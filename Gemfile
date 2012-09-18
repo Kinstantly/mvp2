@@ -25,6 +25,8 @@ end
 
 gem 'jquery-rails'
 
+gem 'ruby-prof', :git => 'git://github.com/wycats/ruby-prof.git'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
