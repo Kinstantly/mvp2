@@ -27,6 +27,13 @@ gem 'jquery-rails'
 
 gem 'ruby-prof', :git => 'git://github.com/wycats/ruby-prof.git'
 
+group :development, :test do
+	gem 'rspec-rails', '~> 2.0'
+	gem 'cucumber-rails', '~> 1.0', require: false
+	gem 'database_cleaner', '~> 0.8'
+	gem 'webrat', '~> 0.7'
+end
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
