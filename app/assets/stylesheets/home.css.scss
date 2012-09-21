@@ -3,7 +3,14 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 .home {
 	.header {
-		color: green;
+		color: gray;
 		text-align: center;
+		border-width: medium; /* sets border width on all sides */
+		border-color: gray;
+		border-style: solid;
+		width: 90%;
+		height: 80px;
+		padding: 10px;
+		margin: 10px;
 	}
 }
