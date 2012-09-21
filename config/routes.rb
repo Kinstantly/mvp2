@@ -1,4 +1,8 @@
 Mvp2::Application.routes.draw do
+
+	# User model on which Devise authentication is based.
+	devise_for :users
+
 	#get "home/index"
 	root :to => 'home#index'
 

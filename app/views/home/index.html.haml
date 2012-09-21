@@ -1,3 +1,5 @@
 .home
 	.header
 		%h1 Get Answers
+	.content
+		-#= user_signed_in? ? "Hello, #{current_user.email}" : 'Join us!'
