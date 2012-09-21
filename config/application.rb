@@ -58,5 +58,11 @@ module Mvp2
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+		
+		# I guess assets added by Devise necessitate this work-around for asset precompilation on Heroku.
+		# Force your application to not access the DB or load models when precompiling your assets.
+		# See https://devcenter.heroku.com/articles/rails3x-asset-pipeline-cedar#troubleshooting
+		config.assets.initialize_on_precompile = false
+
   end
 end
