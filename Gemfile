@@ -6,7 +6,7 @@ gem 'rails', '3.2.8'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 # Make heroku happy.  They only support postgresql.
-gem 'sqlite3', :group => :development
+# gem 'sqlite3', :group => :development
 gem 'pg'
 
 gem 'haml'
