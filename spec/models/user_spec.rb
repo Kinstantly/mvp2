@@ -24,4 +24,23 @@ describe User do
 		@annie.password = '123456'
 		@annie.should have(:no).errors_on(:password)
 	end
+	
+	it "should fail if saved without a password" do
+		@annie.email = 'annie@exmaple.com'
+		status = @annie.save
+		status.should == false
+	end
+	
+	it "should fail if saved without an email address" do
+		@annie.password = '123456'
+		status = @annie.save
+		status.should == false
+	end
+	
+	it "should succeed if saved with both an email address and a password" do
+		@annie.email = 'annie@exmaple.com'
+		@annie.password = '123456'
+		status = @annie.save
+		status.should == true
+	end
 end
