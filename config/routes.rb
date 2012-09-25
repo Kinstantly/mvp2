@@ -1,10 +1,17 @@
 Mvp2::Application.routes.draw do
 
+	# Home page.
+	root :to => 'home#index'
+	
 	# User model on which Devise authentication is based.
 	devise_for :users
-
-	#get "home/index"
-	root :to => 'home#index'
+	
+	# Profile edited via user.
+	match 'edit_profile' => 'users#edit_profile'
+	match 'update_profile' => 'users#update_profile'
+	
+	# Where to go after sign-up or sign-in.
+	match 'user_root' => 'users#edit_profile'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

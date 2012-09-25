@@ -1,0 +1,18 @@
+.top_nav {
+	color: gray;
+	text-align: center;
+	border-width: medium; /* sets border width on all sides */
+	border-color: gray;
+	border-style: solid;
+	width: 90%;
+	padding: 10px;
+	margin: 10px;
+	.flash_messages {
+		.notice {
+			color: green;
+		}
+		.alert {
+			color: red;
+		}
+	}
+}

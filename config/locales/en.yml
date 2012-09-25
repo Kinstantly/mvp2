@@ -3,3 +3,7 @@
 
 en:
   hello: "Hello world"
+  controllers:
+    users:
+      profile_saved: 'Your profile changes were saved.'
+      profile_update_error: 'There was a problem saving your profile.'

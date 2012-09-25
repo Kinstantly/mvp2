@@ -11,6 +11,9 @@ gem 'pg'
 
 gem 'haml'
 
+# Get error message helpers for forms.
+gem 'dynamic_form'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -39,6 +42,7 @@ group :development, :test do
 	gem 'email_spec', '~> 1.2'
 	gem 'capybara', '~> 1.1'
 	gem 'launchy', '~> 2.1'
+	gem 'syntax'
 end
 
 # To use ActiveModel has_secure_password

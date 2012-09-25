@@ -7,10 +7,10 @@
 		= javascript_include_tag "application"
 		= csrf_meta_tags
 	%body
-		.flash_messages
-			%p.notice= notice
-			%p.alert= alert
 		.top_nav
 			= greeting
 			= sign_in_out_link
+			.flash_messages
+				.notice= notice
+				.alert= alert
 		= yield
