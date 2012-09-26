@@ -11,6 +11,9 @@
 				.last_name
 					= f.label :last_name, 'Last name'
 					= f.text_field :last_name
+				.email
+					= uf.label :email, "Email"
+					= uf.text_field :email
 				.company_name
 					= f.label :company_name, 'Company name'
 					= f.text_field :company_name
@@ -31,10 +34,15 @@
 					= f.text_field :city
 					= f.label :region, "State"
 					= f.text_field :region, size: 2
+				.postal_code
+					= f.label :postal_code, "Zip code"
+					= f.text_field :postal_code
 				.mobile_phone
 					= f.label :mobile_phone, "Mobile"
 					= f.text_field :mobile_phone
 				.office_phone
 					= f.label :office_phone, "Office"
 					= f.text_field :office_phone
-			= uf.submit 'Save'
+			.buttons
+				= uf.submit 'Save'
+				= link_to "Cancel", view_profile_path

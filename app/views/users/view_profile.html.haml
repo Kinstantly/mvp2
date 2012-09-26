@@ -1,10 +1,31 @@
 .view_profile
+	.buttons
+		= link_to "Edit profile", edit_profile_path
 	.first_name
 		First name:
 		= @profile.first_name
+	.middle_initial
+		Middle initial
+		= @profile.middle_initial
 	.last_name
 		Last name:
 		= @profile.last_name
 	.email
 		Email:
 		= @user.email
+	.company_name
+		Company name:
+		= @profile.company_name
+	.url
+		Website:
+		= @profile.url
+	.address
+		Address:
+		= profile_address
+		= @profile.postal_code
+	.mobile_phone
+		Mobile:
+		= @profile.mobile_phone
+	.office_phone
+		Office:
+		= @profile.office_phone

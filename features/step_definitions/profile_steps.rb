@@ -3,7 +3,7 @@
 def set_up_new_data
 	create_visitor
 	@profile_data ||= { first_name: 'Know', middle_initial: 'I', last_name: 'Tall',
-		office_phone: '415-555-1234', url: 'http://knowitall.com' }
+		office_phone: '415-555-1234', url: 'http://knowitall.com', address1: '123 Main St.' }
 end
 
 def find_profile
@@ -55,16 +55,37 @@ When /^I edit my profile information$/ do
 	find_profile
 end
 
+When /^I edit my email address$/ do
+	fill_in 'Email', with: @visitor[:email]
+	click_button 'Save'
+	find_profile
+end
+
+When /^Click edit profile$/ do
+	click_link 'Edit profile'
+end
+
+When /^I click on the cancel link$/ do
+	click_link 'Cancel'
+end
+
 ### THEN ###
 
 Then /^I should see my profile information$/ do
-  page.should have_content @profile.first_name
-  page.should have_content @profile.last_name
+	page.should have_content @profile.first_name
+	page.should have_content @profile.last_name
+end
+
+Then /^I should see my profile address$/ do
+	page.should have_content @profile.address1
+end
+
+Then /^I should land on the profile view page$/ do
+	current_path.should == view_profile_path
 end
 
 Then /^I should land on the profile edit page$/ do
-	page.should have_content "First name"
-	page.should have_content "Last name"
+	current_path.should == edit_profile_path
 end
 
 Then /^my basic information should be saved in my profile$/ do
@@ -76,4 +97,8 @@ end
 Then /^my edited information should be saved in my profile$/ do
 	@profile.office_phone.should == @profile_data[:office_phone]
 	@profile.url.should == @profile_data[:url]
+end
+
+Then /^my email address should be saved to my user record$/ do
+  @user.email.should == @visitor[:email]
 end

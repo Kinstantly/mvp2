@@ -13,7 +13,9 @@ Mvp2::Application.routes.draw do
 	match 'view_profile' => 'users#view_profile'
 	
 	# Where to go after sign-up or sign-in.
-	match 'user_root' => 'users#edit_profile'
+	#  Using this option causes the response path to be user_root; kind of weird.
+	#  Better to override in the ApplicationController.
+	# match 'user_root' => 'users#edit_profile'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
