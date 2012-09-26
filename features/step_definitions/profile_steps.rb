@@ -7,7 +7,7 @@ def set_up_new_data
 end
 
 def find_profile
-	find_user
+	refresh_user
 	@profile = @user.profile
 end
 
@@ -15,6 +15,17 @@ end
 Given /^an empty profile right after registration$/ do
 	set_up_new_data
 	sign_up
+end
+
+Given /^I am on my profile edit page$/ do
+	set_up_new_data
+	visit edit_profile_path
+end
+
+### WHEN ###
+
+When /^I view my profile$/ do
+  visit view_profile_path
 end
 
 When /^I enter my basic profile information$/ do
@@ -25,14 +36,26 @@ When /^I enter my basic profile information$/ do
 	find_profile
 end
 
+When /^I edit my profile information$/ do
+	fill_in 'Office', with: @profile_data[:office_phone]
+	fill_in 'Website', with: @profile_data[:url]
+	click_button 'Save'
+	find_profile
+end
+
 ### THEN ###
 Then /^I should land on the profile edit page$/ do
 	page.should have_content "First name"
 	page.should have_content "Last name"
 end
 
-Then /^it should be saved in my profile$/ do
+Then /^my basic information should be saved in my profile$/ do
 	@profile.first_name.should == @profile_data[:first_name]
 	@profile.middle_initial.should == @profile_data[:middle_initial]
 	@profile.last_name.should == @profile_data[:last_name]
+end
+
+Then /^my edited information should be saved in my profile$/ do
+	@profile.office_phone.should == @profile_data[:office_phone]
+	@profile.url.should == @profile_data[:url]
 end

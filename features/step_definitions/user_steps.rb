@@ -9,6 +9,10 @@ def find_user
   @user ||= User.where(:email => @visitor[:email]).first
 end
 
+def refresh_user
+  @user = User.where(:email => @visitor[:email]).first
+end
+
 def create_unconfirmed_user
   create_visitor
   delete_user
@@ -186,4 +190,9 @@ end
 Then /^I should see my email$/ do
   create_user
   page.should have_content @user[:email]
+end
+
+Then /^I should see my first name$/ do
+  create_user
+  page.should have_content @user[:first_name]
 end

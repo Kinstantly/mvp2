@@ -4,6 +4,8 @@ Feature: Edit my expert profile
 	I want to edit in my profile information
 	
 	Scenario: Enter basic information
-		Given I am on my profile edit page
-		When I enter profile information
-		Then it should be saved in my profile
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I edit my profile information
+		Then my edited information should be saved in my profile

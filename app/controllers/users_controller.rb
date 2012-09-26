@@ -2,8 +2,10 @@ class UsersController < ApplicationController
 	before_filter :authenticate_user!
 	before_filter :set_up_user
 	
+	def view_profile
+	end
+	
 	def edit_profile
-		@user.build_profile unless @user.profile
 	end
 	
 	def update_profile
@@ -20,5 +22,7 @@ class UsersController < ApplicationController
 	
 	def set_up_user
 		@user = current_user
+		@user.build_profile unless @user.profile
+		@profile = @user.profile
 	end
 end

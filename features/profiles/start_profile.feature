@@ -11,4 +11,4 @@ Feature: Start building my expert profile
 	Scenario: Enter basic information
 		Given an empty profile right after registration
 		When I enter my basic profile information
-		Then it should be saved in my profile
+		Then my basic information should be saved in my profile

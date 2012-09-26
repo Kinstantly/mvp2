@@ -6,9 +6,11 @@ Mvp2::Application.routes.draw do
 	# User model on which Devise authentication is based.
 	devise_for :users
 	
-	# Profile edited via user.
+	# Profile is accessed via user.
+	# Only current_user should have access to the profile.
 	match 'edit_profile' => 'users#edit_profile'
 	match 'update_profile' => 'users#update_profile'
+	match 'view_profile' => 'users#view_profile'
 	
 	# Where to go after sign-up or sign-in.
 	match 'user_root' => 'users#edit_profile'

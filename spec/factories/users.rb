@@ -7,5 +7,9 @@ FactoryGirl.define do
 		# confirmed_at Time.now
 		
 		profile
+		
+		factory :user_with_no_email do
+			email ''
+		end
 	end
 end

@@ -1,4 +1,4 @@
-.profile
+.edit_profile
 	= form_for @user, url: update_profile_path do |uf|
 		= uf.error_messages
 		= uf.fields_for :profile do |f|
