@@ -11,6 +11,14 @@ def find_profile
 	@profile = @user.profile
 end
 
+def create_profile
+	set_up_new_data
+	create_user unless @user
+	@profile = FactoryGirl.create(:profile, @profile_data)
+	@user.profile = @profile
+	@user.save
+end
+
 ### GIVEN ###
 Given /^an empty profile right after registration$/ do
 	set_up_new_data
@@ -20,6 +28,10 @@ end
 Given /^I am on my profile edit page$/ do
 	set_up_new_data
 	visit edit_profile_path
+end
+
+Given /^I want my profile$/ do
+  create_profile
 end
 
 ### WHEN ###
@@ -44,6 +56,12 @@ When /^I edit my profile information$/ do
 end
 
 ### THEN ###
+
+Then /^I should see my profile information$/ do
+  page.should have_content @profile.first_name
+  page.should have_content @profile.last_name
+end
+
 Then /^I should land on the profile edit page$/ do
 	page.should have_content "First name"
 	page.should have_content "Last name"

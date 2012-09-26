@@ -186,13 +186,3 @@ end
 Then /^I should see an account edited message$/ do
   page.should have_content "You updated your account successfully."
 end
-
-Then /^I should see my email$/ do
-  create_user
-  page.should have_content @user[:email]
-end
-
-Then /^I should see my first name$/ do
-  create_user
-  page.should have_content @user[:first_name]
-end
