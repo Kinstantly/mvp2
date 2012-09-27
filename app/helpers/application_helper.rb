@@ -9,7 +9,7 @@ module ApplicationHelper
 	
 	def greeting
 		if user_signed_in?
-			"Hello, #{current_user.email}"
+			"Hello, #{profile_display_name.presence || current_user.email}"
 		else
 			link_to 'Join us!', new_user_registration_path, class: 'sign_up'
 		end
