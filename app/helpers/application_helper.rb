@@ -14,4 +14,8 @@ module ApplicationHelper
 			link_to 'Join us!', new_user_registration_path, class: 'sign_up'
 		end
 	end
+	
+	def view_profile_link
+		link_to 'View my profile', view_profile_path if user_signed_in? && controller_name != 'users'
+	end
 end

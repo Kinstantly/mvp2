@@ -1,31 +1,63 @@
 .view_profile
 	.buttons
 		= link_to "Edit profile", edit_profile_path
-	.first_name
-		First name:
-		= @profile.first_name
-	.middle_initial
-		Middle initial
-		= @profile.middle_initial
-	.last_name
-		Last name:
-		= @profile.last_name
-	.email
-		Email:
-		= @user.email
-	.company_name
-		Company name:
-		= @profile.company_name
-	.url
-		Website:
-		= @profile.url
-	.address
-		Address:
-		= profile_address
-		= @profile.postal_code
-	.mobile_phone
-		Mobile:
-		= @profile.mobile_phone
-	.office_phone
-		Office:
-		= @profile.office_phone
+	.profile_areas
+		.basic_profile
+			.display_name
+				Name:
+				= profile_display_name
+			.email
+				Email:
+				= @user.email
+			.company_name
+				Company name:
+				= @profile.company_name
+			.url
+				Website:
+				= @profile.url
+		.location_contact_profile
+			.address
+				Address:
+				= profile_address
+				= @profile.postal_code
+			.mobile_phone
+				Mobile:
+				= @profile.mobile_phone
+			.office_phone
+				Office:
+				= @profile.office_phone
+		.professional_profile
+			.headline
+				%span.label Professional headline:
+				%br
+				.value= @profile.headline
+			.education
+				%span.label Education:
+				%br
+				.value= @profile.education
+			.experience
+				%span.label Experience:
+				%br
+				.value= @profile.experience
+			.certifications
+				%span.label Certifications:
+				%br
+				.value= @profile.certifications
+			.awards
+				%span.label Honors and awards:
+				%br
+				.value= @profile.awards
+			.languages
+				%span.label Languages:
+				%br
+				.value= @profile.languages
+			.summary
+				%span.label Summary:
+				%br
+				.value= @profile.summary
+			.specialties
+				%span.label Specialties
+				%br
+				.value= @profile.specialties
+			.insurance_accepted
+				%span.label= @profile.insurance_accepted ? 'Insurance accepted' : 'Insurance not accepted'

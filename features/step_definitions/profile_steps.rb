@@ -34,6 +34,16 @@ Given /^I want my profile$/ do
   create_profile
 end
 
+Given /^I have no country code in my profile$/ do
+	@user.profile.country = nil
+	@user.profile.save
+end
+
+Given /^I have a country code of "(.*?)" in my profile$/ do |country|
+	@user.profile.country = country
+	@user.profile.save
+end
+
 ### WHEN ###
 
 When /^I view my profile$/ do
@@ -69,6 +79,15 @@ When /^I click on the cancel link$/ do
 	click_link 'Cancel'
 end
 
+When /^I save my profile$/ do
+	click_button 'Save'
+	find_profile
+end
+
+When /^I check "(.*?)"$/ do |field|
+  check field
+end
+
 ### THEN ###
 
 Then /^I should see my profile information$/ do
@@ -100,5 +119,13 @@ Then /^my edited information should be saved in my profile$/ do
 end
 
 Then /^my email address should be saved to my user record$/ do
-  @user.email.should == @visitor[:email]
+	@user.email.should == @visitor[:email]
+end
+
+Then /^my country code should be set to "(.*?)"$/ do |country|
+	@profile.country.should == country
+end
+
+Then /^my profile should show "(.*?)"$/ do |value|
+	page.should have_content value
 end

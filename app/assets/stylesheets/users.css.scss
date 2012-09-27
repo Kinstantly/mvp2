@@ -6,11 +6,39 @@
 	.buttons {
 		margin-bottom: 1em;
 	}
+	.profile_areas > div {
+		border-width: medium;
+		border-color: gray;
+		border-style: solid;
+		margin-bottom: 1em;
+		padding: 4px;
+		> div {
+			margin-bottom: 0.5em;
+			.value {
+				border-width: thin;
+				border-color: gray;
+				border-style: solid;
+				padding: 4px;
+			}
+		}
+	}
 }
 
 .edit_profile {
 	margin: 10px;
-	form .buttons {
-		margin-top: 1em;
+	form.edit_user {
+		.profile_areas > div {
+			border-width: medium;
+			border-color: gray;
+			border-style: solid;
+			margin-bottom: 1em;
+			padding: 4px;
+			> div {
+				margin-bottom: 0.5em;
+			}
+		}
+		.buttons {
+			margin-bottom: 2em;
+		}
 	}
 }

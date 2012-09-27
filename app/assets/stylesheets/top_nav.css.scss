@@ -1,12 +1,13 @@
 .top_nav {
-	color: gray;
 	text-align: center;
 	border-width: medium; /* sets border width on all sides */
 	border-color: gray;
 	border-style: solid;
-	width: 90%;
 	padding: 10px;
 	margin: 10px;
+	.nav_el {
+		margin: 0 1em 0 1em;
+	}
 	.flash_messages {
 		.notice {
 			color: green;

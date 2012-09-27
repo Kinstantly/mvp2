@@ -17,6 +17,14 @@ Feature: Edit my expert profile
 		When I edit my email address
 		Then my email address should be saved to my user record
 	
+	Scenario: Check insurance accepted
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I check "Insurance accepted"
+			And I save my profile
+		Then my profile should show "Insurance accepted"
+	
 	Scenario: Land on view page after edit
 		Given I exist as a user
 			And I am logged in
@@ -30,3 +38,19 @@ Feature: Edit my expert profile
 			And I am on my profile edit page
 		When I click on the cancel link
 		Then I should land on the profile view page
+	
+	Scenario: Country code is US by default
+		Given I exist as a user
+			And I am logged in
+			And I have no country code in my profile
+		When I am on my profile edit page
+			And I save my profile
+		Then my country code should be set to "US"
+	
+	Scenario: Country code is preserved
+		Given I exist as a user
+			And I am logged in
+			And I have a country code of "CA" in my profile
+		When I am on my profile edit page
+			And I save my profile
+		Then my country code should be set to "CA"

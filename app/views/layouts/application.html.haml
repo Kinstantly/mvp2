@@ -8,8 +8,9 @@
 		= csrf_meta_tags
 	%body
 		.top_nav
-			= greeting
-			= sign_in_out_link
+			%span.nav_el= greeting
+			%span.nav_el= view_profile_link
+			%span.nav_el= sign_in_out_link
 			.flash_messages
 				.notice= notice
 				.alert= alert

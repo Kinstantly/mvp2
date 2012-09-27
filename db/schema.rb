@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120926041005) do
+ActiveRecord::Schema.define(:version => 20120926211115) do
 
   create_table "profiles", :force => true do |t|
     t.string   "first_name"
@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(:version => 20120926041005) do
     t.string   "middle_initial"
     t.string   "company_name"
     t.string   "url"
-    t.text     "info"
     t.string   "mobile_phone"
     t.string   "office_phone"
     t.string   "address1"
@@ -27,10 +26,21 @@ ActiveRecord::Schema.define(:version => 20120926041005) do
     t.string   "city"
     t.string   "region"
     t.string   "country"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.integer  "user_id"
     t.string   "postal_code"
+    t.string   "credentials"
+    t.string   "headline"
+    t.string   "subcategory"
+    t.text     "education"
+    t.text     "experience"
+    t.string   "certifications"
+    t.text     "awards"
+    t.string   "languages"
+    t.boolean  "insurance_accepted"
+    t.text     "summary"
+    t.string   "specialties"
   end
 
   create_table "users", :force => true do |t|

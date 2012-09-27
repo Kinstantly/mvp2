@@ -1,8 +1,10 @@
 class Profile < ActiveRecord::Base
-	attr_accessible :first_name, :last_name, :middle_initial, 
-		:company_name, :url, :info, 
+	attr_accessible :first_name, :last_name, :middle_initial, :credentials, 
+		:company_name, :url, 
 		:address1, :address2, :city, :region, :country, :postal_code, 
-		:mobile_phone, :office_phone
+		:mobile_phone, :office_phone, 
+		:headline, :subcategory, :education, :experience, :certifications, :awards, 
+		:languages, :insurance_accepted, :summary, :specialties
 	
 	belongs_to :user
 	
