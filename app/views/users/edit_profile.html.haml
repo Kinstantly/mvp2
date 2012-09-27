@@ -24,6 +24,9 @@
 					.url
 						= f.label :url, 'Website'
 						= f.text_field :url
+					.headline
+						= f.label :headline, "Professional headline"
+						= f.text_field :headline, size: 50
 				.location_contact_profile
 					.address
 						= f.label :address1, "Address"
@@ -45,9 +48,9 @@
 						= f.label :office_phone, "Office"
 						= f.text_field :office_phone
 				.professional_profile
-					.headline
-						= f.label :headline, "Professional headline"
-						= f.text_field :headline, size: 50
+					.category
+						= f.label :category_id, "Category"
+						= f.select :category_id, Category.all.collect {|c| [ c.name, c.id ] }, { :include_blank => true }
 					.education
 						= f.label :education, "Education"
 						= f.text_area :education, size: '50x5'

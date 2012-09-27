@@ -15,6 +15,10 @@
 			.url
 				Website:
 				= @profile.url
+			.headline
+				%span.label Professional headline:
+				%br
+				.value= @profile.headline
 		.location_contact_profile
 			.address
 				Address:
@@ -27,10 +31,9 @@
 				Office:
 				= @profile.office_phone
 		.professional_profile
-			.headline
-				%span.label Professional headline:
-				%br
-				.value= @profile.headline
+			.category
+				%span.label Category:
+				.value= @profile.category.try(:name)
 			.education
 				%span.label Education:
 				%br

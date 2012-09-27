@@ -4,6 +4,7 @@ def set_up_new_data
 	create_visitor
 	@profile_data ||= { first_name: 'Know', middle_initial: 'I', last_name: 'Tall',
 		office_phone: '415-555-1234', url: 'http://knowitall.com', address1: '123 Main St.' }
+	@category_data ||= { name: 'Parenting' }
 end
 
 def find_profile
@@ -17,6 +18,7 @@ def create_profile
 	@profile = FactoryGirl.create(:profile, @profile_data)
 	@user.profile = @profile
 	@user.save
+	FactoryGirl.create(:category, @category_data)
 end
 
 ### GIVEN ###
@@ -88,6 +90,10 @@ When /^I check "(.*?)"$/ do |field|
   check field
 end
 
+When /^I select the "(.*?)" category$/ do |category|
+  select category, from: 'Category'
+end
+
 ### THEN ###
 
 Then /^I should see my profile information$/ do
@@ -128,4 +134,10 @@ end
 
 Then /^my profile should show "(.*?)"$/ do |value|
 	page.should have_content value
+end
+
+Then /^my profile should show me as being in the "(.*?)" category$/ do |category|
+	within('.category') do
+		page.should have_content category
+	end
 end

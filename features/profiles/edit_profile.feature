@@ -54,3 +54,12 @@ Feature: Edit my expert profile
 		When I am on my profile edit page
 			And I save my profile
 		Then my country code should be set to "CA"
+	
+	Scenario: Select parenting category
+		Given I exist as a user
+			And I want my profile
+			And I am logged in
+			And I am on my profile edit page
+		When I select the "Parenting" category
+			And I save my profile
+		Then my profile should show me as being in the "Parenting" category
