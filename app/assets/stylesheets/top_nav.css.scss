@@ -1,8 +1,10 @@
 .top_nav {
 	text-align: center;
-	border-width: medium; /* sets border width on all sides */
-	border-color: gray;
-	border-style: solid;
+	border: {
+		width: medium;
+		color: gray;
+		style: solid;
+	}
 	padding: 10px;
 	margin: 10px;
 	.nav_el {

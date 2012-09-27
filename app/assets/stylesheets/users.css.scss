@@ -1,17 +1,23 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@mixin profile-areas-div-style {
+	border: {
+		width: medium;
+		color: gray;
+		style: solid;
+	}
+	margin-bottom: 1em;
+	padding: 4px;
+}
+
 .view_profile {
 	margin: 10px;
 	.buttons {
 		margin-bottom: 1em;
 	}
 	.profile_areas > div {
-		border-width: medium;
-		border-color: gray;
-		border-style: solid;
-		margin-bottom: 1em;
-		padding: 4px;
+		@include profile-areas-div-style;
 		> div {
 			margin-bottom: 0.5em;
 			.value {
@@ -28,11 +34,7 @@
 	margin: 10px;
 	form.edit_user {
 		.profile_areas > div {
-			border-width: medium;
-			border-color: gray;
-			border-style: solid;
-			margin-bottom: 1em;
-			padding: 4px;
+			@include profile-areas-div-style;
 			> div {
 				margin-bottom: 0.5em;
 			}

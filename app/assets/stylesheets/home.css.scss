@@ -5,9 +5,11 @@
 	.header {
 		color: gray;
 		text-align: center;
-		border-width: medium; /* sets border width on all sides */
-		border-color: gray;
-		border-style: solid;
+		border: {
+			width: medium;
+			color: gray;
+			style: solid;
+		}
 		height: 80px;
 		padding: 10px;
 		margin: 10px;
