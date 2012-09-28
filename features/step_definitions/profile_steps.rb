@@ -19,6 +19,8 @@ def create_profile
 	@user.profile = @profile
 	@user.save
 	FactoryGirl.create(:category, @category_data)
+	FactoryGirl.create(:age_range, name: '0 to 6')
+	FactoryGirl.create(:age_range, name: '6 to 12')
 end
 
 ### GIVEN ###
@@ -87,11 +89,15 @@ When /^I save my profile$/ do
 end
 
 When /^I check "(.*?)"$/ do |field|
-  check field
+	check field
 end
 
 When /^I select the "(.*?)" category$/ do |category|
-  select category, from: 'Category'
+	select category, from: 'Category'
+end
+
+When /^I select the "(.*?)" age range$/ do |age_range|
+	select age_range, from: 'Ages'
 end
 
 ### THEN ###
@@ -139,5 +145,11 @@ end
 Then /^my profile should show me as being in the "(.*?)" category$/ do |category|
 	within('.category') do
 		page.should have_content category
+	end
+end
+
+Then /^my profile should show the "(.*?)" age range$/ do |age_range|
+	within('.age_ranges') do
+		page.should have_content age_range
 	end
 end

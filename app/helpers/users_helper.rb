@@ -19,4 +19,9 @@ module UsersHelper
 		name += ", #{cred}" if cred.present?
 		name
 	end
+	
+	def profile_age_ranges
+		age_ranges = current_user.try(:profile).try(:age_ranges).presence || []
+		age_ranges.map{|a| a.name}.join(', ')
+	end
 end

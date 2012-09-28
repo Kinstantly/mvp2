@@ -54,6 +54,11 @@
 					.subcategory
 						= f.label :subcategory, "Subcategory"
 						= f.text_field :subcategory
+					.age_ranges
+						= f.label :age_range_ids, "Ages"
+						= f.collection_select(:age_range_ids, AgeRange.all, :id, :name, {}, multiple: true)
+						%span.note
+							Hold down the Ctrl (Windows) / Command (Mac) button to select multiple options.
 					.education
 						= f.label :education, "Education"
 						= f.text_area :education, size: '50x5'

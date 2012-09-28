@@ -63,3 +63,14 @@ Feature: Edit my expert profile
 		When I select the "Parenting" category
 			And I save my profile
 		Then my profile should show me as being in the "Parenting" category
+	
+	Scenario: Select age ranges
+		Given I exist as a user
+			And I want my profile
+			And I am logged in
+			And I am on my profile edit page
+		When I select the "0 to 6" age range
+			And I select the "6 to 12" age range
+			And I save my profile
+		Then my profile should show the "0 to 6" age range
+			And my profile should show the "6 to 12" age range
