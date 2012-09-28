@@ -50,7 +50,7 @@
 				.professional_profile
 					.category
 						= f.label :category_id, "Category"
-						= f.select :category_id, Category.all.collect {|c| [ c.name, c.id ] }, { :include_blank => 'please choose one' }
+						= f.collection_select(:category_id, Category.all, :id, :name, { prompt: 'Please choose one' })
 					.subcategory
 						= f.label :subcategory, "Subcategory"
 						= f.text_field :subcategory
