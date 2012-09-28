@@ -33,7 +33,10 @@
 		.professional_profile
 			.category
 				%span.label Category:
-				.value= @profile.category.try(:name)
+				= @profile.category.try(:name)
+			.subcategory
+				%span.label Subcategory:
+				= @profile.subcategory
 			.education
 				%span.label Education:
 				%br
