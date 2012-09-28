@@ -10,6 +10,6 @@ class User < ActiveRecord::Base
 		:profile_attributes
 	# attr_accessible :title, :body
 
-	has_one :profile
+	has_one :profile, dependent: :destroy
 	accepts_nested_attributes_for :profile
 end
