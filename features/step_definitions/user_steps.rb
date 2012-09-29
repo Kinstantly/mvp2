@@ -37,7 +37,7 @@ def sign_up
   fill_in "Email", :with => @visitor[:email]
   fill_in "Password", :with => @visitor[:password]
   fill_in "Password confirmation", :with => @visitor[:password_confirmation]
-  click_button "Sign up"
+  click_button "Join us!"
   find_user
 end
 
@@ -45,7 +45,7 @@ def sign_in
   visit '/users/sign_in'
   fill_in "Email", :with => @visitor[:email]
   fill_in "Password", :with => @visitor[:password]
-  click_button "Sign in"
+  click_button "Login"
 end
 
 ### GIVEN ###
@@ -137,7 +137,7 @@ end
 ### THEN ###
 Then /^I should be signed in$/ do
   page.should have_content "Logout"
-  page.should_not have_content "Sign up"
+  page.should_not have_content "Join us"
   page.should_not have_content "Login"
 end
 

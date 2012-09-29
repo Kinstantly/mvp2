@@ -1,0 +1,22 @@
+.sign_up
+	%h2 Join us!
+
+	= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+		= devise_error_messages!
+
+		.email
+			= f.label :email
+			= f.email_field :email
+
+		.password
+			= f.label :password
+			= f.password_field :password
+
+		.password_confirmation
+			= f.label :password_confirmation
+			= f.password_field :password_confirmation
+
+		.buttons
+			= f.submit 'Join us!'
+
+	= render "devise/shared/links"
