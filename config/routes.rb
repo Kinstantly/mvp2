@@ -3,6 +3,8 @@ Mvp2::Application.routes.draw do
 	# Home page.
 	root :to => 'home#index'
 	
+	match 'request_expert' => 'home#request_expert'
+	
 	# User model on which Devise authentication is based.
 	devise_for :users
 	
