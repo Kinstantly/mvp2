@@ -4,6 +4,8 @@ def set_up_new_data
 	create_visitor
 	@profile_data ||= { first_name: 'Know', middle_initial: 'I', last_name: 'Tall',
 		office_phone: '415-555-1234', url: 'http://knowitall.com', address1: '123 Main St.' }
+	@profile_data_2 ||= { first_name: 'Can', middle_initial: 'I', last_name: 'Helpyou',
+		office_phone: '800-555-1111', url: 'http://canihelpyou.com', address1: '10 Broadway Blvd.' }
 	@category_data ||= { name: 'Parenting' }
 end
 
@@ -23,6 +25,14 @@ def create_profile
 	FactoryGirl.create(:age_range, name: '6 to 12')
 end
 
+def create_profile_2
+	set_up_new_data
+	create_user_2 unless @user_2
+	@profile_2 = FactoryGirl.create(:profile, @profile_data_2)
+	@user_2.profile = @profile_2
+	@user_2.save
+end
+
 ### GIVEN ###
 Given /^an empty profile right after registration$/ do
 	set_up_new_data
@@ -34,8 +44,13 @@ Given /^I am on my profile edit page$/ do
 	visit edit_profile_path
 end
 
-Given /^I want my profile$/ do
+Given /^I want (my|a) profile$/ do |word|
   create_profile
+end
+
+Given /^there are multiple profiles in the system$/ do
+	create_profile
+	create_profile_2
 end
 
 Given /^I have no country code in my profile$/ do
@@ -100,6 +115,10 @@ When /^I select the "(.*?)" age range$/ do |age_range|
 	select age_range, from: 'Ages'
 end
 
+When /^I visit the profile index page$/ do
+	visit expert_profiles_path
+end
+
 ### THEN ###
 
 Then /^I should see my profile information$/ do
@@ -152,4 +171,13 @@ Then /^my profile should show the "(.*?)" age range$/ do |age_range|
 	within('.age_ranges') do
 		page.should have_content age_range
 	end
+end
+
+Then /^I should see more than one profile$/ do
+	page.should have_content @profile_data[:url]
+	page.should have_content @profile_data_2[:url]
+end
+
+Then /^I should not see profile data$/ do
+	page.should_not have_content @profile_data[:url]
 end

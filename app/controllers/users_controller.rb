@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
 	before_filter :authenticate_user!
-	before_filter :set_up_user
+	before_filter :set_up_user, except: [:index]
+	
+	def index
+		@users = User.all
+	end
 	
 	def view_profile
 	end

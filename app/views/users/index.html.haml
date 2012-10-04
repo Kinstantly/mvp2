@@ -1,0 +1,46 @@
+.profile_index
+	.profile_list{align: 'center'}
+		%table
+			%thead
+				%tr
+					%th Name
+					%th Email
+					%th Company name
+					%th Website
+					%th Headline
+					%th Address
+					%th Mobile
+					%th Office
+					%th Category
+					%th Subcategory
+					%th Ages
+					%th Education
+					%th.large Experience
+					%th Licenses, certifications
+					%th Honors and awards
+					%th Languages
+					%th.large Summary
+					%th.large Specialties
+					%th Insurance
+			%tbody
+				- @users.each do |u|
+					%tr
+						%td= profile_display_name u
+						%td= u.email
+						%td= u.try(:profile).try(:company_name)
+						%td= u.try(:profile).try(:url)
+						%td= u.try(:profile).try(:headline)
+						%td= "#{profile_address u} #{u.try(:profile).try(:postal_code)}"
+						%td= u.try(:profile).try(:mobile_phone)
+						%td= u.try(:profile).try(:office_phone)
+						%td= u.try(:profile).try(:category).try(:name)
+						%td= u.try(:profile).try(:subcategory)
+						%td= profile_age_ranges u
+						%td= u.try(:profile).try(:education)
+						%td= u.try(:profile).try(:experience)
+						%td= u.try(:profile).try(:certifications)
+						%td= u.try(:profile).try(:awards)
+						%td= u.try(:profile).try(:languages)
+						%td= u.try(:profile).try(:summary)
+						%td= u.try(:profile).try(:specialties)
+						%td= u.try(:profile).try(:insurance_accepted) ? 'Accepted' : 'Not accepted'
