@@ -27,6 +27,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'coffee-filter'
 
 gem 'ruby-prof', :git => 'git://github.com/wycats/ruby-prof.git'
 
