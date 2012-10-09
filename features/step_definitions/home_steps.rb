@@ -14,3 +14,11 @@ end
 Then /^I should see a statement about us$/ do
 	page.should have_content('Zatch')
 end
+
+Then /^I should see a list of frequently asked questions and answers$/ do
+	page.should have_content('Frequently')
+end
+
+Then /^I should see explanations of our policies$/ do
+	page.should have_content('Policies')
+end
