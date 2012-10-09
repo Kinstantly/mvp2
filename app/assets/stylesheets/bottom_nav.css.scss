@@ -1,0 +1,18 @@
+// Navigation at the bottom of the page.
+
+.bottom_nav {
+	text-align: center;
+	border: {
+		width: medium;
+		color: gray;
+		style: solid;
+	}
+	padding: 10px;
+	margin: 10px;
+	a {
+		margin: {
+			left: 1em;
+			right: 1em;
+		}
+	}
+}

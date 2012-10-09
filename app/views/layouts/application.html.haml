@@ -7,12 +7,19 @@
 		= javascript_include_tag "application"
 		= csrf_meta_tags
 	%body
+		%a{name: 'top'}
 		.top_nav
-			%span.nav_el= greeting
 			%span.nav_el= home_link
-			%span.nav_el= view_profile_link
-			%span.nav_el= sign_in_out_link
+			%span.nav_el= request_expert_link
+			%span.nav_el= about_link
+			%span.nav_el= faq_link
+			%span.nav_el= policies_link
+			%span.nav_el= become_expert_link
+			%span.nav_el= contact_link
 			.flash_messages
 				.notice= notice
 				.alert= alert
 		= yield
+		.bottom_nav
+			= link_to "Go to top", '#top'
+			= home_link

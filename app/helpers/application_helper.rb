@@ -16,7 +16,7 @@ module ApplicationHelper
 	end
 	
 	def home_link
-		link_to 'Get Answers', root_path unless controller_name == 'home'
+		link_to "#{company_name}", root_path unless controller_name == 'home' && action_name == 'index'
 	end
 	
 	def view_profile_link
@@ -26,5 +26,29 @@ module ApplicationHelper
 	
 	def company_name
 		'Zatch'
+	end
+	
+	def about_link
+		link_to "About us", about_path unless controller_name == 'home' && action_name == 'about'
+	end
+	
+	def become_expert_link
+		link_to "Expert registration", become_expert_path unless controller_name == 'home' && action_name == 'become_expert'
+	end
+	
+	def contact_link
+		link_to "Contact us", contact_path unless controller_name == 'home' && action_name == 'contact'
+	end
+	
+	def faq_link
+		link_to "FAQ", faq_path unless controller_name == 'home' && action_name == 'faq'
+	end
+	
+	def policies_link
+		link_to "Policies", policies_path unless controller_name == 'home' && action_name == 'policies'
+	end
+	
+	def request_expert_link
+		link_to "Request a meeting", request_expert_path unless controller_name == 'home' && action_name == 'request_expert'
 	end
 end

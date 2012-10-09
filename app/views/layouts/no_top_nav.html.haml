@@ -7,7 +7,8 @@
 		= javascript_include_tag "application"
 		= csrf_meta_tags
 	%body
+		%a{name: 'top'}
 		= yield
 		.bottom_nav
 			= link_to "Go to top", '#top'
-			= link_to "Home", root_path
+			= home_link
