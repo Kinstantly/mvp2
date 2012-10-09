@@ -23,4 +23,8 @@ module ApplicationHelper
 		link_to 'View my profile', view_profile_path if user_signed_in? && 
 			(controller_name != 'users' || (controller_name == 'users' && action_name == 'index'))
 	end
+	
+	def company_name
+		'Zatch'
+	end
 end
