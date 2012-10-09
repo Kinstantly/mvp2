@@ -1,7 +1,7 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-.home, .request_expert, .become_expert {
+.home, .request_expert, .become_expert, .contact, .about {
 	.header {
 		color: gray;
 		text-align: center;
@@ -14,7 +14,11 @@
 		padding: 10px;
 		margin: 10px;
 	}
-	.bottom_nav a {
+}
+
+.bottom_nav {
+	text-align: center;
+	a {
 		margin: {
 			left: 1em;
 			right: 1em;

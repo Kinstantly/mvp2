@@ -8,3 +8,6 @@
 		= csrf_meta_tags
 	%body
 		= yield
+		.bottom_nav
+			= link_to "Go to top", '#top'
+			= link_to "Home", root_path

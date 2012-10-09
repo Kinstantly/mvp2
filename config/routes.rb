@@ -5,6 +5,8 @@ Mvp2::Application.routes.draw do
 	
 	match 'request_expert' => 'home#request_expert'
 	match 'become_expert' => 'home#become_expert'
+	match 'about' => 'home#about'
+	match 'contact' => 'home#contact'
 	
 	# User model on which Devise authentication is based.
 	devise_for :users

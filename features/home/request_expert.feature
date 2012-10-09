@@ -6,5 +6,5 @@ Feature: Request expert
 	# @javascript
 	Scenario: show request form
 		Given I am not logged in
-		When I visit the expert request page
+		When I visit the "request_expert" page
 		Then I should see a Google form

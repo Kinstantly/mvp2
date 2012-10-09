@@ -1,5 +1,5 @@
-When /^I visit the expert request page$/ do
-	visit request_expert_path
+When /^I visit the "(.*?)" page$/ do |path|
+	visit path
 end
 
 Then /^I should see an email input box$/ do
@@ -9,4 +9,8 @@ end
 
 Then /^I should see a Google form$/ do
 	page.should have_css('iframe')
+end
+
+Then /^I should see a statement about us$/ do
+	page.should have_content('Zatch')
 end
