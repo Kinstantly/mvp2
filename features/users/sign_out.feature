@@ -7,5 +7,3 @@ Feature: Sign out
       Given I am logged in
       When I sign out
       Then I should see a signed out message
-      When I return to the site
-      Then I should be signed out
