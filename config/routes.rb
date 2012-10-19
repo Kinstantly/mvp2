@@ -11,7 +11,7 @@ Mvp2::Application.routes.draw do
 	match 'policies' => 'home#policies'
 	
 	# User model on which Devise authentication is based.
-	devise_for :users
+	devise_for :users, controllers: { registrations: "users/registrations" }
 	
 	# Profile is accessed via user.
 	# Only current_user should have access to the profile.

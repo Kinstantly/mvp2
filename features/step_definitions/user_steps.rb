@@ -195,3 +195,7 @@ end
 Then /^I should see an account edited message$/ do
   page.should have_content "You updated your account successfully."
 end
+
+Then /^I should be an expert$/ do
+  @user.should be_expert
+end

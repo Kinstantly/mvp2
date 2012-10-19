@@ -34,6 +34,9 @@ gem 'ruby-prof', :git => 'git://github.com/wycats/ruby-prof.git'
 # Authentication based on Warden.
 gem 'devise'
 
+# Authorization library.
+gem 'cancan'
+
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
 	gem 'cucumber-rails', '~> 1.0', require: false

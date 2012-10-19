@@ -12,4 +12,26 @@ class User < ActiveRecord::Base
 
 	has_one :profile, dependent: :destroy
 	accepts_nested_attributes_for :profile
+	
+	serialize :roles, Array
+	
+	def add_role(role)
+		roles << role.to_sym if role
+	end
+	
+	def has_role?(role=:undefined)
+		roles.include? role.to_sym
+	end
+	
+	def admin?
+		has_role? :admin
+	end
+	
+	def expert?
+		has_role? :expert
+	end
+	
+	def client?
+		has_role? :client
+	end
 end

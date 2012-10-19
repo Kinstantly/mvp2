@@ -58,4 +58,25 @@ describe User do
 			@kelly.profile.should_not be_nil
 		end
 	end
+	
+	context "roles" do
+		it "should have no roles if new" do
+			@kelly.roles.should be_empty
+		end
+		
+		it "should be an admin if the admin role is added" do
+			@kelly.add_role 'admin'
+			@kelly.should be_admin
+		end
+		
+		it "should be an expert if the expert role is added" do
+			@kelly.add_role 'expert'
+			@kelly.should be_expert
+		end
+		
+		it "should be a client if the client role is added" do
+			@kelly.add_role 'client'
+			@kelly.should be_client
+		end
+	end
 end
