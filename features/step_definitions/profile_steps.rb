@@ -119,6 +119,10 @@ When /^I visit the profile index page$/ do
 	visit expert_profiles_path
 end
 
+When /^I visit the profile admin index page$/ do
+	pending # express the regexp above with the code you wish you had
+end
+
 ### THEN ###
 
 Then /^I should see my profile information$/ do
@@ -180,4 +184,8 @@ end
 
 Then /^I should not see profile data$/ do
 	page.should_not have_content @profile_data[:url]
+end
+
+Then /^I should not see profile data that is not my own$/ do
+	page.should_not have_content @profile_data_2[:url]
 end

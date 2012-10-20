@@ -28,6 +28,12 @@ def create_user
   @user = FactoryGirl.create(:user, email: @visitor[:email])
 end
 
+def create_admin_user
+  create_user
+  @user.add_role :admin
+  @user.save
+end
+
 def create_user_2
 	create_visitor
 	@user_2 ||= User.where(:email => @visitor_2[:email]).first
@@ -78,6 +84,11 @@ end
 
 Given /^I exist as an unconfirmed user$/ do
   create_unconfirmed_user
+end
+
+Given /^I am logged in as an administrator$/ do
+  create_admin_user
+  sign_in
 end
 
 ### WHEN ###

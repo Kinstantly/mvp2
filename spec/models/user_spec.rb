@@ -69,6 +69,12 @@ describe User do
 			@kelly.should be_admin
 		end
 		
+		it "should not be an admin if the admin role is removed" do
+			@kelly.add_role 'admin'
+			@kelly.remove_role 'admin'
+			@kelly.should_not be_admin
+		end
+		
 		it "should be an expert if the expert role is added" do
 			@kelly.add_role 'expert'
 			@kelly.should be_expert

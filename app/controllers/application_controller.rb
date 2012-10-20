@@ -1,5 +1,9 @@
 class ApplicationController < ActionController::Base
 	protect_from_forgery
+	
+	rescue_from CanCan::AccessDenied do |exception|
+		render file: "#{Rails.root}/public/403", formats: [:html], status: 403, layout: false
+	end
 
 	# If we are a User, go to the edit_profile page after sign-up or sign-in.
 	# If we want to go to a different page after sign-up, put that logic in here.

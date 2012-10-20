@@ -22,7 +22,10 @@ describe UsersController do
 	
 	describe "GET profile_index" do
 		before(:each) do
+			sign_out @kelly
+			@bossy = FactoryGirl.create(:admin_user, email: 'bossy@example.com')
 			@eddie = FactoryGirl.create(:user, email: 'eddie@example.com')
+			sign_in @bossy
 			get :index
 		end
 		

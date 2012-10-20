@@ -11,5 +11,9 @@ FactoryGirl.define do
 		factory :user_with_no_email do
 			email ''
 		end
+		
+		factory :admin_user do
+			roles [:admin]
+		end
 	end
 end

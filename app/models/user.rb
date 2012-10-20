@@ -16,7 +16,11 @@ class User < ActiveRecord::Base
 	serialize :roles, Array
 	
 	def add_role(role)
-		roles << role.to_sym if role
+		roles << role.to_sym if role && !has_role?(role)
+	end
+	
+	def remove_role(role)
+		roles.delete role.to_sym
 	end
 	
 	def has_role?(role=:undefined)
