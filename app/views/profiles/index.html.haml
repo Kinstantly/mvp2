@@ -1,0 +1,44 @@
+.profile_index
+	.profile_list{align: 'center'}
+		%table
+			%thead
+				%tr
+					%th Name
+					%th Company name
+					%th Website
+					%th Headline
+					%th Address
+					%th Mobile
+					%th Office
+					%th Category
+					%th Subcategory
+					%th Ages
+					%th Education
+					%th.large Experience
+					%th Licenses, certifications
+					%th Honors and awards
+					%th Languages
+					%th.large Summary
+					%th.large Specialties
+					%th Insurance
+			%tbody
+				- @profiles.each do |p|
+					%tr
+						%td= profile_display_name p
+						%td= p.try(:company_name)
+						%td= p.try(:url)
+						%td= p.try(:headline)
+						%td= "#{profile_address p} #{p.try(:postal_code)}"
+						%td= p.try(:mobile_phone)
+						%td= p.try(:office_phone)
+						%td= p.try(:category).try(:name)
+						%td= p.try(:subcategory)
+						%td= profile_age_ranges p
+						%td= p.try(:education)
+						%td= p.try(:experience)
+						%td= p.try(:certifications)
+						%td= p.try(:awards)
+						%td= p.try(:languages)
+						%td= p.try(:summary)
+						%td= p.try(:specialties)
+						%td= p.try(:insurance_accepted) ? 'Accepted' : 'Not accepted'

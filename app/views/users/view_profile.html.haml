@@ -5,7 +5,7 @@
 		.basic_profile
 			.display_name
 				Name:
-				= profile_display_name
+				= user_profile_display_name
 			.email
 				Email:
 				= @user.email
@@ -22,7 +22,7 @@
 		.location_contact_profile
 			.address
 				Address:
-				= profile_address
+				= user_profile_address
 				= @profile.postal_code
 			.mobile_phone
 				Mobile:
@@ -39,7 +39,7 @@
 				= @profile.subcategory
 			.age_ranges
 				%span.label Ages:
-				= profile_age_ranges
+				= user_profile_age_ranges
 			.education
 				%span.label Education:
 				%br

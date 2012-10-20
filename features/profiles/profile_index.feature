@@ -1,7 +1,7 @@
-Feature: View existing users with profiles
-	In order to view all users and their profiles
-	As an administrator
-	I want see a table listing of all user and profile data
+Feature: View all profiles
+	In order to view all expert profiles
+	As a site administrator
+	I want see a table listing of all expert profiles
 
 	Scenario: View all expert profiles
 		Given I am logged in as an administrator
@@ -9,7 +9,7 @@ Feature: View existing users with profiles
 		When I visit the profile index page
 		Then I should see more than one profile
 
-	Scenario: View all expert profiles
+	Scenario: Cannot view all expert profiles
 		Given I am logged in
 			And there are multiple profiles in the system
 		When I visit the profile index page

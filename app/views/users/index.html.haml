@@ -25,17 +25,17 @@
 			%tbody
 				- @users.each do |u|
 					%tr
-						%td= profile_display_name u
+						%td= user_profile_display_name u
 						%td= u.email
 						%td= u.try(:profile).try(:company_name)
 						%td= u.try(:profile).try(:url)
 						%td= u.try(:profile).try(:headline)
-						%td= "#{profile_address u} #{u.try(:profile).try(:postal_code)}"
+						%td= "#{user_profile_address u} #{u.try(:profile).try(:postal_code)}"
 						%td= u.try(:profile).try(:mobile_phone)
 						%td= u.try(:profile).try(:office_phone)
 						%td= u.try(:profile).try(:category).try(:name)
 						%td= u.try(:profile).try(:subcategory)
-						%td= profile_age_ranges u
+						%td= user_profile_age_ranges u
 						%td= u.try(:profile).try(:education)
 						%td= u.try(:profile).try(:experience)
 						%td= u.try(:profile).try(:certifications)

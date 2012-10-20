@@ -1,5 +1,4 @@
 Mvp2::Application.routes.draw do
-
 	# Home page.
 	root :to => 'home#index'
 	
@@ -19,7 +18,9 @@ Mvp2::Application.routes.draw do
 	match 'update_profile' => 'users#update_profile'
 	match 'view_profile' => 'users#view_profile'
 	# Except admin can see all profiles.
-	match 'expert_profiles' => 'users#index'
+	match 'users' => 'users#index'
+	
+	resources :profiles
 	
 	# Where to go after sign-up or sign-in.
 	#  Using this option causes the response path to be user_root; kind of weird.

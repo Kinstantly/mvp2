@@ -116,11 +116,7 @@ When /^I select the "(.*?)" age range$/ do |age_range|
 end
 
 When /^I visit the profile index page$/ do
-	visit expert_profiles_path
-end
-
-When /^I visit the profile admin index page$/ do
-	pending # express the regexp above with the code you wish you had
+	visit profiles_path
 end
 
 ### THEN ###
