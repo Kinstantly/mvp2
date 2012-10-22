@@ -25,7 +25,7 @@ module ApplicationHelper
 	end
 	
 	def company_name
-		'Zatch'
+		'Zatch.me'
 	end
 	
 	def about_link
