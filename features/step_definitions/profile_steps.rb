@@ -16,8 +16,8 @@ def find_user_profile
 	@profile = @user.profile
 end
 
-def find_last_profile
-	@profile = Profile.all.last
+def find_unattached_profile
+	@profile = Profile.find_by_url @unattached_profile_data[:url]
 end
 
 def create_profile
@@ -37,6 +37,11 @@ def create_profile_2
 	@profile_2 = FactoryGirl.create(:profile, @profile_data_2)
 	@user_2.profile = @profile_2
 	@user_2.save
+end
+
+def create_unattached_profile
+	set_up_new_data
+	@unattached_profile = FactoryGirl.create(:profile, @unattached_profile_data)
 end
 
 ### GIVEN ###
@@ -67,6 +72,16 @@ end
 Given /^I have a country code of "(.*?)" in my profile$/ do |country|
 	@user.profile.country = country
 	@user.profile.save
+end
+
+Given /^there is an unclaimed profile$/ do
+	create_unattached_profile
+end
+
+Given /^I visit the edit page for the unclaimed profile$/ do
+	create_unattached_profile
+	find_unattached_profile
+	visit edit_profile_path(@profile)
 end
 
 ### WHEN ###
@@ -136,6 +151,18 @@ end
 
 When /^I visit the new profile page$/ do
 	visit new_profile_path
+end
+
+When /^I click on the edit link for an unclaimed profile$/ do
+	click_link "#{@unattached_profile_data[:first_name]} #{@unattached_profile_data[:middle_initial]} #{@unattached_profile_data[:last_name]}"
+end
+
+When /^I set the last name to "(.*?)"$/ do |last_name|
+	fill_in 'Last name', with: last_name
+end
+
+When /^I save the profile$/ do
+	click_button 'Save'
 end
 
 ### THEN ###
@@ -210,9 +237,19 @@ Then /^I should see a new profile form$/ do
 end
 
 Then /^the new profile should be saved$/ do
-	find_last_profile
+	find_unattached_profile
 	@profile.first_name.should == @unattached_profile_data[:first_name]
 	@profile.middle_initial.should == @unattached_profile_data[:middle_initial]
 	@profile.last_name.should == @unattached_profile_data[:last_name]
 	@profile.url.should == @unattached_profile_data[:url]
+end
+
+Then /^I should land on the edit page for the unclaimed profile$/ do
+	find_unattached_profile
+	current_path.should == edit_profile_path(@profile)
+end
+
+Then /^the last name in the unclaimed profile should be "(.*?)"$/ do |last_name|
+	find_unattached_profile
+	@profile.last_name.should == last_name
 end

@@ -35,6 +35,20 @@ describe ProfilesController do
 		end
 	end
 	
+	describe "POST 'create'" do
+		it "successfully creates the profile" do
+			post :create, profile: FactoryGirl.attributes_for(:profile)
+			response.should redirect_to(controller: 'profiles', action: 'index')
+			flash[:notice].should_not be_nil
+		end
+		
+		it "fails to create the profile" do
+			post :create, profile: FactoryGirl.attributes_for(:profile, last_name: '')
+			response.should render_template('new')
+			flash[:alert].should_not be_nil
+		end
+	end
+	
 	describe "GET 'edit'" do
 		before(:each) do
 			FactoryGirl.create(:profile)
@@ -48,6 +62,25 @@ describe ProfilesController do
 		
 		it "assigns @profile" do
 			assigns[:profile].should == @profile
+		end
+	end
+	
+	describe "PUT 'update'" do
+		before(:each) do
+			FactoryGirl.create(:profile)
+			@profile = Profile.all.first
+		end
+		
+		it "successfully updates the profile" do
+			put :update, id: @profile.id, profile: FactoryGirl.attributes_for(:profile)
+			response.should redirect_to(controller: 'profiles', action: 'index')
+			flash[:notice].should_not be_nil
+		end
+		
+		it "fails to update the profile" do
+			put :update, id: @profile.id, profile: FactoryGirl.attributes_for(:profile, last_name: '')
+			response.should render_template('edit')
+			flash[:alert].should_not be_nil
 		end
 	end
 end

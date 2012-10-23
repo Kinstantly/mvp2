@@ -8,6 +8,7 @@
 					%th Website
 					%th Headline
 					%th Address
+					%th Public email
 					%th Mobile
 					%th Office
 					%th Category
@@ -24,11 +25,12 @@
 			%tbody
 				- @profiles.each do |p|
 					%tr
-						%td= profile_display_name p
+						%td= link_to profile_display_name(p), edit_profile_path(p)
 						%td= p.try(:company_name)
 						%td= p.try(:url)
 						%td= p.try(:headline)
 						%td= "#{profile_address p} #{p.try(:postal_code)}"
+						%td= p.try(:email)
 						%td= p.try(:mobile_phone)
 						%td= p.try(:office_phone)
 						%td= p.try(:category).try(:name)

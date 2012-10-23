@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 	
 	def update_profile
 		if @user.update_attributes(params[:user])
-			set_flash_message :notice, :profile_saved
+			set_flash_message :notice, :profile_updated
 			redirect_to action: :view_profile
 		else
 			set_flash_message :alert, :profile_update_error
