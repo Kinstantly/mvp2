@@ -1,14 +1,19 @@
 .view_profile
 	.buttons
 		= link_to "Edit profile", edit_user_profile_path
+	.account_areas
+		.basic_account
+			.email
+				Account email:
+				= @user.email
 	.profile_areas
 		.basic_profile
 			.display_name
 				Name:
 				= user_profile_display_name
 			.email
-				Email:
-				= @user.email
+				Public email:
+				= @profile.email
 			.company_name
 				Company name:
 				= @profile.company_name

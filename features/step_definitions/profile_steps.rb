@@ -100,7 +100,7 @@ When /^I edit my profile information$/ do
 end
 
 When /^I edit my email address$/ do
-	fill_in 'Email', with: @visitor[:email]
+	fill_in 'Account email', with: @visitor[:email]
 	click_button 'Save'
 	find_user_profile
 end

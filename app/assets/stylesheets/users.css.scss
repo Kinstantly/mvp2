@@ -28,7 +28,7 @@ $profile_margin: 10px;
 	.buttons {
 		margin-bottom: 1em;
 	}
-	.profile_areas > div {
+	.account_areas > div, .profile_areas > div {
 		@include profile-areas-div-style;
 		> div {
 			margin-bottom: 0.5em;
@@ -42,7 +42,7 @@ $profile_margin: 10px;
 .edit_profile {
 	margin: $profile_margin;
 	form {
-		.profile_areas > div {
+		.account_areas > div, .profile_areas > div {
 			@include profile-areas-div-style;
 			> div {
 				margin-bottom: 0.5em;

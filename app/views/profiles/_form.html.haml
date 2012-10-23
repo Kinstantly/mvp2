@@ -1,3 +1,4 @@
+- country ||= default_profile_country
 .profile_areas
 	.basic_profile
 		.first_name
@@ -36,7 +37,7 @@
 		.postal_code
 			= f.label :postal_code, "Zip code"
 			= f.text_field :postal_code
-			= f.hidden_field :country, value: default_profile_country
+			= f.hidden_field :country, value: country
 		.mobile_phone
 			= f.label :mobile_phone, "Mobile"
 			= f.text_field :mobile_phone
