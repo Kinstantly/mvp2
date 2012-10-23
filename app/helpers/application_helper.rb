@@ -11,7 +11,7 @@ module ApplicationHelper
 		if user_signed_in?
 			"Hello, #{profile_display_name.presence || current_user.email}"
 		elsif controller_name != 'registrations'
-			link_to 'Join us!', new_user_registration_path
+			link_to "Become a #{company_name} expert", new_user_registration_path
 		end
 	end
 	
@@ -22,6 +22,11 @@ module ApplicationHelper
 	def view_profile_link
 		link_to 'View my profile', view_user_profile_path if user_signed_in? && 
 			(controller_name != 'users' || (controller_name == 'users' && action_name == 'index'))
+	end
+	
+	def admin_profile_list_link
+		link_to 'Profile admin', profiles_path if user_signed_in? && can?(:read, Profile) &&
+			!(controller_name == 'profiles' && action_name == 'index')
 	end
 	
 	def company_name

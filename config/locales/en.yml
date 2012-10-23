@@ -4,6 +4,7 @@
 en:
   hello: "Hello world"
   controllers:
+    access_denied: 'Sorry, you do not have access to that area.'
     users:
       profile_updated: 'Your profile changes were saved.'
       profile_update_error: 'There was a problem saving your profile.'

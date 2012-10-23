@@ -2,7 +2,9 @@ class ApplicationController < ActionController::Base
 	protect_from_forgery
 	
 	rescue_from CanCan::AccessDenied do |exception|
-		render file: "#{Rails.root}/public/403", formats: [:html], status: 403, layout: false
+		# render file: "#{Rails.root}/public/403", formats: [:html], status: 403, layout: false
+		set_flash_message :alert, :access_denied
+		redirect_to root_url
 	end
 
 	# If we are a User, go to the edit_profile page after sign-up or sign-in.
