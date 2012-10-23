@@ -41,7 +41,7 @@ $profile_margin: 10px;
 
 .edit_profile {
 	margin: $profile_margin;
-	form.edit_user {
+	form {
 		.profile_areas > div {
 			@include profile-areas-div-style;
 			> div {

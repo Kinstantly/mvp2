@@ -1,2 +1,7 @@
-%h1 Profiles#new
-%p Find me in app/views/profiles/new.html.erb
+.edit_profile
+	= form_for @profile do |f|
+		= f.error_messages
+		= render partial: 'form', locals: {f: f}
+		.buttons
+			= f.submit 'Save'
+			= link_to "Cancel", profiles_path

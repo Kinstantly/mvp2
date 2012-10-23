@@ -1,0 +1,81 @@
+.profile_areas
+	.basic_profile
+		.first_name
+			= f.label :first_name, 'First name'
+			= f.text_field :first_name
+			= f.label :middle_initial, 'Middle initial'
+			= f.text_field :middle_initial, size: 2
+		.last_name
+			= f.label :last_name, 'Last name'
+			= f.text_field :last_name
+		.credentials
+			= f.label :credentials, "Degrees/credentials"
+			= f.text_field :credentials
+		.email
+			= f.label :email, "Public email"
+			= f.text_field :email
+		.company_name
+			= f.label :company_name, 'Company name'
+			= f.text_field :company_name
+		.url
+			= f.label :url, 'Website'
+			= f.text_field :url
+		.headline
+			= f.label :headline, "Professional headline"
+			= f.text_field :headline, size: 50
+	.location_contact_profile
+		.address
+			= f.label :address1, "Address"
+			= f.text_field :address1
+			= f.text_field :address2
+		.city_state
+			= f.label :region, "City"
+			= f.text_field :city
+			= f.label :region, "State"
+			= f.text_field :region, size: 2
+		.postal_code
+			= f.label :postal_code, "Zip code"
+			= f.text_field :postal_code
+			= f.hidden_field :country, value: default_profile_country
+		.mobile_phone
+			= f.label :mobile_phone, "Mobile"
+			= f.text_field :mobile_phone
+		.office_phone
+			= f.label :office_phone, "Office"
+			= f.text_field :office_phone
+	.professional_profile
+		.category
+			= f.label :category_id, "Category"
+			= f.collection_select(:category_id, Category.all, :id, :name, { prompt: 'Please choose one' })
+		.subcategory
+			= f.label :subcategory, "Subcategory"
+			= f.text_field :subcategory
+		.age_ranges
+			= f.label :age_range_ids, "Ages"
+			= f.collection_select(:age_range_ids, AgeRange.all, :id, :name, {}, multiple: true)
+			%span.note
+				Hold down the Ctrl (Windows) / Command (Mac) button to select multiple options.
+		.education
+			= f.label :education, "Education"
+			= f.text_area :education, size: '50x5'
+		.experience
+			= f.label :experience, "Professional experience"
+			= f.text_area :experience, size: '50x5'
+		.certifications
+			= f.label :certifications, "Licenses, certifications"
+			= f.text_field :certifications
+		.awards
+			= f.label :awards, "Honors and awards"
+			= f.text_area :awards, size: '50x5'
+		.languages
+			= f.label :languages, "Languages"
+			= f.text_field :languages
+		.summary
+			= f.label :summary, "Summary"
+			= f.text_area :summary, size: '50x8'
+		.specialties
+			= f.label :specialties, "Specialties"
+			= f.text_field :specialties
+		.insurance_accepted
+			= f.label :insurance_accepted, "Insurance accepted"
+			= f.check_box :insurance_accepted

@@ -1,5 +1,5 @@
 class Profile < ActiveRecord::Base
-	attr_accessible :first_name, :last_name, :middle_initial, :credentials, 
+	attr_accessible :first_name, :last_name, :middle_initial, :credentials, :email, 
 		:company_name, :url, :category_id, :age_range_ids, 
 		:address1, :address2, :city, :region, :country, :postal_code, 
 		:mobile_phone, :office_phone, 

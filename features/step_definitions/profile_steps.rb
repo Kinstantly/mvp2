@@ -6,12 +6,18 @@ def set_up_new_data
 		office_phone: '415-555-1234', url: 'http://knowitall.com', address1: '123 Main St.' }
 	@profile_data_2 ||= { first_name: 'Can', middle_initial: 'I', last_name: 'Helpyou',
 		office_phone: '800-555-1111', url: 'http://canihelpyou.com', address1: '10 Broadway Blvd.' }
+	@unattached_profile_data ||= { first_name: 'Prospect', middle_initial: 'A', last_name: 'Expert',
+		office_phone: '888-555-5555', url: 'http://UnattachedExpert.com', address1: '1 Fleet Street' }
 	@category_data ||= { name: 'Parenting' }
 end
 
-def find_profile
+def find_user_profile
 	refresh_user
 	@profile = @user.profile
+end
+
+def find_last_profile
+	@profile = Profile.all.last
 end
 
 def create_profile
@@ -65,6 +71,15 @@ end
 
 ### WHEN ###
 
+When /^I enter new profile information$/ do
+	set_up_new_data
+	fill_in 'First name', with: @unattached_profile_data[:first_name]
+	fill_in 'Middle initial', with: @unattached_profile_data[:middle_initial]
+	fill_in 'Last name', with: @unattached_profile_data[:last_name]
+	fill_in 'Website', with: @unattached_profile_data[:url]
+	click_button 'Save'
+end
+
 When /^I view my profile$/ do
   visit view_user_profile_path
 end
@@ -74,20 +89,20 @@ When /^I enter my basic profile information$/ do
 	fill_in 'Middle initial', with: @profile_data[:middle_initial]
 	fill_in 'Last name', with: @profile_data[:last_name]
 	click_button 'Save'
-	find_profile
+	find_user_profile
 end
 
 When /^I edit my profile information$/ do
 	fill_in 'Office', with: @profile_data[:office_phone]
 	fill_in 'Website', with: @profile_data[:url]
 	click_button 'Save'
-	find_profile
+	find_user_profile
 end
 
 When /^I edit my email address$/ do
 	fill_in 'Email', with: @visitor[:email]
 	click_button 'Save'
-	find_profile
+	find_user_profile
 end
 
 When /^Click edit profile$/ do
@@ -100,7 +115,7 @@ end
 
 When /^I save my profile$/ do
 	click_button 'Save'
-	find_profile
+	find_user_profile
 end
 
 When /^I check "(.*?)"$/ do |field|
@@ -117,6 +132,10 @@ end
 
 When /^I visit the profile index page$/ do
 	visit profiles_path
+end
+
+When /^I visit the new profile page$/ do
+	visit new_profile_path
 end
 
 ### THEN ###
@@ -184,4 +203,16 @@ end
 
 Then /^I should not see profile data that is not my own$/ do
 	page.should_not have_content @profile_data_2[:url]
+end
+
+Then /^I should see a new profile form$/ do
+	page.should have_content 'Public email'
+end
+
+Then /^the new profile should be saved$/ do
+	find_last_profile
+	@profile.first_name.should == @unattached_profile_data[:first_name]
+	@profile.middle_initial.should == @unattached_profile_data[:middle_initial]
+	@profile.last_name.should == @unattached_profile_data[:last_name]
+	@profile.url.should == @unattached_profile_data[:url]
 end

@@ -9,8 +9,12 @@ module ProfilesHelper
 		profile_join_fields [:address1, :address2, :city, :region, :country], ', ', profile
 	end
 	
+	def default_profile_country
+		'US'
+	end
+	
 	def profile_country(profile=current_user.try(:profile))
-		profile.try(:country).presence || 'US'
+		profile.try(:country).presence || default_profile_country
 	end
 	
 	def profile_display_name(profile=current_user.try(:profile))
