@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 	def after_sign_in_path_for(resource)
 		stored_location_for(resource) ||
 			if resource.is_a?(User)
-				edit_profile_path
+				edit_user_profile_path
 			else
 				super
 			end

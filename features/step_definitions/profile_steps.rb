@@ -41,7 +41,7 @@ end
 
 Given /^I am on my profile edit page$/ do
 	set_up_new_data
-	visit edit_profile_path
+	visit edit_user_profile_path
 end
 
 Given /^I want (my|a) profile$/ do |word|
@@ -66,7 +66,7 @@ end
 ### WHEN ###
 
 When /^I view my profile$/ do
-  visit view_profile_path
+  visit view_user_profile_path
 end
 
 When /^I enter my basic profile information$/ do
@@ -131,11 +131,11 @@ Then /^I should see my profile address$/ do
 end
 
 Then /^I should land on the profile view page$/ do
-	current_path.should == view_profile_path
+	current_path.should == view_user_profile_path
 end
 
 Then /^I should land on the profile edit page$/ do
-	current_path.should == edit_profile_path
+	current_path.should == edit_user_profile_path
 end
 
 Then /^my basic information should be saved in my profile$/ do

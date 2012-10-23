@@ -14,9 +14,9 @@ Mvp2::Application.routes.draw do
 	
 	# Profile is accessed via user.
 	# Only current_user should have access to the profile.
-	match 'edit_profile' => 'users#edit_profile'
-	match 'update_profile' => 'users#update_profile'
-	match 'view_profile' => 'users#view_profile'
+	match 'edit_user_profile' => 'users#edit_profile'
+	match 'update_user_profile' => 'users#update_profile'
+	match 'view_user_profile' => 'users#view_profile'
 	# Except admin can see all profiles.
 	match 'users' => 'users#index'
 	

@@ -20,7 +20,7 @@ module ApplicationHelper
 	end
 	
 	def view_profile_link
-		link_to 'View my profile', view_profile_path if user_signed_in? && 
+		link_to 'View my profile', view_user_profile_path if user_signed_in? && 
 			(controller_name != 'users' || (controller_name == 'users' && action_name == 'index'))
 	end
 	
