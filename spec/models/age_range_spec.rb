@@ -1,5 +1,9 @@
 require 'spec_helper'
 
 describe AgeRange do
-  pending "add some examples to (or delete) #{__FILE__}"
+	it "has a name" do
+		age_range = AgeRange.new
+		age_range.name = '0-3'
+		age_range.save.should == true
+	end
 end

@@ -1,5 +1,9 @@
 require 'spec_helper'
 
 describe Category do
-  pending "add some examples to (or delete) #{__FILE__}"
+	it "has a name" do
+		category = Category.new
+		category.name = 'Parenting'
+		category.save.should == true
+	end
 end
