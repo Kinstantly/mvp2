@@ -56,6 +56,9 @@ $profile_margin: 10px;
 
 .profile_index {
 	margin: $profile_margin;
+	.buttons {
+		margin-bottom: 1em;
+	}
 	.profile_list {
 		table {
 			border-collapse: collapse;

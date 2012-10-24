@@ -1,4 +1,13 @@
 module ApplicationHelper
+	
+	def company_name
+		'Zatch.me'
+	end
+	
+	def show_link?(path=nil)
+		request.path != path
+	end
+	
 	def sign_in_out_link
 		if user_signed_in?
 			link_to 'Logout', destroy_user_session_path, method: :delete
@@ -16,44 +25,57 @@ module ApplicationHelper
 	end
 	
 	def home_link
-		link_to "#{company_name}", root_path unless controller_name == 'home' && action_name == 'index'
+		path = root_path
+		link_to "#{company_name}", path if show_link?(path)
 	end
 	
 	def view_profile_link
-		link_to 'View my profile', view_user_profile_path if user_signed_in? && 
-			(controller_name != 'users' || (controller_name == 'users' && action_name == 'index'))
+		path = view_user_profile_path
+		link_to 'View my profile', path if show_link?(path) && can?(:show, User)
+	end
+	
+	def edit_profile_link
+		path = edit_user_profile_path
+		link_to "Edit profile", path if show_link?(path) && can?(:update, User)
 	end
 	
 	def admin_profile_list_link
-		link_to 'Profile admin', profiles_path if user_signed_in? && can?(:read, Profile) &&
-			!(controller_name == 'profiles' && action_name == 'index')
+		path = profiles_path
+		link_to 'Profile admin', path if show_link?(path) && can?(:read, Profile)
 	end
 	
-	def company_name
-		'Zatch.me'
+	def admin_create_profile_link
+		path = new_profile_path
+		link_to 'Create profile', path if show_link?(path) && can?(:create, Profile)
 	end
 	
 	def about_link
-		link_to "About us", about_path unless controller_name == 'home' && action_name == 'about'
+		path = about_path
+		link_to "About us", path if show_link?(path)
 	end
 	
 	def become_expert_link
-		link_to "Expert registration", become_expert_path unless controller_name == 'home' && action_name == 'become_expert'
+		path = become_expert_path
+		link_to "Expert registration", path if show_link?(path)
 	end
 	
 	def contact_link
-		link_to "Contact us", contact_path unless controller_name == 'home' && action_name == 'contact'
+		path = contact_path
+		link_to "Contact us", path if show_link?(path)
 	end
 	
 	def faq_link
-		link_to "FAQ", faq_path unless controller_name == 'home' && action_name == 'faq'
+		path = faq_path
+		link_to "FAQ", path if show_link?(path)
 	end
 	
 	def policies_link
-		link_to "Policies", policies_path unless controller_name == 'home' && action_name == 'policies'
+		path = policies_path
+		link_to "Policies", path if show_link?(path)
 	end
 	
 	def request_expert_link
-		link_to "Request a meeting", request_expert_path unless controller_name == 'home' && action_name == 'request_expert'
+		path = request_expert_path
+		link_to "Request a meeting", path if show_link?(path)
 	end
 end

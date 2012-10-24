@@ -6,7 +6,7 @@ class Ability
 		
 		if user.admin?
 			can :manage, :all
-		else
+		elsif user.expert?
 			alias_action :view_profile, :edit_profile, :update_profile, to: :manage_profile
 			can :manage_profile, User, id: user.id
 			can :create, User, id: user.id
