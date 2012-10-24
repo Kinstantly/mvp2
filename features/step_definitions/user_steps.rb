@@ -25,7 +25,7 @@ end
 def create_user
   create_visitor
   delete_user
-  @user = FactoryGirl.create(:user, email: @visitor[:email])
+  @user = FactoryGirl.create(:expert_user, email: @visitor[:email])
 end
 
 def create_admin_user
@@ -38,7 +38,7 @@ def create_user_2
 	create_visitor
 	@user_2 ||= User.where(:email => @visitor_2[:email]).first
 	@user_2.destroy unless @user_2.nil?
-	@user_2 = FactoryGirl.create(:user, email: @visitor_2[:email])
+	@user_2 = FactoryGirl.create(:expert_user, email: @visitor_2[:email])
 end
 
 def delete_user

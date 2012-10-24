@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe UsersController do
 	before (:each) do
-		@kelly = FactoryGirl.create(:user)
+		@kelly = FactoryGirl.create(:expert_user)
 		sign_in @kelly
 	end
 	
@@ -24,7 +24,7 @@ describe UsersController do
 		before(:each) do
 			sign_out @kelly
 			@bossy = FactoryGirl.create(:admin_user, email: 'bossy@example.com')
-			@eddie = FactoryGirl.create(:user, email: 'eddie@example.com')
+			@eddie = FactoryGirl.create(:expert_user, email: 'eddie@example.com')
 			sign_in @bossy
 			get :index
 		end

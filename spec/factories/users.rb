@@ -12,6 +12,10 @@ FactoryGirl.define do
 			email ''
 		end
 		
+		factory :expert_user do
+			roles [:expert]
+		end
+		
 		factory :admin_user do
 			roles [:admin]
 		end

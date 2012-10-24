@@ -8,7 +8,7 @@ describe ProfilesController do
 
 	describe "GET 'index'" do
 		before(:each) do
-			@eddie = FactoryGirl.create(:user, email: 'eddie@example.com')
+			@eddie = FactoryGirl.create(:expert_user, email: 'eddie@example.com')
 			get :index
 		end
 		
