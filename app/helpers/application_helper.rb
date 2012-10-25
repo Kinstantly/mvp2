@@ -9,7 +9,7 @@ module ApplicationHelper
 	end
 	
 	def to_alphanumeric(s)
-		s.gsub(/[^A-Za-z0-9]/, '')
+		s.gsub(/[^A-Za-z0-9]/, '_')
 	end
 
 	def sign_in_out_link

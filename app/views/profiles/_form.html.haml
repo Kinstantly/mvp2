@@ -1,6 +1,5 @@
 - profile ||= @profile
 - country ||= default_profile_country
-- nested ||= false
 .profile_areas
 	.basic_profile
 		.first_name
@@ -50,10 +49,10 @@
 		.categories
 			Categories
 			%br
-			= profile_categories_hidden_field_tag(nested)
+			= profile_categories_hidden_field_tag(f)
 			- profile_categories.each do |category|
 				.check_box
-					= profile_categories_check_box_tag(profile, category, nested)
+					= profile_categories_check_box_tag(profile, category, f)
 					= category
 		.age_ranges
 			= f.label :age_range_ids, "Ages"

@@ -34,19 +34,19 @@ module ProfilesHelper
 	end
 	
 	def profile_categories_id(category)
-		"categories_#{to_alphanumeric(category)}"
+		"profile_categories_#{to_alphanumeric(category)}"
 	end
 	
-	def profile_categories_tag_name(nested=false)
-		nested ? 'user[profile_attributes][categories_updater][]' : 'profile[categories_updater][]'
+	def profile_categories_tag_name(form_builder=nil)
+		"#{form_builder.object_name.presence || 'profile'}[categories_updater][]"
 	end
 	
-	def profile_categories_hidden_field_tag(nested=false)
-		hidden_field_tag profile_categories_tag_name(nested), '', id: 'profile_categories_hidden_field'
+	def profile_categories_hidden_field_tag(form_builder=nil)
+		hidden_field_tag profile_categories_tag_name(form_builder), '', id: profile_categories_id('hidden_field')
 	end
 	
-	def profile_categories_check_box_tag(profile, category, nested=false)
-		check_box_tag profile_categories_tag_name(nested), category, profile.categories.include?(category), id: profile_categories_id(category)
+	def profile_categories_check_box_tag(profile, category, form_builder=nil)
+		check_box_tag profile_categories_tag_name(form_builder), category, profile.categories.include?(category), id: profile_categories_id(category)
 	end
 	
 	def profile_display_categories(profile=current_user.try(:profile))

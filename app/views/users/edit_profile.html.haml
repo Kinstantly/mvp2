@@ -7,7 +7,7 @@
 					= uf.label :email, "Account email"
 					= uf.text_field :email
 		= uf.fields_for :profile do |f|
-			= render partial: 'profiles/form', locals: {f: f, country: profile_country(@user.profile), nested: true}
+			= render partial: 'profiles/form', locals: {f: f, country: profile_country(@user.profile)}
 		.buttons
 			= uf.submit 'Save'
 			= link_to "Cancel", view_user_profile_path
