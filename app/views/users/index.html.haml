@@ -11,8 +11,7 @@
 					%th Address
 					%th Mobile
 					%th Office
-					%th Category
-					%th Subcategory
+					%th Categories
 					%th Ages
 					%th Education
 					%th.large Experience
@@ -25,17 +24,16 @@
 			%tbody
 				- @users.each do |u|
 					%tr
-						%td= user_profile_display_name u
+						%td= profile_display_name u.profile
 						%td= u.email
 						%td= u.try(:profile).try(:company_name)
 						%td= u.try(:profile).try(:url)
 						%td= u.try(:profile).try(:headline)
-						%td= "#{user_profile_address u} #{u.try(:profile).try(:postal_code)}"
+						%td= "#{profile_address u.profile} #{u.profile.try(:postal_code)}"
 						%td= u.try(:profile).try(:mobile_phone)
 						%td= u.try(:profile).try(:office_phone)
-						%td= u.try(:profile).try(:category).try(:name)
-						%td= u.try(:profile).try(:subcategory)
-						%td= user_profile_age_ranges u
+						%td= profile_display_categories u.profile
+						%td= profile_age_ranges u.profile
 						%td= u.try(:profile).try(:education)
 						%td= u.try(:profile).try(:experience)
 						%td= u.try(:profile).try(:certifications)

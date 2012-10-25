@@ -137,6 +137,13 @@ When /^I check "(.*?)"$/ do |field|
 	check field
 end
 
+When /^I select the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
+	within('.categories') do
+		check MyHelpers.profile_categories_id(cat1)
+		check MyHelpers.profile_categories_id(cat2)
+	end
+end
+
 When /^I select the "(.*?)" category$/ do |category|
 	select category, from: 'Category'
 end
@@ -205,6 +212,13 @@ end
 
 Then /^my profile should show "(.*?)"$/ do |value|
 	page.should have_content value
+end
+
+Then /^my profile should show me as being in the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
+	within('.categories') do
+		page.should have_content cat1
+		page.should have_content cat2
+	end
 end
 
 Then /^my profile should show me as being in the "(.*?)" category$/ do |category|

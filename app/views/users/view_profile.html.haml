@@ -10,7 +10,7 @@
 		.basic_profile
 			.display_name
 				Name:
-				= user_profile_display_name
+				= profile_display_name @profile
 			.email
 				Public email:
 				= @profile.email
@@ -27,7 +27,7 @@
 		.location_contact_profile
 			.address
 				Address:
-				= user_profile_address
+				= profile_address @profile
 				= @profile.postal_code
 			.mobile_phone
 				Mobile:
@@ -36,15 +36,12 @@
 				Office:
 				= @profile.office_phone
 		.professional_profile
-			.category
-				%span.label Category:
-				= @profile.category.try(:name)
-			.subcategory
-				%span.label Subcategory:
-				= @profile.subcategory
+			.categories
+				%span.label Categories:
+				= profile_display_categories @profile
 			.age_ranges
 				%span.label Ages:
-				= user_profile_age_ranges
+				= profile_age_ranges @profile
 			.education
 				%span.label Education:
 				%br

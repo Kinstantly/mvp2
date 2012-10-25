@@ -13,8 +13,7 @@
 					%th Public email
 					%th Mobile
 					%th Office
-					%th Category
-					%th Subcategory
+					%th Categories
 					%th Ages
 					%th Education
 					%th.large Experience
@@ -35,8 +34,7 @@
 						%td= p.try(:email)
 						%td= p.try(:mobile_phone)
 						%td= p.try(:office_phone)
-						%td= p.try(:category).try(:name)
-						%td= p.try(:subcategory)
+						%td= profile_display_categories(p)
 						%td= profile_age_ranges p
 						%td= p.try(:education)
 						%td= p.try(:experience)

@@ -8,6 +8,10 @@ module ApplicationHelper
 		request.path != path
 	end
 	
+	def to_alphanumeric(s)
+		s.gsub(/[^A-Za-z0-9]/, '')
+	end
+
 	def sign_in_out_link
 		if user_signed_in?
 			link_to 'Logout', destroy_user_session_path, method: :delete

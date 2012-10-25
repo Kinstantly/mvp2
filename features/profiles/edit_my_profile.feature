@@ -55,14 +55,14 @@ Feature: Edit my expert profile
 			And I save my profile
 		Then my country code should be set to "CA"
 	
-	Scenario: Select parenting category
+	Scenario: Select categories
 		Given I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I select the "Parenting" category
+		When I select the "child psychiatrist" and "developmental-behavioral pediatrician" categories
 			And I save my profile
-		Then my profile should show me as being in the "Parenting" category
+		Then my profile should show me as being in the "child psychiatrist" and "developmental-behavioral pediatrician" categories
 	
 	Scenario: Select age ranges
 		Given I exist as a user

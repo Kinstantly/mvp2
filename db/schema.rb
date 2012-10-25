@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121023015305) do
+ActiveRecord::Schema.define(:version => 20121024232318) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(:version => 20121023015305) do
     t.string   "specialties"
     t.integer  "category_id"
     t.string   "email"
+    t.text     "categories"
   end
 
   create_table "users", :force => true do |t|

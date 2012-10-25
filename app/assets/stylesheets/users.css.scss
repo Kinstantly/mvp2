@@ -48,6 +48,14 @@ $profile_margin: 10px;
 				margin-bottom: 0.5em;
 			}
 		}
+		.profile_areas .categories .check_box {
+			float: left;
+			margin-left: 1em;
+			margin-bottom: 0.5em;
+		}
+		.categories + div {
+			clear: left;
+		}
 		.buttons {
 			margin-bottom: 2em;
 		}
