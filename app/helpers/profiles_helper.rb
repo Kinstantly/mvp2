@@ -34,7 +34,7 @@ module ProfilesHelper
 	end
 	
 	def profile_categories_id(category)
-		"profile_categories_#{to_alphanumeric(category)}"
+		"profile_categories_#{category.to_alphanumeric}"
 	end
 	
 	def profile_categories_tag_name(form_builder=nil)
