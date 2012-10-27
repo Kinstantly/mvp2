@@ -54,6 +54,20 @@
 				.check_box
 					= profile_categories_check_box_tag(profile, category, f)
 					= category
+		.custom_categories
+			Additional categories
+			= button_tag id: 'add_custom_categories_text_field' do
+				= content_tag :strong, '+ Add'
+			%br
+			= profile_custom_categories_hidden_field_tag(f)
+			- i = 0; profile.categories.each do |category|
+				- unless profile_categories.include?(category)
+					.text_field
+						= profile_custom_categories_text_field_tag(profile, category, "#{i = i+1}", f)
+			.text_field
+				= profile_custom_categories_text_field_tag(profile, '', "#{i = i+1}", f)
+			- @profile_custom_categories_i = i
+			- @profile_custom_categories_text_field_template = profile_custom_categories_text_field_tag(profile, '', 'INDEX', f)
 		.age_ranges
 			= f.label :age_range_ids, "Ages"
 			= f.collection_select(:age_range_ids, AgeRange.all, :id, :name, {}, multiple: true)
@@ -83,3 +97,8 @@
 		.insurance_accepted
 			= f.label :insurance_accepted, "Insurance accepted"
 			= f.check_box :insurance_accepted
+:coffeescript
+	profile_custom_categories_i = #{@profile_custom_categories_i}
+	$('#add_custom_categories_text_field').click (e) ->
+		e.preventDefault()
+		$('.custom_categories').append '<div class="text_field">'+'#{escape_javascript @profile_custom_categories_text_field_template}'.replace('INDEX', String(++profile_custom_categories_i))+'</div>'

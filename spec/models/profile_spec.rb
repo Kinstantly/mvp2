@@ -22,11 +22,27 @@ describe Profile do
 	end
 	
 	context "categories" do
+		before(:each) do
+			@categories = ['board-certified behavior analyst', 'child/clinical psychologist']
+			@profile.categories = @categories
+		end
+		
 		it "stores multiple categories" do
-			categories = ['board-certified behavior analyst', 'child/clinical psychologist']
-			@profile.categories = categories
 			@profile.save.should == true
-			@profile.categories.should == categories
+			@profile.categories.should == @categories
+		end
+		
+		context "custom categories" do
+			before(:each) do
+				@custom = [@categories.first, 'story teller']
+				@profile.categories_merger = @custom
+			end
+			
+			it "merges custom categories" do
+				@profile.save.should == true
+				@profile.should have_exactly(@categories.size + 1).categories
+				@profile.categories.include?(@custom.last).should == true
+			end
 		end
 	end
 end

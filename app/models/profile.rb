@@ -1,6 +1,6 @@
 class Profile < ActiveRecord::Base
 	attr_accessible :first_name, :last_name, :middle_initial, :credentials, :email, 
-		:company_name, :url, :categories, :categories_updater, :age_range_ids, 
+		:company_name, :url, :categories, :categories_updater, :categories_merger, :age_range_ids, 
 		:address1, :address2, :city, :region, :country, :postal_code, 
 		:mobile_phone, :office_phone, 
 		:headline, :subcategory, :education, :experience, :certifications, :awards, 
@@ -15,5 +15,9 @@ class Profile < ActiveRecord::Base
 	
 	def categories_updater=(raw=[])
 		self.categories = raw.select {|c| c.present?}
+	end
+	
+	def categories_merger=(add=[])
+		self.categories_updater = (categories + add).uniq
 	end
 end

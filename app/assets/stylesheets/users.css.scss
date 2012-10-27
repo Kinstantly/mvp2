@@ -45,16 +45,19 @@ $profile_margin: 10px;
 		.account_areas > div, .profile_areas > div {
 			@include profile-areas-div-style;
 			> div {
-				margin-bottom: 0.5em;
+				margin-bottom: 1em;
 			}
 		}
-		.profile_areas .categories .check_box {
-			float: left;
-			margin-left: 1em;
-			margin-bottom: 0.5em;
-		}
-		.categories + div {
-			clear: left;
+		.profile_areas {
+			.categories .check_box, .custom_categories .text_field {
+				float: left;
+				margin-left: 1em;
+				margin-bottom: 0.5em;
+				background-color: #EEEEEE;
+			}
+			.categories + div, .custom_categories + div {
+				clear: left;
+			}
 		}
 		.buttons {
 			margin-bottom: 2em;

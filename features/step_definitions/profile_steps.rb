@@ -144,6 +144,15 @@ When /^I select the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
 	end
 end
 
+# This step uses javascript.
+When /^I add the "(.*?)" and "(.*?)" custom categories$/ do |cat1, cat2|
+	within('.custom_categories') do
+		fill_in MyHelpers.profile_custom_categories_id('1'), with: cat1
+		click_button 'add_custom_categories_text_field'
+		fill_in MyHelpers.profile_custom_categories_id('2'), with: cat2
+	end
+end
+
 When /^I select the "(.*?)" category$/ do |category|
 	select category, from: 'Category'
 end

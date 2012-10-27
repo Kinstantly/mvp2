@@ -64,6 +64,16 @@ Feature: Edit my expert profile
 			And I save my profile
 		Then my profile should show me as being in the "child psychiatrist" and "developmental-behavioral pediatrician" categories
 	
+	@javascript
+	Scenario: Add custom categories
+		Given I exist as a user
+			And I want my profile
+			And I am logged in
+			And I am on my profile edit page
+		When I add the "story-book reader" and "dream catcher" custom categories
+			And I save my profile
+		Then my profile should show me as being in the "story-book reader" and "dream catcher" categories
+	
 	Scenario: Select age ranges
 		Given I exist as a user
 			And I want my profile
