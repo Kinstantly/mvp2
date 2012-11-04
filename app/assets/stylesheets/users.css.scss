@@ -23,7 +23,7 @@ $profile_margin: 10px;
 	padding: 4px;
 }
 
-.view_profile {
+div.view_profile {
 	margin: $profile_margin;
 	.buttons {
 		margin-bottom: 1em;
@@ -39,7 +39,7 @@ $profile_margin: 10px;
 	}
 }
 
-.edit_profile {
+div.edit_profile {
 	margin: $profile_margin;
 	form {
 		.account_areas > div, .profile_areas > div {
@@ -49,6 +49,9 @@ $profile_margin: 10px;
 			}
 		}
 		.profile_areas {
+			.name > span {
+				margin-right: 1em;
+			}
 			.categories .check_box, .custom_categories .text_field {
 				float: left;
 				margin-left: 1em;
@@ -62,10 +65,24 @@ $profile_margin: 10px;
 		.buttons {
 			margin-bottom: 2em;
 		}
+		.required_field_icon {
+			width: 16px;
+			height: 16px;
+		}
+		.info_area {
+			margin-bottom: 1em;
+			.required_field_text {
+				font-style: italic;
+				color: red;
+			}
+		}
+		.field_with_errors {
+			background-color: #ffb3b3;
+		}
 	}
 }
 
-.profile_index {
+div.profile_index {
 	margin: $profile_margin;
 	.buttons {
 		margin-bottom: 1em;

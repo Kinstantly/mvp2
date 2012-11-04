@@ -2,14 +2,18 @@
 - country ||= default_profile_country
 .profile_areas
 	.basic_profile
-		.first_name
-			= f.label :first_name, 'First name'
-			= f.text_field :first_name
-			= f.label :middle_initial, 'Middle initial'
-			= f.text_field :middle_initial, size: 2
-		.last_name
-			= f.label :last_name, 'Last name'
-			= f.text_field :last_name
+		.name
+			%span
+				= image_tag("required_field_icon.png", class: 'required_field_icon')
+				= f.label :first_name, 'First name'
+				= f.text_field :first_name
+			%span
+				= f.label :middle_name, 'Middle name or initial'
+				= f.text_field :middle_name
+			%span
+				= image_tag("required_field_icon.png", class: 'required_field_icon')
+				= f.label :last_name, 'Last name'
+				= f.text_field :last_name
 		.credentials
 			= f.label :credentials, "Degrees/credentials"
 			= f.text_field :credentials
@@ -23,7 +27,7 @@
 			= f.label :url, 'Website'
 			= f.text_field :url
 		.headline
-			= f.label :headline, "Professional headline"
+			= f.label :headline, "Professional headline as you'd like it to appear"
 			= f.text_field :headline, size: 50
 	.location_contact_profile
 		.address

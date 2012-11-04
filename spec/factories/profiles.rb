@@ -4,7 +4,7 @@ FactoryGirl.define do
 	factory :profile do
 		first_name "MyString"
 		last_name "MyString"
-		middle_initial "MyString"
+		middle_name "MyString"
 		company_name "MyString"
 		url "MyString"
 		mobile_phone "MyString"

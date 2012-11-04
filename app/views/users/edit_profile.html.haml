@@ -1,11 +1,17 @@
 .edit_profile
 	= form_for @user, url: update_user_profile_path do |uf|
 		= uf.error_messages
+		= render partial: 'profiles/info_area'
 		.account_areas
 			.basic_account
 				.email
-					= uf.label :email, "Account email"
+					= image_tag("required_field_icon.png", class: 'required_field_icon')
+					= uf.label :email, 'Your login email'
 					= uf.text_field :email
+					%span.note We also use this email to contact you.
+				.phone
+					= uf.label :phone, "Phone number we use to contact you"
+					= uf.text_field :phone
 		= uf.fields_for :profile do |f|
 			= render partial: 'profiles/form', locals: {f: f, country: profile_country(@user.profile)}
 		.buttons

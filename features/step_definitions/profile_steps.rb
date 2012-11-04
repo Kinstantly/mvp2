@@ -2,11 +2,11 @@
 
 def set_up_new_data
 	create_visitor
-	@profile_data ||= { first_name: 'Know', middle_initial: 'I', last_name: 'Tall',
+	@profile_data ||= { first_name: 'Know', middle_name: 'I', last_name: 'Tall',
 		office_phone: '415-555-1234', url: 'http://knowitall.com', address1: '123 Main St.' }
-	@profile_data_2 ||= { first_name: 'Can', middle_initial: 'I', last_name: 'Helpyou',
+	@profile_data_2 ||= { first_name: 'Can', middle_name: 'I', last_name: 'Helpyou',
 		office_phone: '800-555-1111', url: 'http://canihelpyou.com', address1: '10 Broadway Blvd.' }
-	@unattached_profile_data ||= { first_name: 'Prospect', middle_initial: 'A', last_name: 'Expert',
+	@unattached_profile_data ||= { first_name: 'Prospect', middle_name: 'A', last_name: 'Expert',
 		office_phone: '888-555-5555', url: 'http://UnattachedExpert.com', address1: '1 Fleet Street' }
 	@category_data ||= { name: 'Parenting' }
 end
@@ -89,7 +89,7 @@ end
 When /^I enter new profile information$/ do
 	set_up_new_data
 	fill_in 'First name', with: @unattached_profile_data[:first_name]
-	fill_in 'Middle initial', with: @unattached_profile_data[:middle_initial]
+	fill_in 'Middle initial', with: @unattached_profile_data[:middle_name]
 	fill_in 'Last name', with: @unattached_profile_data[:last_name]
 	fill_in 'Website', with: @unattached_profile_data[:url]
 	click_button 'Save'
@@ -101,7 +101,7 @@ end
 
 When /^I enter my basic profile information$/ do
 	fill_in 'First name', with: @profile_data[:first_name]
-	fill_in 'Middle initial', with: @profile_data[:middle_initial]
+	fill_in 'Middle initial', with: @profile_data[:middle_name]
 	fill_in 'Last name', with: @profile_data[:last_name]
 	click_button 'Save'
 	find_user_profile
@@ -170,7 +170,7 @@ When /^I visit the new profile page$/ do
 end
 
 When /^I click on the edit link for an unclaimed profile$/ do
-	click_link "#{@unattached_profile_data[:first_name]} #{@unattached_profile_data[:middle_initial]} #{@unattached_profile_data[:last_name]}"
+	click_link "#{@unattached_profile_data[:first_name]} #{@unattached_profile_data[:middle_name]} #{@unattached_profile_data[:last_name]}"
 end
 
 When /^I set the last name to "(.*?)"$/ do |last_name|
@@ -202,7 +202,7 @@ end
 
 Then /^my basic information should be saved in my profile$/ do
 	@profile.first_name.should == @profile_data[:first_name]
-	@profile.middle_initial.should == @profile_data[:middle_initial]
+	@profile.middle_name.should == @profile_data[:middle_name]
 	@profile.last_name.should == @profile_data[:last_name]
 end
 
@@ -262,7 +262,7 @@ end
 Then /^the new profile should be saved$/ do
 	find_unattached_profile
 	@profile.first_name.should == @unattached_profile_data[:first_name]
-	@profile.middle_initial.should == @unattached_profile_data[:middle_initial]
+	@profile.middle_name.should == @unattached_profile_data[:middle_name]
 	@profile.last_name.should == @unattached_profile_data[:last_name]
 	@profile.url.should == @unattached_profile_data[:url]
 end

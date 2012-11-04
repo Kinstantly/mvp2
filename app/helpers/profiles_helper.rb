@@ -19,7 +19,7 @@ module ProfilesHelper
 	
 	def profile_display_name(profile=current_user.try(:profile))
 		cred = profile.try(:credentials)
-		name = profile_join_fields [:first_name, :middle_initial, :last_name], ' ', profile
+		name = profile_join_fields [:first_name, :middle_name, :last_name], ' ', profile
 		name += ", #{cred}" if cred.present?
 		name
 	end
