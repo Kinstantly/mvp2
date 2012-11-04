@@ -6,17 +6,19 @@
 			%span
 				= image_tag("required_field_icon.png", class: 'required_field_icon')
 				= f.label :first_name, 'First name'
-				= f.text_field :first_name
+				= f.text_field :first_name, id: 'profile_first_name', class: 'display_name_field'
 			%span
 				= f.label :middle_name, 'Middle name or initial'
-				= f.text_field :middle_name
+				= f.text_field :middle_name, id: 'profile_middle_name', class: 'display_name_field'
 			%span
 				= image_tag("required_field_icon.png", class: 'required_field_icon')
 				= f.label :last_name, 'Last name'
-				= f.text_field :last_name
+				= f.text_field :last_name, id: 'profile_last_name', class: 'display_name_field'
 		.credentials
 			= f.label :credentials, "Degrees/credentials"
-			= f.text_field :credentials
+			= f.text_field :credentials, id: 'profile_credentials', class: 'display_name_field'
+		.display_name
+			= profile_display_name profile
 		.email
 			= f.label :email, "Public email"
 			= f.text_field :email
@@ -106,3 +108,7 @@
 	$('#add_custom_categories_text_field').click (e) ->
 		e.preventDefault()
 		$('.custom_categories').append '<div class="text_field">'+'#{escape_javascript @profile_custom_categories_text_field_template}'.replace('INDEX', String(++profile_custom_categories_i))+'</div>'
+	refresh_display_name = () ->
+		$('.display_name').html profile_display_name($('#profile_first_name').val(), $('#profile_middle_name').val(), $('#profile_last_name').val(), $('#profile_credentials').val())
+	$('.display_name_field').keyup (e) ->
+		refresh_display_name()
