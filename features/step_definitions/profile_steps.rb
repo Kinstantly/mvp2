@@ -88,9 +88,9 @@ end
 
 When /^I enter new profile information$/ do
 	set_up_new_data
-	fill_in 'First name', with: @unattached_profile_data[:first_name]
-	fill_in 'Middle initial', with: @unattached_profile_data[:middle_name]
-	fill_in 'Last name', with: @unattached_profile_data[:last_name]
+	fill_in 'profile_first_name', with: @unattached_profile_data[:first_name]
+	fill_in 'profile_middle_name', with: @unattached_profile_data[:middle_name]
+	fill_in 'profile_last_name', with: @unattached_profile_data[:last_name]
 	fill_in 'Website', with: @unattached_profile_data[:url]
 	click_button 'Save'
 end
@@ -100,9 +100,9 @@ When /^I view my profile$/ do
 end
 
 When /^I enter my basic profile information$/ do
-	fill_in 'First name', with: @profile_data[:first_name]
-	fill_in 'Middle initial', with: @profile_data[:middle_name]
-	fill_in 'Last name', with: @profile_data[:last_name]
+	fill_in 'profile_first_name', with: @profile_data[:first_name]
+	fill_in 'profile_middle_name', with: @profile_data[:middle_name]
+	fill_in 'profile_last_name', with: @profile_data[:last_name]
 	click_button 'Save'
 	find_user_profile
 end
@@ -115,7 +115,7 @@ When /^I edit my profile information$/ do
 end
 
 When /^I edit my email address$/ do
-	fill_in 'Account email', with: @visitor[:email]
+	fill_in 'user_email', with: @visitor[:email]
 	click_button 'Save'
 	find_user_profile
 end
