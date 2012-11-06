@@ -107,6 +107,22 @@ When /^I enter my basic profile information$/ do
 	find_user_profile
 end
 
+When /^I set my first name to "(.*?)"$/ do |first_name|
+	fill_in 'profile_first_name', with: first_name
+end
+
+When /^I set my middle name to "(.*?)"$/ do |middle_name|
+	fill_in 'profile_middle_name', with: middle_name
+end
+
+When /^I set my last name to "(.*?)"$/ do |last_name|
+	fill_in 'profile_last_name', with: last_name
+end
+
+When /^I set my credentials to "(.*?)"$/ do |credentials|
+	fill_in 'profile_credentials', with: credentials
+end
+
 When /^I edit my profile information$/ do
 	fill_in 'Office', with: @profile_data[:office_phone]
 	fill_in 'Website', with: @profile_data[:url]
@@ -275,4 +291,18 @@ end
 Then /^the last name in the unclaimed profile should be "(.*?)"$/ do |last_name|
 	find_unattached_profile
 	@profile.last_name.should == last_name
+end
+
+# Dynamic display showing what the display name will be after saving.
+Then /^the display name should be dynamically shown as "(.*?)"$/ do |display_name|
+	within('.display_name') do
+		page.should have_content display_name
+	end 
+end
+
+# Display name based on various profile fields.
+Then /^the display name should be updated to "(.*?)"$/ do |display_name|
+	within('.top_nav') do
+		page.should have_content display_name
+	end 
 end

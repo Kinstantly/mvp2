@@ -84,3 +84,27 @@ Feature: Edit my expert profile
 			And I save my profile
 		Then my profile should show the "0 to 6" age range
 			And my profile should show the "6 to 12" age range
+	
+	@javascript
+	Scenario: Show display name as editing
+		Given I exist as a user
+			And I want my profile
+			And I am logged in
+			And I am on my profile edit page
+		When I set my first name to "Philo"
+			And I set my middle name to "T."
+			And I set my last name to "Farnsworth"
+			And I set my credentials to "MD, PhD"
+		Then the display name should be dynamically shown as "Philo T. Farnsworth, MD, PhD"
+	
+	Scenario: Update display name
+		Given I exist as a user
+			And I want my profile
+			And I am logged in
+			And I am on my profile edit page
+		When I set my first name to "Philo"
+			And I set my middle name to "T."
+			And I set my last name to "Farnsworth"
+			And I set my credentials to "MD, PhD"
+			And I save my profile
+		Then the display name should be updated to "Philo T. Farnsworth, MD, PhD"
