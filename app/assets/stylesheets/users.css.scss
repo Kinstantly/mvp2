@@ -52,6 +52,13 @@ div.edit_profile {
 			.name > span {
 				margin-right: 1em;
 			}
+			.display_name_area .display_name {
+				font: {
+					family: Ariel, Helvetica, sans-serif;
+					weight: 500;
+				}
+				margin-left: 1em;
+			}
 			.categories .check_box, .custom_categories .text_field {
 				float: left;
 				margin-left: 1em;

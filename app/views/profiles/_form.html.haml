@@ -17,8 +17,10 @@
 		.credentials
 			= f.label :credentials, "Degrees/credentials"
 			= f.text_field :credentials, id: 'profile_credentials', class: 'display_name_field'
-		.display_name
-			= profile_display_name profile
+		.display_name_area
+			Display name
+			%span.display_name
+				= profile_display_name profile
 		.email
 			= f.label :email, "Public email"
 			= f.text_field :email
