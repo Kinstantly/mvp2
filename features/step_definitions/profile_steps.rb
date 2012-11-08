@@ -74,6 +74,16 @@ Given /^I have a country code of "(.*?)" in my profile$/ do |country|
 	@user.profile.save
 end
 
+Given /^I have a category of "(.*?)" in my profile$/ do |category|
+	@user.profile.categories = [category]
+	@user.profile.save
+end
+
+Given /^I have no predefined categories in my profile$/ do
+	@user.profile.categories = []
+	@user.profile.save
+end
+
 Given /^there is an unclaimed profile$/ do
 	create_unattached_profile
 end
@@ -160,7 +170,7 @@ When /^I select the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
 	end
 end
 
-# This step uses javascript.
+# This step requires javascript.
 When /^I add the "(.*?)" and "(.*?)" custom categories$/ do |cat1, cat2|
 	within('.custom_categories') do
 		fill_in MyHelpers.profile_custom_categories_id('1'), with: cat1
@@ -171,6 +181,23 @@ end
 
 When /^I select the "(.*?)" category$/ do |category|
 	select category, from: 'Category'
+end
+
+# This step requires javascript.
+When /^I select the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
+	within('.specialties') do
+		check MyHelpers.profile_specialties_id(spec1)
+		check MyHelpers.profile_specialties_id(spec2)
+	end
+end
+
+# This step requires javascript.
+When /^I add the "(.*?)" and "(.*?)" custom specialties$/ do |spec1, spec2|
+	within('.custom_specialties') do
+		fill_in MyHelpers.profile_custom_specialties_id('1'), with: spec1
+		click_button 'add_custom_specialties_text_field'
+		fill_in MyHelpers.profile_custom_specialties_id('2'), with: spec2
+	end
 end
 
 When /^I select the "(.*?)" age range$/ do |age_range|
@@ -249,6 +276,28 @@ end
 Then /^my profile should show me as being in the "(.*?)" category$/ do |category|
 	within('.category') do
 		page.should have_content category
+	end
+end
+
+Then /^then I should be offered the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
+	within('.specialties') do
+		page.should have_content spec1
+		page.should have_content spec2
+	end
+end
+
+Then /^my profile should show me as having the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
+	within('.specialties') do
+		page.should have_content spec1
+		page.should have_content spec2
+	end
+end
+
+Then /^I should be offered all specialties$/ do
+	within('.specialties') do
+		MyHelpers.profile_predefined_specialties.each do |spec|
+			page.should have_content spec
+		end
 	end
 end
 

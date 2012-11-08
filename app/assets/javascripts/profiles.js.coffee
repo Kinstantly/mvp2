@@ -5,8 +5,7 @@ window.string_present = (s) ->
 	s? && s.length > 0
 window.profile_display_name = (first_name, middle_name, last_name, credentials) ->
 	names = []
-	[first_name, middle_name, last_name].forEach (name, i, a) ->
-		names.push name if string_present name
+	names.push name for name in [first_name, middle_name, last_name] when string_present name
 	s = names.join(' ')
 	s = s + ', ' + credentials if string_present credentials
 	s

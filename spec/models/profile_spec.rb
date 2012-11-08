@@ -28,7 +28,7 @@ describe Profile do
 		end
 		
 		it "stores multiple categories" do
-			@profile.save.should == true
+			@profile.save.should be_true
 			@profile.categories.should == @categories
 		end
 		
@@ -41,8 +41,51 @@ describe Profile do
 			it "merges custom categories" do
 				@profile.save.should == true
 				@profile.should have_exactly(@categories.size + 1).categories
-				@profile.categories.include?(@custom.last).should == true
+				@profile.categories.include?(@custom.last).should be_true
 			end
+		end
+	end
+	
+	context "specialties" do
+		before(:each) do
+			@specialties = ['behavior', 'choosing a school (pre-K to 12)']
+			@profile.specialties = @specialties
+		end
+		
+		it "stores multiple specialties" do
+			@profile.save.should be_true
+			@profile.specialties.should == @specialties
+		end
+		
+		context "custom specialties" do
+			before(:each) do
+				@custom = [@specialties.first, 'parenting support']
+				@profile.specialties_merger = @custom
+			end
+			
+			it "merges custom specialties" do
+				@profile.save.should == true
+				@profile.should have_exactly(@specialties.size + 1).specialties
+				@profile.specialties.include?(@custom.last).should be_true
+			end
+		end
+	end
+	
+	context "Profile configuration" do
+		it "has predefined categories" do
+			Profile.predefined_categories.length.should be > 0
+			Profile.predefined_categories.include?('parenting coach/educator').should be_true
+		end
+		
+		it "has predefined specialties" do
+			Profile.predefined_specialties.length.should be > 0
+			Profile.predefined_specialties.include?('behavior').should be_true
+		end
+		
+		it "has specialties tied to category" do
+			specialties = Profile.categories_specialties_map['parenting coach/educator']
+			specialties.length.should be > 0
+			specialties.include?('behavior').should be_true
 		end
 	end
 end

@@ -73,7 +73,44 @@ Feature: Edit my expert profile
 		When I add the "story-book reader" and "dream catcher" custom categories
 			And I save my profile
 		Then my profile should show me as being in the "story-book reader" and "dream catcher" categories
+		
+	@javascript
+	Scenario: Select specialties
+		Given I exist as a user
+			And I am logged in
+			And I have a category of "developmental-behavioral pediatrician" in my profile
+			And I am on my profile edit page
+		When I select the "behavior" and "developmental delay" specialties
+			And I save my profile
+		Then my profile should show me as having the "behavior" and "developmental delay" specialties
 	
+	@javascript
+	Scenario: Add custom specialties
+		Given I exist as a user
+			And I am logged in
+			And I have a category of "developmental-behavioral pediatrician" in my profile
+			And I am on my profile edit page
+		When I add the "story-books" and "dreams" custom specialties
+			And I save my profile
+		Then my profile should show me as having the "story-books" and "dreams" specialties
+	
+	@javascript
+	Scenario: Offer specialties for given categories
+		Given I exist as a user
+			And I want my profile
+			And I am logged in
+			And I am on my profile edit page
+		When I select the "child psychiatrist" and "developmental-behavioral pediatrician" categories
+		Then then I should be offered the "adoption" and "toilet training" specialties
+	
+	@javascript
+	Scenario: Offer all specialties when I have selected no predefined categories
+		Given I exist as a user
+			And I have no predefined categories in my profile
+			And I am logged in
+		When I am on my profile edit page
+		Then I should be offered all specialties
+
 	Scenario: Select age ranges
 		Given I exist as a user
 			And I want my profile

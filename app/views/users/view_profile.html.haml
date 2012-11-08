@@ -43,6 +43,9 @@
 			.categories
 				%span.label Categories:
 				= profile_display_categories @profile
+			.specialties
+				%span.label Specialties:
+				= profile_display_specialties @profile
 			.age_ranges
 				%span.label Ages:
 				= profile_age_ranges @profile
@@ -70,9 +73,5 @@
 				%span.label Summary:
 				%br
 				.value= @profile.summary
-			.specialties
-				%span.label Specialties
-				%br
-				.value= @profile.specialties
 			.insurance_accepted
 				%span.label= @profile.insurance_accepted ? 'Insurance accepted' : 'Insurance not accepted'
