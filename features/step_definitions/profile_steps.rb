@@ -301,6 +301,14 @@ Then /^I should be offered all specialties$/ do
 	end
 end
 
+Then /^I should be offered no specialties$/ do
+	within('.specialties') do
+		MyHelpers.profile_predefined_specialties.each do |spec|
+			page.should_not have_content spec
+		end
+	end
+end
+
 Then /^my profile should show the "(.*?)" age range$/ do |age_range|
 	within('.age_ranges') do
 		page.should have_content age_range

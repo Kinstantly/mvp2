@@ -72,6 +72,11 @@ div.edit_profile {
 				margin-bottom: 0.5em;
 				background-color: #EEEEEE;
 			}
+			.specialties .notice {
+				float: left;
+				margin-left: 1em;
+				margin-bottom: 0.5em;
+			}
 			.categories + div, .custom_categories + div, .specialties + div, .custom_specialties + div {
 				clear: left;
 			}

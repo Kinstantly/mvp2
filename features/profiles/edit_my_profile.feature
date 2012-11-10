@@ -104,12 +104,12 @@ Feature: Edit my expert profile
 		Then then I should be offered the "adoption" and "toilet training" specialties
 	
 	@javascript
-	Scenario: Offer all specialties when I have selected no predefined categories
+	Scenario: Offer no predefined specialties when I have selected no predefined categories
 		Given I exist as a user
 			And I have no predefined categories in my profile
 			And I am logged in
 		When I am on my profile edit page
-		Then I should be offered all specialties
+		Then I should be offered no specialties
 
 	Scenario: Select age ranges
 		Given I exist as a user
