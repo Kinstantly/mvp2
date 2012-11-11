@@ -146,6 +146,7 @@
 				if cat_specs
 					specs.push spec for spec in cat_specs when spec not in specs
 			true
+		specs.push spec for spec in #{profile.specialties.to_json} when spec not in specs and spec of profile_specialties_check_box_tag_cache
 		boxes = $('.predefined_specialties')
 		boxes.empty()
 		if specs.length > 0
