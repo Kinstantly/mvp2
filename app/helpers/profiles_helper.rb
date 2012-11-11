@@ -101,11 +101,15 @@ module ProfilesHelper
 		check_box_tag profile_specialties_tag_name(form_builder), specialty, profile.specialties.include?(specialty), id: profile_specialties_id(specialty)
 	end
 	
-	def profile_specialties_check_box_tag_cache(profile, form_builder=nil)
+	def profile_specialties_check_box_cache(profile, wrapper_class, form_builder=nil)
 		cache = {}
 		Profile.categories_specialties_map.each do |cat, specs|
 			specs.each do |spec|
-				cache[spec] = profile_specialties_check_box_tag(profile, spec, form_builder) unless cache[spec]
+				unless cache[spec]
+					cache[spec] = content_tag :div, class: wrapper_class do
+						profile_specialties_check_box_tag(profile, spec, form_builder) + " #{spec}"
+					end
+				end
 			end
 		end
 		cache

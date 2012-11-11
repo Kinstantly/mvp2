@@ -137,7 +137,7 @@
 	
 	# Show specialties check boxes that belong to the checked categories.
 	profile_categories_specialties_map = #{profile_categories_specialties_map.to_json}
-	profile_specialties_check_box_tag_cache = #{profile_specialties_check_box_tag_cache(profile, f).to_json}
+	profile_specialties_check_box_cache = #{profile_specialties_check_box_cache(profile, 'check_box', f).to_json}
 	show_specialties_check_boxes = ->
 		specs = []
 		$('.categories .check_box input').each ->
@@ -146,14 +146,16 @@
 				if cat_specs
 					specs.push spec for spec in cat_specs when spec not in specs
 			true
-		specs.push spec for spec in #{profile.specialties.to_json} when spec not in specs and spec of profile_specialties_check_box_tag_cache
+		specs.push spec for spec in #{profile.specialties.to_json} when spec not in specs and spec of profile_specialties_check_box_cache
 		boxes = $('.predefined_specialties')
+		$('.check_box', boxes).each ->
+			profile_specialties_check_box_cache[$('input', this).val()] = this
 		boxes.empty()
 		if specs.length > 0
 			specs.sort()
-			boxes.append '<div class="check_box">'+profile_specialties_check_box_tag_cache[spec]+' '+spec+'</div>' for spec in specs
+			boxes.append profile_specialties_check_box_cache[spec] for spec in specs
 		else
-			boxes.append '<div class="notice">Choose a category and we\'ll show you a list of specialties.</div>'
+			boxes.append "#{escape_javascript content_tag(:div, 'Choose a category and we\'ll show you a list of specialties.', class: 'notice')}"
 	show_specialties_check_boxes()
 	# Redisplay specialties choices when categories are changed.
 	$('.categories .check_box input').change (e) ->
