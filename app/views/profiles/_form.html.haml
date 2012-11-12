@@ -53,7 +53,7 @@
 		.office_phone
 			= f.label :office_phone, "Office"
 			= f.text_field :office_phone
-	.categories_specialties_profile
+	.expertise_profile
 		.categories
 			Categories
 			%br
@@ -95,12 +95,12 @@
 				= profile_custom_specialties_text_field_tag(profile, '', "#{i = i+1}", f)
 			- @profile_custom_specialties_i = i
 			- @profile_custom_specialties_text_field_template = profile_custom_specialties_text_field_tag(profile, '', 'INDEX', f)
-	.professional_profile
 		.age_ranges
 			= f.label :age_range_ids, "Ages"
-			= f.collection_select(:age_range_ids, AgeRange.all, :id, :name, {}, multiple: true)
+			= f.collection_select(:age_range_ids, AgeRange.all.sort_by(&:sort_index), :id, :name, {}, multiple: true)
 			%span.note
 				Hold down the Ctrl (Windows) / Command (Mac) button to select multiple options.
+	.professional_profile
 		.education
 			= f.label :education, "Education"
 			= f.text_area :education, size: '50x5'

@@ -26,7 +26,7 @@ module ProfilesHelper
 	
 	def profile_age_ranges(profile=current_user.try(:profile))
 		age_ranges = profile.try(:age_ranges).presence || []
-		age_ranges.map{|a| a.name}.join(', ')
+		age_ranges.sort_by(&:sort_index).map(&:name).join(', ')
 	end
 		
 	def profile_attribute_tag_name(attr_name, form_builder=nil)

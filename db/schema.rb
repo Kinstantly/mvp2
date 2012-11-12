@@ -11,12 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121107015735) do
+ActiveRecord::Schema.define(:version => 20121112031329) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "sort_index"
   end
 
   create_table "age_ranges_profiles", :force => true do |t|
