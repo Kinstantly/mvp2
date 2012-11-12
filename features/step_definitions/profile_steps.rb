@@ -201,7 +201,7 @@ When /^I add the "(.*?)" and "(.*?)" custom specialties$/ do |spec1, spec2|
 end
 
 When /^I select the "(.*?)" age range$/ do |age_range|
-	select age_range, from: 'Ages'
+	check MyHelpers.profile_age_ranges_id(age_range)
 end
 
 When /^I visit the profile index page$/ do

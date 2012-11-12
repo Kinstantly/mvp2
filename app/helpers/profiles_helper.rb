@@ -134,4 +134,22 @@ module ProfilesHelper
 	def profile_custom_specialties_text_field_tag(profile, value, suffix, form_builder=nil)
 		text_field_tag profile_custom_specialties_tag_name(form_builder), value, id: profile_custom_specialties_id(suffix)
 	end
+	
+	# Age range helpers
+	
+	def profile_age_ranges_id(s)
+		"profile_age_ranges_#{s.to_alphanumeric}"
+	end
+	
+	def profile_age_ranges_tag_name(form_builder=nil)
+		profile_attribute_tag_name 'age_range_ids', form_builder
+	end
+	
+	def profile_age_ranges_hidden_field_tag(form_builder=nil)
+		hidden_field_tag profile_age_ranges_tag_name(form_builder), '', id: profile_age_ranges_id('hidden_field')
+	end
+	
+	def profile_age_ranges_check_box_tag(profile, age_range, form_builder=nil)
+		check_box_tag profile_age_ranges_tag_name(form_builder), age_range.id, profile.age_ranges.include?(age_range), id: profile_age_ranges_id(age_range.name)
+	end
 end

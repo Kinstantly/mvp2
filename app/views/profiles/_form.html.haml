@@ -96,10 +96,13 @@
 			- @profile_custom_specialties_i = i
 			- @profile_custom_specialties_text_field_template = profile_custom_specialties_text_field_tag(profile, '', 'INDEX', f)
 		.age_ranges
-			= f.label :age_range_ids, "Ages"
-			= f.collection_select(:age_range_ids, AgeRange.all.sort_by(&:sort_index), :id, :name, {}, multiple: true)
-			%span.note
-				Hold down the Ctrl (Windows) / Command (Mac) button to select multiple options.
+			Ages
+			%br
+			= profile_age_ranges_hidden_field_tag(f)
+			- AgeRange.all.sort_by(&:sort_index).each do |age_range|
+				.check_box
+					= profile_age_ranges_check_box_tag(profile, age_range, f)
+					= age_range.name
 	.professional_profile
 		.education
 			= f.label :education, "Education"

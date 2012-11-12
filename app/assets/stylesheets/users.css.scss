@@ -66,7 +66,9 @@ div.edit_profile {
 			.expertise_profile > div {
 				padding-bottom: 1em;
 			}
-			.categories .check_box, .custom_categories .text_field, .specialties .check_box, .custom_specialties .text_field {
+			.categories .check_box, .custom_categories .text_field, 
+			.specialties .check_box, .custom_specialties .text_field, 
+			.age_ranges .check_box {
 				float: left;
 				margin-left: 1em;
 				margin-bottom: 0.5em;
