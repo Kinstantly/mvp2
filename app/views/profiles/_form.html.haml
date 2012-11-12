@@ -96,7 +96,7 @@
 			- @profile_custom_specialties_i = i
 			- @profile_custom_specialties_text_field_template = profile_custom_specialties_text_field_tag(profile, '', 'INDEX', f)
 		.age_ranges
-			Ages
+			Ages/stages of clients/children (check all that apply):
 			%br
 			= profile_age_ranges_hidden_field_tag(f)
 			- AgeRange.all.sort_by(&:sort_index).each do |age_range|
