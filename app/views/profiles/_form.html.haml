@@ -131,6 +131,7 @@
 	$('#add_custom_categories_text_field').click (e) ->
 		e.preventDefault()
 		$('.custom_categories').append '<div class="text_field">'+'#{escape_javascript @profile_custom_categories_text_field_template}'.replace('INDEX', String(++profile_custom_categories_i))+'</div>'
+		$('.custom_categories input:last').focus()
 	
 	# Refresh display name as contributing input tags are modified.
 	refresh_display_name = () ->
@@ -169,3 +170,4 @@
 	$('#add_custom_specialties_text_field').click (e) ->
 		e.preventDefault()
 		$('.custom_specialties').append '<div class="text_field">'+'#{escape_javascript @profile_custom_specialties_text_field_template}'.replace('INDEX', String(++profile_custom_specialties_i))+'</div>'
+		$('.custom_specialties input:last').focus()
