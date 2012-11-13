@@ -13,7 +13,8 @@
 					%th Public email
 					%th Mobile
 					%th Office
-					%th Categories
+					%th.large Categories
+					%th.large Specialties
 					%th Ages
 					%th Education
 					%th.large Experience
@@ -21,7 +22,6 @@
 					%th Honors and awards
 					%th Languages
 					%th.large Summary
-					%th.large Specialties
 					%th Insurance
 			%tbody
 				- @profiles.each do |p|
@@ -35,6 +35,7 @@
 						%td= p.try(:mobile_phone)
 						%td= p.try(:office_phone)
 						%td= profile_display_categories(p)
+						%td= profile_display_specialties(p)
 						%td= profile_age_ranges p
 						%td= p.try(:education)
 						%td= p.try(:experience)
@@ -42,5 +43,4 @@
 						%td= p.try(:awards)
 						%td= p.try(:languages)
 						%td= p.try(:summary)
-						%td= p.try(:specialties)
 						%td= p.try(:insurance_accepted) ? 'Accepted' : 'Not accepted'

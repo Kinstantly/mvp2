@@ -55,6 +55,7 @@
 			= f.text_field :office_phone
 	.expertise_profile
 		.categories
+			= image_tag("required_field_icon.png", class: 'required_field_icon')
 			= f.label :categories, "Categories"
 			%br
 			= profile_categories_hidden_field_tag(f)
@@ -77,6 +78,7 @@
 			- @profile_custom_categories_i = i
 			- @profile_custom_categories_text_field_template = profile_custom_categories_text_field_tag(profile, '', 'INDEX', f)
 		.specialties
+			= image_tag("required_field_icon.png", class: 'required_field_icon')
 			= f.label :specialties, "Specialties"
 			%br
 			= profile_specialties_hidden_field_tag(f)

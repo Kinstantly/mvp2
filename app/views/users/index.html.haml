@@ -11,7 +11,8 @@
 					%th Address
 					%th Mobile
 					%th Office
-					%th Categories
+					%th.large Categories
+					%th.large Specialties
 					%th Ages
 					%th Education
 					%th.large Experience
@@ -19,7 +20,6 @@
 					%th Honors and awards
 					%th Languages
 					%th.large Summary
-					%th.large Specialties
 					%th Insurance
 			%tbody
 				- @users.each do |u|
@@ -33,6 +33,7 @@
 						%td= u.try(:profile).try(:mobile_phone)
 						%td= u.try(:profile).try(:office_phone)
 						%td= profile_display_categories u.profile
+						%td= profile_display_specialties u.profile
 						%td= profile_age_ranges u.profile
 						%td= u.try(:profile).try(:education)
 						%td= u.try(:profile).try(:experience)
@@ -40,5 +41,4 @@
 						%td= u.try(:profile).try(:awards)
 						%td= u.try(:profile).try(:languages)
 						%td= u.try(:profile).try(:summary)
-						%td= u.try(:profile).try(:specialties)
 						%td= u.try(:profile).try(:insurance_accepted) ? 'Accepted' : 'Not accepted'
