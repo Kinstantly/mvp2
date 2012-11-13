@@ -35,7 +35,7 @@ describe Profile do
 		context "custom categories" do
 			before(:each) do
 				@custom = [@categories.first, 'story teller']
-				@profile.categories_merger = @custom
+				@profile.custom_category_names = @custom
 			end
 			
 			it "merges custom categories" do
@@ -60,7 +60,7 @@ describe Profile do
 		context "custom specialties" do
 			before(:each) do
 				@custom = [@specialties.first, 'parenting support']
-				@profile.specialties_merger = @custom
+				@profile.custom_specialty_names = @custom
 			end
 			
 			it "merges custom specialties" do

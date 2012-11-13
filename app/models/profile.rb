@@ -1,4 +1,6 @@
 class Profile < ActiveRecord::Base
+	attr_accessor :custom_categories, :custom_specialties
+	
 	attr_accessible :first_name, :last_name, :middle_name, :credentials, :email, 
 		:company_name, :url, 
 		:address1, :address2, :city, :region, :country, :postal_code, 
@@ -6,8 +8,8 @@ class Profile < ActiveRecord::Base
 		:headline, :subcategory, :education, :experience, :certifications, :awards, 
 		:languages, :insurance_accepted, :summary, 
 		:age_range_ids, 
-		:categories, :category_names, :categories_merger, 
-		:specialties, :specialty_names, :specialties_merger
+		:categories, :category_names, :custom_category_names, 
+		:specialties, :specialty_names, :custom_specialty_names
 	
 	belongs_to :user
 	has_and_belongs_to_many :age_ranges
@@ -17,20 +19,26 @@ class Profile < ActiveRecord::Base
 	
 	validates_presence_of :first_name, :last_name, message: "is required"
 	
+	# Merge in custom categories and specialties.
+	before_validation do
+		self.categories = ((categories.presence || []) + (custom_categories.presence || [])).uniq
+		self.specialties = ((specialties.presence || []) + (custom_specialties.presence || [])).uniq
+	end
+	
 	def category_names=(names=[])
-		self.categories = names.select(&:present?)
+		self.categories = remove_blanks names
 	end
 	
-	def categories_merger=(add=[])
-		self.category_names = (categories + add).uniq
+	def custom_category_names=(names=[])
+		self.custom_categories = remove_blanks names
 	end
 	
-	def specialty_names=(raw=[])
-		self.specialties = raw.select {|c| c.present?}
+	def specialty_names=(names=[])
+		self.specialties = remove_blanks names
 	end
 	
-	def specialties_merger=(add=[])
-		self.specialty_names = (specialties + add).uniq
+	def custom_specialty_names=(names=[])
+		self.custom_specialties = remove_blanks names
 	end
 	
 	class << self
@@ -45,5 +53,11 @@ class Profile < ActiveRecord::Base
 		def predefined_specialties
 			@predefined_specialties ||= (CATEGORIES_SPECIALTIES_MAP.try(:values).try(:flatten).try(:uniq).try(:sort).presence || [])
 		end
+	end
+	
+	private
+	
+	def remove_blanks(strings=[])
+		strings.select(&:present?)
 	end
 end
