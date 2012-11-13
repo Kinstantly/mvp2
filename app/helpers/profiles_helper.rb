@@ -48,7 +48,7 @@ module ProfilesHelper
 	end
 	
 	def profile_categories_tag_name(form_builder=nil)
-		profile_attribute_tag_name 'categories_updater', form_builder
+		profile_attribute_tag_name 'category_names', form_builder
 	end
 	
 	def profile_categories_hidden_field_tag(form_builder=nil)
@@ -90,7 +90,7 @@ module ProfilesHelper
 	end
 	
 	def profile_specialties_tag_name(form_builder=nil)
-		profile_attribute_tag_name 'specialties_updater', form_builder
+		profile_attribute_tag_name 'specialty_names', form_builder
 	end
 	
 	def profile_specialties_hidden_field_tag(form_builder=nil)

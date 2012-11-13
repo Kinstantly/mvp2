@@ -6,8 +6,8 @@ class Profile < ActiveRecord::Base
 		:headline, :subcategory, :education, :experience, :certifications, :awards, 
 		:languages, :insurance_accepted, :summary, 
 		:age_range_ids, 
-		:categories, :categories_updater, :categories_merger, 
-		:specialties, :specialties_updater, :specialties_merger
+		:categories, :category_names, :categories_merger, 
+		:specialties, :specialty_names, :specialties_merger
 	
 	belongs_to :user
 	has_and_belongs_to_many :age_ranges
@@ -17,20 +17,20 @@ class Profile < ActiveRecord::Base
 	
 	validates_presence_of :first_name, :last_name, message: "is required"
 	
-	def categories_updater=(raw=[])
-		self.categories = raw.select {|c| c.present?}
+	def category_names=(names=[])
+		self.categories = names.select(&:present?)
 	end
 	
 	def categories_merger=(add=[])
-		self.categories_updater = (categories + add).uniq
+		self.category_names = (categories + add).uniq
 	end
 	
-	def specialties_updater=(raw=[])
+	def specialty_names=(raw=[])
 		self.specialties = raw.select {|c| c.present?}
 	end
 	
 	def specialties_merger=(add=[])
-		self.specialties_updater = (specialties + add).uniq
+		self.specialty_names = (specialties + add).uniq
 	end
 	
 	class << self
