@@ -55,7 +55,7 @@
 			= f.text_field :office_phone
 	.expertise_profile
 		.categories
-			Categories
+			= f.label :categories, "Categories"
 			%br
 			= profile_categories_hidden_field_tag(f)
 			- profile_predefined_categories.each do |category|
@@ -77,7 +77,7 @@
 			- @profile_custom_categories_i = i
 			- @profile_custom_categories_text_field_template = profile_custom_categories_text_field_tag(profile, '', 'INDEX', f)
 		.specialties
-			Specialties
+			= f.label :specialties, "Specialties"
 			%br
 			= profile_specialties_hidden_field_tag(f)
 			%span.predefined_specialties

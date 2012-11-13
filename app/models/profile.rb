@@ -18,6 +18,7 @@ class Profile < ActiveRecord::Base
 	serialize :specialties, Array
 	
 	validates_presence_of :first_name, :last_name, message: "is required"
+	validates_presence_of :categories, :specialties, message: "must be chosen"
 	
 	# Merge in custom categories and specialties.
 	before_validation do

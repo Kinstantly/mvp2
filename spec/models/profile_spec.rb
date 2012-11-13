@@ -5,6 +5,10 @@ describe Profile do
 		@profile = Profile.new
 		@profile.first_name = 'Joe'
 		@profile.last_name = 'Black'
+		@categories = ['board-certified behavior analyst', 'child/clinical psychologist']
+		@profile.categories = @categories
+		@specialties = ['behavior', 'choosing a school (pre-K to 12)']
+		@profile.specialties = @specialties
 	end
 	
 	context "name" do
@@ -22,14 +26,14 @@ describe Profile do
 	end
 	
 	context "categories" do
-		before(:each) do
-			@categories = ['board-certified behavior analyst', 'child/clinical psychologist']
-			@profile.categories = @categories
-		end
-		
 		it "stores multiple categories" do
 			@profile.save.should be_true
 			@profile.categories.should == @categories
+		end
+		
+		it "requires at least one category" do
+			@profile.categories = []
+			@profile.should have(1).errors_on(:categories)
 		end
 		
 		context "custom categories" do
@@ -47,14 +51,14 @@ describe Profile do
 	end
 	
 	context "specialties" do
-		before(:each) do
-			@specialties = ['behavior', 'choosing a school (pre-K to 12)']
-			@profile.specialties = @specialties
-		end
-		
 		it "stores multiple specialties" do
 			@profile.save.should be_true
 			@profile.specialties.should == @specialties
+		end
+		
+		it "requires at least one specialty" do
+			@profile.specialties = []
+			@profile.should have(1).errors_on(:specialties)
 		end
 		
 		context "custom specialties" do

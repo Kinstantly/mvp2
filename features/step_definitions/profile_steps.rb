@@ -8,7 +8,6 @@ def set_up_new_data
 		office_phone: '800-555-1111', url: 'http://canihelpyou.com', address1: '10 Broadway Blvd.' }
 	@unattached_profile_data ||= { first_name: 'Prospect', middle_name: 'A', last_name: 'Expert',
 		office_phone: '888-555-5555', url: 'http://UnattachedExpert.com', address1: '1 Fleet Street' }
-	@category_data ||= { name: 'Parenting' }
 end
 
 def find_user_profile
@@ -26,7 +25,6 @@ def create_profile
 	@profile = FactoryGirl.create(:profile, @profile_data)
 	@user.profile = @profile
 	@user.save
-	FactoryGirl.create(:category, @category_data)
 	FactoryGirl.create(:age_range, name: '0 to 6')
 	FactoryGirl.create(:age_range, name: '6 to 12')
 end
@@ -113,6 +111,12 @@ When /^I enter my basic profile information$/ do
 	fill_in 'profile_first_name', with: @profile_data[:first_name]
 	fill_in 'profile_middle_name', with: @profile_data[:middle_name]
 	fill_in 'profile_last_name', with: @profile_data[:last_name]
+	within('.custom_categories') do
+		fill_in MyHelpers.profile_custom_categories_id('1'), with: 'teacher'
+	end
+	within('.custom_specialties') do
+		fill_in MyHelpers.profile_custom_specialties_id('1'), with: 'teaching'
+	end
 	click_button 'Save'
 	find_user_profile
 end
