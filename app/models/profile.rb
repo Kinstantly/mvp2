@@ -9,7 +9,8 @@ class Profile < ActiveRecord::Base
 		:languages, :insurance_accepted, :summary, 
 		:age_range_ids, 
 		:categories, :category_names, :custom_category_names, 
-		:specialties, :specialty_names, :custom_specialty_names
+		:specialties, :specialty_names, :custom_specialty_names, 
+		:consult_by_email, :consult_by_phone, :consult_by_video, :visit_home, :visit_school
 	
 	belongs_to :user
 	has_and_belongs_to_many :age_ranges

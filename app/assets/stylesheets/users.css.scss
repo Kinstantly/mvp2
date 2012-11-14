@@ -23,6 +23,13 @@ $profile_margin: 10px;
 	padding: 4px;
 }
 
+@mixin check-box-style {
+	float: left;
+	margin-left: 1em;
+	margin-bottom: 0.5em;
+	background-color: #EEEEEE;
+}
+
 div.view_profile {
 	margin: $profile_margin;
 	.buttons {
@@ -66,21 +73,25 @@ div.edit_profile {
 			.expertise_profile > div {
 				padding-bottom: 1em;
 			}
-			.categories .check_box, .custom_categories .text_field, 
-			.specialties .check_box, .custom_specialties .text_field, 
-			.age_ranges .check_box {
-				float: left;
-				margin-left: 1em;
-				margin-bottom: 0.5em;
-				background-color: #EEEEEE;
+			.categories, .specialties, .age_ranges, .consultations, .visits {
+				.check_box {
+					@include check-box-style;
+				}
+			}
+			.custom_categories, .custom_specialties {
+				.text_field {
+					@include check-box-style;
+				}
 			}
 			.specialties .notice {
 				float: left;
 				margin-left: 1em;
 				margin-bottom: 0.5em;
 			}
-			.categories + div, .custom_categories + div, .specialties + div, .custom_specialties + div {
-				clear: left;
+			.categories, .custom_categories, .specialties, .custom_specialties, .age_ranges, .consultations, .visits {
+				+ div {
+					clear: left;
+				}
 			}
 		}
 		.buttons {

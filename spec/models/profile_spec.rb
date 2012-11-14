@@ -75,6 +75,24 @@ describe Profile do
 		end
 	end
 	
+	context "consultations and visits" do
+		it "stores consultation preferences" do
+			@profile.consult_by_email = true
+			@profile.consult_by_phone = true
+			@profile.consult_by_video = false
+			@profile.should have(:no).errors_on(:consult_by_email)
+			@profile.should have(:no).errors_on(:consult_by_phone)
+			@profile.should have(:no).errors_on(:consult_by_video)
+		end
+		
+		it "stores visitation preferences" do
+			@profile.visit_home = true
+			@profile.visit_school = false
+			@profile.should have(:no).errors_on(:visit_home)
+			@profile.should have(:no).errors_on(:visit_school)
+		end
+	end
+	
 	context "Profile configuration" do
 		it "has predefined categories" do
 			Profile.predefined_categories.length.should be > 0

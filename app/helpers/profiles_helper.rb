@@ -152,4 +152,21 @@ module ProfilesHelper
 	def profile_age_ranges_check_box_tag(profile, age_range, form_builder=nil)
 		check_box_tag profile_age_ranges_tag_name(form_builder), age_range.id, profile.age_ranges.include?(age_range), id: profile_age_ranges_id(age_range.name)
 	end
+	
+	# Consultations and visits
+	
+	def profile_display_consultation_modes(profile)
+		modes = []
+		modes.push 'email' if profile.consult_by_email
+		modes.push 'phone' if profile.consult_by_phone
+		modes.push 'video' if profile.consult_by_video
+		modes.join ', '
+	end
+	
+	def profile_display_visitation_modes(profile)
+		modes = []
+		modes.push 'home' if profile.visit_home
+		modes.push 'school' if profile.visit_school
+		modes.join ', '
+	end
 end

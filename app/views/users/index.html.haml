@@ -14,6 +14,8 @@
 					%th.large Categories
 					%th.large Specialties
 					%th Ages
+					%th Consultations
+					%th Visitations
 					%th Education
 					%th.large Experience
 					%th Licenses, certifications
@@ -35,6 +37,8 @@
 						%td= profile_display_categories u.profile
 						%td= profile_display_specialties u.profile
 						%td= profile_age_ranges u.profile
+						%td= profile_display_consultation_modes u.profile
+						%td= profile_display_visitation_modes u.profile
 						%td= u.try(:profile).try(:education)
 						%td= u.try(:profile).try(:experience)
 						%td= u.try(:profile).try(:certifications)
