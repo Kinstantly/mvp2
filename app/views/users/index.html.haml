@@ -16,11 +16,11 @@
 					%th Ages
 					%th Consultations
 					%th Visitations
-					%th Education
+					%th.large Education
 					%th Licenses, certifications
 					%th Languages
+					%th.large Insurance accepted
 					%th.large Summary
-					%th Insurance
 			%tbody
 				- @users.each do |u|
 					%tr
@@ -37,8 +37,8 @@
 						%td= profile_age_ranges u.profile
 						%td= profile_display_consultation_modes u.profile
 						%td= profile_display_visitation_modes u.profile
-						%td= u.try(:profile).try(:education)
-						%td= u.try(:profile).try(:certifications)
-						%td= u.try(:profile).try(:languages)
-						%td= u.try(:profile).try(:summary)
-						%td= u.try(:profile).try(:insurance_accepted) ? 'Accepted' : 'Not accepted'
+						%td.text_area= preserve u.try(:profile).try(:education)
+						%td.text_area= preserve u.try(:profile).try(:certifications)
+						%td.text_area= preserve u.try(:profile).try(:languages)
+						%td.text_area= preserve u.try(:profile).try(:insurance_accepted)
+						%td.text_area= preserve u.try(:profile).try(:summary)

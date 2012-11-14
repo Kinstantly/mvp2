@@ -43,6 +43,9 @@ div.view_profile {
 				.value {
 					@include cell-style;
 				}
+				.value.text_area {
+					white-space: pre-line;
+				}
 			}
 		}
 	}
@@ -128,6 +131,9 @@ div.profile_index {
 			}
 			th.large {
 				min-width: 16em;
+			}
+			td.text_area {
+				white-space: pre-line;
 			}
 		}
 	}

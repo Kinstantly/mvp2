@@ -18,11 +18,11 @@
 					%th Ages
 					%th Consultations
 					%th Visitations
-					%th Education
+					%th.large Education
 					%th Licenses, certifications
 					%th Languages
+					%th.large Insurance accepted
 					%th.large Summary
-					%th Insurance
 			%tbody
 				- @profiles.each do |p|
 					%tr
@@ -39,8 +39,8 @@
 						%td= profile_age_ranges p
 						%td= profile_display_consultation_modes p
 						%td= profile_display_visitation_modes p
-						%td= p.try(:education)
-						%td= p.try(:certifications)
-						%td= p.try(:languages)
-						%td= p.try(:summary)
-						%td= p.try(:insurance_accepted) ? 'Accepted' : 'Not accepted'
+						%td.text_area= preserve p.try(:education)
+						%td.text_area= preserve p.try(:certifications)
+						%td.text_area= preserve p.try(:languages)
+						%td.text_area= preserve p.try(:insurance_accepted)
+						%td.text_area= preserve p.try(:summary)

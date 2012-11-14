@@ -132,12 +132,12 @@
 		.languages
 			= f.label :languages, "Languages"
 			= f.text_field :languages
+		.insurance_accepted
+			= f.label :insurance_accepted, "Health insurance accepted"
+			= f.text_area :insurance_accepted, size: '50x5'
 		.summary
 			= f.label :summary, "Summary"
 			= f.text_area :summary, size: '50x8'
-		.insurance_accepted
-			= f.label :insurance_accepted, "Insurance accepted"
-			= f.check_box :insurance_accepted
 :coffeescript
 	# Add extra text input tags for custom categories.
 	profile_custom_categories_i = #{@profile_custom_categories_i}

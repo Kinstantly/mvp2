@@ -59,18 +59,22 @@
 			.education
 				%span.label Education:
 				%br
-				.value= @profile.education
+				.value.text_area= preserve @profile.education
 			.certifications
 				%span.label Licenses, certifications:
 				%br
-				.value= @profile.certifications
+				.value.text_area= preserve @profile.certifications
 			.languages
 				%span.label Languages:
 				%br
-				.value= @profile.languages
+				.value.text_area= preserve @profile.languages
+			.insurance_accepted
+				%span.label Health insurance accepted:
+				%br
+				.value.text_area= preserve @profile.insurance_accepted
 			.summary
 				%span.label Summary:
 				%br
-				.value= @profile.summary
-			.insurance_accepted
-				%span.label= @profile.insurance_accepted ? 'Insurance accepted' : 'Insurance not accepted'
+				.value.text_area= preserve @profile.summary
+	.buttons
+		= edit_profile_link

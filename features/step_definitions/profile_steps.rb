@@ -220,8 +220,8 @@ When /^I click on the edit link for an unclaimed profile$/ do
 	click_link "#{@unattached_profile_data[:first_name]} #{@unattached_profile_data[:middle_name]} #{@unattached_profile_data[:last_name]}"
 end
 
-When /^I set the last name to "(.*?)"$/ do |last_name|
-	fill_in 'Last name', with: last_name
+When /^I enter "(.*?)" in the "(.*?)" field$/ do |text, field|
+	fill_in field, with: text
 end
 
 When /^I save the profile$/ do

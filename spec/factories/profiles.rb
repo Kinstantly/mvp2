@@ -14,7 +14,7 @@ FactoryGirl.define do
 		city "MyString"
 		region "MyString"
 		country "MyString"
-		insurance_accepted false
+		insurance_accepted 'MyString'
 		categories ['MyString']
 		specialties ['MyString']
 	end

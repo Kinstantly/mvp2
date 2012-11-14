@@ -17,13 +17,14 @@ Feature: Edit my expert profile
 		When I edit my email address
 		Then my email address should be saved to my user record
 	
-	Scenario: Check insurance accepted
+	Scenario: Enter insurance accepted
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I check "Insurance accepted"
+		When I enter "Blue Cross\nKaiser Permanente" in the "Health insurance accepted" field
 			And I save my profile
-		Then my profile should show "Insurance accepted"
+		Then my profile should show "Blue Cross"
+			And my profile should show "Kaiser Permanente"
 	
 	Scenario: Land on view page after edit
 		Given I exist as a user
