@@ -17,9 +17,7 @@
 					%th Consultations
 					%th Visitations
 					%th Education
-					%th.large Experience
 					%th Licenses, certifications
-					%th Honors and awards
 					%th Languages
 					%th.large Summary
 					%th Insurance
@@ -40,9 +38,7 @@
 						%td= profile_display_consultation_modes u.profile
 						%td= profile_display_visitation_modes u.profile
 						%td= u.try(:profile).try(:education)
-						%td= u.try(:profile).try(:experience)
 						%td= u.try(:profile).try(:certifications)
-						%td= u.try(:profile).try(:awards)
 						%td= u.try(:profile).try(:languages)
 						%td= u.try(:profile).try(:summary)
 						%td= u.try(:profile).try(:insurance_accepted) ? 'Accepted' : 'Not accepted'
