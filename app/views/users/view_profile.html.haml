@@ -76,5 +76,13 @@
 				%span.label Summary:
 				%br
 				.value.text_area= preserve @profile.summary
+			.rates
+				%span.label Rates:
+				%br
+				.value.text_area= preserve @profile.rates
+			.availability
+				%span.label Availability:
+				%br
+				.value.text_area= preserve @profile.availability
 	.buttons
 		= edit_profile_link

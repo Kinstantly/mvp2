@@ -23,6 +23,8 @@
 					%th Languages
 					%th.large Insurance accepted
 					%th.large Summary
+					%th Rates
+					%th.large Availability
 			%tbody
 				- @profiles.each do |p|
 					%tr
@@ -44,3 +46,5 @@
 						%td.text_area= preserve p.try(:languages)
 						%td.text_area= preserve p.try(:insurance_accepted)
 						%td.text_area= preserve p.try(:summary)
+						%td.text_area= preserve p.try(:rates)
+						%td.text_area= preserve p.try(:availability)

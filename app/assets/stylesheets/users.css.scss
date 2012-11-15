@@ -30,6 +30,15 @@ $profile_margin: 10px;
 	background-color: #EEEEEE;
 }
 
+@mixin required-field-label-style {
+	border: {
+		width: medium;
+		color: green;
+		style: solid;
+	}
+	padding: 2px;
+}
+
 div.view_profile {
 	margin: $profile_margin;
 	.buttons {
@@ -54,24 +63,32 @@ div.view_profile {
 div.edit_profile {
 	margin: $profile_margin;
 	form {
+		label.required {
+			@include required-field-label-style;
+		}
 		.account_areas, .profile_areas {
 			> div {
 				@include profile-areas-div-style;
 				> div {
-					margin-bottom: 1em;
+					padding-top: 0.5em;
+					padding-bottom: 0.5em;
+					clear: left;
 				}
 			}
 		}
 		.profile_areas {
-			.name > span {
-				margin-right: 1em;
-			}
 			.display_name_area .display_name {
-				font: {
-					family: Ariel, Helvetica, sans-serif;
-					weight: 500;
+				border: {
+					width: thin;
+					color: gray;
+					style: solid;
 				}
+				padding: 2px;
 				margin-left: 1em;
+			}
+			.label_area {
+				float: left;
+				margin-right: 1em;
 			}
 			.expertise_profile > div {
 				padding-bottom: 1em;
@@ -81,7 +98,7 @@ div.edit_profile {
 					@include check-box-style;
 				}
 			}
-			.custom_categories, .custom_specialties {
+			.name, .custom_categories, .custom_specialties {
 				.text_field {
 					@include check-box-style;
 				}
@@ -90,11 +107,6 @@ div.edit_profile {
 				float: left;
 				margin-left: 1em;
 				margin-bottom: 0.5em;
-			}
-			.categories, .custom_categories, .specialties, .custom_specialties, .age_ranges, .consultations, .visits {
-				+ div {
-					clear: left;
-				}
 			}
 		}
 		.buttons {
@@ -107,8 +119,7 @@ div.edit_profile {
 		.info_area {
 			margin-bottom: 1em;
 			.required_field_text {
-				font-style: italic;
-				color: red;
+				@include required-field-label-style;
 			}
 		}
 		.field_with_errors {
@@ -145,4 +156,8 @@ span.note {
 		weight: lighter;
 		size: small;
 	}
+}
+
+span.note.text_area {
+	white-space: pre-line;
 }

@@ -10,7 +10,8 @@ class Profile < ActiveRecord::Base
 		:age_range_ids, 
 		:categories, :category_names, :custom_category_names, 
 		:specialties, :specialty_names, :custom_specialty_names, 
-		:consult_by_email, :consult_by_phone, :consult_by_video, :visit_home, :visit_school
+		:consult_by_email, :consult_by_phone, :consult_by_video, :visit_home, :visit_school, 
+		:rates, :availability
 	
 	belongs_to :user
 	has_and_belongs_to_many :age_ranges

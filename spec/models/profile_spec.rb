@@ -93,6 +93,13 @@ describe Profile do
 		end
 	end
 	
+	context "rates" do
+		it "stores a description of rates" do
+			@profile.rates = "$1/minute\n$40/15 minutes\n$120/hour"
+			@profile.should have(:no).errors_on(:rates)
+		end
+	end
+	
 	context "Profile configuration" do
 		it "has predefined categories" do
 			Profile.predefined_categories.length.should be > 0

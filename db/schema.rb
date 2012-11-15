@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121114035745) do
+ActiveRecord::Schema.define(:version => 20121115020325) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -67,6 +67,8 @@ ActiveRecord::Schema.define(:version => 20121114035745) do
     t.boolean  "visit_home"
     t.boolean  "visit_school"
     t.text     "insurance_accepted"
+    t.text     "rates"
+    t.text     "availability"
   end
 
   create_table "users", :force => true do |t|

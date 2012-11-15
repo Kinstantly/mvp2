@@ -3,20 +3,20 @@
 .profile_areas
 	.basic_profile
 		.name
-			%span
-				= image_tag("required_field_icon.png", class: 'required_field_icon')
-				= f.label :first_name, 'First name'
+			Name
+			%br
+			.text_field
+				= f.label :first_name, 'First name', class: 'required'
 				= f.text_field :first_name, id: 'profile_first_name', class: 'display_name_field'
-			%span
+			.text_field
 				= f.label :middle_name, 'Middle name or initial'
 				= f.text_field :middle_name, id: 'profile_middle_name', class: 'display_name_field'
-			%span
-				= image_tag("required_field_icon.png", class: 'required_field_icon')
-				= f.label :last_name, 'Last name'
+			.text_field
+				= f.label :last_name, 'Last name', class: 'required'
 				= f.text_field :last_name, id: 'profile_last_name', class: 'display_name_field'
-		.credentials
-			= f.label :credentials, "Degrees/credentials"
-			= f.text_field :credentials, id: 'profile_credentials', class: 'display_name_field'
+			.text_field
+				= f.label :credentials, "Degrees/credentials"
+				= f.text_field :credentials, id: 'profile_credentials', class: 'display_name_field'
 		.display_name_area
 			Display name
 			%span.display_name
@@ -55,8 +55,7 @@
 			= f.text_field :office_phone
 	.expertise_profile
 		.categories
-			= image_tag("required_field_icon.png", class: 'required_field_icon')
-			= f.label :categories, "Categories"
+			= f.label :categories, "Categories", class: 'required'
 			%br
 			= profile_categories_hidden_field_tag(f)
 			- profile_predefined_categories.each do |category|
@@ -78,8 +77,7 @@
 			- @profile_custom_categories_i = i
 			- @profile_custom_categories_text_field_template = profile_custom_categories_text_field_tag(profile, '', 'INDEX', f)
 		.specialties
-			= image_tag("required_field_icon.png", class: 'required_field_icon')
-			= f.label :specialties, "Specialties"
+			= f.label :specialties, "Specialties", class: 'required'
 			%br
 			= profile_specialties_hidden_field_tag(f)
 			%span.predefined_specialties
@@ -124,20 +122,34 @@
 				= f.check_box :visit_school
 				= f.label :visit_school, "School visits"
 		.education
-			= f.label :education, "Education"
+			.label_area
+				= f.label :education, "Education"
 			= f.text_area :education, size: '50x5'
 		.certifications
-			= f.label :certifications, "Licenses, certifications"
+			.label_area
+				= f.label :certifications, "Licenses, certifications"
 			= f.text_field :certifications
 		.languages
-			= f.label :languages, "Languages"
+			.label_area
+				= f.label :languages, "Languages"
 			= f.text_field :languages
 		.insurance_accepted
-			= f.label :insurance_accepted, "Health insurance accepted"
+			.label_area
+				= f.label :insurance_accepted, "Health insurance accepted"
 			= f.text_area :insurance_accepted, size: '50x5'
 		.summary
-			= f.label :summary, "Summary"
+			.label_area
+				= f.label :summary, "Summary"
 			= f.text_area :summary, size: '50x8'
+		.rates
+			.label_area
+				= f.label :rates, "Rates"
+				%span.note.text_area= preserve "\nExample:\n$1/minute\n$40/15 minutes\n$120/hour\nor monthly subscription"
+			= f.text_area :rates, size: '50x5'
+		.availability
+			.label_area
+				= f.label :availability, "Next available appointments"
+			= f.text_area :availability, size: '50x5'
 :coffeescript
 	# Add extra text input tags for custom categories.
 	profile_custom_categories_i = #{@profile_custom_categories_i}

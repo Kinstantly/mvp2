@@ -21,6 +21,8 @@
 					%th Languages
 					%th.large Insurance accepted
 					%th.large Summary
+					%th Rates
+					%th.large Availability
 			%tbody
 				- @users.each do |u|
 					%tr
@@ -42,3 +44,5 @@
 						%td.text_area= preserve u.try(:profile).try(:languages)
 						%td.text_area= preserve u.try(:profile).try(:insurance_accepted)
 						%td.text_area= preserve u.try(:profile).try(:summary)
+						%td.text_area= preserve u.try(:profile).try(:rates)
+						%td.text_area= preserve u.try(:profile).try(:availability)
