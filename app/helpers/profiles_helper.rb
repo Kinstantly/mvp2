@@ -60,7 +60,7 @@ module ProfilesHelper
 	end
 	
 	def profile_display_categories(profile=current_user.try(:profile))
-		profile.categories.join(', ')
+		profile.try(:categories).try(:join, ', ')
 	end
 	
 	def profile_custom_categories_id(s)
@@ -116,7 +116,7 @@ module ProfilesHelper
 	end
 		
 	def profile_display_specialties(profile=current_user.try(:profile))
-		profile.specialties.join(', ')
+		profile.try(:specialties).try(:join, ', ')
 	end
 	
 	def profile_custom_specialties_id(s)
@@ -156,6 +156,7 @@ module ProfilesHelper
 	# Consultations and visits
 	
 	def profile_display_consultation_modes(profile)
+		return '' unless profile
 		modes = []
 		modes.push 'email' if profile.consult_by_email
 		modes.push 'phone' if profile.consult_by_phone
@@ -164,6 +165,7 @@ module ProfilesHelper
 	end
 	
 	def profile_display_visitation_modes(profile)
+		return '' unless profile
 		modes = []
 		modes.push 'home' if profile.visit_home
 		modes.push 'school' if profile.visit_school
