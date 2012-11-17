@@ -1,9 +1,12 @@
 class ProfilesController < ApplicationController
 	before_filter :authenticate_user!
 	
-	# Side effect: loads @products or @product as appropriate.
-	# e.g., for index action, @products is set to Product.accessible_by(current_ability)
+	# Side effect: loads @profiles or @profile as appropriate.
+	# e.g., for index action, @profiles is set to Profile.accessible_by(current_ability)
 	load_and_authorize_resource
+	
+	# *After* profile is loaded, ensure it has at least one location.
+	before_filter :require_location_in_profile, only: [:new, :edit]
 	
 	def create
 		# @profile initialized by load_and_authorize_resource with cancan ability conditions and then parameter values.

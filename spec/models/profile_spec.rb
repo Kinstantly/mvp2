@@ -100,6 +100,19 @@ describe Profile do
 		end
 	end
 	
+	context "locations" do
+		it "has multiple locations" do
+			@profile.locations.build(city: 'Albuquerque', region: 'NM')
+			@profile.should have(:no).errors_on(:locations)
+			@profile.locations.first.should have(:no).errors_on(:city)
+			@profile.locations.first.should have(:no).errors_on(:region)
+			@profile.locations.build(city: 'Manteca', region: 'CA')
+			@profile.should have(:no).errors_on(:locations)
+			@profile.locations.last.should have(:no).errors_on(:city)
+			@profile.locations.last.should have(:no).errors_on(:region)
+		end
+	end
+	
 	context "Profile configuration" do
 		it "has predefined categories" do
 			Profile.predefined_categories.length.should be > 0

@@ -28,17 +28,16 @@
 				%span.label Professional headline:
 				%br
 				.value= @profile.headline
-		.location_contact_profile
-			.address
-				Address:
-				= profile_address @profile
-				= @profile.postal_code
 			.mobile_phone
 				Mobile:
 				= @profile.mobile_phone
 			.office_phone
 				Office:
 				= @profile.office_phone
+		.location_contact_profile
+			.address
+				Address:
+				= location_display_address @profile.try(:locations).try(:first)
 		.expertise_profile
 			.categories
 				%span.label Categories:

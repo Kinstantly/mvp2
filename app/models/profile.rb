@@ -2,8 +2,7 @@ class Profile < ActiveRecord::Base
 	attr_accessor :custom_categories, :custom_specialties
 	
 	attr_accessible :first_name, :last_name, :middle_name, :credentials, :email, 
-		:company_name, :url, 
-		:address1, :address2, :city, :region, :country, :postal_code, 
+		:company_name, :url, :locations_attributes, 
 		:mobile_phone, :office_phone, 
 		:headline, :subcategory, :education, :experience, :certifications, :awards, 
 		:languages, :insurance_accepted, :summary, 
@@ -15,6 +14,9 @@ class Profile < ActiveRecord::Base
 	
 	belongs_to :user
 	has_and_belongs_to_many :age_ranges
+	
+	has_many :locations, dependent: :destroy
+	accepts_nested_attributes_for :locations
 	
 	serialize :categories, Array
 	serialize :specialties, Array
@@ -42,6 +44,10 @@ class Profile < ActiveRecord::Base
 	
 	def custom_specialty_names=(names=[])
 		self.custom_specialties = remove_blanks names
+	end
+	
+	def require_location
+		locations.build if locations.blank?
 	end
 	
 	class << self

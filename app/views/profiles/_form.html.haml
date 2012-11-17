@@ -33,26 +33,27 @@
 		.headline
 			= f.label :headline, "Professional headline as you'd like it to appear"
 			= f.text_field :headline, size: 50
-	.location_contact_profile
-		.address
-			= f.label :address1, "Address"
-			= f.text_field :address1
-			= f.text_field :address2
-		.city_state
-			= f.label :region, "City"
-			= f.text_field :city
-			= f.label :region, "State"
-			= f.text_field :region, size: 2
-		.postal_code
-			= f.label :postal_code, "Zip code"
-			= f.text_field :postal_code
-			= f.hidden_field :country, value: country
 		.mobile_phone
 			= f.label :mobile_phone, "Mobile"
 			= f.text_field :mobile_phone
 		.office_phone
 			= f.label :office_phone, "Office"
 			= f.text_field :office_phone
+	= f.fields_for :locations do |lf|
+		.location_contact_profile
+			.address
+				= lf.label :address1, "Address"
+				= lf.text_field :address1
+				= lf.text_field :address2
+			.city_state
+				= lf.label :city, "City"
+				= lf.text_field :city
+				= lf.label :region, "State"
+				= lf.text_field :region, size: 2
+			.postal_code
+				= lf.label :postal_code, "Zip code"
+				= lf.text_field :postal_code
+				= lf.hidden_field :country, value: country
 	.expertise_profile
 		.categories
 			= f.label :categories, "Categories", class: 'required'

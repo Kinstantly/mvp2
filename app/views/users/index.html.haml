@@ -31,7 +31,7 @@
 						%td= u.try(:profile).try(:company_name)
 						%td= u.try(:profile).try(:url)
 						%td= u.try(:profile).try(:headline)
-						%td= "#{profile_address u.profile} #{u.profile.try(:postal_code)}"
+						%td= "#{location_display_address u.profile.try(:locations).try(:first)}"
 						%td= u.try(:profile).try(:mobile_phone)
 						%td= u.try(:profile).try(:office_phone)
 						%td= profile_display_categories u.profile

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121115020325) do
+ActiveRecord::Schema.define(:version => 20121117023049) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -31,6 +31,18 @@ ActiveRecord::Schema.define(:version => 20121115020325) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "locations", :force => true do |t|
+    t.integer  "profile_id"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "region"
+    t.string   "country"
+    t.string   "postal_code"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "profiles", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -39,15 +51,9 @@ ActiveRecord::Schema.define(:version => 20121115020325) do
     t.string   "url"
     t.string   "mobile_phone"
     t.string   "office_phone"
-    t.string   "address1"
-    t.string   "address2"
-    t.string   "city"
-    t.string   "region"
-    t.string   "country"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
     t.integer  "user_id"
-    t.string   "postal_code"
     t.string   "credentials"
     t.string   "headline"
     t.string   "subcategory"

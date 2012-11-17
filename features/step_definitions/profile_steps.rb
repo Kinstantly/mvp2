@@ -3,11 +3,11 @@
 def set_up_new_data
 	create_visitor
 	@profile_data ||= { first_name: 'Know', middle_name: 'I', last_name: 'Tall',
-		office_phone: '415-555-1234', url: 'http://knowitall.com', address1: '123 Main St.' }
+		office_phone: '415-555-1234', url: 'http://knowitall.com' }
 	@profile_data_2 ||= { first_name: 'Can', middle_name: 'I', last_name: 'Helpyou',
-		office_phone: '800-555-1111', url: 'http://canihelpyou.com', address1: '10 Broadway Blvd.' }
+		office_phone: '800-555-1111', url: 'http://canihelpyou.com' }
 	@unattached_profile_data ||= { first_name: 'Prospect', middle_name: 'A', last_name: 'Expert',
-		office_phone: '888-555-5555', url: 'http://UnattachedExpert.com', address1: '1 Fleet Street' }
+		office_phone: '888-555-5555', url: 'http://UnattachedExpert.com' }
 end
 
 def find_user_profile
@@ -63,13 +63,21 @@ Given /^there are multiple profiles in the system$/ do
 end
 
 Given /^I have no country code in my profile$/ do
-	@user.profile.country = nil
-	@user.profile.save
+	location = @user.profile.locations.first
+	if location
+		location.country = nil
+		location.save
+	end
 end
 
 Given /^I have a country code of "(.*?)" in my profile$/ do |country|
-	@user.profile.country = country
-	@user.profile.save
+	location = @user.profile.locations.first
+	if location
+		location.country = country
+		location.save
+	else
+		@user.profile.locations.create(country: country)
+	end
 end
 
 Given /^I have a category of "(.*?)" in my profile$/ do |category|
@@ -235,8 +243,8 @@ Then /^I should see my profile information$/ do
 	page.should have_content @profile.last_name
 end
 
-Then /^I should see my profile address$/ do
-	page.should have_content @profile.address1
+Then /^I should see one of my categories$/ do
+	page.should have_content @profile.categories.first
 end
 
 Then /^I should land on the profile view page$/ do
@@ -263,11 +271,17 @@ Then /^my email address should be saved to my user record$/ do
 end
 
 Then /^my country code should be set to "(.*?)"$/ do |country|
-	@profile.country.should == country
+	@profile.locations.first.country.should == country
 end
 
 Then /^my profile should show "(.*?)"$/ do |value|
 	page.should have_content value
+end
+
+Then /^my profile should show "(.*?)" in the location area$/ do |value|
+	within('.location_contact_profile') do
+		page.should have_content value
+	end
 end
 
 Then /^my profile should show me as being in the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|

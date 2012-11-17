@@ -26,4 +26,9 @@ class ApplicationController < ActionController::Base
 		flash[level] = message if message.present?
 	end
 
+	private
+	
+	def require_location_in_profile
+		@profile.require_location
+	end
 end

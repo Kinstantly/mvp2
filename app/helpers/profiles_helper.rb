@@ -1,12 +1,15 @@
 module ProfilesHelper
-	def profile_join_fields(field_array=[], separator=' ', profile=current_user.try(:profile))
+	def join_fields(field_array=[], separator=' ', obj=nil)
 		field_array.map { |field|
-				profile.try(field).presence
+				obj.try(field).presence
 			}.compact.join(separator)
 	end
 	
-	def profile_address(profile=current_user.try(:profile))
-		profile_join_fields [:address1, :address2, :city, :region, :country], ', ', profile
+	def location_display_address(location=current_user.try(:profile).try(:locations).try(:first))
+		addr = join_fields [:address1, :address2, :city, :region, :country], ', ', location
+		postal_code = location.try(:postal_code)
+		addr += " #{postal_code}" if postal_code.present?
+		addr
 	end
 	
 	def default_profile_country
@@ -14,12 +17,12 @@ module ProfilesHelper
 	end
 	
 	def profile_country(profile=current_user.try(:profile))
-		profile.try(:country).presence || default_profile_country
+		profile.try(:locations).try(:first).try(:country).presence || default_profile_country
 	end
 	
 	def profile_display_name(profile=current_user.try(:profile))
 		cred = profile.try(:credentials)
-		name = profile_join_fields [:first_name, :middle_name, :last_name], ' ', profile
+		name = join_fields [:first_name, :middle_name, :last_name], ' ', profile
 		name += ", #{cred}" if cred.present?
 		name
 	end

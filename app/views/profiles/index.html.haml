@@ -32,7 +32,7 @@
 						%td= p.try(:company_name)
 						%td= p.try(:url)
 						%td= p.try(:headline)
-						%td= "#{profile_address p} #{p.try(:postal_code)}"
+						%td= "#{location_display_address p.try(:locations).try(:first)}"
 						%td= p.try(:email)
 						%td= p.try(:mobile_phone)
 						%td= p.try(:office_phone)

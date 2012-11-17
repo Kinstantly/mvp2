@@ -3,6 +3,9 @@ class UsersController < ApplicationController
 	before_filter :set_up_user, except: [:index]
 	load_and_authorize_resource
 	
+	# *After* profile is loaded, ensure it has at least one location.
+	before_filter :require_location_in_profile, only: [:edit_profile]
+	
 	def index
 		@users = User.all
 	end

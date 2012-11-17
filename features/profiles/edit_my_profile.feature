@@ -33,12 +33,26 @@ Feature: Edit my expert profile
 		When I edit my profile information
 		Then I should land on the profile view page
 	
-	Scenario: Land on view page after edit
+	Scenario: Land on view page after cancel edit
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
 		When I click on the cancel link
 		Then I should land on the profile view page
+	
+	Scenario: Edit location address
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I enter "123 Main St." in the "Address" field
+			And I enter "Ames" in the "City" field
+			And I enter "IA" in the "State" field
+			And I enter "50010" in the "Zip code" field
+			And I save my profile
+		Then my profile should show "123 Main St." in the location area
+			And my profile should show "Ames" in the location area
+			And my profile should show "IA" in the location area
+			And my profile should show "50010" in the location area
 	
 	Scenario: Country code is US by default
 		Given I exist as a user

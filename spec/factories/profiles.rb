@@ -9,11 +9,6 @@ FactoryGirl.define do
 		url "MyString"
 		mobile_phone "MyString"
 		office_phone "MyString"
-		address1 "MyString"
-		address2 "MyString"
-		city "MyString"
-		region "MyString"
-		country "MyString"
 		insurance_accepted 'MyString'
 		categories ['MyString']
 		specialties ['MyString']

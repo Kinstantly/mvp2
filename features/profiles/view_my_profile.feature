@@ -9,15 +9,15 @@ Feature: View my expert profile
 			When I view my profile
 			Then I should see my profile information
 
-		Scenario: See profile information
+		Scenario: Edit link on profile view page
 			Given I am logged in
 				And I want my profile
 			When I view my profile
 				And Click edit profile
 			Then I should land on the profile edit page
 
-		Scenario: See profile information
+		Scenario: See at least one category
 			Given I am logged in
 				And I want my profile
 			When I view my profile
-			Then I should see my profile address
+			Then I should see one of my categories
