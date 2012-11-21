@@ -28,7 +28,7 @@ describe Profile do
 	context "categories" do
 		it "stores multiple categories" do
 			@profile.save.should be_true
-			@profile.categories.should == @categories
+			Profile.find_by_last_name(@profile.last_name).categories.should == @categories
 		end
 		
 		it "requires at least one category" do
@@ -44,8 +44,9 @@ describe Profile do
 			
 			it "merges custom categories" do
 				@profile.save.should == true
-				@profile.should have_exactly(@categories.size + 1).categories
-				@profile.categories.include?(@custom.last).should be_true
+				profile = Profile.find_by_last_name(@profile.last_name)
+				profile.should have_exactly(@categories.size + 1).categories
+				profile.categories.include?(@custom.last).should be_true
 			end
 		end
 	end
@@ -53,7 +54,7 @@ describe Profile do
 	context "specialties" do
 		it "stores multiple specialties" do
 			@profile.save.should be_true
-			@profile.specialties.should == @specialties
+			Profile.find_by_last_name(@profile.last_name).specialties.should == @specialties
 		end
 		
 		it "requires at least one specialty" do
@@ -69,8 +70,9 @@ describe Profile do
 			
 			it "merges custom specialties" do
 				@profile.save.should == true
-				@profile.should have_exactly(@specialties.size + 1).specialties
-				@profile.specialties.include?(@custom.last).should be_true
+				profile = Profile.find_by_last_name(@profile.last_name)
+				profile.should have_exactly(@specialties.size + 1).specialties
+				profile.specialties.include?(@custom.last).should be_true
 			end
 		end
 	end
