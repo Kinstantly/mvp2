@@ -2,13 +2,14 @@ require 'spec_helper'
 
 describe Profile do
 	before(:each) do
-		@profile = Profile.new
-		@profile.first_name = 'Joe'
-		@profile.last_name = 'Black'
-		@categories = ['board-certified behavior analyst', 'child/clinical psychologist']
-		@profile.categories = @categories
-		@specialties = ['behavior', 'choosing a school (pre-K to 12)']
-		@profile.specialties = @specialties
+		@profile_data ||= {
+			first_name: 'Joe', last_name: 'Black',
+			categories: [FactoryGirl.create(:category, name: 'board-certified behavior analyst'),
+				FactoryGirl.create(:category, name: 'child/clinical psychologist')],
+			specialties: [FactoryGirl.create(:specialty, name: 'behavior'), 
+				FactoryGirl.create(:specialty, name: 'choosing a school (pre-K to 12)')]
+		}
+		@profile = FactoryGirl.build(:profile, @profile_data)
 	end
 	
 	context "name" do
@@ -28,7 +29,7 @@ describe Profile do
 	context "categories" do
 		it "stores multiple categories" do
 			@profile.save.should be_true
-			Profile.find_by_last_name(@profile.last_name).categories.should == @categories
+			Profile.find_by_last_name(@profile_data[:last_name]).categories.should == @profile_data[:categories]
 		end
 		
 		it "requires at least one category" do
@@ -38,15 +39,15 @@ describe Profile do
 		
 		context "custom categories" do
 			before(:each) do
-				@custom = [@categories.first, 'story teller']
+				@custom = [@profile_data[:categories].first.name, 'story teller']
 				@profile.custom_category_names = @custom
 			end
 			
 			it "merges custom categories" do
 				@profile.save.should == true
-				profile = Profile.find_by_last_name(@profile.last_name)
-				profile.should have_exactly(@categories.size + 1).categories
-				profile.categories.include?(@custom.last).should be_true
+				profile = Profile.find_by_last_name(@profile_data[:last_name])
+				profile.should have_exactly(@profile_data[:categories].size + 1).categories
+				profile.categories.collect(&:name).include?(@custom.last).should be_true
 			end
 		end
 	end
@@ -54,7 +55,7 @@ describe Profile do
 	context "specialties" do
 		it "stores multiple specialties" do
 			@profile.save.should be_true
-			Profile.find_by_last_name(@profile.last_name).specialties.should == @specialties
+			Profile.find_by_last_name(@profile_data[:last_name]).specialties.should == @profile_data[:specialties]
 		end
 		
 		it "requires at least one specialty" do
@@ -64,15 +65,15 @@ describe Profile do
 		
 		context "custom specialties" do
 			before(:each) do
-				@custom = [@specialties.first, 'parenting support']
+				@custom = [@profile_data[:specialties].first.name, 'parenting support']
 				@profile.custom_specialty_names = @custom
 			end
 			
 			it "merges custom specialties" do
 				@profile.save.should == true
-				profile = Profile.find_by_last_name(@profile.last_name)
-				profile.should have_exactly(@specialties.size + 1).specialties
-				profile.specialties.include?(@custom.last).should be_true
+				profile = Profile.find_by_last_name(@profile_data[:last_name])
+				profile.should have_exactly(@profile_data[:specialties].size + 1).specialties
+				profile.specialties.collect(&:name).include?(@custom.last).should be_true
 			end
 		end
 	end

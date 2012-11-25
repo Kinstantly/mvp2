@@ -36,14 +36,22 @@ describe ProfilesController do
 	end
 	
 	describe "POST 'create'" do
+		before(:each) do
+			@profile_attrs = 
+				FactoryGirl.attributes_for(:profile,
+					category_ids: ["#{FactoryGirl.create(:category).id}"],
+					specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
+		end
+		
 		it "successfully creates the profile" do
-			post :create, profile: FactoryGirl.attributes_for(:profile)
+			post :create, profile: @profile_attrs
 			response.should redirect_to(controller: 'profiles', action: 'index')
 			flash[:notice].should_not be_nil
 		end
 		
 		it "fails to create the profile" do
-			post :create, profile: FactoryGirl.attributes_for(:profile, last_name: '')
+			@profile_attrs[:last_name] = ''
+			post :create, profile: @profile_attrs
 			response.should render_template('new')
 			flash[:alert].should_not be_nil
 		end
@@ -67,18 +75,23 @@ describe ProfilesController do
 	
 	describe "PUT 'update'" do
 		before(:each) do
+			@profile_attrs = 
+				FactoryGirl.attributes_for(:profile,
+					category_ids: ["#{FactoryGirl.create(:category).id}"],
+					specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
 			FactoryGirl.create(:profile)
 			@profile = Profile.all.first
 		end
 		
 		it "successfully updates the profile" do
-			put :update, id: @profile.id, profile: FactoryGirl.attributes_for(:profile)
+			put :update, id: @profile.id, profile: @profile_attrs
 			response.should redirect_to(controller: 'profiles', action: 'index')
 			flash[:notice].should_not be_nil
 		end
 		
 		it "fails to update the profile" do
-			put :update, id: @profile.id, profile: FactoryGirl.attributes_for(:profile, last_name: '')
+			@profile_attrs[:last_name] = ''
+			put :update, id: @profile.id, profile: @profile_attrs
 			response.should render_template('edit')
 			flash[:alert].should_not be_nil
 		end

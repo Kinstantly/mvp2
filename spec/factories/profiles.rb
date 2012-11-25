@@ -10,7 +10,10 @@ FactoryGirl.define do
 		mobile_phone "MyString"
 		office_phone "MyString"
 		insurance_accepted 'MyString'
-		categories ['MyString']
-		specialties ['MyString']
+		
+		after(:build) { |profile|
+			profile.categories = [FactoryGirl.create(:category)] if profile.categories.blank?
+			profile.specialties = [FactoryGirl.create(:specialty)] if profile.specialties.blank?
+		}
 	end
 end

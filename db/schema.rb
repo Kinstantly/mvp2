@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121117023049) do
+ActiveRecord::Schema.define(:version => 20121125050056) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -29,6 +29,11 @@ ActiveRecord::Schema.define(:version => 20121117023049) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "categories_profiles", :force => true do |t|
+    t.integer "category_id"
+    t.integer "profile_id"
   end
 
   create_table "locations", :force => true do |t|
@@ -56,16 +61,13 @@ ActiveRecord::Schema.define(:version => 20121117023049) do
     t.integer  "user_id"
     t.string   "credentials"
     t.string   "headline"
-    t.string   "subcategory"
     t.text     "education"
     t.text     "experience"
     t.string   "certifications"
     t.text     "awards"
     t.string   "languages"
     t.text     "summary"
-    t.integer  "category_id"
     t.string   "email"
-    t.text     "categories"
     t.text     "specialties"
     t.boolean  "consult_by_email"
     t.boolean  "consult_by_phone"
@@ -75,6 +77,17 @@ ActiveRecord::Schema.define(:version => 20121117023049) do
     t.text     "insurance_accepted"
     t.text     "rates"
     t.text     "availability"
+  end
+
+  create_table "profiles_specialties", :force => true do |t|
+    t.integer "profile_id"
+    t.integer "specialty_id"
+  end
+
+  create_table "specialties", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

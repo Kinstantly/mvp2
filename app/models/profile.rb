@@ -4,22 +4,21 @@ class Profile < ActiveRecord::Base
 	attr_accessible :first_name, :last_name, :middle_name, :credentials, :email, 
 		:company_name, :url, :locations_attributes, 
 		:mobile_phone, :office_phone, 
-		:headline, :subcategory, :education, :experience, :certifications, :awards, 
+		:headline, :education, :experience, :certifications, :awards, 
 		:languages, :insurance_accepted, :summary, 
-		:age_range_ids, 
-		:categories, :category_names, :custom_category_names, 
-		:specialties, :specialty_names, :custom_specialty_names, 
+		:category_ids, :specialty_ids, :age_range_ids, 
+		:category_names, :custom_category_names, 
+		:specialty_names, :custom_specialty_names, 
 		:consult_by_email, :consult_by_phone, :consult_by_video, :visit_home, :visit_school, 
 		:rates, :availability
 	
 	belongs_to :user
 	has_and_belongs_to_many :age_ranges
+	has_and_belongs_to_many :categories
+	has_and_belongs_to_many :specialties
 	
 	has_many :locations, dependent: :destroy
 	accepts_nested_attributes_for :locations
-	
-	serialize :categories, Array
-	serialize :specialties, Array
 	
 	validates_presence_of :first_name, :last_name, message: "is required"
 	validates_presence_of :categories, :specialties, message: "must be chosen"
@@ -35,7 +34,7 @@ class Profile < ActiveRecord::Base
 	end
 	
 	def custom_category_names=(names=[])
-		self.custom_categories = remove_blanks names
+		self.custom_categories = remove_blanks(names).collect(&:to_category)
 	end
 	
 	def specialty_names=(names=[])
@@ -43,7 +42,7 @@ class Profile < ActiveRecord::Base
 	end
 	
 	def custom_specialty_names=(names=[])
-		self.custom_specialties = remove_blanks names
+		self.custom_specialties = remove_blanks(names).collect(&:to_specialty)
 	end
 	
 	def require_location
