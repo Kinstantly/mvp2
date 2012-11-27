@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121125050056) do
+ActiveRecord::Schema.define(:version => 20121126022146) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -27,13 +27,19 @@ ActiveRecord::Schema.define(:version => 20121125050056) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.boolean  "is_predefined", :default => false
   end
 
   create_table "categories_profiles", :force => true do |t|
     t.integer "category_id"
     t.integer "profile_id"
+  end
+
+  create_table "categories_specialties", :force => true do |t|
+    t.integer "category_id"
+    t.integer "specialty_id"
   end
 
   create_table "locations", :force => true do |t|

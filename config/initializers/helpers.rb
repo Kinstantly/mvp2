@@ -4,7 +4,7 @@ class String
 	end
 	
 	def to_db_singleton(singleton_class)
-		singleton_class.find_by_name(self).presence || singleton_class.create(name: self)
+		singleton_class.where(name: self).first_or_create
 	end
 	
 	def to_category

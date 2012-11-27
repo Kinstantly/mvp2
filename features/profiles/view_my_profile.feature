@@ -21,3 +21,9 @@ Feature: View my expert profile
 				And I want my profile
 			When I view my profile
 			Then I should see one of my categories
+
+		Scenario: See at least one specialty
+			Given I am logged in
+				And I want my profile
+			When I view my profile
+			Then I should see one of my specialties

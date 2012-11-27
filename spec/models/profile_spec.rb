@@ -63,6 +63,15 @@ describe Profile do
 			@profile.should have(1).errors_on(:specialties)
 		end
 		
+		it "has a simple array of specialty IDs and names" do
+			ids_names = @profile.specialty_ids_names
+			specialties_data = @profile_data[:specialties]
+			ids_names.each_index do |i|
+				specialties_data[i].id.should == ids_names[i][:id]
+				specialties_data[i].name.should == ids_names[i][:name]
+			end
+		end
+		
 		context "custom specialties" do
 			before(:each) do
 				@custom = [@profile_data[:specialties].first.name, 'parenting support']
@@ -117,9 +126,13 @@ describe Profile do
 	end
 	
 	context "Profile configuration" do
+		before(:each) do
+			@category = FactoryGirl.create(:predefined_category, name: 'parenting coach/educator')
+		end
+		
 		it "has predefined categories" do
-			Profile.predefined_categories.length.should be > 0
-			Profile.predefined_categories.include?('parenting coach/educator').should be_true
+			Category.predefined.length.should be > 0
+			Category.predefined.include?(@category).should be_true
 		end
 		
 		it "has predefined specialties" do

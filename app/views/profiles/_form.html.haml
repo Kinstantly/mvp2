@@ -1,5 +1,5 @@
 - profile ||= @profile
-- country ||= default_profile_country
+- country = default_profile_country if country.blank?
 .profile_areas
 	.basic_profile
 		.name
@@ -59,20 +59,19 @@
 			= f.label :categories, "Categories", class: 'required'
 			%br
 			= profile_categories_hidden_field_tag(f)
-			- profile_predefined_categories.each do |category|
+			- profile_category_choices(profile).each do |category|
 				.check_box
 					= profile_categories_check_box_tag(profile, category, f)
-					= category
+					= category.name
 		.custom_categories
 			Additional categories
 			= button_tag id: 'add_custom_categories_text_field' do
 				= content_tag :strong, '+ Add'
 			%br
 			= profile_custom_categories_hidden_field_tag(f)
-			- i = 0; profile.categories.each do |category|
-				- unless profile_predefined_categories.include?(category)
-					.text_field
-						= profile_custom_categories_text_field_tag(profile, category, "#{i = i+1}", f)
+			- i = 0; profile_new_custom_categories(profile).each do |category|
+				.text_field
+					= profile_custom_categories_text_field_tag(profile, category.name, "#{i = i+1}", f)
 			.text_field
 				= profile_custom_categories_text_field_tag(profile, '', "#{i = i+1}", f)
 			- @profile_custom_categories_i = i
@@ -80,7 +79,6 @@
 		.specialties
 			= f.label :specialties, "Specialties", class: 'required'
 			%br
-			= profile_specialties_hidden_field_tag(f)
 			%span.predefined_specialties
 		.custom_specialties
 			Additional specialties
@@ -88,10 +86,9 @@
 				= content_tag :strong, '+ Add'
 			%br
 			= profile_custom_specialties_hidden_field_tag(f)
-			- i = 0; profile.specialties.each do |specialty|
-				- unless profile_predefined_specialties.include?(specialty)
-					.text_field
-						= profile_custom_specialties_text_field_tag(profile, specialty, "#{i = i+1}", f)
+			- i = 0; profile_new_custom_specialties(profile).each do |specialty|
+				.text_field
+					= profile_custom_specialties_text_field_tag(profile, specialty.name, "#{i = i+1}", f)
 			.text_field
 				= profile_custom_specialties_text_field_tag(profile, '', "#{i = i+1}", f)
 			- @profile_custom_specialties_i = i
@@ -166,24 +163,25 @@
 		refresh_display_name()
 	
 	# Show specialties check boxes that belong to the checked categories.
-	profile_categories_specialties_map = #{profile_categories_specialties_map.to_json}
+	profile_categories_specialties_map = #{profile_categories_specialties_map(profile).to_json}
 	profile_specialties_check_box_cache = #{profile_specialties_check_box_cache(profile, 'check_box', f).to_json}
 	show_specialties_check_boxes = ->
-		specs = []
+		spec_choices = {}
 		$('.categories .check_box input').each ->
 			if $(this).attr('checked')
 				cat_specs = profile_categories_specialties_map[$(this).val()]
 				if cat_specs
-					specs.push spec for spec in cat_specs when spec not in specs
+					spec_choices[spec.name] = spec.id for spec in cat_specs
 			true
-		specs.push spec for spec in #{profile.specialties.to_json} when spec not in specs and spec of profile_specialties_check_box_cache
+		spec_choices[spec.name] = spec.id for spec in #{profile.specialty_ids_names.to_json}
 		boxes = $('.predefined_specialties')
 		$('.check_box', boxes).each ->
 			profile_specialties_check_box_cache[$('input', this).val()] = this
 		boxes.empty()
-		if specs.length > 0
-			specs.sort()
-			boxes.append profile_specialties_check_box_cache[spec] for spec in specs
+		boxes.append "#{escape_javascript profile_specialties_hidden_field_tag(f)}"
+		spec_names = Object.keys(spec_choices)
+		if spec_names.length > 0
+			boxes.append profile_specialties_check_box_cache[spec_choices[name]] for name in spec_names.sort()
 		else
 			boxes.append "#{escape_javascript content_tag(:div, 'Choose a category and we\'ll show you a list of specialties.', class: 'notice')}"
 	show_specialties_check_boxes()

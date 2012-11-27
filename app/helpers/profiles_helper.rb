@@ -36,14 +36,22 @@ module ProfilesHelper
 		"#{form_builder.object_name.presence || 'profile'}[#{attr_name}][]"
 	end
 	
-	def profile_categories_specialties_map
-		Profile.categories_specialties_map
+	def profile_categories_specialties_map(profile)
+		map = {}
+		(Category.predefined + profile.categories).uniq.each { |cat|
+			map[cat.id] = cat.specialties.collect{|spec| {id: spec.id, name: spec.name}}
+		}
+		map
 	end
 
 	# Categories helpers
 	
-	def profile_predefined_categories
-		Profile.predefined_categories
+	def profile_category_choices(profile)
+		(Category.predefined + profile.categories.reject(&:new_record?)).uniq.sort_by(&:name)
+	end
+	
+	def profile_new_custom_categories(profile)
+		(profile.custom_categories.presence || []).select(&:new_record?)
 	end
 	
 	def profile_categories_id(s)
@@ -51,7 +59,7 @@ module ProfilesHelper
 	end
 	
 	def profile_categories_tag_name(form_builder=nil)
-		profile_attribute_tag_name 'category_names', form_builder
+		profile_attribute_tag_name 'category_ids', form_builder
 	end
 	
 	def profile_categories_hidden_field_tag(form_builder=nil)
@@ -59,11 +67,11 @@ module ProfilesHelper
 	end
 	
 	def profile_categories_check_box_tag(profile, category, form_builder=nil)
-		check_box_tag profile_categories_tag_name(form_builder), category, profile.categories.include?(category), id: profile_categories_id(category)
+		check_box_tag profile_categories_tag_name(form_builder), category.id, profile.categories.include?(category), id: profile_categories_id(category.name)
 	end
 	
 	def profile_display_categories(profile=current_user.try(:profile))
-		profile.try(:categories).try(:join, ', ')
+		profile.try(:categories).try(:collect, &:name).try(:join, ', ')
 	end
 	
 	def profile_custom_categories_id(s)
@@ -88,12 +96,16 @@ module ProfilesHelper
 		Profile.predefined_specialties
 	end
 	
+	def profile_new_custom_specialties(profile)
+		(profile.custom_specialties.presence || []).select(&:new_record?)
+	end
+	
 	def profile_specialties_id(s)
 		"profile_specialties_#{s.to_alphanumeric}"
 	end
 	
 	def profile_specialties_tag_name(form_builder=nil)
-		profile_attribute_tag_name 'specialty_names', form_builder
+		profile_attribute_tag_name 'specialty_ids', form_builder
 	end
 	
 	def profile_specialties_hidden_field_tag(form_builder=nil)
@@ -101,25 +113,21 @@ module ProfilesHelper
 	end
 	
 	def profile_specialties_check_box_tag(profile, specialty, form_builder=nil)
-		check_box_tag profile_specialties_tag_name(form_builder), specialty, profile.specialties.include?(specialty), id: profile_specialties_id(specialty)
+		check_box_tag profile_specialties_tag_name(form_builder), specialty.id, profile.specialties.include?(specialty), id: profile_specialties_id(specialty.name)
 	end
 	
 	def profile_specialties_check_box_cache(profile, wrapper_class, form_builder=nil)
 		cache = {}
-		Profile.categories_specialties_map.each do |cat, specs|
-			specs.each do |spec|
-				unless cache[spec]
-					cache[spec] = content_tag :div, class: wrapper_class do
-						profile_specialties_check_box_tag(profile, spec, form_builder) + " #{spec}"
-					end
-				end
+		(Category.specialties_map.values.flatten + profile.specialties).uniq.each do |spec|
+			cache[spec.id] = content_tag :div, class: wrapper_class do
+				profile_specialties_check_box_tag(profile, spec, form_builder) + " #{spec.name}"
 			end
 		end
 		cache
 	end
 		
 	def profile_display_specialties(profile=current_user.try(:profile))
-		profile.try(:specialties).try(:join, ', ')
+		profile.try(:specialties).try(:collect, &:name).try(:join, ', ')
 	end
 	
 	def profile_custom_specialties_id(s)

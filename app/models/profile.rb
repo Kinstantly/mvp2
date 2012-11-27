@@ -7,8 +7,7 @@ class Profile < ActiveRecord::Base
 		:headline, :education, :experience, :certifications, :awards, 
 		:languages, :insurance_accepted, :summary, 
 		:category_ids, :specialty_ids, :age_range_ids, 
-		:category_names, :custom_category_names, 
-		:specialty_names, :custom_specialty_names, 
+		:custom_category_names, :custom_specialty_names, 
 		:consult_by_email, :consult_by_phone, :consult_by_video, :visit_home, :visit_school, 
 		:rates, :availability
 	
@@ -29,20 +28,18 @@ class Profile < ActiveRecord::Base
 		self.specialties = ((specialties.presence || []) + (custom_specialties.presence || [])).uniq
 	end
 	
-	def category_names=(names=[])
-		self.categories = remove_blanks names
-	end
-	
 	def custom_category_names=(names=[])
 		self.custom_categories = remove_blanks(names).collect(&:to_category)
 	end
 	
-	def specialty_names=(names=[])
-		self.specialties = remove_blanks names
-	end
-	
 	def custom_specialty_names=(names=[])
 		self.custom_specialties = remove_blanks(names).collect(&:to_specialty)
+	end
+	
+	# Return an array of hashes holding specialty id and name values.
+	# Do not return new (unsaved) specialty records.
+	def specialty_ids_names
+		specialties.reject(&:new_record?).collect {|spec| {id: spec.id, name: spec.name}}
 	end
 	
 	def require_location

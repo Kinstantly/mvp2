@@ -1,3 +1,5 @@
+# Tip: to view the page, use: save_and_open_page
+
 ### Utility methods ###
 
 def set_up_new_data
@@ -53,6 +55,10 @@ Given /^I am on my profile edit page$/ do
 	visit edit_user_profile_path
 end
 
+Given /^I go to my profile edit page$/ do
+	visit edit_user_profile_path
+end
+
 Given /^I want (my|a) profile$/ do |word|
   create_profile
 end
@@ -67,6 +73,8 @@ Given /^I have no country code in my profile$/ do
 	if location
 		location.country = nil
 		location.save
+	else
+		@user.profile.locations.create(country: nil)
 	end
 end
 
@@ -81,6 +89,14 @@ Given /^I have a country code of "(.*?)" in my profile$/ do |country|
 end
 
 Given /^I have a category of "(.*?)" in my profile$/ do |category|
+	@user.profile.categories = [category.to_category]
+	@user.profile.save
+end
+
+Given /^I have a category of "(.*?)" in my profile that is associated with the "(.*?)" and "(.*?)" specialties$/ do |cat, spec1, spec2|
+	category = cat.to_category
+	category.specialties = [spec1.to_specialty, spec2.to_specialty]
+	category.save
 	@user.profile.categories = [category]
 	@user.profile.save
 end
@@ -88,6 +104,21 @@ end
 Given /^I have no predefined categories in my profile$/ do
 	@user.profile.categories = []
 	@user.profile.save
+end
+
+Given /^the "(.*?)" and "(.*?)" categories are predefined$/ do |cat1, cat2|
+	[cat1, cat2].each do |cat|
+		category = cat.to_category
+		category.is_predefined = true
+		category.save
+	end
+end
+
+Given /^the predefined category of "(.*?)" is associated with the "(.*?)" and "(.*?)" specialties$/ do |cat, spec1, spec2|
+	category = cat.to_category
+	category.is_predefined = true
+	category.specialties = [spec1.to_specialty, spec2.to_specialty]
+	category.save
 end
 
 Given /^there is an unclaimed profile$/ do
@@ -175,6 +206,12 @@ When /^I check "(.*?)"$/ do |field|
 	check field
 end
 
+When /^I select the "(.*?)" category$/ do |category|
+	within('.categories') do
+		check MyHelpers.profile_categories_id(category)
+	end
+end
+
 When /^I select the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
 	within('.categories') do
 		check MyHelpers.profile_categories_id(cat1)
@@ -189,10 +226,6 @@ When /^I add the "(.*?)" and "(.*?)" custom categories$/ do |cat1, cat2|
 		click_button 'add_custom_categories_text_field'
 		fill_in MyHelpers.profile_custom_categories_id('2'), with: cat2
 	end
-end
-
-When /^I select the "(.*?)" category$/ do |category|
-	select category, from: 'Category'
 end
 
 # This step requires javascript.
@@ -239,12 +272,22 @@ end
 ### THEN ###
 
 Then /^I should see my profile information$/ do
-	page.should have_content @profile.first_name
-	page.should have_content @profile.last_name
+	within('.display_name') do
+		page.should have_content @profile.first_name
+		page.should have_content @profile.last_name
+	end
 end
 
 Then /^I should see one of my categories$/ do
-	page.should have_content @profile.categories.first
+	within('.categories') do
+		page.should have_content @profile.categories.first.name
+	end
+end
+
+Then /^I should see one of my specialties$/ do
+	within('.specialties') do
+		page.should have_content @profile.specialties.first.name
+	end
 end
 
 Then /^I should land on the profile view page$/ do
@@ -262,8 +305,8 @@ Then /^my basic information should be saved in my profile$/ do
 end
 
 Then /^my edited information should be saved in my profile$/ do
-	@profile.office_phone.should == @profile_data[:office_phone]
-	@profile.url.should == @profile_data[:url]
+	page.should have_content @profile_data[:office_phone]
+	page.should have_content @profile_data[:url]
 end
 
 Then /^my email address should be saved to my user record$/ do
@@ -294,6 +337,13 @@ end
 Then /^my profile should show me as being in the "(.*?)" category$/ do |category|
 	within('.category') do
 		page.should have_content category
+	end
+end
+
+Then /^the "(.*?)" and "(.*?)" categories should appear in the profile edit check list$/ do |cat1, cat2|
+	within('.categories') do
+		page.should have_content cat1
+		page.should have_content cat2
 	end
 end
 

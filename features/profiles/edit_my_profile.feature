@@ -71,7 +71,8 @@ Feature: Edit my expert profile
 		Then my country code should be set to "CA"
 	
 	Scenario: Select categories
-		Given I exist as a user
+		Given the "child psychiatrist" and "developmental-behavioral pediatrician" categories are predefined
+			And I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
@@ -90,14 +91,25 @@ Feature: Edit my expert profile
 		Then my profile should show me as being in the "story-book reader" and "dream catcher" categories
 		
 	@javascript
+	Scenario: Added custom categories appear in check list on next profile edit
+		Given I exist as a user
+			And I want my profile
+			And I am logged in
+			And I am on my profile edit page
+		When I add the "story-book reader" and "dream catcher" custom categories
+			And I save my profile
+			And I go to my profile edit page
+		Then the "story-book reader" and "dream catcher" categories should appear in the profile edit check list
+		
+	@javascript
 	Scenario: Select specialties
 		Given I exist as a user
 			And I am logged in
-			And I have a category of "developmental-behavioral pediatrician" in my profile
+			And I have a category of "child psychiatrist" in my profile that is associated with the "behavior" and "adoption" specialties
 			And I am on my profile edit page
-		When I select the "behavior" and "developmental delay" specialties
+		When I select the "behavior" and "adoption" specialties
 			And I save my profile
-		Then my profile should show me as having the "behavior" and "developmental delay" specialties
+		Then my profile should show me as having the "behavior" and "adoption" specialties
 	
 	@javascript
 	Scenario: Add custom specialties
@@ -111,11 +123,12 @@ Feature: Edit my expert profile
 	
 	@javascript
 	Scenario: Offer specialties for given categories
-		Given I exist as a user
+		Given the predefined category of "child psychiatrist" is associated with the "adoption" and "toilet training" specialties
+			And I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I select the "child psychiatrist" and "developmental-behavioral pediatrician" categories
+		When I select the "child psychiatrist" category
 		Then then I should be offered the "adoption" and "toilet training" specialties
 	
 	@javascript
