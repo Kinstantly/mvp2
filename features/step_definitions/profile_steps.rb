@@ -208,14 +208,14 @@ end
 
 When /^I select the "(.*?)" category$/ do |category|
 	within('.categories') do
-		check MyHelpers.profile_categories_id(category)
+		check MyHelpers.profile_categories_id(category.to_category.id)
 	end
 end
 
 When /^I select the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
 	within('.categories') do
-		check MyHelpers.profile_categories_id(cat1)
-		check MyHelpers.profile_categories_id(cat2)
+		check MyHelpers.profile_categories_id(cat1.to_category.id)
+		check MyHelpers.profile_categories_id(cat2.to_category.id)
 	end
 end
 
