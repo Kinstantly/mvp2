@@ -10,6 +10,12 @@ describe Category do
 		@category.save.should be_true
 	end
 	
+	it "can be flagged as predefined" do
+		@category.is_predefined = true
+		@category.save.should be_true
+		Category.predefined.include?(@category).should be_true
+	end
+	
 	context "specialties" do
 		before(:each) do
 			@specialties = [FactoryGirl.create(:specialty, name: 'behavior'),
