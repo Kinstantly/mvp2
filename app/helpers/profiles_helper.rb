@@ -101,7 +101,7 @@ module ProfilesHelper
 	end
 	
 	def profile_specialties_id(s)
-		"profile_specialties_#{s.to_alphanumeric}"
+		"profile_specialties_#{s.to_s.to_alphanumeric}"
 	end
 	
 	def profile_specialties_tag_name(form_builder=nil)
@@ -112,16 +112,16 @@ module ProfilesHelper
 		hidden_field_tag profile_specialties_tag_name(form_builder), '', id: profile_specialties_id('hidden_field')
 	end
 	
-	def profile_specialties_check_box_tag(profile, specialty, form_builder=nil)
-		check_box_tag profile_specialties_tag_name(form_builder), specialty.id, profile.specialties.include?(specialty), id: profile_specialties_id(specialty.name)
+	def profile_specialties_check_box(profile, id, name, checked, wrapper_class, form_builder=nil)
+		content_tag :div, class: wrapper_class do
+			check_box_tag(profile_specialties_tag_name(form_builder), id, checked, id: profile_specialties_id(id)) + " #{name}"
+		end
 	end
 	
 	def profile_specialties_check_box_cache(profile, wrapper_class, form_builder=nil)
 		cache = {}
-		(Category.specialties_map.values.flatten + profile.specialties).uniq.each do |spec|
-			cache[spec.id] = content_tag :div, class: wrapper_class do
-				profile_specialties_check_box_tag(profile, spec, form_builder) + " #{spec.name}"
-			end
+		profile.specialties.uniq.each do |spec|
+			cache[spec.id] = profile_specialties_check_box profile, spec.id, spec.name, true, wrapper_class, form_builder
 		end
 		cache
 	end

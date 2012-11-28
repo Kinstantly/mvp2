@@ -165,6 +165,7 @@
 	# Show specialties check boxes that belong to the checked categories.
 	profile_categories_specialties_map = #{profile_categories_specialties_map(profile).to_json}
 	profile_specialties_check_box_cache = #{profile_specialties_check_box_cache(profile, 'check_box', f).to_json}
+	profile_specialties_check_box_template = "#{escape_javascript profile_specialties_check_box(profile, '_ID_', '_NAME_', false, 'check_box', f)}"
 	show_specialties_check_boxes = ->
 		spec_choices = {}
 		$('.categories .check_box input').each ->
@@ -181,7 +182,10 @@
 		boxes.append "#{escape_javascript profile_specialties_hidden_field_tag(f)}"
 		spec_names = Object.keys(spec_choices)
 		if spec_names.length > 0
-			boxes.append profile_specialties_check_box_cache[spec_choices[name]] for name in spec_names.sort()
+			for name in spec_names.sort()
+				spec_id = spec_choices[name]
+				check_box = profile_specialties_check_box_cache[spec_id] || profile_specialties_check_box_template.replace(/_ID_/g, spec_id).replace(/_NAME_/g, name)
+				boxes.append check_box
 		else
 			boxes.append "#{escape_javascript content_tag(:div, 'Choose a category and we\'ll show you a list of specialties.', class: 'notice')}"
 	show_specialties_check_boxes()

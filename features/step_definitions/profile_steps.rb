@@ -231,8 +231,8 @@ end
 # This step requires javascript.
 When /^I select the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
 	within('.specialties') do
-		check MyHelpers.profile_specialties_id(spec1)
-		check MyHelpers.profile_specialties_id(spec2)
+		check MyHelpers.profile_specialties_id(spec1.to_specialty.id)
+		check MyHelpers.profile_specialties_id(spec2.to_specialty.id)
 	end
 end
 
