@@ -4,5 +4,5 @@ class Specialty < ActiveRecord::Base
 	has_and_belongs_to_many :profiles
 	has_and_belongs_to_many :categories
 	
-	scope :predefined, where(is_predefined: true).order('name')
+	scope :predefined, where(is_predefined: true).order('lower(name)')
 end
