@@ -12,6 +12,10 @@ module ProfilesHelper
 		addr
 	end
 	
+	def display_profile_item_names(items)
+		items.collect(&:name).sort{|a, b| a.casecmp b}.join(', ') if items.present?
+	end
+	
 	def default_profile_country
 		'US'
 	end
@@ -49,7 +53,7 @@ module ProfilesHelper
 	# Categories helpers
 	
 	def profile_category_choices(profile)
-		(Category.predefined + profile.categories.reject(&:new_record?)).uniq.sort_by(&:name)
+		(Category.predefined + profile.categories.reject(&:new_record?)).uniq.sort { |a, b| a.name.casecmp b.name }
 	end
 	
 	def profile_new_custom_categories(profile)
@@ -73,7 +77,7 @@ module ProfilesHelper
 	end
 	
 	def profile_display_categories(profile=current_user.try(:profile))
-		profile.try(:categories).try(:collect, &:name).try(:join, ', ')
+		display_profile_item_names profile.try(:categories)
 	end
 	
 	def profile_custom_categories_id(s)
@@ -129,7 +133,7 @@ module ProfilesHelper
 	end
 		
 	def profile_display_specialties(profile=current_user.try(:profile))
-		profile.try(:specialties).try(:collect, &:name).try(:join, ', ')
+		display_profile_item_names profile.try(:specialties)
 	end
 	
 	def profile_custom_specialties_id(s)

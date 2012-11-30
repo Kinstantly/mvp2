@@ -189,7 +189,7 @@
 		boxes.append "#{escape_javascript profile_specialties_hidden_field_tag(f)}"
 		spec_names = Object.keys(spec_choices)
 		if spec_names.length > 0
-			for name in spec_names.sort()
+			for name in spec_names.sort((a, b) -> a.toLowerCase().localeCompare(b.toLowerCase()))
 				spec_id = spec_choices[name]
 				check_box = edit_user_profile.specialties_check_box_cache[spec_id] || edit_user_profile.specialties_check_box_template.replace(/_ID_/g, spec_id).replace(/_NAME_/g, name)
 				boxes.append check_box
