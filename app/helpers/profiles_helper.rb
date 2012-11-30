@@ -36,12 +36,14 @@ module ProfilesHelper
 		"#{form_builder.object_name.presence || 'profile'}[#{attr_name}][]"
 	end
 	
-	def profile_categories_specialties_map(profile)
+	def profile_categories_specialties_info(profile)
 		map = {}
+		names = {}
 		(Category.predefined + profile.categories).uniq.each { |cat|
-			map[cat.id] = cat.specialties.collect{|spec| {id: spec.id, name: spec.name}}
+			map[cat.id] = cat.specialties.collect(&:id)
+			cat.specialties.each { |spec| names[spec.id] = spec.name unless names[spec.id] }
 		}
-		map
+		[map, names]
 	end
 
 	# Categories helpers

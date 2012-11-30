@@ -150,10 +150,14 @@
 			= f.text_area :availability, size: '50x5'
 :javascript
 	window.edit_user_profile = {
-		categories_specialties_map: #{profile_categories_specialties_map(profile).to_json},
+		categories_specialties_map: null,
+		specialties_names: null,
 		specialties_check_box_cache: #{profile_specialties_check_box_cache(profile, 'check_box', f).to_json},
 		specialties_check_box_template: "#{escape_javascript profile_specialties_check_box(profile, '_ID_', '_NAME_', false, 'check_box', f)}"
-	}
+	};
+	var categories_specialties_info = #{profile_categories_specialties_info(profile).to_json};
+	edit_user_profile.categories_specialties_map = categories_specialties_info[0];
+	edit_user_profile.specialties_names = categories_specialties_info[1];
 :coffeescript
 	# Add extra text input tags for custom categories.
 	profile_custom_categories_i = #{@profile_custom_categories_i}
@@ -173,9 +177,9 @@
 		spec_choices = {}
 		$('.categories .check_box input').each ->
 			if $(this).attr('checked')
-				cat_specs = edit_user_profile.categories_specialties_map[$(this).val()]
-				if cat_specs
-					spec_choices[spec.name] = spec.id for spec in cat_specs
+				cat_spec_ids = edit_user_profile.categories_specialties_map[$(this).val()]
+				if cat_spec_ids
+					spec_choices[edit_user_profile.specialties_names[spec_id]] = spec_id for spec_id in cat_spec_ids
 			true
 		spec_choices[spec.name] = spec.id for spec in #{profile.specialty_ids_names.to_json}
 		boxes = $('.predefined_specialties')
