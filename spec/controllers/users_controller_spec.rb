@@ -59,10 +59,16 @@ describe UsersController do
 			flash[:notice].should_not be_nil
 		end
 		
-		it "fails to update the profile" do
+		it "fails to update the profile with no email" do
 			post :update_profile, user: FactoryGirl.attributes_for(:user_with_no_email)
 			response.should render_template('edit_profile')
 			flash[:alert].should_not be_nil
+		end
+		
+		it "fails to self-publish the profile" do
+			expect {
+				post :update_profile, user: {profile_attributes: {is_published: true}}
+			}.to raise_error(/protected attributes/i)
 		end
 	end
 end

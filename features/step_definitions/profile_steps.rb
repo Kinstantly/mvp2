@@ -10,6 +10,8 @@ def set_up_new_data
 		office_phone: '800-555-1111', url: 'http://canihelpyou.com' }
 	@unattached_profile_data ||= { first_name: 'Prospect', middle_name: 'A', last_name: 'Expert',
 		office_phone: '888-555-5555', url: 'http://UnattachedExpert.com' }
+	@published_profile_data ||= { first_name: 'Sandy', middle_name: 'A', last_name: 'Known',
+		office_phone: '888-555-7777', url: 'http://KnownExpert.com', is_published: true }
 end
 
 def find_user_profile
@@ -44,6 +46,11 @@ def create_unattached_profile
 	@unattached_profile = FactoryGirl.create(:profile, @unattached_profile_data)
 end
 
+def create_published_profile
+	set_up_new_data
+	@published_profile = FactoryGirl.create(:profile, @published_profile_data)
+end
+
 ### GIVEN ###
 Given /^an empty profile right after registration$/ do
 	set_up_new_data
@@ -59,13 +66,17 @@ Given /^I go to my profile edit page$/ do
 	visit edit_user_profile_path
 end
 
-Given /^I want (my|a) profile$/ do |word|
-  create_profile
+Given /^I want (my|a|an)( unpublished)? profile$/ do |word1, word2|
+	create_profile
 end
 
-Given /^there are multiple profiles in the system$/ do
+Given /^there are multiple( unpublished)? profiles in the system$/ do |word|
 	create_profile
 	create_profile_2
+end
+
+Given /^I want a published profile$/ do
+	create_published_profile
 end
 
 Given /^I have no country code in my profile$/ do
@@ -257,7 +268,7 @@ When /^I visit the new profile page$/ do
 	visit new_profile_path
 end
 
-When /^I click on the edit link for an unclaimed profile$/ do
+When /^I click on the link for an unclaimed profile$/ do
 	click_link "#{@unattached_profile_data[:first_name]} #{@unattached_profile_data[:middle_name]} #{@unattached_profile_data[:last_name]}"
 end
 
@@ -396,6 +407,10 @@ Then /^I should not see profile data that is not my own$/ do
 	page.should_not have_content @profile_data_2[:url]
 end
 
+Then /^I should see published profile data$/ do
+	page.should have_content @published_profile_data[:url]
+end
+
 Then /^I should see a new profile form$/ do
 	page.should have_content 'Public email'
 end
@@ -406,6 +421,11 @@ Then /^the new profile should be saved$/ do
 	@profile.middle_name.should == @unattached_profile_data[:middle_name]
 	@profile.last_name.should == @unattached_profile_data[:last_name]
 	@profile.url.should == @unattached_profile_data[:url]
+end
+
+Then /^I should land on the view page for the unclaimed profile$/ do
+	find_unattached_profile
+	current_path.should == profile_path(@profile)
 end
 
 Then /^I should land on the edit page for the unclaimed profile$/ do

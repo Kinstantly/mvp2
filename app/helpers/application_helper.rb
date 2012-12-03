@@ -29,19 +29,19 @@ module ApplicationHelper
 		link_to "#{company_name}", path if show_link?(path)
 	end
 	
-	def view_profile_link
+	def view_user_profile_link
 		path = view_user_profile_path
 		link_to 'View my profile', path if show_link?(path) && can?(:show, User)
 	end
 	
-	def edit_profile_link
+	def edit_user_profile_link
 		path = edit_user_profile_path
 		link_to "Edit profile", path if show_link?(path) && can?(:update, User)
 	end
 	
 	def admin_profile_list_link
 		path = profiles_path
-		link_to 'Profile admin', path if show_link?(path) && can?(:read, Profile)
+		link_to 'Profile admin', path if show_link?(path) && can?(:manage, Profile)
 	end
 	
 	def admin_create_profile_link

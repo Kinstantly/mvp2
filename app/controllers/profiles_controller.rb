@@ -1,5 +1,5 @@
 class ProfilesController < ApplicationController
-	before_filter :authenticate_user!
+	before_filter :authenticate_user!, except: [:index, :show]
 	
 	# Side effect: loads @profiles or @profile as appropriate.
 	# e.g., for index action, @profiles is set to Profile.accessible_by(current_ability)

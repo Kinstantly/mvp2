@@ -1,6 +1,6 @@
 .view_profile
 	.buttons
-		= edit_profile_link
+		= edit_user_profile_link
 	.account_areas
 		.basic_account
 			.email
@@ -10,78 +10,6 @@
 			.phone
 				Phone number we use to contact you:
 				= @user.phone
-	.profile_areas
-		.basic_profile
-			.display_name
-				Name:
-				= profile_display_name @profile
-			.email
-				Public email:
-				= @profile.email
-			.company_name
-				Company name:
-				= @profile.company_name
-			.url
-				Website:
-				= @profile.url
-			.headline
-				%span.label Professional headline:
-				%br
-				.value= @profile.headline
-			.mobile_phone
-				Mobile:
-				= @profile.mobile_phone
-			.office_phone
-				Office:
-				= @profile.office_phone
-		.location_contact_profile
-			.address
-				Address:
-				= location_display_address @profile.try(:locations).try(:first)
-		.expertise_profile
-			.categories
-				%span.label Categories:
-				= profile_display_categories @profile
-			.specialties
-				%span.label Specialties:
-				= profile_display_specialties @profile
-			.age_ranges
-				%span.label Ages:
-				= profile_age_ranges @profile
-		.professional_profile
-			.consultations
-				%span.label Consultations by:
-				= profile_display_consultation_modes @profile
-			.visits
-				%span.label Visit:
-				= profile_display_visitation_modes @profile
-			.education
-				%span.label Education:
-				%br
-				.value.text_area= preserve @profile.education
-			.certifications
-				%span.label Licenses, certifications:
-				%br
-				.value.text_area= preserve @profile.certifications
-			.languages
-				%span.label Languages:
-				%br
-				.value.text_area= preserve @profile.languages
-			.insurance_accepted
-				%span.label Health insurance accepted:
-				%br
-				.value.text_area= preserve @profile.insurance_accepted
-			.summary
-				%span.label Summary:
-				%br
-				.value.text_area= preserve @profile.summary
-			.rates
-				%span.label Rates:
-				%br
-				.value.text_area= preserve @profile.rates
-			.availability
-				%span.label Availability:
-				%br
-				.value.text_area= preserve @profile.availability
+	= render partial: 'profiles/view', locals: {profile: @profile}
 	.buttons
-		= edit_profile_link
+		= edit_user_profile_link

@@ -26,9 +26,9 @@
 					%th Rates
 					%th.large Availability
 			%tbody
-				- @profiles.each do |p|
+				- @profiles.sort{|a, b| a.last_name.casecmp b.last_name}.each do |p|
 					%tr
-						%td= link_to profile_display_name(p), edit_profile_path(p)
+						%td= can?(:read, p) ? link_to(profile_display_name(p), profile_path(p)) : profile_display_name(p)
 						%td= p.try(:company_name)
 						%td= p.try(:url)
 						%td= p.try(:headline)

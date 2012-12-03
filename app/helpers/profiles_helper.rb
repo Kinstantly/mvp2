@@ -40,6 +40,10 @@ module ProfilesHelper
 		"#{form_builder.object_name.presence || 'profile'}[#{attr_name}][]"
 	end
 	
+	def edit_profile_link(profile)
+		link_to "Edit profile", edit_profile_path(profile) if can?(:update, profile)
+	end
+	
 	def profile_categories_specialties_info(profile)
 		map = {}
 		names = {}
