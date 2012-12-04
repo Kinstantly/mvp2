@@ -1,7 +1,7 @@
 module ApplicationHelper
 	
 	def company_name
-		'Zatch.me'
+		'Get Answers 5555'
 	end
 	
 	def show_link?(path=nil)

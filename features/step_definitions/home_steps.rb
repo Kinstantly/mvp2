@@ -12,7 +12,7 @@ Then /^I should see a Google form$/ do
 end
 
 Then /^I should see a statement about us$/ do
-	page.should have_content('Zatch')
+	page.should have_content(MyHelpers.company_name)
 end
 
 Then /^I should see a list of frequently asked questions and answers$/ do
