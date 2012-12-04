@@ -69,9 +69,9 @@ module ApplicationHelper
 		link_to "FAQ", path if show_link?(path)
 	end
 	
-	def policies_link
-		path = policies_path
-		link_to "Policies", path if show_link?(path)
+	def terms_link
+		path = terms_path
+		link_to "Terms of Use", path if show_link?(path)
 	end
 	
 	def request_expert_link

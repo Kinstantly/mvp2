@@ -19,6 +19,6 @@ Then /^I should see a list of frequently asked questions and answers$/ do
 	page.should have_content('Frequently')
 end
 
-Then /^I should see explanations of our policies$/ do
-	page.should have_content('Policies')
+Then /^I should see explanations of our terms of use$/ do
+	page.should have_content('Terms of Use')
 end
