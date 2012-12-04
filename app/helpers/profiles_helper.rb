@@ -44,6 +44,12 @@ module ProfilesHelper
 		link_to "Edit profile", edit_profile_path(profile) if can?(:update, profile)
 	end
 	
+	def profile_publish_check_box(profile)
+		tag_name = 'is_published'
+		hidden_field_tag(tag_name, '', id: 'is_published_not') +
+			check_box_tag(tag_name, '1', profile.is_published, id: 'is_published')
+	end
+	
 	def profile_categories_specialties_info(profile)
 		map = {}
 		names = {}

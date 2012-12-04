@@ -136,7 +136,7 @@ Given /^there is an unclaimed profile$/ do
 	create_unattached_profile
 end
 
-Given /^I visit the edit page for the unclaimed profile$/ do
+Given /^I visit the edit page for an (unclaimed|unpublished) profile$/ do |word|
 	create_unattached_profile
 	find_unattached_profile
 	visit edit_profile_path(@profile)
@@ -150,7 +150,12 @@ When /^I enter new profile information$/ do
 	fill_in 'profile_middle_name', with: @unattached_profile_data[:middle_name]
 	fill_in 'profile_last_name', with: @unattached_profile_data[:last_name]
 	fill_in 'Website', with: @unattached_profile_data[:url]
-	click_button 'Save'
+	within('.custom_categories') do
+		fill_in MyHelpers.profile_custom_categories_id('1'), with: 'teacher'
+	end
+	within('.custom_specialties') do
+		fill_in MyHelpers.profile_custom_specialties_id('1'), with: 'teaching'
+	end
 end
 
 When /^I view my profile$/ do
@@ -274,6 +279,10 @@ end
 
 When /^I enter "(.*?)" in the "(.*?)" field$/ do |text, field|
 	fill_in field, with: text
+end
+
+When /^I check the publish box$/ do
+	check 'is_published'
 end
 
 When /^I save the profile$/ do
@@ -436,6 +445,11 @@ end
 Then /^the last name in the unclaimed profile should be "(.*?)"$/ do |last_name|
 	find_unattached_profile
 	@profile.last_name.should == last_name
+end
+
+Then /^the (new|previously unpublished) profile should be published$/ do |word|
+	find_unattached_profile
+	@profile.is_published.should be_true
 end
 
 # Dynamic display showing what the display name will be after saving.

@@ -148,6 +148,10 @@
 			.label_area
 				= f.label :availability, "Next available appointments"
 			= f.text_area :availability, size: '50x5'
+	- if current_user.admin?
+		.admin_options
+			= profile_publish_check_box @profile
+			Check to publish
 :javascript
 	window.edit_user_profile = {
 		categories_specialties_map: null,

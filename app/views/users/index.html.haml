@@ -4,6 +4,8 @@
 			%thead
 				%tr
 					%th Name
+					- if current_user.try(:admin?)
+						%th Profile published?
 					%th Email
 					%th Company name
 					%th Website
@@ -27,6 +29,8 @@
 				- @users.each do |u|
 					%tr
 						%td= profile_display_name u.profile
+						- if current_user.try(:admin?)
+							%td= u.try(:profile).try(:is_published) ? 'Published' : 'Not published'
 						%td= u.email
 						%td= u.try(:profile).try(:company_name)
 						%td= u.try(:profile).try(:url)

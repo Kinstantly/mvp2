@@ -6,6 +6,8 @@
 			%thead
 				%tr
 					%th Name
+					- if current_user.try(:admin?)
+						%th Published?
 					%th Company name
 					%th Website
 					%th Headline
@@ -29,6 +31,8 @@
 				- @profiles.sort{|a, b| a.last_name.casecmp b.last_name}.each do |p|
 					%tr
 						%td= can?(:read, p) ? link_to(profile_display_name(p), profile_path(p)) : profile_display_name(p)
+						- if current_user.try(:admin?)
+							%td= p.try(:is_published) ? 'Published' : 'Not published'
 						%td= p.try(:company_name)
 						%td= p.try(:url)
 						%td= p.try(:headline)

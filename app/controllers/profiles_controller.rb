@@ -5,8 +5,11 @@ class ProfilesController < ApplicationController
 	# e.g., for index action, @profiles is set to Profile.accessible_by(current_ability)
 	load_and_authorize_resource
 	
-	# *After* profile is loaded, ensure it has at least one location.
+	# *After* profile is loaded:
+	#   ensure it has at least one location
+	#   set publish state based on parameter
 	before_filter :require_location_in_profile, only: [:new, :edit]
+	before_filter :process_profile_publish_param, only: [:create, :update]
 	
 	def create
 		# @profile initialized by load_and_authorize_resource with cancan ability conditions and then parameter values.

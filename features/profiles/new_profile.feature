@@ -10,5 +10,15 @@ Feature: Create a new expert profile
 	
 	Scenario: Create new profile
 		Given I am logged in as an administrator
-		When I enter new profile information
+		When I visit the new profile page
+			And I enter new profile information
+			And I save the profile
 		Then the new profile should be saved
+	
+	Scenario: Create and publish new profile
+		Given I am logged in as an administrator
+		When I visit the new profile page
+			And I enter new profile information
+			And I check the publish box
+			And I save the profile
+		Then the new profile should be published

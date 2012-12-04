@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 	before_filter :authenticate_user!
 	before_filter :set_up_user, except: [:index]
 	load_and_authorize_resource
+	before_filter :process_profile_publish_param, only: [:update_profile]
 	
 	# *After* profile is loaded, ensure it has at least one location.
 	before_filter :require_location_in_profile, only: [:edit_profile]

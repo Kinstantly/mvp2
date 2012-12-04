@@ -31,4 +31,13 @@ class ApplicationController < ActionController::Base
 	def require_location_in_profile
 		@profile.require_location
 	end
+	
+	# If current user is an admin and the is_published param was used,
+	# use it to set the publish state of @profile.
+	def process_profile_publish_param
+		if current_user.admin?
+			is_published = params[:is_published]
+			@profile.is_published = is_published.present? if is_published
+		end
+	end
 end
