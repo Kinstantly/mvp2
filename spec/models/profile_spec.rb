@@ -18,11 +18,11 @@ describe Profile do
 			@profile.should have(:no).errors_on(:last_name)
 		end
 		
-		it "complains if first and last name are not set" do
+		it "is happy if first and last name are NOT set" do
 			@profile.first_name = ''
 			@profile.last_name = ''
-			@profile.should have(1).errors_on(:first_name)
-			@profile.should have(1).errors_on(:last_name)
+			@profile.should have(:no).errors_on(:first_name)
+			@profile.should have(:no).errors_on(:last_name)
 		end
 	end
 	
@@ -58,9 +58,9 @@ describe Profile do
 			Profile.find_by_last_name(@profile_data[:last_name]).specialties.should == @profile_data[:specialties]
 		end
 		
-		it "requires at least one specialty" do
+		it "does not require a specialty" do
 			@profile.specialties = []
-			@profile.should have(1).errors_on(:specialties)
+			@profile.should have(:no).errors_on(:specialties)
 		end
 		
 		it "has a simple array of specialty IDs and names" do

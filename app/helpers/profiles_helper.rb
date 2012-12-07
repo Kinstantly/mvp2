@@ -50,6 +50,16 @@ module ProfilesHelper
 			check_box_tag(tag_name, '1', profile.is_published, id: 'is_published')
 	end
 	
+	def profile_list_name_link(profile)
+		name = profile_display_name(profile)
+		if can?(:read, profile)
+			html_options = name.blank? ? {class: 'emphasized'} : {}
+			link_to((name.presence || 'Click to view'), profile_path(profile), html_options)
+		else
+			name
+		end
+	end
+	
 	def profile_categories_specialties_info(profile)
 		map = {}
 		names = {}

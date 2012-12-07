@@ -6,13 +6,13 @@
 			Name
 			%br
 			.text_field
-				= f.label :first_name, 'First name', class: 'required'
+				= f.label :first_name, 'First name'
 				= f.text_field :first_name, id: 'profile_first_name', class: 'display_name_field'
 			.text_field
 				= f.label :middle_name, 'Middle name or initial'
 				= f.text_field :middle_name, id: 'profile_middle_name', class: 'display_name_field'
 			.text_field
-				= f.label :last_name, 'Last name', class: 'required'
+				= f.label :last_name, 'Last name'
 				= f.text_field :last_name, id: 'profile_last_name', class: 'display_name_field'
 			.text_field
 				= f.label :credentials, "Degrees/credentials"
@@ -77,7 +77,7 @@
 			- @profile_custom_categories_i = i
 			- @profile_custom_categories_text_field_template = profile_custom_categories_text_field_tag(profile, '', 'INDEX', f)
 		.specialties
-			= f.label :specialties, "Specialties", class: 'required'
+			= f.label :specialties, "Specialties"
 			%br
 			%span.predefined_specialties
 		.custom_specialties

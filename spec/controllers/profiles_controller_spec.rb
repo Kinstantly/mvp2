@@ -117,11 +117,11 @@ describe ProfilesController do
 				flash[:notice].should_not be_nil
 			end
 		
-			it "fails to create the profile with no last name" do
+			it "can create the profile with no last name" do
 				@profile_attrs[:last_name] = ''
 				post :create, profile: @profile_attrs
-				response.should render_template('new')
-				flash[:alert].should_not be_nil
+				response.should redirect_to(controller: 'profiles', action: 'index')
+				flash[:notice].should_not be_nil
 			end
 		end
 	
@@ -157,11 +157,11 @@ describe ProfilesController do
 				flash[:notice].should_not be_nil
 			end
 		
-			it "fails to update the profile with no last name" do
+			it "can update the profile with no last name" do
 				@profile_attrs[:last_name] = ''
 				put :update, id: @profile.id, profile: @profile_attrs
-				response.should render_template('edit')
-				flash[:alert].should_not be_nil
+				response.should redirect_to(controller: 'profiles', action: 'index')
+				flash[:notice].should_not be_nil
 			end
 		end
 	end
