@@ -212,3 +212,16 @@ end
 Then /^I should be an expert$/ do
   @user.should be_expert
 end
+
+Then /^I should see more than one user$/ do
+	page.should have_content @visitor[:email]
+	page.should have_content @visitor_2[:email]
+end
+
+Then /^I should not see user data$/ do
+	page.should_not have_content @visitor[:email]
+end
+
+Then /^I should not see user data that is not my own$/ do
+	page.should_not have_content @visitor_2[:email]
+end

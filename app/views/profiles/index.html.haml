@@ -12,7 +12,7 @@
 					%th Website
 					%th Headline
 					%th Address
-					%th Public email
+					%th= current_user.try(:admin?) ? 'Public email' : 'Email'
 					%th Mobile
 					%th Office
 					%th.large Categories

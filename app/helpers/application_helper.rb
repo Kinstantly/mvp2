@@ -49,6 +49,11 @@ module ApplicationHelper
 		link_to 'Create profile', path if show_link?(path) && can?(:create, Profile)
 	end
 	
+	def admin_user_list_link
+		path = users_path
+		link_to 'User admin', path if show_link?(path) && can?(:manage, User)
+	end
+	
 	def about_link
 		path = about_path
 		link_to "About us", path if show_link?(path)

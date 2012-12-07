@@ -3,50 +3,12 @@
 		%table
 			%thead
 				%tr
+					%th Login email
 					%th Name
-					- if current_user.try(:admin?)
-						%th Profile published?
-					%th Email
-					%th Company name
-					%th Website
-					%th Headline
-					%th Address
-					%th Mobile
-					%th Office
-					%th.large Categories
-					%th.large Specialties
-					%th Ages
-					%th Consultations
-					%th Visitations
-					%th.large Education
-					%th Licenses, certifications
-					%th Languages
-					%th.large Insurance accepted
-					%th.large Summary
-					%th Rates
-					%th.large Availability
+					%th Profile (click to view)
 			%tbody
-				- @users.each do |u|
+				- @users.sort{|a, b| a.email.casecmp b.email}.each do |u|
 					%tr
-						%td= profile_display_name u.profile
-						- if current_user.try(:admin?)
-							%td= u.try(:profile).try(:is_published) ? 'Published' : 'Not published'
 						%td= u.email
-						%td= u.try(:profile).try(:company_name)
-						%td= u.try(:profile).try(:url)
-						%td= u.try(:profile).try(:headline)
-						%td= "#{location_display_address u.profile.try(:locations).try(:first)}"
-						%td= u.try(:profile).try(:mobile_phone)
-						%td= u.try(:profile).try(:office_phone)
-						%td= profile_display_categories u.profile
-						%td= profile_display_specialties u.profile
-						%td= profile_age_ranges u.profile
-						%td= profile_display_consultation_modes u.profile
-						%td= profile_display_visitation_modes u.profile
-						%td.text_area= preserve u.try(:profile).try(:education)
-						%td.text_area= preserve u.try(:profile).try(:certifications)
-						%td.text_area= preserve u.try(:profile).try(:languages)
-						%td.text_area= preserve u.try(:profile).try(:insurance_accepted)
-						%td.text_area= preserve u.try(:profile).try(:summary)
-						%td.text_area= preserve u.try(:profile).try(:rates)
-						%td.text_area= preserve u.try(:profile).try(:availability)
+						%td= profile_display_name u.profile
+						%td= user_list_profile_link u.profile

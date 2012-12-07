@@ -70,13 +70,17 @@ Given /^I want (my|a|an)( unpublished)? profile$/ do |word1, word2|
 	create_profile
 end
 
-Given /^there are multiple( unpublished)? profiles in the system$/ do |word|
+Given /^there are multiple( users with)?( unpublished)? profiles in the system$/ do |phrase1, phrase2|
 	create_profile
 	create_profile_2
 end
 
 Given /^I want a published profile$/ do
 	create_published_profile
+end
+
+Given /^a user with a profile exists$/ do
+	create_profile
 end
 
 Given /^I have no country code in my profile$/ do
@@ -289,6 +293,10 @@ When /^I save the profile$/ do
 	click_button 'Save'
 end
 
+When /^I click on a user profile link$/ do
+	click_link MyHelpers.user_list_profile_link_id(@profile)
+end
+
 ### THEN ###
 
 Then /^I should see my profile information$/ do
@@ -464,4 +472,10 @@ Then /^the display name should be updated to "(.*?)"$/ do |display_name|
 	within('.top_nav') do
 		page.should have_content display_name
 	end 
+end
+
+Then /^I should see profile data for that user$/ do
+	within('.url') do
+		page.should have_content @profile_data[:url]
+	end
 end
