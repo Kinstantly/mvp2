@@ -19,5 +19,9 @@ FactoryGirl.define do
 		factory :admin_user do
 			roles [:admin]
 		end
+		
+		factory :profile_editor do
+			roles [:profile_editor]
+		end
 	end
 end

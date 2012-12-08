@@ -2,14 +2,14 @@
 
 FactoryGirl.define do
 	factory :profile do
-		first_name "MyString"
-		last_name "MyString"
-		middle_name "MyString"
-		company_name "MyString"
-		url "MyString"
-		mobile_phone "MyString"
-		office_phone "MyString"
-		insurance_accepted 'MyString'
+		first_name "FactoryFirstName"
+		last_name "FactoryLastName"
+		middle_name "FactoryMiddleName"
+		company_name "FactoryCompanyName"
+		url "FactoryURL"
+		mobile_phone "FactoryMobilePhone"
+		office_phone "FactoryOfficePhone"
+		insurance_accepted 'FactoryInsuranceAccepted'
 		
 		after(:build) { |profile|
 			profile.categories = [FactoryGirl.create(:category)] if profile.categories.blank?

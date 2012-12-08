@@ -20,21 +20,27 @@ describe UsersController do
 		end
 	end
 	
-	describe "GET profile_index" do
-		before(:each) do
-			sign_out @kelly
-			@bossy = FactoryGirl.create(:admin_user, email: 'bossy@example.com')
-			@eddie = FactoryGirl.create(:expert_user, email: 'eddie@example.com')
-			sign_in @bossy
-			get :index
+	describe "GET users index" do
+		it "does not render the view" do
+			response.should_not render_template('index')
 		end
 		
-		it "renders the view" do
-			response.should render_template('index')
-		end
+		context "as admin user" do
+			before(:each) do
+				sign_out @kelly
+				@bossy = FactoryGirl.create(:admin_user, email: 'bossy@example.com')
+				@eddie = FactoryGirl.create(:expert_user, email: 'eddie@example.com')
+				sign_in @bossy
+				get :index
+			end
 		
-		it "assigns @users" do
-			assigns[:users].should == User.all
+			it "renders the view" do
+				response.should render_template('index')
+			end
+		
+			it "assigns @users" do
+				assigns[:users].should == User.all
+			end
 		end
 	end
 	

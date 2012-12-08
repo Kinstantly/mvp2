@@ -165,4 +165,59 @@ describe ProfilesController do
 			end
 		end
 	end
+	
+	context "as profile editor" do
+		before (:each) do
+			@profile_editor = FactoryGirl.create(:profile_editor, email: 'editor@example.com')
+			sign_in @profile_editor
+		end
+
+		describe "GET 'index'" do
+			it "renders the view" do
+				@eddie = FactoryGirl.create(:expert_user, email: 'eddie@example.com')
+				get :index
+				response.should render_template('index')
+			end
+		end
+	
+		describe "GET 'new'" do
+			it "renders the view" do
+				get :new
+				response.should render_template('new')
+			end
+		end
+	
+		describe "POST 'create'" do
+			it "successfully creates the profile" do
+				@profile_attrs = 
+					FactoryGirl.attributes_for(:profile,
+						category_ids: ["#{FactoryGirl.create(:category).id}"],
+						specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
+				post :create, profile: @profile_attrs
+				response.should redirect_to(controller: 'profiles', action: 'index')
+				flash[:notice].should_not be_nil
+			end
+		end
+	
+		describe "GET 'edit'" do
+			it "renders the view" do
+				@profile = FactoryGirl.create(:profile)
+				get :edit, id: @profile.id
+				response.should render_template('edit')
+			end
+		end
+	
+		describe "PUT 'update'" do
+			it "successfully updates the profile" do
+				@profile_attrs = 
+					FactoryGirl.attributes_for(:profile,
+						category_ids: ["#{FactoryGirl.create(:category).id}"],
+						specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
+				@profile = FactoryGirl.create(:profile)
+				put :update, id: @profile.id, profile: @profile_attrs
+				response.should redirect_to(controller: 'profiles', action: 'index')
+				flash[:notice].should_not be_nil
+			end
+		end
+	end
 end

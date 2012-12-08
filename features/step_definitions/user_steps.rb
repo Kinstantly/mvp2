@@ -34,6 +34,12 @@ def create_admin_user
   @user.save
 end
 
+def create_profile_editor
+  create_user
+  @user.add_role :profile_editor
+  @user.save
+end
+
 def create_user_2
 	create_visitor
 	@user_2 ||= User.where(:email => @visitor_2[:email]).first
@@ -86,9 +92,14 @@ Given /^I exist as an unconfirmed user$/ do
   create_unconfirmed_user
 end
 
-Given /^I am logged in as an administrator$/ do
-  create_admin_user
-  sign_in
+Given /^I am logged in as (an administrator|a profile editor)$/ do |role|
+	case role
+	when 'an administrator'
+		create_admin_user
+	when 'a profile editor'
+		create_profile_editor
+	end
+	sign_in
 end
 
 ### WHEN ###

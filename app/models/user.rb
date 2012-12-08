@@ -38,4 +38,8 @@ class User < ActiveRecord::Base
 	def client?
 		has_role? :client
 	end
+	
+	def profile_editor?
+		has_role? :profile_editor
+	end
 end

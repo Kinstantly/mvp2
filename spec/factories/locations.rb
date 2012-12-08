@@ -2,11 +2,11 @@
 
 FactoryGirl.define do
   factory :location do
-    address1 "MyString"
-    address2 "MyString"
-    city "MyString"
-    region "MyString"
-    country "MyString"
-    postal_code "MyString"
+    address1 "FactoryAddress1"
+    address2 "FactoryAddress2"
+    city "FactoryCity"
+    region "FactoryRegion"
+    country "FactoryCountry"
+    postal_code "FactoryPostalCode"
   end
 end

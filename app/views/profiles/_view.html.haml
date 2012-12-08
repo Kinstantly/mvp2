@@ -1,6 +1,6 @@
 .profile_areas
-	- if current_user.try(:admin?)
-		.admin_info
+	- if can? :manage, Profile
+		.editor_info
 			.publish_state
 				= profile.is_published ? 'Profile is published' : 'Profile is NOT published'
 	.basic_profile

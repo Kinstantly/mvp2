@@ -9,8 +9,14 @@ Feature: View existing users
 		When I visit the user index page
 		Then I should see more than one user
 
-	Scenario: Cannot view all users and profiles
+	Scenario: Unpriveleged user cannot view all users
 		Given I am logged in
+			And there are multiple users with profiles in the system
+		When I visit the user index page
+		Then I should not see user data that is not my own
+
+	Scenario: Profile editor cannot view all users
+		Given I am logged in as a profile editor
 			And there are multiple users with profiles in the system
 		When I visit the user index page
 		Then I should not see user data that is not my own

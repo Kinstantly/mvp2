@@ -84,5 +84,10 @@ describe User do
 			@kelly.add_role 'client'
 			@kelly.should be_client
 		end
+		
+		it "should be a profile editor if the profile_editor role is added" do
+			@kelly.add_role 'profile_editor'
+			@kelly.should be_profile_editor
+		end
 	end
 end

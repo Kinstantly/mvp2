@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
 	factory :category do
-		name 'MyString'
+		name 'FactoryCategory'
 		
 		factory :predefined_category do
 			is_predefined true
