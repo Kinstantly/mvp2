@@ -4,8 +4,9 @@ class Ability
 	def initialize(user)
 		user ||= User.new # guest user (not logged in)
 		
-		# The public can read published profiles.
-		can :read, Profile, is_published: true
+		# The public and crawlers can view published profiles.
+		alias_action :read, :link_index, to: :view
+		can :view, Profile, is_published: true
 		
 		# Experts should only be able to edit their profile via nested attributes on the user model.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.

@@ -1,0 +1,10 @@
+.profile_index
+	.profile_list{align: 'center'}
+		%table
+			%thead
+				%tr
+					%th Name
+			%tbody
+				- @profiles.sort{|a, b| a.last_name.casecmp b.last_name}.each do |p|
+					%tr
+						%td= profile_list_name_link p

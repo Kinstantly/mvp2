@@ -22,6 +22,9 @@ Mvp2::Application.routes.draw do
 	
 	resources :profiles
 	
+	# Links to profiles for search engine crawlers.
+	match 'providers' => 'profiles#link_index'
+	
 	# Where to go after sign-up or sign-in.
 	#  Using this option causes the response path to be user_root; kind of weird.
 	#  Better to override in the ApplicationController.

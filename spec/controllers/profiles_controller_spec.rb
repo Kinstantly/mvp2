@@ -220,4 +220,20 @@ describe ProfilesController do
 			end
 		end
 	end
+	
+	context "for a search engine crawler" do
+		before(:each) do
+			@published_profile = FactoryGirl.create(:profile, last_name: 'Garanca', is_published: true)
+			@unpublised_profile = FactoryGirl.create(:profile, last_name: 'Netrebko', is_published: false)
+			get :link_index
+		end
+		
+		it "should assign published profiles" do
+			assigns[:profiles].include?(@published_profile).should be_true
+		end
+		
+		it "should not assign unpublished profiles" do
+			assigns[:profiles].include?(@unpublished_profile).should_not be_true
+		end
+	end
 end
