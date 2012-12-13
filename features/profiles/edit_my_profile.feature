@@ -134,8 +134,8 @@ Feature: Edit my expert profile
 	@javascript
 	Scenario: Offer no predefined specialties when I have selected no predefined categories
 		Given I exist as a user
-			And I have no predefined categories in my profile
 			And I am logged in
+			And I have no predefined categories and no specialties in my profile
 		When I am on my profile edit page
 		Then I should be offered no specialties
 

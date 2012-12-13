@@ -5,14 +5,4 @@ class Category < ActiveRecord::Base
 	has_and_belongs_to_many :specialties
 	
 	scope :predefined, where(is_predefined: true).order('lower(name)')
-	
-	class << self
-		def specialties_map
-			map = {}
-			all.each do |cat|
-				map[cat.id] = cat.specialties if cat.specialties.present?
-			end
-			map
-		end
-	end
 end

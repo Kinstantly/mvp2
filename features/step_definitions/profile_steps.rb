@@ -116,8 +116,9 @@ Given /^I have a category of "(.*?)" in my profile that is associated with the "
 	@user.profile.save
 end
 
-Given /^I have no predefined categories in my profile$/ do
+Given /^I have no predefined categories and no specialties in my profile$/ do
 	@user.profile.categories = []
+	@user.profile.specialties = []
 	@user.profile.save
 end
 
@@ -389,19 +390,9 @@ Then /^my profile should show me as having the "(.*?)" and "(.*?)" specialties$/
 	end
 end
 
-Then /^I should be offered all specialties$/ do
-	within('.specialties') do
-		MyHelpers.profile_predefined_specialties.each do |spec|
-			page.should have_content spec
-		end
-	end
-end
-
 Then /^I should be offered no specialties$/ do
 	within('.specialties') do
-		MyHelpers.profile_predefined_specialties.each do |spec|
-			page.should_not have_content spec
-		end
+		page.should_not have_content FactoryGirl.attributes_for(:specialty)[:name]
 	end
 end
 

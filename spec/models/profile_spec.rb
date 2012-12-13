@@ -124,26 +124,4 @@ describe Profile do
 			@profile.locations.last.should have(:no).errors_on(:region)
 		end
 	end
-	
-	context "Profile configuration" do
-		before(:each) do
-			@category = FactoryGirl.create(:predefined_category, name: 'parenting coach/educator')
-		end
-		
-		it "has predefined categories" do
-			Category.predefined.length.should be > 0
-			Category.predefined.include?(@category).should be_true
-		end
-		
-		it "has predefined specialties" do
-			Profile.predefined_specialties.length.should be > 0
-			Profile.predefined_specialties.include?('behavior').should be_true
-		end
-		
-		it "has specialties tied to category" do
-			specialties = Profile.categories_specialties_map['parenting coach/educator']
-			specialties.length.should be > 0
-			specialties.include?('behavior').should be_true
-		end
-	end
 end

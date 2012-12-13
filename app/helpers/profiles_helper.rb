@@ -118,10 +118,6 @@ module ProfilesHelper
 	
 	# Specialties helpers
 	
-	def profile_predefined_specialties
-		Profile.predefined_specialties
-	end
-	
 	def profile_new_custom_specialties(profile)
 		(profile.custom_specialties.presence || []).select(&:new_record?)
 	end

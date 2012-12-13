@@ -45,20 +45,6 @@ class Profile < ActiveRecord::Base
 		locations.build if locations.blank?
 	end
 	
-	class << self
-		def predefined_categories
-			@predefined_categories ||= (CATEGORIES_SPECIALTIES_MAP.try(:keys).try(:sort).presence || [])
-		end
-		
-		def categories_specialties_map
-			@categories_specialties_map ||= (CATEGORIES_SPECIALTIES_MAP.presence || {})
-		end
-		
-		def predefined_specialties
-			@predefined_specialties ||= (CATEGORIES_SPECIALTIES_MAP.try(:values).try(:flatten).try(:uniq).try(:sort).presence || [])
-		end
-	end
-	
 	private
 	
 	def remove_blanks(strings=[])

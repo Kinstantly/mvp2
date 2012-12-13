@@ -30,9 +30,5 @@ describe Category do
 				@category.specialties.include?(spec).should be_true
 			end
 		end
-		
-		it "has a map of all associated specialties" do
-			Category.specialties_map[@category.id].sort_by(&:id).should == @specialties.sort_by(&:id)
-		end
 	end
 end
