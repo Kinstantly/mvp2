@@ -11,6 +11,10 @@ class String
 		to_db_singleton Category
 	end
 	
+	def to_service
+		to_db_singleton Service
+	end
+	
 	def to_specialty
 		to_db_singleton Specialty
 	end

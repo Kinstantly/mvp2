@@ -6,6 +6,8 @@ describe Profile do
 			first_name: 'Joe', last_name: 'Black',
 			categories: [FactoryGirl.create(:category, name: 'board-certified behavior analyst'),
 				FactoryGirl.create(:category, name: 'child/clinical psychologist')],
+			services: [FactoryGirl.create(:service, name: 'board-certified behavior analyst'),
+				FactoryGirl.create(:service, name: 'child/clinical psychologist')],
 			specialties: [FactoryGirl.create(:specialty, name: 'behavior'), 
 				FactoryGirl.create(:specialty, name: 'choosing a school (pre-K to 12)')]
 		}
@@ -48,6 +50,27 @@ describe Profile do
 				profile = Profile.find_by_last_name(@profile_data[:last_name])
 				profile.should have_exactly(@profile_data[:categories].size + 1).categories
 				profile.categories.collect(&:name).include?(@custom.last).should be_true
+			end
+		end
+	end
+	
+	context "services" do
+		it "stores multiple services" do
+			@profile.save.should be_true
+			Profile.find_by_last_name(@profile_data[:last_name]).services.should == @profile_data[:services]
+		end
+		
+		context "custom services" do
+			before(:each) do
+				@custom = [@profile_data[:services].first.name, 'story teller']
+				@profile.custom_service_names = @custom
+			end
+			
+			it "merges custom services" do
+				@profile.save.should == true
+				profile = Profile.find_by_last_name(@profile_data[:last_name])
+				profile.should have_exactly(@profile_data[:services].size + 1).services
+				profile.services.collect(&:name).include?(@custom.last).should be_true
 			end
 		end
 	end

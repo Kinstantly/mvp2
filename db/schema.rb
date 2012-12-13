@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121203011648) do
+ActiveRecord::Schema.define(:version => 20121213045508) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -86,8 +86,25 @@ ActiveRecord::Schema.define(:version => 20121203011648) do
     t.boolean  "is_published",       :default => false
   end
 
+  create_table "profiles_services", :force => true do |t|
+    t.integer "profile_id"
+    t.integer "service_id"
+  end
+
   create_table "profiles_specialties", :force => true do |t|
     t.integer "profile_id"
+    t.integer "specialty_id"
+  end
+
+  create_table "services", :force => true do |t|
+    t.string   "name"
+    t.boolean  "is_predefined", :default => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+  end
+
+  create_table "services_specialties", :force => true do |t|
+    t.integer "service_id"
     t.integer "specialty_id"
   end
 
