@@ -63,19 +63,23 @@
 				.check_box
 					= profile_categories_check_box_tag(profile, category, f)
 					= category.name
-		.custom_categories
-			Additional categories
-			= button_tag id: 'add_custom_categories_text_field' do
+		.services
+			= f.label :services, "Services"
+			%br
+			%span.predefined_services
+		.custom_services
+			Additional services
+			= button_tag id: 'add_custom_services_text_field' do
 				= content_tag :strong, '+ Add'
 			%br
-			= profile_custom_categories_hidden_field_tag(f)
-			- i = 0; profile_new_custom_categories(profile).each do |category|
+			= profile_custom_services_hidden_field_tag(f)
+			- i = 0; profile_new_custom_services(profile).each do |svc|
 				.text_field
-					= profile_custom_categories_text_field_tag(profile, category.name, "#{i = i+1}", f)
+					= profile_custom_services_text_field_tag(profile, svc.name, "#{i = i+1}", f)
 			.text_field
-				= profile_custom_categories_text_field_tag(profile, '', "#{i = i+1}", f)
-			- @profile_custom_categories_i = i
-			- @profile_custom_categories_text_field_template = profile_custom_categories_text_field_tag(profile, '', 'INDEX', f)
+				= profile_custom_services_text_field_tag(profile, '', "#{i = i+1}", f)
+			- @profile_custom_services_i = i
+			- @profile_custom_services_text_field_template = profile_custom_services_text_field_tag(profile, '', 'INDEX', f)
 		.specialties
 			= f.label :specialties, "Specialties"
 			%br
@@ -152,57 +156,93 @@
 		.admin_options
 			= profile_publish_check_box @profile
 			Check to publish
+
 :javascript
-	window.edit_user_profile = {
-		categories_specialties_map: null,
-		specialties_names: null,
-		specialties_check_box_cache: #{profile_specialties_check_box_cache(profile, 'check_box', f).to_json},
-		specialties_check_box_template: "#{escape_javascript profile_specialties_check_box(profile, '_ID_', '_NAME_', false, 'check_box', f)}"
+	window.edit_profile = {
+		parents: {}, maps: {}, names: {}, ids_names: {},
+		check_box_caches: {}, check_box_templates: {}, hidden_field_tags: {},
+		prompts: {}
 	};
-	var categories_specialties_info = #{profile_categories_specialties_info(profile).to_json};
-	edit_user_profile.categories_specialties_map = categories_specialties_info[0];
-	edit_user_profile.specialties_names = categories_specialties_info[1];
+	// categories -> services
+	edit_profile.parents['services'] = 'categories';
+	edit_profile.check_box_caches['services'] = 
+		#{profile_services_check_box_cache(profile, 'check_box', f).to_json};
+	edit_profile.check_box_templates['services'] = 
+		"#{escape_javascript profile_services_check_box(profile, '_ID_', '_NAME_', false, 'check_box', f)}";
+	var info = #{profile_categories_services_info(profile).to_json};
+	edit_profile.maps['services'] = info[0];
+	edit_profile.names['services'] = info[1];
+	edit_profile.ids_names['services'] = #{profile.service_ids_names.to_json};
+	edit_profile.hidden_field_tags['services'] = 
+		"#{escape_javascript profile_services_hidden_field_tag(f)}";
+	edit_profile.prompts['services'] = 
+		"#{escape_javascript content_tag(:div, 'Choose a category and we\'ll show you a list of services.', class: 'notice')}";
+	// services -> specialties
+	edit_profile.parents['specialties'] = 'services';
+	edit_profile.check_box_caches['specialties'] = 
+		#{profile_specialties_check_box_cache(profile, 'check_box', f).to_json};
+	edit_profile.check_box_templates['specialties'] = 
+		"#{escape_javascript profile_specialties_check_box(profile, '_ID_', '_NAME_', false, 'check_box', f)}";
+	var info = #{profile_services_specialties_info(profile).to_json};
+	edit_profile.maps['specialties'] = info[0];
+	edit_profile.names['specialties'] = info[1];
+	edit_profile.ids_names['specialties'] = #{profile.specialty_ids_names.to_json};
+	edit_profile.hidden_field_tags['specialties'] = 
+		"#{escape_javascript profile_specialties_hidden_field_tag(f)}";
+	edit_profile.prompts['specialties'] = 
+		"#{escape_javascript content_tag(:div, 'Choose a service and we\'ll show you a list of specialties.', class: 'notice')}";
+
 :coffeescript
-	# Add extra text input tags for custom categories.
-	profile_custom_categories_i = #{@profile_custom_categories_i}
-	$('#add_custom_categories_text_field').click (e) ->
-		e.preventDefault()
-		$('.custom_categories').append '<div class="text_field">'+'#{escape_javascript @profile_custom_categories_text_field_template}'.replace('INDEX', String(++profile_custom_categories_i))+'</div>'
-		$('.custom_categories input:last').focus()
-	
 	# Refresh display name as contributing input tags are modified.
 	refresh_display_name = () ->
 		$('.display_name').html profile_display_name($('#profile_first_name').val(), $('#profile_middle_name').val(), $('#profile_last_name').val(), $('#profile_credentials').val())
 	$('.display_name_field').keyup (e) ->
 		refresh_display_name()
 	
-	# Show specialties check boxes that belong to the checked categories.
-	show_specialties_check_boxes = ->
-		spec_choices = {}
-		$('.categories .check_box input').each ->
+	# Show child check boxes that belong to the checked parents.
+	show_check_boxes = (children) ->
+		choices = {}
+		$('.'+edit_profile.parents[children]+' .check_box input').each ->
 			if $(this).attr('checked')
-				cat_spec_ids = edit_user_profile.categories_specialties_map[$(this).val()]
-				if cat_spec_ids
-					spec_choices[edit_user_profile.specialties_names[spec_id]] = spec_id for spec_id in cat_spec_ids
+				ids = edit_profile.maps[children][$(this).val()]
+				if ids
+					choices[edit_profile.names[children][id]] = id for id in ids
 			true
-		spec_choices[spec.name] = spec.id for spec in #{profile.specialty_ids_names.to_json}
-		boxes = $('.predefined_specialties')
+		choices[id_name.name] = id_name.id for id_name in edit_profile.ids_names[children]
+		boxes = $('.predefined_'+children)
 		$('.check_box', boxes).each ->
-			edit_user_profile.specialties_check_box_cache[$('input', this).val()] = this
+			edit_profile.check_box_caches[children][$('input', this).val()] = this
 		boxes.empty()
-		boxes.append "#{escape_javascript profile_specialties_hidden_field_tag(f)}"
-		spec_names = Object.keys(spec_choices)
-		if spec_names.length > 0
-			for name in spec_names.sort((a, b) -> a.toLowerCase().localeCompare(b.toLowerCase()))
-				spec_id = spec_choices[name]
-				check_box = edit_user_profile.specialties_check_box_cache[spec_id] || edit_user_profile.specialties_check_box_template.replace(/_ID_/g, spec_id).replace(/_NAME_/g, name)
+		boxes.append edit_profile.hidden_field_tags[children]
+		names = Object.keys(choices)
+		if names.length > 0
+			for name in names.sort((a, b) -> a.toLowerCase().localeCompare(b.toLowerCase()))
+				id = choices[name]
+				check_box = edit_profile.check_box_caches[children][id] || edit_profile.check_box_templates[children].replace(/_ID_/g, id).replace(/_NAME_/g, name)
 				boxes.append check_box
 		else
-			boxes.append "#{escape_javascript content_tag(:div, 'Choose a category and we\'ll show you a list of specialties.', class: 'notice')}"
-	show_specialties_check_boxes()
-	# Redisplay specialties choices when categories are changed.
+			boxes.append edit_profile.prompts[children]
+		# If redisplaying services, we may have a new set of check boxes to monitor.
+		if children == 'services'
+			$('.services .check_box input').change (e) ->
+				show_check_boxes('specialties')
+	
+	# When a category is changed, redisplay all descendent choices.
 	$('.categories .check_box input').change (e) ->
-		show_specialties_check_boxes()
+		show_check_boxes('services')
+		show_check_boxes('specialties')
+	
+	# Show check boxes for services.
+	show_check_boxes('services')
+	# Show check boxes for specialties.
+	show_check_boxes('specialties')
+	
+	# Add extra text input tags for custom services.
+	profile_custom_services_i = #{@profile_custom_services_i}
+	$('#add_custom_services_text_field').click (e) ->
+		e.preventDefault()
+		$('.custom_services').append '<div class="text_field">'+'#{escape_javascript @profile_custom_services_text_field_template}'.replace('INDEX', String(++profile_custom_services_i))+'</div>'
+		$('.custom_services input:last').focus()
 	
 	# Add extra text input tags for custom specialties.
 	profile_custom_specialties_i = #{@profile_custom_specialties_i}

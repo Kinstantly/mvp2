@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Category do
 	before(:each) do
 		@category = Category.new
-		@category.name = 'child psychiatrist'
+		@category.name = 'THERAPISTS & PARENTING COACHES'
 	end
 	
 	it "has a name" do
@@ -16,18 +16,18 @@ describe Category do
 		Category.predefined.include?(@category).should be_true
 	end
 	
-	context "specialties" do
+	context "services" do
 		before(:each) do
-			@specialties = [FactoryGirl.create(:specialty, name: 'behavior'),
-				FactoryGirl.create(:specialty, name: 'adoption')]
-			@category.specialties = @specialties
+			@services = [FactoryGirl.create(:service, name: 'couples/family therapists'),
+				FactoryGirl.create(:service, name: 'occupational therapists')]
+			@category.services = @services
 			@category.save
 			@category = Category.find_by_name @category.name
 		end
 		
-		it "it has persistent associated specialties" do
-			@specialties.each do |spec|
-				@category.specialties.include?(spec).should be_true
+		it "it has persistent associated services" do
+			@services.each do |spec|
+				@category.services.include?(spec).should be_true
 			end
 		end
 	end

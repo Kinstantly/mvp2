@@ -3,6 +3,10 @@ class String
 		self.gsub(/[^A-Za-z0-9]/, '_')
 	end
 	
+	def html_escape
+		ERB::Util.html_escape self
+	end
+	
 	def to_db_singleton(singleton_class)
 		singleton_class.where(name: self).first_or_create
 	end

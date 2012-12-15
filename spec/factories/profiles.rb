@@ -13,6 +13,7 @@ FactoryGirl.define do
 		
 		after(:build) { |profile|
 			profile.categories = [FactoryGirl.create(:category)] if profile.categories.blank?
+			profile.services = [FactoryGirl.create(:service)] if profile.services.blank?
 			profile.specialties = [FactoryGirl.create(:specialty)] if profile.specialties.blank?
 		}
 	end

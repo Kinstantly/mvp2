@@ -12,6 +12,11 @@ def set_up_new_data
 		office_phone: '888-555-5555', url: 'http://UnattachedExpert.com' }
 	@published_profile_data ||= { first_name: 'Sandy', middle_name: 'A', last_name: 'Known',
 		office_phone: '888-555-7777', url: 'http://KnownExpert.com', is_published: true }
+	unless @predefined_category
+		@predefined_category = 'TUTORS'.to_category
+		@predefined_category.is_predefined = true
+		@predefined_category.save
+	end
 end
 
 def find_user_profile
@@ -108,16 +113,30 @@ Given /^I have a category of "(.*?)" in my profile$/ do |category|
 	@user.profile.save
 end
 
-Given /^I have a category of "(.*?)" in my profile that is associated with the "(.*?)" and "(.*?)" specialties$/ do |cat, spec1, spec2|
+Given /^I have a category of "(.*?)" in my profile that is associated with the "(.*?)" and "(.*?)" services$/ do |cat, svc1, svc2|
 	category = cat.to_category
-	category.specialties = [spec1.to_specialty, spec2.to_specialty]
+	category.services = [svc1.to_service, svc2.to_service]
 	category.save
 	@user.profile.categories = [category]
 	@user.profile.save
 end
 
-Given /^I have no predefined categories and no specialties in my profile$/ do
+Given /^I have no predefined categories and no services in my profile$/ do
 	@user.profile.categories = []
+	@user.profile.services = []
+	@user.profile.save
+end
+
+Given /^I have a service of "(.*?)" in my profile that is associated with the "(.*?)" and "(.*?)" specialties$/ do |svc, spec1, spec2|
+	service = svc.to_service
+	service.specialties = [spec1.to_specialty, spec2.to_specialty]
+	service.save
+	@user.profile.services = [service]
+	@user.profile.save
+end
+
+Given /^I have no predefined services and no specialties in my profile$/ do
+	@user.profile.services = []
 	@user.profile.specialties = []
 	@user.profile.save
 end
@@ -130,11 +149,26 @@ Given /^the "(.*?)" and "(.*?)" categories are predefined$/ do |cat1, cat2|
 	end
 end
 
-Given /^the predefined category of "(.*?)" is associated with the "(.*?)" and "(.*?)" specialties$/ do |cat, spec1, spec2|
+Given /^the predefined category of "(.*?)" is associated with the "(.*?)" and "(.*?)" services$/ do |cat, svc1, svc2|
 	category = cat.to_category
 	category.is_predefined = true
-	category.specialties = [spec1.to_specialty, spec2.to_specialty]
+	category.services = [svc1.to_service, svc2.to_service]
 	category.save
+end
+
+Given /^the "(.*?)" and "(.*?)" services are predefined$/ do |svc1, svc2|
+	[svc1, svc2].each do |svc|
+		service = svc.to_service
+		service.is_predefined = true
+		service.save
+	end
+end
+
+Given /^the predefined service of "(.*?)" is associated with the "(.*?)" and "(.*?)" specialties$/ do |svc, spec1, spec2|
+	service = svc.to_service
+	service.is_predefined = true
+	service.specialties = [spec1.to_specialty, spec2.to_specialty]
+	service.save
 end
 
 Given /^there is an unclaimed profile$/ do
@@ -155,8 +189,11 @@ When /^I enter new profile information$/ do
 	fill_in 'profile_middle_name', with: @unattached_profile_data[:middle_name]
 	fill_in 'profile_last_name', with: @unattached_profile_data[:last_name]
 	fill_in 'Website', with: @unattached_profile_data[:url]
-	within('.custom_categories') do
-		fill_in MyHelpers.profile_custom_categories_id('1'), with: 'teacher'
+	within('.categories') do
+		check MyHelpers.profile_categories_id(@predefined_category.id)
+	end
+	within('.custom_services') do
+		fill_in MyHelpers.profile_custom_services_id('1'), with: 'teacher'
 	end
 	within('.custom_specialties') do
 		fill_in MyHelpers.profile_custom_specialties_id('1'), with: 'teaching'
@@ -168,11 +205,15 @@ When /^I view my profile$/ do
 end
 
 When /^I enter my basic profile information$/ do
+	set_up_new_data
 	fill_in 'profile_first_name', with: @profile_data[:first_name]
 	fill_in 'profile_middle_name', with: @profile_data[:middle_name]
 	fill_in 'profile_last_name', with: @profile_data[:last_name]
-	within('.custom_categories') do
-		fill_in MyHelpers.profile_custom_categories_id('1'), with: 'teacher'
+	within('.categories') do
+		check MyHelpers.profile_categories_id(@predefined_category.id)
+	end
+	within('.custom_services') do
+		fill_in MyHelpers.profile_custom_services_id('1'), with: 'teacher'
 	end
 	within('.custom_specialties') do
 		fill_in MyHelpers.profile_custom_specialties_id('1'), with: 'teaching'
@@ -227,9 +268,9 @@ When /^I check "(.*?)"$/ do |field|
 	check field
 end
 
-When /^I select the "(.*?)" category$/ do |category|
+When /^I select the "(.*?)" category$/ do |cat|
 	within('.categories') do
-		check MyHelpers.profile_categories_id(category.to_category.id)
+		check MyHelpers.profile_categories_id(cat.to_category.id)
 	end
 end
 
@@ -240,12 +281,25 @@ When /^I select the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
 	end
 end
 
+When /^I select the "(.*?)" service$/ do |svc|
+	within('.services') do
+		check MyHelpers.profile_services_id(svc.to_service.id)
+	end
+end
+
+When /^I select the "(.*?)" and "(.*?)" services$/ do |svc1, svc2|
+	within('.services') do
+		check MyHelpers.profile_services_id(svc1.to_service.id)
+		check MyHelpers.profile_services_id(svc2.to_service.id)
+	end
+end
+
 # This step requires javascript.
-When /^I add the "(.*?)" and "(.*?)" custom categories$/ do |cat1, cat2|
-	within('.custom_categories') do
-		fill_in MyHelpers.profile_custom_categories_id('1'), with: cat1
-		click_button 'add_custom_categories_text_field'
-		fill_in MyHelpers.profile_custom_categories_id('2'), with: cat2
+When /^I add the "(.*?)" and "(.*?)" custom services$/ do |svc1, svc2|
+	within('.custom_services') do
+		fill_in MyHelpers.profile_custom_services_id('1'), with: svc1
+		click_button 'add_custom_services_text_field'
+		fill_in MyHelpers.profile_custom_services_id('2'), with: svc2
 	end
 end
 
@@ -275,6 +329,7 @@ When /^I visit the profile index page$/ do
 end
 
 When /^I visit the new profile page$/ do
+	set_up_new_data
 	visit new_profile_path
 end
 
@@ -356,43 +411,37 @@ Then /^my profile should show "(.*?)" in the location area$/ do |value|
 	end
 end
 
-Then /^my profile should show me as being in the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
-	within('.categories') do
-		page.should have_content cat1
-		page.should have_content cat2
+Then /^my profile should show me as being in the "(.*?)" and "(.*?)" (.*?)$/ do |name1, name2, things|
+	within(".#{things}") do
+		page.should have_content name1
+		page.should have_content name2
 	end
 end
 
-Then /^my profile should show me as being in the "(.*?)" category$/ do |category|
-	within('.category') do
-		page.should have_content category
+Then /^the "(.*?)" and "(.*?)" services should appear in the profile edit check list$/ do |svc1, svc2|
+	within('.services') do
+		page.should have_content svc1
+		page.should have_content svc2
 	end
 end
 
-Then /^the "(.*?)" and "(.*?)" categories should appear in the profile edit check list$/ do |cat1, cat2|
-	within('.categories') do
-		page.should have_content cat1
-		page.should have_content cat2
+Then /^then I should be offered the "(.*?)" and "(.*?)" (.*?)$/ do |name1, name2, things|
+	within(".#{things}") do
+		page.should have_content name1
+		page.should have_content name2
 	end
 end
 
-Then /^then I should be offered the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
-	within('.specialties') do
-		page.should have_content spec1
-		page.should have_content spec2
+Then /^my profile should show me as having the "(.*?)" and "(.*?)" (.*?)$/ do |name1, name2, things|
+	within(".#{things}") do
+		page.should have_content name1
+		page.should have_content name2
 	end
 end
 
-Then /^my profile should show me as having the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
-	within('.specialties') do
-		page.should have_content spec1
-		page.should have_content spec2
-	end
-end
-
-Then /^I should be offered no specialties$/ do
-	within('.specialties') do
-		page.should_not have_content FactoryGirl.attributes_for(:specialty)[:name]
+Then /^I should be offered no (.*?)$/ do |things|
+	within(".#{things}") do
+		page.should_not have_content FactoryGirl.attributes_for(things.singularize.to_sym)[:name]
 	end
 end
 

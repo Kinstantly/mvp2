@@ -71,41 +71,69 @@ Feature: Edit my expert profile
 		Then my country code should be set to "CA"
 	
 	Scenario: Select categories
-		Given the "child psychiatrist" and "developmental-behavioral pediatrician" categories are predefined
+		Given the "THERAPISTS & PARENTING COACHES" and "TUTORS & COUNSELORS" categories are predefined
 			And I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I select the "child psychiatrist" and "developmental-behavioral pediatrician" categories
+		When I select the "THERAPISTS & PARENTING COACHES" and "TUTORS & COUNSELORS" categories
 			And I save my profile
-		Then my profile should show me as being in the "child psychiatrist" and "developmental-behavioral pediatrician" categories
+		Then my profile should show me as being in the "THERAPISTS & PARENTING COACHES" and "TUTORS & COUNSELORS" categories
+		
+	@javascript
+	Scenario: Select services associated with my category
+		Given I exist as a user
+			And I am logged in
+			And I have a category of "THERAPISTS & PARENTING COACHES" in my profile that is associated with the "child psychologist" and "child psychiatrist" services
+			And I am on my profile edit page
+		When I select the "child psychologist" and "child psychiatrist" services
+			And I save my profile
+		Then my profile should show me as having the "child psychologist" and "child psychiatrist" services
 	
 	@javascript
-	Scenario: Add custom categories
+	Scenario: Offer services for predefined category
+		Given the predefined category of "THERAPISTS & PARENTING COACHES" is associated with the "child psychologist" and "child psychiatrist" services
+			And I exist as a user
+			And I want my profile
+			And I am logged in
+			And I am on my profile edit page
+		When I select the "THERAPISTS & PARENTING COACHES" category
+		Then then I should be offered the "child psychologist" and "child psychiatrist" services
+	
+	@javascript
+	Scenario: Offer no predefined services when I have selected no predefined categories
+		Given I exist as a user
+			And I am logged in
+			And I have no predefined categories and no services in my profile
+		When I am on my profile edit page
+		Then I should be offered no services
+
+	@javascript
+	Scenario: Add custom services
 		Given I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I add the "story-book reader" and "dream catcher" custom categories
+		When I add the "story-book reader" and "dream catcher" custom services
 			And I save my profile
-		Then my profile should show me as being in the "story-book reader" and "dream catcher" categories
+		Then my profile should show me as being in the "story-book reader" and "dream catcher" services
 		
 	@javascript
-	Scenario: Added custom categories appear in check list on next profile edit
+	Scenario: Added custom services appear in check list on next profile edit
 		Given I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I add the "story-book reader" and "dream catcher" custom categories
+		When I add the "story-book reader" and "dream catcher" custom services
 			And I save my profile
 			And I go to my profile edit page
-		Then the "story-book reader" and "dream catcher" categories should appear in the profile edit check list
+		Then the "story-book reader" and "dream catcher" services should appear in the profile edit check list
 		
 	@javascript
-	Scenario: Select specialties
+	Scenario: Select specialties associated with my service
 		Given I exist as a user
 			And I am logged in
-			And I have a category of "child psychiatrist" in my profile that is associated with the "behavior" and "adoption" specialties
+			And I have a service of "child psychiatrist" in my profile that is associated with the "behavior" and "adoption" specialties
 			And I am on my profile edit page
 		When I select the "behavior" and "adoption" specialties
 			And I save my profile
@@ -122,20 +150,21 @@ Feature: Edit my expert profile
 		Then my profile should show me as having the "story-books" and "dreams" specialties
 	
 	@javascript
-	Scenario: Offer specialties for given categories
-		Given the predefined category of "child psychiatrist" is associated with the "adoption" and "toilet training" specialties
+	Scenario: Offer specialties for predefined service
+		Given the predefined category of "THERAPISTS & PARENTING COACHES" is associated with the "child psychologist" and "child psychiatrist" services
+			And the predefined service of "child psychiatrist" is associated with the "adoption" and "toilet training" specialties
 			And I exist as a user
-			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I select the "child psychiatrist" category
+		When I select the "THERAPISTS & PARENTING COACHES" category
+			And I select the "child psychiatrist" service
 		Then then I should be offered the "adoption" and "toilet training" specialties
 	
 	@javascript
-	Scenario: Offer no predefined specialties when I have selected no predefined categories
+	Scenario: Offer no predefined specialties when I have selected no predefined services
 		Given I exist as a user
 			And I am logged in
-			And I have no predefined categories and no specialties in my profile
+			And I have no predefined services and no specialties in my profile
 		When I am on my profile edit page
 		Then I should be offered no specialties
 

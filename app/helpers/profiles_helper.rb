@@ -60,12 +60,22 @@ module ProfilesHelper
 		end
 	end
 	
-	def profile_categories_specialties_info(profile)
+	def profile_categories_services_info(profile)
 		map = {}
 		names = {}
 		(Category.predefined + profile.categories).uniq.each { |cat|
-			map[cat.id] = cat.specialties.collect(&:id)
-			cat.specialties.each { |spec| names[spec.id] = spec.name unless names[spec.id] }
+			map[cat.id] = cat.services.collect(&:id)
+			cat.services.each { |svc| names[svc.id] = svc.name.html_escape unless names[svc.id] }
+		}
+		[map, names]
+	end
+
+	def profile_services_specialties_info(profile)
+		map = {}
+		names = {}
+		(Service.predefined + profile.services).uniq.each { |svc|
+			map[svc.id] = svc.specialties.collect(&:id)
+			svc.specialties.each { |spec| names[spec.id] = spec.name.html_escape unless names[spec.id] }
 		}
 		[map, names]
 	end
@@ -114,6 +124,62 @@ module ProfilesHelper
 	
 	def profile_custom_categories_text_field_tag(profile, value, suffix, form_builder=nil)
 		text_field_tag profile_custom_categories_tag_name(form_builder), value, id: profile_custom_categories_id(suffix)
+	end
+	
+	# Services helpers
+	
+	def profile_service_choices(profile)
+		(Service.predefined + profile.services.reject(&:new_record?)).uniq.sort { |a, b| a.name.casecmp b.name }
+	end
+	
+	def profile_new_custom_services(profile)
+		(profile.custom_services.presence || []).select(&:new_record?)
+	end
+	
+	def profile_services_id(s)
+		"profile_services_#{s.to_s.to_alphanumeric}"
+	end
+	
+	def profile_services_tag_name(form_builder=nil)
+		profile_attribute_tag_name 'service_ids', form_builder
+	end
+	
+	def profile_services_hidden_field_tag(form_builder=nil)
+		hidden_field_tag profile_services_tag_name(form_builder), '', id: profile_services_id('hidden_field')
+	end
+	
+	def profile_services_check_box(profile, id, name, checked, wrapper_class, form_builder=nil)
+		content_tag :div, class: wrapper_class do
+			check_box_tag(profile_services_tag_name(form_builder), id, checked, id: profile_services_id(id)) + " #{name}"
+		end
+	end
+	
+	def profile_services_check_box_cache(profile, wrapper_class, form_builder=nil)
+		cache = {}
+		profile.services.uniq.each do |svc|
+			cache[svc.id] = profile_services_check_box profile, svc.id, svc.name, true, wrapper_class, form_builder
+		end
+		cache
+	end
+	
+	def profile_display_services(profile=current_user.try(:profile))
+		display_profile_item_names profile.try(:services)
+	end
+	
+	def profile_custom_services_id(s)
+		profile_services_id "custom_#{s}"
+	end
+	
+	def profile_custom_services_tag_name(form_builder=nil)
+		profile_attribute_tag_name 'custom_service_names', form_builder
+	end
+	
+	def profile_custom_services_hidden_field_tag(form_builder=nil)
+		hidden_field_tag profile_custom_services_tag_name(form_builder), '', id: profile_custom_services_id('hidden_field')
+	end
+	
+	def profile_custom_services_text_field_tag(profile, value, suffix, form_builder=nil)
+		text_field_tag profile_custom_services_tag_name(form_builder), value, id: profile_custom_services_id(suffix)
 	end
 	
 	# Specialties helpers
