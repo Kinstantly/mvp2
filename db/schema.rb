@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121217222116) do
+ActiveRecord::Schema.define(:version => 20121218205905) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -67,8 +67,8 @@ ActiveRecord::Schema.define(:version => 20121217222116) do
     t.string   "url"
     t.string   "mobile_phone"
     t.string   "office_phone"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.integer  "user_id"
     t.string   "credentials"
     t.string   "headline"
@@ -88,7 +88,11 @@ ActiveRecord::Schema.define(:version => 20121217222116) do
     t.text     "insurance_accepted"
     t.text     "rates"
     t.text     "availability"
-    t.boolean  "is_published",       :default => false
+    t.boolean  "is_published",          :default => false
+    t.text     "office_hours"
+    t.text     "phone_hours"
+    t.text     "video_hours"
+    t.boolean  "accepting_new_clients", :default => true
   end
 
   create_table "profiles_services", :force => true do |t|

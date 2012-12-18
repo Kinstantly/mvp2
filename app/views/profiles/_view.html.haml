@@ -44,6 +44,9 @@
 			%span.label Ages:
 			= profile_age_ranges profile
 	.professional_profile
+		.accepting_new_clients
+			%span.label
+				= profile_display_accepting_new_clients profile
 		.consultations
 			%span.label Consultations by:
 			= profile_display_consultation_modes profile
@@ -78,3 +81,15 @@
 			%span.label Availability:
 			%br
 			.value.text_area= preserve profile.availability
+		.office_hours
+			%span.label Office hours:
+			%br
+			.value.text_area= preserve profile.office_hours
+		.phone_hours
+			%span.label Phone consultation hours:
+			%br
+			.value.text_area= preserve profile.phone_hours
+		.video_hours
+			%span.label Video consultation hours:
+			%br
+			.value.text_area= preserve profile.video_hours

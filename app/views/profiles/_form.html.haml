@@ -106,6 +106,10 @@
 					= profile_age_ranges_check_box_tag(profile, age_range, f)
 					= age_range.name
 	.professional_profile
+		.accepting_new_clients
+			.check_box
+				= f.check_box :accepting_new_clients
+				= f.label :accepting_new_clients, "Accepting new clients"
 		.consultations
 			.check_box
 				= f.check_box :consult_by_email
@@ -151,7 +155,19 @@
 		.availability
 			.label_area
 				= f.label :availability, "Next available appointments"
-			= f.text_area :availability, size: '50x5'
+			= f.text_area :availability, size: '30x5'
+		.office_hours
+			.label_area
+				= f.label :office_hours, "Office hours"
+			= f.text_area :office_hours, size: '30x5'
+		.phone_hours
+			.label_area
+				= f.label :phone_hours, "Phone consultation hours"
+			= f.text_area :phone_hours, size: '30x5'
+		.video_hours
+			.label_area
+				= f.label :video_hours, "Video consultation hours"
+			= f.text_area :video_hours, size: '30x5'
 	- if current_user.admin?
 		.admin_options
 			= profile_publish_check_box @profile

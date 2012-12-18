@@ -270,4 +270,9 @@ module ProfilesHelper
 		modes.push 'school' if profile.visit_school
 		modes.join ', '
 	end
+	
+	# Accepting new clients
+	def profile_display_accepting_new_clients(profile)
+		profile.accepting_new_clients ? 'Accepting new clients' : 'Not accepting new clients at this time'
+	end
 end
