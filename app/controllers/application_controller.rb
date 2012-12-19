@@ -1,7 +1,10 @@
 class ApplicationController < ActionController::Base
 	protect_from_forgery
 	
-	rescue_from CanCan::AccessDenied do |exception|
+	# What to do if access is denied.
+	# Also, prevent fishing for existing, but protected, records on production by making it look like access was denied.
+	rescue_from CanCan::AccessDenied, ActiveRecord::RecordNotFound do |exception|
+		raise exception if exception.is_a?(ActiveRecord::RecordNotFound) && ENV["RAILS_ENV"] != 'production'
 		# render file: "#{Rails.root}/public/403", formats: [:html], status: 403, layout: false
 		set_flash_message :alert, :access_denied
 		redirect_to root_url
