@@ -8,6 +8,7 @@
 					%th Name
 					- if can? :manage, Profile
 						%th Published?
+					%th New clients?
 					%th Company name
 					%th Website
 					%th Headline
@@ -16,6 +17,7 @@
 					%th Mobile
 					%th Office
 					%th.large Categories
+					%th.large Jobs or Services
 					%th.large Specialties
 					%th Ages
 					%th Consultations
@@ -27,12 +29,16 @@
 					%th.large Summary
 					%th Rates
 					%th.large Availability
+					%th.large Office hours
+					%th.large Phone consultation hours
+					%th.large Video consultation hours
 			%tbody
 				- @profiles.sort{|a, b| a.last_name.casecmp b.last_name}.each do |p|
 					%tr
 						%td= profile_list_name_link p
 						- if can? :manage, Profile
 							%td= p.try(:is_published) ? 'Published' : 'Not published'
+						%td= profile_display_accepting_new_clients p
 						%td= p.try(:company_name)
 						%td= p.try(:url)
 						%td= p.try(:headline)
@@ -40,8 +46,9 @@
 						%td= p.try(:email)
 						%td= p.try(:mobile_phone)
 						%td= p.try(:office_phone)
-						%td= profile_display_categories(p)
-						%td= profile_display_specialties(p)
+						%td= profile_display_categories p
+						%td= profile_display_services p
+						%td= profile_display_specialties p
 						%td= profile_age_ranges p
 						%td= profile_display_consultation_modes p
 						%td= profile_display_visitation_modes p
@@ -52,3 +59,6 @@
 						%td.text_area= preserve p.try(:summary)
 						%td.text_area= preserve p.try(:rates)
 						%td.text_area= preserve p.try(:availability)
+						%td.text_area= preserve p.try(:office_hours)
+						%td.text_area= preserve p.try(:phone_hours)
+						%td.text_area= preserve p.try(:video_hours)
