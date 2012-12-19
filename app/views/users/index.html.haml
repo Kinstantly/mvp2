@@ -6,9 +6,21 @@
 					%th Login email
 					%th Name
 					%th Profile (click to view)
+					%th Roles
+					%th Current sign-in
+					%th Last sign-in
+					%th Sign-in count
+					%th Created
+					%th Updated
 			%tbody
 				- @users.sort{|a, b| a.email.casecmp b.email}.each do |u|
 					%tr
 						%td= u.email
 						%td= profile_display_name u.profile
 						%td= user_list_profile_link u.profile
+						%td= u.roles.join(', ')
+						%td= u.current_sign_in_at
+						%td= u.last_sign_in_at
+						%td= u.sign_in_count
+						%td= u.created_at
+						%td= u.updated_at
