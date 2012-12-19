@@ -37,6 +37,9 @@ gem 'devise'
 # Authorization library.
 gem 'cancan'
 
+# Sitemap generation and search engine pinging.
+gem 'sitemap_generator'
+
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
 	gem 'cucumber-rails', '~> 1.0', require: false

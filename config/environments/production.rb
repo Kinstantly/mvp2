@@ -80,3 +80,5 @@ Mvp2::Application.configure do
 	config.action_mailer.default_url_options = { :host => 'get-answers-5555.herokuapp.com' }
 
 end
+
+SITEMAP_DEFAULT_HOST = 'http://get-answers-5555.herokuapp.com/'

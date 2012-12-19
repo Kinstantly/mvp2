@@ -13,3 +13,6 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Ignore dynamically generated sitemaps.
+/public/sitemap[0-9_]*.xml*
