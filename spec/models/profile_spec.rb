@@ -4,8 +4,7 @@ describe Profile do
 	before(:each) do
 		@profile_data ||= {
 			first_name: 'Joe', last_name: 'Black',
-			categories: [FactoryGirl.create(:category, name: 'board-certified behavior analyst'),
-				FactoryGirl.create(:category, name: 'child/clinical psychologist')],
+			categories: [FactoryGirl.create(:category, name: 'THERAPISTS & PARENTING COACHES')],
 			services: [FactoryGirl.create(:service, name: 'board-certified behavior analyst'),
 				FactoryGirl.create(:service, name: 'child/clinical psychologist')],
 			specialties: [FactoryGirl.create(:specialty, name: 'behavior'), 
@@ -29,28 +28,20 @@ describe Profile do
 	end
 	
 	context "categories" do
-		it "stores multiple categories" do
+		it "stores a category" do
 			@profile.save.should be_true
 			Profile.find_by_last_name(@profile_data[:last_name]).categories.should == @profile_data[:categories]
 		end
 		
-		it "requires at least one category" do
+		it "requires a category" do
 			@profile.categories = []
 			@profile.should have(1).errors_on(:categories)
 		end
 		
-		context "custom categories" do
-			before(:each) do
-				@custom = [@profile_data[:categories].first.name, 'story teller']
-				@profile.custom_category_names = @custom
-			end
-			
-			it "merges custom categories" do
-				@profile.save.should == true
-				profile = Profile.find_by_last_name(@profile_data[:last_name])
-				profile.should have_exactly(@profile_data[:categories].size + 1).categories
-				profile.categories.collect(&:name).include?(@custom.last).should be_true
-			end
+		it "allows only one category" do
+			@profile.categories = @profile_data[:categories]
+			@profile.categories << FactoryGirl.create(:category, name: 'MISC.')
+			@profile.should have(1).errors_on(:categories)
 		end
 	end
 	

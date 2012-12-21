@@ -76,9 +76,9 @@ Feature: Edit my expert profile
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I select the "THERAPISTS & PARENTING COACHES" and "TUTORS & COUNSELORS" categories
+		When I select the "TUTORS & COUNSELORS" category
 			And I save my profile
-		Then my profile should show me as being in the "THERAPISTS & PARENTING COACHES" and "TUTORS & COUNSELORS" categories
+		Then my profile should show me as being in the "TUTORS & COUNSELORS" category
 		
 	@javascript
 	Scenario: Select services associated with my category
@@ -143,7 +143,7 @@ Feature: Edit my expert profile
 	Scenario: Add custom specialties
 		Given I exist as a user
 			And I am logged in
-			And I have a category of "developmental-behavioral pediatrician" in my profile
+			And I have a category of "THERAPISTS & PARENTING COACHES" in my profile
 			And I am on my profile edit page
 		When I add the "story-books" and "dreams" custom specialties
 			And I save my profile

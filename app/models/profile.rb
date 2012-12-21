@@ -21,7 +21,7 @@ class Profile < ActiveRecord::Base
 	has_many :locations, dependent: :destroy
 	accepts_nested_attributes_for :locations
 	
-	validates_presence_of :categories, message: "must be chosen"
+	validates :categories, length: {is: 1, message: "must be chosen"}
 	
 	# Merge in custom categories and specialties.
 	before_validation do
