@@ -56,7 +56,7 @@
 				= lf.hidden_field :country, value: country
 	.expertise_profile
 		.categories
-			= f.label :categories, "Categories", class: 'required'
+			= f.label :categories, "Category", class: 'required'
 			%br
 			= profile_categories_hidden_field_tag(f)
 			- profile_category_choices(profile).each do |category|
