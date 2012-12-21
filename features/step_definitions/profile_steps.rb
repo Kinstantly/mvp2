@@ -356,20 +356,20 @@ end
 ### THEN ###
 
 Then /^I should see my profile information$/ do
-	within('.display_name') do
+	within('.view_profile .display_name') do
 		page.should have_content @profile.first_name
 		page.should have_content @profile.last_name
 	end
 end
 
 Then /^I should see one of my categories$/ do
-	within('.categories') do
+	within('.view_profile .categories') do
 		page.should have_content @profile.categories.first.name
 	end
 end
 
 Then /^I should see one of my specialties$/ do
-	within('.specialties') do
+	within('.view_profile .specialties') do
 		page.should have_content @profile.specialties.first.name
 	end
 end
@@ -406,7 +406,7 @@ Then /^my profile should show "(.*?)"$/ do |value|
 end
 
 Then /^my profile should show "(.*?)" in the location area$/ do |value|
-	within('.location_contact_profile') do
+	within('.view_profile .location_contact_profile') do
 		page.should have_content value
 	end
 end
@@ -425,34 +425,34 @@ Then /^my profile should show me as being in the "(.*?)" and "(.*?)" (.*?)$/ do 
 end
 
 Then /^the "(.*?)" and "(.*?)" services should appear in the profile edit check list$/ do |svc1, svc2|
-	within('.services') do
+	within('.edit_profile .services') do
 		page.should have_content svc1
 		page.should have_content svc2
 	end
 end
 
 Then /^then I should be offered the "(.*?)" and "(.*?)" (.*?)$/ do |name1, name2, things|
-	within(".#{things}") do
+	within(".edit_profile .#{things}") do
 		page.should have_content name1
 		page.should have_content name2
 	end
 end
 
 Then /^my profile should show me as having the "(.*?)" and "(.*?)" (.*?)$/ do |name1, name2, things|
-	within(".#{things}") do
+	within(".view_profile .#{things}") do
 		page.should have_content name1
 		page.should have_content name2
 	end
 end
 
 Then /^I should be offered no (.*?)$/ do |things|
-	within(".#{things}") do
+	within(".edit_profile .#{things}") do
 		page.should_not have_content FactoryGirl.attributes_for(things.singularize.to_sym)[:name]
 	end
 end
 
 Then /^my profile should show the "(.*?)" age range$/ do |age_range|
-	within('.age_ranges') do
+	within('.view_profile .age_ranges') do
 		page.should have_content age_range
 	end
 end
@@ -508,7 +508,7 @@ end
 
 # Dynamic display showing what the display name will be after saving.
 Then /^the display name should be dynamically shown as "(.*?)"$/ do |display_name|
-	within('.display_name') do
+	within('.edit_profile .display_name') do
 		page.should have_content display_name
 	end 
 end
@@ -521,7 +521,7 @@ Then /^the display name should be updated to "(.*?)"$/ do |display_name|
 end
 
 Then /^I should see profile data for that user$/ do
-	within('.url') do
+	within('.view_profile .url') do
 		page.should have_content @profile_data[:url]
 	end
 end
