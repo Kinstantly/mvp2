@@ -41,3 +41,4 @@ Mvp2::Application.configure do
 end
 
 SITEMAP_DEFAULT_HOST = 'http://localhost:3000/'
+SITEMAP_SITEMAPS_PATH = 'sitemaps_dev/'

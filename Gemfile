@@ -38,7 +38,11 @@ gem 'devise'
 gem 'cancan'
 
 # Sitemap generation and search engine pinging.
+# Can upload sitemaps to AWS S3 (see below).
 gem 'sitemap_generator'
+
+# AWS S3 access.
+gem 'fog'
 
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'

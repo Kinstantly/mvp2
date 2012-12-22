@@ -82,3 +82,4 @@ Mvp2::Application.configure do
 end
 
 SITEMAP_DEFAULT_HOST = 'http://get-answers-5555.herokuapp.com/'
+SITEMAP_SITEMAPS_PATH = 'sitemaps/'
