@@ -36,9 +36,9 @@ Mvp2::Application.configure do
   config.assets.debug = true
 
 	# Devise needs this for its email.
-	config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+	config.action_mailer.default_url_options = { :host => 'localhost:5000' }
 
 end
 
-SITEMAP_DEFAULT_HOST = 'http://localhost:3000/'
+SITEMAP_DEFAULT_HOST = 'http://localhost:5000/'
 SITEMAP_SITEMAPS_PATH = 'sitemaps_dev/'
