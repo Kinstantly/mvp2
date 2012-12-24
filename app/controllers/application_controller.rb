@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 		raise exception if exception.is_a?(ActiveRecord::RecordNotFound) && ENV["RAILS_ENV"] != 'production'
 		# render file: "#{Rails.root}/public/403", formats: [:html], status: 403, layout: false
 		set_flash_message :alert, :access_denied
-		redirect_to root_url
+		redirect_to(user_signed_in? ? root_path : new_user_session_path)
 	end
 
 	# If we are a User, go to the edit_profile page after sign-up or sign-in.
