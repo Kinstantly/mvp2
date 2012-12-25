@@ -30,6 +30,22 @@ class Profile < ActiveRecord::Base
 		self.specialties = ((specialties.presence || []) + (custom_specialties.presence || [])).uniq
 	end
 	
+	# Solr search configuration.
+	searchable do
+		text :first_name, :last_name, :middle_name, :credentials, 
+			:email, :company_name, :url, :mobile_phone, :office_phone, 
+			:headline, :education, :experience, :certifications, :awards, :languages, :insurance_accepted, :summary, 
+			:languages, :insurance_accepted, :summary, :rates, :availability, 
+			:office_hours, :phone_hours, :video_hours
+		boolean :is_published
+		boolean :consult_by_email
+		boolean :consult_by_phone
+		boolean :consult_by_video
+		boolean :visit_home
+		boolean :visit_school
+		boolean :accepting_new_clients
+	end
+	
 	def custom_category_names=(names=[])
 		self.custom_categories = remove_blanks(names).collect(&:to_category)
 	end

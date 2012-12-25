@@ -12,7 +12,11 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
+/log/*.log.lck
 /tmp
 
 # Ignore dynamically generated sitemaps.
 /public/sitemap[0-9_]*.xml*
+
+# Ignore Solr dev files.
+/solr

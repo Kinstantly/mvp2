@@ -44,6 +44,12 @@ gem 'sitemap_generator'
 # AWS S3 access.
 gem 'fog'
 
+# Search with the Solr search engine.
+gem 'sunspot_rails'
+
+# Show progress on the console of long-running tasks.
+gem 'progress_bar'
+
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
 	gem 'cucumber-rails', '~> 1.0', require: false
@@ -55,6 +61,7 @@ group :development, :test do
 	gem 'capybara-webkit'
 	gem 'launchy', '~> 2.1'
 	gem 'syntax'
+	gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in development
 end
 
 # To use ActiveModel has_secure_password
