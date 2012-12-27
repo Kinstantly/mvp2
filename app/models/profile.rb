@@ -70,6 +70,12 @@ class Profile < ActiveRecord::Base
 		locations.build if locations.blank?
 	end
 	
+	def display_name
+		name = join_present_attrs ' ', :first_name, :middle_name, :last_name
+		name += ", #{credentials}" if credentials.present?
+		name
+	end
+	
 	private
 	
 	def remove_blanks(strings=[])

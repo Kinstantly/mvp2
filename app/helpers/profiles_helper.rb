@@ -1,15 +1,6 @@
 module ProfilesHelper
-	def join_fields(field_array=[], separator=' ', obj=nil)
-		field_array.map { |field|
-				obj.try(field).presence
-			}.compact.join(separator)
-	end
-	
 	def location_display_address(location=current_user.try(:profile).try(:locations).try(:first))
-		addr = join_fields [:address1, :address2, :city, :region, :country], ', ', location
-		postal_code = location.try(:postal_code)
-		addr += " #{postal_code}" if postal_code.present?
-		addr
+		location.try(:display_address).presence || ''
 	end
 	
 	def display_profile_item_names(items)
@@ -25,10 +16,7 @@ module ProfilesHelper
 	end
 	
 	def profile_display_name(profile=current_user.try(:profile))
-		cred = profile.try(:credentials)
-		name = join_fields [:first_name, :middle_name, :last_name], ' ', profile
-		name += ", #{cred}" if cred.present?
-		name
+		profile.try(:display_name).presence || ''
 	end
 	
 	def profile_age_ranges(profile=current_user.try(:profile))
