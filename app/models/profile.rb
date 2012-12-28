@@ -37,6 +37,20 @@ class Profile < ActiveRecord::Base
 			:headline, :education, :experience, :certifications, :awards, :languages, :insurance_accepted, :summary, 
 			:languages, :insurance_accepted, :summary, :rates, :availability, 
 			:office_hours, :phone_hours, :video_hours
+		
+		text :locations do
+			locations.map &:display_address
+		end
+		text :categories do
+			categories.map &:name
+		end
+		text :services do
+			services.map &:name
+		end
+		text :specialties do
+			specialties.map &:name
+		end
+		
 		boolean :is_published
 		boolean :consult_by_email
 		boolean :consult_by_phone
@@ -44,6 +58,17 @@ class Profile < ActiveRecord::Base
 		boolean :visit_home
 		boolean :visit_school
 		boolean :accepting_new_clients
+		integer :age_range_ids, multiple: true
+		integer :category_ids, multiple: true
+		integer :service_ids, multiple: true
+		integer :specialty_ids, multiple: true
+		
+		string :last_name do
+			last_name.strip.downcase
+		end
+		
+		# For highlighting.
+		text :summary, stored: true
 	end
 	
 	def custom_category_names=(names=[])
