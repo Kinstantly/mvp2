@@ -18,5 +18,6 @@
 # Ignore dynamically generated sitemaps.
 /public/sitemap[0-9_]*.xml*
 
-# Ignore Solr dev files.
-/solr
+# Ignore Solr dev files that are not configuration.
+/solr/data
+/solr/pids
