@@ -15,6 +15,11 @@ class User < ActiveRecord::Base
 	
 	serialize :roles, Array
 	
+	# Solr search configuration.
+	searchable do
+		text :email, :phone
+	end
+	
 	def add_role(role)
 		roles << role.to_sym if role && !has_role?(role)
 	end
