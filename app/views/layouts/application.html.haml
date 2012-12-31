@@ -19,6 +19,7 @@
 			%span.nav_el= sign_in_out_link
 			%span.nav_el= admin_profile_list_link
 			%span.nav_el= admin_user_list_link
+			= render partial: 'profiles/search_form'
 			.flash_messages
 				.notice= notice
 				.alert= alert

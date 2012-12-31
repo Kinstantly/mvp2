@@ -224,7 +224,7 @@ describe ProfilesController do
 	context "for a search engine crawler" do
 		before(:each) do
 			@published_profile = FactoryGirl.create(:profile, last_name: 'Garanca', is_published: true)
-			@unpublised_profile = FactoryGirl.create(:profile, last_name: 'Netrebko', is_published: false)
+			@unpublished_profile = FactoryGirl.create(:profile, last_name: 'Netrebko', is_published: false)
 			get :link_index
 		end
 		
@@ -234,6 +234,37 @@ describe ProfilesController do
 		
 		it "should not assign unpublished profiles" do
 			assigns[:profiles].include?(@unpublished_profile).should_not be_true
+		end
+	end
+	
+	context "as a site visitor searching for a profile" do
+		before(:each) do
+			@published_profile = FactoryGirl.create(:profile, last_name: 'Garanca', is_published: true)
+			@unpublished_profile = FactoryGirl.create(:profile, last_name: 'Netrebko', is_published: false)
+			Profile.reindex
+			Sunspot.commit
+		end
+		
+		it "should show search results" do
+			get :search, query: @published_profile.last_name
+			response.should render_template(:search_results)
+		end
+		
+		it "should assign search results" do
+			get :search, query: @published_profile.last_name
+			assigns[:search].should have_at_least(1).result
+		end
+		
+		context "visitor is not known" do
+			it "should assign published profiles" do
+				get :search, query: @published_profile.last_name
+				assigns[:search].results.include?(@published_profile).should be_true
+			end
+			
+			it "should not assign unpublished profiles" do
+				get :search, query: @unpublished_profile.last_name
+				assigns[:search].results.include?(@unpublished_profile).should_not be_true
+			end
 		end
 	end
 end

@@ -80,7 +80,7 @@ Given /^there are multiple( users with)?( unpublished)? profiles in the system$/
 	create_profile_2
 end
 
-Given /^I want a published profile$/ do
+Given /^I want a published profile|a published profile exists$/ do
 	create_published_profile
 end
 

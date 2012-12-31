@@ -1,9 +1,10 @@
 class ProfilesController < ApplicationController
-	before_filter :authenticate_user!, except: [:index, :show, :link_index]
+	before_filter :authenticate_user!, except: [:index, :show, :link_index, :search]
 	
 	# Side effect: loads @profiles or @profile as appropriate.
 	# e.g., for index action, @profiles is set to Profile.accessible_by(current_ability)
 	load_and_authorize_resource
+	skip_load_and_authorize_resource only: :search
 	
 	# *After* profile is loaded:
 	#   ensure it has at least one location
@@ -30,5 +31,13 @@ class ProfilesController < ApplicationController
 			set_flash_message :alert, :profile_update_error
 			render action: :edit
 		end
+	end
+	
+	def search
+		@search = Profile.search do
+			fulltext params[:query]
+			with :is_published, true
+		end
+		render :search_results
 	end
 end

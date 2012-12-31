@@ -1,0 +1,4 @@
+.search_providers
+	= form_tag '/search_providers', method: :get do
+		= text_field_tag :query, (@search ? @search.query.to_params[:q] : ''), id: 'provider_search_query'
+		= submit_tag 'Search', id: 'provider_search_button'
