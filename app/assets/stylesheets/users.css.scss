@@ -150,6 +150,18 @@ div.profile_index {
 	}
 }
 
+div.search_results {
+	margin: $profile_margin;
+	h3 {
+		text-align: center;
+	}
+	.search_results_list {
+		> div {
+			@include profile-areas-div-style;
+		}
+	}
+}
+
 span.note {
 	font: {
 		style: italic;

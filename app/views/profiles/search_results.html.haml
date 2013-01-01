@@ -1,3 +1,8 @@
 .search_results
-	%h2 Results
-	%p= @search.results
+	%h3= search_results_title @search
+	.search_results_list
+		- @search.results.each do |profile|
+			.expert_result
+				.name_category= search_result_name_category profile
+				.location_services= search_result_location_services profile
+				.specialties= profile_display_specialties profile

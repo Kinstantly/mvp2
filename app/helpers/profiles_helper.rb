@@ -270,4 +270,20 @@ module ProfilesHelper
 	def profile_display_accepting_new_clients(profile)
 		profile.accepting_new_clients ? 'Accepting new clients' : 'Not accepting new clients at this time'
 	end
+	
+	# Search
+	
+	def search_results_title(search)
+		n = search.results.size
+		query = search.query.to_params[:q]
+		n > 0 ? "#{'Expert'.pluralize(n)} matching \"#{query}\"" : "No experts match \"#{query}\""
+	end
+	
+	def search_result_name_category(profile)
+		[profile.display_name_or_company.presence, profile.categories.first.try(:name).presence].compact.join(' | ')
+	end
+	
+	def search_result_location_services(profile)
+		[profile.locations.first.try(:city).presence, profile_display_services(profile).presence].compact.join(' | ')
+	end
 end

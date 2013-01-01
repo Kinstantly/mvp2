@@ -181,6 +181,20 @@ Given /^I visit the edit page for an (unclaimed|unpublished) profile$/ do |word|
 	visit edit_profile_path(@profile)
 end
 
+Given /^a published profile with last name "(.*?)" and category "(.*?)"$/ do |name, cat|
+	create_published_profile
+	@published_profile.last_name = name
+	@published_profile.categories = [cat.to_category]
+	@published_profile.save
+end
+
+Given /^a published profile with city "(.*?)" and service "(.*?)"$/ do |city, svc|
+	create_published_profile
+	@published_profile.locations = [FactoryGirl.create(:location, city: city)]
+	@published_profile.services << svc.to_service
+	@published_profile.save
+end
+
 ### WHEN ###
 
 When /^I enter new profile information$/ do

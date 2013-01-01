@@ -101,6 +101,10 @@ class Profile < ActiveRecord::Base
 		name
 	end
 	
+	def display_name_or_company
+		first_name.present? || last_name.present? ? display_name : (company_name.presence || '')
+	end
+	
 	private
 	
 	def remove_blanks(strings=[])

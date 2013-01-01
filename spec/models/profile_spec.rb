@@ -27,6 +27,32 @@ describe Profile do
 		end
 	end
 	
+	context "display name" do
+		it "contains first, middle, and last name as well as credentials" do
+			@profile.middle_name = 'X'
+			@profile.credentials = 'BA, MA'
+			@profile.display_name.should =~ /#{@profile.first_name}.*#{@profile.middle_name}.*#{@profile.last_name}.*#{@profile.credentials}/
+		end
+	end
+	
+	context "display name or company" do
+		it "returns display name if first name is present" do
+			@profile.last_name = ''
+			@profile.display_name_or_company.should == @profile.display_name
+		end
+		
+		it "returns display name if last name is present" do
+			@profile.first_name = ''
+			@profile.display_name_or_company.should == @profile.display_name
+		end
+		
+		it "returns company name if neither first name nor last name are present" do
+			@profile.first_name = ''
+			@profile.last_name = ''
+			@profile.display_name_or_company.should == @profile.company_name
+		end
+	end
+	
 	context "categories" do
 		it "stores a category" do
 			@profile.save.should be_true
