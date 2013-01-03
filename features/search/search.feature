@@ -9,14 +9,14 @@ Feature: search the provider directory
 		When I enter published profile data in the search box
 		Then I should see profile data in the search results list
 
-	Scenario: show name and category in search result
-		Given a published profile with last name "Tebaldi" and category "OPERA"
+	Scenario: show name and specialty in search result
+		Given a published profile with last name "Tebaldi" and specialty "ADHD"
 			And I visit the "/" page
 		When I enter "Tebaldi" in the search box
-		Then I should see "Tebaldi" and "OPERA" in the search results list
+		Then I should see "Tebaldi" and "ADHD" in the search results list
 
-	Scenario: show city and service in search result
-		Given a published profile with city "Pesaro" and service "lirico-spinto soprano"
+	Scenario: show city and postal code in search result
+		Given a published profile with city "Pesaro" and postal code "98765"
 			And I visit the "/" page
 		When I enter "Pesaro" in the search box
-		Then I should see "Pesaro" and "lirico-spinto soprano" in the search results list
+		Then I should see "Pesaro" and "98765" in the search results list

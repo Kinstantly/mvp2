@@ -52,9 +52,6 @@ div.view_profile {
 				.value {
 					@include cell-style;
 				}
-				.value.text_area {
-					white-space: pre-line;
-				}
 			}
 		}
 	}
@@ -143,9 +140,6 @@ div.profile_index {
 			th.large {
 				min-width: 16em;
 			}
-			td.text_area {
-				white-space: pre-line;
-			}
 		}
 	}
 }
@@ -159,6 +153,30 @@ div.search_results {
 		> div {
 			@include profile-areas-div-style;
 		}
+		.expert_result {
+			table {
+				width: 100%;
+			}
+			td {
+				vertical-align: top;
+				> div {
+					margin-top: 0.2em;
+					margin-bottom: 0.2em;
+				}
+			}
+			.left {
+				width: 50%;
+			}
+			.right {
+				text-align: right;
+			}
+			.name {
+				font: {
+					weight: bolder;
+					size: large;
+				}
+			}
+		}
 	}
 }
 
@@ -170,7 +188,7 @@ span.note {
 	}
 }
 
-span.note.text_area {
+.text_area {
 	white-space: pre-line;
 }
 

@@ -283,7 +283,28 @@ module ProfilesHelper
 		[profile.display_name_or_company.presence, profile.categories.first.try(:name).presence].compact.join(' | ')
 	end
 	
+	def search_result_name_specialties(profile)
+		specs = display_profile_item_names([profile.specialties.first, profile.specialties.second].compact)
+		[profile.display_name_or_company.presence, specs.presence].compact.join(' | ')
+	end
+	
 	def search_result_location_services(profile)
 		[profile.locations.first.try(:city).presence, profile_display_services(profile).presence].compact.join(' | ')
+	end
+	
+	def search_result_location(profile)
+		loc = profile.locations.first
+		[loc.try(:city).presence, loc.try(:postal_code).presence].compact.join(' ')
+	end
+	
+	def search_result_consultations_visits(profile)
+		icons = []
+		icons << 'accepting new clients' if profile.accepting_new_clients
+		icons << 'email' if profile.consult_by_email
+		icons << 'phone' if profile.consult_by_phone
+		icons << 'video' if profile.consult_by_video
+		icons << 'home' if profile.visit_home
+		icons << 'school' if profile.visit_school
+		icons.join(' | ')
 	end
 end

@@ -188,10 +188,23 @@ Given /^a published profile with last name "(.*?)" and category "(.*?)"$/ do |na
 	@published_profile.save
 end
 
+Given /^a published profile with last name "(.*?)" and specialty "(.*?)"$/ do |name, spec|
+	create_published_profile
+	@published_profile.last_name = name
+	@published_profile.specialties = [spec.to_specialty]
+	@published_profile.save
+end
+
 Given /^a published profile with city "(.*?)" and service "(.*?)"$/ do |city, svc|
 	create_published_profile
 	@published_profile.locations = [FactoryGirl.create(:location, city: city)]
 	@published_profile.services << svc.to_service
+	@published_profile.save
+end
+
+Given /^a published profile with city "(.*?)" and postal code "(.*?)"$/ do |city, postal_code|
+	create_published_profile
+	@published_profile.locations = [FactoryGirl.create(:location, city: city, postal_code: postal_code)]
 	@published_profile.save
 end
 

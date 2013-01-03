@@ -3,6 +3,12 @@
 	.search_results_list
 		- @search.results.each do |profile|
 			.expert_result
-				.name_category= search_result_name_category profile
-				.location_services= search_result_location_services profile
-				.specialties= profile_display_specialties profile
+				%table
+					%tr
+						%td.left
+							.name= search_result_name_specialties profile
+							.location= search_result_location profile
+							.summary.text_area= preserve profile.summary
+						%td.right
+							.availability.text_area= preserve "Availability:\n#{profile.availability}" if profile.availability.present?
+							.consultations= search_result_consultations_visits profile
