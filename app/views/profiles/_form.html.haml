@@ -54,6 +54,10 @@
 				= lf.label :postal_code, "Zip code"
 				= lf.text_field :postal_code
 				= lf.hidden_field :country, value: country
+			- if current_user.profile_editor?
+				.search_area_tag
+					= f.label :search_area_tag_id, "Region for search"
+					= lf.collection_select :search_area_tag_id, SearchAreaTag.all, :id, :name, {include_blank: '--'}, id: 'search_area_tag'
 	.expertise_profile
 		.categories
 			= f.label :categories, "Category", class: 'required'

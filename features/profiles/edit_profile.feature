@@ -23,3 +23,11 @@ Feature: Edit an expert's profile
 		When I enter "Capulet" in the "Last name" field
 			And I save the profile
 		Then the last name in the unclaimed profile should be "Capulet"
+
+	Scenario: Assign search area tag as a profile editor
+		Given there is a search area tag named "East Bay"
+			And I am logged in as a profile editor
+			And I visit the edit page for an unclaimed profile
+		When I select "East Bay" as the search area tag
+			And I save the profile
+		Then the search area tag in the unclaimed profile should be "East Bay"

@@ -30,6 +30,9 @@
 		.address
 			Address:
 			= location_display_address profile.try(:locations).try(:first)
+		.search_area_tag
+			Region:
+			= profile.try(:locations).try(:first).try(:search_area_tag).try(:name)
 	.expertise_profile
 		.categories
 			%span.label Category:

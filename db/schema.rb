@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121218205905) do
+ActiveRecord::Schema.define(:version => 20130104012644) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -55,8 +55,9 @@ ActiveRecord::Schema.define(:version => 20121218205905) do
     t.string   "region"
     t.string   "country"
     t.string   "postal_code"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.integer  "search_area_tag_id"
   end
 
   create_table "profiles", :force => true do |t|
@@ -103,6 +104,12 @@ ActiveRecord::Schema.define(:version => 20121218205905) do
   create_table "profiles_specialties", :force => true do |t|
     t.integer "profile_id"
     t.integer "specialty_id"
+  end
+
+  create_table "search_area_tags", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "services", :force => true do |t|

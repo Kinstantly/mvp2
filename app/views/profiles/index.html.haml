@@ -13,6 +13,7 @@
 					%th Website
 					%th Headline
 					%th Address
+					%th Search region
 					%th= current_user.try(:admin?) ? 'Public email' : 'Email'
 					%th Mobile
 					%th Office
@@ -43,6 +44,7 @@
 						%td= p.try(:url)
 						%td= p.try(:headline)
 						%td= "#{location_display_address p.try(:locations).try(:first)}"
+						%td= p.try(:locations).try(:first).try(:search_area_tag).try(:name)
 						%td= p.try(:email)
 						%td= p.try(:mobile_phone)
 						%td= p.try(:office_phone)

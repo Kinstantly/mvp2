@@ -45,6 +45,6 @@ class User < ActiveRecord::Base
 	end
 	
 	def profile_editor?
-		has_role? :profile_editor
+		has_role?(:profile_editor) || has_role?(:admin)
 	end
 end

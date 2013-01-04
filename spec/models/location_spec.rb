@@ -16,4 +16,10 @@ describe Location do
 		location.should have(:no).errors_on(:country)
 		location.should have(:no).errors_on(:postal_code)
 	end
+	
+	it "has a search area tag used to limit the scope of full-text searches" do
+		location = FactoryGirl.create :location
+		location.search_area_tag = FactoryGirl.create :search_area_tag, name: 'East Bay'
+		location.should have(:no).errors_on(:search_area_tag)
+	end
 end

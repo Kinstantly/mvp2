@@ -208,6 +208,10 @@ Given /^a published profile with city "(.*?)" and postal code "(.*?)"$/ do |city
 	@published_profile.save
 end
 
+Given /^there is a search area tag named "(.*?)"$/ do |tag|
+	FactoryGirl.create(:search_area_tag, name: tag)
+end
+
 ### WHEN ###
 
 When /^I enter new profile information$/ do
@@ -349,6 +353,12 @@ end
 
 When /^I select the "(.*?)" age range$/ do |age_range|
 	check MyHelpers.profile_age_ranges_id(age_range)
+end
+
+When /^I select "(.*?)" as the search area tag$/ do |tag|
+	within('.location_contact_profile') do
+		select tag, from: 'search_area_tag'
+	end
 end
 
 When /^I visit the profile index page$/ do
@@ -531,6 +541,11 @@ end
 Then /^the (new|previously unpublished) profile should be published$/ do |word|
 	find_unattached_profile
 	@profile.is_published.should be_true
+end
+
+Then /^the search area tag in the unclaimed profile should be "(.*?)"$/ do |tag|
+	find_unattached_profile
+	@profile.locations.first.search_area_tag.name.should == tag
 end
 
 # Dynamic display showing what the display name will be after saving.
