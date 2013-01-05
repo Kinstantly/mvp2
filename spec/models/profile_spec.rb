@@ -164,4 +164,20 @@ describe Profile do
 			@profile.locations.last.should have(:no).errors_on(:region)
 		end
 	end
+	
+	context "search" do
+		before(:each) do
+			@profile = FactoryGirl.create(:profile, summary: 'Swedish dramatic soprano', is_published: true)
+			Profile.reindex
+			Sunspot.commit
+		end
+		
+		it "does not require an exact match of query terms when searching profiles" do
+			Profile.fuzzy_search('famous Swedish sopranos').results.include?(@profile).should be_true
+		end
+		
+		it "requires at least two query terms to match out of three" do
+			Profile.fuzzy_search('famous Swedish tenors').results.include?(@profile).should be_false
+		end
+	end
 end

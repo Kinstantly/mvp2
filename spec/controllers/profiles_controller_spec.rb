@@ -266,5 +266,17 @@ describe ProfilesController do
 				assigns[:search].results.include?(@unpublished_profile).should_not be_true
 			end
 		end
+		
+		context "visitor is a profile editor" do
+			before(:each) do
+				@profile_editor = FactoryGirl.create(:profile_editor, email: 'editor@example.com')
+				sign_in @profile_editor
+			end
+			
+			it "should assign unpublished profiles" do
+				get :search, query: @unpublished_profile.last_name
+				assigns[:search].results.include?(@unpublished_profile).should be_true
+			end
+		end
 	end
 end

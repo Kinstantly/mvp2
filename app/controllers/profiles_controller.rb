@@ -34,10 +34,7 @@ class ProfilesController < ApplicationController
 	end
 	
 	def search
-		@search = Profile.search do
-			fulltext params[:query]
-			with :is_published, true
-		end
+		@search = Profile.fuzzy_search params[:query], !current_user.try(:profile_editor?)
 		render :search_results
 	end
 end

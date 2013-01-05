@@ -71,6 +71,21 @@ class Profile < ActiveRecord::Base
 		text :summary, stored: true
 	end
 	
+	# By default, only search published profiles.
+	# For explanation of mm param, see
+	#  http://lucene.apache.org/solr/4_0_0/solr-core/org/apache/solr/util/doc-files/min-should-match.html
+	def self.fuzzy_search(query, published_only=true)
+		Profile.search do
+			adjust_solr_params { |params|
+				params[:mm] = '2<-1 4<-2 6<50%'
+			}
+			fulltext(query) {
+				query_phrase_slop 1
+			}
+			with :is_published, true if published_only
+		end
+	end
+	
 	def custom_category_names=(names=[])
 		self.custom_categories = remove_blanks(names).collect(&:to_category)
 	end
