@@ -273,10 +273,13 @@ module ProfilesHelper
 	
 	# Search
 	
+	def search_query_string(search)
+		q = search.try(:query).try(:to_params).try(:'[]', :q)
+		q != '*:*' && q || ''
+	end
+	
 	def search_results_title(search)
-		n = search.results.size
-		query = search.query.to_params[:q]
-		n > 0 ? "#{'Expert'.pluralize(n)} matching \"#{query}\"" : "No experts match \"#{query}\""
+		(search.results.size > 0 ? "You searched for" : "No one found for") + " \"#{search_query_string(search)}\""
 	end
 	
 	def search_result_name_specialties(profile)
