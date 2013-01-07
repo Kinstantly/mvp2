@@ -3,8 +3,8 @@ module ProfilesHelper
 		location.try(:display_address).presence || ''
 	end
 	
-	def display_profile_item_names(items)
-		items.collect(&:name).sort{|a, b| a.casecmp b}.join(', ') if items.present?
+	def display_profile_item_names(items, n=items.try(:length))
+		items.collect(&:name).sort{|a, b| a.casecmp b}.slice(0, n).join(', ') if items.present?
 	end
 	
 	def default_profile_country
@@ -41,7 +41,7 @@ module ProfilesHelper
 	def profile_list_view_link(profile, name)
 		if can?(:read, profile)
 			html_options = name.blank? ? {class: 'emphasized'} : {}
-			link_to((name.presence || 'Click to view'), profile_path(profile), html_options)
+			link_to(html_escape(name.presence || 'Click to view'), profile_path(profile), html_options).html_safe
 		else
 			name
 		end
@@ -279,27 +279,31 @@ module ProfilesHelper
 		n > 0 ? "#{'Expert'.pluralize(n)} matching \"#{query}\"" : "No experts match \"#{query}\""
 	end
 	
-	def search_result_name_category(profile)
-		[profile.display_name_or_company.presence, profile.categories.first.try(:name).presence].compact.join(' | ')
-	end
-	
 	def search_result_name_specialties(profile)
-		specs = display_profile_item_names([profile.specialties.first, profile.specialties.second].compact)
-		[profile.display_name_or_company.presence, specs.presence].compact.join(' | ')
+		specs = html_escape(display_profile_item_names(profile.specialties, 2))
+		name_link = profile_list_name_or_company_link(profile)
+		s = [name_link.presence, specs.presence].compact.join(' | ')
+		name_link.html_safe? ? s.html_safe : s
 	end
 	
-	def search_result_location_services(profile)
-		[profile.locations.first.try(:city).presence, profile_display_services(profile).presence].compact.join(' | ')
+	def search_result_name_headline(profile)
+		headline = html_escape(profile.headline)
+		name_link = profile_list_name_or_company_link(profile)
+		s = [name_link.presence, headline.presence].compact.join(' | ')
+		name_link.html_safe? ? s.html_safe : s
+	end
+	
+	def search_result_specialties(profile)
+		display_profile_item_names profile.specialties, 3
 	end
 	
 	def search_result_location(profile)
 		loc = profile.locations.first
-		[loc.try(:city).presence, loc.try(:postal_code).presence].compact.join(' ')
+		[[loc.try(:city).presence, loc.try(:region).presence].compact.join(', ').presence, loc.try(:postal_code).presence].compact.join(' ')
 	end
 	
 	def search_result_consultations_visits(profile)
 		icons = []
-		icons << 'accepting new clients' if profile.accepting_new_clients
 		icons << 'email' if profile.consult_by_email
 		icons << 'phone' if profile.consult_by_phone
 		icons << 'video' if profile.consult_by_video

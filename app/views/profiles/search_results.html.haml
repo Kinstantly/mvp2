@@ -6,9 +6,11 @@
 				%table
 					%tr
 						%td.left
-							.name= search_result_name_specialties profile
+							.name= search_result_name_headline profile
+							.specialties= search_result_specialties profile
 							.location= search_result_location profile
 							.summary.text_area= preserve profile.summary
 						%td.right
 							.availability.text_area= preserve "Availability:\n#{profile.availability}" if profile.availability.present?
+							.accepting_new_clients= profile_display_accepting_new_clients profile
 							.consultations= search_result_consultations_visits profile
