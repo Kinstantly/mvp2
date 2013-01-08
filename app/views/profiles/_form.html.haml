@@ -215,7 +215,7 @@
 :coffeescript
 	# Refresh display name as contributing input tags are modified.
 	refresh_display_name = () ->
-		$('.display_name').html profile_display_name($('#profile_first_name').val(), $('#profile_middle_name').val(), $('#profile_last_name').val(), $('#profile_credentials').val())
+		$('.display_name').text profile_display_name($('#profile_first_name').val(), $('#profile_middle_name').val(), $('#profile_last_name').val(), $('#profile_credentials').val())
 	$('.display_name_field').keyup (e) ->
 		refresh_display_name()
 	
