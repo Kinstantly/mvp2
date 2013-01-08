@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130104012644) do
+ActiveRecord::Schema.define(:version => 20130108212530) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -108,8 +108,9 @@ ActiveRecord::Schema.define(:version => 20130104012644) do
 
   create_table "search_area_tags", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.integer  "display_order"
   end
 
   create_table "services", :force => true do |t|

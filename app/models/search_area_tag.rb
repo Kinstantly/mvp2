@@ -1,5 +1,5 @@
 class SearchAreaTag < ActiveRecord::Base
-	attr_accessible :name
-	
 	has_many :locations
+	
+	scope :all_ordered, order('display_order')
 end

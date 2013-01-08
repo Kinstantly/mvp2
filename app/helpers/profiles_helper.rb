@@ -278,6 +278,11 @@ module ProfilesHelper
 		q != '*:*' && q || ''
 	end
 	
+	def search_area_tag_options(selected=nil)
+		(anywhere_tag = SearchAreaTag.new).name = 'Anywhere'
+		options_from_collection_for_select(SearchAreaTag.all_ordered << anywhere_tag, :id, :name, selected)
+	end
+	
 	def search_results_title(search)
 		(search.results.size > 0 ? "You searched for" : "No one found for") + " \"#{search_query_string(search)}\""
 	end
