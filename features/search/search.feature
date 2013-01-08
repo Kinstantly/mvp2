@@ -20,3 +20,9 @@ Feature: search the provider directory
 			And I visit the "/" page
 		When I enter "Pesaro" in the search box
 		Then I should see "Pesaro" and "98765" in the search results list
+
+	Scenario: restrict search by search area tag
+		Given a published profile with last name "Caballe", specialty "ADHD", and search area tag "North Bay"
+			And I visit the "/" page
+		When I enter "ADHD" in the search box and select the "North Bay" search area tag
+		Then I should see "Caballe" and "ADHD" in the search results list

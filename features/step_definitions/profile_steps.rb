@@ -195,6 +195,14 @@ Given /^a published profile with last name "(.*?)" and specialty "(.*?)"$/ do |n
 	@published_profile.save
 end
 
+Given /^a published profile with last name "(.*?)", specialty "(.*?)", and search area tag "(.*?)"$/ do |name, spec, tag|
+	create_published_profile
+	@published_profile.last_name = name
+	@published_profile.specialties = [spec.to_specialty]
+	@published_profile.locations = [FactoryGirl.create(:location, search_area_tag: FactoryGirl.create(:search_area_tag, name: tag))]
+	@published_profile.save
+end
+
 Given /^a published profile with city "(.*?)" and service "(.*?)"$/ do |city, svc|
 	create_published_profile
 	@published_profile.locations = [FactoryGirl.create(:location, city: city)]

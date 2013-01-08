@@ -34,7 +34,9 @@ class ProfilesController < ApplicationController
 	end
 	
 	def search
-		@search = Profile.fuzzy_search params[:query], !current_user.try(:profile_editor?)
+		@search_query = params[:query]
+		@search_area_tag_id = params[:search_area_tag_id]
+		@search = Profile.fuzzy_search @search_query, search_area_tag_id: @search_area_tag_id, published_only: !current_user.try(:profile_editor?)
 		render :search_results
 	end
 end

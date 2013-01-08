@@ -278,5 +278,25 @@ describe ProfilesController do
 				assigns[:search].results.include?(@unpublished_profile).should be_true
 			end
 		end
+		
+		context "search restricted by search area tag" do
+			before(:each) do
+				tag = FactoryGirl.create(:search_area_tag, name: 'San Francisco')
+				loc = FactoryGirl.create(:location, search_area_tag: tag)
+				last_name = @published_profile.last_name
+				@published_sf_profile = FactoryGirl.create(:profile, last_name: last_name, locations: [loc], is_published: true)
+				Profile.reindex
+				Sunspot.commit
+				get :search, query: last_name, search_area_tag_id: tag.id
+			end
+			
+			it "should assign profiles that have the search area tag" do
+				assigns[:search].results.include?(@published_sf_profile).should be_true
+			end
+			
+			it "should not assign profiles that do not have the search area tag" do
+				assigns[:search].results.include?(@published_profile).should_not be_true
+			end
+		end
 	end
 end

@@ -1,4 +1,5 @@
 .search_providers
 	= form_tag '/search_providers', method: :get do
-		= text_field_tag :query, search_query_string(@search), size: 24, id: 'provider_search_query'
+		= text_field_tag :query, @search_query, size: 24, id: 'provider_search_query'
+		= select_tag :search_area_tag_id, options_from_collection_for_select(SearchAreaTag.all, :id, :name, @search_area_tag_id), prompt: 'Location', id: 'search_area_tag'
 		= submit_tag 'Find an expert', id: 'provider_search_button'

@@ -63,6 +63,10 @@ class Profile < ActiveRecord::Base
 		integer :service_ids, multiple: true
 		integer :specialty_ids, multiple: true
 		
+		integer :search_area_tag_ids, multiple: true do
+			locations.map{|loc| loc.search_area_tag.try(:id)}.compact
+		end
+		
 		string :last_name do
 			last_name.strip.downcase
 		end
@@ -74,7 +78,12 @@ class Profile < ActiveRecord::Base
 	# By default, only search published profiles.
 	# For explanation of mm param, see
 	#  http://lucene.apache.org/solr/4_0_0/solr-core/org/apache/solr/util/doc-files/min-should-match.html
-	def self.fuzzy_search(query, published_only=true)
+	# Use the is_published scope only if the published_only option is true.  Default is to restrict to published profiles.
+	# Use the search_area_tag_ids scope only if the search_area_tag_id or search_area_tag_ids options have value(s).
+	def self.fuzzy_search(query, new_opts={})
+		opts = {published_only: true}.merge(new_opts)
+		opts[:search_area_tag_ids] = [opts[:search_area_tag_id]] if opts[:search_area_tag_id].present?
+		opts[:search_area_tag_ids].delete_if(&:blank?) if opts[:search_area_tag_ids].present?
 		Profile.search do
 			adjust_solr_params { |params|
 				params[:mm] = '2<-1 4<-2 6<50%'
@@ -82,7 +91,8 @@ class Profile < ActiveRecord::Base
 			fulltext(query) {
 				query_phrase_slop 1
 			}
-			with :is_published, true if published_only
+			with :search_area_tag_ids, opts[:search_area_tag_ids] if opts[:search_area_tag_ids].present?
+			with :is_published, true if opts[:published_only]
 		end
 	end
 	
