@@ -210,9 +210,9 @@ Given /^a published profile with city "(.*?)" and service "(.*?)"$/ do |city, sv
 	@published_profile.save
 end
 
-Given /^a published profile with city "(.*?)" and postal code "(.*?)"$/ do |city, postal_code|
+Given /^a published profile with city "(.*?)" and state "(.*?)"$/ do |city, state|
 	create_published_profile
-	@published_profile.locations = [FactoryGirl.create(:location, city: city, postal_code: postal_code)]
+	@published_profile.locations = [FactoryGirl.create(:location, city: city, region: state)]
 	@published_profile.save
 end
 

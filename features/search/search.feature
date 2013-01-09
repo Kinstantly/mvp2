@@ -15,11 +15,11 @@ Feature: search the provider directory
 		When I enter "Tebaldi" in the search box
 		Then I should see "Tebaldi" and "ADHD" in the search results list
 
-	Scenario: show city and postal code in search result
-		Given a published profile with city "Pesaro" and postal code "98765"
+	Scenario: show city and state in search result
+		Given a published profile with city "Pesaro" and state "CA"
 			And I visit the "/" page
 		When I enter "Pesaro" in the search box
-		Then I should see "Pesaro" and "98765" in the search results list
+		Then I should see "Pesaro" and "CA" in the search results list
 
 	Scenario: restrict search by search area tag
 		Given a published profile with last name "Caballe", specialty "ADHD", and search area tag "North Bay"

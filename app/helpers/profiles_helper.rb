@@ -307,7 +307,7 @@ module ProfilesHelper
 	
 	def search_result_location(profile)
 		loc = profile.locations.first
-		[[loc.try(:city).presence, loc.try(:region).presence].compact.join(', ').presence, loc.try(:postal_code).presence].compact.join(' ')
+		[loc.try(:city).presence, loc.try(:region).presence].compact.join(', ')
 	end
 	
 	def search_result_consultations_visits(profile)
