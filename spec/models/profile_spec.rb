@@ -129,9 +129,11 @@ describe Profile do
 	
 	context "consultations and visits" do
 		it "stores consultation preferences" do
+			@profile.consult_in_person = true
 			@profile.consult_by_email = true
 			@profile.consult_by_phone = true
 			@profile.consult_by_video = false
+			@profile.should have(:no).errors_on(:consult_in_person)
 			@profile.should have(:no).errors_on(:consult_by_email)
 			@profile.should have(:no).errors_on(:consult_by_phone)
 			@profile.should have(:no).errors_on(:consult_by_video)

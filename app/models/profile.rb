@@ -8,7 +8,8 @@ class Profile < ActiveRecord::Base
 		:languages, :insurance_accepted, :summary, 
 		:category_ids, :service_ids, :specialty_ids, :age_range_ids, 
 		:custom_service_names, :custom_specialty_names, 
-		:consult_by_email, :consult_by_phone, :consult_by_video, :visit_home, :visit_school, 
+		:consult_in_person, :consult_by_email, :consult_by_phone, :consult_by_video, 
+		:visit_home, :visit_school, 
 		:rates, :availability, 
 		:office_hours, :phone_hours, :video_hours, :accepting_new_clients
 	

@@ -446,8 +446,14 @@ Then /^my country code should be set to "(.*?)"$/ do |country|
 	@profile.locations.first.country.should == country
 end
 
-Then /^my profile should show "(.*?)"$/ do |value|
+Then /^my profile should show "([^\"]+)"$/ do |value|
 	page.should have_content value
+end
+
+Then /^my profile should show "([^\"]+)" within "([^\"]+)"$/ do |value, css_class_name|
+	within(".#{css_class_name}") do
+		page.should have_content value
+	end
 end
 
 Then /^my profile should show "(.*?)" in the location area$/ do |value|

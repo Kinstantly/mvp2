@@ -252,6 +252,7 @@ module ProfilesHelper
 	def profile_display_consultation_modes(profile)
 		return '' unless profile
 		modes = []
+		modes.push 'in-person' if profile.consult_in_person
 		modes.push 'email' if profile.consult_by_email
 		modes.push 'phone' if profile.consult_by_phone
 		modes.push 'video' if profile.consult_by_video

@@ -212,3 +212,17 @@ Feature: Edit my expert profile
 		Then my profile should show "$1/minute"
 			And my profile should show "$40/15 minutes"
 			And my profile should show "$120/hour"
+	
+	Scenario: Specify consultation modes
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I check "Email consultations"
+			And I check "Phone consultations"
+			And I check "Video consultations"
+			And I check "In-person consultations"
+			And I save my profile
+		Then my profile should show "email" within "consultations"
+			And my profile should show "phone" within "consultations"
+			And my profile should show "video" within "consultations"
+			And my profile should show "in-person" within "consultations"

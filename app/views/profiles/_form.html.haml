@@ -116,6 +116,9 @@
 				= f.label :accepting_new_clients, "Accepting new clients"
 		.consultations
 			.check_box
+				= f.check_box :consult_in_person
+				= f.label :consult_in_person, "In-person consultations"
+			.check_box
 				= f.check_box :consult_by_email
 				= f.label :consult_by_email, "Email consultations"
 			.check_box
