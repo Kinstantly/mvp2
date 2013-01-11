@@ -252,10 +252,10 @@ module ProfilesHelper
 	def profile_display_consultation_modes(profile)
 		return '' unless profile
 		modes = []
-		modes.push 'in-person' if profile.consult_in_person
 		modes.push 'email' if profile.consult_by_email
 		modes.push 'phone' if profile.consult_by_phone
 		modes.push 'video' if profile.consult_by_video
+		modes.push 'in-person' if profile.consult_in_person
 		modes.join ', '
 	end
 	
@@ -316,6 +316,7 @@ module ProfilesHelper
 		icons << 'email' if profile.consult_by_email
 		icons << 'phone' if profile.consult_by_phone
 		icons << 'video' if profile.consult_by_video
+		icons << 'in-person' if profile.consult_in_person
 		icons << 'home' if profile.visit_home
 		icons << 'school' if profile.visit_school
 		icons.join(' | ')
