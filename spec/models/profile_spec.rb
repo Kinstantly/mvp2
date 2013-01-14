@@ -187,4 +187,15 @@ describe Profile do
 			Profile.fuzzy_search('famous Swedish tenors').results.include?(@profile).should be_false
 		end
 	end
+	
+	context "character limits on text attributes" do
+		it "limits the number of input characters for attributes stored as text records" do
+			s = 'a' * 1001
+			[:availability, :awards, :education, :experience, :insurance_accepted, :rates, :summary, 
+				:office_hours, :phone_hours, :video_hours].each do |attr|
+				@profile.send "#{attr}=", s
+				@profile.should have(1).error_on(attr)
+			end
+		end
+	end
 end
