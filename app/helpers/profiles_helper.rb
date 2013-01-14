@@ -303,7 +303,7 @@ module ProfilesHelper
 	end
 	
 	def search_result_specialties(profile)
-		display_profile_item_names profile.specialties, 3
+		profile.specialties_description.presence || display_profile_item_names(profile.specialties, 3)
 	end
 	
 	def search_result_location(profile)

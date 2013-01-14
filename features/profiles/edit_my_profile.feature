@@ -226,3 +226,11 @@ Feature: Edit my expert profile
 			And my profile should show "phone" within "consultations"
 			And my profile should show "video" within "consultations"
 			And my profile should show "in-person" within "consultations"
+	
+	Scenario: Enter specialties description
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I enter "challenging behavior, attachment issues, temperament" in the "My specialties" field
+			And I save my profile
+		Then my profile should show "challenging behavior, attachment issues, temperament" within "specialties_description"

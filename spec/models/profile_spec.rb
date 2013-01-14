@@ -125,6 +125,11 @@ describe Profile do
 				profile.specialties.collect(&:name).include?(@custom.last).should be_true
 			end
 		end
+		
+		it "stores a text description of specialties" do
+			@profile.specialties_description = 'methods of parenting, parent/child communication, parenting through separation and divorce'
+			@profile.should have(:no).errors_on(:specialties_description)
+		end
 	end
 	
 	context "consultations and visits" do

@@ -7,7 +7,7 @@ class Profile < ActiveRecord::Base
 		:headline, :education, :experience, :certifications, :awards, 
 		:languages, :insurance_accepted, :summary, 
 		:category_ids, :service_ids, :specialty_ids, :age_range_ids, 
-		:custom_service_names, :custom_specialty_names, 
+		:custom_service_names, :custom_specialty_names, :specialties_description, 
 		:consult_in_person, :consult_by_email, :consult_by_phone, :consult_by_video, 
 		:visit_home, :visit_school, 
 		:rates, :availability, 
@@ -37,7 +37,7 @@ class Profile < ActiveRecord::Base
 			:email, :company_name, :url, :mobile_phone, :office_phone, 
 			:headline, :education, :experience, :certifications, :awards, :languages, :insurance_accepted, :summary, 
 			:languages, :insurance_accepted, :summary, :rates, :availability, 
-			:office_hours, :phone_hours, :video_hours
+			:office_hours, :phone_hours, :video_hours, :specialties_description
 		
 		text :locations do
 			locations.map &:display_address
