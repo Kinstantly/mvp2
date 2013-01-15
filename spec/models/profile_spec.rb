@@ -53,18 +53,71 @@ describe Profile do
 		end
 	end
 	
+	context "publishing requirements" do
+		before(:each) do
+			@profile.is_published = true
+		end
+		
+		it "will not be published if none of first name, last name, or company name are supplied" do
+			@profile.first_name = @profile.last_name = @profile.company_name = ''
+			@profile.categories = @profile_data[:categories]
+			@profile.should have(1).errors_on(:first_name)
+		end
+		
+		it "will not be published if a category is not set" do
+			@profile.company_name = 'Figaro, Inc.'
+			@profile.categories = []
+			@profile.should have(1).errors_on(:category)
+		end
+		
+		it "will not be published if only a last name is supplied" do
+			@profile.first_name = ''
+			@profile.last_name = 'di Almaviva'
+			@profile.company_name = ''
+			@profile.categories = @profile_data[:categories]
+			@profile.should have(1).errors_on(:first_name)
+		end
+		
+		it "will be published if both a full name and category are supplied" do
+			@profile.first_name = 'Il Conte'
+			@profile.last_name = 'di Almaviva'
+			@profile.company_name = ''
+			@profile.categories = @profile_data[:categories]
+			@profile.should have(:no).errors_on(:first_name)
+			@profile.should have(:no).errors_on(:category)
+		end
+		
+		it "will be published if both a company name and category are supplied" do
+			@profile.first_name = ''
+			@profile.last_name = ''
+			@profile.company_name = 'Figaro, Inc.'
+			@profile.categories = @profile_data[:categories]
+			@profile.should have(:no).errors_on(:first_name)
+			@profile.should have(:no).errors_on(:category)
+		end
+		
+		it "no problem if we are not trying to publish" do
+			@profile.is_published = false
+			@profile.first_name = @profile.last_name = @profile.company_name = ''
+			@profile.categories = []
+			@profile.should have(:no).errors_on(:first_name)
+			@profile.should have(:no).errors_on(:category)
+		end
+	end
+	
 	context "categories" do
 		it "stores a category" do
 			@profile.save.should be_true
 			Profile.find_by_last_name(@profile_data[:last_name]).categories.should == @profile_data[:categories]
 		end
 		
-		it "requires a category" do
+		it "does not require a category if not publishing" do
+			@profile.is_published = false
 			@profile.categories = []
-			@profile.should have(1).errors_on(:categories)
+			@profile.should have(:no).errors_on(:categories)
 		end
 		
-		it "allows only one category" do
+		it "allows no more than one category" do
 			@profile.categories = @profile_data[:categories]
 			@profile.categories << FactoryGirl.create(:category, name: 'MISC.')
 			@profile.should have(1).errors_on(:categories)

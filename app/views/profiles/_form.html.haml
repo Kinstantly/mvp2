@@ -60,7 +60,7 @@
 					= lf.collection_select :search_area_tag_id, SearchAreaTag.all, :id, :name, {include_blank: '--'}, id: 'search_area_tag'
 	.expertise_profile
 		.categories
-			= f.label :categories, "Category", class: 'required'
+			= f.label :category, "Category", class: 'required'
 			%br
 			= profile_categories_hidden_field_tag(f)
 			- profile_category_choices(profile).each do |category|

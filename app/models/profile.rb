@@ -22,7 +22,8 @@ class Profile < ActiveRecord::Base
 	has_many :locations, dependent: :destroy
 	accepts_nested_attributes_for :locations
 	
-	validates :categories, length: {is: 1, message: "must be chosen"}
+	validate :publishing_requirements
+	validates :categories, length: {maximum: 1}
 	validates :availability, :awards, :education, :experience, :insurance_accepted, :rates, :summary, 
 		:office_hours, :phone_hours, :video_hours, length: {maximum: 1000}
 	
@@ -134,6 +135,13 @@ class Profile < ActiveRecord::Base
 	end
 	
 	private
+	
+	def publishing_requirements
+		if is_published
+			errors.add :first_name, 'and last name, or company name, are required' if (first_name.blank? || last_name.blank?) && company_name.blank?
+			errors.add :category, 'must be chosen' if categories.blank?
+		end
+	end
 	
 	def remove_blanks(strings=[])
 		strings.select(&:present?)
