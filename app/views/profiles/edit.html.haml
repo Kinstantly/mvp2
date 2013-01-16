@@ -5,4 +5,4 @@
 		= render partial: 'form', locals: {f: f}
 		.buttons
 			= f.submit 'Save'
-			= link_to "Cancel", profiles_path
+			= link_to "Cancel", profile_path(@profile)
