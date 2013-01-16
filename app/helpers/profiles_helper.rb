@@ -74,6 +74,10 @@ module ProfilesHelper
 		}
 		[map, names]
 	end
+	
+	def profile_page_title(profile=nil)
+		[company_name.presence, profile.try(:display_name_or_company).presence].compact.join(' - ')
+	end
 
 	# Categories helpers
 	

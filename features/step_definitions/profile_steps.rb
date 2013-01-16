@@ -378,6 +378,10 @@ When /^I visit the new profile page$/ do
 	visit new_profile_path
 end
 
+When /^I visit the published profile page$/ do
+	visit profile_path(@published_profile)
+end
+
 When /^I click on the link for an unclaimed profile$/ do
 	click_link "#{@unattached_profile_data[:first_name]} #{@unattached_profile_data[:middle_name]} #{@unattached_profile_data[:last_name]}"
 end
@@ -579,5 +583,11 @@ end
 Then /^I should see profile data for that user$/ do
 	within('.view_profile .url') do
 		page.should have_content @profile_data[:url]
+	end
+end
+
+Then /^I should see "(.*?)" in the page title$/ do |words|
+	within('title') do
+		page.should have_content words
 	end
 end
