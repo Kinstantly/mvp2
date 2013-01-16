@@ -16,7 +16,7 @@ class ProfilesController < ApplicationController
 		# @profile initialized by load_and_authorize_resource with cancan ability conditions and then parameter values.
 		if @profile.save
 			set_flash_message :notice, :profile_created
-			redirect_to action: :index
+			redirect_to profile_path @profile
 		else
 			set_flash_message :alert, :profile_create_error
 			render action: :new
@@ -26,7 +26,7 @@ class ProfilesController < ApplicationController
 	def update
 		if @profile.update_attributes(params[:profile])
 			set_flash_message :notice, :profile_updated
-			redirect_to action: :index
+			redirect_to profile_path @profile
 		else
 			set_flash_message :alert, :profile_update_error
 			render action: :edit

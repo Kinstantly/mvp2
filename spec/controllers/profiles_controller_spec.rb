@@ -113,14 +113,14 @@ describe ProfilesController do
 		
 			it "successfully creates the profile" do
 				post :create, profile: @profile_attrs
-				response.should redirect_to(controller: 'profiles', action: 'index')
+				response.should redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
 				flash[:notice].should_not be_nil
 			end
 		
 			it "can create the profile with no last name" do
 				@profile_attrs[:last_name] = ''
 				post :create, profile: @profile_attrs
-				response.should redirect_to(controller: 'profiles', action: 'index')
+				response.should redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
 				flash[:notice].should_not be_nil
 			end
 		end
@@ -153,14 +153,14 @@ describe ProfilesController do
 		
 			it "successfully updates the profile" do
 				put :update, id: @profile.id, profile: @profile_attrs
-				response.should redirect_to(controller: 'profiles', action: 'index')
+				response.should redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
 				flash[:notice].should_not be_nil
 			end
 		
 			it "can update the profile with no last name" do
 				@profile_attrs[:last_name] = ''
 				put :update, id: @profile.id, profile: @profile_attrs
-				response.should redirect_to(controller: 'profiles', action: 'index')
+				response.should redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
 				flash[:notice].should_not be_nil
 			end
 		end
@@ -194,7 +194,7 @@ describe ProfilesController do
 						category_ids: ["#{FactoryGirl.create(:category).id}"],
 						specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
 				post :create, profile: @profile_attrs
-				response.should redirect_to(controller: 'profiles', action: 'index')
+				response.should redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
 				flash[:notice].should_not be_nil
 			end
 		end
@@ -215,7 +215,7 @@ describe ProfilesController do
 						specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
 				@profile = FactoryGirl.create(:profile)
 				put :update, id: @profile.id, profile: @profile_attrs
-				response.should redirect_to(controller: 'profiles', action: 'index')
+				response.should redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
 				flash[:notice].should_not be_nil
 			end
 		end
