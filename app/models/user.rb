@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 
 	# Setup accessible (or protected) attributes for your model
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
-		:profile_attributes, :phone
+		:profile_attributes, :phone, :is_provider
 	# attr_accessible :title, :body
 
 	has_one :profile, dependent: :destroy
@@ -46,5 +46,9 @@ class User < ActiveRecord::Base
 	
 	def profile_editor?
 		has_role?(:profile_editor) || has_role?(:admin)
+	end
+	
+	def is_provider=(value)
+		add_role :expert if value.presence && !client?
 	end
 end
