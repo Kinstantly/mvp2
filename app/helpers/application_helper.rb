@@ -17,11 +17,11 @@ module ApplicationHelper
 	end
 	
 	def greeting
-		if user_signed_in?
-			"Hello, #{profile_display_name.presence || current_user.email}"
-		elsif controller_name != 'registrations'
-			link_to "Become a #{company_name} expert", new_user_registration_path
-		end
+		"Hello, #{profile_display_name.presence || current_user.email}" if user_signed_in?
+	end
+	
+	def sign_up_links
+		"Become a #{link_to 'provider', provider_sign_up_path} or a #{link_to 'member', member_sign_up_path}".html_safe unless user_signed_in? || controller_name == 'registrations'
 	end
 	
 	def home_link

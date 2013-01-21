@@ -52,14 +52,18 @@ def delete_user
   @user.destroy unless @user.nil?
 end
 
-def sign_up
+def sign_up(sign_up_path='/provider/sign_up')
   delete_user
-  visit '/users/sign_up'
+  visit sign_up_path
   fill_in "Email", :with => @visitor[:email]
   fill_in "Password", :with => @visitor[:password]
   fill_in "Password confirmation", :with => @visitor[:password_confirmation]
   click_button "Join us!"
   find_user
+end
+
+def sign_up_member
+  sign_up '/member/sign_up'
 end
 
 def sign_in
@@ -115,6 +119,11 @@ end
 When /^I sign up with valid user data$/ do
   create_visitor
   sign_up
+end
+
+When /^I sign up as a non\-expert with valid user data$/ do
+  create_visitor
+  sign_up_member
 end
 
 When /^I sign up with an invalid email$/ do
@@ -222,6 +231,10 @@ end
 
 Then /^I should be an expert$/ do
   @user.should be_expert
+end
+
+Then /^I should be a client$/ do
+  @user.should be_client
 end
 
 Then /^I should see more than one user$/ do

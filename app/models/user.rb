@@ -51,4 +51,6 @@ class User < ActiveRecord::Base
 	def is_provider=(value)
 		add_role :expert if value.presence && !client?
 	end
+	
+	alias :is_provider? :expert?
 end

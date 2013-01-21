@@ -10,12 +10,14 @@ class ApplicationController < ActionController::Base
 		redirect_to(user_signed_in? ? root_path : new_user_session_path)
 	end
 
-	# If we are a User, go to the edit_profile page after sign-up or sign-in.
+	# After sign-up or sign-in and if we are a User,
+	#   go to the edit_profile page if we are also a provider,
+	#   otherwise go to the home page.
 	# If we want to go to a different page after sign-up, put that logic in here.
 	def after_sign_in_path_for(resource)
 		stored_location_for(resource) ||
 			if resource.is_a?(User)
-				edit_user_profile_path
+				resource.is_provider? ? edit_user_profile_path : root_path
 			else
 				super
 			end

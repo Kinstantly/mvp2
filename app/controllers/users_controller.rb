@@ -31,7 +31,9 @@ class UsersController < ApplicationController
 	
 	def set_up_user
 		@user = current_user
-		@user.build_profile unless @user.profile
-		@profile = @user.profile
+		if @user.is_provider?
+			@user.build_profile unless @user.profile
+			@profile = @user.profile
+		end
 	end
 end

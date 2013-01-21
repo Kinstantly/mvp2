@@ -1,10 +1,11 @@
+- is_provider = params[:is_provider].nil? ? resource.is_provider? : params[:is_provider]
 .sign_up
-	%h2 Join us!
+	%h2= "Become a #{is_provider ? 'provider' : 'member'}"
 
 	= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
 		= devise_error_messages!
 
-		= f.hidden_field :is_provider, value: '1'
+		= f.hidden_field :is_provider, value: (is_provider ? '1' : '')
 
 		.email
 			= f.label :email

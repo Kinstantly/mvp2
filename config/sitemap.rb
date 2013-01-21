@@ -6,7 +6,7 @@ SitemapGenerator::Sitemap.sitemaps_path = SITEMAP_SITEMAPS_PATH
 SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new
 
 SitemapGenerator::Sitemap.create do
-	add new_user_registration_path, changefreq: 'monthly'
+	add provider_sign_up_path, changefreq: 'monthly'
 	add about_path, changefreq: 'monthly'
 	add contact_path, changefreq: 'monthly'
 	add terms_path, changefreq: 'monthly'

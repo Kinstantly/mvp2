@@ -10,8 +10,12 @@ Mvp2::Application.routes.draw do
 	match 'terms' => 'home#terms'
 	
 	# User model on which Devise authentication is based.
-	devise_for :users
-	# devise_for :users, controllers: { registrations: "users/registrations" }
+	devise_for :users, controllers: { registrations: 'users/registrations' }
+	# Alternate Devise routes for special uses.
+	devise_scope :user do
+		get '/provider/sign_up', to: 'users/registrations#new', is_provider: true
+		get '/member/sign_up', to: 'users/registrations#new', is_provider: false
+	end
 	
 	# Profile is accessed via user.
 	# Only current_user should have access to the profile.

@@ -29,3 +29,7 @@ Feature: Sign up
 		Scenario: Newly registered user is an expert
 			When I sign up with valid user data
 			Then I should be an expert
+
+		Scenario: Newly registered non-expert is a client
+			When I sign up as a non-expert with valid user data
+			Then I should be a client
