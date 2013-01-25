@@ -150,7 +150,7 @@ class Profile < ActiveRecord::Base
 	end
 	
 	def claimed?
-		!!user
+		!user.nil?
 	end
 	
 	private

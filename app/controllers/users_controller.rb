@@ -27,12 +27,10 @@ class UsersController < ApplicationController
 		end
 	end
 	
+	# Try to claim the profile specified by the token parameter.
+	# Do not use set_up_user filter because we don't want to build a profile.
 	def claim_profile
-		user = current_user
-		token = params[:token]
-		if user.is_provider? && user.profile.nil? && token.present? &&
-			(profile = Profile.find_by_invitation_token(token)) && profile.user.nil? &&
-			(user.profile = profile) && user.save
+		if current_user.claim_profile(params[:token])
 			set_flash_message :notice, :profile_claimed
 			redirect_to action: :view_profile
 		else

@@ -57,6 +57,38 @@ describe User do
 			@kelly.build_profile
 			@kelly.profile.should_not be_nil
 		end
+		
+		context "claiming" do
+			before(:each) do
+				@token = '2857251c-64e2-11e2-93ca-00264afffe0a'
+				FactoryGirl.create(:profile, invitation_email: 'Ralph@VaughanWilliams.com', invitation_token: @token)
+				@ralph = FactoryGirl.create(:expert_user, email: 'Ralph@VaughanWilliams.com')
+			end
+			
+			it "should fail if this user already has a persistent profile" do
+				@ralph.claim_profile(@token).should_not be_true
+			end
+			
+			context "this user does not already have a persistent profile" do
+				before(:each) do
+					@ralph.profile = nil
+					@ralph.save
+				end
+				
+				it "should claim the profile specified by the given token" do
+					@ralph.claim_profile(@token).should be_true
+				end
+				
+				it "should fail if the token does not match a profile" do
+					@ralph.claim_profile('nonsense').should_not be_true
+				end
+				
+				it "should fail if the profile is already claimed" do
+					@ralph.claim_profile(@token).should be_true
+					@ralph.claim_profile(@token).should_not be_true
+				end
+			end
+		end
 	end
 	
 	context "roles" do
