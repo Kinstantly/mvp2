@@ -6,6 +6,8 @@
 				= profile.is_published ? 'Profile is published' : 'Profile is NOT published'
 			.user_state
 				= profile.claimed? ? "Profile is claimed by #{profile.user.email}" : 'Profile is NOT claimed'
+			.invitation_state
+				= profile_invitation_info profile
 	.basic_profile
 		.display_name
 			Name:

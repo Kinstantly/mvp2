@@ -7,6 +7,10 @@ module ProfilesHelper
 		items.collect(&:name).sort{|a, b| a.casecmp b}.slice(0, n).join(', ') if items.present?
 	end
 	
+	def display_profile_time(time_with_zone)
+		time_with_zone.localtime.strftime('%a, %b %d, %Y %l:%M %p %Z')
+	end
+	
 	def default_profile_country
 		'US'
 	end
@@ -34,6 +38,16 @@ module ProfilesHelper
 	
 	def new_invitation_profile_link(profile)
 		link_to "Send invitation to claim", new_invitation_profile_path(profile), id: 'new_invitation_profile' if can?(:update, profile)
+	end
+	
+	def profile_invitation_info(profile)
+		if can?(:manage, profile) && !profile.claimed?
+			if profile.invitation_sent_at
+				"Invitation to claim has been sent to #{profile.invitation_email} at #{display_profile_time profile.invitation_sent_at}"
+			else
+				new_invitation_profile_link profile
+			end
+		end
 	end
 	
 	def profile_publish_check_box(profile)
