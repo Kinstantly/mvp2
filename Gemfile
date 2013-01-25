@@ -50,13 +50,16 @@ gem 'sunspot_rails'
 # Show progress on the console of long-running tasks.
 gem 'progress_bar'
 
+# Generates various types of UUIDs.  It conforms to RFC 4122 whenever possible.
+gem 'uuidtools'
+
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
 	gem 'cucumber-rails', '~> 1.0', require: false
 	gem 'database_cleaner', '~> 0.8'
 	# gem 'webrat', '~> 0.7'
 	gem 'factory_girl_rails', '~> 4.1'
-	gem 'email_spec', '~> 1.2'
+	gem 'email_spec', '~> 1.4'
 	gem 'capybara', '~> 1.1'
 	gem 'capybara-webkit'
 	gem 'launchy', '~> 2.1'

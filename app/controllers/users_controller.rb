@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	before_filter :authenticate_user!
-	before_filter :set_up_user, except: [:index]
+	before_filter :set_up_user, except: [:index, :claim_profile]
 	load_and_authorize_resource
 	before_filter :process_profile_publish_param, only: [:update_profile]
 	
@@ -24,6 +24,20 @@ class UsersController < ApplicationController
 		else
 			set_flash_message :alert, :profile_update_error
 			render action: :edit_profile
+		end
+	end
+	
+	def claim_profile
+		user = current_user
+		token = params[:token]
+		if user.is_provider? && user.profile.nil? && token.present? &&
+			(profile = Profile.find_by_invitation_token(token)) && profile.user.nil? &&
+			(user.profile = profile) && user.save
+			set_flash_message :notice, :profile_claimed
+			redirect_to action: :view_profile
+		else
+			set_flash_message :alert, :profile_claim_error
+			redirect_to root_path
 		end
 	end
 	

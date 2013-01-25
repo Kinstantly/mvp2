@@ -4,6 +4,8 @@
 		.editor_info
 			.publish_state
 				= profile.is_published ? 'Profile is published' : 'Profile is NOT published'
+			.user_state
+				= profile.claimed? ? "Profile is claimed by #{profile.user.email}" : 'Profile is NOT claimed'
 	.basic_profile
 		.display_name
 			Name:

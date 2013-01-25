@@ -43,6 +43,9 @@ div.view_profile {
 	margin: $profile_margin;
 	.buttons {
 		margin-bottom: 1em;
+		a {
+			margin: 0 1em 0 1em;
+		}
 	}
 	.account_areas, .profile_areas {
 		> div {

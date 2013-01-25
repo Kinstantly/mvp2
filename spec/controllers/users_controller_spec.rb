@@ -77,4 +77,55 @@ describe UsersController do
 			}.to raise_error(/protected attributes/i)
 		end
 	end
+	
+	describe "GET claim_profile" do
+		before(:each) do
+			@token = '2857251c-64e2-11e2-93ca-00264afffe0a'
+			@claimable_profile = FactoryGirl.create(:profile, invitation_email: 'Montserrat@Caballe.com', invitation_token: @token)
+		end
+		
+		context "as provider with no profile" do
+			before(:each) do
+				user = User.find(@kelly.id)
+				user.profile = nil
+				user.save
+			end
+			
+			it "successfully attaches the profile with the given token to the current user" do
+				get :claim_profile, token: @token
+				profile = User.find(@kelly.id).profile
+				profile.should_not be_nil
+				profile.id.should == @claimable_profile.id
+			end
+		
+			it "redirects to profile view page upon successful claim" do
+				get :claim_profile, token: @token
+				response.should redirect_to(controller: 'users', action: 'view_profile')
+			end
+		
+			it "does not redirect to profile view page when claim fails" do
+				get :claim_profile, token: 'bad-token'
+				response.should_not redirect_to(controller: 'users', action: 'view_profile')
+				flash[:alert].should_not be_nil
+			end
+			
+			it "fails if profile was already claimed" do
+				profile = @claimable_profile
+				profile.user = FactoryGirl.create(:expert_user, email: 'email@hasnotbeentaken.com')
+				profile.save
+				get :claim_profile, token: profile.invitation_token
+				response.should_not redirect_to(controller: 'users', action: 'view_profile')
+				flash[:alert].should_not be_nil
+			end
+		end
+		
+		context "as provider that already has a profile" do
+			it "should fail when claiming the profile in the invitation" do
+				get :claim_profile, token: @token
+				profile = User.find(@kelly.id).profile
+				response.should_not redirect_to(controller: 'users', action: 'view_profile')
+				flash[:alert].should_not be_nil
+			end
+		end
+	end
 end

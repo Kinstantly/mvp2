@@ -299,4 +299,40 @@ describe ProfilesController do
 			end
 		end
 	end
+	
+	context "sending invitation to claim a profile" do
+		context "as an admin user" do
+			before (:each) do
+				@editor = FactoryGirl.create(:admin_user, email: 'editor@example.com')
+				sign_in @editor
+				@profile = FactoryGirl.create(:profile)
+				get :new_invitation, id: @profile.id
+			end
+		
+			it "renders the invitation page" do
+				response.should render_template('new_invitation')
+			end
+			
+			context "submit the form to send the invitation" do
+				it "should redirect to profile view page if succesful" do
+					put :send_invitation, id: @profile.id, profile: {invitation_email: 'la@stupenda.com'}
+					response.should redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
+				end
+				
+				it "should render the invitation page if failed" do
+					put :send_invitation, id: @profile.id, profile: {invitation_email: 'nonsense'}
+					response.should render_template('new_invitation')
+				end
+			end
+		end
+		
+		it "should fail if the profile was already claimed" do
+			expert_with_profile = FactoryGirl.create(:expert_user)
+			editor = FactoryGirl.create(:admin_user, email: 'editor@example.com')
+			sign_in editor
+			put :send_invitation, id: expert_with_profile.profile.id, profile: {invitation_email: 'la@stupenda.com'}
+			response.should render_template('new_invitation')
+			flash[:alert].should_not be_nil
+		end
+	end
 end

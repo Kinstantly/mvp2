@@ -32,6 +32,10 @@ module ProfilesHelper
 		link_to "Edit profile", edit_profile_path(profile) if can?(:update, profile)
 	end
 	
+	def new_invitation_profile_link(profile)
+		link_to "Send invitation to claim", new_invitation_profile_path(profile), id: 'new_invitation_profile' if can?(:update, profile)
+	end
+	
 	def profile_publish_check_box(profile)
 		tag_name = 'is_published'
 		hidden_field_tag(tag_name, '', id: 'is_published_not') +

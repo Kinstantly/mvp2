@@ -46,9 +46,9 @@ def create_profile_2
 	@user_2.save
 end
 
-def create_unattached_profile
+def create_unattached_profile(override_data={})
 	set_up_new_data
-	@unattached_profile = FactoryGirl.create(:profile, @unattached_profile_data)
+	@unattached_profile = FactoryGirl.create(:profile, @unattached_profile_data.merge(override_data))
 end
 
 def create_published_profile
@@ -175,10 +175,15 @@ Given /^there is an unclaimed profile$/ do
 	create_unattached_profile
 end
 
-Given /^I visit the edit page for an (unclaimed|unpublished) profile$/ do |word|
+Given /^I visit the (view|edit) page for an (unclaimed|unpublished) profile$/ do |page, word|
 	create_unattached_profile
 	find_unattached_profile
-	visit edit_profile_path(@profile)
+	case page
+	when 'view'
+		visit profile_path(@profile)
+	when 'edit'
+		visit edit_profile_path(@profile)
+	end
 end
 
 Given /^a published profile with last name "(.*?)" and category "(.*?)"$/ do |name, cat|
@@ -218,6 +223,17 @@ end
 
 Given /^there is a search area tag named "(.*?)"$/ do |tag|
 	FactoryGirl.create(:search_area_tag, name: tag)
+end
+
+Given /^I have no profile$/ do
+	find_user
+	@user.profile = nil
+	@user.save
+end
+
+Given /^I have been invited to claim a profile$/ do
+	create_unattached_profile invitation_email: 'asleep@thewheel.wv.us'
+	@unattached_profile.invite
 end
 
 ### WHEN ###
@@ -400,6 +416,16 @@ end
 
 When /^I click on a user profile link$/ do
 	click_link MyHelpers.user_list_profile_link_id(@profile)
+end
+
+When /^click on the profile claim link$/ do
+	visit claim_user_profile_url(token: @unattached_profile.invitation_token)
+end
+
+When /^I invite "(.*?)" to claim the profile$/ do |email|
+	click_link 'new_invitation_profile'
+	fill_in 'invitation_email', with: email
+	click_button 'send_invitation_profile'
 end
 
 ### THEN ###
@@ -590,4 +616,9 @@ Then /^I should see "(.*?)" in the page title$/ do |words|
 	within('title') do
 		page.should have_content words
 	end
+end
+
+Then /^the profile should be attached to my account$/ do
+	find_user_profile
+	@profile.should == @unattached_profile
 end

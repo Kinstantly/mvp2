@@ -11,7 +11,7 @@ class Ability
 		# Experts should only be able to edit their profile via nested attributes on the user model.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.
 		if user.expert?
-			alias_action :view_profile, :edit_profile, :update_profile, to: :manage_profile
+			alias_action :view_profile, :edit_profile, :update_profile, :claim_profile, to: :manage_profile
 			can :manage_profile, User, id: user.id
 			can :create, User, id: user.id
 			can :update, User, id: user.id

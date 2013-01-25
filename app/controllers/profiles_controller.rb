@@ -39,4 +39,14 @@ class ProfilesController < ApplicationController
 		@search = Profile.fuzzy_search @search_query, search_area_tag_id: @search_area_tag_id, published_only: !current_user.try(:profile_editor?)
 		render :search_results
 	end
+	
+	def send_invitation
+		if @profile.update_attributes(params[:profile]) && @profile.invite
+			set_flash_message :notice, :invitation_sent
+			redirect_to profile_path @profile
+		else
+			set_flash_message :alert, :invitation_error
+			render action: :new_invitation
+		end
+	end
 end

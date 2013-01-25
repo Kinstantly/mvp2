@@ -1,0 +1,5 @@
+= "Hello, #{@profile.display_name.presence || 'Provider'},"
+= ''
+Please join Kinstantly.  To claim your profile, copy and paste the following link into your browser.
+= ''
+= claim_user_profile_url(token: @profile.invitation_token)

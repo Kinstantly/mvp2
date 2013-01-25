@@ -251,4 +251,61 @@ describe Profile do
 			end
 		end
 	end
+	
+	context "invite provider to claim their profile" do
+		before(:each) do
+			@profile.invitation_email = 'nicola@filacuridi.it'
+		end
+		
+		context "when profile is NOT saved before invitation is attempted" do
+			it "does not send invitation email" do
+				message = mock('message')
+				ProfileMailer.stub(:invite).and_return(message)
+				ProfileMailer.should_not_receive(:invite).with(@profile)
+				message.should_not_receive(:deliver)
+				@profile.invite
+			end
+		end
+		
+		context "when profile is saved before invitation is attempted" do
+			before(:each) do
+				@profile.save
+			end
+		
+			it "sends invitation email" do
+				message = mock('message')
+				ProfileMailer.should_receive(:invite).with(@profile).and_return(message)
+				message.should_receive(:deliver)
+				@profile.invite
+			end
+			
+			context "invitation attributes are properly set" do
+				before(:each) do
+					@profile.invite
+					@profile.should have(:no).errors
+				end
+				
+				it "sets invitation token" do
+					@profile.invitation_token.should be_present
+				end
+			
+				it "sets invitation delivery time" do
+					@profile.invitation_sent_at.should be_present
+					@profile.invitation_sent_at.to_f.should be_within(600).of(Time.zone.now.to_f) # be generous: within 10 minutes
+				end
+			end
+		end
+		
+		context "when the profile has already been claimed" do
+			it "should not send an invitation email" do
+				@profile.user = FactoryGirl.create(:expert_user)
+				@profile.save
+				message = mock('message')
+				ProfileMailer.stub(:invite).and_return(message)
+				ProfileMailer.should_not_receive(:invite).with(@profile)
+				message.should_not_receive(:deliver)
+				@profile.invite
+			end
+		end
+	end
 end

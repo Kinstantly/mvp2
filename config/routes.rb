@@ -22,10 +22,16 @@ Mvp2::Application.routes.draw do
 	match 'edit_user_profile' => 'users#edit_profile'
 	match 'update_user_profile' => 'users#update_profile'
 	match 'view_user_profile' => 'users#view_profile'
+	match 'claim_profile/:token' => 'users#claim_profile', as: :claim_user_profile
 	# Except admin can see all profiles.
 	match 'users' => 'users#index'
 	
-	resources :profiles
+	resources :profiles do
+		member do
+			get 'new_invitation'
+			put 'send_invitation'
+		end
+	end
 	
 	# Links to profiles for search engine crawlers.
 	match 'providers' => 'profiles#link_index'

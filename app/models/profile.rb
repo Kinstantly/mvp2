@@ -11,7 +11,8 @@ class Profile < ActiveRecord::Base
 		:consult_in_person, :consult_by_email, :consult_by_phone, :consult_by_video, 
 		:visit_home, :visit_school, 
 		:rates, :availability, 
-		:office_hours, :phone_hours, :video_hours, :accepting_new_clients
+		:office_hours, :phone_hours, :video_hours, :accepting_new_clients, 
+		:invitation_email
 	
 	belongs_to :user
 	has_and_belongs_to_many :age_ranges
@@ -26,6 +27,7 @@ class Profile < ActiveRecord::Base
 	validates :categories, length: {maximum: 1}
 	validates :availability, :awards, :education, :experience, :insurance_accepted, :rates, :summary, 
 		:office_hours, :phone_hours, :video_hours, length: {maximum: 1000}
+	validates :invitation_email, email: true, if: 'invitation_email.present?'
 	
 	# Merge in custom categories and specialties.
 	before_validation do
@@ -72,7 +74,7 @@ class Profile < ActiveRecord::Base
 		end
 		
 		string :last_name do
-			last_name.strip.downcase
+			(last_name || '').strip.downcase
 		end
 		
 		# For highlighting.
@@ -134,6 +136,23 @@ class Profile < ActiveRecord::Base
 		first_name.present? || last_name.present? ? display_name : (company_name.presence || '')
 	end
 	
+	def invite
+		if user
+			errors.add :profile, 'is already claimed.  You cannot send an invitation.'
+		elsif invitation_email.blank?
+			errors.add :invitation_email, 'address is required'
+		elsif generate_and_save_invitation_token
+			ProfileMailer.invite(self).deliver
+			self.invitation_sent_at = Time.zone.now
+			errors.add :invitation_sent_at, 'could not be recorded' unless save
+		end
+		errors.empty?
+	end
+	
+	def claimed?
+		!!user
+	end
+	
 	private
 	
 	def publishing_requirements
@@ -151,5 +170,15 @@ class Profile < ActiveRecord::Base
 	# Do not return values for new (unsaved) items.
 	def ids_names(items)
 		items.reject(&:new_record?).collect {|item| {id: item.id, name: item.name.html_escape}}
+	end
+	
+	# Return true if this profile is already in the database and
+	#   we were able to successfully save the generated token.
+	# Otherwise, return false, e.g., if this profile hasn't been saved yet
+	#   (we don't want to save for the first time as a side effect).
+	def generate_and_save_invitation_token
+		self.invitation_token = UUIDTools::UUID.timestamp_create.to_s
+		errors.add :invitation_token, 'could not be saved' unless persisted? && save
+		errors.empty?
 	end
 end
