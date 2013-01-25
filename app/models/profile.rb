@@ -137,11 +137,7 @@ class Profile < ActiveRecord::Base
 	end
 	
 	def invite
-		if user
-			errors.add :profile, 'is already claimed.  You cannot send an invitation.'
-		elsif invitation_email.blank?
-			errors.add :invitation_email, 'address is required'
-		elsif generate_and_save_invitation_token
+		if validate_invitable && generate_and_save_invitation_token
 			ProfileMailer.invite(self).deliver
 			self.invitation_sent_at = Time.zone.now
 			errors.add :invitation_sent_at, 'could not be recorded' unless save
@@ -170,6 +166,16 @@ class Profile < ActiveRecord::Base
 	# Do not return values for new (unsaved) items.
 	def ids_names(items)
 		items.reject(&:new_record?).collect {|item| {id: item.id, name: item.name.html_escape}}
+	end
+	
+	# Validate that an invitation can be sent to claim this profile.
+	def validate_invitable
+		if claimed?
+			errors.add :profile, 'is already claimed.  You cannot send an invitation.'
+		elsif invitation_email.blank?
+			errors.add :invitation_email, 'address is required'
+		end
+		errors.empty?
 	end
 	
 	# Return true if this profile is already in the database and
