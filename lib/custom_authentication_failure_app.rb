@@ -24,6 +24,6 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 	
 	# If attempting to claim a profile, we need to register as a provider first.
 	def need_provider_registration?
-		attempted_path =~ Regexp.new("^#{claim_user_profile_path('1').chop}")
+		attempted_path && attempted_path.start_with?(claim_user_profile_path('1').chop)
 	end
 end
