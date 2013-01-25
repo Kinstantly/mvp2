@@ -249,3 +249,7 @@ end
 Then /^I should not see user data that is not my own$/ do
 	page.should_not have_content @visitor_2[:email]
 end
+
+Then /^I should be on the provider (registration|sign[- ]up) page$/ do |word|
+	page.current_path.should == provider_sign_up_path
+end

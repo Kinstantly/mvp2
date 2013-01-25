@@ -418,7 +418,7 @@ When /^I click on a user profile link$/ do
 	click_link MyHelpers.user_list_profile_link_id(@profile)
 end
 
-When /^click on the profile claim link$/ do
+When /^I click on the profile claim link$/ do
 	visit claim_user_profile_url(token: @unattached_profile.invitation_token)
 end
 
