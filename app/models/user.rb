@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
 	end
 	
 	def is_provider=(value)
-		add_role :expert if value.presence && !client?
+		add_role :expert if value.present? && !client?
 	end
 	
 	alias :is_provider? :expert?
