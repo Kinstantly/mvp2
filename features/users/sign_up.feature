@@ -33,3 +33,7 @@ Feature: Sign up
 		Scenario: Newly registered non-expert is a client
 			When I sign up as a non-expert with valid user data
 			Then I should be a client
+
+		Scenario: Newly registered non-expert is a client
+			When I sign up as a non-expert without a username
+			Then I should see a missing username message

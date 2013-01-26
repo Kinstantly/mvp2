@@ -7,13 +7,15 @@ class User < ActiveRecord::Base
 
 	# Setup accessible (or protected) attributes for your model
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
-		:profile_attributes, :phone, :is_provider
-	# attr_accessible :title, :body
+		:profile_attributes, :phone, :is_provider, :username
 
 	has_one :profile, dependent: :destroy
 	accepts_nested_attributes_for :profile
 	
 	serialize :roles, Array
+	
+	validates :username, presence: true, if: 'client?'
+	validates :username, length: {minimum: 4}, if: 'client? && username.present?'
 	
 	# Solr search configuration.
 	searchable do
@@ -49,7 +51,11 @@ class User < ActiveRecord::Base
 	end
 	
 	def is_provider=(value)
-		add_role :expert if value.present? && !client?
+		if value.present? && !client?
+			add_role :expert
+		elsif value.blank? && !expert?
+			add_role :client
+		end
 	end
 	
 	alias :is_provider? :expert?

@@ -183,6 +183,10 @@ div.search_results {
 	}
 }
 
+.sign_up, .sign_in {
+	margin: $profile_margin;
+}
+
 span.note {
 	font: {
 		style: italic;

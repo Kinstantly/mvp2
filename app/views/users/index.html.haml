@@ -4,7 +4,7 @@
 			%thead
 				%tr
 					%th Login email
-					%th Name
+					%th Name or username
 					%th Profile (click to view)
 					%th Roles
 					%th Current sign-in
@@ -16,8 +16,8 @@
 				- @users.sort{|a, b| a.email.casecmp b.email}.each do |u|
 					%tr
 						%td= u.email
-						%td= profile_display_name u.profile
-						%td= user_list_profile_link u.profile
+						%td= u.is_provider? ? profile_display_name(u.profile) : u.username
+						%td= user_list_profile_link u.profile if u.is_provider?
 						%td= u.roles.join(', ')
 						%td= u.current_sign_in_at
 						%td= u.last_sign_in_at

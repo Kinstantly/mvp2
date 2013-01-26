@@ -58,6 +58,7 @@ def sign_up(sign_up_path='/provider/sign_up')
   fill_in "Email", :with => @visitor[:email]
   fill_in "Password", :with => @visitor[:password]
   fill_in "Password confirmation", :with => @visitor[:password_confirmation]
+  fill_in "Username", :with => @visitor[:username] if @visitor[:username]
   click_button "Join us!"
   find_user
 end
@@ -123,6 +124,13 @@ end
 
 When /^I sign up as a non\-expert with valid user data$/ do
   create_visitor
+  @visitor = @visitor.merge(:username => "hoffman")
+  sign_up_member
+end
+
+When /^I sign up as a non\-expert without a username$/ do
+  create_visitor
+  @visitor = @visitor.merge(:username => "")
   sign_up_member
 end
 
@@ -215,6 +223,10 @@ end
 
 Then /^I should see a mismatched password message$/ do
   page.should have_content "Password doesn't match confirmation"
+end
+
+Then /^I should see a missing username message$/ do
+  page.should have_content "Username can't be blank"
 end
 
 Then /^I should see a signed out message$/ do
