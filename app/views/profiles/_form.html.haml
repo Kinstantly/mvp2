@@ -226,14 +226,14 @@
 	$('.display_name_field').keyup (e) ->
 		refresh_display_name()
 	
-	# Show child check boxes that belong to the checked parents.
+	# Show check boxes for children that belong to the currently checked parents.
+	# In addition, always show check boxes for children that were originally checked (i.e., are currently persisted).
 	show_check_boxes = (children) ->
 		choices = {}
-		$('.'+edit_profile.parents[children]+' .check_box input').each ->
-			if $(this).attr('checked')
-				ids = edit_profile.maps[children][$(this).val()]
-				if ids
-					choices[edit_profile.names[children][id]] = id for id in ids
+		$('.'+edit_profile.parents[children]+' .check_box input:checked').each ->
+			ids = edit_profile.maps[children][$(this).val()]
+			if ids
+				choices[edit_profile.names[children][id]] = id for id in ids
 			true
 		choices[id_name.name] = id_name.id for id_name in edit_profile.ids_names[children]
 		boxes = $('.predefined_'+children)
