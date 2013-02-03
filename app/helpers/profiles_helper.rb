@@ -255,6 +255,10 @@ module ProfilesHelper
 		text_field_tag profile_custom_specialties_tag_name(form_builder), value, id: profile_custom_specialties_id(suffix)
 	end
 	
+	def profile_custom_specialties_autocomplete_field_tag(profile, value, suffix, form_builder=nil)
+		autocomplete_field_tag profile_custom_specialties_tag_name(form_builder), value, autocomplete_specialty_name_profiles_path, id: profile_custom_specialties_id(suffix)
+	end
+	
 	# Age range helpers
 	
 	def profile_age_ranges_id(s)

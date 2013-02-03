@@ -33,6 +33,7 @@ Mvp2::Application.routes.draw do
 		end
 		collection do
 			get :autocomplete_service_name
+			get :autocomplete_specialty_name
 		end
 	end
 	
