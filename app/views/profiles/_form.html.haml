@@ -80,11 +80,11 @@
 			= profile_custom_services_hidden_field_tag(f)
 			- i = 0; profile_new_custom_services(profile).each do |svc|
 				.text_field
-					= profile_custom_services_text_field_tag(profile, svc.name, "#{i = i+1}", f)
+					= profile_custom_services_autocomplete_field_tag(profile, svc.name, "#{i = i+1}", f)
 			.text_field
-				= profile_custom_services_text_field_tag(profile, '', "#{i = i+1}", f)
+				= profile_custom_services_autocomplete_field_tag(profile, '', "#{i = i+1}", f)
 			- @profile_custom_services_i = i
-			- @profile_custom_services_text_field_template = profile_custom_services_text_field_tag(profile, '', 'INDEX', f)
+			- @profile_custom_services_text_field_template = profile_custom_services_autocomplete_field_tag(profile, '', 'INDEX', f)
 		.specialties
 			= f.label :specialties, "Specialties"
 			%br

@@ -31,6 +31,9 @@ Mvp2::Application.routes.draw do
 			get 'new_invitation'
 			put 'send_invitation'
 		end
+		collection do
+			get :autocomplete_service_name
+		end
 	end
 	
 	# Links to profiles for search engine crawlers.

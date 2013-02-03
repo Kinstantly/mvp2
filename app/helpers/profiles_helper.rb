@@ -199,6 +199,10 @@ module ProfilesHelper
 		text_field_tag profile_custom_services_tag_name(form_builder), value, id: profile_custom_services_id(suffix)
 	end
 	
+	def profile_custom_services_autocomplete_field_tag(profile, value, suffix, form_builder=nil)
+		autocomplete_field_tag profile_custom_services_tag_name(form_builder), value, autocomplete_service_name_profiles_path, id: profile_custom_services_id(suffix)
+	end
+	
 	# Specialties helpers
 	
 	def profile_new_custom_specialties(profile)

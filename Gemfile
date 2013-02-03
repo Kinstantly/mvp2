@@ -26,7 +26,9 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+# Has jquery, jquery_ujs, and jquery-ui.
 gem 'jquery-rails'
+
 gem 'coffee-filter'
 
 gem 'ruby-prof', :git => 'git://github.com/wycats/ruby-prof.git'
@@ -52,6 +54,9 @@ gem 'progress_bar'
 
 # Generates various types of UUIDs.  It conforms to RFC 4122 whenever possible.
 gem 'uuidtools'
+
+# Rails integration of jQuery UI Autocomplete Widget.
+gem 'rails3-jquery-autocomplete', github: 'edsimpson/rails3-jquery-autocomplete'
 
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
