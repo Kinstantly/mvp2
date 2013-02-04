@@ -9,4 +9,9 @@ class Location < ActiveRecord::Base
 		addr += " #{postal_code}" if postal_code.present?
 		addr
 	end
+	
+	def search_address
+		region_name = Carmen::Country.coded(country).try(:subregions).try(:coded, region).try(:name)
+		[display_address, region_name].compact.join(' ')
+	end
 end

@@ -56,6 +56,10 @@ GEM
     capybara-webkit (0.13.0)
       capybara (>= 1.0.0, < 1.2)
       json
+    carmen (1.0.0.beta2)
+    carmen-rails (1.0.0.beta3)
+      carmen (~> 1.0.0.beta2)
+      rails
     childprocess (0.3.5)
       ffi (~> 1.0, >= 1.0.6)
     coffee-filter (0.1.1)
@@ -233,6 +237,7 @@ DEPENDENCIES
   cancan
   capybara (~> 1.1)
   capybara-webkit
+  carmen-rails (~> 1.0.0.beta3)
   coffee-filter
   coffee-rails (~> 3.2.1)
   cucumber-rails (~> 1.0)

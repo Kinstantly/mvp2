@@ -46,7 +46,7 @@ Feature: Edit my expert profile
 			And I am on my profile edit page
 		When I enter "123 Main St." in the "Address" field
 			And I enter "Ames" in the "City" field
-			And I enter "IA" in the "State" field
+			And I select "Iowa" as the state
 			And I enter "50010" in the "Zip code" field
 			And I save my profile
 		Then my profile should show "123 Main St." in the location area

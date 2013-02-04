@@ -12,7 +12,7 @@ module ProfilesHelper
 	end
 	
 	def default_profile_country
-		'US'
+		DEFAULT_COUNTRY_CODE
 	end
 	
 	def profile_country(profile=current_user.try(:profile))

@@ -1,5 +1,5 @@
 - profile ||= @profile
-- country = default_profile_country if country.blank?
+- country ||= (profile.try(:locations).try(:first).try(:country).presence || default_profile_country)
 - @page_title = profile_page_title profile
 .profile_areas
 	.basic_profile
@@ -50,7 +50,7 @@
 				= lf.label :city, "City"
 				= lf.text_field :city
 				= lf.label :region, "State"
-				= lf.text_field :region, size: 2
+				= lf.subregion_select :region, country, include_blank: '--'
 			.postal_code
 				= lf.label :postal_code, "Zip code"
 				= lf.text_field :postal_code

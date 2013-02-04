@@ -385,6 +385,12 @@ When /^I select "(.*?)" as the search area tag$/ do |tag|
 	end
 end
 
+When /^I select "(.*?)" as the state$/ do |name|
+	within('.location_contact_profile') do
+		select name, from: 'State'
+	end
+end
+
 When /^I visit the profile index page$/ do
 	visit profiles_path
 end

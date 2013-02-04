@@ -58,6 +58,9 @@ gem 'uuidtools'
 # Rails integration of jQuery UI Autocomplete Widget.
 gem 'rails3-jquery-autocomplete', github: 'edsimpson/rails3-jquery-autocomplete'
 
+# A repository of geographic regions for Ruby via Rails.
+gem 'carmen-rails', '~> 1.0.0.beta3'
+
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
 	gem 'cucumber-rails', '~> 1.0', require: false

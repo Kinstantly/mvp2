@@ -45,7 +45,7 @@ class Profile < ActiveRecord::Base
 			:office_hours, :phone_hours, :video_hours, :specialties_description
 		
 		text :locations do
-			locations.map &:display_address
+			locations.map &:search_address
 		end
 		text :categories do
 			categories.map &:name

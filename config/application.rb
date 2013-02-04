@@ -74,5 +74,6 @@ module Mvp2
   end
 end
 
+DEFAULT_COUNTRY_CODE = 'US'
 MAILER_DEFAULT_FROM = 'support@kinstantly.com'
 MAILER_DEFAULT_BCC = 'monitor@kinstantly.com'
