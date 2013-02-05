@@ -13,8 +13,8 @@ class ProfilesController < ApplicationController
 	before_filter :process_profile_publish_param, only: [:create, :update]
 	
 	# Autocomplete custom service and specialty names.
-	autocomplete :service, :name
-	autocomplete :specialty, :name
+	autocomplete :service, :name, full: true
+	autocomplete :specialty, :name, full: true
 	
 	# Auto-complete city name in location record.
 	# The database will have many records with the same city, so retrieve from database by distinct city.
