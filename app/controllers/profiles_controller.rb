@@ -12,8 +12,16 @@ class ProfilesController < ApplicationController
 	before_filter :require_location_in_profile, only: [:new, :edit]
 	before_filter :process_profile_publish_param, only: [:create, :update]
 	
+	# Autocomplete custom service and specialty names.
 	autocomplete :service, :name
 	autocomplete :specialty, :name
+	
+	# Auto-complete city name in location record.
+	# The database will have many records with the same city, so retrieve from database by distinct city.
+	# In order for the distinct city selection to work, use the :full_model option to
+	# trick autocomplete into not selecting specific columns.
+	# We can change the size limit on the returned list with the :limit option.
+	autocomplete :location, :city, scopes: [:unique_by_city], full_model: true
 	
 	def create
 		# @profile initialized by load_and_authorize_resource with cancan ability conditions and then parameter values.

@@ -4,6 +4,8 @@ class Location < ActiveRecord::Base
 	belongs_to :profile
 	belongs_to :search_area_tag
 	
+	scope :unique_by_city, select(:city).uniq
+	
 	def display_address
 		addr = join_present_attrs ', ', :address1, :address2, :city, :region, :country
 		addr += " #{postal_code}" if postal_code.present?

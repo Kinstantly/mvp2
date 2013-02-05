@@ -48,7 +48,7 @@
 				= lf.text_field :address2
 			.city_state
 				= lf.label :city, "City"
-				= lf.text_field :city
+				= lf.autocomplete_field :city, autocomplete_location_city_profiles_path
 				= lf.label :region, "State"
 				= lf.subregion_select :region, country, include_blank: '--'
 			.postal_code
