@@ -10,13 +10,6 @@ Feature: Edit my expert profile
 		When I edit my profile information
 		Then my edited information should be saved in my profile
 	
-	Scenario: Enter user information
-		Given I exist as a user
-			And I am logged in
-			And I am on my profile edit page
-		When I edit my email address
-		Then my email address should be saved to my user record
-	
 	Scenario: Enter insurance accepted
 		Given I exist as a user
 			And I am logged in

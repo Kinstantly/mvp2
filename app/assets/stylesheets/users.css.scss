@@ -60,7 +60,7 @@ div.view_profile {
 	}
 }
 
-div.edit_profile {
+.edit_profile, .edit_account {
 	margin: $profile_margin;
 	form {
 		label.required {
@@ -126,6 +126,11 @@ div.edit_profile {
 			background-color: #ffb3b3;
 		}
 	}
+}
+
+.cancel_account {
+	margin: $profile_margin;
+	@include profile-areas-div-style;
 }
 
 div.profile_index {

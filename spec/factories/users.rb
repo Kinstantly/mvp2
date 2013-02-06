@@ -25,5 +25,10 @@ FactoryGirl.define do
 		factory :profile_editor do
 			roles [:profile_editor]
 		end
+		
+		factory :client_user do
+			roles [:client]
+			username 'example_username'
+		end
 	end
 end

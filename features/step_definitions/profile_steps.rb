@@ -303,12 +303,6 @@ When /^I edit my profile information$/ do
 	find_user_profile
 end
 
-When /^I edit my email address$/ do
-	fill_in 'user_email', with: @visitor[:email]
-	click_button 'Save'
-	find_user_profile
-end
-
 When /^Click edit profile$/ do
 	click_link 'Edit profile'
 end

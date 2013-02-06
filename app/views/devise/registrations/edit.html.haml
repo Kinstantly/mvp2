@@ -1,0 +1,36 @@
+.edit_account
+	%h2 Account settings
+	= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f|
+		= devise_error_messages!
+		= render partial: 'profiles/info_area'
+		.account_areas
+			.basic_account
+				.email
+					= f.label :email, 'Your login email', class: 'required'
+					= f.email_field :email
+					%span.note We also use this email to contact you.
+				.password
+					= f.label :password, "Password"
+					= f.password_field :password, :autocomplete => "off"
+					%span.note Leave blank if you don't want to change it.
+				.password_confirmation
+					= f.label :password_confirmation, "Retype password"
+					= f.password_field :password_confirmation
+				.current_password
+					= f.label :current_password, "Current password", class: 'required'
+					= f.password_field :current_password
+					%span.note We need your current password to confirm your changes.
+				- if resource.client?
+					.username
+						= f.label :username, "Username"
+						= f.text_field :username
+				- if resource.is_provider?
+					.phone
+						= f.label :phone, "Phone number we use to contact you"
+						= f.text_field :phone
+		.buttons
+			= f.submit 'Save'
+			= link_to "Cancel", view_user_profile_path
+.cancel_account
+	Unhappy?
+	= link_to "Cancel my account.", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete

@@ -28,6 +28,13 @@ def create_user
   @user = FactoryGirl.create(:expert_user, email: @visitor[:email])
 end
 
+def create_client_user
+  create_visitor
+  delete_user
+  @visitor[:username] = 'username'
+  @user = FactoryGirl.create(:client_user, email: @visitor[:email], username: @visitor[:username])
+end
+
 def create_admin_user
   create_user
   @user.add_role :admin
@@ -88,6 +95,11 @@ Given /^I exist as a user$/ do
   create_user
 end
 
+Given /^I am logged in as a client user$/ do
+  create_client_user
+  sign_in
+end
+
 Given /^I do not exist as a user$/ do
   create_visitor
   delete_user
@@ -105,6 +117,10 @@ Given /^I am logged in as (an administrator|a profile editor)$/ do |role|
 		create_profile_editor
 	end
 	sign_in
+end
+
+Given /^I am on my account edit page$/ do
+	visit edit_user_registration_path
 end
 
 ### WHEN ###
@@ -184,12 +200,35 @@ When /^I edit my account details$/ do
   click_button "Update"
 end
 
+When /^I enter a new password(?: of "([^"]*?)")?$/ do |password|
+	password ||= 'kjoi4lk3j8nl'
+	fill_in 'user_password', with: password
+	fill_in 'user_password_confirmation', with: password
+	fill_in 'user_current_password', with: @visitor[:password]
+end
+
+When /^I enter a new email address(?: of "([^"]*?)")?$/ do |email|
+	email ||= "new_#{@visitor[:email]}"
+	fill_in 'user_current_password', with: @visitor[:password]
+	fill_in 'user_email', with: email
+end
+
+When /^I enter a new username(?: of "([^"]*?)")?$/ do |username|
+	username ||= "new_#{@visitor[:username]}"
+	fill_in 'user_current_password', with: @visitor[:password]
+	fill_in 'user_username', with: username
+end
+
 When /^I look at the list of users$/ do
   visit '/'
 end
 
 When /^I visit the user index page$/ do
 	visit users_path
+end
+
+When /^I save the account settings$/ do
+	click_button 'Save'
 end
 
 ### THEN ###
