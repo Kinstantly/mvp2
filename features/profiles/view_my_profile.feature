@@ -13,7 +13,7 @@ Feature: View my expert profile
 			Given I am logged in
 				And I want my profile
 			When I view my profile
-				And Click edit profile
+				And click edit my profile
 			Then I should land on the profile edit page
 
 		Scenario: See at least one category

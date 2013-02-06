@@ -40,7 +40,7 @@ module ApplicationHelper
 	
 	def edit_user_profile_link
 		path = edit_user_profile_path
-		link_to "Edit profile", path if show_link?(path) && can?(:update, User)
+		link_to "Edit my profile", path if show_link?(path) && can?(:update, User)
 	end
 	
 	def admin_profile_list_link

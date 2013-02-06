@@ -10,4 +10,8 @@ module UsersHelper
 			'No profile!'
 		end
 	end
+	
+	def account_settings_link
+		link_to 'Account settings', edit_user_registration_path
+	end
 end

@@ -227,14 +227,3 @@ Feature: Edit my expert profile
 		When I enter "challenging behavior, attachment issues, temperament" in the "My specialties" field
 			And I save my profile
 		Then my profile should show "challenging behavior, attachment issues, temperament" within "specialties_description"
-	
-	Scenario: Email change requires confirmation
-		Given I exist as a user
-			And I am logged in
-			And I am on my profile edit page
-		When I enter "cocteau@twins.com" in the "user_email" field
-			And I save the profile
-			And "cocteau@twins.com" opens the email
-			And I follow "confirm" in the email
-			And I view my profile
-		Then my profile should show "cocteau@twins.com" within "email"

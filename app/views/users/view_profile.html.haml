@@ -1,6 +1,7 @@
 .view_profile
 	.buttons
 		= edit_user_profile_link
+		= account_settings_link
 	.account_areas
 		.basic_account
 			.email
@@ -13,3 +14,4 @@
 	= render partial: 'profiles/view', locals: {profile: @profile}
 	.buttons
 		= edit_user_profile_link
+		= account_settings_link

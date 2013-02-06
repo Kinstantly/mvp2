@@ -303,8 +303,8 @@ When /^I edit my profile information$/ do
 	find_user_profile
 end
 
-When /^Click edit profile$/ do
-	click_link 'Edit profile'
+When /^(?:I )?click edit my profile$/ do
+	click_link 'Edit my profile'
 end
 
 When /^I click on the cancel link$/ do
