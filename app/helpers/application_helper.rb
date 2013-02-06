@@ -33,6 +33,11 @@ module ApplicationHelper
 		link_to "#{company_name}", path if show_link?(path)
 	end
 	
+	def account_settings_link
+		path = edit_user_registration_path
+		link_to 'Account settings', path if user_signed_in? && show_link?(path)
+	end
+	
 	def view_user_profile_link
 		path = view_user_profile_path
 		link_to 'View my profile', path if show_link?(path) && can?(:show, User)
