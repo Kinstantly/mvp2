@@ -134,6 +134,12 @@ When /^I sign up as a non\-expert without a username$/ do
   sign_up_member
 end
 
+When /^I sign up with email "([^"]*?)"$/ do |email|
+  create_visitor
+  @visitor = @visitor.merge(:email => email)
+  sign_up
+end
+
 When /^I sign up with an invalid email$/ do
   create_visitor
   @visitor = @visitor.merge(:email => "notanemail")
@@ -198,7 +204,11 @@ Then /^I should be signed out$/ do
 end
 
 Then /^I see an unconfirmed account message$/ do
-  page.should have_content "You have to confirm your account before continuing."
+  page.should have_content "A message with a confirmation link has been sent to your email address"
+end
+
+Then /^I see a confirmed account message$/ do
+  page.should have_content "Your account was successfully confirmed"
 end
 
 Then /^I see a successful sign in message$/ do

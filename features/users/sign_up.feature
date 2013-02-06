@@ -8,7 +8,7 @@ Feature: Sign up
 
 		Scenario: User signs up with valid data
 			When I sign up with valid user data
-			Then I should see a successful sign up message
+			Then I see an unconfirmed account message
 			
 		Scenario: User signs up with invalid email
 			When I sign up with an invalid email
@@ -37,3 +37,13 @@ Feature: Sign up
 		Scenario: Newly registered non-expert is a client
 			When I sign up as a non-expert without a username
 			Then I should see a missing username message
+	
+		Scenario: Newly registered user receives confirmation email
+			When I sign up with email "asleep@thewheel.wv.us"
+			Then "asleep@thewheel.wv.us" should receive an email with subject "Confirmation instructions"
+		
+		Scenario: Newly registered user must confirm
+			When I sign up with valid user data
+				And I open the email with subject "Confirmation instructions"
+			 	And I follow "confirm" in the email
+			Then I see a confirmed account message

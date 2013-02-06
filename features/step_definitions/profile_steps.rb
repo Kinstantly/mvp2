@@ -57,9 +57,12 @@ def create_published_profile
 end
 
 ### GIVEN ###
-Given /^an empty profile right after registration$/ do
+Given /^an empty profile right after registration and confirmation$/ do
 	set_up_new_data
 	sign_up
+	# Open confirmation email and click confirmation link.
+	open_last_email
+	click_first_link_in_email
 end
 
 Given /^I am on my profile edit page$/ do

@@ -3,8 +3,10 @@ FactoryGirl.define do
 		email 'example@example.com'
 		password 'please'
 		password_confirmation 'please'
-		# required if the Devise Confirmable module is used
-		# confirmed_at Time.now
+		
+		# confirmed_at is required if the Devise Confirmable module is used.
+		# However, confirmed_at cannot be mass assigned, so ensure it is not returned by attributes_for().
+		after(:build) { |user| user.confirmed_at = Time.now }
 		
 		profile
 		

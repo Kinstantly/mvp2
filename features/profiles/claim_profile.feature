@@ -21,3 +21,13 @@ Feature: Claim profile
 			And I have been invited to claim a profile
 	  When I click on the profile claim link
 	  Then I should be on the provider registration page
+	
+	Scenario: Newly registered provider must confirm to claim profile
+	  Given I am not logged in
+			And I have been invited to claim a profile
+	  When I click on the profile claim link
+	  Then I should be on the provider registration page
+		When I sign up with valid user data
+			And I open the email with subject "Confirmation instructions"
+		 	And I follow "confirm" in the email
+		Then the profile should be attached to my account
