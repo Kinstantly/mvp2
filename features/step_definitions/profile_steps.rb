@@ -74,11 +74,11 @@ Given /^I go to my profile edit page$/ do
 	visit edit_user_profile_path
 end
 
-Given /^I want (my|a|an)( unpublished)? profile$/ do |word1, word2|
+Given /^I want (?:my|a|an)(?: unpublished)? profile$/ do
 	create_profile
 end
 
-Given /^there are multiple( users with)?( unpublished)? profiles in the system$/ do |phrase1, phrase2|
+Given /^there are multiple(?: users with)?(?: unpublished)? profiles in the system$/ do
 	create_profile
 	create_profile_2
 end
@@ -178,7 +178,7 @@ Given /^there is an unclaimed profile$/ do
 	create_unattached_profile
 end
 
-Given /^I visit the (view|edit) page for an (unclaimed|unpublished) profile$/ do |page, word|
+Given /^I visit the (view|edit) page for an (?:unclaimed|unpublished) profile$/ do |page|
 	create_unattached_profile
 	find_unattached_profile
 	case page
@@ -591,7 +591,7 @@ Then /^the last name in the unclaimed profile should be "(.*?)"$/ do |last_name|
 	@profile.last_name.should == last_name
 end
 
-Then /^the (new|previously unpublished) profile should be published$/ do |word|
+Then /^the (?:new|previously unpublished) profile should be published$/ do
 	find_unattached_profile
 	@profile.is_published.should be_true
 end
