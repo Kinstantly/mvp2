@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
 	# This user must be a provider and must not already have a persistent profile.
 	def claim_profile(token)
 		is_provider? && (profile.nil? || profile.new_record?) && token.present? &&
-			(profile_to_claim = Profile.find_by_invitation_token(token)) && !profile_to_claim.claimed? &&
+			(profile_to_claim = Profile.find_by_invitation_token(token.to_s)) && !profile_to_claim.claimed? &&
 			(self.profile = profile_to_claim) && save
 	end
 end
