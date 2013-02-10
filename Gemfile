@@ -72,7 +72,7 @@ group :development, :test do
 	gem 'capybara-webkit'
 	gem 'launchy', '~> 2.1'
 	gem 'syntax'
-	gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in development
+	gem 'sunspot_solr', '~> 2.0.0.pre' # optional pre-packaged Solr distribution for use in development
 end
 
 # To use ActiveModel has_secure_password
