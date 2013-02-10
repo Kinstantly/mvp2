@@ -47,7 +47,7 @@ gem 'sitemap_generator'
 gem 'fog'
 
 # Search with the Solr search engine.
-gem 'sunspot_rails'
+gem 'sunspot_rails', '~> 2.0.0.pre'
 
 # Show progress on the console of long-running tasks.
 gem 'progress_bar'

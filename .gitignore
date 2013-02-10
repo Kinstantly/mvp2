@@ -19,5 +19,5 @@
 /public/sitemap[0-9_]*.xml*
 
 # Ignore Solr dev files that are not configuration.
-/solr/data
+/solr/data*
 /solr/pids
