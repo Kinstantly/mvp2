@@ -5,6 +5,9 @@ gem 'rails', '3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+# json 1.7.7 has a bug fix: CVE-2013-0269
+gem 'json', '>= 1.7.7'
+
 # Make heroku happy.  They only support postgresql.
 # gem 'sqlite3', :group => :development
 gem 'pg'
