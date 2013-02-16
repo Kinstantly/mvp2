@@ -22,4 +22,15 @@ describe Location do
 		location.search_area_tag = FactoryGirl.create :search_area_tag, name: 'East Bay'
 		location.should have(:no).errors_on(:search_area_tag)
 	end
+	
+	it "has Sunspot coordinates" do
+		lat = 37.7701468
+		lon = -122.4451098
+		location = Location.new
+		location.latitude = lat
+		location.longitude = lon
+		coords = location.coordinates
+		coords.lat.should be_within(0.0000001).of(lat)
+		coords.lng.should be_within(0.0000001).of(lon)
+	end
 end

@@ -36,7 +36,7 @@ class Profile < ActiveRecord::Base
 		self.specialties = ((specialties.presence || []) + (custom_specialties.presence || [])).uniq
 	end
 	
-	# Solr search configuration.
+	# Sunspot Solr search configuration.
 	searchable do
 		text :first_name, :last_name, :middle_name, :credentials, 
 			:email, :company_name, :url, :mobile_phone, :office_phone, 
@@ -44,9 +44,16 @@ class Profile < ActiveRecord::Base
 			:languages, :insurance_accepted, :summary, :rates, :availability, 
 			:office_hours, :phone_hours, :video_hours, :specialties_description
 		
-		text :locations do
+		text :addresses do
 			locations.map &:search_address
 		end
+		latlon :first_location do
+			locations.first.coordinates if locations.first
+		end
+		latlon :locations, multiple: true do
+			locations.map &:coordinates
+		end
+		
 		text :categories do
 			categories.map &:name
 		end
@@ -99,6 +106,12 @@ class Profile < ActiveRecord::Base
 			}
 			with :search_area_tag_ids, opts[:search_area_tag_ids] if opts[:search_area_tag_ids].present?
 			with :is_published, true if opts[:published_only]
+			
+			within_radius = opts[:within_radius]
+			with(:locations).in_radius(within_radius[:latitude], within_radius[:longitude], within_radius[:radius_km]) if within_radius.present?
+			
+			order_by_distance = opts[:order_by_distance]
+			order_by_geodist(:first_location, order_by_distance[:latitude], order_by_distance[:longitude]) if order_by_distance.present?
 		end
 	end
 	

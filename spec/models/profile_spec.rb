@@ -226,18 +226,77 @@ describe Profile do
 	end
 	
 	context "search" do
-		before(:each) do
-			@profile = FactoryGirl.create(:profile, summary: 'Swedish dramatic soprano', is_published: true)
-			Profile.reindex
-			Sunspot.commit
+		context "matching crieria" do
+			before(:each) do
+				@profile = FactoryGirl.create(:profile, summary: 'Swedish dramatic soprano', is_published: true)
+				Profile.reindex
+				Sunspot.commit
+			end
+		
+			it "does not require an exact match of query terms when searching profiles" do
+				Profile.fuzzy_search('famous Swedish sopranos').results.include?(@profile).should be_true
+			end
+		
+			it "requires at least two query terms to match out of three" do
+				Profile.fuzzy_search('famous Swedish tenors').results.include?(@profile).should be_false
+			end
 		end
 		
-		it "does not require an exact match of query terms when searching profiles" do
-			Profile.fuzzy_search('famous Swedish sopranos').results.include?(@profile).should be_true
-		end
+		context "ordering and restricting" do
+			before(:each) do
+				@summary_1 = 'Swedish dramatic soprano'
+				@summary_2 = 'Italian dramatic soprano'
+				@profile_1 = FactoryGirl.create(:profile, summary: @summary_1, is_published: true)
+				@profile_2 = FactoryGirl.create(:profile, summary: @summary_2, is_published: true)
+			end
+			
+			it "orders by relevance" do
+				Profile.reindex
+				Sunspot.commit
+				results = Profile.fuzzy_search(@summary_1).results
+				results.should have(2).things
+				results.first.should == @profile_1
+				results.second.should == @profile_2
+			end
 		
-		it "requires at least two query terms to match out of three" do
-			Profile.fuzzy_search('famous Swedish tenors').results.include?(@profile).should be_false
+			context "geographic" do
+				before(:each) do
+					@geocode_1 = {latitude: 37.7701468, longitude: -122.4451098}
+					@geocode_2 = {latitude: 37.7633971, longitude: -122.4664416}
+					# Location's latitude and longitude cannot be mass-assigned, so do it the hard way.
+					@location_1 = @profile_1.locations.build
+					@location_1.latitude = @geocode_1[:latitude]
+					@location_1.longitude = @geocode_1[:longitude]
+					@location_1.save
+					@location_2 = @profile_2.locations.build
+					@location_2.latitude = @geocode_2[:latitude]
+					@location_2.longitude = @geocode_2[:longitude]
+					@location_2.save
+					Profile.reindex
+					Sunspot.commit
+				end
+				
+				it "orders results by distance from a location" do
+					# Order wrt @geocode_2, so expect @profile_2 first.
+					results = Profile.fuzzy_search(@summary_1, order_by_distance: @geocode_2).results
+					results.should have(2).things
+					results.first.should == @profile_2
+					results.second.should == @profile_1
+				end
+				
+				it "excludes results outside of a given radius" do
+					# Assuming @geocode_1 and @geocode_2 are more than 0.5 km apart, we should only see one.
+					results = Profile.fuzzy_search(@summary_1, within_radius: @geocode_1.merge(radius_km: 0.5)).results
+					results.should have(1).thing
+					results.first.should == @profile_1
+				end
+				
+				it "includes results within a given radius" do
+					# Assuming @geocode_1 and @geocode_2 are less than 100 km apart, we should see both.
+					results = Profile.fuzzy_search(@summary_1, within_radius: @geocode_1.merge(radius_km: 100)).results
+					results.should have(2).things
+				end
+			end
 		end
 	end
 	

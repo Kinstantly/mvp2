@@ -16,4 +16,8 @@ class Location < ActiveRecord::Base
 		region_name = Carmen::Country.coded(country).try(:subregions).try(:coded, region).try(:name)
 		[display_address, region_name].compact.join(' ')
 	end
+	
+	def coordinates
+		Sunspot::Util::Coordinates.new(latitude, longitude)
+	end
 end

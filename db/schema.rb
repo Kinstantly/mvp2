@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130205031519) do
+ActiveRecord::Schema.define(:version => 20130212003522) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -58,6 +58,8 @@ ActiveRecord::Schema.define(:version => 20130205031519) do
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
     t.integer  "search_area_tag_id"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   create_table "profiles", :force => true do |t|
