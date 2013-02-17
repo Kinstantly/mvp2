@@ -120,7 +120,7 @@ module ProfilesHelper
 	end
 	
 	def profile_categories_check_box_tag(profile, category, form_builder=nil)
-		radio_button_tag profile_categories_tag_name(form_builder), category.id, profile.categories.include?(category), id: profile_categories_id(category.id)
+		check_box_tag profile_categories_tag_name(form_builder), category.id, profile.categories.include?(category), id: profile_categories_id(category.id)
 	end
 	
 	def profile_display_categories(profile=current_user.try(:profile))

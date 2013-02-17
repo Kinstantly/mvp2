@@ -117,10 +117,10 @@ describe Profile do
 			@profile.should have(:no).errors_on(:categories)
 		end
 		
-		it "allows no more than one category" do
+		it "allows more than one category" do
 			@profile.categories = @profile_data[:categories]
 			@profile.categories << FactoryGirl.create(:category, name: 'MISC.')
-			@profile.should have(1).errors_on(:categories)
+			@profile.should have(:no).errors_on(:categories)
 		end
 	end
 	

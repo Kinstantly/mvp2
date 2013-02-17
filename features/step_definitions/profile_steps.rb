@@ -248,7 +248,7 @@ When /^I enter new profile information$/ do
 	fill_in 'profile_last_name', with: @unattached_profile_data[:last_name]
 	fill_in 'Website', with: @unattached_profile_data[:url]
 	within('.categories') do
-		choose MyHelpers.profile_categories_id(@predefined_category.id)
+		check MyHelpers.profile_categories_id(@predefined_category.id)
 	end
 	within('.custom_services') do
 		fill_in MyHelpers.profile_custom_services_id('1'), with: 'teacher'
@@ -268,7 +268,7 @@ When /^I enter my basic profile information$/ do
 	fill_in 'profile_middle_name', with: @profile_data[:middle_name]
 	fill_in 'profile_last_name', with: @profile_data[:last_name]
 	within('.categories') do
-		choose MyHelpers.profile_categories_id(@predefined_category.id)
+		check MyHelpers.profile_categories_id(@predefined_category.id)
 	end
 	within('.custom_services') do
 		fill_in MyHelpers.profile_custom_services_id('1'), with: 'teacher'
@@ -322,14 +322,14 @@ end
 
 When /^I select the "(.*?)" category$/ do |cat|
 	within('.categories') do
-		choose MyHelpers.profile_categories_id(cat.to_category.id)
+		check MyHelpers.profile_categories_id(cat.to_category.id)
 	end
 end
 
 When /^I select the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
 	within('.categories') do
-		choose MyHelpers.profile_categories_id(cat1.to_category.id)
-		choose MyHelpers.profile_categories_id(cat2.to_category.id)
+		check MyHelpers.profile_categories_id(cat1.to_category.id)
+		check MyHelpers.profile_categories_id(cat2.to_category.id)
 	end
 end
 

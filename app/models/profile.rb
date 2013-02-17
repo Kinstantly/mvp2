@@ -24,7 +24,7 @@ class Profile < ActiveRecord::Base
 	accepts_nested_attributes_for :locations
 	
 	validate :publishing_requirements
-	validates :categories, length: {maximum: 1}
+	# validates :categories, length: {maximum: 1}
 	validates :availability, :awards, :education, :experience, :insurance_accepted, :rates, :summary, 
 		:office_hours, :phone_hours, :video_hours, length: {maximum: 1000}
 	validates :invitation_email, email: true, if: 'invitation_email.present?'
