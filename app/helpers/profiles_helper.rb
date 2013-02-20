@@ -50,8 +50,7 @@ module ProfilesHelper
 		end
 	end
 	
-	def profile_publish_check_box(profile)
-		tag_name = 'is_published'
+	def profile_publish_check_box(tag_name, profile)
 		hidden_field_tag(tag_name, '', id: 'is_published_not') +
 			check_box_tag(tag_name, '1', profile.is_published, id: 'is_published')
 	end

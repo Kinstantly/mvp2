@@ -224,6 +224,12 @@ Given /^a published profile with city "(.*?)" and state "(.*?)"$/ do |city, stat
 	@published_profile.save
 end
 
+Given /^a published profile with admin notes "(.*?)"$/ do |notes|
+	create_published_profile
+	@published_profile.admin_notes = notes
+	@published_profile.save
+end
+
 Given /^there is a search area tag named "(.*?)"$/ do |tag|
 	FactoryGirl.create(:search_area_tag, name: tag)
 end
@@ -489,8 +495,12 @@ Then /^my country code should be set to "(.*?)"$/ do |country|
 	@profile.locations.first.country.should == country
 end
 
-Then /^my profile should show "([^\"]+)"$/ do |value|
+Then /^(?:my|the) profile should show "([^\"]+)"$/ do |value|
 	page.should have_content value
+end
+
+Then /^(?:my|the) profile should not show "([^\"]+)"$/ do |value|
+	page.should_not have_content value
 end
 
 Then /^my profile should show "([^\"]+)" within "([^\"]+)"$/ do |value, css_class_name|

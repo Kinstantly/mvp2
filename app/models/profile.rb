@@ -26,7 +26,7 @@ class Profile < ActiveRecord::Base
 	validate :publishing_requirements
 	# validates :categories, length: {maximum: 1}
 	validates :availability, :awards, :education, :experience, :insurance_accepted, :rates, :summary, 
-		:office_hours, :phone_hours, :video_hours, length: {maximum: 1000}
+		:office_hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: 1000}
 	validates :invitation_email, email: true, if: 'invitation_email.present?'
 	
 	# Merge in custom categories and specialties.

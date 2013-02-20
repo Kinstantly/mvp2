@@ -37,12 +37,15 @@ class ApplicationController < ActionController::Base
 		@profile.require_location
 	end
 	
-	# If current user is an admin and the is_published param was used,
-	# use it to set the publish state of @profile.
-	def process_profile_publish_param
+	# If current user is an admin and
+	#   * the is_published param was used, use it to set the publish state of @profile,
+	#   * the admin_notes param was used, set to nil if only has whitespace, otherwise set to stripped value.
+	def process_profile_admin_params
 		if current_user.admin?
 			is_published = params[:is_published]
 			@profile.is_published = is_published.present? if is_published
+			admin_notes = params[:admin_notes]
+			@profile.admin_notes = admin_notes.strip.presence if admin_notes
 		end
 	end
 end

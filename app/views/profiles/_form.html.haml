@@ -184,8 +184,12 @@
 			= f.text_area :video_hours, size: '30x5'
 	- if current_user.admin?
 		.admin_options
-			= profile_publish_check_box @profile
-			Check to publish
+			.label_area
+				= label_tag :admin_notes, 'Admin notes'
+			= text_area_tag :admin_notes, @profile.admin_notes, size: '50x5'
+			.check_box
+				= profile_publish_check_box :is_published, @profile
+				= label_tag :is_published, 'Check to publish'
 
 :javascript
 	window.edit_profile = {

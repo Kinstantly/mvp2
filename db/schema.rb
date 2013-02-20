@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130212003522) do
+ActiveRecord::Schema.define(:version => 20130220011611) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(:version => 20130212003522) do
     t.string   "invitation_email"
     t.string   "invitation_token"
     t.datetime "invitation_sent_at"
+    t.text     "admin_notes"
   end
 
   create_table "profiles_services", :force => true do |t|

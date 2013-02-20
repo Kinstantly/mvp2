@@ -76,6 +76,12 @@ describe UsersController do
 				post :update_profile, user: {profile_attributes: {is_published: true}}
 			}.to raise_error(/protected attributes/i)
 		end
+		
+		it "fails to update the admin notes" do
+			expect {
+				post :update_profile, user: {profile_attributes: {admin_notes: 'Sneaky notes'}}
+			}.to raise_error(/protected attributes/i)
+		end
 	end
 	
 	describe "GET claim_profile" do

@@ -31,3 +31,11 @@ Feature: Edit an expert's profile
 		When I select "East Bay" as the search area tag
 			And I save the profile
 		Then the search area tag in the unclaimed profile should be "East Bay"
+
+	Scenario: Save notes as an administrator
+		Given I am logged in as an administrator
+			And I visit the edit page for an unclaimed profile
+		When I enter "Bel piacere e godere fido amor" in the "Admin notes" field
+			And I save the profile
+		Then the profile should show "Bel piacere e godere fido amor"
+

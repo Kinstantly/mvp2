@@ -10,7 +10,7 @@ class ProfilesController < ApplicationController
 	#   ensure it has at least one location
 	#   set publish state based on parameter
 	before_filter :require_location_in_profile, only: [:new, :edit]
-	before_filter :process_profile_publish_param, only: [:create, :update]
+	before_filter :process_profile_admin_params, only: [:create, :update]
 	
 	# Autocomplete custom service and specialty names.
 	autocomplete :service, :name, full: true

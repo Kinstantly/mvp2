@@ -8,6 +8,13 @@
 				= profile.claimed? ? "Profile is claimed by #{profile.user.email}" : 'Profile is NOT claimed'
 			.invitation_state
 				= profile_invitation_info profile
+	- if current_user.try(:admin?)
+		.admin_info
+			- if profile.admin_notes.present?
+				.admin_notes
+					%span.label Admin notes:
+					%br
+					.value.text_area= preserve profile.admin_notes
 	.basic_profile
 		.display_name
 			Name:

@@ -8,3 +8,21 @@ Feature: View a provider's profile
 			And I am not logged in
 		When I visit the published profile page
 		Then I should see "Cabell" in the page title
+
+	Scenario: Administrator can see admin notes
+		Given a published profile with admin notes "Nessun dorma"
+			And I am logged in as an administrator
+		When I visit the published profile page
+		Then the profile should show "Nessun dorma"
+
+	Scenario: Profile editor cannot see admin notes
+		Given a published profile with admin notes "Nessun dorma"
+			And I am logged in as a profile editor
+		When I visit the published profile page
+		Then the profile should not show "Nessun dorma"
+
+	Scenario: Public cannot see admin notes
+		Given a published profile with admin notes "Nessun dorma"
+			And I am not logged in
+		When I visit the published profile page
+		Then the profile should not show "Nessun dorma"
