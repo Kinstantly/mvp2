@@ -32,12 +32,13 @@
 			Office:
 			= profile.office_phone
 	.location_contact_profile
-		.address
-			Address:
-			= location_display_address profile.try(:locations).try(:first)
-		.search_area_tag
-			Region:
-			= profile.try(:locations).try(:first).try(:search_area_tag).try(:name)
+		- profile.locations.each do |location|
+			.address
+				Address:
+				= location_display_address location
+			.search_area_tag
+				Region:
+				= location.search_area_tag.try(:name)
 	.expertise_profile
 		.categories
 			%span.label Category:

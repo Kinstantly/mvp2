@@ -66,7 +66,7 @@ div.view_profile {
 		label.required {
 			@include required-field-label-style;
 		}
-		.account_areas, .profile_areas {
+		.account_areas, .profile_areas, .location_contact_profile {
 			> div {
 				@include profile-areas-div-style;
 				> div {

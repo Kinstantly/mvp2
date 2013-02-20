@@ -378,7 +378,7 @@ end
 
 When /^I select "(.*?)" as the search area tag$/ do |tag|
 	within('.location_contact_profile') do
-		select tag, from: 'search_area_tag'
+		select tag, from: 'Region for search'
 	end
 end
 
@@ -429,6 +429,16 @@ When /^I invite "(.*?)" to claim the profile$/ do |email|
 	click_link 'new_invitation_profile'
 	fill_in 'invitation_email', with: email
 	click_button 'send_invitation_profile'
+end
+
+When /^I click on the "(.*?)" (?:link|button)$/ do |link|
+	click_link_or_button link
+end
+
+When /^I enter "(.*?)" in the "(.*?)" field of the second location$/ do |text, field|
+	within('.location_contact_profile .fields + .fields') do
+		fill_in field, with: text
+	end
 end
 
 ### THEN ###
@@ -493,6 +503,10 @@ Then /^my profile should show "(.*?)" in the location area$/ do |value|
 	within('.view_profile .location_contact_profile') do
 		page.should have_content value
 	end
+end
+
+Then /^my profile should have no locations$/ do
+	@profile.locations.should have(:no).things
 end
 
 Then /^my profile should show me as being in the "(.*?)" (category|service|specialty)$/ do |name, thing|
@@ -624,4 +638,8 @@ end
 Then /^the profile should be attached to my account$/ do
 	find_user_profile
 	@profile.should == @unattached_profile
+end
+
+Then /^I should see form fields for an extra location$/ do
+	have_css '.location_contact_profile .fields + .fields'
 end

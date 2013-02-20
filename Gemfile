@@ -17,6 +17,9 @@ gem 'haml'
 # Get error message helpers for forms.
 gem 'dynamic_form'
 
+# Dynamic add and remove links for nested models.
+gem 'nested_form'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

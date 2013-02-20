@@ -29,7 +29,7 @@ module ProfilesHelper
 	end
 		
 	def profile_attribute_tag_name(attr_name, form_builder=nil)
-		"#{form_builder.object_name.presence || 'profile'}[#{attr_name}][]"
+		"#{form_builder.try(:object_name).presence || 'profile'}[#{attr_name}][]"
 	end
 	
 	def edit_profile_link(profile)

@@ -227,3 +227,30 @@ Feature: Edit my expert profile
 		When I enter "challenging behavior, attachment issues, temperament" in the "My specialties" field
 			And I save my profile
 		Then my profile should show "challenging behavior, attachment issues, temperament" within "specialties_description"
+	
+	@javascript
+	Scenario: Request extra location
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I click on the "Fill in another location" link
+		Then I should see form fields for an extra location
+	
+	@javascript
+	Scenario: Enter extra location
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I click on the "Fill in another location" link
+			And I enter "La Fenice" in the "Address" field of the second location
+			And I save my profile
+		Then my profile should show "La Fenice" in the location area
+	
+	@javascript
+	Scenario: Delete location
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I click on the "Mark this location for removal" link
+			And I save my profile
+		Then my profile should have no locations

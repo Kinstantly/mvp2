@@ -21,7 +21,7 @@ class Profile < ActiveRecord::Base
 	has_and_belongs_to_many :specialties
 	
 	has_many :locations, dependent: :destroy
-	accepts_nested_attributes_for :locations
+	accepts_nested_attributes_for :locations, allow_destroy: true
 	
 	validate :publishing_requirements
 	# validates :categories, length: {maximum: 1}

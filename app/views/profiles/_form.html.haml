@@ -40,8 +40,8 @@
 		.office_phone
 			= f.label :office_phone, "Office"
 			= f.text_field :office_phone
-	= f.fields_for :locations do |lf|
-		.location_contact_profile
+	.location_contact_profile
+		= f.fields_for :locations do |lf|
 			.address
 				= lf.label :address1, "Address"
 				= lf.text_field :address1
@@ -57,8 +57,11 @@
 				= lf.hidden_field :country, value: country
 			- if current_user.profile_editor?
 				.search_area_tag
-					= f.label :search_area_tag_id, "Region for search"
-					= lf.collection_select :search_area_tag_id, SearchAreaTag.all, :id, :name, {include_blank: 'Other'}, id: 'search_area_tag'
+					= lf.label :search_area_tag_id, "Region for search"
+					= lf.collection_select :search_area_tag_id, SearchAreaTag.all, :id, :name, {include_blank: 'Other'}
+			= lf.link_to_remove 'Mark this location for removal'
+			upon saving
+		= f.link_to_add 'Fill in another location', :locations
 	.expertise_profile
 		.categories
 			= f.label :category, "Category", class: 'required'

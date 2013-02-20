@@ -153,6 +153,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.21)
     multi_json (1.5.1)
+    nested_form (0.3.1)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-ssh (2.6.2)
@@ -262,6 +263,7 @@ DEPENDENCIES
   jquery-rails
   json (>= 1.7.7)
   launchy (~> 2.1)
+  nested_form
   pg
   progress_bar
   rails (= 3.2.12)

@@ -1,5 +1,5 @@
 .edit_profile
-	= form_for @user, url: update_user_profile_path do |uf|
+	= nested_form_for @user, url: update_user_profile_path do |uf|
 		= uf.error_messages
 		= render partial: 'profiles/info_area'
 		= uf.fields_for :profile do |f|
