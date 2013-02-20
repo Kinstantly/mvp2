@@ -59,8 +59,7 @@
 				.search_area_tag
 					= lf.label :search_area_tag_id, "Region for search"
 					= lf.collection_select :search_area_tag_id, SearchAreaTag.all, :id, :name, {include_blank: 'Other'}
-			= lf.link_to_remove 'Mark this location for removal'
-			upon saving
+			= lf.link_to_remove 'Mark this location for removal upon saving', confirm: 'This location will be removed when you save the profile.'
 		= f.link_to_add 'Fill in another location', :locations
 	.expertise_profile
 		.categories
