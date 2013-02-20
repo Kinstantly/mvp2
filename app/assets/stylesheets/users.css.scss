@@ -41,6 +41,9 @@ $profile_margin: 10px;
 
 div.view_profile {
 	margin: $profile_margin;
+	#headline {
+		text-align: center;
+	}
 	.buttons {
 		margin-bottom: 1em;
 		a {

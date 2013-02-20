@@ -1,4 +1,5 @@
 .view_profile
+	%h3#headline= @profile.display_name_or_company
 	.buttons
 		= edit_profile_link @profile
 		- if !@profile.claimed?
