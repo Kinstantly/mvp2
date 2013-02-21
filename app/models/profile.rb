@@ -3,7 +3,7 @@ class Profile < ActiveRecord::Base
 	
 	attr_accessible :first_name, :last_name, :middle_name, :credentials, :email, 
 		:company_name, :url, :locations_attributes, 
-		:mobile_phone, :office_phone, 
+		:primary_phone, :secondary_phone, 
 		:headline, :education, :experience, :certifications, :awards, 
 		:languages, :insurance_accepted, :summary, 
 		:category_ids, :service_ids, :specialty_ids, :age_range_ids, 
@@ -41,7 +41,7 @@ class Profile < ActiveRecord::Base
 	# Sunspot Solr search configuration.
 	searchable do
 		text :first_name, :last_name, :middle_name, :credentials, 
-			:email, :company_name, :url, :mobile_phone, :office_phone, 
+			:email, :company_name, :url, :primary_phone, :secondary_phone, 
 			:headline, :education, :experience, :certifications, :awards, :languages, :insurance_accepted, :summary, 
 			:languages, :insurance_accepted, :summary, :rates, :availability, 
 			:office_hours, :phone_hours, :video_hours, :specialties_description

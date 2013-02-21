@@ -34,12 +34,12 @@
 		.headline
 			= f.label :headline, "Professional headline as you'd like it to appear"
 			= f.text_field :headline, size: 50
-		.mobile_phone
-			= f.label :mobile_phone, "Mobile"
-			= f.text_field :mobile_phone
-		.office_phone
-			= f.label :office_phone, "Office"
-			= f.text_field :office_phone
+		.primary_phone
+			= f.label :primary_phone, "Primary phone"
+			= f.text_field :primary_phone
+		.secondary_phone
+			= f.label :secondary_phone, "Secondary phone"
+			= f.text_field :secondary_phone
 	.location_contact_profile
 		= f.fields_for :locations do |lf|
 			.address

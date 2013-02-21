@@ -19,8 +19,8 @@
 					%th Address
 					%th Search region
 					%th= current_user.try(:admin?) ? 'Public email' : 'Email'
-					%th Mobile
-					%th Office
+					%th Primary phone
+					%th Secondary phone
 					%th.large Categories
 					%th.large Jobs or Services
 					%th.large Specialties
@@ -54,8 +54,8 @@
 						%td= "#{location_display_address p.try(:locations).try(:first)}"
 						%td= p.try(:locations).try(:first).try(:search_area_tag).try(:name)
 						%td= p.try(:email)
-						%td= p.try(:mobile_phone)
-						%td= p.try(:office_phone)
+						%td= p.try(:primary_phone)
+						%td= p.try(:secondary_phone)
 						%td= profile_display_categories p
 						%td= profile_display_services p
 						%td= profile_display_specialties p

@@ -36,12 +36,12 @@
 			%span.label Professional headline:
 			%br
 			.value= profile.headline
-		.mobile_phone
-			Mobile:
-			= profile.mobile_phone
-		.office_phone
-			Office:
-			= profile.office_phone
+		.primary_phone
+			Primary phone:
+			= profile.primary_phone
+		.secondary_phone
+			Secondary phone:
+			= profile.secondary_phone
 	.location_contact_profile
 		- profile.locations.each do |location|
 			.address

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130221005653) do
+ActiveRecord::Schema.define(:version => 20130221022449) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -68,8 +68,8 @@ ActiveRecord::Schema.define(:version => 20130221005653) do
     t.string   "middle_name"
     t.string   "company_name"
     t.string   "url"
-    t.string   "mobile_phone"
-    t.string   "office_phone"
+    t.string   "secondary_phone"
+    t.string   "primary_phone"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
     t.integer  "user_id"

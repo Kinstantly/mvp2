@@ -5,13 +5,13 @@
 def set_up_new_data
 	create_visitor
 	@profile_data ||= { first_name: 'Know', middle_name: 'I', last_name: 'Tall',
-		office_phone: '415-555-1234', url: 'http://knowitall.com' }
+		primary_phone: '415-555-1234', url: 'http://knowitall.com' }
 	@profile_data_2 ||= { first_name: 'Can', middle_name: 'I', last_name: 'Helpyou',
-		office_phone: '800-555-1111', url: 'http://canihelpyou.com' }
+		primary_phone: '800-555-1111', url: 'http://canihelpyou.com' }
 	@unattached_profile_data ||= { first_name: 'Prospect', middle_name: 'A', last_name: 'Expert',
-		office_phone: '888-555-5555', url: 'http://UnattachedExpert.com' }
+		primary_phone: '888-555-5555', url: 'http://UnattachedExpert.com' }
 	@published_profile_data ||= { first_name: 'Sandy', middle_name: 'A', last_name: 'Known',
-		office_phone: '888-555-7777', url: 'http://KnownExpert.com', is_published: true }
+		primary_phone: '888-555-7777', url: 'http://KnownExpert.com', is_published: true }
 	unless @predefined_category
 		@predefined_category = 'TUTORS'.to_category
 		@predefined_category.is_predefined = true
@@ -303,7 +303,7 @@ When /^I set my credentials to "(.*?)"$/ do |credentials|
 end
 
 When /^I edit my profile information$/ do
-	fill_in 'Office', with: @profile_data[:office_phone]
+	fill_in 'Office', with: @profile_data[:primary_phone]
 	fill_in 'Website', with: @profile_data[:url]
 	click_button 'Save'
 	find_user_profile
@@ -483,7 +483,7 @@ Then /^my basic information should be saved in my profile$/ do
 end
 
 Then /^my edited information should be saved in my profile$/ do
-	page.should have_content @profile_data[:office_phone]
+	page.should have_content @profile_data[:primary_phone]
 	page.should have_content @profile_data[:url]
 end
 
