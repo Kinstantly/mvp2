@@ -186,7 +186,7 @@
 			#lead_generator
 				.label_area
 					= label_tag :lead_generator, 'Lead generator'
-				= text_field_tag :lead_generator, @profile.lead_generator
+				= autocomplete_field_tag :lead_generator, @profile.lead_generator, autocomplete_profile_lead_generator_profiles_path
 			#admin_notes
 				.label_area
 					= label_tag :admin_notes, 'Admin notes'

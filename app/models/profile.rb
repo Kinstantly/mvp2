@@ -29,6 +29,7 @@ class Profile < ActiveRecord::Base
 		:office_hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: 1000}
 	validates :invitation_email, email: true, if: 'invitation_email.present?'
 	
+	scope :unique_by_lead_generator, select(:lead_generator).uniq
 	scope :with_admin_notes, where('admin_notes IS NOT NULL')
 	
 	# Merge in custom categories and specialties.

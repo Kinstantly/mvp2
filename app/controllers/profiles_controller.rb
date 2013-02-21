@@ -22,6 +22,8 @@ class ProfilesController < ApplicationController
 	# trick autocomplete into not selecting specific columns.
 	# We can change the size limit on the returned list with the :limit option.
 	autocomplete :location, :city, scopes: [:unique_by_city], full_model: true
+	# Similar unique auto-completion for profile lead_generator.
+	autocomplete :profile, :lead_generator, scopes: [:unique_by_lead_generator], full_model: true
 	
 	def index
 		@profiles = @profiles.with_admin_notes if current_user.try(:admin?) && params[:with_admin_notes].present?
