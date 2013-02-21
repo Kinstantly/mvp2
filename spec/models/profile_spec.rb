@@ -367,4 +367,11 @@ describe Profile do
 			end
 		end
 	end
+	
+	it "has a scope that returns all profiles with admin notes" do
+		admin_notes = 'Contact this provider'
+		@profile.admin_notes = admin_notes
+		@profile.save
+		Profile.with_admin_notes.first.admin_notes.should == admin_notes
+	end
 end

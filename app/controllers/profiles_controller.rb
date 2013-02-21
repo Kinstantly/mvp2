@@ -23,6 +23,10 @@ class ProfilesController < ApplicationController
 	# We can change the size limit on the returned list with the :limit option.
 	autocomplete :location, :city, scopes: [:unique_by_city], full_model: true
 	
+	def index
+		@profiles = @profiles.with_admin_notes if current_user.try(:admin?) && params[:with_admin_notes].present?
+	end
+	
 	def create
 		# @profile initialized by load_and_authorize_resource with cancan ability conditions and then parameter values.
 		if @profile.save

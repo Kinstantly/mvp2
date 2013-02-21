@@ -140,6 +140,9 @@ div.profile_index {
 	margin: $profile_margin;
 	.buttons {
 		margin-bottom: 1em;
+		a {
+			margin: 0 1em 0 1em;
+		}
 	}
 	.profile_list {
 		table {

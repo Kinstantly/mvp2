@@ -53,6 +53,16 @@ module ApplicationHelper
 		link_to 'Profile admin', path if show_link?(path) && can?(:manage, Profile)
 	end
 	
+	def admin_change_profile_list_link
+		if current_user.try(:admin?)
+			if params[:with_admin_notes].present?
+				link_to 'Show all profiles', profiles_path
+			else
+				link_to 'Show only profiles with admin notes', profiles_path(with_admin_notes: 't')
+			end
+		end
+	end
+	
 	def admin_create_profile_link
 		path = new_profile_path
 		link_to 'Create profile', path if show_link?(path) && can?(:create, Profile)

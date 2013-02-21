@@ -1,16 +1,18 @@
 .profile_index
 	.buttons
 		= admin_create_profile_link
+		= admin_change_profile_list_link
 	.profile_list{align: 'center'}
 		%table
 			%thead
 				%tr
 					%th Name
+					%th Company name
 					- if can? :manage, Profile
 						%th Published?
 						%th Claimed by
-					%th New clients?
-					%th Company name
+					- if current_user.try(:admin?)
+						%th.large Admin notes
 					%th Website
 					%th Headline
 					%th Address
@@ -39,11 +41,12 @@
 				- @profiles.sort{|a, b| (a.last_name || '').casecmp (b.last_name || '')}.each do |p|
 					%tr
 						%td= profile_list_name_link p
+						%td= p.try(:company_name)
 						- if can? :manage, Profile
 							%td= p.try(:is_published) ? 'Published' : 'Not published'
 							%td= p.try(:claimed?) ? p.user.email : 'Not claimed'
-						%td= profile_display_accepting_new_clients p
-						%td= p.try(:company_name)
+						- if current_user.try(:admin?)
+							%td= p.try(:admin_notes)
 						%td= p.try(:url)
 						%td= p.try(:headline)
 						%td= "#{location_display_address p.try(:locations).try(:first)}"
