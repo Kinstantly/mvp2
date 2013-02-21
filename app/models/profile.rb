@@ -164,6 +164,18 @@ class Profile < ActiveRecord::Base
 		!user.nil?
 	end
 	
+	# If param was used, set to true if param is not blank.
+	# If param was not used, do nothing.
+	def assign_boolean_param_if_used(attr_name, value)
+		send "#{attr_name}=", value.present? if value
+	end
+	
+	# If param was used, set to nil if value only has whitespace, otherwise set to stripped value.
+	# If param was not used, do nothing.
+	def assign_text_param_if_used(attr_name, value)
+		send "#{attr_name}=", value.strip.presence if value
+	end
+	
 	private
 	
 	def publishing_requirements

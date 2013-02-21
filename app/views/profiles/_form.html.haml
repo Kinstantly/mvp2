@@ -183,9 +183,14 @@
 			= f.text_area :video_hours, size: '30x5'
 	- if current_user.admin?
 		.admin_options
-			.label_area
-				= label_tag :admin_notes, 'Admin notes'
-			= text_area_tag :admin_notes, @profile.admin_notes, size: '50x5'
+			#lead_generator
+				.label_area
+					= label_tag :lead_generator, 'Lead generator'
+				= text_field_tag :lead_generator, @profile.lead_generator
+			#admin_notes
+				.label_area
+					= label_tag :admin_notes, 'Admin notes'
+				= text_area_tag :admin_notes, @profile.admin_notes, size: '50x5'
 			.check_box
 				= profile_publish_check_box :is_published, @profile
 				= label_tag :is_published, 'Check to publish'

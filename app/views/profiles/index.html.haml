@@ -13,6 +13,7 @@
 						%th Claimed by
 					- if current_user.try(:admin?)
 						%th.large Admin notes
+						%th Lead generator
 					%th Website
 					%th Headline
 					%th Address
@@ -47,6 +48,7 @@
 							%td= p.try(:claimed?) ? p.user.email : 'Not claimed'
 						- if current_user.try(:admin?)
 							%td= p.try(:admin_notes)
+							%td= p.try(:lead_generator)
 						%td= p.try(:url)
 						%td= p.try(:headline)
 						%td= "#{location_display_address p.try(:locations).try(:first)}"

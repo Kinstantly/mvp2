@@ -39,3 +39,10 @@ Feature: Edit an expert's profile
 			And I save the profile
 		Then the profile should show "Bel piacere e godere fido amor"
 
+	Scenario: Log a lead generator as an administrator
+		Given I am logged in as an administrator
+			And I visit the edit page for an unclaimed profile
+		When I enter "Miah Persson" in the "Lead generator" field
+			And I save the profile
+		Then the profile should show "Miah Persson"
+

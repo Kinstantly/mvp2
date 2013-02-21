@@ -15,6 +15,10 @@
 					%span.label Admin notes:
 					%br
 					.value.text_area= preserve profile.admin_notes
+			- if profile.lead_generator.present?
+				.lead_generator
+					Lead generator:
+					= profile.lead_generator
 	.basic_profile
 		.display_name
 			Name:

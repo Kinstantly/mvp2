@@ -39,13 +39,12 @@ class ApplicationController < ActionController::Base
 	
 	# If current user is an admin and
 	#   * the is_published param was used, use it to set the publish state of @profile,
-	#   * the admin_notes param was used, set to nil if only has whitespace, otherwise set to stripped value.
+	#   * if any of the admin_notes and lead_generator params are used, set the corresponding profile attribute.
 	def process_profile_admin_params
 		if current_user.admin?
-			is_published = params[:is_published]
-			@profile.is_published = is_published.present? if is_published
-			admin_notes = params[:admin_notes]
-			@profile.admin_notes = admin_notes.strip.presence if admin_notes
+			@profile.assign_boolean_param_if_used :is_published, params[:is_published]
+			@profile.assign_text_param_if_used :admin_notes, params[:admin_notes]
+			@profile.assign_text_param_if_used :lead_generator, params[:lead_generator]
 		end
 	end
 end
