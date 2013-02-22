@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/edsimpson/rails3-jquery-autocomplete.git
-  revision: 0ab1ad332c8c6eb5f4955d31744046ce90a81d7a
-  specs:
-    rails3-jquery-autocomplete (1.0.10)
-      rails (~> 3.0)
-
-GIT
   remote: git://github.com/edsimpson/sunspot.git
   revision: 9a97e2608a5adaa8ab073826deb6d0450f4e2979
   specs:
@@ -152,7 +145,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.21)
-    multi_json (1.5.1)
+    multi_json (1.6.1)
     nested_form (0.3.1)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
@@ -183,6 +176,8 @@ GEM
       activesupport (= 3.2.12)
       bundler (~> 1.0)
       railties (= 3.2.12)
+    rails3-jquery-autocomplete (1.0.11)
+      rails (~> 3.0)
     railties (3.2.12)
       actionpack (= 3.2.12)
       activesupport (= 3.2.12)
@@ -269,7 +264,7 @@ DEPENDENCIES
   phonie
   progress_bar
   rails (= 3.2.12)
-  rails3-jquery-autocomplete!
+  rails3-jquery-autocomplete
   rspec-rails (~> 2.0)
   ruby-prof!
   sass-rails (~> 3.2.3)

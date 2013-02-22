@@ -66,7 +66,7 @@ gem 'progress_bar'
 gem 'uuidtools'
 
 # Rails integration of jQuery UI Autocomplete Widget.
-gem 'rails3-jquery-autocomplete', github: 'edsimpson/rails3-jquery-autocomplete'
+gem 'rails3-jquery-autocomplete' # , github: 'edsimpson/rails3-jquery-autocomplete'
 
 # A repository of geographic regions for Ruby via Rails.
 gem 'carmen-rails', '~> 1.0.0.beta3'
