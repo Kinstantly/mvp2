@@ -102,4 +102,10 @@ module ApplicationHelper
 		path = request_expert_path
 		link_to "Request a meeting", path if show_link?(path)
 	end
+	
+	# Display country code, area code, number, and if present, extension.
+	def display_phone_number(value)
+		phone = Phonie::Phone.parse value.try(:strip)
+		phone.try :format, '%c (%a) %f-%l' + (phone.try(:extension).present? ? ', x%x' : '')
+	end
 end

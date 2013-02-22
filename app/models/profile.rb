@@ -28,6 +28,8 @@ class Profile < ActiveRecord::Base
 	validates :availability, :awards, :education, :experience, :insurance_accepted, :rates, :summary, 
 		:office_hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: 1000}
 	validates :invitation_email, email: true, if: 'invitation_email.present?'
+	validates :primary_phone, phone_number: true, allow_blank: true
+	validates :secondary_phone, phone_number: true, allow_blank: true
 	
 	scope :unique_by_lead_generator, select(:lead_generator).uniq
 	scope :with_admin_notes, where('admin_notes IS NOT NULL')

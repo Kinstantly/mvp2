@@ -54,8 +54,8 @@
 						%td= "#{location_display_address p.try(:locations).try(:first)}"
 						%td= p.try(:locations).try(:first).try(:search_area_tag).try(:name)
 						%td= p.try(:email)
-						%td= p.try(:primary_phone)
-						%td= p.try(:secondary_phone)
+						%td= display_phone_number p.try(:primary_phone)
+						%td= display_phone_number p.try(:secondary_phone)
 						%td= profile_display_categories p
 						%td= profile_display_services p
 						%td= profile_display_specialties p

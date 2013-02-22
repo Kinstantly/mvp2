@@ -7,8 +7,8 @@ FactoryGirl.define do
 		middle_name "FactoryMiddleName"
 		company_name "FactoryCompanyName"
 		url "FactoryURL"
-		primary_phone "FactoryPrimaryPhone"
-		secondary_phone "FactorySecondaryPhone"
+		primary_phone "1-212-333-4444"
+		secondary_phone "1-505-666-7777"
 		insurance_accepted 'FactoryInsuranceAccepted'
 		
 		after(:build) { |profile|

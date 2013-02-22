@@ -254,3 +254,11 @@ Feature: Edit my expert profile
 		When I click on the "Mark this location for removal" link
 			And I save my profile
 		Then my profile should have no locations
+	
+	Scenario: Enter phone number
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I enter "505-555-9087x47 " in the "Primary phone" field
+			And I save my profile
+		Then my profile should show "(505) 555-9087, x47"

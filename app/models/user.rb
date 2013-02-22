@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
 	
 	validates :username, presence: true, if: 'client?'
 	validates :username, length: {minimum: 4}, if: 'client? && username.present?'
+	validates :phone, phone_number: true, allow_blank: true
 	
 	# Solr search configuration.
 	searchable do

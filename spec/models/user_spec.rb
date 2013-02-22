@@ -49,6 +49,11 @@ describe User do
 			status = @kelly.save
 			status.should == true
 		end
+		
+		it "should fail with an invalid US phone number" do
+			@kelly.phone = '(111) 555-1234'
+			@kelly.should have(1).errors_on(:phone)
+		end
 	
 		context "profile" do
 			it "should have no profile if new" do

@@ -77,3 +77,4 @@ end
 DEFAULT_COUNTRY_CODE = 'US'
 MAILER_DEFAULT_FROM = 'support@kinstantly.com'
 MAILER_DEFAULT_BCC = 'monitor@kinstantly.com'
+Phonie::Phone.default_country_code = '1'
