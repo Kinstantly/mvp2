@@ -261,17 +261,12 @@ describe Profile do
 		
 			context "geographic" do
 				before(:each) do
-					@geocode_1 = {latitude: 37.7701468, longitude: -122.4451098}
-					@geocode_2 = {latitude: 37.7633971, longitude: -122.4664416}
-					# Location's latitude and longitude cannot be mass-assigned, so do it the hard way.
-					@location_1 = @profile_1.locations.build
-					@location_1.latitude = @geocode_1[:latitude]
-					@location_1.longitude = @geocode_1[:longitude]
+					@location_1 = @profile_1.locations.build({address1: '1398 Haight St', city: 'San Francisco', region: 'CA', postal_code: '94117'})
 					@location_1.save
-					@location_2 = @profile_2.locations.build
-					@location_2.latitude = @geocode_2[:latitude]
-					@location_2.longitude = @geocode_2[:longitude]
+					@geocode_1 = {latitude: @location_1.latitude, longitude: @location_1.longitude}
+					@location_2 = @profile_2.locations.build({address1: '1326 9th Avenue', city: 'San Francisco', region: 'CA', postal_code: '94122'})
 					@location_2.save
+					@geocode_2 = {latitude: @location_2.latitude, longitude: @location_2.longitude}
 					Profile.reindex
 					Sunspot.commit
 				end

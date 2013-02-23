@@ -74,6 +74,9 @@ gem 'carmen-rails', '~> 1.0.0.beta3'
 # Parse and print phone numbers.  International support.
 gem 'phonie'
 
+# Geocoding (by street or IP address), reverse geocoding (find street address based on given coordinates), and distance queries.
+gem 'geocoder'
+
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
 	gem 'cucumber-rails', '~> 1.0', require: false
