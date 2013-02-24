@@ -179,6 +179,8 @@ GEM
       railties (= 3.2.12)
     rails3-jquery-autocomplete (1.0.11)
       rails (~> 3.0)
+    rails_autolink (1.0.9)
+      rails (~> 3.1)
     railties (3.2.12)
       actionpack (= 3.2.12)
       activesupport (= 3.2.12)
@@ -267,6 +269,7 @@ DEPENDENCIES
   progress_bar
   rails (= 3.2.12)
   rails3-jquery-autocomplete
+  rails_autolink
   rspec-rails (~> 2.0)
   ruby-prof!
   sass-rails (~> 3.2.3)

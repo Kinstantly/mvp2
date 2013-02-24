@@ -49,7 +49,7 @@
 						- if current_user.try(:admin?)
 							%td= p.try(:admin_notes)
 							%td= p.try(:lead_generator)
-						%td= p.try(:url)
+						%td= profile_website p
 						%td= p.try(:headline)
 						%td= "#{location_display_address p.try(:locations).try(:first)}"
 						%td= p.try(:locations).try(:first).try(:search_area_tag).try(:name)

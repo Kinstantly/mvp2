@@ -27,6 +27,12 @@ module ProfilesHelper
 		age_ranges = profile.try(:age_ranges).presence || []
 		age_ranges.sort_by(&:sort_index).map(&:name).join(', ')
 	end
+	
+	def profile_website(profile=current_user.try(:profile))
+		if (url = profile.try(:url)).present?
+			auto_link "http://#{url.strip.gsub(/http:\/\//i, '')}", link: :urls
+		end
+	end
 		
 	def profile_attribute_tag_name(attr_name, form_builder=nil)
 		"#{form_builder.try(:object_name).presence || 'profile'}[#{attr_name}][]"

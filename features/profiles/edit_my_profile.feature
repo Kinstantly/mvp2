@@ -262,3 +262,11 @@ Feature: Edit my expert profile
 		When I enter "505-555-9087x47 " in the "Primary phone" field
 			And I save my profile
 		Then my profile should show "(505) 555-9087, x47"
+	
+	Scenario: My profile should display my website with a link
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I enter "www.sfopera.com" in the "Website" field
+			And I save my profile
+		Then my profile should show "www.sfopera.com" within "url a"
