@@ -20,3 +20,20 @@ en:
   profile_mailer:
     invite:
       subject: 'Claim your profile at Kinstantly!'
+  models:
+    phone_number:
+      invalid: 'must be valid and properly formatted, e.g., "(800) 555-1234 x47"'
+    email:
+      invalid: 'must be a valid email address'
+    profile:
+      invitation_sent_at:
+        save_error: 'could not be recorded'
+      invitation_token:
+        save_error: 'could not be saved'
+      invitation_email:
+        missing: 'address is required'
+      name_and_company:
+        missing: 'and last name, or company name, are required'
+      category:
+        missing: 'must be chosen'
+      claimed: 'is already claimed. You cannot send an invitation.'

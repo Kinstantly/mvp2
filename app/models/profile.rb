@@ -27,6 +27,7 @@ class Profile < ActiveRecord::Base
 	# validates :categories, length: {maximum: 1}
 	validates :availability, :awards, :education, :experience, :insurance_accepted, :rates, :summary, 
 		:office_hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: 1000}
+	validates :email, email: true, allow_blank: true
 	validates :invitation_email, email: true, allow_blank: true
 	validates :primary_phone, phone_number: true, allow_blank: true
 	validates :secondary_phone, phone_number: true, allow_blank: true
@@ -158,7 +159,7 @@ class Profile < ActiveRecord::Base
 		if validate_invitable && generate_and_save_invitation_token
 			ProfileMailer.invite(self).deliver
 			self.invitation_sent_at = Time.zone.now
-			errors.add :invitation_sent_at, 'could not be recorded' unless save
+			errors.add :invitation_sent_at, I18n.t('models.profile.invitation_sent_at.save_error') unless save
 		end
 		errors.empty?
 	end
@@ -183,8 +184,8 @@ class Profile < ActiveRecord::Base
 	
 	def publishing_requirements
 		if is_published
-			errors.add :first_name, 'and last name, or company name, are required' if (first_name.blank? || last_name.blank?) && company_name.blank?
-			errors.add :category, 'must be chosen' if categories.blank?
+			errors.add :first_name, I18n.t('models.profile.name_and_company.missing') if (first_name.blank? || last_name.blank?) && company_name.blank?
+			errors.add :category, I18n.t('models.profile.category.missing') if categories.blank?
 		end
 	end
 	
@@ -201,9 +202,9 @@ class Profile < ActiveRecord::Base
 	# Validate that an invitation can be sent to claim this profile.
 	def validate_invitable
 		if claimed?
-			errors.add :profile, 'is already claimed.  You cannot send an invitation.'
+			errors.add :profile, I18n.t('models.profile.claimed')
 		elsif invitation_email.blank?
-			errors.add :invitation_email, 'address is required'
+			errors.add :invitation_email, I18n.t('models.profile.invitation_email.missing')
 		end
 		errors.empty?
 	end
@@ -214,7 +215,7 @@ class Profile < ActiveRecord::Base
 	#   (we don't want to save for the first time as a side effect).
 	def generate_and_save_invitation_token
 		self.invitation_token = UUIDTools::UUID.timestamp_create.to_s
-		errors.add :invitation_token, 'could not be saved' unless persisted? && save
+		errors.add :invitation_token, I18n.t('models.profile.invitation_token.save_error') unless persisted? && save
 		errors.empty?
 	end
 end
