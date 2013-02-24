@@ -4,5 +4,5 @@
 		= render partial: 'info_area'
 		= render partial: 'form', locals: {f: f}
 		.buttons
-			= f.submit 'Save'
+			= f.submit 'Save changes', disable_with: 'Saving...'
 			= link_to "Cancel", profile_path(@profile)

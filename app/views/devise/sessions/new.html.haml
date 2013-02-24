@@ -16,6 +16,6 @@
 				= f.label :remember_me
 
 		.buttons
-			= f.submit 'Login'
+			= f.submit 'Login', disable_with: 'Logging in...'
 
 	= render "devise/shared/links"

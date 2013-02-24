@@ -29,7 +29,7 @@
 						= f.label :phone, "Phone number we use to contact you"
 						= f.text_field :phone
 		.buttons
-			= f.submit 'Save'
+			= f.submit 'Save changes', disable_with: 'Saving...'
 			= link_to "Cancel", view_user_profile_path
 .cancel_account
 	Unhappy?

@@ -9,5 +9,5 @@
 				= f.label :invitation_email, "Invitation Email"
 				= f.text_field :invitation_email, id: 'invitation_email'
 		.buttons
-			= f.submit 'Send invitation', id: 'send_invitation_profile'
+			= f.submit 'Send invitation', disable_with: 'Sending invitation...', id: 'send_invitation_profile'
 			= link_to "Cancel", profile_path(@profile)

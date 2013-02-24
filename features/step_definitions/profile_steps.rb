@@ -423,6 +423,10 @@ When /^I save the profile$/ do
 	click_button 'Save'
 end
 
+When /^I create the profile$/ do
+	click_button 'Create'
+end
+
 When /^I click on a user profile link$/ do
 	click_link MyHelpers.user_list_profile_link_id(@profile)
 end

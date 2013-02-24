@@ -12,7 +12,7 @@ Feature: Create a new expert profile
 		Given I am logged in as an administrator
 		When I visit the new profile page
 			And I enter new profile information
-			And I save the profile
+			And I create the profile
 		Then the new profile should be saved
 	
 	Scenario: Create and publish new profile as an administrator
@@ -20,7 +20,7 @@ Feature: Create a new expert profile
 		When I visit the new profile page
 			And I enter new profile information
 			And I check the publish box
-			And I save the profile
+			And I create the profile
 		Then the new profile should be published
 	
 	Scenario: New profile page as a profile editor
@@ -32,5 +32,5 @@ Feature: Create a new expert profile
 		Given I am logged in as a profile editor
 		When I visit the new profile page
 			And I enter new profile information
-			And I save the profile
+			And I create the profile
 		Then the new profile should be saved
