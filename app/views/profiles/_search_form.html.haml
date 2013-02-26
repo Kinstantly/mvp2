@@ -1,5 +1,5 @@
 .search_providers
-	= form_tag '/search_providers', method: :get do
+	= form_tag search_providers_path, method: :get do
 		= text_field_tag :query, @search_query, size: 24, id: 'provider_search_query'
 		= select_tag :search_area_tag_id, search_area_tag_options(@search_area_tag_id), id: 'search_area_tag'
 		= submit_tag 'Search', disable_with: 'Searching...', id: 'provider_search_button'
