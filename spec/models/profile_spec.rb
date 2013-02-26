@@ -131,16 +131,18 @@ describe Profile do
 		end
 		
 		context "custom services" do
-			before(:each) do
-				@custom = [@profile_data[:services].first.name, 'story teller']
-				@profile.custom_service_names = @custom
-			end
-			
 			it "merges custom services" do
+				custom = [@profile_data[:services].first.name, 'story teller']
+				@profile.custom_service_names = custom
 				@profile.save.should == true
 				profile = Profile.find_by_last_name(@profile_data[:last_name])
 				profile.should have_exactly(@profile_data[:services].size + 1).services
-				profile.services.collect(&:name).include?(@custom.last).should be_true
+				profile.services.collect(&:name).include?(custom.last).should be_true
+			end
+			
+			it "limits length of name" do
+				@profile.custom_service_names = ['a' * (Profile::MAX_CUSTOM_NAME_LENGTH + 1)]
+				@profile.should have(1).error_on(:custom_service_names)
 			end
 		end
 	end
@@ -166,16 +168,18 @@ describe Profile do
 		end
 		
 		context "custom specialties" do
-			before(:each) do
-				@custom = [@profile_data[:specialties].first.name, 'parenting support']
-				@profile.custom_specialty_names = @custom
-			end
-			
 			it "merges custom specialties" do
+				custom = [@profile_data[:specialties].first.name, 'parenting support']
+				@profile.custom_specialty_names = custom
 				@profile.save.should == true
 				profile = Profile.find_by_last_name(@profile_data[:last_name])
 				profile.should have_exactly(@profile_data[:specialties].size + 1).specialties
-				profile.specialties.collect(&:name).include?(@custom.last).should be_true
+				profile.specialties.collect(&:name).include?(custom.last).should be_true
+			end
+			
+			it "limits length of name" do
+				@profile.custom_specialty_names = ['a' * (Profile::MAX_CUSTOM_NAME_LENGTH + 1)]
+				@profile.should have(1).error_on(:custom_specialty_names)
 			end
 		end
 		
@@ -297,7 +301,7 @@ describe Profile do
 	
 	context "character limits on text attributes" do
 		it "limits the number of input characters for attributes stored as text records" do
-			s = 'a' * 1001
+			s = 'a' * (Profile::MAX_TEXT_LENGTH + 1)
 			[:availability, :awards, :education, :experience, :insurance_accepted, :rates, :summary, 
 				:office_hours, :phone_hours, :video_hours, :admin_notes].each do |attr|
 				@profile.send "#{attr}=", s

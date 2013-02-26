@@ -248,19 +248,12 @@ end
 ### WHEN ###
 
 When /^I enter new profile information$/ do
-	set_up_new_data
 	fill_in 'profile_first_name', with: @unattached_profile_data[:first_name]
 	fill_in 'profile_middle_name', with: @unattached_profile_data[:middle_name]
 	fill_in 'profile_last_name', with: @unattached_profile_data[:last_name]
 	fill_in 'Website', with: @unattached_profile_data[:url]
 	within('.categories') do
 		check MyHelpers.profile_categories_id(@predefined_category.id)
-	end
-	within('.custom_services') do
-		fill_in MyHelpers.profile_custom_services_id('1'), with: 'teacher'
-	end
-	within('.custom_specialties') do
-		fill_in MyHelpers.profile_custom_specialties_id('1'), with: 'teaching'
 	end
 end
 
@@ -269,18 +262,11 @@ When /^I view my profile$/ do
 end
 
 When /^I enter my basic profile information$/ do
-	set_up_new_data
 	fill_in 'profile_first_name', with: @profile_data[:first_name]
 	fill_in 'profile_middle_name', with: @profile_data[:middle_name]
 	fill_in 'profile_last_name', with: @profile_data[:last_name]
 	within('.categories') do
 		check MyHelpers.profile_categories_id(@predefined_category.id)
-	end
-	within('.custom_services') do
-		fill_in MyHelpers.profile_custom_services_id('1'), with: 'teacher'
-	end
-	within('.custom_specialties') do
-		fill_in MyHelpers.profile_custom_specialties_id('1'), with: 'teaching'
 	end
 	click_button 'Save'
 	find_user_profile
@@ -355,6 +341,7 @@ end
 # This step requires javascript.
 When /^I add the "(.*?)" and "(.*?)" custom services$/ do |svc1, svc2|
 	within('.custom_services') do
+		click_button 'add_custom_services_text_field'
 		fill_in MyHelpers.profile_custom_services_id('1'), with: svc1
 		click_button 'add_custom_services_text_field'
 		fill_in MyHelpers.profile_custom_services_id('2'), with: svc2
@@ -372,6 +359,7 @@ end
 # This step requires javascript.
 When /^I add the "(.*?)" and "(.*?)" custom specialties$/ do |spec1, spec2|
 	within('.custom_specialties') do
+		click_button 'add_custom_specialties_text_field'
 		fill_in MyHelpers.profile_custom_specialties_id('1'), with: spec1
 		click_button 'add_custom_specialties_text_field'
 		fill_in MyHelpers.profile_custom_specialties_id('2'), with: spec2

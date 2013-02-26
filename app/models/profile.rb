@@ -1,5 +1,5 @@
 class Profile < ActiveRecord::Base
-	attr_accessor :custom_categories, :custom_services, :custom_specialties
+	attr_writer :custom_service_names, :custom_specialty_names # readers defined below
 	
 	attr_accessible :first_name, :last_name, :middle_name, :credentials, :email, 
 		:company_name, :url, :locations_attributes, 
@@ -23,24 +23,32 @@ class Profile < ActiveRecord::Base
 	has_many :locations, dependent: :destroy
 	accepts_nested_attributes_for :locations, allow_destroy: true
 	
+	MAX_TEXT_LENGTH = 1000
+	MAX_CUSTOM_NAME_LENGTH = 100
+	
 	validate :publishing_requirements
 	# validates :categories, length: {maximum: 1}
 	validates :availability, :awards, :education, :experience, :insurance_accepted, :rates, :summary, 
-		:office_hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: 1000}
+		:office_hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: MAX_TEXT_LENGTH}
 	validates :email, email: true, allow_blank: true
 	validates :invitation_email, email: true, allow_blank: true
 	validates :primary_phone, phone_number: true, allow_blank: true
 	validates :secondary_phone, phone_number: true, allow_blank: true
 	
+	validates_each :custom_service_names, :custom_specialty_names do |record, attribute, names|
+		names.each do |name|
+			record.errors.add attribute, I18n.t("models.profile.#{attribute}.too_long", max: MAX_CUSTOM_NAME_LENGTH) if name.length > MAX_CUSTOM_NAME_LENGTH
+		end
+	end
+
+	# Merge in custom categories and specialties.
+	before_save do
+		self.services = (services + custom_service_names.map(&:to_service)).uniq
+		self.specialties = (specialties + custom_specialty_names.map(&:to_specialty)).uniq
+	end
+	
 	scope :unique_by_lead_generator, select(:lead_generator).uniq
 	scope :with_admin_notes, where('admin_notes IS NOT NULL')
-	
-	# Merge in custom categories and specialties.
-	before_validation do
-		self.categories = ((categories.presence || []) + (custom_categories.presence || [])).uniq
-		self.services = ((services.presence || []) + (custom_services.presence || [])).uniq
-		self.specialties = ((specialties.presence || []) + (custom_specialties.presence || [])).uniq
-	end
 	
 	# Sunspot Solr search configuration.
 	searchable do
@@ -121,16 +129,12 @@ class Profile < ActiveRecord::Base
 		end
 	end
 	
-	def custom_category_names=(names=[])
-		self.custom_categories = remove_blanks(names).collect(&:to_category)
+	def custom_service_names
+		remove_blanks @custom_service_names
 	end
 	
-	def custom_service_names=(names=[])
-		self.custom_services = remove_blanks(names).collect(&:to_service)
-	end
-	
-	def custom_specialty_names=(names=[])
-		self.custom_specialties = remove_blanks(names).collect(&:to_specialty)
+	def custom_specialty_names
+		remove_blanks @custom_specialty_names
 	end
 	
 	def service_ids_names
@@ -189,8 +193,8 @@ class Profile < ActiveRecord::Base
 		end
 	end
 	
-	def remove_blanks(strings=[])
-		strings.select(&:present?)
+	def remove_blanks(strings)
+		(strings || []).select(&:present?)
 	end
 	
 	# Return an array of hashes holding the id and name values for each of the given items.

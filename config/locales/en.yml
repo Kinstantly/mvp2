@@ -36,4 +36,8 @@ en:
         missing: 'and last name, or company name, are required'
       category:
         missing: 'must be chosen'
+      custom_service_names:
+        too_long: '^The name of each additional service must have no more than %{max} characters.'
+      custom_specialty_names:
+        too_long: '^The name of each additional specialty must have no more than %{max} characters.'
       claimed: 'is already claimed. You cannot send an invitation.'

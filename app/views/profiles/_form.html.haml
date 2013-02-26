@@ -75,16 +75,14 @@
 			%br
 			%span.predefined_services
 		.custom_services
-			Additional services
+			= f.label :custom_service_names, 'Additional services'
 			= button_tag id: 'add_custom_services_text_field' do
-				= content_tag :strong, '+ Add'
+				= content_tag :strong, 'Enter a service not shown above'
 			%br
 			= profile_custom_services_hidden_field_tag(f)
-			- i = 0; profile_new_custom_services(profile).each do |svc|
+			- i = 0; profile.custom_service_names.each do |name|
 				.text_field
-					= profile_custom_services_autocomplete_field_tag(profile, svc.name, "#{i = i+1}", f)
-			.text_field
-				= profile_custom_services_autocomplete_field_tag(profile, '', "#{i = i+1}", f)
+					= profile_custom_services_autocomplete_field_tag(profile, name, "#{i = i+1}", f)
 			- @profile_custom_services_i = i
 			- @profile_custom_services_text_field_template = profile_custom_services_autocomplete_field_tag(profile, '', 'INDEX', f)
 		.specialties
@@ -92,16 +90,14 @@
 			%br
 			%span.predefined_specialties
 		.custom_specialties
-			Additional specialties
+			= f.label :custom_specialty_names, 'Additional specialties'
 			= button_tag id: 'add_custom_specialties_text_field' do
-				= content_tag :strong, '+ Add'
+				= content_tag :strong, 'Enter a specialty not shown above'
 			%br
 			= profile_custom_specialties_hidden_field_tag(f)
-			- i = 0; profile_new_custom_specialties(profile).each do |specialty|
+			- i = 0; profile.custom_specialty_names.each do |name|
 				.text_field
-					= profile_custom_specialties_autocomplete_field_tag(profile, specialty.name, "#{i = i+1}", f)
-			.text_field
-				= profile_custom_specialties_autocomplete_field_tag(profile, '', "#{i = i+1}", f)
+					= profile_custom_specialties_autocomplete_field_tag(profile, name, "#{i = i+1}", f)
 			- @profile_custom_specialties_i = i
 			- @profile_custom_specialties_text_field_template = profile_custom_specialties_autocomplete_field_tag(profile, '', 'INDEX', f)
 		.specialties_description
