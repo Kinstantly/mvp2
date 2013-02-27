@@ -111,7 +111,8 @@ class Profile < ActiveRecord::Base
 		opts = {published_only: true}.merge(new_opts)
 		opts[:search_area_tag_ids] = [opts[:search_area_tag_id]] if opts[:search_area_tag_id].present?
 		opts[:search_area_tag_ids].delete_if(&:blank?) if opts[:search_area_tag_ids].present?
-		Profile.search do
+		opts[:order_by_distance] = self.geocode_postal_code opts[:postal_code] if opts[:postal_code].present?
+		self.search do
 			adjust_solr_params { |params|
 				params[:mm] = '2<-1 4<-2 6<50%'
 			}
@@ -127,6 +128,12 @@ class Profile < ActiveRecord::Base
 			order_by_distance = opts[:order_by_distance]
 			order_by_geodist(:first_location, order_by_distance[:latitude], order_by_distance[:longitude]) if order_by_distance.present?
 		end
+	end
+	
+	# Convert a postal code to a hash with latitude and longitude.
+	def self.geocode_postal_code(postal_code)
+		latlon = Location.new(postal_code: postal_code).geocode_address
+		{latitude: latlon[0], longitude: latlon[1]}
 	end
 	
 	def custom_service_names

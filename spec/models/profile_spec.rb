@@ -283,6 +283,14 @@ describe Profile do
 					results.second.should == @profile_1
 				end
 				
+				it "orders results by distance from a postal code" do
+					# Order wrt @location_2.postal_code, so expect @profile_2 first.
+					results = Profile.fuzzy_search(@summary_1, postal_code: @location_2.postal_code).results
+					results.should have(2).things
+					results.first.should == @profile_2
+					results.second.should == @profile_1
+				end
+				
 				it "excludes results outside of a given radius" do
 					# Assuming @geocode_1 and @geocode_2 are more than 0.5 km apart, we should only see one.
 					results = Profile.fuzzy_search(@summary_1, within_radius: @geocode_1.merge(radius_km: 0.5)).results

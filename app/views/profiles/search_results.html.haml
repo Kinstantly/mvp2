@@ -1,5 +1,13 @@
 .search_results
 	%h3= search_results_title @search
+	.buttons
+		- if @search.results.present?
+			= form_tag search_providers_path, method: :get do
+				= hidden_field_tag :query, @search_query
+				= hidden_field_tag :search_area_tag_id, @search_area_tag_id
+				= submit_tag 'Show closest to', disable_with: 'Searching...', id: 'order_by_distance_button'
+				- postal_code_prompt = 'zip code'
+				= text_field_tag :postal_code, @postal_code, size: 10, id: 'postal_code', placeholder: postal_code_prompt, title: postal_code_prompt
 	.search_results_list
 		- @search.results.each do |profile|
 			.expert_result

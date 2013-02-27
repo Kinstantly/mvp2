@@ -44,8 +44,10 @@
 		= f.fields_for :locations do |lf|
 			.address
 				= lf.label :address1, "Address"
-				= lf.text_field :address1
-				= lf.text_field :address2
+				- address1_prompt = 'number and street'
+				= lf.text_field :address1, placeholder: address1_prompt, title: address1_prompt
+				- address2_prompt = 'room, suite, floor if any'
+				= lf.text_field :address2, placeholder: address2_prompt, title: address2_prompt
 			.city_state
 				= lf.label :city, "City"
 				= lf.autocomplete_field :city, autocomplete_location_city_profiles_path

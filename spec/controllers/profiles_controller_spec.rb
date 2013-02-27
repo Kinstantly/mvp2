@@ -300,6 +300,19 @@ describe ProfilesController do
 		end
 	end
 	
+	context "as a site visitor searching by distance" do
+		it "should show the nearest provider at the top" do
+			bear_profile = FactoryGirl.create(:profile, company_name: "Bear Republic Brewing Co", locations: [FactoryGirl.create(:location, postal_code: '95448')], is_published: true)
+			rr_profile = FactoryGirl.create(:profile, company_name: 'Russian River Brewing Co', locations: [FactoryGirl.create(:location, postal_code: '95404')], is_published: true)
+			Profile.reindex
+			Sunspot.commit
+			get :search, query: 'river brewing co', postal_code: bear_profile.locations.first.postal_code
+			assigns[:search].results.should have(2).things
+			assigns[:search].results.first.should == bear_profile
+			assigns[:search].results.second.should == rr_profile
+		end
+	end
+	
 	context "sending invitation to claim a profile" do
 		context "as an admin user" do
 			before (:each) do

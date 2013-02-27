@@ -12,6 +12,8 @@ def set_up_new_data
 		primary_phone: '888-555-5555', url: 'http://UnattachedExpert.com' }
 	@published_profile_data ||= { first_name: 'Sandy', middle_name: 'A', last_name: 'Known',
 		primary_phone: '888-555-7777', url: 'http://KnownExpert.com', is_published: true }
+	@published_profile_data_2 ||= { first_name: 'Yeti', middle_name: 'B', last_name: 'Foot',
+		primary_phone: '888-555-6666', url: 'http://yetibfoot.com', is_published: true }
 	unless @predefined_category
 		@predefined_category = 'TUTORS'.to_category
 		@predefined_category.is_predefined = true
@@ -54,6 +56,11 @@ end
 def create_published_profile
 	set_up_new_data
 	@published_profile = FactoryGirl.create(:profile, @published_profile_data)
+end
+
+def create_published_profile_2
+	set_up_new_data
+	@published_profile_2 = FactoryGirl.create(:profile, @published_profile_data_2)
 end
 
 ### GIVEN ###
@@ -222,6 +229,12 @@ Given /^a published profile with city "(.*?)" and state "(.*?)"$/ do |city, stat
 	create_published_profile
 	@published_profile.locations = [FactoryGirl.create(:location, city: city, region: state)]
 	@published_profile.save
+end
+
+Given /^another published profile with city "(.*?)" and state "(.*?)"$/ do |city, state|
+	create_published_profile_2
+	@published_profile_2.locations = [FactoryGirl.create(:location, city: city, region: state)]
+	@published_profile_2.save
 end
 
 Given /^a published profile with admin notes "(.*?)"$/ do |notes|

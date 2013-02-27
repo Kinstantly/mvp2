@@ -20,6 +20,13 @@ When /^I enter "(.*?)" in the search box and select the "(.*?)" search area tag$
 	end
 end
 
+When /^I enter "(.*?)" in the search-by-distance box$/ do |postal_code|
+	within('.buttons form') do
+		fill_in 'postal_code', with: postal_code
+		click_button 'order_by_distance_button'
+	end
+end
+
 Then /^I should see profile data in the search results list$/ do
 	within('.search_results_list') do
 		page.should have_content @published_profile_data[:last_name]
@@ -30,5 +37,11 @@ Then /^I should see "(.*?)" and "(.*?)" in the search results list$/ do |arg1, a
 	within('.search_results_list') do
 		page.should have_content arg1
 		page.should have_content arg2
+	end
+end
+
+Then /^I should see "(.*?)" first in the search results list$/ do |arg1|
+	within('.expert_result:first-of-type') do
+		page.should have_content arg1
 	end
 end

@@ -163,6 +163,12 @@ div.search_results {
 	h3 {
 		text-align: center;
 	}
+	.buttons {
+		margin-bottom: 1em;
+		form {
+			margin: 0 1em 0 1em;
+		}
+	}
 	.search_results_list {
 		> div {
 			@include profile-areas-div-style;
