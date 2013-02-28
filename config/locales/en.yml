@@ -22,7 +22,7 @@ en:
       subject: 'Claim your profile at Kinstantly!'
   models:
     phone_number:
-      invalid: 'must be valid and properly formatted, e.g., "(800) 555-1234 x47"'
+      invalid: '^Phone number must be valid and properly formatted, e.g., "(800) 555-1234 x47"'
     email:
       invalid: 'must be a valid email address'
     profile:

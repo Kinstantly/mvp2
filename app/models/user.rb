@@ -19,8 +19,12 @@ class User < ActiveRecord::Base
 	validates :phone, phone_number: true, allow_blank: true
 	
 	# Solr search configuration.
-	searchable do
-		text :email, :phone
+	# searchable do
+	# 	text :email, :display_phone
+	# end
+	
+	def display_phone
+		display_phone_number phone
 	end
 	
 	def add_role(role)

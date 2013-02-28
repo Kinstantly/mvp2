@@ -36,17 +36,14 @@
 			%span.label Professional headline:
 			%br
 			.value= profile.headline
-		.primary_phone
-			Primary phone:
-			= display_phone_number profile.primary_phone
-		.secondary_phone
-			Secondary phone:
-			= display_phone_number profile.secondary_phone
 	.location_contact_profile
 		- profile.locations.each do |location|
 			.address
 				Address:
-				= location_display_address location
+				= location.display_address
+			.phone
+				Phone:
+				= location.display_phone
 			.search_area_tag
 				Region:
 				= location.search_area_tag.try(:name)

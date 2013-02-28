@@ -381,16 +381,4 @@ describe Profile do
 		@profile.save
 		Profile.with_admin_notes.first.admin_notes.should == admin_notes
 	end
-	
-	context "phone number" do
-		it "should accept a properly formatted US number" do
-			@profile.primary_phone = '(415) 555-1234'
-			@profile.should have(:no).errors_on(:primary_phone)
-		end
-		
-		it "should fail with an improperly formatted US number" do
-			@profile.primary_phone = '(415) 55-1234'
-			@profile.should have(1).errors_on(:primary_phone)
-		end
-	end
 end

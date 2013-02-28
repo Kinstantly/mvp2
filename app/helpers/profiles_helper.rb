@@ -1,8 +1,4 @@
 module ProfilesHelper
-	def location_display_address(location=current_user.try(:profile).try(:locations).try(:first))
-		location.try(:display_address).presence || ''
-	end
-	
 	def display_profile_item_names(items, n=items.try(:length))
 		items.collect(&:name).sort{|a, b| a.casecmp b}.slice(0, n).join(', ') if items.present?
 	end

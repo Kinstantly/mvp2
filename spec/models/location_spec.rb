@@ -33,4 +33,20 @@ describe Location do
 		coords.lat.should be_within(0.0000001).of(lat)
 		coords.lng.should be_within(0.0000001).of(lon)
 	end
+	
+	context "phone number" do
+		before(:each) do
+			@location = Location.new
+		end
+		
+		it "should accept a properly formatted US number" do
+			@location.phone = '(415) 555-1234'
+			@location.should have(:no).errors_on(:phone)
+		end
+		
+		it "should fail with an improperly formatted US number" do
+			@location.phone = '(415) 55-1234'
+			@location.should have(1).errors_on(:phone)
+		end
+	end
 end

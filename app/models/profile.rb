@@ -3,7 +3,6 @@ class Profile < ActiveRecord::Base
 	
 	attr_accessible :first_name, :last_name, :middle_name, :credentials, :email, 
 		:company_name, :url, :locations_attributes, 
-		:primary_phone, :secondary_phone, 
 		:headline, :education, :experience, :certifications, :awards, 
 		:languages, :insurance_accepted, :summary, 
 		:category_ids, :service_ids, :specialty_ids, :age_range_ids, 
@@ -32,8 +31,6 @@ class Profile < ActiveRecord::Base
 		:office_hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: MAX_TEXT_LENGTH}
 	validates :email, email: true, allow_blank: true
 	validates :invitation_email, email: true, allow_blank: true
-	validates :primary_phone, phone_number: true, allow_blank: true
-	validates :secondary_phone, phone_number: true, allow_blank: true
 	
 	validates_each :custom_service_names, :custom_specialty_names do |record, attribute, names|
 		names.each do |name|
@@ -53,13 +50,16 @@ class Profile < ActiveRecord::Base
 	# Sunspot Solr search configuration.
 	searchable do
 		text :first_name, :last_name, :middle_name, :credentials, 
-			:email, :company_name, :url, :primary_phone, :secondary_phone, 
+			:email, :company_name, :url, 
 			:headline, :education, :experience, :certifications, :awards, :languages, :insurance_accepted, :summary, 
 			:languages, :insurance_accepted, :summary, :rates, :availability, 
 			:office_hours, :phone_hours, :video_hours, :specialties_description
 		
 		text :addresses do
 			locations.map &:search_address
+		end
+		text :phones do
+			locations.map &:display_phone
 		end
 		latlon :first_location do
 			locations.first.coordinates if locations.first

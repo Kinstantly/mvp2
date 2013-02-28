@@ -16,11 +16,10 @@
 						%th Lead generator
 					%th Website
 					%th Headline
-					%th Address
-					%th Search region
 					%th= current_user.try(:admin?) ? 'Public email' : 'Email'
-					%th Primary phone
-					%th Secondary phone
+					%th Address
+					%th Phone
+					%th Search region
 					%th.large Categories
 					%th.large Jobs or Services
 					%th.large Specialties
@@ -51,11 +50,11 @@
 							%td= p.try(:lead_generator)
 						%td= profile_website p
 						%td= p.try(:headline)
-						%td= "#{location_display_address p.try(:locations).try(:first)}"
-						%td= p.try(:locations).try(:first).try(:search_area_tag).try(:name)
 						%td= p.try(:email)
-						%td= display_phone_number p.try(:primary_phone)
-						%td= display_phone_number p.try(:secondary_phone)
+						- location = p.try(:locations).try(:first)
+						%td= location.try(:display_address)
+						%td= location.try(:display_phone)
+						%td= location.try(:search_area_tag).try(:name)
 						%td= profile_display_categories p
 						%td= profile_display_services p
 						%td= profile_display_specialties p

@@ -446,9 +446,16 @@ When /^I click on the "(.*?)" (?:link|button)$/ do |link|
 	click_link_or_button link
 end
 
-When /^I enter "(.*?)" in the "(.*?)" field of the second location$/ do |text, field|
-	within('.location_contact_profile .fields + .fields') do
-		fill_in field, with: text
+When /^I enter "(.*?)" in the "(.*?)" field of the (first|second) location$/ do |text, field, which|
+	case which
+	when 'first'
+		within('.location_contact_profile .fields:first-of-type') do
+			fill_in field, with: text
+		end
+	when 'second'
+		within('.location_contact_profile .fields + .fields') do
+			fill_in field, with: text
+		end
 	end
 end
 

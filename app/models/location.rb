@@ -1,8 +1,10 @@
 class Location < ActiveRecord::Base
-	attr_accessible :address1, :address2, :city, :country, :postal_code, :profile_id, :region, :search_area_tag_id
+	attr_accessible :address1, :address2, :city, :country, :phone, :postal_code, :profile_id, :region, :search_area_tag_id
 	
 	belongs_to :profile
 	belongs_to :search_area_tag
+	
+	validates :phone, phone_number: true, allow_blank: true
 	
 	scope :unique_by_city, select(:city).uniq
 	
@@ -37,5 +39,9 @@ class Location < ActiveRecord::Base
 	
 	def coordinates
 		Sunspot::Util::Coordinates.new(latitude, longitude)
+	end
+	
+	def display_phone
+		display_phone_number phone
 	end
 end

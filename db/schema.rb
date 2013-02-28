@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130226030907) do
+ActiveRecord::Schema.define(:version => 20130227214152) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(:version => 20130226030907) do
     t.integer  "search_area_tag_id"
     t.float    "latitude"
     t.float    "longitude"
+    t.string   "phone"
   end
 
   create_table "profiles", :force => true do |t|

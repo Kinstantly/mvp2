@@ -34,12 +34,6 @@
 		.headline
 			= f.label :headline, "Professional headline as you'd like it to appear"
 			= f.text_field :headline, size: 50
-		.primary_phone
-			= f.label :primary_phone, "Primary phone"
-			= f.text_field :primary_phone
-		.secondary_phone
-			= f.label :secondary_phone, "Secondary phone"
-			= f.text_field :secondary_phone
 	.location_contact_profile
 		= f.fields_for :locations do |lf|
 			.address
@@ -57,6 +51,9 @@
 				= lf.label :postal_code, "Zip code"
 				= lf.text_field :postal_code
 				= lf.hidden_field :country, value: country
+			.phone
+				= lf.label :phone, "Phone"
+				= lf.text_field :phone
 			- if current_user.profile_editor?
 				.search_area_tag
 					= lf.label :search_area_tag_id, "Region for search"

@@ -8,5 +8,6 @@ FactoryGirl.define do
     region "FactoryRegion"
     country "FactoryCountry"
     postal_code "FactoryPostalCode"
+    phone "1-505-666-7777"
   end
 end

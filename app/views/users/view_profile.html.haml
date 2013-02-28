@@ -11,7 +11,7 @@
 				%span.note We also use this email to contact you.
 			.phone
 				Phone number we use to contact you:
-				= display_phone_number @user.phone
+				= @user.display_phone
 	= render partial: 'profiles/view', locals: {profile: @profile}
 	.buttons
 		= edit_user_profile_link
