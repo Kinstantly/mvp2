@@ -51,12 +51,18 @@ class Profile < ActiveRecord::Base
 	searchable do
 		text :first_name, :last_name, :middle_name, :credentials, 
 			:email, :company_name, :url, 
-			:headline, :education, :experience, :certifications, :awards, :languages, :insurance_accepted, :summary, 
-			:languages, :insurance_accepted, :summary, :rates, :availability, 
+			:headline, :education, :experience, :certifications, :awards, 
+			:languages, :insurance_accepted, :rates, :availability, 
 			:office_hours, :phone_hours, :video_hours, :specialties_description
+		
+		# Stored for highlighting.
+		text :summary, stored: true
 		
 		text :addresses do
 			locations.map &:search_address
+		end
+		text :cities, boost: 2.0 do
+			locations.map &:city
 		end
 		text :phones do
 			locations.map &:display_phone
@@ -97,9 +103,6 @@ class Profile < ActiveRecord::Base
 		string :last_name do
 			(last_name || '').strip.downcase
 		end
-		
-		# For highlighting.
-		text :summary, stored: true
 	end
 	
 	# By default, only search published profiles.
