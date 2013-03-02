@@ -170,6 +170,9 @@ div.search_results {
 		}
 	}
 	.search_results_list {
+		#search_by_location_placeholder {
+			color: blue;
+		}
 		> div {
 			@include profile-areas-div-style;
 		}

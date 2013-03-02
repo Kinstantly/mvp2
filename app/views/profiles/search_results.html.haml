@@ -2,15 +2,18 @@
 	%h3= search_results_title @search
 	.buttons
 		- if @search.results.present?
-			= form_tag search_providers_path, method: :get do
+			= button_tag 'Show nearest', id: 'get_location_button', style: 'display: none'
+			= form_tag search_providers_path, method: :get, id: 'get_location_form' do
 				= hidden_field_tag :query, @search_query
 				= hidden_field_tag :search_area_tag_id, @search_area_tag_id
 				= submit_tag 'Show closest to', disable_with: 'Searching...', id: 'order_by_distance_button'
 				- postal_code_prompt = 'zip code'
 				= text_field_tag :postal_code, @postal_code, size: 10, id: 'postal_code', placeholder: postal_code_prompt, title: postal_code_prompt
 	.search_results_list
-		- @search.results.each do |profile|
-			.expert_result
+		%span#search_by_location_placeholder{style: 'display: none'}
+			Searching...
+		- @search.results.each_with_index do |profile, i|
+			.expert_result{id: "expert_result_#{i}"}
 				%table
 					%tr
 						%td.left
@@ -22,3 +25,19 @@
 							.availability.text_area= preserve "Availability:\n#{profile.availability}" if profile.availability.present?
 							.accepting_new_clients= profile_display_accepting_new_clients profile
 							.consultations= search_result_consultations_visits profile
+
+:coffeescript
+	if Modernizr.geolocation
+		$('#get_location_form').css('display', 'none')
+		$('#get_location_button').css('display', 'inline')
+	$('#get_location_button').click (e) ->
+		e.preventDefault()
+		$(this).css('display', 'none')
+		$('#get_location_form').css('display', 'inline')
+		if Modernizr.geolocation
+			navigator.geolocation.getCurrentPosition(search_by_location)
+	search_by_location = (position) ->
+		$('#search_by_location_placeholder').css('display', 'inline')
+		search_path = '#{escape_javascript search_providers_path(query: @search_query, search_area_tag_id: @search_area_tag_id)} .expert_result'
+		params = 'latitude='+position.coords.latitude+'&longitude='+position.coords.longitude
+		$('.search_results_list').load(search_path, params)

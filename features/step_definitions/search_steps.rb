@@ -1,3 +1,5 @@
+# Tip: to view the page, use: save_and_open_page
+
 When /^I enter published profile data in the search box$/ do
 	within('.search_providers') do
 		fill_in 'provider_search_query', with: @published_profile_data[:last_name]
@@ -41,7 +43,7 @@ Then /^I should see "(.*?)" and "(.*?)" in the search results list$/ do |arg1, a
 end
 
 Then /^I should see "(.*?)" first in the search results list$/ do |arg1|
-	within('.expert_result:first-of-type') do
+	within('#expert_result_0') do
 		page.should have_content arg1
 	end
 end
