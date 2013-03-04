@@ -24,7 +24,14 @@ end
 
 When /^I enter "(.*?)" in the search-by-distance box$/ do |postal_code|
 	within('.buttons form') do
-		fill_in 'postal_code', with: postal_code
+		fill_in 'search_postal_code', with: postal_code
+		click_button 'order_by_distance_button'
+	end
+end
+
+When /^I enter "(.*?)" in the search-by-city box$/ do |city|
+	within('.buttons form') do
+		fill_in 'search_city', with: city
 		click_button 'order_by_distance_button'
 	end
 end

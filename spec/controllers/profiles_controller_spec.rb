@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ProfilesController do
 	context "as site visitor attempting to access a published profile" do
 		before(:each) do
-			@profile = FactoryGirl.create(:profile, is_published: true)
+			@profile = FactoryGirl.create(:published_profile)
 		end
 		
 		describe "GET 'show'" do
@@ -30,7 +30,7 @@ describe ProfilesController do
 	
 	context "as site visitor attempting to access an unpublished profile" do
 		before(:each) do
-			@profile = FactoryGirl.create(:profile, is_published: false)
+			@profile = FactoryGirl.create(:unpublished_profile)
 		end
 		
 		describe "GET 'show'" do
@@ -56,7 +56,7 @@ describe ProfilesController do
 		
 		context "attempting to access another profile" do
 			before(:each) do
-				@profile = FactoryGirl.create(:profile, is_published: true)
+				@profile = FactoryGirl.create(:published_profile)
 			end
 		
 			describe "GET 'edit'" do
@@ -223,8 +223,8 @@ describe ProfilesController do
 	
 	context "for a search engine crawler" do
 		before(:each) do
-			@published_profile = FactoryGirl.create(:profile, last_name: 'Garanca', is_published: true)
-			@unpublished_profile = FactoryGirl.create(:profile, last_name: 'Netrebko', is_published: false)
+			@published_profile = FactoryGirl.create(:published_profile, last_name: 'Garanca')
+			@unpublished_profile = FactoryGirl.create(:unpublished_profile, last_name: 'Netrebko')
 			get :link_index
 		end
 		
@@ -239,8 +239,8 @@ describe ProfilesController do
 	
 	context "as a site visitor searching for a profile" do
 		before(:each) do
-			@published_profile = FactoryGirl.create(:profile, last_name: 'Garanca', is_published: true)
-			@unpublished_profile = FactoryGirl.create(:profile, last_name: 'Netrebko', is_published: false)
+			@published_profile = FactoryGirl.create(:published_profile, last_name: 'Garanca')
+			@unpublished_profile = FactoryGirl.create(:unpublished_profile, last_name: 'Netrebko')
 			Profile.reindex
 			Sunspot.commit
 		end
@@ -284,7 +284,7 @@ describe ProfilesController do
 				tag = FactoryGirl.create(:search_area_tag, name: 'San Francisco')
 				loc = FactoryGirl.create(:location, search_area_tag: tag)
 				last_name = @published_profile.last_name
-				@published_sf_profile = FactoryGirl.create(:profile, last_name: last_name, locations: [loc], is_published: true)
+				@published_sf_profile = FactoryGirl.create(:published_profile, last_name: last_name, locations: [loc])
 				Profile.reindex
 				Sunspot.commit
 				get :search, query: last_name, search_area_tag_id: tag.id
@@ -301,15 +301,27 @@ describe ProfilesController do
 	end
 	
 	context "as a site visitor searching by distance" do
-		it "should show the nearest provider at the top" do
-			bear_profile = FactoryGirl.create(:profile, company_name: "Bear Republic Brewing Co", locations: [FactoryGirl.create(:location, postal_code: '95448')], is_published: true)
-			rr_profile = FactoryGirl.create(:profile, company_name: 'Russian River Brewing Co', locations: [FactoryGirl.create(:location, postal_code: '95404')], is_published: true)
+		before(:each) do
+			@bear_location = FactoryGirl.create(:location, address1: '345 Healdsburg Ave.', city: 'Healdsburg', region: 'CA', postal_code: '95448')
+			@bear_profile = FactoryGirl.create(:published_profile, company_name: "Bear Republic Brewing Co", locations: [@bear_location])
+			@rr_location = FactoryGirl.create(:location, address1: '725 4th Street', city: 'Santa Rosa', region: 'CA', postal_code: '95404')
+			@rr_profile = FactoryGirl.create(:published_profile, company_name: 'Russian River Brewing Co', locations: [@rr_location])
 			Profile.reindex
 			Sunspot.commit
-			get :search, query: 'river brewing co', postal_code: bear_profile.locations.first.postal_code
+		end
+		
+		it "should show the nearest provider at the top when searching by postal code" do
+			get :search, query: 'river brewing co', postal_code: @bear_location.postal_code
 			assigns[:search].results.should have(2).things
-			assigns[:search].results.first.should == bear_profile
-			assigns[:search].results.second.should == rr_profile
+			assigns[:search].results.first.should == @bear_profile
+			assigns[:search].results.second.should == @rr_profile
+		end
+		
+		it "should show the nearest provider at the top when searching by city and state" do
+			get :search, query: 'river brewing co', city: @bear_location.city, region: @bear_location.region
+			assigns[:search].results.should have(2).things
+			assigns[:search].results.first.should == @bear_profile
+			assigns[:search].results.second.should == @rr_profile
 		end
 	end
 	

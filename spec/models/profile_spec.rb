@@ -232,7 +232,7 @@ describe Profile do
 	context "search" do
 		context "matching crieria" do
 			before(:each) do
-				@profile = FactoryGirl.create(:profile, summary: 'Swedish dramatic soprano', is_published: true)
+				@profile = FactoryGirl.create(:published_profile, summary: 'Swedish dramatic soprano')
 				Profile.reindex
 				Sunspot.commit
 			end
@@ -250,8 +250,8 @@ describe Profile do
 			before(:each) do
 				@summary_1 = 'Swedish dramatic soprano'
 				@summary_2 = 'Italian dramatic soprano'
-				@profile_1 = FactoryGirl.create(:profile, summary: @summary_1, is_published: true)
-				@profile_2 = FactoryGirl.create(:profile, summary: @summary_2, is_published: true)
+				@profile_1 = FactoryGirl.create(:published_profile, summary: @summary_1)
+				@profile_2 = FactoryGirl.create(:published_profile, summary: @summary_2)
 			end
 			
 			it "orders by relevance" do
@@ -268,14 +268,14 @@ describe Profile do
 					@location_1 = @profile_1.locations.build({address1: '1398 Haight St', city: 'San Francisco', region: 'CA', postal_code: '94117'})
 					@location_1.save
 					@geocode_1 = {latitude: @location_1.latitude, longitude: @location_1.longitude}
-					@location_2 = @profile_2.locations.build({address1: '1326 9th Avenue', city: 'San Francisco', region: 'CA', postal_code: '94122'})
+					@location_2 = @profile_2.locations.build({address1: '1933 Davis Street', city: 'San Leandro', region: 'CA', postal_code: '94577'})
 					@location_2.save
 					@geocode_2 = {latitude: @location_2.latitude, longitude: @location_2.longitude}
 					Profile.reindex
 					Sunspot.commit
 				end
 				
-				it "orders results by distance from a location" do
+				it "orders results by distance from a given latitude and longitude" do
 					# Order wrt @geocode_2, so expect @profile_2 first.
 					results = Profile.fuzzy_search(@summary_1, order_by_distance: @geocode_2).results
 					results.should have(2).things
@@ -285,7 +285,17 @@ describe Profile do
 				
 				it "orders results by distance from a postal code" do
 					# Order wrt @location_2.postal_code, so expect @profile_2 first.
-					results = Profile.fuzzy_search(@summary_1, postal_code: @location_2.postal_code).results
+					location = Location.new(postal_code: @location_2.postal_code)
+					results = Profile.fuzzy_search(@summary_1, location: location).results
+					results.should have(2).things
+					results.first.should == @profile_2
+					results.second.should == @profile_1
+				end
+				
+				it "orders results by distance from a city" do
+					# Order wrt @location_2 city and state, so expect @profile_2 first.
+					location = Location.new(city: @location_2.city, region: @location_2.region)
+					results = Profile.fuzzy_search(@summary_1, location: location).results
 					results.should have(2).things
 					results.first.should == @profile_2
 					results.second.should == @profile_1

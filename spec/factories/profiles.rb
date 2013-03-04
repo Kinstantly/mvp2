@@ -14,5 +14,13 @@ FactoryGirl.define do
 			profile.services = [FactoryGirl.create(:service)] if profile.services.blank?
 			profile.specialties = [FactoryGirl.create(:specialty)] if profile.specialties.blank?
 		}
+		
+		factory :published_profile do
+			is_published true
+		end
+		
+		factory :unpublished_profile do
+			is_published false
+		end
 	end
 end
