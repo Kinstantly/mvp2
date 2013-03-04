@@ -312,7 +312,7 @@ module ProfilesHelper
 	
 	def search_area_tag_options(selected=nil)
 		(anywhere_tag = SearchAreaTag.new).name = 'Anywhere'
-		options_from_collection_for_select(SearchAreaTag.all_ordered << anywhere_tag, :id, :name, selected)
+		options_from_collection_for_select(SearchAreaTag.all_ordered.unshift(anywhere_tag), :id, :name, selected)
 	end
 	
 	def search_results_title(search)
