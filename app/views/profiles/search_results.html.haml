@@ -2,12 +2,14 @@
 	%h3= search_results_title @search
 	.buttons
 		- if @search.results.present?
-			= button_tag 'Show nearest', id: 'get_location_button', style: 'display: none'
+			#get_location_button_area{style: 'display: none'}
+				= button_tag 'Show nearest to you', id: 'get_location_button'
+				%strong= '|'
 			= form_tag search_providers_path, method: :get, id: 'get_location_form' do
 				= hidden_field_tag :query, @search_query
 				= hidden_field_tag :search_area_tag_id, @search_area_tag_id
 				= submit_tag 'Show closest to', disable_with: 'Searching...', id: 'order_by_distance_button'
-				- city_prompt = 'city in CA'
+				- city_prompt = 'city in California'
 				= text_field_tag :city, @search_city, size: 12, id: 'search_city', placeholder: city_prompt, title: city_prompt
 				= hidden_field_tag :region, DEFAULT_REGION
 				or
@@ -32,16 +34,14 @@
 
 :coffeescript
 	if Modernizr.geolocation
-		$('#get_location_form').css('display', 'none')
-		$('#get_location_button').css('display', 'inline')
+		$('#get_location_button_area').css('display', 'inline-block')
 	$('#search_city').focusin ->
 		$('#search_postal_code').val('')
 	$('#search_postal_code').focusin ->
 		$('#search_city').val('')
 	$('#get_location_button').click (e) ->
 		e.preventDefault()
-		$(this).css('display', 'none')
-		$('#get_location_form').css('display', 'inline')
+		$('#get_location_button_area').css('display', 'none')
 		if Modernizr.geolocation
 			navigator.geolocation.getCurrentPosition(search_by_location)
 	search_by_location = (position) ->

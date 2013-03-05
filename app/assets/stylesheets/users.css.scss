@@ -165,8 +165,12 @@ div.search_results {
 	}
 	.buttons {
 		margin-bottom: 1em;
+		#get_location_button {
+			margin-right: 1em;
+		}
 		form {
 			margin: 0 1em 0 1em;
+			display: inline-block;
 		}
 	}
 	.search_results_list {
