@@ -29,12 +29,9 @@ class Location < ActiveRecord::Base
 		# [addr.presence, country.presence].compact.join(', ')
 	end
 	
+	# Always return an array with latitude and longitude values, even if address failed geocoding (in which case, values are nil).
 	def geocode_address
-		if geocodable_address.present?
-			geocode
-		else
-			self.latitude, self.longitude = nil, nil
-		end
+		(geocodable_address.present? and geocode) or (self.latitude, self.longitude = nil, nil)
 	end
 	
 	def coordinates

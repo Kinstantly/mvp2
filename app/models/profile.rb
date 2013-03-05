@@ -126,10 +126,10 @@ class Profile < ActiveRecord::Base
 			with :is_published, true if opts[:published_only]
 			
 			within_radius = opts[:within_radius]
-			with(:locations).in_radius(within_radius[:latitude], within_radius[:longitude], within_radius[:radius_km]) if within_radius.present?
+			with(:locations).in_radius(within_radius[:latitude], within_radius[:longitude], within_radius[:radius_km]) if within_radius.try(:values_present?, :latitude, :longitude, :radius_km)
 			
 			order_by_distance = opts[:order_by_distance]
-			order_by_geodist(:first_location, order_by_distance[:latitude], order_by_distance[:longitude]) if order_by_distance.present?
+			order_by_geodist(:first_location, order_by_distance[:latitude], order_by_distance[:longitude]) if order_by_distance.try(:values_present?, :latitude, :longitude)
 		end
 	end
 	
