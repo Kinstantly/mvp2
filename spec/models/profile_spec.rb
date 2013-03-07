@@ -209,10 +209,10 @@ describe Profile do
 		end
 	end
 	
-	context "rates" do
-		it "stores a description of rates" do
-			@profile.rates = "$1/minute\n$40/15 minutes\n$120/hour"
-			@profile.should have(:no).errors_on(:rates)
+	context "pricing" do
+		it "stores a description of pricing" do
+			@profile.pricing = "$1/minute\n$40/15 minutes\n$120/hour"
+			@profile.should have(:no).errors_on(:pricing)
 		end
 	end
 	
@@ -320,7 +320,7 @@ describe Profile do
 	context "character limits on text attributes" do
 		it "limits the number of input characters for attributes stored as text records" do
 			s = 'a' * (Profile::MAX_TEXT_LENGTH + 1)
-			[:availability, :awards, :education, :experience, :insurance_accepted, :rates, :summary, 
+			[:availability, :awards, :education, :experience, :insurance_accepted, :pricing, :summary, 
 				:office_hours, :phone_hours, :video_hours, :admin_notes].each do |attr|
 				@profile.send "#{attr}=", s
 				@profile.should have(1).error_on(attr)

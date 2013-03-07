@@ -161,11 +161,11 @@
 			.label_area
 				= f.label :summary, "Summary"
 			= f.text_area :summary, size: '50x8'
-		.rates
+		.pricing
 			.label_area
-				= f.label :rates, "Rates"
+				= f.label :pricing, "Pricing"
 				%span.note.text_area= preserve "\nExample:\n$1/minute\n$40/15 minutes\n$120/hour\nor monthly subscription"
-			= f.text_area :rates, size: '50x5'
+			= f.text_area :pricing, size: '50x5'
 		.availability
 			.label_area
 				= f.label :availability, "Next available appointments"

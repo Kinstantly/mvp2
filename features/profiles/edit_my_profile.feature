@@ -196,11 +196,11 @@ Feature: Edit my expert profile
 			And I save my profile
 		Then the display name should be updated to "Philo T. Farnsworth, MD, PhD"
 	
-	Scenario: Enter rates
+	Scenario: Enter pricing
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I enter "$1/minute\n$40/15 minutes\n$120/hour" in the "Rates" field
+		When I enter "$1/minute\n$40/15 minutes\n$120/hour" in the "Pricing" field
 			And I save my profile
 		Then my profile should show "$1/minute"
 			And my profile should show "$40/15 minutes"
