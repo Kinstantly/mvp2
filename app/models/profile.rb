@@ -22,6 +22,9 @@ class Profile < ActiveRecord::Base
 	has_many :locations, dependent: :destroy
 	accepts_nested_attributes_for :locations, allow_destroy: true
 	
+	has_many :ratings, as: :rateable, dependent: :destroy
+	has_many :raters, through: :ratings
+	
 	MAX_TEXT_LENGTH = 1000
 	MAX_CUSTOM_NAME_LENGTH = 100
 	
@@ -192,6 +195,24 @@ class Profile < ActiveRecord::Base
 	# If param was not used, do nothing.
 	def assign_text_param_if_used(attr_name, value)
 		send "#{attr_name}=", value.strip.presence if value
+	end
+	
+	def rate(score, user)
+		return false unless user
+		if score.present?
+			rating = rating_by(user).presence || ratings.build
+			rating.rater ||= user
+			rating.score = score.to_f
+			return false unless rating.save
+		else
+			rating_by(user).try(:destroy)
+		end
+		update_attribute :rating_average_score, ratings.average(:score)
+		true
+	end
+	
+	def rating_by(user)
+		ratings.find_by_rater_id user.id
 	end
 	
 	private

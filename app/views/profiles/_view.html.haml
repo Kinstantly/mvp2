@@ -19,6 +19,9 @@
 				.lead_generator
 					Lead generator:
 					= profile.lead_generator
+	- if user_signed_in? && profile != current_user.profile
+		.rate_provider
+			= render partial: 'rate', locals: {profile: profile}
 	.basic_profile
 		.display_name
 			Name:

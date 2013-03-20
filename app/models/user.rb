@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
 	has_one :profile, dependent: :destroy
 	accepts_nested_attributes_for :profile
 	
+	has_many :ratings_given, class_name: 'Rate', foreign_key: :rater_id
+	
 	serialize :roles, Array
 	
 	validates :username, presence: true, if: 'client?'

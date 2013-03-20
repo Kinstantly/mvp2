@@ -391,4 +391,40 @@ describe Profile do
 		@profile.save
 		Profile.with_admin_notes.first.admin_notes.should == admin_notes
 	end
+	
+	context "ratings" do
+		before(:each) do
+			@user = FactoryGirl.create(:client_user)
+		end
+		
+		it "is rateable" do
+			@profile.rate(2.5, @user)
+			@profile.should have(1).rating
+			@profile.ratings.last.score.should be_within(0.01).of(2.5)
+		end
+		
+		it "maintains an average rating score" do
+			@profile.rate(3.0, @user)
+			new_user = FactoryGirl.create(:client_user, email: 'caballe@barcelona.es')
+			@profile.rate(4.0, new_user)
+			@profile.should have(2).ratings
+			@profile.rating_average_score.should be_within(0.01).of(3.5)
+		end
+		
+		it "can rerate for a given user" do
+			@profile.rate(2.5, @user)
+			@profile.rate(4.5, @user)
+			@profile.should have(1).rating
+			@profile.ratings.last.score.should be_within(0.01).of(4.5)
+			@profile.rating_average_score.should be_within(0.01).of(4.5)
+		end
+		
+		it "can remove a rating by a given user" do
+			@profile.rate(3.0, @user)
+			@profile.should have(1).rating
+			@profile.rate(nil, @user)
+			@profile.should have(:no).rating
+			@profile.rating_average_score.should be_nil
+		end
+	end
 end

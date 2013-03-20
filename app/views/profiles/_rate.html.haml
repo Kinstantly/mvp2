@@ -1,0 +1,8 @@
+#rate_provider_form
+	= form_tag rate_profile_path do
+		- current_user_score = profile.rating_by(current_user).try(:score).try(:round).presence || -1
+		- (1..5).each do |i|
+			= radio_button_tag 'rating', i, (i == current_user_score), class: 'star'
+
+:coffeescript
+	$('.star').rating(callback: (value, link) -> $.post('#{rate_profile_path}', score: value))

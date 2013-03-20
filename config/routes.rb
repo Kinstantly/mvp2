@@ -30,6 +30,7 @@ Mvp2::Application.routes.draw do
 		member do
 			get 'new_invitation'
 			put 'send_invitation'
+			post 'rate'
 		end
 		collection do
 			get :autocomplete_service_name

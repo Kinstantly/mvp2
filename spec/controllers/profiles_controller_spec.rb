@@ -360,4 +360,36 @@ describe ProfilesController do
 			flash[:alert].should_not be_nil
 		end
 	end
+	
+	context "ratings" do
+		before(:each) do
+			@profile = FactoryGirl.create(:published_profile)
+		end
+		
+		it "should rate a profile" do
+			sign_in FactoryGirl.create(:client_user)
+			post :rate, id: @profile.id, score: '2.0'
+			@profile.should have(1).rating
+			@profile.ratings.find_by_rater_id(@profile.id).score.should be_within(0.01).of(2.0)
+		end
+		
+		it "should fail to rate if not signed in" do
+			post :rate, id: @profile.id, score: '2.0'
+			@profile.should have(:no).ratings
+		end
+		
+		it "should fail to rate the rater's profile" do
+			sign_in FactoryGirl.create(:expert_user, profile: @profile)
+			post :rate, id: @profile.id, score: '2.0'
+			@profile.should have(:no).ratings
+		end
+		
+		it "should remove a rating" do
+			sign_in FactoryGirl.create(:client_user)
+			post :rate, id: @profile.id, score: '2.0'
+			@profile.should have(1).rating
+			post :rate, id: @profile.id
+			@profile.should have(:no).rating
+		end
+	end
 end

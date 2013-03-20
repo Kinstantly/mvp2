@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130307002617) do
+ActiveRecord::Schema.define(:version => 20130319031743) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -103,6 +103,7 @@ ActiveRecord::Schema.define(:version => 20130307002617) do
     t.datetime "invitation_sent_at"
     t.text     "admin_notes"
     t.string   "lead_generator"
+    t.float    "rating_average_score"
   end
 
   create_table "profiles_services", :force => true do |t|
@@ -114,6 +115,18 @@ ActiveRecord::Schema.define(:version => 20130307002617) do
     t.integer "profile_id"
     t.integer "specialty_id"
   end
+
+  create_table "ratings", :force => true do |t|
+    t.float    "score",         :null => false
+    t.integer  "rater_id"
+    t.integer  "rateable_id"
+    t.string   "rateable_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "ratings", ["rateable_id", "rateable_type"], :name => "index_ratings_on_rateable_id_and_rateable_type"
+  add_index "ratings", ["rater_id"], :name => "index_ratings_on_rater_id"
 
   create_table "search_area_tags", :force => true do |t|
     t.string   "name"

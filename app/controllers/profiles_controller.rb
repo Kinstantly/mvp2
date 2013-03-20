@@ -78,4 +78,8 @@ class ProfilesController < ApplicationController
 			render action: :new_invitation
 		end
 	end
+	
+	def rate
+		render json: !!@profile.try(:rate, params[:score], current_user)
+	end
 end
