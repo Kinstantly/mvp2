@@ -287,6 +287,7 @@ module ProfilesHelper
 		modes.push 'phone' if profile.consult_by_phone
 		modes.push 'video' if profile.consult_by_video
 		modes.push 'in-person' if profile.consult_in_person
+		modes.push 'group' if profile.consult_in_group
 		modes.join ', '
 	end
 	
@@ -348,6 +349,7 @@ module ProfilesHelper
 		icons << 'phone' if profile.consult_by_phone
 		icons << 'video' if profile.consult_by_video
 		icons << 'in-person' if profile.consult_in_person
+		icons << 'group' if profile.consult_in_group
 		icons << 'home' if profile.visit_home
 		icons << 'school' if profile.visit_school
 		icons.join(' | ')
