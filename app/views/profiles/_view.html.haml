@@ -19,9 +19,12 @@
 				.lead_generator
 					Lead generator:
 					= profile.lead_generator
-	- if user_signed_in? && profile != current_user.profile
-		.rate_provider
-			= render partial: 'rate', locals: {profile: profile}
+	.rating_info
+		-# If these partials are called from a users view, we need an explicit reference to profiles.
+		- if profile.ratings.size > 0
+			= render partial: 'profiles/rating_score', locals: {profile: profile}
+		- if user_signed_in? && profile != current_user.profile
+			= render partial: 'profiles/rate', locals: {profile: profile}
 	.basic_profile
 		.display_name
 			Name:

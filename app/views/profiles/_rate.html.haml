@@ -1,8 +1,9 @@
 #rate_provider_form
-	= form_tag rate_profile_path do
+	= "#{profile.ratings.size > 0 ? 'Rate' : 'Be the first to rate'} #{profile.display_name_or_company}:"
+	= form_tag rate_profile_path(profile) do
 		- current_user_score = profile.rating_by(current_user).try(:score).try(:round).presence || -1
 		- (1..5).each do |i|
-			= radio_button_tag 'rating', i, (i == current_user_score), class: 'star'
+			= radio_button_tag 'rating', i, (i == current_user_score), class: 'rate_provider_star'
 
 :coffeescript
-	$('.star').rating(callback: (value, link) -> $.post('#{rate_profile_path}', score: value))
+	$('input.rate_provider_star').rating(callback: (value, link) -> $.post('#{rate_profile_path}', score: value))

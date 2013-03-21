@@ -1,0 +1,10 @@
+#provider_rating
+	- n_ratings = profile.ratings.size
+	= "#{n_ratings} #{'rating'.pluralize(n_ratings)}:"
+	= form_tag rate_profile_path(profile) do
+		- provider_score = ((profile.rating_average_score.presence || -1) * 2).round
+		- (1..10).each do |i|
+			= radio_button_tag 'provider_score', i, (i == provider_score), class: 'provider_score_star {split:2}'
+
+:coffeescript
+	$('input.provider_score_star').rating().rating('readOnly', true)

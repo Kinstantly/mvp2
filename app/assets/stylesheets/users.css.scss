@@ -50,6 +50,14 @@ div.view_profile {
 			margin: 0 1em 0 1em;
 		}
 	}
+	.rating_info {
+		> div, form {
+			display: inline-block;
+		}
+		> div {
+			margin-right: 3em;
+		}
+	}
 	.account_areas, .profile_areas {
 		> div {
 			@include profile-areas-div-style;
