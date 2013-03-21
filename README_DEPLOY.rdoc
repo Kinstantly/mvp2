@@ -30,7 +30,7 @@ OR if you know the release name but don't yet have it checked out and want to tr
 
 OR if you are making a hotfix, use the hotfix branch you created using the instructions in README_DEVEL.rdoc.
 
-For production, you want the master branch:
+For *production*, you want the master branch:
 
   git checkout master
   git fetch
@@ -44,8 +44,8 @@ Create a tag and push it to the remote server:
 
 For example:
 
- git tag v2.1
- git push origin v2.1
+ git tag 2.1.0
+ git push origin 2.1.0
 
 If you screw up and need to delete a tag:
 
