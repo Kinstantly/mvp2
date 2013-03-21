@@ -4,7 +4,13 @@ Git is used for source control.  The repository is at Github: https://github.com
 
 We are using git-flow-avh to manage feature development.  For more info on git-flow-avh, see https://github.com/petervanderdoes/gitflow#readme
 
-To install git-flow, see https://github.com/petervanderdoes/gitflow/wiki
+To install git-flow-avh, see https://github.com/petervanderdoes/gitflow/wiki
+
+Once you have installed git flow, initialize your repository this way:
+
+ git checkout master
+ git pull
+ git flow init -d
 
 The workflow is:
 
