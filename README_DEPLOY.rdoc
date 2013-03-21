@@ -1,0 +1,66 @@
+= Deploying
+
+We are running on Heroku.
+
+== To actually do a deploy
+
+=== First check out the proper branch.
+
+To see your local branches:
+
+ git branch
+
+To see all the remote branches:
+
+ git branch -r
+
+For staging, you'll usually want the latest release branch if any. The following commands should check out the latest branch.
+
+ rel=`git branch | sort -r | perl -ne 'if (m,\s+(release/\S+),) { print "$1"; exit; }'`
+ [[ -n "$rel" ]] && git checkout $rel || echo 'Create release branch with:  git flow release finish YYYY-MM-DD-NN'
+
+OR if you already have the release branch locally, just switch to it and update
+
+ git checkout release/RELEASE NAME
+ git fetch
+
+OR if you know the release name but don't yet have it checked out and want to track it locally:
+
+ git checkout -t release/RELEASE NAME
+
+OR if you are making a hotfix, use the hotfix branch you created using the instructions in README_DEVEL.rdoc.
+
+For production, you want the master branch:
+
+  git checkout master
+  git fetch
+
+=== Tagging
+
+Create a tag and push it to the remote server:
+
+ git tag TAG_NAME
+ git push origin TAG_NAME
+
+For example:
+
+ git tag v2.1
+ git push origin v2.1
+
+If you screw up and need to delete a tag:
+
+ git tag   # to list all tags and find the tag you want to delete
+ git tag -d TAG_NAME_TO_DELETE
+ git push origin :refs/tags/TAG_NAME_TO_DELETE
+
+=== To push to Heroku production
+
+Issue these deployment commands:
+
+ heroku maintenance:on
+ git push heroku master
+ heroku run rake db:migrate
+ heroku ps:restart
+ heroku maintenance:off
+
+Marvel at the magic.

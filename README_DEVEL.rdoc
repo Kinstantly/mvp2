@@ -1,0 +1,126 @@
+= Source Control
+
+Git is used for source control.  The repository is at Github: https://github.com/edsimpson/mvp2
+
+We are using git-flow-avh to manage feature development.  For more info on git-flow-avh, see https://github.com/petervanderdoes/gitflow#readme
+
+To install git-flow, see https://github.com/petervanderdoes/gitflow/wiki
+
+The workflow is:
+
+* 'master' branch
+* 'develop' branch
+* feature branches (optional)
+* release branches
+* hot-fix branches
+* tags on master for deployment to production
+
+New development work is done right on the 'develop' branch or on a feature branch.  Use a feature branch for a coherent set of changes.  Feature branches are managed with git flow.
+
+When we are ready to deploy to staging for QA work, we will create a new release branch (off 'develop').  The release branch will be used to deploy to staging for testing by QA.  Bug fixes will be done on the release branch.  When QA signs off on the release, it will be merged into 'develop', merged into 'master', tagged, and deployed to production.  This is done using git flow.
+
+Urgent patches to the production system (that can not wait for the next release) are done as a hot fix.  A hot fix branch is created off the 'master' branch (using git flow).  The hot fix can be deployed temporarily to staging for QA.  When the hot fix is approved, it is merged back into 'master' and 'develop' using git flow.  A tag is created on 'master' and it is deployed to production.
+
+Below are the git flow commands we use most often.  All of these are completely compatible with regular git commands which we use as well as shown below.
+
+== Creating, using, and finishing a release branch.
+
+=== Create a new release branch, named RELEASE_NAME, off the 'develop' branch.
+
+Switches you to the RELEASE_NAME branch.
+
+ git pull
+ git flow release start RELEASE_NAME
+
+=== Push the new release branch to the remote repository.
+
+ git push origin release/RELEASE_NAME
+
+The team can now use this release branch for QA and bug fixes.
+
+If you want to pull other people's commits on the release branch,
+you'll probably need to do the following (rather than a plain 'git pull'):
+
+ git pull origin release/RELEASE_NAME
+
+To deploy this release to staging follow the deploy instructions in README_DEPLOY.rdoc (TBD).
+
+=== Done with the release, ready to deploy to production.
+
+* Merges RELEASE_NAME into 'master'.
+* Tags the release.
+* Merges RELEASE_NAME into 'develop'.
+* Removes RELEASE_NAME branch locally (release branch still exists on the remote repository).
+
+ git flow release finish RELEASE_NAME
+ git pull
+ git push
+
+To deploy to production follow the deploy instructions in README_DEPLOY.rdoc.
+
+=== Remove this release branch from the remote repository.
+
+You can put off this step, but be sure to do this before creating the next release branch.
+
+	git push origin :release/RELEASE_NAME
+
+== To make time critical fixes to the production system, use a hotfix branch.
+
+=== Got a bug in production.
+
+Do a hot fix independent of what's being currently developed.
+
+* Creates a new hotfix branch, named HOTFIX_NAME, off 'master'.
+* Switches you to HOTFIX_NAME branch.
+
+ git pull
+ git flow hotfix start HOTFIX_NAME
+
+If you are the only developer working on this hotfix, then you can make changes using this branch
+without pushing it to the remote repository.  If other developers need to share this branch,
+then push it to the remote repository.
+
+ git push origin hotfix/HOTFIX_NAME  # Do this ONLY if you want to share this branch with other developers.
+
+You can now use this hotfix branch to make your changes.
+
+To deploy this hotfix to staging, follow the deploy instructions in README_DEPLOY.rdoc using this
+hotfix branch instead of a release branch.
+
+=== Bug fixed.
+
+Merge the bug fix back into the 'master' and 'develop' branches.
+
+* Merges HOTFIX_NAME into 'master'.
+* Tags the hotfix.
+* Merges HOTFIX_NAME into 'develop'.
+* Removes HOTFIX_NAME branch.
+
+ git flow hotfix finish HOTFIX_NAME
+ git pull
+ git push
+
+To deploy to production follow the deploy instructions in README_DEPLOY.rdoc.
+
+== If you need to make a coherent set of changes to the 'develop' branch, you can use a feature branch.
+
+=== Create a new feature branch, named FEATURE_NAME, off the 'develop' branch.
+
+Switch to the FEATURE_NAME branch.
+
+ git pull
+ git flow feature start FEATURE_NAME
+
+You can now use this feature branch locally on your repository to make your changes.
+
+=== Done developing on branch FEATURE_NAME.
+
+Merge the new code into the 'develop' branch.
+
+* Merges FEATURE_NAME into 'develop'.
+* Removes FEATURE_NAME branch.
+* Switches you to the 'develop' branch.
+
+ git flow feature finish FEATURE_NAME
+ git pull
+ git push
