@@ -199,11 +199,18 @@ div.search_results {
 					margin-bottom: 0.2em;
 				}
 			}
-			.left {
+			td.left {
 				width: 50%;
 			}
-			.right {
+			div.right {
+				clear: right;
 				text-align: right;
+			}
+			.provider_rating {
+				float: right;
+				form {
+					display: inline-block;
+				}
 			}
 			.name {
 				font: {

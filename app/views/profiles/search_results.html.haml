@@ -28,9 +28,11 @@
 							.location= search_result_location profile
 							.summary.text_area= preserve profile.summary
 						%td.right
-							.availability.text_area= preserve "Availability:\n#{profile.availability}" if profile.availability.present?
-							.accepting_new_clients= profile_display_accepting_new_clients profile
-							.consultations= search_result_consultations_visits profile
+							- if profile.ratings.size > 0
+								= render partial: 'profiles/rating_score', locals: {profile: profile}
+							.availability.text_area.right= preserve "Availability:\n#{profile.availability}" if profile.availability.present?
+							.accepting_new_clients.right= profile_display_accepting_new_clients profile
+							.consultations.right= search_result_consultations_visits profile
 
 :coffeescript
 	if Modernizr.geolocation
@@ -44,8 +46,9 @@
 		$('#get_location_button_area').css('display', 'none')
 		if Modernizr.geolocation
 			navigator.geolocation.getCurrentPosition(search_by_location)
+	rating_score_setup = -> $("input.#{@provider_score_class}").rating().rating('readOnly', true)
 	search_by_location = (position) ->
 		$('#search_by_location_placeholder').css('display', 'inline')
 		search_path = '#{escape_javascript search_providers_path(query: @search_query, search_area_tag_id: @search_area_tag_id)} .expert_result'
 		params = 'latitude='+position.coords.latitude+'&longitude='+position.coords.longitude
-		$('.search_results_list').load(search_path, params)
+		$('.search_results_list').load(search_path, params, rating_score_setup)
