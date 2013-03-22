@@ -23,7 +23,7 @@
 		-# If these partials are called from a users view, we need an explicit reference to profiles.
 		- if profile.ratings.size > 0
 			= render partial: 'profiles/rating_score', locals: {profile: profile}
-		- if user_signed_in? && profile != current_user.profile
+		- if can? :rate, profile
 			= render partial: 'profiles/rate', locals: {profile: profile}
 	.basic_profile
 		.display_name

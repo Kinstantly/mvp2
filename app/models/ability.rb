@@ -8,8 +8,8 @@ class Ability
 		alias_action :read, :link_index, to: :view
 		can :view, Profile, is_published: true
 		
-		# Any confirmed user can rate a profile that is not their own.
-		can :rate, Profile if user.confirmed_at
+		# Any confirmed user can rate a published profile that is not their own.
+		can :rate, Profile, is_published: true if user.confirmed_at
 		cannot :rate, Profile, user_id: user.id
 		
 		# Experts should only be able to edit their profile via nested attributes on the user model.

@@ -6,4 +6,4 @@
 			= radio_button_tag 'rating', i, (i == current_user_score), class: 'rate_provider_star'
 
 :coffeescript
-	$('input.rate_provider_star').rating(callback: (value, link) -> $.post('#{rate_profile_path}', score: value))
+	$('input.rate_provider_star').rating(callback: (value, link) -> $.post('#{rate_profile_path profile}', score: value))

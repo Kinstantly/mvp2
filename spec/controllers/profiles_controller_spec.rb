@@ -361,7 +361,7 @@ describe ProfilesController do
 		end
 	end
 	
-	context "ratings" do
+	context "rating published profiles" do
 		before(:each) do
 			@profile = FactoryGirl.create(:published_profile)
 		end
@@ -391,5 +391,12 @@ describe ProfilesController do
 			post :rate, id: @profile.id
 			@profile.should have(:no).rating
 		end
+	end
+	
+	it "should fail to rate an unpublished profile" do
+		@profile = FactoryGirl.create(:unpublished_profile)
+		sign_in FactoryGirl.create(:client_user)
+		post :rate, id: @profile.id, score: '2.0'
+		@profile.should have(:no).rating
 	end
 end
