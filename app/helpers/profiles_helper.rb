@@ -354,4 +354,9 @@ module ProfilesHelper
 		icons << 'school' if profile.visit_school
 		icons.join(' | ')
 	end
+	
+	# Provider rating
+	def provider_rating_title(rating)
+		I18n.t "rating.score_#{rating.floor}"
+	end
 end

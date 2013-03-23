@@ -4,9 +4,10 @@
 	- n_ratings = profile.ratings.size
 	= "#{n_ratings} #{'rating'.pluralize(n_ratings)}:"
 	= form_tag rate_profile_path(profile) do
-		- provider_score = ((profile.rating_average_score.presence || -1) * 2).round
+		- provider_score_title = profile.rating_average_score.try(:round, 1) || 'not rated yet'
+		- provider_score_index = ((profile.rating_average_score.presence || -1) * 2).round
 		- (1..10).each do |i|
-			= radio_button_tag "#{name}", i, (i == provider_score), class: "#{@provider_score_class} #{name} {split:2}"
+			= radio_button_tag "#{name}", i, (i == provider_score_index), class: "#{@provider_score_class} #{name} {split:2}", title: provider_score_title
 
 :coffeescript
 	$("input.#{name}").rating().rating('readOnly', true)

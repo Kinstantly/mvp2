@@ -41,3 +41,9 @@ en:
       custom_specialty_names:
         too_long: '^The name of each additional specialty must have no more than %{max} characters.'
       claimed: 'is already claimed. You cannot send an invitation.'
+  rating:
+    score_1: 'Really did not like'
+    score_2: 'Did not like'
+    score_3: 'OK'
+    score_4: 'Liked'
+    score_5: 'Liked a lot!'
