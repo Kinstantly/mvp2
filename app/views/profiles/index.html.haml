@@ -14,6 +14,7 @@
 					- if current_user.try(:admin?)
 						%th.large Admin notes
 						%th Lead generator
+					%th Rating
 					%th Website
 					%th Headline
 					%th= current_user.try(:admin?) ? 'Public email' : 'Email'
@@ -48,6 +49,7 @@
 						- if current_user.try(:admin?)
 							%td= p.try(:admin_notes)
 							%td= p.try(:lead_generator)
+						%td= p.try(:rating_average_score).try(:round, 1)
 						%td= profile_website p
 						%td= p.try(:headline)
 						%td= p.try(:email)
