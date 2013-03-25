@@ -46,9 +46,8 @@
 		$('#get_location_button_area').css('display', 'none')
 		if Modernizr.geolocation
 			navigator.geolocation.getCurrentPosition(search_by_location)
-	rating_score_setup = -> $("input.#{@provider_score_class}").rating().rating('readOnly', true)
 	search_by_location = (position) ->
 		$('#search_by_location_placeholder').css('display', 'inline')
 		search_path = '#{escape_javascript search_providers_path(query: @search_query, search_area_tag_id: @search_area_tag_id)} .expert_result'
 		params = 'latitude='+position.coords.latitude+'&longitude='+position.coords.longitude
-		$('.search_results_list').load(search_path, params, rating_score_setup)
+		$('.search_results_list').load(search_path, params, window.rating_score_reset)
