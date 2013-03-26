@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
 	protect_from_forgery
 	
+	# Store referrer for use after sign-in or sign-up if so directed.
+	before_filter :store_referrer, only: :new
+	
 	# What to do if access is denied.
 	# Also, prevent fishing for existing, but protected, records on production by making it look like access was denied.
 	rescue_from CanCan::AccessDenied, ActiveRecord::RecordNotFound do |exception|
@@ -15,6 +18,7 @@ class ApplicationController < ActionController::Base
 	#   otherwise go to the home page.
 	# If we want to go to a different page after sign-up, put that logic in here.
 	def after_sign_in_path_for(resource)
+		stored_referrer ||
 		stored_location_for(resource) ||
 			if resource.is_a?(User)
 				resource.is_provider? ? edit_user_profile_path : root_path
@@ -46,5 +50,13 @@ class ApplicationController < ActionController::Base
 			@profile.assign_text_param_if_used :admin_notes, params[:admin_notes]
 			@profile.assign_text_param_if_used :lead_generator, params[:lead_generator]
 		end
+	end
+	
+	def store_referrer
+		session[:stored_referrer] ||= request.headers['Referer'] if params[:store_referrer]
+	end
+	
+	def stored_referrer
+		session.delete(:stored_referrer)
 	end
 end

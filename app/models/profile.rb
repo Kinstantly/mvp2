@@ -212,7 +212,7 @@ class Profile < ActiveRecord::Base
 	end
 	
 	def rating_by(user)
-		ratings.find_by_rater_id user.id
+		ratings.find_by_rater_id user.id if user.try(:id)
 	end
 	
 	private
