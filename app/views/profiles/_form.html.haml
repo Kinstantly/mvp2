@@ -179,6 +179,11 @@
 			.label_area
 				= f.label :video_hours, "Video consultation hours"
 			= f.text_area :video_hours, size: '30x5'
+		.service_area
+			.label_area
+				= f.label :service_area, "Service area"
+				%span.note.text_area= preserve "\nExample:\nEast Bay\nSan Francisco\nNorth Peninsula"
+			= f.text_area :service_area, size: '30x5'
 	- if current_user.admin?
 		.admin_options
 			#lead_generator

@@ -206,6 +206,16 @@ Feature: Edit my expert profile
 			And my profile should show "$40/15 minutes"
 			And my profile should show "$120/hour"
 	
+	Scenario: Enter service area
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I enter "East Bay\nSan Francisco\nDaly City" in the "Service area" field
+			And I save my profile
+		Then my profile should show "East Bay"
+			And my profile should show "San Francisco"
+			And my profile should show "Daly City"
+	
 	Scenario: Specify consultation modes
 		Given I exist as a user
 			And I am logged in

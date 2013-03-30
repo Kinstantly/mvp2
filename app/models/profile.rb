@@ -9,7 +9,7 @@ class Profile < ActiveRecord::Base
 		:custom_service_names, :custom_specialty_names, :specialties_description, 
 		:consult_in_person, :consult_in_group, :consult_by_email, :consult_by_phone, :consult_by_video, 
 		:visit_home, :visit_school, 
-		:pricing, :availability, 
+		:pricing, :availability, :service_area, 
 		:office_hours, :phone_hours, :video_hours, :accepting_new_clients, 
 		:invitation_email
 	
@@ -30,7 +30,7 @@ class Profile < ActiveRecord::Base
 	
 	validate :publishing_requirements
 	# validates :categories, length: {maximum: 1}
-	validates :availability, :awards, :education, :experience, :insurance_accepted, :pricing, :summary, 
+	validates :availability, :awards, :education, :experience, :insurance_accepted, :pricing, :summary, :service_area,
 		:office_hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: MAX_TEXT_LENGTH}
 	validates :email, email: true, allow_blank: true
 	validates :invitation_email, email: true, allow_blank: true
@@ -55,7 +55,7 @@ class Profile < ActiveRecord::Base
 		text :first_name, :last_name, :middle_name, :credentials, 
 			:email, :company_name, :url, 
 			:headline, :education, :experience, :certifications, :awards, 
-			:languages, :insurance_accepted, :pricing, :availability, 
+			:languages, :insurance_accepted, :pricing, :availability, :service_area, 
 			:office_hours, :phone_hours, :video_hours, :specialties_description
 		
 		# Stored for highlighting.
