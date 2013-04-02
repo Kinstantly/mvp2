@@ -146,10 +146,16 @@ div.view_profile {
 
 div.profile_index {
 	margin: $profile_margin;
-	.buttons {
+	#top_bar {
 		margin-bottom: 1em;
+		> div {
+			display: inline-block;
+		}
 		a {
 			margin: 0 1em 0 1em;
+		}
+		#info {
+			float: right;
 		}
 	}
 	.profile_list {
