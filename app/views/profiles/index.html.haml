@@ -1,7 +1,17 @@
 .profile_index
-	.buttons
-		= admin_create_profile_link
-		= admin_change_profile_list_link
+	#top_bar
+		.buttons
+			= admin_create_profile_link
+			= admin_change_profile_list_link
+		#info
+			- if can? :manage, Profile
+				%strong= 'Profile counts'
+				&nbsp;
+				= profile_total_count
+				&nbsp;
+				= profile_claimed_count
+				&nbsp;
+				= profile_unclaimed_count
 	.profile_list{align: 'center'}
 		%table
 			%thead
@@ -38,6 +48,7 @@
 					%th.large Office hours
 					%th.large Phone consultation hours
 					%th.large Video consultation hours
+					%th Service area
 			%tbody
 				- @profiles.sort{|a, b| (a.last_name || '').casecmp (b.last_name || '')}.each do |p|
 					%tr

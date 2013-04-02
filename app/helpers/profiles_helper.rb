@@ -97,6 +97,18 @@ module ProfilesHelper
 	def profile_page_title(profile=nil)
 		[company_name.presence, profile.try(:display_name_or_company).presence].compact.join(' - ')
 	end
+	
+	def profile_total_count
+		"Total: #{Profile.count}"
+	end
+	
+	def profile_claimed_count
+		"Claimed: #{Profile.where('user_id is not null').count}"
+	end
+	
+	def profile_unclaimed_count
+		"Unclaimed: #{Profile.where(user_id: nil).count}"
+	end
 
 	# Categories helpers
 	

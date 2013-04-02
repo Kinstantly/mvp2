@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
 		:profile_attributes, :phone, :is_provider, :username
 
-	has_one :profile, dependent: :destroy
+	has_one :profile # If we do "dependent: :destroy", it will be hard to detach or move the profile.
 	accepts_nested_attributes_for :profile
 	
 	has_many :ratings_given, class_name: 'Rate', foreign_key: :rater_id
