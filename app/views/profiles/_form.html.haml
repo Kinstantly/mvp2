@@ -280,14 +280,18 @@
 	
 	# Add extra text input tags for custom services.
 	profile_custom_services_i = #{@profile_custom_services_i}
-	$('#add_custom_services_text_field').click (e) ->
+	add_custom_services_text_field = (e) ->
 		e.preventDefault()
 		$('.custom_services').append '<div class="text_field">'+'#{escape_javascript @profile_custom_services_text_field_template}'.replace('INDEX', String(++profile_custom_services_i))+'</div>'
-		$('.custom_services input:last').focus()
+		$('.custom_services input:last').focus().keydown (e) ->
+			add_custom_services_text_field e if e.which == 9 # tab
+	$('#add_custom_services_text_field').click add_custom_services_text_field
 	
 	# Add extra text input tags for custom specialties.
 	profile_custom_specialties_i = #{@profile_custom_specialties_i}
-	$('#add_custom_specialties_text_field').click (e) ->
+	add_custom_specialties_text_field = (e) ->
 		e.preventDefault()
 		$('.custom_specialties').append '<div class="text_field">'+'#{escape_javascript @profile_custom_specialties_text_field_template}'.replace('INDEX', String(++profile_custom_specialties_i))+'</div>'
-		$('.custom_specialties input:last').focus()
+		$('.custom_specialties input:last').focus().keydown (e) ->
+			add_custom_specialties_text_field e if e.which == 9 # tab
+	$('#add_custom_specialties_text_field').click add_custom_specialties_text_field
