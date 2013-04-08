@@ -1,0 +1,238 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="keywords" content="YOUR INFO HERE" />
+	<meta name="description" content="YOUR INFO HERE" />
+	<link rel="stylesheet" href="styles.css?ver=1.0" type="text/css" />
+	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+	<title>Sophia M. Hurd, Noe Valley Pediatrics | Kinstantly | When parenting challenges can't wait.</title>
+	
+	<!-- JavaScript -->
+		<!--[if IE]><![endif]-->
+		<!--[if lt IE 9]>
+		<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<script src="assets/js/respond.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="assets/js/modernizr-2.5.3.min.js"></script>
+		<script type="text/javascript">
+		$(function() {
+
+    // Get select elements
+    var selects = $('.select-wrapper > select');
+    if ( !selects.length ) return;
+
+    // Add change event to selects, and trigger it on load, so the span is up to date
+    selects.on('change', function() {
+
+        // Assign the jquery object to a variable 
+        var select = $(this);
+
+        // Get placeholder element
+        var placeholder = select.prev('.select-text');
+        if ( !placeholder.length ) return;
+
+        // Get the text from the selected option
+        var selected_text = select.children('option:selected').text();
+
+        // Update the placeholder text
+        placeholder.html(selected_text);
+
+    }).change();
+
+    // Not proud of this, workaround for Firefox that doesn't trigger the change event
+    // if the user is using the keyboard to navigate through the options
+    selects.on('keypress', function() {
+        selects.trigger('change');
+    });
+});
+</script>
+</head>
+
+<body class="interior edit">
+		<header id="branding" class="clearfix">
+		<div class="container">
+			<h3 id="tagline">When parenting challenges can't wait.</h3>
+			<div id="access" class="clearfix">
+				<ul class="clearfix">
+					<li id="about"><a href="about-us/">About us</a></li>
+					<li id="contact"><a href="contact-us/">Contact us</a></li>
+					<li id="signin">Already a member? <a href="#">Sign in</a></li>
+				</ul>
+			</div>
+		</div>
+			
+		<div id="masthead" class="clearfix">
+			<h1><a href="index.html">Kinstantly</a></h1>
+		
+			<div id="findProvider" class="aside">
+			<form id="providerSearch" method="post" action="">
+				  <input type="text" name="provider" id="provider" autocomplete="off" value="doctor, tutor, therapist..." onfocus="this.value=''">
+			  <div class="select-wrapper">
+			    <span class="select-text"></span>
+			    <select>
+				  <option selected="selected">San Francisco, CA</option>
+				  <option>Another Place, CA</option>
+				  <option>Anywhere</option>
+				 </select>
+			  </div>
+			  <input type="submit" name="submit" value="sign in" class="button submit green" id="submit">
+			  <p class="small">Provider? <a href="#">Join us</a></p>
+		  </form>
+		  </div>
+		</div>
+		
+		</header>
+		
+		<article id="content">
+		
+			<header id="content-header" class="clearfix">
+				
+				<img src="images/profile-photo.jpg" alt="" width="168" height="168" border="0" class="profile-photo" itemprop="image" />
+				<div itemscope itemtype="http://schema.org/Person" class="profile">
+					<h1 itemprop="name" class="editable">Sophia M. Hurd</h1>
+					<div class="reviews reviewed-4-star">
+						<div class="star star1"></div>
+						<div class="star star2"></div>
+						<div class="star star3"></div>
+						<div class="star star4"></div>
+						<div class="star star5"></div>
+						<div class="review-num">2 reviews</div>
+					</div>
+					<span itemprop="jobTitle" class="title editable">Pediatrician</span>
+					<span itemprop="affiliation" class="title editable">Noe Valley Pediatrics</span>
+					<span itemprop="street-address" class="location editable">1234 Dolores St, San Francisco, CA 94110</span>
+					<span itemprop="telephone" class="location editable">(415) 555-0123</span>
+					<span itemprop="url" class="location editable"><a href="http://www.noevalleypediatrics.com" target="_blank">www.noevalleypediatrics.com</a></span>
+					<span itemprop="email" class="location editable">email: <a href="mailto:info@noevalleypediatrics.com">info@noevalleypediatrics.com</a></span>
+					<div class="rate reviews">
+						<div class="rate-this">Rate Sophia M. Hurd:</div>
+						<div class="star star1"></div>
+						<div class="star star2"></div>
+						<div class="star star3"></div>
+						<div class="star star4"></div>
+						<div class="star star5"></div>
+					</div>
+				</div>
+				
+				<ul class="contact-toolbar editable">
+					<li id="email"><a href="mailto:info@noevalleypediatrics.com">Email</a></li>
+					<li id="call"><a href="tel:+14155550123">Phone</a></li>
+					<li id="url"><a href="http://www.noevalleypediatrics.com" target="_blank">Visit website</a></li>
+					<li id="appointment"><a href="#">Make an appointment</a></li>
+				</ul>
+			</header>
+			
+			<section id="details" class="clearfix">
+				<div class="interior">
+					<div class="summary-text">
+						<div class="summary editable active"><h3>Summary</h3>
+						<div class="edit popover">
+							<form id="edit-summary" method="post" action="">
+							<label>Summary:</label>
+								<textarea name="summary" id="summary" cols="45" rows="5">Our practice has been a neighborhood based practice since 1977. Our staff prides itself on respecting the dignity, confidentiality and privacy of our clients.</textarea>
+								<input type="submit" value="Save" id="save">
+								<a href="#" class="cancel button">cancel</a> 
+							</form>
+						</div>
+						<p>Our practice has been a neighborhood based practice since 1977. Our staff prides itself on respecting the dignity, confidentiality and privacy of our clients.</p>
+						</div>
+						
+						<div class="services editable"><h3>Services / Specialties</h3>
+						<p>Pediatrician. Autism specturm, Developmental delay, Integrated functional medicine for kids, Evidence based complementary and alternative healing modalities.</p>
+						</div>
+					</div>
+					
+					<table class="info" cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<th><span class="editable">Hours</span></th>
+							<td>Monday - Friday, 8am - 5pm</td>
+						</tr>
+						<tr>
+							<th><span class="editable">Ages</span></th>
+							<td>0-12</td>
+						</tr>
+						<tr>
+							<th><span class="editable">Languages</span></th>
+							<td>English, Spanish</td>
+						</tr>
+						<tr>
+							<th><span class="editable">Education</span></th>
+							<td>Medical Degree, University of Washington</td>
+						</tr>
+						<tr>
+							<th><span class="editable">Licenses / Certifications</span></th>
+							<td>licensed in California</td>
+						</tr>
+						<tr>
+							<th><span class="editable">Insurance</span></th>
+							<td>Blue Shield of CA, Aetna, Blue Cross</td>
+						</tr>
+						<tr>
+							<th><span class="editable">Rates</span></th>
+							<td>$150/hour</td>
+						</tr>
+					</table>
+							
+					</div>
+				</div>
+			</section>
+			
+			<section id="reviews" class="clearfix">
+				<article class="review even">
+					<header class="review-header">
+						<span class="author"><a href="#">Illiana Cruz</a></span>
+						<span class="location">San Francisco, CA</span>
+						<span class="num-reviews"><a href="#">6 reviews</a></span>
+					</header>
+					<section class="review-body">
+						<div class="reviews reviewed-4-star">
+							<div class="star star1"></div>
+							<div class="star star2"></div>
+							<div class="star star3"></div>
+							<div class="star star4"></div>
+							<div class="star star5"></div>
+							<div class="review-date">1/25/13</div>
+						</div>
+						
+						<p>We've seen Dr. Hurd now 3 times, and each time, she is as personable and helpful as the last, from breastfeeding, to pumping, to sleep training.  I am sorry that there are folks who cannot get into this practice due to the "interview" process.  As one of the lucky ones, we were referred into NVP and went to interview a month before my due date.  Nurse Judy was so helpful and we chose Dr. Hurd based on the info she gave us.  Since then, we have attended one of Nurse Judy's classes, and plan to take many more.  She has classes for: new parents, illness, safety, and more!  I cannot imagine a better resource for new parents with an admittedly average-to-low-maintenance newborn baby (no special needs).  And so far, we've always been seen on time for appointments.</p>
+					</section>
+				</article>
+				
+				<article class="review odd">
+					<header class="review-header">
+						<span class="author"><a href="#">John Manning</a></span>
+						<span class="location">San Francisco, CA</span>
+						<span class="num-reviews"><a href="#">10 reviews</a></span>
+					</header>
+					<section class="review-body">
+						<div class="reviews reviewed-4-star">
+							<div class="star star1"></div>
+							<div class="star star2"></div>
+							<div class="star star3"></div>
+							<div class="star star4"></div>
+							<div class="star star5"></div>
+							<div class="review-date">11/12/10</div>
+						</div>
+						
+						<p>We've been extremely pleased with the practice as a whole and with our pediatrician, Dr Hurd, who figured out that our baby's supposedly drastic weight loss was due to CPMC's mis-converting from grams to pounds and ounces.  Phone calls get answered by a human being (although I'm sometimes asked to hold briefly), and emails and calls to the on-duty nurses are returned quickly.</p>
+					</section>
+				</article>
+			</section>
+
+		</article>
+        		
+		<footer id="footer">
+			<p id="bottom"><a href="#">About us</a>  |  <a href="#">Contact us</a>  |  <a href="#">Terms of use</a><br>
+&copy; Copyright 2013 Kinstantly, Inc. All Rights Reserved.</p>
+		</footer>
+		<div id="line"></div>
+</body>
+</html>
