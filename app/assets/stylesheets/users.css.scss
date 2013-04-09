@@ -113,6 +113,9 @@ div.view_profile {
 				.text_field {
 					@include check-box-style;
 				}
+				span.note {
+					margin-left: 1em;
+				}
 			}
 			.specialties .notice {
 				float: left;

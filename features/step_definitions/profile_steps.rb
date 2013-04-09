@@ -362,10 +362,10 @@ When /^I add the "(.*?)" and "(.*?)" custom services$/ do |svc1, svc2|
 end
 
 # This step requires javascript.
-When /^I add the "(.*?)" and "(.*?)" custom services using tab$/ do |svc1, svc2|
+When /^I add the "(.*?)" and "(.*?)" custom services using enter$/ do |svc1, svc2|
 	within('.custom_services') do
 		click_button 'add_custom_services_text_field'
-		fill_in MyHelpers.profile_custom_services_id('1'), with: "#{svc1}\t"
+		fill_in MyHelpers.profile_custom_services_id('1'), with: "#{svc1}\r"
 		fill_in MyHelpers.profile_custom_services_id('2'), with: svc2
 	end
 end
@@ -389,10 +389,10 @@ When /^I add the "(.*?)" and "(.*?)" custom specialties$/ do |spec1, spec2|
 end
 
 # This step requires javascript.
-When /^I add the "(.*?)" and "(.*?)" custom specialties using tab$/ do |spec1, spec2|
+When /^I add the "(.*?)" and "(.*?)" custom specialties using enter$/ do |spec1, spec2|
 	within('.custom_specialties') do
 		click_button 'add_custom_specialties_text_field'
-		fill_in MyHelpers.profile_custom_specialties_id('1'), with: "#{spec1}\t"
+		fill_in MyHelpers.profile_custom_specialties_id('1'), with: "#{spec1}\r"
 		fill_in MyHelpers.profile_custom_specialties_id('2'), with: spec2
 	end
 end

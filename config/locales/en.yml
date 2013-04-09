@@ -41,6 +41,10 @@ en:
       custom_specialty_names:
         too_long: '^The name of each additional specialty must have no more than %{max} characters.'
       claimed: 'is already claimed. You cannot send an invitation.'
+  views:
+    profile:
+      edit:
+        add_text_field: 'Hit ENTER to add a new field'
   rating:
     score_1: 'Really did not like'
     score_2: 'Did not like'
