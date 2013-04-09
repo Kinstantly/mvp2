@@ -44,7 +44,7 @@
 				= lf.text_field :address2, placeholder: address2_prompt, title: address2_prompt
 			.city_state
 				= lf.label :city, "City"
-				= lf.autocomplete_field :city, autocomplete_location_city_profiles_path
+				= autocomplete_form_field :city, nil, autocomplete_location_city_profiles_path, form_builder: lf
 				= lf.label :region, "State"
 				= lf.subregion_select :region, country, include_blank: '--'
 			.postal_code
@@ -184,12 +184,13 @@
 				= f.label :service_area, "Service area"
 				%span.note.text_area= preserve "\nExample:\nEast Bay\nSan Francisco\nNorth Peninsula"
 			= f.text_area :service_area, size: '30x5'
+	-# Mass assignment is not allowed on admin attributes, so use simple params and tags.
 	- if current_user.admin?
 		.admin_options
 			#lead_generator
 				.label_area
 					= label_tag :lead_generator, 'Lead generator'
-				= autocomplete_field_tag :lead_generator, @profile.lead_generator, autocomplete_profile_lead_generator_profiles_path
+				= autocomplete_form_field :lead_generator, @profile.lead_generator, autocomplete_profile_lead_generator_profiles_path
 			#admin_notes
 				.label_area
 					= label_tag :admin_notes, 'Admin notes'

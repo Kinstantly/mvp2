@@ -213,7 +213,7 @@ module ProfilesHelper
 	end
 	
 	def profile_custom_services_autocomplete_field_tag(profile, value, suffix, form_builder=nil)
-		autocomplete_field_tag profile_custom_services_tag_name(form_builder), value, autocomplete_service_name_profiles_path, id: profile_custom_services_id(suffix)
+		autocomplete_form_field profile_custom_services_tag_name(form_builder), value, autocomplete_service_name_profiles_path, id: profile_custom_services_id(suffix)
 	end
 	
 	# Specialties helpers
@@ -269,7 +269,7 @@ module ProfilesHelper
 	end
 	
 	def profile_custom_specialties_autocomplete_field_tag(profile, value, suffix, form_builder=nil)
-		autocomplete_field_tag profile_custom_specialties_tag_name(form_builder), value, autocomplete_specialty_name_profiles_path, id: profile_custom_specialties_id(suffix)
+		autocomplete_form_field profile_custom_specialties_tag_name(form_builder), value, autocomplete_specialty_name_profiles_path, id: profile_custom_specialties_id(suffix)
 	end
 	
 	# Age range helpers
