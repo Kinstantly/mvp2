@@ -50,7 +50,7 @@ module ApplicationHelper
 	
 	def admin_profile_list_link
 		path = profiles_path
-		link_to 'Profile admin', path if show_link?(path) && can?(:manage, Profile)
+		link_to 'List profiles', path if show_link?(path) && can?(:manage, Profile)
 	end
 	
 	def admin_change_profile_list_link

@@ -8,6 +8,7 @@ Mvp2::Application.routes.draw do
 	match 'contact' => 'home#contact'
 	match 'faq' => 'home#faq'
 	match 'terms' => 'home#terms'
+	match 'admin' => 'home#admin'
 	
 	# User model on which Devise authentication is based.
 	devise_for :users, controllers: { registrations: 'users/registrations' }

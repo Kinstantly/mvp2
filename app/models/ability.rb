@@ -24,7 +24,10 @@ class Ability
 		
 		can :manage, Profile if user.profile_editor?
 		
-		can :manage, :all if user.admin?
+		if user.admin?
+			can :any, :admin
+			can :manage, :all
+		end
 		
 		# Define abilities for the passed in user here. For example:
 		#
