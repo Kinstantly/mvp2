@@ -1,10 +1,11 @@
 .profile_index
 	.profile_list{align: 'center'}
+		= paginate @profiles
 		%table
 			%thead
 				%tr
 					%th Name
 			%tbody
-				- @profiles.sort{|a, b| a.last_name.casecmp b.last_name}.each do |p|
+				- @profiles.each do |p|
 					%tr
 						%td= profile_list_name_or_company_link p

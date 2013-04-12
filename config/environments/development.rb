@@ -42,3 +42,7 @@ end
 
 SITEMAP_DEFAULT_HOST = 'http://localhost:5000/'
 SITEMAP_SITEMAPS_PATH = 'sitemaps_dev/'
+
+Kaminari.configure do |config|
+	config.default_per_page = 10
+end

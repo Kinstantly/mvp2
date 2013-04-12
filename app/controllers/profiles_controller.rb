@@ -27,6 +27,11 @@ class ProfilesController < ApplicationController
 	
 	def index
 		@profiles = @profiles.with_admin_notes if current_user.try(:admin?) && params[:with_admin_notes].present?
+		@profiles = @profiles.order('lower(last_name)').page params[:page]
+	end
+	
+	def link_index
+		@profiles = @profiles.page params[:page]
 	end
 	
 	def create
