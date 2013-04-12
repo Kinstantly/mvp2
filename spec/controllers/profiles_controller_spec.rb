@@ -197,6 +197,12 @@ describe ProfilesController do
 				response.should redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
 				flash[:notice].should_not be_nil
 			end
+			
+			it "successfully creates the profile from the admin page" do
+				post :create, profile: FactoryGirl.attributes_for(:profile), admin: true
+				response.should redirect_to(controller: 'profiles', action: 'edit', id: assigns[:profile].id)
+				flash[:notice].should_not be_nil
+			end
 		end
 	
 		describe "GET 'edit'" do
@@ -398,5 +404,30 @@ describe ProfilesController do
 		sign_in FactoryGirl.create(:client_user)
 		post :rate, id: @profile.id, score: '2.0'
 		@profile.should have(:no).rating
+	end
+	
+	describe "GET admin" do
+		it "does not render the view when not signed in" do
+			get :admin
+			response.should_not render_template('admin')
+		end
+		
+		it "does not render the view when signed in as an expert user" do
+			sign_in FactoryGirl.create(:expert_user)
+			get :admin
+			response.should_not render_template('admin')
+		end
+		
+		it "does not render the view when signed in as a client user" do
+			sign_in FactoryGirl.create(:client_user)
+			get :admin
+			response.should_not render_template('admin')
+		end
+		
+		it "renders the view when signed in as an admin user" do
+			sign_in FactoryGirl.create(:admin_user)
+			get :admin
+			response.should render_template('admin')
+		end
 	end
 end

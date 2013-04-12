@@ -3,15 +3,7 @@
 		.buttons
 			= admin_create_profile_link
 			= admin_change_profile_list_link
-		#info
-			- if can? :manage, Profile
-				%strong= 'Profile counts'
-				&nbsp;
-				= profile_total_count
-				&nbsp;
-				= profile_claimed_count
-				&nbsp;
-				= profile_unclaimed_count
+		= render partial: 'stats'
 	.profile_list{align: 'center'}
 		%table
 			%thead

@@ -136,6 +136,10 @@ module ProfilesHelper
 		check_box_tag profile_categories_tag_name(form_builder), category.id, profile.categories.include?(category), id: profile_categories_id(category.id)
 	end
 	
+	def profile_categories_check_box_label(category)
+		label_tag profile_categories_id(category.id), category.name
+	end
+	
 	def profile_display_categories(profile=current_user.try(:profile))
 		display_profile_item_names profile.try(:categories)
 	end

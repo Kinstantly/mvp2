@@ -64,8 +64,18 @@ module ApplicationHelper
 	end
 	
 	def admin_create_profile_link
-		path = new_profile_path
+		path = admin_profiles_path
 		link_to 'Create a profile', path if show_link?(path) && can?(:create, Profile)
+	end
+	
+	def admin_profiles_link
+		path = admin_profiles_path
+		link_to 'Profile admin', path if show_link?(path) && can?(:create, Profile)
+	end
+	
+	def admin_link
+		path = admin_path
+		link_to 'Admin', path if show_link?(path) && can?(:manage, Profile) && can?(:manage, User)
 	end
 	
 	def admin_user_list_link

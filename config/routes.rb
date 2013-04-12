@@ -36,6 +36,7 @@ Mvp2::Application.routes.draw do
 			post 'rate'
 		end
 		collection do
+			get :admin
 			get :autocomplete_service_name
 			get :autocomplete_specialty_name
 			get :autocomplete_location_city

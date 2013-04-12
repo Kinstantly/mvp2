@@ -422,6 +422,11 @@ When /^I visit the new profile page$/ do
 	visit new_profile_path
 end
 
+When /^I visit the profile admin page$/ do
+	set_up_new_data
+	visit admin_profiles_path
+end
+
 When /^I visit the published profile page$/ do
 	visit profile_path(@published_profile)
 end
@@ -612,8 +617,10 @@ Then /^I should see published profile data$/ do
 	page.should have_content @published_profile_data[:url]
 end
 
-Then /^I should see a new profile form$/ do
-	page.should have_content 'Public email'
+Then /^I should see (?:a new|an edit) profile form$/ do
+	within('.check_box') do
+		page.should have_content @predefined_category.name
+	end
 end
 
 Then /^the new profile should be saved$/ do
