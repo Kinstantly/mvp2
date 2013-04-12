@@ -37,6 +37,7 @@ Mvp2::Application.routes.draw do
 		end
 		collection do
 			get :admin
+			get 'page/:page', action: :index
 			get :autocomplete_service_name
 			get :autocomplete_specialty_name
 			get :autocomplete_location_city
@@ -46,6 +47,7 @@ Mvp2::Application.routes.draw do
 	
 	# Links to profiles for search engine crawlers.
 	match 'providers' => 'profiles#link_index'
+	match 'providers/page/:page' => 'profiles#link_index'
 	
 	# Profile search.
 	match 'search_providers' => 'profiles#search'
