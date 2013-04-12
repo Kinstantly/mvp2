@@ -49,6 +49,9 @@ div.view_profile {
 		a {
 			margin: 0 1em 0 1em;
 		}
+		#destroy_profile {
+			float: right;
+		}
 	}
 	.rating_info {
 		> div, form {

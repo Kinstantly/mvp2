@@ -15,6 +15,8 @@ en:
       profile_create_error: 'There was a problem creating the profile.'
       profile_updated: 'The profile was saved.'
       profile_update_error: 'There was a problem saving the profile.'
+      profile_destroyed: 'The profile was destroyed!'
+      profile_destroy_error: 'The profile was not removed.  Perhaps it is owned by a user.'
       invitation_sent: 'The invitation was sent.'
       invitation_error: 'There was a problem sending the invitation.'
   profile_mailer:

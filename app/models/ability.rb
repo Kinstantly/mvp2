@@ -22,11 +22,16 @@ class Ability
 			can :show, User, id: user.id
 		end
 		
-		can :manage, Profile if user.profile_editor?
+		if user.profile_editor?
+			can :manage, Profile
+			cannot :destroy, Profile
+		end
 		
 		if user.admin?
 			can :any, :admin
 			can :manage, :all
+			cannot :destroy, Profile
+			can :destroy, Profile, user: nil
 		end
 		
 		# Define abilities for the passed in user here. For example:

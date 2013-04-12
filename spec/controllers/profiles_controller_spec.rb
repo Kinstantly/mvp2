@@ -164,6 +164,28 @@ describe ProfilesController do
 				flash[:notice].should_not be_nil
 			end
 		end
+		
+		describe "DELETE 'destroy'" do
+			before(:each) do
+				@profile = FactoryGirl.create(:profile)
+				@profile_id = @profile.id
+			end
+			
+			it "destroys unattached profile" do
+				delete :destroy, id: @profile_id
+				response.should redirect_to(controller: 'profiles', action: 'admin')
+				Profile.find_by_id(@profile_id).should be_nil
+			end
+			
+			it "should not destroy an attached profile" do
+				user = FactoryGirl.create(:expert_user)
+				user.profile = @profile
+				user.save
+				delete :destroy, id: @profile_id
+				response.should redirect_to(root_path)
+				Profile.find_by_id(@profile_id).should_not be_nil
+			end
+		end
 	end
 	
 	context "as profile editor" do

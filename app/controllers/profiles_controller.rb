@@ -50,6 +50,13 @@ class ProfilesController < ApplicationController
 		end
 	end
 	
+	# CanCan should prevent access to this action if the profile has been claimed.
+	def destroy
+		@profile.destroy
+		set_flash_message :notice, :profile_destroyed
+		redirect_to admin_profiles_path
+	end
+	
 	def search
 		options = {}
 		@search_query = params[:query]
