@@ -4,8 +4,8 @@ class Ability
 	def initialize(user)
 		user ||= User.new # guest user (not logged in)
 		
-		# The public and crawlers can view published profiles.
-		alias_action :read, :link_index, to: :view
+		# The public and crawlers can view published profiles (but not the index because it shows full profiles).
+		alias_action :show, :link_index, to: :view
 		can :view, Profile, is_published: true
 		
 		# Any confirmed user can rate a published profile that is not their own.

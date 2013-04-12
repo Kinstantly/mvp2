@@ -4,15 +4,15 @@
 
 def set_up_new_data
 	create_visitor
-	@profile_data ||= { first_name: 'Know', middle_name: 'I', last_name: 'Tall',
+	@profile_data ||= { first_name: 'Know', middle_name: 'I', last_name: 'Tall_59284872465',
 		primary_phone: '415-555-1234', url: 'http://knowitall.com' }
-	@profile_data_2 ||= { first_name: 'Can', middle_name: 'I', last_name: 'Helpyou',
+	@profile_data_2 ||= { first_name: 'Can', middle_name: 'I', last_name: 'Helpyou_57839029577',
 		primary_phone: '800-555-1111', url: 'http://canihelpyou.com' }
-	@unattached_profile_data ||= { first_name: 'Prospect', middle_name: 'A', last_name: 'Expert',
+	@unattached_profile_data ||= { first_name: 'Prospect', middle_name: 'A', last_name: 'Expert_109284920473',
 		primary_phone: '888-555-5555', url: 'http://UnattachedExpert.com' }
-	@published_profile_data ||= { first_name: 'Sandy', middle_name: 'A', last_name: 'Known',
+	@published_profile_data ||= { first_name: 'Sandy', middle_name: 'A', last_name: 'Known_58792040839757',
 		primary_phone: '888-555-7777', url: 'http://KnownExpert.com', is_published: true }
-	@published_profile_data_2 ||= { first_name: 'Yeti', middle_name: 'B', last_name: 'Foot',
+	@published_profile_data_2 ||= { first_name: 'Yeti', middle_name: 'B', last_name: 'Foot_6594098385732',
 		primary_phone: '888-555-6666', url: 'http://yetibfoot.com', is_published: true }
 	unless @predefined_category
 		@predefined_category = 'TUTORS'.to_category
@@ -417,6 +417,10 @@ When /^I visit the profile index page$/ do
 	visit profiles_path
 end
 
+When /^I visit the profile link index page$/ do
+	visit providers_path
+end
+
 When /^I visit the new profile page$/ do
 	set_up_new_data
 	visit new_profile_path
@@ -601,20 +605,20 @@ Then /^my profile should show the "(.*?)" age range$/ do |age_range|
 end
 
 Then /^I should see more than one profile$/ do
-	page.should have_content @profile_data[:url]
-	page.should have_content @profile_data_2[:url]
+	page.should have_content @profile_data[:last_name]
+	page.should have_content @profile_data_2[:last_name]
 end
 
 Then /^I should not see profile data$/ do
-	page.should_not have_content @profile_data[:url]
+	page.should_not have_content @profile_data[:last_name]
 end
 
 Then /^I should not see profile data that is not my own$/ do
-	page.should_not have_content @profile_data_2[:url]
+	page.should_not have_content @profile_data_2[:last_name]
 end
 
 Then /^I should see published profile data$/ do
-	page.should have_content @published_profile_data[:url]
+	page.should have_content @published_profile_data[:last_name]
 end
 
 Then /^I should see (?:a new|an edit) profile form$/ do

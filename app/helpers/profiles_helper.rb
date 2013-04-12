@@ -58,7 +58,7 @@ module ProfilesHelper
 	end
 	
 	def profile_list_view_link(profile, name)
-		if can?(:read, profile)
+		if can?(:view, profile)
 			html_options = name.blank? ? {class: 'emphasized'} : {}
 			link_to(html_escape(name.presence || 'Click to view'), profile_path(profile), html_options).html_safe
 		else
