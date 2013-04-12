@@ -183,8 +183,9 @@ module ProfilesHelper
 	end
 	
 	def profile_services_check_box(profile, id, name, checked, wrapper_class, form_builder=nil)
+		tag_id = profile_services_id(id)
 		content_tag :div, class: wrapper_class do
-			check_box_tag(profile_services_tag_name(form_builder), id, checked, id: profile_services_id(id)) + " #{name}"
+			check_box_tag(profile_services_tag_name(form_builder), id, checked, id: tag_id) + label_tag(tag_id, name)
 		end
 	end
 	
@@ -239,8 +240,9 @@ module ProfilesHelper
 	end
 	
 	def profile_specialties_check_box(profile, id, name, checked, wrapper_class, form_builder=nil)
+		tag_id = profile_specialties_id(id)
 		content_tag :div, class: wrapper_class do
-			check_box_tag(profile_specialties_tag_name(form_builder), id, checked, id: profile_specialties_id(id)) + " #{name}"
+			check_box_tag(profile_specialties_tag_name(form_builder), id, checked, id: tag_id) + label_tag(tag_id, name)
 		end
 	end
 	
@@ -292,6 +294,10 @@ module ProfilesHelper
 	
 	def profile_age_ranges_check_box_tag(profile, age_range, form_builder=nil)
 		check_box_tag profile_age_ranges_tag_name(form_builder), age_range.id, profile.age_ranges.include?(age_range), id: profile_age_ranges_id(age_range.name)
+	end
+	
+	def profile_age_ranges_check_box_label(age_range)
+		label_tag profile_age_ranges_id(age_range.name), age_range.name
 	end
 	
 	# Consultations and visits

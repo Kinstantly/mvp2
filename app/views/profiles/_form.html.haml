@@ -68,7 +68,7 @@
 			- profile_category_choices(profile).each do |category|
 				.check_box
 					= profile_categories_check_box_tag(profile, category, f)
-					= category.name
+					= profile_categories_check_box_label category
 		.services
 			= f.label :services, "Services"
 			%br
@@ -109,7 +109,7 @@
 			- AgeRange.all.sort_by(&:sort_index).each do |age_range|
 				.check_box
 					= profile_age_ranges_check_box_tag(profile, age_range, f)
-					= age_range.name
+					= profile_age_ranges_check_box_label age_range
 	.professional_profile
 		.accepting_new_clients
 			.check_box
