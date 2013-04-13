@@ -123,6 +123,16 @@ Feature: Edit my expert profile
 		Then the "story-book reader" and "dream catcher" services should appear in the profile edit check list
 		
 	@javascript
+	Scenario: Add custom services using enter
+		Given I exist as a user
+			And I want my profile
+			And I am logged in
+			And I am on my profile edit page
+		When I add the "story-book reader" and "dream catcher" custom services using enter
+			And I save my profile
+		Then my profile should show me as being in the "story-book reader" and "dream catcher" services
+		
+	@javascript
 	Scenario: Select specialties associated with my service
 		Given I exist as a user
 			And I am logged in
@@ -139,6 +149,16 @@ Feature: Edit my expert profile
 			And I have a category of "THERAPISTS & PARENTING COACHES" in my profile
 			And I am on my profile edit page
 		When I add the "story-books" and "dreams" custom specialties
+			And I save my profile
+		Then my profile should show me as having the "story-books" and "dreams" specialties
+	
+	@javascript
+	Scenario: Add custom specialties using enter
+		Given I exist as a user
+			And I am logged in
+			And I have a category of "THERAPISTS & PARENTING COACHES" in my profile
+			And I am on my profile edit page
+		When I add the "story-books" and "dreams" custom specialties using enter
 			And I save my profile
 		Then my profile should show me as having the "story-books" and "dreams" specialties
 	

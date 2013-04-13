@@ -49,7 +49,7 @@ module ApplicationHelper
 	
 	def admin_profile_list_link
 		path = profiles_path
-		link_to 'Profile admin', path if show_link?(path) && can?(:manage, Profile)
+		link_to 'List profiles', path if show_link?(path) && can?(:manage, Profile)
 	end
 	
 	def admin_change_profile_list_link
@@ -63,8 +63,18 @@ module ApplicationHelper
 	end
 	
 	def admin_create_profile_link
-		path = new_profile_path
+		path = admin_profiles_path
 		link_to 'Create a profile', path if show_link?(path) && can?(:create, Profile)
+	end
+	
+	def admin_profiles_link
+		path = admin_profiles_path
+		link_to 'Profile admin', path if show_link?(path) && can?(:create, Profile)
+	end
+	
+	def admin_link
+		path = admin_path
+		link_to 'Admin', path if show_link?(path) && can?(:manage, Profile) && can?(:manage, User)
 	end
 	
 	def admin_user_list_link
@@ -100,5 +110,17 @@ module ApplicationHelper
 	def request_expert_link
 		path = request_expert_path
 		link_to "Request a meeting", path if show_link?(path)
+	end
+	
+	# Use this helper to work around a bug that causes an unchecked undefined value when using jQuery 1.9.
+	# http://github.com/crowdint/rails3-jquery-autocomplete/issues/210
+	def autocomplete_form_field(attribute, value, path, options={})
+		options[:id_element] ||= ''
+		options[:update_elements] ||= {}
+		if options[:form_builder]
+			options.delete(:form_builder).autocomplete_field attribute, path, options
+		else
+			autocomplete_field_tag attribute, value, path, options
+		end
 	end
 end

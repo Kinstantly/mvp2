@@ -80,6 +80,9 @@ gem 'geocoder'
 # Use to safely create links from user input.
 gem 'rails_autolink'
 
+# Pagination.
+gem 'kaminari'
+
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
 	gem 'cucumber-rails', '~> 1.0', require: false

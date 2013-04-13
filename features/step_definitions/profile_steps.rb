@@ -4,15 +4,15 @@
 
 def set_up_new_data
 	create_visitor
-	@profile_data ||= { first_name: 'Know', middle_name: 'I', last_name: 'Tall',
+	@profile_data ||= { first_name: 'Know', middle_name: 'I', last_name: 'Tall_59284872465',
 		primary_phone: '415-555-1234', url: 'http://knowitall.com' }
-	@profile_data_2 ||= { first_name: 'Can', middle_name: 'I', last_name: 'Helpyou',
+	@profile_data_2 ||= { first_name: 'Can', middle_name: 'I', last_name: 'Helpyou_57839029577',
 		primary_phone: '800-555-1111', url: 'http://canihelpyou.com' }
-	@unattached_profile_data ||= { first_name: 'Prospect', middle_name: 'A', last_name: 'Expert',
+	@unattached_profile_data ||= { first_name: 'Prospect', middle_name: 'A', last_name: 'Expert_109284920473',
 		primary_phone: '888-555-5555', url: 'http://UnattachedExpert.com' }
-	@published_profile_data ||= { first_name: 'Sandy', middle_name: 'A', last_name: 'Known',
+	@published_profile_data ||= { first_name: 'Sandy', middle_name: 'A', last_name: 'Known_58792040839757',
 		primary_phone: '888-555-7777', url: 'http://KnownExpert.com', is_published: true }
-	@published_profile_data_2 ||= { first_name: 'Yeti', middle_name: 'B', last_name: 'Foot',
+	@published_profile_data_2 ||= { first_name: 'Yeti', middle_name: 'B', last_name: 'Foot_6594098385732',
 		primary_phone: '888-555-6666', url: 'http://yetibfoot.com', is_published: true }
 	unless @predefined_category
 		@predefined_category = 'TUTORS'.to_category
@@ -362,6 +362,15 @@ When /^I add the "(.*?)" and "(.*?)" custom services$/ do |svc1, svc2|
 end
 
 # This step requires javascript.
+When /^I add the "(.*?)" and "(.*?)" custom services using enter$/ do |svc1, svc2|
+	within('.custom_services') do
+		click_button 'add_custom_services_text_field'
+		fill_in MyHelpers.profile_custom_services_id('1'), with: "#{svc1}\r"
+		fill_in MyHelpers.profile_custom_services_id('2'), with: svc2
+	end
+end
+
+# This step requires javascript.
 When /^I select the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
 	within('.specialties') do
 		check MyHelpers.profile_specialties_id(spec1.to_specialty.id)
@@ -375,6 +384,15 @@ When /^I add the "(.*?)" and "(.*?)" custom specialties$/ do |spec1, spec2|
 		click_button 'add_custom_specialties_text_field'
 		fill_in MyHelpers.profile_custom_specialties_id('1'), with: spec1
 		click_button 'add_custom_specialties_text_field'
+		fill_in MyHelpers.profile_custom_specialties_id('2'), with: spec2
+	end
+end
+
+# This step requires javascript.
+When /^I add the "(.*?)" and "(.*?)" custom specialties using enter$/ do |spec1, spec2|
+	within('.custom_specialties') do
+		click_button 'add_custom_specialties_text_field'
+		fill_in MyHelpers.profile_custom_specialties_id('1'), with: "#{spec1}\r"
 		fill_in MyHelpers.profile_custom_specialties_id('2'), with: spec2
 	end
 end
@@ -399,9 +417,18 @@ When /^I visit the profile index page$/ do
 	visit profiles_path
 end
 
+When /^I visit the profile link index page$/ do
+	visit providers_path
+end
+
 When /^I visit the new profile page$/ do
 	set_up_new_data
 	visit new_profile_path
+end
+
+When /^I visit the profile admin page$/ do
+	set_up_new_data
+	visit admin_profiles_path
 end
 
 When /^I visit the published profile page$/ do
@@ -578,24 +605,26 @@ Then /^my profile should show the "(.*?)" age range$/ do |age_range|
 end
 
 Then /^I should see more than one profile$/ do
-	page.should have_content @profile_data[:url]
-	page.should have_content @profile_data_2[:url]
+	page.should have_content @profile_data[:last_name]
+	page.should have_content @profile_data_2[:last_name]
 end
 
 Then /^I should not see profile data$/ do
-	page.should_not have_content @profile_data[:url]
+	page.should_not have_content @profile_data[:last_name]
 end
 
 Then /^I should not see profile data that is not my own$/ do
-	page.should_not have_content @profile_data_2[:url]
+	page.should_not have_content @profile_data_2[:last_name]
 end
 
 Then /^I should see published profile data$/ do
-	page.should have_content @published_profile_data[:url]
+	page.should have_content @published_profile_data[:last_name]
 end
 
-Then /^I should see a new profile form$/ do
-	page.should have_content 'Public email'
+Then /^I should see (?:a new|an edit) profile form$/ do
+	within('.check_box') do
+		page.should have_content @predefined_category.name
+	end
 end
 
 Then /^the new profile should be saved$/ do

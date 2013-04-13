@@ -1,0 +1,21 @@
+- @page_title = "#{company_name} - Profile administration"
+.profile_admin
+	#top_bar
+		.buttons
+			= admin_profile_list_link
+		= render partial: 'stats'
+	.content
+		#new_profile
+			= nested_form_for @profile do |f|
+				= f.error_messages
+				= hidden_field_tag 'admin', true
+				.categories
+					= f.label :category, "Category"
+					%br
+					= profile_categories_hidden_field_tag(f)
+					- profile_category_choices(@profile).each do |category|
+						.check_box
+							= profile_categories_check_box_tag @profile, category, f
+							= profile_categories_check_box_label category
+				.buttons
+					= f.submit 'Create profile', disable_with: 'Creating...'

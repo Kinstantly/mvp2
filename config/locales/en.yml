@@ -15,6 +15,8 @@ en:
       profile_create_error: 'There was a problem creating the profile.'
       profile_updated: 'The profile was saved.'
       profile_update_error: 'There was a problem saving the profile.'
+      profile_destroyed: 'The profile was destroyed!'
+      profile_destroy_error: 'The profile was not removed.  Perhaps it is owned by a user.'
       invitation_sent: 'The invitation was sent.'
       invitation_error: 'There was a problem sending the invitation.'
   profile_mailer:
@@ -41,6 +43,10 @@ en:
       custom_specialty_names:
         too_long: '^The name of each additional specialty must have no more than %{max} characters.'
       claimed: 'is already claimed. You cannot send an invitation.'
+  views:
+    profile:
+      edit:
+        add_text_field: 'Hit ENTER to add a new field'
   rating:
     score_1: 'Really did not like'
     score_2: 'Did not like'

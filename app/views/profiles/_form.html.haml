@@ -44,7 +44,7 @@
 				= lf.text_field :address2, placeholder: address2_prompt, title: address2_prompt
 			.city_state
 				= lf.label :city, "City"
-				= lf.autocomplete_field :city, autocomplete_location_city_profiles_path
+				= autocomplete_form_field :city, nil, autocomplete_location_city_profiles_path, form_builder: lf
 				= lf.label :region, "State"
 				= lf.subregion_select :region, country, include_blank: '--'
 			.postal_code
@@ -62,13 +62,13 @@
 		= f.link_to_add 'Fill in another location', :locations
 	.expertise_profile
 		.categories
-			= f.label :category, "Category", class: 'required'
+			= f.label :category, "Category"
 			%br
 			= profile_categories_hidden_field_tag(f)
 			- profile_category_choices(profile).each do |category|
 				.check_box
 					= profile_categories_check_box_tag(profile, category, f)
-					= category.name
+					= profile_categories_check_box_label category
 		.services
 			= f.label :services, "Services"
 			%br
@@ -109,7 +109,7 @@
 			- AgeRange.all.sort_by(&:sort_index).each do |age_range|
 				.check_box
 					= profile_age_ranges_check_box_tag(profile, age_range, f)
-					= age_range.name
+					= profile_age_ranges_check_box_label age_range
 	.professional_profile
 		.accepting_new_clients
 			.check_box
@@ -184,12 +184,13 @@
 				= f.label :service_area, "Service area"
 				%span.note.text_area= preserve "\nExample:\nEast Bay\nSan Francisco\nNorth Peninsula"
 			= f.text_area :service_area, size: '30x5'
+	-# Mass assignment is not allowed on admin attributes, so use simple params and tags.
 	- if current_user.admin?
 		.admin_options
 			#lead_generator
 				.label_area
 					= label_tag :lead_generator, 'Lead generator'
-				= autocomplete_field_tag :lead_generator, @profile.lead_generator, autocomplete_profile_lead_generator_profiles_path
+				= autocomplete_form_field :lead_generator, @profile.lead_generator, autocomplete_profile_lead_generator_profiles_path
 			#admin_notes
 				.label_area
 					= label_tag :admin_notes, 'Admin notes'
@@ -280,14 +281,20 @@
 	
 	# Add extra text input tags for custom services.
 	profile_custom_services_i = #{@profile_custom_services_i}
-	$('#add_custom_services_text_field').click (e) ->
+	add_custom_services_text_field = (e) ->
 		e.preventDefault()
-		$('.custom_services').append '<div class="text_field">'+'#{escape_javascript @profile_custom_services_text_field_template}'.replace('INDEX', String(++profile_custom_services_i))+'</div>'
-		$('.custom_services input:last').focus()
+		$('.custom_services').append '<span id="custom_services_field_prompt" class="note">#{t "views.profile.edit.add_text_field"}</span>' if $('#custom_services_field_prompt').length == 0
+		$('#custom_services_field_prompt').before '<div class="text_field">'+'#{escape_javascript @profile_custom_services_text_field_template}'.replace('INDEX', String(++profile_custom_services_i))+'</div>'
+		$('.custom_services input:last').focus().keydown (e) ->
+			add_custom_services_text_field e if e.which == 13 # carriage return
+	$('#add_custom_services_text_field').click add_custom_services_text_field
 	
 	# Add extra text input tags for custom specialties.
 	profile_custom_specialties_i = #{@profile_custom_specialties_i}
-	$('#add_custom_specialties_text_field').click (e) ->
+	add_custom_specialties_text_field = (e) ->
 		e.preventDefault()
-		$('.custom_specialties').append '<div class="text_field">'+'#{escape_javascript @profile_custom_specialties_text_field_template}'.replace('INDEX', String(++profile_custom_specialties_i))+'</div>'
-		$('.custom_specialties input:last').focus()
+		$('.custom_specialties').append '<span id="custom_specialties_field_prompt" class="note">#{t "views.profile.edit.add_text_field"}</span>' if $('#custom_specialties_field_prompt').length == 0
+		$('#custom_specialties_field_prompt').before '<div class="text_field">'+'#{escape_javascript @profile_custom_specialties_text_field_template}'.replace('INDEX', String(++profile_custom_specialties_i))+'</div>'
+		$('.custom_specialties input:last').focus().keydown (e) ->
+			add_custom_specialties_text_field e if e.which == 13 # carriage return
+	$('#add_custom_specialties_text_field').click add_custom_specialties_text_field

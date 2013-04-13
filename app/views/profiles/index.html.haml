@@ -3,16 +3,9 @@
 		.buttons
 			= admin_create_profile_link
 			= admin_change_profile_list_link
-		#info
-			- if can? :manage, Profile
-				%strong= 'Profile counts'
-				&nbsp;
-				= profile_total_count
-				&nbsp;
-				= profile_claimed_count
-				&nbsp;
-				= profile_unclaimed_count
+		= render partial: 'stats'
 	.profile_list{align: 'center'}
+		= paginate @profiles
 		%table
 			%thead
 				%tr
@@ -50,7 +43,7 @@
 					%th.large Video consultation hours
 					%th Service area
 			%tbody
-				- @profiles.sort{|a, b| (a.last_name || '').casecmp (b.last_name || '')}.each do |p|
+				- @profiles.each do |p|
 					%tr
 						%td= profile_list_name_link p
 						%td= p.try(:company_name)
@@ -86,3 +79,4 @@
 						%td.text_area= preserve p.try(:phone_hours)
 						%td.text_area= preserve p.try(:video_hours)
 						%td.text_area= preserve p.try(:service_area)
+		= paginate @profiles

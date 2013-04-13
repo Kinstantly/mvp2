@@ -49,6 +49,9 @@ div.view_profile {
 		a {
 			margin: 0 1em 0 1em;
 		}
+		#destroy_profile {
+			float: right;
+		}
 	}
 	.rating_info {
 		> div, form {
@@ -74,9 +77,6 @@ div.view_profile {
 .edit_profile, .edit_account {
 	margin: $profile_margin;
 	form {
-		label.required {
-			@include required-field-label-style;
-		}
 		.account_areas, .profile_areas, .location_contact_profile {
 			> div {
 				@include profile-areas-div-style;
@@ -113,6 +113,9 @@ div.view_profile {
 				.text_field {
 					@include check-box-style;
 				}
+				span.note {
+					margin-left: 1em;
+				}
 			}
 			.specialties .notice {
 				float: left;
@@ -133,9 +136,6 @@ div.view_profile {
 				@include required-field-label-style;
 			}
 		}
-		.field_with_errors {
-			background-color: #ffb3b3;
-		}
 	}
 }
 
@@ -144,7 +144,7 @@ div.view_profile {
 	@include profile-areas-div-style;
 }
 
-div.profile_index {
+.profile_index, .profile_admin {
 	margin: $profile_margin;
 	#top_bar {
 		margin-bottom: 1em;
@@ -154,9 +154,12 @@ div.profile_index {
 		a {
 			margin: 0 1em 0 1em;
 		}
-		#info {
+		#profile_stats {
 			float: right;
 		}
+	}
+	.pagination {
+		margin: 0.5em 1em 0.5em 1em;
 	}
 	.profile_list {
 		table {
@@ -167,6 +170,19 @@ div.profile_index {
 			}
 			th.large {
 				min-width: 16em;
+			}
+		}
+	}
+	.content {
+		> div {
+			@include profile-areas-div-style;
+		}
+		form {
+			.check_box {
+				@include check-box-style;
+			}
+			.buttons {
+				clear: left;
 			}
 		}
 	}
@@ -246,4 +262,13 @@ span.note {
 
 a.emphasized {
 	font-style: italic;
+}
+
+form {
+	label.required {
+		@include required-field-label-style;
+	}
+	.field_with_errors {
+		background-color: #ffb3b3;
+	}
 }

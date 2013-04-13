@@ -7,6 +7,7 @@
 		= javascript_include_tag "application"
 		= csrf_meta_tags
 		= yield :head
+		= render partial: 'layouts/tracking'
 	%body
 		%a{name: 'top'}
 		.top_nav
@@ -19,8 +20,7 @@
 			%span.nav_el= view_user_profile_link
 			%span.nav_el= account_settings_link
 			%span.nav_el= sign_in_out_link
-			%span.nav_el= admin_create_profile_link
-			%span.nav_el= admin_profile_list_link
+			%span.nav_el= admin_profiles_link
 			%span.nav_el= admin_user_list_link
 			= render partial: 'profiles/search_form'
 			.flash_messages

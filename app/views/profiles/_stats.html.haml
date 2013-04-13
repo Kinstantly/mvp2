@@ -1,0 +1,9 @@
+#profile_stats
+	- if can? :manage, Profile
+		%strong= 'Profile counts'
+		&nbsp;
+		= profile_total_count
+		&nbsp;
+		= profile_claimed_count
+		&nbsp;
+		= profile_unclaimed_count

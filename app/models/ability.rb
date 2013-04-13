@@ -4,8 +4,8 @@ class Ability
 	def initialize(user)
 		user ||= User.new # guest user (not logged in)
 		
-		# The public and crawlers can view published profiles.
-		alias_action :read, :link_index, to: :view
+		# The public and crawlers can view published profiles (but not the index because it shows full profiles).
+		alias_action :show, :link_index, to: :view
 		can :view, Profile, is_published: true
 		
 		# Any confirmed user can rate a published profile that is not their own.
@@ -22,9 +22,17 @@ class Ability
 			can :show, User, id: user.id
 		end
 		
-		can :manage, Profile if user.profile_editor?
+		if user.profile_editor?
+			can :manage, Profile
+			cannot :destroy, Profile
+		end
 		
-		can :manage, :all if user.admin?
+		if user.admin?
+			can :any, :admin
+			can :manage, :all
+			cannot :destroy, Profile
+			can :destroy, Profile, user: nil
+		end
 		
 		# Define abilities for the passed in user here. For example:
 		#

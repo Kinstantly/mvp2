@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
 	protect_from_forgery
 	
+	http_basic_authenticate_with name: ENV['BASIC_AUTH_NAME'], password: ENV['BASIC_AUTH_PASSWORD'] if ENV['BASIC_AUTH_NAME']
+	
 	# Store referrer for use after sign-in or sign-up if so directed.
 	before_filter :store_referrer, only: :new
 	

@@ -58,7 +58,7 @@ module ProfilesHelper
 	end
 	
 	def profile_list_view_link(profile, name)
-		if can?(:read, profile)
+		if can?(:view, profile)
 			html_options = name.blank? ? {class: 'emphasized'} : {}
 			link_to(html_escape(name.presence || 'Click to view'), profile_path(profile), html_options).html_safe
 		else
@@ -136,6 +136,10 @@ module ProfilesHelper
 		check_box_tag profile_categories_tag_name(form_builder), category.id, profile.categories.include?(category), id: profile_categories_id(category.id)
 	end
 	
+	def profile_categories_check_box_label(category)
+		label_tag profile_categories_id(category.id), category.name
+	end
+	
 	def profile_display_categories(profile=current_user.try(:profile))
 		display_profile_item_names profile.try(:categories)
 	end
@@ -179,8 +183,9 @@ module ProfilesHelper
 	end
 	
 	def profile_services_check_box(profile, id, name, checked, wrapper_class, form_builder=nil)
+		tag_id = profile_services_id(id)
 		content_tag :div, class: wrapper_class do
-			check_box_tag(profile_services_tag_name(form_builder), id, checked, id: profile_services_id(id)) + " #{name}"
+			check_box_tag(profile_services_tag_name(form_builder), id, checked, id: tag_id) + label_tag(tag_id, name)
 		end
 	end
 	
@@ -213,7 +218,7 @@ module ProfilesHelper
 	end
 	
 	def profile_custom_services_autocomplete_field_tag(profile, value, suffix, form_builder=nil)
-		autocomplete_field_tag profile_custom_services_tag_name(form_builder), value, autocomplete_service_name_profiles_path, id: profile_custom_services_id(suffix)
+		autocomplete_form_field profile_custom_services_tag_name(form_builder), value, autocomplete_service_name_profiles_path, id: profile_custom_services_id(suffix)
 	end
 	
 	# Specialties helpers
@@ -235,8 +240,9 @@ module ProfilesHelper
 	end
 	
 	def profile_specialties_check_box(profile, id, name, checked, wrapper_class, form_builder=nil)
+		tag_id = profile_specialties_id(id)
 		content_tag :div, class: wrapper_class do
-			check_box_tag(profile_specialties_tag_name(form_builder), id, checked, id: profile_specialties_id(id)) + " #{name}"
+			check_box_tag(profile_specialties_tag_name(form_builder), id, checked, id: tag_id) + label_tag(tag_id, name)
 		end
 	end
 	
@@ -269,7 +275,7 @@ module ProfilesHelper
 	end
 	
 	def profile_custom_specialties_autocomplete_field_tag(profile, value, suffix, form_builder=nil)
-		autocomplete_field_tag profile_custom_specialties_tag_name(form_builder), value, autocomplete_specialty_name_profiles_path, id: profile_custom_specialties_id(suffix)
+		autocomplete_form_field profile_custom_specialties_tag_name(form_builder), value, autocomplete_specialty_name_profiles_path, id: profile_custom_specialties_id(suffix)
 	end
 	
 	# Age range helpers
@@ -288,6 +294,10 @@ module ProfilesHelper
 	
 	def profile_age_ranges_check_box_tag(profile, age_range, form_builder=nil)
 		check_box_tag profile_age_ranges_tag_name(form_builder), age_range.id, profile.age_ranges.include?(age_range), id: profile_age_ranges_id(age_range.name)
+	end
+	
+	def profile_age_ranges_check_box_label(age_range)
+		label_tag profile_age_ranges_id(age_range.name), age_range.name
 	end
 	
 	# Consultations and visits
