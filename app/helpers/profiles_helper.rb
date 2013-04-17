@@ -1,5 +1,6 @@
 module ProfilesHelper
-	def display_profile_item_names(items, n=items.try(:length))
+	def display_profile_item_names(items, n=nil)
+		n ||= items.try(:length)
 		items.collect(&:name).sort{|a, b| a.casecmp b}.slice(0, n).join(', ') if items.present?
 	end
 	
@@ -24,9 +25,23 @@ module ProfilesHelper
 		age_ranges.sort_by(&:sort_index).map(&:name).join(', ')
 	end
 	
-	def profile_website(profile=current_user.try(:profile))
+	def profile_linked_website(profile=current_user.try(:profile))
 		if (url = profile.try(:url)).present?
-			auto_link "http://#{url.strip.gsub(/http:\/\//i, '')}", link: :urls
+			auto_link "http://#{url.strip.gsub(/http:\/\//i, '')}", link: :urls, html: { target: '_blank' } do |body|
+				body.sub(/^http:\/\//, '')
+			end
+		end
+	end
+	
+	def profile_linked_email(profile=current_user.try(:profile))
+		if (email = profile.try(:email)).present?
+			auto_link email.strip, link: :email_addresses
+		end
+	end
+	
+	def location_linked_phone(location=current_user.try(:profile).try(:locations).try(:first))
+		if (phone = location.try(:phone)).present? && (parsed_phone = Phonie::Phone.parse(phone))
+			link_to location.display_phone, parsed_phone.format('tel:+%c%a%f%l')
 		end
 	end
 		
@@ -109,6 +124,10 @@ module ProfilesHelper
 	def profile_unclaimed_count
 		"Unclaimed: #{Profile.where(user_id: nil).count}"
 	end
+	
+	def serialize_profile_text(text)
+		text.gsub(/\s*\n+\s*/, ', ')
+	end
 
 	# Categories helpers
 	
@@ -140,8 +159,8 @@ module ProfilesHelper
 		label_tag profile_categories_id(category.id), category.name
 	end
 	
-	def profile_display_categories(profile=current_user.try(:profile))
-		display_profile_item_names profile.try(:categories)
+	def profile_display_categories(profile=current_user.try(:profile), n=nil)
+		display_profile_item_names profile.try(:categories), n
 	end
 	
 	def profile_custom_categories_id(s)
@@ -197,8 +216,8 @@ module ProfilesHelper
 		cache
 	end
 	
-	def profile_display_services(profile=current_user.try(:profile))
-		display_profile_item_names profile.try(:services)
+	def profile_display_services(profile=current_user.try(:profile), n=nil)
+		display_profile_item_names profile.try(:services), n
 	end
 	
 	def profile_custom_services_id(s)
@@ -254,8 +273,8 @@ module ProfilesHelper
 		cache
 	end
 		
-	def profile_display_specialties(profile=current_user.try(:profile))
-		display_profile_item_names profile.try(:specialties)
+	def profile_display_specialties(profile=current_user.try(:profile), n=nil)
+		display_profile_item_names profile.try(:specialties), n
 	end
 	
 	def profile_custom_specialties_id(s)

@@ -1,4 +1,7 @@
 class ProfilesController < ApplicationController
+	
+	layout false, only: :showx # temp: for new design.
+	
 	before_filter :authenticate_user!, except: [:index, :show, :link_index, :search]
 	
 	# Side effect: loads @profiles or @profile as appropriate.
@@ -32,6 +35,11 @@ class ProfilesController < ApplicationController
 	
 	def link_index
 		@profiles = @profiles.page params[:page]
+	end
+	
+	# temp: for new design.
+	def showx
+		render handlers: [:erb]
 	end
 	
 	def create

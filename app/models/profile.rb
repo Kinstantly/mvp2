@@ -56,7 +56,7 @@ class Profile < ActiveRecord::Base
 			:email, :company_name, :url, 
 			:headline, :education, :experience, :certifications, :awards, 
 			:languages, :insurance_accepted, :pricing, :availability, :service_area, 
-			:office_hours, :phone_hours, :video_hours, :specialties_description
+			:specialties_description
 		
 		# Stored for highlighting.
 		text :summary, stored: true

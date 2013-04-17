@@ -54,7 +54,7 @@ div.view_profile {
 		}
 	}
 	.rating_info {
-		> div, form {
+		> div, > div > div, form {
 			display: inline-block;
 		}
 		> div {

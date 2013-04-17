@@ -87,7 +87,7 @@
 		-->
 
 		<div id="findProvider" class="aside">
-			<%= form_tag search_providers_path, method: :get do %>
+			<%= form_tag search_providers_path, method: :get, id: 'providerSearch' do %>
 			<h3>Find a provider</h3>
 				<%= text_field_tag :query, @search_query, id: 'provider_search_query', autocomplete: 'off', placeholder: 'doctor, tutor, therapist...' %>
 			  <div class="select-wrapper">

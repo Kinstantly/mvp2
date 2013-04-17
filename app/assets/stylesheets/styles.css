@@ -84,11 +84,11 @@ audio:not([controls]) {
 
 @font-face {
     font-family: 'museo_slab500';
-    src: url('assets/fonts/museo_slab_500-webfont.eot');
-    src: url('assets/fonts/museo_slab_500-webfont.eot?#iefix') format('embedded-opentype'),
-         url('assets/fonts/museo_slab_500-webfont.woff') format('woff'),
-         url('assets/fonts/museo_slab_500-webfont.ttf') format('truetype'),
-         url('assets/fonts/museo_slab_500-webfont.svg#museo_slab500') format('svg');
+    src: url('fonts/museo_slab_500-webfont.eot');
+    src: url('fonts/museo_slab_500-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/museo_slab_500-webfont.woff') format('woff'),
+         url('fonts/museo_slab_500-webfont.ttf') format('truetype'),
+         url('fonts/museo_slab_500-webfont.svg#museo_slab500') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -123,7 +123,7 @@ a:hover {
 #tagline {
 	float: left;
 	text-indent: -999em;
-	background: url('images/tagline.gif') no-repeat;
+	background: url('tagline.gif') no-repeat;
 	width: 294px;
 	height: 17px;
 	margin: 32px 0 0 26px;
@@ -136,7 +136,7 @@ a:hover {
 }
 #branding h1 a {
 	display: block;
-	background: transparent url('images/kinstantly-logo.png');
+	background: transparent url('kinstantly-logo.png');
 	text-indent: -999em;
 	margin: 0;
 	width: 196px;
@@ -153,7 +153,7 @@ a:hover {
 	margin-left: 35px;
 	font-size: 0.9375em;
 }
-#access ul li#about:after {
+#access ul li#contact:before, #access ul li#signout:before {
 	content: '|';
 	font-size: 0.9375em;
 	color: #BDBCBD;	
@@ -207,7 +207,7 @@ a:hover {
 	margin-right: 8px;
 }
 #findProvider #submit {
-	background: url('images/search.png') no-repeat center 0px;
+	background: url('search.png') no-repeat center 0px;
 	text-indent: -999em;
 	width: 36px;
 	height: 36px;
@@ -222,7 +222,7 @@ a:hover {
 }
 #findProvider .select-wrapper {   
     -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;
-    background: url('images/arrow.png') no-repeat 207px center #fdf0f2;
+    background: url('arrow.png') no-repeat 207px center #fdf0f2;
     border-top: 1px solid #514447;
 	border-left: 1px solid #514447;
 	border-bottom: 1px solid #a89b9e;
@@ -352,28 +352,31 @@ a:hover {
 	line-height: 19px;
 }
 .reviews .star {
-	background: url('images/star.gif') 0px 0px no-repeat;
+	background: url('star.gif') 0px 0px no-repeat;
 	width: 17px;
 	height: 17px;
 	float: left;
 	display: block;
 }
 .reviewed-5-star .star1, .reviewed-5-star .star2, .reviewed-5-star .star3, .reviewed-5-star .star4, .reviewed-5-star .star5 {
-	background: url('images/star.gif') 0px -17px; 
+	background: url('star.gif') 0px -17px; 
 }
 .reviewed-4-star .star1, .reviewed-4-star .star2, .reviewed-4-star .star3, .reviewed-4-star .star4 {
-	background: url('images/star.gif') 0px -17px; 
+	background: url('star.gif') 0px -17px; 
 }
 .reviewed-3-star .star1, .reviewed-3-star .star2, .reviewed-3-star .star3 {
-	background: url('images/star.gif') 0px -17px; 
+	background: url('star.gif') 0px -17px; 
 }
 .reviewed-2-star .star1, .reviewed-2-star .star2 {
-	background: url('images/star.gif') 0px -17px; 
+	background: url('star.gif') 0px -17px; 
 }
 .reviewed-1-star .star1 {
-	background: url('images/star.gif') 0px -17px; 
+	background: url('star.gif') 0px -17px; 
 }
-.reviews .review-num {
+.provider_rating form {
+	float: left;
+}
+.reviews .review-num, .provider_rating .rating-num {
 	font-size: 13px;
 	color: #807f7f;
 	padding-top: 3px;
@@ -381,14 +384,17 @@ a:hover {
 	float: left;
 	margin-left: 4px;
 }
-.rate {
+.rate, .rate_provider_form {
 	padding-top: 8px;
 }
 .rate .star:hover {
-	background: url('images/star.gif') 0px -17px no-repeat;
+	background: url('star.gif') 0px -17px no-repeat;
 	cursor: pointer;
 }
-.rate .rate-this {
+.rate_provider_form form {
+	float: left;
+}
+.rate .rate-this, .rate_provider_form .rate-this {
 	float: left;
 	font-size: 13px;
 	font-weight: bold;
@@ -411,15 +417,15 @@ a:hover {
 	float: left;
 }
 .contact-toolbar li#email a {
-	background: url('images/contact-icons.gif') 0px 0px no-repeat;
+	background: url('contact-icons.gif') 0px 0px no-repeat;
 }
 .contact-toolbar li#call a {
-	background: url('images/contact-icons.gif') -25px 0px no-repeat;
+	background: url('contact-icons.gif') -25px 0px no-repeat;
 	width: 19px;
 	margin: 0px 3px 0px 5px;
 }
 .contact-toolbar li#url a {
-	background: url('images/contact-icons.gif') -47px 0px no-repeat;
+	background: url('contact-icons.gif') -47px 0px no-repeat;
 	width: 23px;
 }
 #appointment {
@@ -431,10 +437,10 @@ a:hover {
 	clear: left;
 	width: 170px;
 	height: 33px;
-	background: url('images/make-appointment.gif') 0px 0px;
+	background: url('make-appointment.gif') 0px 0px;
 }
 #appointment a:hover {
-	background: url('images/make-appointment.gif') 0px -33px;
+	background: url('make-appointment.gif') 0px -33px;
 }
 
 /*  Profile summary -------------------------------------------------------------------------- */
@@ -477,7 +483,7 @@ table.info th {
 	padding-right: 16px;
 	font-size: 14px;
 	width: 176px;
-	vertical-align: middle;
+	vertical-align: top;
 }
 table.info th span {
 	font-weight: bold;
@@ -485,6 +491,12 @@ table.info th span {
 table.info td {
 	width: 254px;
 	vertical-align: middle;
+}
+table.info .text-area th {
+	vertical-align: top;
+}
+table.info .text-area td {
+	white-space: pre-line;
 }
 
 /*  Reviews -------------------------------------------------------------------------- */
@@ -536,13 +548,13 @@ table.info td {
 /*  Editing -------------------------------------------------------------------------- */
 
 .editable {
-	background: url('images/edit.png') 0px 0px no-repeat;
+	background: url('edit.png') 0px 0px no-repeat;
 	background-size: 12px 15px;
 	padding-left: 18px;
 	margin-left: -18px;
 }
 .editable:hover {
-	background: url('images/edit-over.png') 0px 0px no-repeat;
+	background: url('edit-over.png') 0px 0px no-repeat;
 	cursor: pointer;
 }
 div.popover {
@@ -586,7 +598,7 @@ div.popover label {
 	font-size: 14px;
 }
 div.popover #save {
-	background: url('images/save-button.gif') 0px 0px;
+	background: url('save-button.gif') 0px 0px;
 	width: 53px;
 	height: 26px;
 	text-indent: -999em;
@@ -594,11 +606,11 @@ div.popover #save {
 	margin-right: 3px;
 }
 div.popover #save:hover {
-	background: url('images/save-button.gif') 0px -26px;
+	background: url('save-button.gif') 0px -26px;
 	cursor: pointer;
 }
 div.popover a.cancel {
-	background: url('images/cancel-button.gif') 0px 0px; 
+	background: url('cancel-button.gif') 0px 0px; 
 	width: 61px;
 	height: 26px;
 	text-indent: -999em; 
@@ -606,7 +618,7 @@ div.popover a.cancel {
 	float: left;
 }
 div.popover a.cancel:hover {
-	background: url('images/cancel-button.gif') 0px -26px; 
+	background: url('cancel-button.gif') 0px -26px; 
 }
 
 /*  Footer -------------------------------------------------------------------------- */
@@ -652,7 +664,7 @@ div.popover a.cancel:hover {
 	top: 0px;
 	right: 0px;
 	width: 50%;
-	background: url('images/line-complete.gif');
+	background: url('line-complete.gif');
 	height: 154px;
 	z-index: -1 !important;
 }
