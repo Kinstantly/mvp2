@@ -34,7 +34,6 @@ Mvp2::Application.routes.draw do
 			get 'new_invitation'
 			put 'send_invitation'
 			post 'rate'
-			get 'showx'
 		end
 		collection do
 			get :admin

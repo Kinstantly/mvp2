@@ -171,10 +171,10 @@
 						<!-- ><p>Pediatrician. Autism specturm, Developmental delay, Integrated functional medicine for kids, Evidence based complementary and alternative healing modalities.</p> -->
 						<p>
 							<% if @profile.services.present? %>
-								<%= profile_display_services(@profile, 3).titlecase %>.
+								<%= profile_display_services(@profile, 3) %>.
 							<% end %>
 							<% if @profile.specialties.present? %>
-								<%= profile_display_specialties(@profile, 3).titlecase %>.
+								<%= profile_display_specialties(@profile, 3) %>.
 							<% end %>
 						</p>
 						</div>
