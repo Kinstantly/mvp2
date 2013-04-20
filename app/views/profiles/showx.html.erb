@@ -15,7 +15,7 @@
 	<%= stylesheet_link_tag "jquery.rating", media: "screen, handheld, print" %>
 	<%= favicon_link_tag '/favicon.ico?v=1' %>
 	<!-- <link rel="icon" href="favicon.ico" type="image/x-icon" /> -->
-	<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 	<title><%= @profile.display_name_or_company %> | Kinstantly | When parenting challenges can't wait.</title>
 	
 	<!-- JavaScript -->
@@ -273,5 +273,13 @@
 &copy; Copyright 2013 Kinstantly, Inc. All Rights Reserved.</p>
 		</footer>
 		<div id="line"></div>
+	<script type='text/javascript'>
+		//<![CDATA[
+		window.onload = function() {
+			window.rating_score_reset();
+			window.rate_reset();
+		};
+		//]]>
+	</script>
 </body>
 </html>

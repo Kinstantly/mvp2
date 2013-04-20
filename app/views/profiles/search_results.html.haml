@@ -35,6 +35,8 @@
 							.consultations.right= search_result_consultations_visits profile
 
 :coffeescript
+	window.onload = ->
+		window.rating_score_reset()
 	if Modernizr.geolocation
 		$('#get_location_button_area').css('display', 'inline-block')
 	$('#search_city').focusin ->

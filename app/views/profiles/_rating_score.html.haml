@@ -12,4 +12,4 @@
 
 :coffeescript
 	$("form##{form_id} input.#{tag_class}").rating().rating('readOnly', true)
-	window.rating_score_reset = -> $("input.#{tag_class}").rating().rating('readOnly', true)
+	window.rating_score_reset = -> $("form input.#{tag_class}").rating().rating('readOnly', true)
