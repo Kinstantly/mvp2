@@ -13,6 +13,7 @@ gem 'json', '>= 1.7.7'
 gem 'pg'
 
 gem 'haml'
+gem 'html2haml'
 
 # Get error message helpers for forms.
 gem 'dynamic_form'
@@ -35,7 +36,8 @@ end
 # Has jquery, jquery_ujs, and jquery-ui.
 gem 'jquery-rails'
 
-gem 'coffee-filter'
+# HAML 4 includes coffeescript support.
+# gem 'coffee-filter'
 
 gem 'ruby-prof', :git => 'git://github.com/wycats/ruby-prof.git'
 

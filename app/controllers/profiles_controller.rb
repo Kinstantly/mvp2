@@ -37,13 +37,15 @@ class ProfilesController < ApplicationController
 	
 	# for merging new design
 	def show
-		case params[:h]
-		when 'haml'
-			render handlers: [:haml]
+		case params[:view]
+		when 'plain'
+			render 'show_plain'
 		when 'erb'
 			render handlers: [:erb], layout: false
+		when 'haml'
+			render handlers: [:haml], layout: false
 		else
-			render handlers: [:erb], layout: false
+			render handlers: [:haml], layout: false
 		end
 	end
 	
