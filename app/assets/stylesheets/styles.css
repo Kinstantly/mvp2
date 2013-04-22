@@ -286,6 +286,10 @@ a:hover {
 	cursor: pointer;
 }
 
+#findProvider select option {
+	font-size: 150%;
+}
+
 /*  Content -------------------------------------------------------------------------- */
 
 #content {

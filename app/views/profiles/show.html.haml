@@ -3,21 +3,19 @@
 /[if lt IE 7] <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en">
 /[if IE 7] <html class="no-js lt-ie9 lt-ie8" lang="en">
 /[if IE 8] <html class="no-js lt-ie9" lang="en">
-/ [if gt IE 8]><!
+<!--[if gt IE 8]><!-->
 %html.no-js{:lang => "en"}
-	/ <![endif]
+	<!--<![endif]-->
 	%head
 		%meta{:charset => "utf-8"}
 		%meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}
 		%meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
 		%meta{:content => "YOUR INFO HERE", :name => "keywords"}
 		%meta{:content => "YOUR INFO HERE", :name => "description"}
-		/ <link rel="stylesheet" href="styles.css?ver=1.0" type="text/css" />
 		= stylesheet_link_tag "styles", media: "screen, handheld, print"
 		= stylesheet_link_tag "jquery-ui-lightness", media: "screen, handheld, print"
 		= stylesheet_link_tag "jquery.rating", media: "screen, handheld, print"
 		= favicon_link_tag '/favicon.ico?v=1'
-		/ <link rel="icon" href="favicon.ico" type="image/x-icon" />
 		%link{:href => "/apple-touch-icon.png", :rel => "apple-touch-icon"}/
 		%title
 			= @profile.display_name_or_company
@@ -26,43 +24,8 @@
 		/[if IE] 
 		/[if lt IE 9]
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		/
-			<script src="assets/js/respond.min.js"></script>
-			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-			<script src="assets/js/modernizr-2.5.3.min.js"></script>
 		= javascript_include_tag "application"
 		= csrf_meta_tags
-		:javascript
-			$(function() {
-			
-					// Get select elements
-					var selects = $('.select-wrapper > select');
-					if ( !selects.length ) return;
-			
-					// Add change event to selects, and trigger it on load, so the span is up to date
-					selects.on('change', function() {
-			
-							// Assign the jquery object to a variable 
-							var select = $(this);
-			
-							// Get placeholder element
-							var placeholder = select.prev('.select-text');
-							if ( !placeholder.length ) return;
-			
-							// Get the text from the selected option
-							var selected_text = select.children('option:selected').text();
-			
-							// Update the placeholder text
-							placeholder.html(selected_text);
-			
-					}).change();
-			
-					// Not proud of this, workaround for Firefox that doesn't trigger the change event
-					// if the user is using the keyboard to navigate through the options
-					selects.on('keypress', function() {
-							selects.trigger('change');
-					});
-			});
 	%body.interior
 		%header#branding.clearfix
 			.container
@@ -79,20 +42,6 @@
 			#masthead.clearfix
 				%h1= home_link
 				#findProvider.aside
-					/
-						<form id="providerSearch" method="post" action="">
-						<input type="text" name="provider" id="provider" autocomplete="off" value="doctor, tutor, therapist..." onfocus="this.value=''">
-						<div class="select-wrapper">
-						<span class="select-text"></span>
-						<select>
-						<option selected="selected">San Francisco, CA</option>
-						<option>Another Place, CA</option>
-						<option>Anywhere</option>
-						</select>
-						</div>
-						<input type="submit" name="submit" value="sign in" class="button submit green" id="submit">
-						<p class="small">Provider? <a href="#">Join us</a></p>
-						</form>
 					= form_tag search_providers_path, method: :get, id: 'providerSearch' do
 						= text_field_tag :query, @search_query, id: 'provider_search_query', autocomplete: 'off', placeholder: 'doctor, tutor, therapist...'
 						.select-wrapper
@@ -104,20 +53,10 @@
 								Provider? #{provider_sign_up_link 'Join us'}
 		%article#content
 			%header#content-header.clearfix{:itemscope => "", :itemtype => "http://schema.org/Person"}
-				/ <img src="images/profile-photo.jpg" alt="" width="168" height="168" border="0" class="profile-photo" itemprop="image" />
 				= image_tag 'profile-photo.jpg', alt: 'Photo of Sophia M. Hurd', width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
 				.profile
 					%h1{:itemprop => "name"}= @profile.display_name_or_company
 					= render partial: 'profiles/rating_score', locals: {profile: @profile}
-					/
-						<div class="reviews reviewed-4-star">
-						<div class="star star1"></div>
-						<div class="star star2"></div>
-						<div class="star star3"></div>
-						<div class="star star4"></div>
-						<div class="star star5"></div>
-						<div class="review-num">2 reviews</div>
-						</div>
 					%span.title{:itemprop => "jobTitle"}= @profile.headline
 					- if @profile.company_name.present? && @profile.display_name.present?
 						%span.title{:itemprop => "affiliation"}= @profile.company_name
@@ -127,16 +66,15 @@
 					- if @profile.email.present?
 						%span.location{:itemprop => "email"}
 							email: #{profile_linked_email @profile}
-					= render partial: 'profiles/rate', locals: {profile: @profile}
-					/
-						<div class="rate reviews">
-						<div class="rate-this">Rate Sophia M. Hurd:</div>
-						<div class="star star1"></div>
-						<div class="star star2"></div>
-						<div class="star star3"></div>
-						<div class="star star4"></div>
-						<div class="star star5"></div>
-						</div>
+					- if can? :rate, @profile
+						= render partial: 'profiles/rate', locals: {profile: @profile}
+					- elsif !user_signed_in?
+						.rate
+							.rate-this
+								= link_to 'Sign in', member_sign_in_return_path
+								or
+								= link_to 'sign up', member_sign_up_return_path
+								= "to rate and review #{@profile.display_name_or_company}"
 				%ul.contact-toolbar
 					%li#email= profile_linked_email @profile
 					%li#call= location_linked_phone @profile.locations.first
@@ -225,16 +163,28 @@
 						%p We've been extremely pleased with the practice as a whole and with our pediatrician, Dr Hurd, who figured out that our baby's supposedly drastic weight loss was due to CPMC's mis-converting from grams to pounds and ounces.  Phone calls get answered by a human being (although I'm sometimes asked to hold briefly), and emails and calls to the on-duty nurses are returned quickly.
 		%footer#footer
 			%p#bottom
-				%a{:href => "#"} About us
+				= about_link
 				|
-				%a{:href => "#"} Contact us
+				= contact_link
 				|
-				%a{:href => "#"} Terms of use
-				%br/
+				= terms_link
+				%br
 				\&copy; Copyright 2013 Kinstantly, Inc. All Rights Reserved.
 		#line
-		:javascript
-			window.onload = function() {
-				window.rating_score_reset();
-				window.rate_reset();
-			};
+		:coffeescript
+			window.onload = ->
+				window.rating_score_reset()
+				window.rate_reset()
+		:coffeescript
+			# Add change event to selects, and trigger it on load, so the span is up to date
+			selects = $('.select-wrapper > select').on('change', ->
+				# Assign the jquery object to a variable 
+				select = $(this)
+				# Get placeholder element
+				placeholder = select.prev('.select-text')
+				# Use the text from the selected option to update the placeholder text
+				placeholder.html(select.children('option:selected').text()) if placeholder.length
+			).change()
+			# Workaround for Firefox which doesn't trigger the change event
+			# if the user is using the keyboard to navigate through the options
+			selects.on('keypress', -> selects.trigger('change'))
