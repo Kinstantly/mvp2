@@ -1,7 +1,7 @@
 module ProfilesHelper
 	def display_profile_item_names(items, n=nil)
 		n ||= items.try(:length)
-		items.collect(&:name).sort{|a, b| a.casecmp b}.slice(0, n).join(', ') if items.present?
+		items.collect(&:name).sort{|a, b| a.casecmp b}.slice(0, n).join(' | ') if items.present?
 	end
 	
 	def display_profile_time(time_with_zone)
