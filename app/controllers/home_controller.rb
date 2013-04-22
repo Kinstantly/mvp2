@@ -1,12 +1,16 @@
 class HomeController < ApplicationController
 	before_filter :authorize_admin, only: [:admin]
 	# before_filter :authenticate_user!
-	# layout 'no_user_registration'
-	
-	layout false, only: :index
 	
 	def index
-		render handlers: [:erb]
+		case params[:view]
+		when 'erb'
+			render handlers: [:erb], layout: false
+		when 'haml'
+			render handlers: [:haml], layout: false
+		else
+			render handlers: [:haml], layout: false
+		end
 	end
 	
 	private
