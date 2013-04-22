@@ -33,6 +33,7 @@ Mvp2::Application.routes.draw do
 		member do
 			get 'new_invitation'
 			put 'send_invitation'
+			get 'rating_score'
 			post 'rate'
 		end
 		collection do

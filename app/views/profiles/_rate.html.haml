@@ -9,5 +9,7 @@
 			= radio_button_tag "#{form_id}", i, (i == current_user_score), class: "#{tag_class}", title: provider_rating_title(i)
 
 :coffeescript
-	$("form##{form_id} input.#{tag_class}").rating(callback: (value, link) -> $.post('#{rate_profile_path profile}', score: value))
-	window.rate_reset = -> $("form input.#{tag_class}").rating(callback: (value, link) -> $.post('#{rate_profile_path profile}', score: value))
+	post_rating = (value, link) ->
+		$.post('#{rate_profile_path profile}', {score: value}, -> $('.provider_rating').load('#{rating_score_profile_path profile} .provider_rating > *', window.rating_score_reset))
+	$("form##{form_id} input.#{tag_class}").rating(callback: post_rating)
+	window.rate_reset = -> $("form input.#{tag_class}").rating(callback: post_rating)
