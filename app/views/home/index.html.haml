@@ -1,4 +1,197 @@
-.home
-	.header
-		%h1= company_name
-	.content
+!!! XML
+!!!
+/[if lt IE 7] <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en">
+/[if IE 7] <html class="no-js lt-ie9 lt-ie8" lang="en">
+/[if IE 8] <html class="no-js lt-ie9" lang="en">
+<!--[if gt IE 8]><!-->
+%html.no-js{:lang => "en"}
+  <!--<![endif]-->
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    %meta{:content => "YOUR INFO HERE", :name => "keywords"}/
+    %meta{:content => "YOUR INFO HERE", :name => "description"}/
+    / <link rel="stylesheet" href="styles-home.css?ver=1.0" type="text/css" />
+    = stylesheet_link_tag "styles-home", media: "screen, handheld, print"
+    = favicon_link_tag '/favicon.ico?v=1'
+    / <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    %link{:href => "/apple-touch-icon.png", :rel => "apple-touch-icon"}/
+    %title Kinstantly | When parenting challenges can't wait.
+    / JavaScript
+    /[if IE] 
+    /[if lt IE 9]
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    /
+      <script src="assets/js/respond.min.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+      <script src="assets/js/modernizr-2.5.3.min.js"></script>
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+    :javascript
+      $(function() {
+      
+          // Get select elements
+          var selects = $('.select-wrapper > select');
+          if ( !selects.length ) return;
+      
+          // Add change event to selects, and trigger it on load, so the span is up to date
+          selects.on('change', function() {
+      
+              // Assign the jquery object to a variable 
+              var select = $(this);
+      
+              // Get placeholder element
+              var placeholder = select.prev('.select-text');
+              if ( !placeholder.length ) return;
+      
+              // Get the text from the selected option
+              var selected_text = select.children('option:selected').text();
+      
+              // Update the placeholder text
+              placeholder.html(selected_text);
+      
+          }).change();
+      
+          // Not proud of this, workaround for Firefox that doesn't trigger the change event
+          // if the user is using the keyboard to navigate through the options
+          selects.on('keypress', function() {
+              selects.trigger('change');
+          });
+      });
+  %body.home
+    #container.clearfix
+      %header#branding.clearfix
+        #access.clearfix
+          %ul
+            %li#about= about_link
+            %li#contact= contact_link
+            - if user_signed_in?
+              %li#signout= sign_in_out_link
+            - else
+              %li#signin
+                Already a member? #{sign_in_out_link}
+        %h1= home_link
+        #msg Marketing message goes here
+      /
+        \= form_tag search_providers_path, method: :get do
+        \= text_field_tag :query, @search_query, size: 24, id: 'provider_search_query'
+        \= select_tag :search_area_tag_id, search_area_tag_options(@search_area_tag_id), id: 'search_area_tag'
+        \= submit_tag 'Search', disable_with: 'Searching...', id: 'provider_search_button'
+      #findProvider.aside
+        = form_tag search_providers_path, method: :get, id: 'providerSearch' do
+          %h3 Find a provider
+          = text_field_tag :query, @search_query, id: 'provider_search_query', autocomplete: 'off', placeholder: 'doctor, tutor, therapist...'
+          .select-wrapper
+            %span.select-text
+            = select_tag :search_area_tag_id, search_area_tag_options(@search_area_tag_id), id: 'search_area_tag'
+          = submit_tag 'Search for free', disable_with: 'Searching...', class: 'button submit green', id: 'submit'
+          - if !user_signed_in?
+            %p.small
+              Provider? #{provider_sign_up_link 'Join us'}
+      #content.category-list.clearfix
+        %h3 Browse by category
+        %span.help
+          Not sure
+          %a{:href => "#"} where to start?
+        #col1.col
+          %h4 Therapists & Coaches
+          %ul
+            %li
+              %a{:href => "#"} Applied Behavior Analysts
+            %li
+              %a{:href => "#"} Child Psychologists
+            %li
+              %a{:href => "#"} Child Psychiatrists
+            %li
+              %a{:href => "#"} Couples/Family Therapists
+            %li
+              %a{:href => "#"} Eating Disorder Therapists
+            %li
+              %a{:href => "#"} Occupational Therapists
+            %li
+              %a{:href => "#"} Parenting Coaches
+            %li
+              %a{:href => "#"} Physical Therapists
+            %li
+              %a{:href => "#"} Social Skills Therapists
+            %li
+              %a{:href => "#"} Speech Therapists
+          %h4 TUTORS
+          %ul
+            %li
+              %a{:href => "#"} Executive Function/Time Management
+            %li
+              %a{:href => "#"} Languages
+            %li
+              %a{:href => "#"} Math
+            %li
+              %a{:href => "#"} Reading
+            %li
+              %a{:href => "#"} Sciences
+            %li
+              %a{:href => "#"} Study skills
+            %li
+              %a{:href => "#"} Test prep
+            %li
+              %a{:href => "#"} Writing
+        #col2.col
+          %h4 SPECIAL NEEDS
+          %ul
+            %li
+              %a{:href => "#"} ADHD
+            %li
+              %a{:href => "#"} Autism spectrum Specialists
+            %li
+              %a{:href => "#"} Dyslexia Specialists
+            %li
+              %a{:href => "#"} Learning Disorders Specialists
+            %li
+              %a{:href => "#"} School Advocates
+          %h4 HEALTH
+          %ul
+            %li
+              %a{:href => "#"} Child Psychiatrists
+            %li
+              %a{:href => "#"} Developmental-Behavioral
+            %li
+              %a{:href => "#"} Pediatricians
+            %li
+              %a{:href => "#"} Fertility Specialists
+            %li
+              %a{:href => "#"} Nutritionists
+            %li
+              %a{:href => "#"} Pediatricians
+            %li
+              %a{:href => "#"} Pediatric Dentists
+            %li
+              %a{:href => "#"} Sports Medicine Specialists
+          %h4 NEW MOM SUPPORT
+          %ul
+            %li
+              %a{:href => "#"} Doulas
+            %li
+              %a{:href => "#"} Lactation/infant feeding
+            %li
+              %a{:href => "#"} Midwives
+          %h4 MORE
+          %ul
+            %li
+              %a{:href => "#"} Adoption facilitators
+            %li
+              %a{:href => "#"} Home allergen inspectors
+          #all-cats.see-all.select-wrapper
+            %span.select-text
+            %select
+              %option{:selected => "selected"} See all
+              %option This is a dropdown
+              %option of all categories?
+      #social
+        = link_to 'Follow us on twitter', 'http://twitter.com/kinstantly', target: '_blank', id: 'twitter'
+        = link_to 'Follow us on facebook', 'http://facebook.com', target: '_blank', id: 'facebook'
+    %footer#footer
+      %p#bottom
+        = about_link
+        |  #{contact_link}  |  #{terms_link}
+        %br/
+        \&copy; Copyright 2013 Kinstantly, Inc. All Rights Reserved.
