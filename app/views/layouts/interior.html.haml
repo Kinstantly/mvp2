@@ -1,0 +1,31 @@
+- @body_class = 'interior'
+- content_for :head do
+	= stylesheet_link_tag "styles", media: "screen, handheld, print"
+	= stylesheet_link_tag "jquery-ui-lightness", media: "screen, handheld, print"
+	= stylesheet_link_tag "jquery.rating", media: "screen, handheld, print"
+- content_for :body_header do
+	%header#branding.clearfix
+		.container
+			%h3#tagline When parenting challenges can't wait.
+			#access.clearfix
+				%ul
+					%li#about= about_link
+					%li#contact= contact_link
+					- if user_signed_in?
+						%li#signout= sign_in_out_link
+					- else
+						%li#signin
+							Already a member? #{sign_in_out_link}
+		#masthead.clearfix
+			%h1= home_link
+			#findProvider.aside
+				= form_tag search_providers_path, method: :get, id: 'providerSearch' do
+					= text_field_tag :query, @search_query, id: 'provider_search_query', autocomplete: 'off', placeholder: 'doctor, tutor, therapist...'
+					.select-wrapper
+						%span.select-text
+						= select_tag :search_area_tag_id, search_area_tag_options(@search_area_tag_id), id: 'search_area_tag'
+					= submit_tag 'Search for free', disable_with: 'Searching...', class: 'button submit green', id: 'submit'
+					- if !user_signed_in?
+						%p.small
+							Provider? #{provider_sign_up_link 'Join us'}
+= render template: 'layouts/application'

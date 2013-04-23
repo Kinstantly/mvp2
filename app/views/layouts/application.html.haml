@@ -1,32 +1,63 @@
 !!! XML
 !!!
-%html
+/[if lt IE 7] <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en">
+/[if IE 7] <html class="no-js lt-ie9 lt-ie8" lang="en">
+/[if IE 8] <html class="no-js lt-ie9" lang="en">
+<!--[if gt IE 8]><!-->
+%html.no-js{:lang => "en"}
+	<!--<![endif]-->
 	%head
-		%title= @page_title.presence || company_name
-		= stylesheet_link_tag    "application", :media => "all"
-		= javascript_include_tag "application"
-		= csrf_meta_tags
-		= yield :head
+		%meta{charset: 'utf-8'}
+		%meta{content: 'IE=edge,chrome=1', 'http-equiv' => 'X-UA-Compatible'}
+		%meta{content: 'width=device-width, initial-scale=1.0', name: 'viewport'}
+		%meta{content: (@meta_keywords.presence || t('meta.keywords')), name: 'keywords'}
+		%meta{content: (@meta_description.presence || t('meta.description')), name: 'description'}
+		= favicon_link_tag '/favicon.ico?v=1'
+		%link{href: '/apple-touch-icon.png', rel: 'apple-touch-icon'}
+		%title
+			- if @page_title_prefix.present?
+				= "#{@page_title_prefix} |"
+			Kinstantly | When parenting challenges can't wait.
+		/ JavaScript
+		/[if IE] 
+		/[if lt IE 9]
+			= javascript_include_tag '//html5shim.googlecode.com/svn/trunk/html5.js'
+		= javascript_include_tag 'application'
 		= render partial: 'layouts/tracking'
-	%body
+		= yield :head
+		= csrf_meta_tags
+	%body{class: @body_class}
 		%a{name: 'top'}
-		.top_nav
-			%span.nav_el= greeting
-			%span.nav_el= provider_sign_up_link
-			%span.nav_el= home_link
-			%span.nav_el= about_link
-			%span.nav_el= terms_link
-			%span.nav_el= contact_link
-			%span.nav_el= view_user_profile_link
-			%span.nav_el= account_settings_link
-			%span.nav_el= sign_in_out_link
-			%span.nav_el= admin_profiles_link
-			%span.nav_el= admin_user_list_link
-			= render partial: 'profiles/search_form'
-			.flash_messages
-				.notice= notice
-				.alert= alert
+		= yield :body_header
+		.flash_messages
+			.notice= notice
+			.alert= alert
 		= yield
-		.bottom_nav
-			= link_to "Go to top", '#top'
-			= home_link
+		%footer#footer
+			%p#bottom
+				= about_link
+				|
+				= contact_link
+				|
+				= terms_link
+				%br
+				\&copy; Copyright 2013 Kinstantly, Inc. All Rights Reserved.
+		#line
+		:coffeescript
+			# Ensure rating stars render properly after everything is loaded.
+			window.onload = ->
+				window.rating_score_reset() if window.rating_score_reset
+				window.rate_reset() if window.rate_reset
+			#
+			# Add change event to selects, and trigger it on load, so the span is up to date
+			selects = $('.select-wrapper > select').on('change', ->
+				# Assign the jquery object to a variable 
+				select = $(this)
+				# Get placeholder element
+				placeholder = select.prev('.select-text')
+				# Use the text from the selected option to update the placeholder text
+				placeholder.html(select.children('option:selected').text()) if placeholder.length
+			).change()
+			# Workaround for Firefox which doesn't trigger the change event
+			# if the user is using the keyboard to navigate through the options
+			selects.on('keypress', -> selects.trigger('change'))

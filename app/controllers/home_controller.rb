@@ -7,9 +7,9 @@ class HomeController < ApplicationController
 		when 'erb'
 			render handlers: [:erb], layout: false
 		when 'haml'
-			render handlers: [:haml], layout: false
+			render handlers: [:haml], layout: 'application'
 		else
-			render handlers: [:haml], layout: false
+			render handlers: [:haml], layout: 'application'
 		end
 	end
 	

@@ -43,9 +43,9 @@ class ProfilesController < ApplicationController
 		when 'erb'
 			render handlers: [:erb], layout: false
 		when 'haml'
-			render handlers: [:haml], layout: false
+			render handlers: [:haml], layout: 'interior'
 		else
-			render handlers: [:haml], layout: false
+			render handlers: [:haml], layout: 'interior'
 		end
 	end
 	

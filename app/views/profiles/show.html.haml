@@ -1,191 +1,112 @@
-!!! XML
-!!!
-/[if lt IE 7] <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en">
-/[if IE 7] <html class="no-js lt-ie9 lt-ie8" lang="en">
-/[if IE 8] <html class="no-js lt-ie9" lang="en">
-<!--[if gt IE 8]><!-->
-%html.no-js{:lang => "en"}
-	<!--<![endif]-->
-	%head
-		%meta{:charset => "utf-8"}
-		%meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}
-		%meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
-		%meta{:content => "YOUR INFO HERE", :name => "keywords"}
-		%meta{:content => "YOUR INFO HERE", :name => "description"}
-		= stylesheet_link_tag "styles", media: "screen, handheld, print"
-		= stylesheet_link_tag "jquery-ui-lightness", media: "screen, handheld, print"
-		= stylesheet_link_tag "jquery.rating", media: "screen, handheld, print"
-		= favicon_link_tag '/favicon.ico?v=1'
-		%link{:href => "/apple-touch-icon.png", :rel => "apple-touch-icon"}/
-		%title
-			= @profile.display_name_or_company
-			| Kinstantly | When parenting challenges can't wait.
-		/ JavaScript
-		/[if IE] 
-		/[if lt IE 9]
-			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		= javascript_include_tag "application"
-		= csrf_meta_tags
-	%body.interior
-		%header#branding.clearfix
-			.container
-				%h3#tagline When parenting challenges can't wait.
-				#access.clearfix
-					%ul
-						%li#about= about_link
-						%li#contact= contact_link
-						- if user_signed_in?
-							%li#signout= sign_in_out_link
-						- else
-							%li#signin
-								Already a member? #{sign_in_out_link}
-			#masthead.clearfix
-				%h1= home_link
-				#findProvider.aside
-					= form_tag search_providers_path, method: :get, id: 'providerSearch' do
-						= text_field_tag :query, @search_query, id: 'provider_search_query', autocomplete: 'off', placeholder: 'doctor, tutor, therapist...'
-						.select-wrapper
-							%span.select-text
-							= select_tag :search_area_tag_id, search_area_tag_options(@search_area_tag_id), id: 'search_area_tag'
-						= submit_tag 'Search for free', disable_with: 'Searching...', class: 'button submit green', id: 'submit'
-						- if !user_signed_in?
-							%p.small
-								Provider? #{provider_sign_up_link 'Join us'}
-		%article#content
-			%header#content-header.clearfix{:itemscope => "", :itemtype => "http://schema.org/Person"}
-				= image_tag 'profile-photo.jpg', alt: 'Photo of Sophia M. Hurd', width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
-				.profile
-					%h1{:itemprop => "name"}= @profile.display_name_or_company
-					= render partial: 'profiles/rating_score', locals: {profile: @profile}
-					%span.title{:itemprop => "jobTitle"}= @profile.headline
-					- if @profile.company_name.present? && @profile.display_name.present?
-						%span.title{:itemprop => "affiliation"}= @profile.company_name
-					%span.location{:itemprop => "street-address"}= @profile.locations.first.try(:display_address)
-					%span.location{:itemprop => "telephone"}= @profile.locations.first.try(:display_phone)
-					%span.location{:itemprop => "url"}= profile_linked_website @profile
-					- if @profile.email.present?
-						%span.location{:itemprop => "email"}
-							email: #{profile_linked_email @profile}
-					- if can? :rate, @profile
-						= render partial: 'profiles/rate', locals: {profile: @profile}
-					- elsif !user_signed_in?
-						.rate
-							.rate-this
-								= link_to 'Sign in', member_sign_in_return_path
-								or
-								= link_to 'sign up', member_sign_up_return_path
-								= "to rate and review #{@profile.display_name_or_company}"
-				%ul.contact-toolbar
-					%li#email= profile_linked_email @profile
-					%li#call= location_linked_phone @profile.locations.first
-					%li#url= profile_linked_website @profile
-					%li#appointment
-						%a{:href => "#"} Make an appointment
-			%section#details.clearfix
-				.interior
-					.summary-text
-						- if @profile.summary.present?
-							.summary
-								%h3 Summary
-								%p= @profile.summary
-						- if @profile.services.present? || @profile.specialties.present?
-							.services
-								%h3 Services / Specialties
-								/ <p>Pediatrician. Autism specturm, Developmental delay, Integrated functional medicine for kids, Evidence based complementary and alternative healing modalities.</p>
-								%p
-									- if @profile.services.present?
-										= profile_display_services(@profile, 3)
-									= '|' if @profile.services.present? && @profile.specialties.present?
-									- if @profile.specialties.present?
-										= profile_display_specialties(@profile, 3)
-					%table.info{:border => "0", :cellpadding => "0", :cellspacing => "0"}
-						- if @profile.age_ranges.present?
-							%tr
-								%th
-									%span Ages
-								%td= profile_age_ranges @profile
-						- if @profile.languages.present?
-							%tr
-								%th
-									%span Languages
-								%td= serialize_profile_text @profile.languages
-						- if @profile.education.present?
-							%tr
-								%th
-									%span Education
-								%td= serialize_profile_text @profile.education
-						- if @profile.certifications.present?
-							%tr
-								%th
-									%span Licenses / Certifications
-								%td= serialize_profile_text @profile.certifications
-						- if @profile.insurance_accepted.present?
-							%tr
-								%th
-									%span Insurance
-								%td= serialize_profile_text @profile.insurance_accepted
-						- if @profile.pricing.present?
-							%tr
-								%th
-									%span Rates
-								%td= serialize_profile_text @profile.pricing
-			%section#reviews.clearfix
-				%article.review.even
-					%header.review-header
-						%span.author
-							%a{:href => "#"} Illiana Cruz
-						%span.location San Francisco, CA
-						%span.num-reviews
-							%a{:href => "#"} 6 reviews
-					%section.review-body
-						.reviews.reviewed-4-star
-							.star.star1
-							.star.star2
-							.star.star3
-							.star.star4
-							.star.star5
-							.review-date 1/25/13
-						%p We've seen Dr. Hurd now 3 times, and each time, she is as personable and helpful as the last, from breastfeeding, to pumping, to sleep training.  I am sorry that there are folks who cannot get into this practice due to the "interview" process.  As one of the lucky ones, we were referred into NVP and went to interview a month before my due date.  Nurse Judy was so helpful and we chose Dr. Hurd based on the info she gave us.  Since then, we have attended one of Nurse Judy's classes, and plan to take many more.  She has classes for: new parents, illness, safety, and more!  I cannot imagine a better resource for new parents with an admittedly average-to-low-maintenance newborn baby (no special needs).  And so far, we've always been seen on time for appointments.
-				%article.review.odd
-					%header.review-header
-						%span.author
-							%a{:href => "#"} John Manning
-						%span.location San Francisco, CA
-						%span.num-reviews
-							%a{:href => "#"} 10 reviews
-					%section.review-body
-						.reviews.reviewed-4-star
-							.star.star1
-							.star.star2
-							.star.star3
-							.star.star4
-							.star.star5
-							.review-date 11/12/10
-						%p We've been extremely pleased with the practice as a whole and with our pediatrician, Dr Hurd, who figured out that our baby's supposedly drastic weight loss was due to CPMC's mis-converting from grams to pounds and ounces.  Phone calls get answered by a human being (although I'm sometimes asked to hold briefly), and emails and calls to the on-duty nurses are returned quickly.
-		%footer#footer
-			%p#bottom
-				= about_link
-				|
-				= contact_link
-				|
-				= terms_link
-				%br
-				\&copy; Copyright 2013 Kinstantly, Inc. All Rights Reserved.
-		#line
-		:coffeescript
-			window.onload = ->
-				window.rating_score_reset()
-				window.rate_reset()
-		:coffeescript
-			# Add change event to selects, and trigger it on load, so the span is up to date
-			selects = $('.select-wrapper > select').on('change', ->
-				# Assign the jquery object to a variable 
-				select = $(this)
-				# Get placeholder element
-				placeholder = select.prev('.select-text')
-				# Use the text from the selected option to update the placeholder text
-				placeholder.html(select.children('option:selected').text()) if placeholder.length
-			).change()
-			# Workaround for Firefox which doesn't trigger the change event
-			# if the user is using the keyboard to navigate through the options
-			selects.on('keypress', -> selects.trigger('change'))
+- @page_title_prefix = @profile.display_name_or_company
+%article#content
+	%header#content-header.clearfix{:itemscope => "", :itemtype => "http://schema.org/Person"}
+		= image_tag 'profile-photo.jpg', alt: 'Photo of Sophia M. Hurd', width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
+		.profile
+			%h1{:itemprop => "name"}= @profile.display_name_or_company
+			= render partial: 'profiles/rating_score', locals: {profile: @profile}
+			%span.title{:itemprop => "jobTitle"}= @profile.headline
+			- if @profile.company_name.present? && @profile.display_name.present?
+				%span.title{:itemprop => "affiliation"}= @profile.company_name
+			%span.location{:itemprop => "street-address"}= @profile.locations.first.try(:display_address)
+			%span.location{:itemprop => "telephone"}= @profile.locations.first.try(:display_phone)
+			%span.location{:itemprop => "url"}= profile_linked_website @profile
+			- if @profile.email.present?
+				%span.location{:itemprop => "email"}
+					email: #{profile_linked_email @profile}
+			- if can? :rate, @profile
+				= render partial: 'profiles/rate', locals: {profile: @profile}
+			- elsif !user_signed_in?
+				.rate
+					.rate-this
+						= link_to 'Sign in', member_sign_in_return_path
+						or
+						= link_to 'sign up', member_sign_up_return_path
+						= "to rate and review #{@profile.display_name_or_company}"
+		%ul.contact-toolbar
+			%li#email= profile_linked_email @profile
+			%li#call= location_linked_phone @profile.locations.first
+			%li#url= profile_linked_website @profile
+			%li#appointment
+				%a{:href => "#"} Make an appointment
+	%section#details.clearfix
+		.interior
+			.summary-text
+				- if @profile.summary.present?
+					.summary
+						%h3 Summary
+						%p= @profile.summary
+				- if @profile.services.present? || @profile.specialties.present?
+					.services
+						%h3 Services / Specialties
+						/ <p>Pediatrician. Autism specturm, Developmental delay, Integrated functional medicine for kids, Evidence based complementary and alternative healing modalities.</p>
+						%p
+							- if @profile.services.present?
+								= profile_display_services(@profile, 3)
+							= '|' if @profile.services.present? && @profile.specialties.present?
+							- if @profile.specialties.present?
+								= profile_display_specialties(@profile, 3)
+			%table.info{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+				- if @profile.age_ranges.present?
+					%tr
+						%th
+							%span Ages
+						%td= profile_age_ranges @profile
+				- if @profile.languages.present?
+					%tr
+						%th
+							%span Languages
+						%td= serialize_profile_text @profile.languages
+				- if @profile.education.present?
+					%tr
+						%th
+							%span Education
+						%td= serialize_profile_text @profile.education
+				- if @profile.certifications.present?
+					%tr
+						%th
+							%span Licenses / Certifications
+						%td= serialize_profile_text @profile.certifications
+				- if @profile.insurance_accepted.present?
+					%tr
+						%th
+							%span Insurance
+						%td= serialize_profile_text @profile.insurance_accepted
+				- if @profile.pricing.present?
+					%tr
+						%th
+							%span Rates
+						%td= serialize_profile_text @profile.pricing
+	%section#reviews.clearfix
+		%article.review.even
+			%header.review-header
+				%span.author
+					%a{:href => "#"} Illiana Cruz
+				%span.location San Francisco, CA
+				%span.num-reviews
+					%a{:href => "#"} 6 reviews
+			%section.review-body
+				.reviews.reviewed-4-star
+					.star.star1
+					.star.star2
+					.star.star3
+					.star.star4
+					.star.star5
+					.review-date 1/25/13
+				%p We've seen Dr. Hurd now 3 times, and each time, she is as personable and helpful as the last, from breastfeeding, to pumping, to sleep training.  I am sorry that there are folks who cannot get into this practice due to the "interview" process.  As one of the lucky ones, we were referred into NVP and went to interview a month before my due date.  Nurse Judy was so helpful and we chose Dr. Hurd based on the info she gave us.  Since then, we have attended one of Nurse Judy's classes, and plan to take many more.  She has classes for: new parents, illness, safety, and more!  I cannot imagine a better resource for new parents with an admittedly average-to-low-maintenance newborn baby (no special needs).  And so far, we've always been seen on time for appointments.
+		%article.review.odd
+			%header.review-header
+				%span.author
+					%a{:href => "#"} John Manning
+				%span.location San Francisco, CA
+				%span.num-reviews
+					%a{:href => "#"} 10 reviews
+			%section.review-body
+				.reviews.reviewed-4-star
+					.star.star1
+					.star.star2
+					.star.star3
+					.star.star4
+					.star.star5
+					.review-date 11/12/10
+				%p We've been extremely pleased with the practice as a whole and with our pediatrician, Dr Hurd, who figured out that our baby's supposedly drastic weight loss was due to CPMC's mis-converting from grams to pounds and ounces.  Phone calls get answered by a human being (although I'm sometimes asked to hold briefly), and emails and calls to the on-duty nurses are returned quickly.

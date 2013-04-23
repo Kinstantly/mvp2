@@ -3,6 +3,9 @@
 
 en:
   hello: "Hello world"
+  meta:
+    keywords: 'parenting children health expert'
+    description: "Kinstantly connects families with the parenting experts, children's health providers, and other services they need in smart, convenient ways"
   controllers:
     access_denied: 'Sorry, you do not have access to that area.'
     users:

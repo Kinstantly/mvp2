@@ -48,33 +48,33 @@ blockquote, q {
  * Corrects `block` display not defined in IE6/7/8/9 & FF3.
  */
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {
-  display: block;
+	display: block;
 }
 /*
  * Corrects `inline-block` display not defined in IE6/7/8/9 & FF3.
  */
 audio,canvas,video {
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
 }
 /*
  * Prevents modern browsers from displaying `audio` without controls.
  * Remove excess height in iOS5 devices.
  */
 audio:not([controls]) {
-  display: none;
-  height: 0;
+	display: none;
+	height: 0;
 }
 /*
  * Addresses styling for `hidden` attribute not present in IE7/8/9, FF3, S4.
  * Known issue: no IE6 support.
  */
 [hidden] {
-  display: none;
+	display: none;
 }
 .clearfix:before, .clearfix:after {
-  content: "\0020"; display: block; height: 0; visibility: hidden;	
+	content: "\0020"; display: block; height: 0; visibility: hidden;	
 } 
 .clearfix:after { clear: both; }
 /* Fix clearfix: blueprintcss.lighthouseapp.com/projects/15318/tickets/5-extra-margin-padding-bottom-of-page */
@@ -83,14 +83,14 @@ audio:not([controls]) {
 /* End CSS reset */
 
 @font-face {
-    font-family: 'museo_slab500';
-    src: url('fonts/museo_slab_500-webfont.eot');
-    src: url('fonts/museo_slab_500-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/museo_slab_500-webfont.woff') format('woff'),
-         url('fonts/museo_slab_500-webfont.ttf') format('truetype'),
-         url('fonts/museo_slab_500-webfont.svg#museo_slab500') format('svg');
-    font-weight: normal;
-    font-style: normal;
+	font-family: 'museo_slab500';
+	src: url('fonts/museo_slab_500-webfont.eot');
+	src: url('fonts/museo_slab_500-webfont.eot?#iefix') format('embedded-opentype'),
+			 url('fonts/museo_slab_500-webfont.woff') format('woff'),
+			 url('fonts/museo_slab_500-webfont.ttf') format('truetype'),
+			 url('fonts/museo_slab_500-webfont.svg#museo_slab500') format('svg');
+	font-weight: normal;
+	font-style: normal;
 }
 
 /*
@@ -320,83 +320,83 @@ span.help {
 /* Form input / label styling  -------------------------------------------------------------------------- */
 
 .input {
-  display: block;
-  float: left;
+	display: block;
+	float: left;
 }
 .input span {
-  position: absolute;
-  padding: 10px 15px;
-  z-index: 1;
-  cursor: text;
-  font-family: Helvetica, Arial, sans-serif;;
-  font-size: 1.3125em;
-  color: rgba(153,153,153,0.92);
+	position: absolute;
+	padding: 10px 15px;
+	z-index: 1;
+	cursor: text;
+	font-family: Helvetica, Arial, sans-serif;;
+	font-size: 1.3125em;
+	color: rgba(153,153,153,0.92);
 }
 #findProvider .select-wrapper {   
-    -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;
-    background: url('arrow.png') no-repeat 235px center #fdf0f2;
-    border-top: 1px solid #514447;
+	-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;
+	background: url('arrow.png') no-repeat 235px center #fdf0f2;
+	border-top: 1px solid #514447;
 	border-left: 1px solid #514447;
 	border-bottom: 1px solid #a89b9e;
 	border-right: 1px solid #a89b9e;
 	-moz-box-shadow: inset 1px 1px #d0c4c6;
 	-webkit-box-shadow: inset 1px 1px #d0c4c6;
 	box-shadow: inset 1px 1px #d0c4c6;
-    display: inline-block;
-    width: 256px;
+	display: inline-block;
+	width: 256px;
 	height: 41px;
 	font-size: 1.3125em;
 	color: rgba(153,153,153,0.92);
 	line-height: 1em;
 	margin-bottom: 12px;
-    position: relative;
+	position: relative;
 }   
 
 #findProvider .select-text {
-    display: block;
-    font-size: 1em;
+	display: block;
+	font-size: 1em;
 	color: rgba(153,153,153,0.92);
-    padding: 10px 15px;
-    z-index: 1;
+	padding: 10px 15px;
+	z-index: 1;
 }
 
 #findProvider select {
-    /* Position the select over the span*/
-    min-height: 41px !important;
-    padding: 12px 0px;
-    display: block;
-    left: 0;
-    position: absolute;
-    top: 0px;
-    width: 100%;
-    z-index: 100;
+	/* Position the select over the span*/
+	min-height: 41px !important;
+	padding: 12px 0px;
+	display: block;
+	left: 0;
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	z-index: 100;
 
-    /*  The select is now positioned over the span
-     *  We don't want to see the select, but we want to be able to click on it 
-     *  So we set the opacity to 0  
-     */
-    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
+	/*  The select is now positioned over the span
+	 *  We don't want to see the select, but we want to be able to click on it 
+	 *  So we set the opacity to 0  
+	 */
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	-moz-opacity: 0;
+	-khtml-opacity: 0;
+	-webkit-opacity: 0;
+	opacity: 0;
 }
 
 #all-cats {   
-    -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;
-    background: transparent;
-    display: block;
-    width: auto;
+	-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;
+	background: transparent;
+	display: block;
+	width: auto;
 	height: 17px;
 	font-size: 0.9375em;
 	color: #0b99a2;
 	line-height: 1.133333em;
-    position: relative;
+	position: relative;
 }   
 
 #all-cats .select-text {
-    display: inline-block;
-    font-size: 1em;
+	display: inline-block;
+	font-size: 1em;
 	color: #0b99a2;
 	font-weight: bold;
 }
@@ -407,23 +407,23 @@ span.help {
 }
 
 #all-cats select {
-    /* Position the select over the span*/
-    min-height: 17px !important;
-    display: block;
-    left: 0;
-    position: absolute;
-    top: 0px;
-    width: 100%;
+	/* Position the select over the span*/
+	min-height: 17px !important;
+	display: block;
+	left: 0;
+	position: absolute;
+	top: 0px;
+	width: 100%;
 
-    /*  The select is now positioned over the span
-     *  We don't want to see the select, but we want to be able to click on it 
-     *  So we set the opacity to 0  
-     */
-    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
+	/*  The select is now positioned over the span
+	 *  We don't want to see the select, but we want to be able to click on it 
+	 *  So we set the opacity to 0  
+	 */
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	-moz-opacity: 0;
+	-khtml-opacity: 0;
+	-webkit-opacity: 0;
+	opacity: 0;
 }
 #social {
 	width: 53px;
@@ -445,43 +445,58 @@ span.help {
 	background: url('social.gif') -29px 0px;
 }
 
+/* Messages */
+
+.flash_messages {
+	font-family: Helvetica, Arial, sans-serif;
+	line-height: 20px;
+	width: 100%;
+	text-align: center;
+	margin-top: 0.5em;
+	.notice {
+		color: rgba(0,127,0,0.92);
+	}
+	.alert {
+		color: rgba(159,0,0,0.92);
+	}
+}
+
 /*
 BIGGER MOBILE
 */
 @media only screen and (min-width: 728px) {
-
-body {
-	font-size: 100%;
-}
-#access {
-	float: right;
-	min-width: 400px;
-	border-bottom: 1px solid #DADADA;
-	padding-bottom: 8px;
-}
-#access ul li#signin {
-	margin-left: 35px;
-	font-size: 1em;
-}
-#findProvider {
-	float: right;
-	padding: 60px 66px 62px 66px;
-	width: 290px;
-	margin-top: -70px;
-}
-.category-list {
-	float: right;
-	clear: right;
-	width: 341px;
-	margin: 32px 0 0 0;
-}
-.home {
-	background: #FFF url('home-img.jpg') center top no-repeat;
-}
-#social {
-	float: left;
-	margin: 368px 0 0 282px;
-}
+	body {
+		font-size: 100%;
+	}
+	#access {
+		float: right;
+		min-width: 400px;
+		border-bottom: 1px solid #DADADA;
+		padding-bottom: 8px;
+	}
+	#access ul li#signin {
+		margin-left: 35px;
+		font-size: 1em;
+	}
+	#findProvider {
+		float: right;
+		padding: 60px 66px 62px 66px;
+		width: 290px;
+		margin-top: -70px;
+	}
+	.category-list {
+		float: right;
+		clear: right;
+		width: 341px;
+		margin: 32px 0 0 0;
+	}
+	.home {
+		background: #FFF url('home-img.jpg') center top no-repeat;
+	}
+	#social {
+		float: left;
+		margin: 368px 0 0 282px;
+	}
 }
 
 /*
@@ -491,77 +506,74 @@ in general anyone not viewing on a mobile device. Here's where
 you can add resource intensive styles.
 */
 @media only screen and (min-width: 980px) {
-
-body {
-	font-size: 114.3%;
-	overflow-x: hidden;
-}
-
-#container {
-	width: 970px;
-	padding: 0px;
-	overflow: visible;
-}
-#access {
-/*	margin: 30px 0px 0 87px;*/
-	padding-left: 11px;
-	padding-right: 51px;
-}
-#branding h1 a {
-	display: block;
-	float: left;
-	margin: 16px 0 0 -21px;
-	width: 441px;
-	height: 159px;
-}
-#access ul li#signin {
-	margin-left: 35px;
-	font-size: 1em;
-}
-#access ul li#about:after {
-	padding: 0 0.7333em;
-}
-#msg {
-	float: right;
-	width: 468px;
-	margin: 25px 0 26px 0;
-}
-#findProvider {
-	padding: 60px 298px 62px 66px;
-	width: 290px;
-	margin-right: -162px;
-	margin-top: -68px;
-}
-#findProvider input {
-	width: 256px;
-}
-#findProvider .select-wrapper {   
-    background: url('arrow.png') no-repeat 245px center #fdf0f2;
-    width: 286px;
-}
-#findProvider #submit {
-	background: url('search-button.png') no-repeat 0px 0px;
-	width: 288px;
-}
-#findProvider #submit:hover {
-	cursor: pointer;
-	background: url('search-button.png') no-repeat 0px -41px;
-}
-.category-list {
-	float: right;
-	clear: right;
-	width: 412px;
-	margin: 32px 0 0 0;
-	font-size: 1em;
-}
-#bottom {
-	width: 970px;
-}
-.home {
-	background: #FFF url('home-img.jpg') center top no-repeat;
-}
-#social {
-	margin: 489px 0 0 378px;
-}
-
+	body {
+		font-size: 114.3%;
+		overflow-x: hidden;
+	}
+	#container {
+		width: 970px;
+		padding: 0px;
+		overflow: visible;
+	}
+	#access {
+/*		margin: 30px 0px 0 87px;*/
+		padding-left: 11px;
+		padding-right: 51px;
+	}
+	#branding h1 a {
+		display: block;
+		float: left;
+		margin: 16px 0 0 -21px;
+		width: 441px;
+		height: 159px;
+	}
+	#access ul li#signin {
+		margin-left: 35px;
+		font-size: 1em;
+	}
+	#access ul li#about:after {
+		padding: 0 0.7333em;
+	}
+	#msg {
+		float: right;
+		width: 468px;
+		margin: 25px 0 26px 0;
+	}
+	#findProvider {
+		padding: 60px 298px 62px 66px;
+		width: 290px;
+		margin-right: -162px;
+		margin-top: -68px;
+	}
+	#findProvider input {
+		width: 256px;
+	}
+	#findProvider .select-wrapper {   
+			background: url('arrow.png') no-repeat 245px center #fdf0f2;
+			width: 286px;
+	}
+	#findProvider #submit {
+		background: url('search-button.png') no-repeat 0px 0px;
+		width: 288px;
+	}
+	#findProvider #submit:hover {
+		cursor: pointer;
+		background: url('search-button.png') no-repeat 0px -41px;
+	}
+	.category-list {
+		float: right;
+		clear: right;
+		width: 412px;
+		margin: 32px 0 0 0;
+		font-size: 1em;
+	}
+	#bottom {
+		width: 970px;
+	}
+	.home {
+		background: #FFF url('home-img.jpg') center top no-repeat;
+	}
+	#social {
+		margin: 489px 0 0 378px;
+	}
 }

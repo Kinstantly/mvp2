@@ -48,33 +48,33 @@ blockquote, q {
  * Corrects `block` display not defined in IE6/7/8/9 & FF3.
  */
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,navigation,section,summary {
-  display: block;
+	display: block;
 }
 /*
  * Corrects `inline-block` display not defined in IE6/7/8/9 & FF3.
  */
 audio,canvas,video {
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
 }
 /*
  * Prevents modern browsers from displaying `audio` without controls.
  * Remove excess height in iOS5 devices.
  */
 audio:not([controls]) {
-  display: none;
-  height: 0;
+	display: none;
+	height: 0;
 }
 /*
  * Addresses styling for `hidden` attribute not present in IE7/8/9, FF3, S4.
  * Known issue: no IE6 support.
  */
 [hidden] {
-  display: none;
+	display: none;
 }
 .clearfix:before, .clearfix:after {
-  content: "\0020"; display: block; height: 0; visibility: hidden;	
+	content: "\0020"; display: block; height: 0; visibility: hidden;	
 } 
 .clearfix:after { clear: both; }
 /* Fix clearfix: blueprintcss.lighthouseapp.com/projects/15318/tickets/5-extra-margin-padding-bottom-of-page */
@@ -83,14 +83,14 @@ audio:not([controls]) {
 /* End CSS reset */
 
 @font-face {
-    font-family: 'museo_slab500';
-    src: url('fonts/museo_slab_500-webfont.eot');
-    src: url('fonts/museo_slab_500-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/museo_slab_500-webfont.woff') format('woff'),
-         url('fonts/museo_slab_500-webfont.ttf') format('truetype'),
-         url('fonts/museo_slab_500-webfont.svg#museo_slab500') format('svg');
-    font-weight: normal;
-    font-style: normal;
+	font-family: 'museo_slab500';
+	src: url('fonts/museo_slab_500-webfont.eot');
+	src: url('fonts/museo_slab_500-webfont.eot?#iefix') format('embedded-opentype'),
+			 url('fonts/museo_slab_500-webfont.woff') format('woff'),
+			 url('fonts/museo_slab_500-webfont.ttf') format('truetype'),
+			 url('fonts/museo_slab_500-webfont.svg#museo_slab500') format('svg');
+	font-weight: normal;
+	font-style: normal;
 }
 
 /*
@@ -221,48 +221,48 @@ a:hover {
 	cursor: pointer;
 }
 #findProvider .select-wrapper {   
-    -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;
-    background: url('arrow.png') no-repeat 207px center #fdf0f2;
-    border-top: 1px solid #514447;
+	-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;
+	background: url('arrow.png') no-repeat 207px center #fdf0f2;
+	border-top: 1px solid #514447;
 	border-left: 1px solid #514447;
 	border-bottom: 1px solid #a89b9e;
 	border-right: 1px solid #a89b9e;
 	-moz-box-shadow: inset 1px 1px #d0c4c6;
 	-webkit-box-shadow: inset 1px 1px #d0c4c6;
 	box-shadow: inset 1px 1px #d0c4c6;
-    display: block;
-    width: 242px;
+	display: block;
+	width: 242px;
 	height: 36px;
 	font-size: 1.125em;
 	color: rgba(153,153,153,0.92);
 	line-height: 1em;
-    position: relative;
-    float: left;
+	position: relative;
+	float: left;
 }   
 
 #findProvider .select-text {
-    display: block;
-    font-size: 1em;
+	display: block;
+	font-size: 1em;
 	color: rgba(153,153,153,0.92);
-    padding: 8px 12px;
-    z-index: 1;
+	padding: 8px 12px;
+	z-index: 1;
 }
 
 #findProvider select {
-    /* Position the select over the span*/
-    min-height: 41px !important;
-    padding: 0px;
-    display: block;
-    left: 0;
-    position: absolute;
-    top: 0px;
-    width: 100%;
-    z-index: 100;
-    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
+	/* Position the select over the span*/
+	min-height: 41px !important;
+	padding: 0px;
+	display: block;
+	left: 0;
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	z-index: 100;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	-moz-opacity: 0;
+	-khtml-opacity: 0;
+	-webkit-opacity: 0;
+	opacity: 0;
 }
 
 #findProvider .small {
@@ -651,17 +651,17 @@ div.popover a.cancel:hover {
 /* Form input / label styling  -------------------------------------------------------------------------- */
 
 .input {
-  display: block;
-  float: left;
+	display: block;
+	float: left;
 }
 .input span {
-  position: absolute;
-  padding: 10px 13px;
-  z-index: 1;
-  cursor: text;
-  font-family: Helvetica, Arial, sans-serif;;
-  font-size: 1.125em;
-  color: rgba(153,153,153,0.92);
+	position: absolute;
+	padding: 10px 13px;
+	z-index: 1;
+	cursor: text;
+	font-family: Helvetica, Arial, sans-serif;;
+	font-size: 1.125em;
+	color: rgba(153,153,153,0.92);
 }
 #line {
 	position: absolute;
@@ -671,4 +671,20 @@ div.popover a.cancel:hover {
 	background: url('line-complete.gif');
 	height: 154px;
 	z-index: -1 !important;
+}
+
+/* Messages */
+
+.flash_messages {
+	font-family: Helvetica, Arial, sans-serif;
+	line-height: 20px;
+	width: 100%;
+	text-align: center;
+	margin-top: 0.5em;
+	.notice {
+		color: rgba(0,127,0,0.92);
+	}
+	.alert {
+		color: rgba(159,0,0,0.92);
+	}
 }
