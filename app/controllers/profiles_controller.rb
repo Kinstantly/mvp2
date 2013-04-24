@@ -40,10 +40,6 @@ class ProfilesController < ApplicationController
 		case params[:view]
 		when 'plain'
 			render 'show_plain'
-		when 'erb'
-			render handlers: [:erb], layout: false
-		when 'haml'
-			render handlers: [:haml], layout: 'interior'
 		else
 			render handlers: [:haml], layout: 'interior'
 		end

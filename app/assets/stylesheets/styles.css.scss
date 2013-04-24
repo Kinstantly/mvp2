@@ -1,3 +1,8 @@
+// Styles for interior pages, i.e., not the home page.
+
+$default_font_family: Helvetica, Arial, sans-serif;
+$default_link_color: #0b99a2;
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -107,7 +112,7 @@ html, body {
 	margin: 0px auto;
 }
 a {
-	color: #0b99a2;
+	color: $default_link_color;
 	text-decoration: none;
 }
 a:hover {
@@ -118,7 +123,7 @@ a:hover {
 
 #branding {
 	width: 100%;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: $default_font_family;
 }
 #tagline {
 	float: left;
@@ -132,7 +137,7 @@ a:hover {
 	display: block;
 	float: right;
 	margin: 28px 26px 8px 0;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: $default_font_family;
 }
 #branding h1 a {
 	display: block;
@@ -295,7 +300,7 @@ a:hover {
 #content {
 	width: 100%;
 	margin-top: 38px;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: $default_font_family;
 }
 #content-header {
 	width: 900px;
@@ -451,6 +456,24 @@ a:hover {
 }
 #appointment a:hover {
 	background: url('make-appointment.gif') 0px -33px;
+}
+.editor_buttons {
+	padding-left: 60px;
+	font-family: $default_font_family;
+	a {
+		margin: 0 1em 0 1em;
+	}
+	#destroy_profile {
+		float: right;
+		padding-right: 2em;
+		input {
+			color: $default_link_color;
+			background: none;
+		}
+		input:hover {
+			text-decoration: underline;
+		}
+	}
 }
 
 /*  Profile summary -------------------------------------------------------------------------- */
@@ -647,7 +670,7 @@ div.popover a.cancel:hover {
 	font-size: 0.875em;
 	line-height: 1.42857em;
 	color: #FFF;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: $default_font_family;
 	-webkit-font-smoothing: antialiased;
 }
 #bottom a {
@@ -665,7 +688,7 @@ div.popover a.cancel:hover {
 	padding: 10px 13px;
 	z-index: 1;
 	cursor: text;
-	font-family: Helvetica, Arial, sans-serif;;
+	font-family: $default_font_family;;
 	font-size: 1.125em;
 	color: rgba(153,153,153,0.92);
 }
@@ -682,7 +705,7 @@ div.popover a.cancel:hover {
 /* Messages */
 
 .flash_messages {
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: $default_font_family;
 	line-height: 20px;
 	width: 100%;
 	text-align: center;
