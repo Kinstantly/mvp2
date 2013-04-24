@@ -24,9 +24,9 @@
 						= link_to 'sign up', member_sign_up_return_path
 						= "to rate and review #{@profile.display_name_or_company}"
 		%ul.contact-toolbar
-			%li#email= profile_linked_email @profile
-			%li#call= location_linked_phone @profile.locations.first
-			%li#url= profile_linked_website @profile
+			%li#consult_by_email= profile_consult_by_email_link @profile
+			%li#consult_by_phone= profile_consult_by_phone_link @profile
+			%li#visit_home= profile_visit_home_link @profile
 			%li#appointment
 				%a{:href => "#"} Make an appointment
 	%section#details.clearfix

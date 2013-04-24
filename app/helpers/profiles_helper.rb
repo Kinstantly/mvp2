@@ -44,6 +44,24 @@ module ProfilesHelper
 			link_to location.display_phone, parsed_phone.format('tel:+%c%a%f%l')
 		end
 	end
+	
+	def profile_consult_by_email_link(profile=current_user.try(:profile))
+		if profile.try(:consult_by_email).present?
+			profile_linked_email(profile).presence || tag('span')
+		end
+	end
+	
+	def profile_consult_by_phone_link(profile=current_user.try(:profile))
+		if profile.try(:consult_by_phone).present?
+			location_linked_phone(profile.try(:locations).try(:first)).presence || tag('span')
+		end
+	end
+	
+	def profile_visit_home_link(profile=current_user.try(:profile))
+		if profile.try(:visit_home).present?
+			profile_linked_website(profile).presence || tag('span')
+		end
+	end
 		
 	def profile_attribute_tag_name(attr_name, form_builder=nil)
 		"#{form_builder.try(:object_name).presence || 'profile'}[#{attr_name}][]"

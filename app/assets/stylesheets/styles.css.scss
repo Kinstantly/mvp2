@@ -408,29 +408,35 @@ a:hover {
 .contact-toolbar {
 	width: 170px;
 	float: left;
-}
-.contact-toolbar li {
-	float: left;
-	height: 19px;
-}
-.contact-toolbar li a {
-	display: block;
-	text-indent: -999em;
-	width: 20px;
-	height: 20px;
-	float: left;
-}
-.contact-toolbar li#email a {
-	background: url('contact-icons.gif') 0px 0px no-repeat;
-}
-.contact-toolbar li#call a {
-	background: url('contact-icons.gif') -25px 0px no-repeat;
-	width: 19px;
-	margin: 0px 3px 0px 5px;
-}
-.contact-toolbar li#url a {
-	background: url('contact-icons.gif') -47px 0px no-repeat;
-	width: 23px;
+	li {
+		float: left;
+		height: 19px;
+		a, span {
+			display: block;
+			text-indent: -999em;
+			width: 20px;
+			height: 20px;
+			float: left;
+		}
+	}
+	li#consult_by_email {
+		a, span {
+			background: url('contact-icons.gif') 0px 0px no-repeat;
+		}
+	}
+	li#consult_by_phone {
+		a, span {
+			background: url('contact-icons.gif') -25px 0px no-repeat;
+			width: 19px;
+			margin: 0px 3px 0px 5px;
+		}
+	}
+	li#visit_home {
+		a, span {
+			background: url('contact-icons.gif') -47px 0px no-repeat;
+			width: 23px;
+		}
+	}
 }
 #appointment {
 	height: 33px;
