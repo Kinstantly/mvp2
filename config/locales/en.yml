@@ -50,6 +50,8 @@ en:
     profile:
       edit:
         add_text_field: 'Hit ENTER to add another field'
+        custom_service_placeholder: 'Type in a service'
+        custom_specialty_placeholder: 'Type in a specialty'
   rating:
     score_1: 'Really did not like'
     score_2: 'Did not like'
