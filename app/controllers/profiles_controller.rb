@@ -72,11 +72,10 @@ class ProfilesController < ApplicationController
 		@formlet = params[:formlet]
 		if @formlet.blank?
 			set_flash_message :alert, :profile_update_error
-			redirect_to edit_profile_path(@profile)
 		else
 			@update_succeeded = @profile.update_attributes(params[:profile])
-			respond_with @profile, layout: false
 		end
+		respond_with @profile, layout: false
 	end
 	
 	# CanCan should prevent access to this action if the profile has been claimed.
