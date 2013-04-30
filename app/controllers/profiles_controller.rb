@@ -1,5 +1,7 @@
 class ProfilesController < ApplicationController
 	
+	respond_to :html, :js
+	
 	before_filter :authenticate_user!, except: [:index, :show, :link_index, :search]
 	
 	# Side effect: loads @profiles or @profile as appropriate.
@@ -35,14 +37,14 @@ class ProfilesController < ApplicationController
 		@profiles = @profiles.page params[:page]
 	end
 	
-	# for merging new design
+	# while implementing new design
 	def show
-		case params[:view]
-		when 'plain'
-			render 'show_plain'
-		else
-			render handlers: [:haml], layout: 'interior'
-		end
+		render layout: 'interior'
+	end
+	
+	# while implementing new design
+	def edit
+		render layout: 'interior'
 	end
 	
 	def create
@@ -63,6 +65,17 @@ class ProfilesController < ApplicationController
 		else
 			set_flash_message :alert, :profile_update_error
 			render action: :edit
+		end
+	end
+	
+	def formlet_update
+		@formlet = params[:formlet]
+		if @formlet.blank?
+			set_flash_message :alert, :profile_update_error
+			redirect_to edit_profile_path(@profile)
+		else
+			@update_succeeded = @profile.update_attributes(params[:profile])
+			respond_with @profile, layout: false
 		end
 	end
 	

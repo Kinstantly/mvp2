@@ -1,0 +1,8 @@
+.edit_profile
+	= nested_form_for @profile do |f|
+		= f.error_messages
+		= render partial: 'info_area'
+		= render partial: 'form', locals: {f: f}
+		.buttons
+			= f.submit 'Save changes', disable_with: 'Saving...'
+			= link_to "Cancel", profile_path(@profile)

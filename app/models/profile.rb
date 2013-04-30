@@ -41,10 +41,15 @@ class Profile < ActiveRecord::Base
 		end
 	end
 
-	# Merge in custom categories and specialties.
+	# Merge in custom services and specialties.
 	before_save do
 		self.services = (services + custom_service_names.map(&:to_service)).uniq
 		self.specialties = (specialties + custom_specialty_names.map(&:to_specialty)).uniq
+	end
+	
+	# Custom services and specialties are now merged and saved, so we don't need their names (especially for AJAX updates).
+	after_save do
+		self.custom_service_names, self.custom_specialty_names = nil, nil
 	end
 	
 	scope :unique_by_lead_generator, select(:lead_generator).uniq

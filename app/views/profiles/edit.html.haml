@@ -1,8 +1,66 @@
-.edit_profile
-	= nested_form_for @profile do |f|
-		= f.error_messages
-		= render partial: 'info_area'
-		= render partial: 'form', locals: {f: f}
-		.buttons
-			= f.submit 'Save changes', disable_with: 'Saving...'
-			= link_to "Cancel", profile_path(@profile)
+- @body_class ||= 'interior edit'
+.editor_buttons
+	= profile_link @profile
+	- if !@profile.claimed?
+		= new_invitation_profile_link @profile
+	- if can?(:destroy, @profile)
+		= render partial: 'destroy', locals: {profile: @profile}
+%article#content
+	%header#content-header.clearfix
+		= image_tag 'profile-photo.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
+		.profile{itemscope: "", itemtype: "http://schema.org/Person"}
+			%h1.editable{itemprop: "name"}= @profile.display_name_or_company
+			= render partial: 'profiles/rating_score', locals: {profile: @profile}
+			%span.title.editable{itemprop: "jobTitle"} Pediatrician
+			%span.title.editable{itemprop: "affiliation"} Noe Valley Pediatrics
+			%span.location.editable{itemprop: "street-address"} 1234 Dolores St, San Francisco, CA 94110
+			%span.location.editable{itemprop: "telephone"} (415) 555-0123
+			%span.location.editable{itemprop: "url"}
+				%a{href: "http://www.noevalleypediatrics.com", target: "_blank"} www.noevalleypediatrics.com
+			%span.location.editable{itemprop: "email"}
+				email:
+				%a{href: "mailto:info@noevalleypediatrics.com"} info@noevalleypediatrics.com
+		%ul.contact-toolbar.editable
+			%li#consult_by_email= profile_consult_by_email_link @profile
+			%li#consult_by_phone= profile_consult_by_phone_link @profile
+			%li#visit_home= profile_visit_home_link @profile
+			%li#appointment
+				%a{href: "#"} Make an appointment
+	%section#details.clearfix
+		.interior
+			.summary-text
+				#summary.editable
+					= render partial: 'formlet', locals: {formlet: 'summary'}
+				#services.editable
+					= render partial: 'formlet', locals: {formlet: 'services'}
+			%table.info{border: "0", cellpadding: "0", cellspacing: "0"}
+				%tr
+					%th
+						%span.editable Hours
+					%td Monday - Friday, 8am - 5pm
+				%tr
+					%th
+						%span.editable Ages
+					%td 0-12
+				%tr
+					%th
+						%span.editable Languages
+					%td English, Spanish
+				%tr
+					%th
+						%span.editable Education
+					%td Medical Degree, University of Washington
+				%tr
+					%th
+						%span.editable Licenses / Certifications
+					%td licensed in California
+				%tr
+					%th
+						%span.editable Insurance
+					%td Blue Shield of CA, Aetna, Blue Cross
+				%tr
+					%th
+						%span.editable Rates
+					%td $150/hour
+:coffeescript
+	$('.editable').click -> $(this).addClass 'active'

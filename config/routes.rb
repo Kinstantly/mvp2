@@ -35,6 +35,10 @@ Mvp2::Application.routes.draw do
 			put 'send_invitation'
 			get 'rating_score'
 			post 'rate'
+			put 'formlet_update'
+			# plain layout; legacy
+			get 'show_plain'
+			get 'edit_plain'
 		end
 		collection do
 			get :admin

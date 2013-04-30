@@ -1,24 +1,26 @@
 - @page_title_prefix = @profile.display_name_or_company
 .editor_buttons
 	= edit_profile_link @profile
+	- if can? :manage, Profile
+		= edit_full_profile_link @profile
 	- if !@profile.claimed?
 		= new_invitation_profile_link @profile
 	- if can?(:destroy, @profile)
 		= render partial: 'destroy', locals: {profile: @profile}
 %article#content
-	%header#content-header.clearfix{:itemscope => "", :itemtype => "http://schema.org/Person"}
-		= image_tag 'profile-photo.jpg', alt: 'Photo of Sophia M. Hurd', width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
+	%header#content-header.clearfix{itemscope: "", itemtype: "http://schema.org/Person"}
+		= image_tag 'profile-photo.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
 		.profile
-			%h1{:itemprop => "name"}= @profile.display_name_or_company
+			%h1{itemprop: "name"}= @profile.display_name_or_company
 			= render partial: 'profiles/rating_score', locals: {profile: @profile}
-			%span.title{:itemprop => "jobTitle"}= @profile.headline
+			%span.title{itemprop: "jobTitle"}= @profile.headline
 			- if @profile.company_name.present? && @profile.display_name.present?
-				%span.title{:itemprop => "affiliation"}= @profile.company_name
-			%span.location{:itemprop => "street-address"}= @profile.locations.first.try(:display_address)
-			%span.location{:itemprop => "telephone"}= @profile.locations.first.try(:display_phone)
-			%span.location{:itemprop => "url"}= profile_linked_website @profile
+				%span.title{itemprop: "affiliation"}= @profile.company_name
+			%span.location{itemprop: "street-address"}= @profile.locations.first.try(:display_address)
+			%span.location{itemprop: "telephone"}= @profile.locations.first.try(:display_phone)
+			%span.location{itemprop: "url"}= profile_linked_website @profile
 			- if @profile.email.present?
-				%span.location{:itemprop => "email"}
+				%span.location{itemprop: "email"}
 					email: #{profile_linked_email @profile}
 			- if can? :rate, @profile
 				= render partial: 'profiles/rate', locals: {profile: @profile}
@@ -34,7 +36,7 @@
 			%li#consult_by_phone= profile_consult_by_phone_link @profile
 			%li#visit_home= profile_visit_home_link @profile
 			%li#appointment
-				%a{:href => "#"} Make an appointment
+				%a{href: "#"} Make an appointment
 	%section#details.clearfix
 		.interior
 			.summary-text
@@ -47,12 +49,12 @@
 						%h3 Services / Specialties
 						/ <p>Pediatrician. Autism specturm, Developmental delay, Integrated functional medicine for kids, Evidence based complementary and alternative healing modalities.</p>
 						%p
-							- if @profile.services.present?
-								= profile_display_services(@profile, 3)
-							= '|' if @profile.services.present? && @profile.specialties.present?
-							- if @profile.specialties.present?
-								= profile_display_specialties(@profile, 3)
-			%table.info{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+							= profile_display_services(@profile, 3)
+							- if @profile.services.present? && @profile.specialties.present?
+								%br
+							= profile_display_specialties(@profile, 3)
+						%p= @profile.specialties_description
+			%table.info{border: "0", cellpadding: "0", cellspacing: "0"}
 				- if @profile.age_ranges.present?
 					%tr
 						%th
@@ -87,10 +89,10 @@
 		%article.review.even
 			%header.review-header
 				%span.author
-					%a{:href => "#"} Illiana Cruz
+					%a{href: "#"} Illiana Cruz
 				%span.location San Francisco, CA
 				%span.num-reviews
-					%a{:href => "#"} 6 reviews
+					%a{href: "#"} 6 reviews
 			%section.review-body
 				.reviews.reviewed-4-star
 					.star.star1
@@ -103,10 +105,10 @@
 		%article.review.odd
 			%header.review-header
 				%span.author
-					%a{:href => "#"} John Manning
+					%a{href: "#"} John Manning
 				%span.location San Francisco, CA
 				%span.num-reviews
-					%a{:href => "#"} 10 reviews
+					%a{href: "#"} 10 reviews
 			%section.review-body
 				.reviews.reviewed-4-star
 					.star.star1

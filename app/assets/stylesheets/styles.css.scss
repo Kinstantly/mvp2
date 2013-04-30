@@ -1,8 +1,5 @@
 // Styles for interior pages, i.e., not the home page.
 
-$default_font_family: Helvetica, Arial, sans-serif;
-$default_link_color: #0b99a2;
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -458,14 +455,16 @@ a:hover {
 	background: url('make-appointment.gif') 0px -33px;
 }
 .editor_buttons {
-	padding-left: 60px;
+}
+.editor_buttons {
+	background: #F5F5F5;
+	padding: 8px 8px 8px 68px;
 	font-family: $default_font_family;
 	a {
 		margin: 0 1em 0 1em;
 	}
 	#destroy_profile {
 		float: right;
-		padding-right: 2em;
 		input {
 			color: $default_link_color;
 			background: none;
@@ -606,52 +605,70 @@ div.popover {
 	box-shadow: 1px 3px 8px #CCC;
 	border: 1px solid #DDD;
 	margin-left: -25px;
+	form > div {
+		margin: 12px 0px 13px 0px;
+		clear: left;
+		> label {
+			margin-bottom: 6px;
+		}
+	}
+	.text_field {
+		textarea, input {
+			border: 1px solid #D5D5D5;
+			padding: 14px;
+			-moz-box-shadow: inset 4px 4px 10px #E5E5E5;
+			-webkit-box-shadow: inset 4px 4px 10px #E5E5E5;
+			box-shadow: inset 4px 4px 10px #E5E5E5;
+			width: 388px;
+			font-size: 13px;
+			color: #333;
+			line-height: 18px;
+			margin: 12px 0px 13px 0px;
+		}
+	}
+	label {
+		font-weight: bold;
+		color: #000;
+		font-size: 14px;
+	}
+	.check_box {
+		@include check-box-style;
+	}
+	span.note {
+		margin-left: 1em;
+	}
+	.text_area {
+		white-space: pre-line;
+	}
+	.save {
+		background: url('save-button.gif') 0px 0px;
+		width: 53px;
+		height: 26px;
+		text-indent: -999em;
+		float: left;
+		margin-right: 3px;
+	}
+	.save:hover {
+		background: url('save-button.gif') 0px -26px;
+		cursor: pointer;
+	}
+	a.cancel {
+		background: url('cancel-button.gif') 0px 0px; 
+		width: 61px;
+		height: 26px;
+		text-indent: -999em; 
+		display: block;
+		float: left;
+	}
+	a.cancel:hover {
+		background: url('cancel-button.gif') 0px -26px; 
+	}
 }
 .active {
 	background: none !important;
-}
-.active div.popover {
-	display: block;
-}
-div.popover textarea {
-	border: 1px solid #D5D5D5;
-	padding: 14px;
-	-moz-box-shadow: inset 4px 4px 10px #E5E5E5;
-	-webkit-box-shadow: inset 4px 4px 10px #E5E5E5;
-	box-shadow: inset 4px 4px 10px #E5E5E5;
-	width: 388px;
-	font-size: 13px;
-	color: #333;
-	line-height: 18px;
-	margin: 12px 0px 13px 0px;
-}
-div.popover label {
-	font-weight: bold;
-	color: #000;
-	font-size: 14px;
-}
-div.popover #save {
-	background: url('save-button.gif') 0px 0px;
-	width: 53px;
-	height: 26px;
-	text-indent: -999em;
-	float: left;
-	margin-right: 3px;
-}
-div.popover #save:hover {
-	background: url('save-button.gif') 0px -26px;
-	cursor: pointer;
-}
-div.popover a.cancel {
-	background: url('cancel-button.gif') 0px 0px; 
-	width: 61px;
-	height: 26px;
-	text-indent: -999em; 
-	display: block;
-	float: left;
-}
-div.popover a.cancel:hover {
-	background: url('cancel-button.gif') 0px -26px; 
+	div.popover {
+		display: block;
+	}
 }
 
 /*  Footer -------------------------------------------------------------------------- */
@@ -700,20 +717,4 @@ div.popover a.cancel:hover {
 	background: url('line-complete.gif');
 	height: 154px;
 	z-index: -1 !important;
-}
-
-/* Messages */
-
-.flash_messages {
-	font-family: $default_font_family;
-	line-height: 20px;
-	width: 100%;
-	text-align: center;
-	margin-top: 0.5em;
-	.notice {
-		color: rgba(0,127,0,0.92);
-	}
-	.alert {
-		color: rgba(159,0,0,0.92);
-	}
 }

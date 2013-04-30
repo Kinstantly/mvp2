@@ -1,0 +1,3 @@
+- if @update_succeeded
+	$('##{@formlet}').removeClass('active');
+$('##{@formlet}').html('#{escape_javascript(render partial: 'formlet')}');

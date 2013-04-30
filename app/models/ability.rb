@@ -20,6 +20,7 @@ class Ability
 			can :create, User, id: user.id
 			can :update, User, id: user.id
 			can :show, User, id: user.id
+			can :formlet_update, Profile, user_id: user.id
 		end
 		
 		if user.profile_editor?

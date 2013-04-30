@@ -67,8 +67,16 @@ module ProfilesHelper
 		"#{form_builder.try(:object_name).presence || 'profile'}[#{attr_name}][]"
 	end
 	
+	def profile_link(profile)
+		link_to "View profile", profile_path(profile) if can?(:show, profile)
+	end
+	
 	def edit_profile_link(profile)
 		link_to "Edit profile", edit_profile_path(profile) if can?(:update, profile)
+	end
+	
+	def edit_full_profile_link(profile)
+		link_to "Edit full profile", edit_plain_profile_path(profile) if can?(:update, profile)
 	end
 	
 	def new_invitation_profile_link(profile)
@@ -145,6 +153,17 @@ module ProfilesHelper
 	
 	def serialize_profile_text(text)
 		text.gsub(/\s*\n+\s*/, ', ')
+	end
+	
+	def profile_display_categories_services_specialties(profile, n=nil)
+		[profile_display_categories(profile, n).presence,
+			profile_display_services(profile, n).presence,
+			profile_display_specialties(profile, n).presence].compact.join(' | ')
+	end
+	
+	def profile_display_services_specialties(profile, n=nil)
+		[profile_display_services(profile, n).presence,
+			profile_display_specialties(profile, n).presence].compact.join(' | ')
 	end
 
 	# Categories helpers
@@ -255,7 +274,7 @@ module ProfilesHelper
 	end
 	
 	def profile_custom_services_autocomplete_field_tag(profile, value, suffix, form_builder=nil)
-		autocomplete_form_field profile_custom_services_tag_name(form_builder), value, autocomplete_service_name_profiles_path, id: profile_custom_services_id(suffix)
+		autocomplete_form_field profile_custom_services_tag_name(form_builder), value, autocomplete_service_name_profiles_path, id: profile_custom_services_id(suffix), placeholder: 'Type in a service'
 	end
 	
 	# Specialties helpers
@@ -312,7 +331,7 @@ module ProfilesHelper
 	end
 	
 	def profile_custom_specialties_autocomplete_field_tag(profile, value, suffix, form_builder=nil)
-		autocomplete_form_field profile_custom_specialties_tag_name(form_builder), value, autocomplete_specialty_name_profiles_path, id: profile_custom_specialties_id(suffix)
+		autocomplete_form_field profile_custom_specialties_tag_name(form_builder), value, autocomplete_specialty_name_profiles_path, id: profile_custom_specialties_id(suffix), placeholder: 'Type in a specialty'
 	end
 	
 	# Age range helpers

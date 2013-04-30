@@ -1,8 +1,6 @@
-- @body_class = 'interior'
+- @body_class ||= 'interior'
 - content_for :head do
-	= stylesheet_link_tag "styles", media: "screen, handheld, print"
-	= stylesheet_link_tag "jquery-ui-lightness", media: "screen, handheld, print"
-	= stylesheet_link_tag "jquery.rating", media: "screen, handheld, print"
+	= stylesheet_link_tag "interior", media: "screen, handheld, print"
 - content_for :body_header do
 	%header#branding.clearfix
 		.container
