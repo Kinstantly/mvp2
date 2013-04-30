@@ -3,14 +3,7 @@ class HomeController < ApplicationController
 	# before_filter :authenticate_user!
 	
 	def index
-		case params[:view]
-		when 'erb'
-			render handlers: [:erb], layout: false
-		when 'haml'
-			render handlers: [:haml], layout: 'application'
-		else
-			render handlers: [:haml], layout: 'application'
-		end
+		render layout: 'application'
 	end
 	
 	private
