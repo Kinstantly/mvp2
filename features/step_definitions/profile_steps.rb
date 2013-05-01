@@ -402,6 +402,7 @@ When /^I select the "(.*?)" age range$/ do |age_range|
 end
 
 When /^I select "(.*?)" as the search area tag$/ do |tag|
+	pending 'missing attributes in new design'
 	within('.location_contact_profile') do
 		select tag, from: 'Region for search'
 	end
@@ -440,6 +441,7 @@ When /^I click on the link for an unclaimed profile$/ do
 end
 
 When /^I enter "(.*?)" in the "(.*?)" field$/ do |text, field|
+	pending 'editor and admin functions in new design' if ['Admin notes', 'Lead generator'].include? field
 	fill_in field, with: text
 end
 
@@ -455,6 +457,7 @@ When /^I save the display name$/ do
 end
 
 When /^I check the publish box$/ do
+	pending 'editor and admin functions in new design'
 	check 'is_published'
 end
 
