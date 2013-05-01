@@ -1,0 +1,33 @@
+.edit.popover
+	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+		= f.error_messages
+		= hidden_field_tag 'formlet', formlet
+		.text_field
+			= f.label :first_name, 'First name'
+			= f.text_field :first_name, id: 'profile_first_name', class: 'display_name_field'
+		.text_field
+			= f.label :middle_name, 'Middle name or initial'
+			= f.text_field :middle_name, id: 'profile_middle_name', class: 'display_name_field'
+		.text_field
+			= f.label :last_name, 'Last name'
+			= f.text_field :last_name, id: 'profile_last_name', class: 'display_name_field'
+		.text_field
+			= f.label :credentials, "Degrees/credentials"
+			= f.text_field :credentials, id: 'profile_credentials', class: 'display_name_field'
+		.display_name_area
+			= f.label :display_name, 'Display name'
+			%span.display_name
+				= profile_display_name @profile
+		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+		= link_to 'Cancel', '#', class: 'cancel button'
+%h1.editable{itemprop: "name"}= @profile.display_name_or_company
+:coffeescript
+	$('##{formlet} .cancel').click (e) ->
+		$('##{formlet}').removeClass 'active'
+		$('##{formlet} h1.editable').removeClass 'active'
+		false # prevent click action and don't propagate to the parent editable element.
+	
+	# Refresh display name as contributing input tags are modified.
+	refresh_display_name = () ->
+		$('##{formlet} span.display_name').text profile_display_name($('#profile_first_name').val(), $('#profile_middle_name').val(), $('#profile_last_name').val(), $('#profile_credentials').val())
+	$('.display_name_field').keyup (e) -> refresh_display_name()

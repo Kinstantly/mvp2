@@ -12,7 +12,8 @@
 	%header#content-header.clearfix
 		= image_tag 'profile-photo.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
 		.profile{itemscope: "", itemtype: "http://schema.org/Person"}
-			%h1.editable{itemprop: "name"}= @profile.display_name_or_company
+			#display_name.editable
+				= render partial: 'formlet', locals: {formlet: 'display_name'}
 			= render partial: 'profiles/rating_score', locals: {profile: @profile}
 			%span.title.editable{itemprop: "jobTitle"} Pediatrician
 			%span.title.editable{itemprop: "affiliation"} Noe Valley Pediatrics

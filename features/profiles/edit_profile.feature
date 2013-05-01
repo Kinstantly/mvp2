@@ -6,8 +6,8 @@ Feature: Edit an expert's profile
 	Scenario: Save edited profile as an administrator
 		Given I am logged in as an administrator
 			And I visit the edit page for an unclaimed profile
-		When I enter "Capulet" in the "Last name" field
-			And I save the profile
+		When I enter "Capulet" in the "Last name" display name field
+			And I save the display name
 		Then the last name in the unclaimed profile should be "Capulet"
 
 	Scenario: Publish profile as an administrator
@@ -20,8 +20,8 @@ Feature: Edit an expert's profile
 	Scenario: Save edited profile as a profile editor
 		Given I am logged in as a profile editor
 			And I visit the edit page for an unclaimed profile
-		When I enter "Capulet" in the "Last name" field
-			And I save the profile
+		When I enter "Capulet" in the "Last name" display name field
+			And I save the display name
 		Then the last name in the unclaimed profile should be "Capulet"
 
 	Scenario: Assign search area tag as a profile editor

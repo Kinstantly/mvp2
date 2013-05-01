@@ -443,6 +443,17 @@ When /^I enter "(.*?)" in the "(.*?)" field$/ do |text, field|
 	fill_in field, with: text
 end
 
+When /^I enter "(.*?)" in the "(.*?)" display name field$/ do |text, field|
+	find('#display_name').click
+	fill_in field, with: text
+end
+
+When /^I save the display name$/ do
+	within('#display_name') do
+		click_button 'Save'
+	end
+end
+
 When /^I check the publish box$/ do
 	check 'is_published'
 end
