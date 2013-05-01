@@ -3,6 +3,24 @@
 $default_font_family: Helvetica, Arial, sans-serif;
 $default_link_color: #0b99a2;
 
+@mixin cell-style {
+	border: {
+		width: thin;
+		color: gray;
+		style: solid;
+	}
+	padding: 4px;
+}
+
+@mixin profile-admin-style {
+	> div {
+		margin-bottom: 0.5em;
+		.value {
+			@include cell-style;
+		}
+	}
+}
+
 @mixin check-box-style {
 	float: left;
 	margin-left: 1em;

@@ -1,12 +1,12 @@
 - @page_title_prefix = @profile.display_name_or_company
-.editor_buttons
-	= edit_profile_link @profile
-	- if can? :manage, Profile
+- if can? :manage, Profile
+	.editor_buttons
+		= edit_profile_link @profile
 		= edit_full_profile_link @profile
-	- if !@profile.claimed?
-		= new_invitation_profile_link @profile
-	- if can?(:destroy, @profile)
-		= render partial: 'destroy', locals: {profile: @profile}
+		- if !@profile.claimed?
+			= new_invitation_profile_link @profile
+		- if can?(:destroy, @profile)
+			= render partial: 'destroy', locals: {profile: @profile}
 %article#content
 	%header#content-header.clearfix{itemscope: "", itemtype: "http://schema.org/Person"}
 		= image_tag 'profile-photo.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
@@ -118,3 +118,23 @@
 					.star.star5
 					.review-date 11/12/10
 				%p We've been extremely pleased with the practice as a whole and with our pediatrician, Dr Hurd, who figured out that our baby's supposedly drastic weight loss was due to CPMC's mis-converting from grams to pounds and ounces.  Phone calls get answered by a human being (although I'm sometimes asked to hold briefly), and emails and calls to the on-duty nurses are returned quickly.
+-# For editors and administrators only.
+- if can? :manage, Profile
+	.editor_info
+		.publish_state
+			= @profile.is_published ? 'Profile is published' : 'Profile is NOT published'
+		.user_state
+			= @profile.claimed? ? "Profile is claimed by #{@profile.user.email}" : 'Profile is NOT claimed'
+		.invitation_state
+			= profile_invitation_info @profile
+- if current_user.try(:admin?)
+	.admin_info
+		- if @profile.admin_notes.present?
+			.admin_notes
+				%span.label Admin notes:
+				%br
+				.value.text_area= preserve @profile.admin_notes
+		- if @profile.lead_generator.present?
+			.lead_generator
+				Lead generator:
+				= @profile.lead_generator

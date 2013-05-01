@@ -454,9 +454,7 @@ a:hover {
 #appointment a:hover {
 	background: url('make-appointment.gif') 0px -33px;
 }
-.editor_buttons {
-}
-.editor_buttons {
+.editor_buttons, .editor_info, .admin_info {
 	background: #F5F5F5;
 	padding: 8px 8px 8px 68px;
 	font-family: $default_font_family;
@@ -473,6 +471,9 @@ a:hover {
 			text-decoration: underline;
 		}
 	}
+}
+.editor_info, .admin_info {
+	@include profile-admin-style;
 }
 
 /*  Profile summary -------------------------------------------------------------------------- */
