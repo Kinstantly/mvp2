@@ -523,7 +523,7 @@ end
 
 Then /^my edited information should be saved in my profile$/ do
 	page.should have_content @profile_data[:primary_phone]
-	page.should have_content @profile_data[:url]
+	page.should have_content @profile_data[:url].sub('http://', '')
 end
 
 Then /^my email address should be saved to my user record$/ do
