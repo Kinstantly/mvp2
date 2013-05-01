@@ -1,0 +1,6 @@
+- if @update_succeeded.nil?
+	window.location.replace("#{edit_profile_path @profile}");
+- else
+	- if @update_succeeded
+		$('##{@formlet}').removeClass('active');
+	$('##{@formlet}').html('#{escape_javascript(render partial: 'formlet')}');

@@ -54,9 +54,9 @@
 							%td= p.try(:admin_notes)
 							%td= p.try(:lead_generator)
 						%td= p.try(:rating_average_score).try(:round, 1)
-						%td= profile_website p
+						%td= profile_linked_website p
 						%td= p.try(:headline)
-						%td= p.try(:email)
+						%td= profile_linked_email p
 						- location = p.try(:locations).try(:first)
 						%td= location.try(:display_address)
 						%td= location.try(:display_phone)

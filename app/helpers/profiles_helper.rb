@@ -1,6 +1,7 @@
 module ProfilesHelper
-	def display_profile_item_names(items, n=items.try(:length))
-		items.collect(&:name).sort{|a, b| a.casecmp b}.slice(0, n).join(', ') if items.present?
+	def display_profile_item_names(items, n=nil)
+		n ||= items.try(:length)
+		items.collect(&:name).sort{|a, b| a.casecmp b}.slice(0, n).join(' | ') if items.present?
 	end
 	
 	def display_profile_time(time_with_zone)
@@ -24,9 +25,41 @@ module ProfilesHelper
 		age_ranges.sort_by(&:sort_index).map(&:name).join(', ')
 	end
 	
-	def profile_website(profile=current_user.try(:profile))
+	def profile_linked_website(profile=current_user.try(:profile))
 		if (url = profile.try(:url)).present?
-			auto_link "http://#{url.strip.gsub(/http:\/\//i, '')}", link: :urls
+			auto_link "http://#{url.strip.gsub(/http:\/\//i, '')}", link: :urls, html: { target: '_blank' } do |body|
+				body.sub(/^http:\/\//, '')
+			end
+		end
+	end
+	
+	def profile_linked_email(profile=current_user.try(:profile))
+		if (email = profile.try(:email)).present?
+			auto_link email.strip, link: :email_addresses
+		end
+	end
+	
+	def location_linked_phone(location=current_user.try(:profile).try(:locations).try(:first))
+		if (phone = location.try(:phone)).present? && (parsed_phone = Phonie::Phone.parse(phone))
+			link_to location.display_phone, parsed_phone.format('tel:+%c%a%f%l')
+		end
+	end
+	
+	def profile_consult_by_email_link(profile=current_user.try(:profile))
+		if profile.try(:consult_by_email).present?
+			profile_linked_email(profile).presence || tag('span')
+		end
+	end
+	
+	def profile_consult_by_phone_link(profile=current_user.try(:profile))
+		if profile.try(:consult_by_phone).present?
+			location_linked_phone(profile.try(:locations).try(:first)).presence || tag('span')
+		end
+	end
+	
+	def profile_visit_home_link(profile=current_user.try(:profile))
+		if profile.try(:visit_home).present?
+			profile_linked_website(profile).presence || tag('span')
 		end
 	end
 		
@@ -34,8 +67,20 @@ module ProfilesHelper
 		"#{form_builder.try(:object_name).presence || 'profile'}[#{attr_name}][]"
 	end
 	
+	def profile_link(profile)
+		link_to "View profile", profile_path(profile) if can?(:show, profile)
+	end
+	
 	def edit_profile_link(profile)
 		link_to "Edit profile", edit_profile_path(profile) if can?(:update, profile)
+	end
+	
+	# temporary; until the legacy code is fully merged into the new design; only to be used by profile editors.
+	def full_profile_link(profile)
+		link_to "View full profile", show_plain_profile_path(profile) if can?(:manage, profile)
+	end
+	def edit_full_profile_link(profile)
+		link_to "Edit full profile", edit_plain_profile_path(profile) if can?(:manage, profile)
 	end
 	
 	def new_invitation_profile_link(profile)
@@ -109,6 +154,21 @@ module ProfilesHelper
 	def profile_unclaimed_count
 		"Unclaimed: #{Profile.where(user_id: nil).count}"
 	end
+	
+	def serialize_profile_text(text)
+		text.gsub(/\s*\n+\s*/, ', ')
+	end
+	
+	def profile_display_categories_services_specialties(profile, n=nil)
+		[profile_display_categories(profile, n).presence,
+			profile_display_services(profile, n).presence,
+			profile_display_specialties(profile, n).presence].compact.join(' | ')
+	end
+	
+	def profile_display_services_specialties(profile, n=nil)
+		[profile_display_services(profile, n).presence,
+			profile_display_specialties(profile, n).presence].compact.join(' | ')
+	end
 
 	# Categories helpers
 	
@@ -140,8 +200,8 @@ module ProfilesHelper
 		label_tag profile_categories_id(category.id), category.name
 	end
 	
-	def profile_display_categories(profile=current_user.try(:profile))
-		display_profile_item_names profile.try(:categories)
+	def profile_display_categories(profile=current_user.try(:profile), n=nil)
+		display_profile_item_names profile.try(:categories), n
 	end
 	
 	def profile_custom_categories_id(s)
@@ -197,8 +257,8 @@ module ProfilesHelper
 		cache
 	end
 	
-	def profile_display_services(profile=current_user.try(:profile))
-		display_profile_item_names profile.try(:services)
+	def profile_display_services(profile=current_user.try(:profile), n=nil)
+		display_profile_item_names profile.try(:services), n
 	end
 	
 	def profile_custom_services_id(s)
@@ -218,7 +278,7 @@ module ProfilesHelper
 	end
 	
 	def profile_custom_services_autocomplete_field_tag(profile, value, suffix, form_builder=nil)
-		autocomplete_form_field profile_custom_services_tag_name(form_builder), value, autocomplete_service_name_profiles_path, id: profile_custom_services_id(suffix)
+		autocomplete_form_field profile_custom_services_tag_name(form_builder), value, autocomplete_service_name_profiles_path, id: profile_custom_services_id(suffix), placeholder: I18n.t('views.profile.edit.custom_service_placeholder')
 	end
 	
 	# Specialties helpers
@@ -254,8 +314,8 @@ module ProfilesHelper
 		cache
 	end
 		
-	def profile_display_specialties(profile=current_user.try(:profile))
-		display_profile_item_names profile.try(:specialties)
+	def profile_display_specialties(profile=current_user.try(:profile), n=nil)
+		display_profile_item_names profile.try(:specialties), n
 	end
 	
 	def profile_custom_specialties_id(s)
@@ -275,7 +335,7 @@ module ProfilesHelper
 	end
 	
 	def profile_custom_specialties_autocomplete_field_tag(profile, value, suffix, form_builder=nil)
-		autocomplete_form_field profile_custom_specialties_tag_name(form_builder), value, autocomplete_specialty_name_profiles_path, id: profile_custom_specialties_id(suffix)
+		autocomplete_form_field profile_custom_specialties_tag_name(form_builder), value, autocomplete_specialty_name_profiles_path, id: profile_custom_specialties_id(suffix), placeholder: I18n.t('views.profile.edit.custom_specialty_placeholder')
 	end
 	
 	# Age range helpers

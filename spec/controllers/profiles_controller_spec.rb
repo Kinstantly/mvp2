@@ -66,6 +66,19 @@ describe ProfilesController do
 				end
 			end
 		end
+		
+		describe "PUT 'formlet_update'" do
+			it "successfully updates the profile via a formlet" do
+				put :formlet_update, id: @me.profile.id, formlet: 'summary', profile: {summary: 'A short story.'}
+				response.should render_template('formlet')
+			end
+			
+			it "cannot update a profile I don't own" do
+				@profile = FactoryGirl.create(:published_profile)
+				put :formlet_update, id: @profile.id, formlet: 'summary', profile: {summary: 'A short story.'}
+				response.should_not render_template('formlet')
+			end
+		end
 	end
 	
 	context "as admin user" do

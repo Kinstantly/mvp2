@@ -13,10 +13,10 @@
 	}
 	.flash_messages {
 		.notice {
-			color: green;
+			color: rgba(0,127,0,0.92);
 		}
 		.alert {
-			color: red;
+			color: rgba(160,0,0,0.92);
 		}
 	}
 }

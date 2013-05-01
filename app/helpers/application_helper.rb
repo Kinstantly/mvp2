@@ -1,7 +1,7 @@
 module ApplicationHelper
 	
 	def company_name
-		'Get Answers 5555'
+		'Kinstantly'
 	end
 	
 	def show_link?(path=nil)
@@ -10,9 +10,9 @@ module ApplicationHelper
 	
 	def sign_in_out_link
 		if user_signed_in?
-			link_to 'Logout', destroy_user_session_path, method: :delete
+			link_to 'Sign out', destroy_user_session_path, method: :delete
 		elsif controller_name != 'sessions'
-			link_to 'Login', new_user_session_path
+			link_to 'Sign in', new_user_session_path
 		end
 	end
 	
@@ -24,13 +24,12 @@ module ApplicationHelper
 		"Become a #{link_to 'provider', provider_sign_up_path} or a #{link_to 'member', member_sign_up_path}".html_safe unless user_signed_in? || controller_name == 'registrations'
 	end
 	
-	def provider_sign_up_link
-		link_to 'Become a provider', provider_sign_up_path unless user_signed_in? || controller_name == 'registrations'
+	def provider_sign_up_link(body='Provider? Join us')
+		link_to body, provider_sign_up_path unless user_signed_in? || controller_name == 'registrations'
 	end
 	
 	def home_link
-		path = root_path
-		link_to "#{company_name}", path if show_link?(path)
+		link_to "#{company_name}", root_path
 	end
 	
 	def account_settings_link
@@ -105,7 +104,7 @@ module ApplicationHelper
 	
 	def terms_link
 		path = terms_path
-		link_to "Terms of Use", path if show_link?(path)
+		link_to "Terms of use", path if show_link?(path)
 	end
 	
 	def request_expert_link

@@ -1,0 +1,32 @@
+!!! XML
+!!!
+%html
+	%head
+		%title= @page_title.presence || company_name
+		= stylesheet_link_tag    "application", :media => "all"
+		= javascript_include_tag "application"
+		= csrf_meta_tags
+		= yield :head
+		= render partial: 'layouts/tracking'
+	%body
+		%a{name: 'top'}
+		.top_nav
+			%span.nav_el= greeting
+			%span.nav_el= provider_sign_up_link
+			%span.nav_el= home_link
+			%span.nav_el= about_link
+			%span.nav_el= terms_link
+			%span.nav_el= contact_link
+			%span.nav_el= view_user_profile_link
+			%span.nav_el= account_settings_link
+			%span.nav_el= sign_in_out_link
+			%span.nav_el= admin_profiles_link
+			%span.nav_el= admin_user_list_link
+			= render partial: 'profiles/search_form'
+			.flash_messages
+				.notice= notice
+				.alert= alert
+		= yield
+		.bottom_nav
+			= link_to "Go to top", '#top'
+			= home_link

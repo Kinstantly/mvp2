@@ -1,0 +1,65 @@
+// Styles and values used across the site.
+
+$default_font_family: Helvetica, Arial, sans-serif;
+$default_link_color: #0b99a2;
+
+@mixin cell-style {
+	border: {
+		width: thin;
+		color: gray;
+		style: solid;
+	}
+	padding: 4px;
+}
+
+@mixin profile-admin-style {
+	> div {
+		margin-bottom: 0.5em;
+		.value {
+			@include cell-style;
+		}
+	}
+}
+
+@mixin check-box-style {
+	float: left;
+	margin-left: 1em;
+	margin-bottom: 0.5em;
+	background-color: #F5F5F5;
+	label {
+		margin-left: 0.5em;
+		color: #807f7f;
+		font-size: 14px;
+		font-weight: normal;
+	}
+}
+
+span.note {
+	font: {
+		style: italic;
+		weight: lighter;
+		size: small;
+	}
+}
+
+/* Messages */
+
+.flash_messages {
+	font-family: $default_font_family;
+	line-height: 20px;
+	width: 100%;
+	text-align: center;
+	margin-top: 0.5em;
+	.notice {
+//		color: rgba(0,127,0,0.92);
+//		color: #afb434;
+//		color: rgb(175,180,52);
+		color: #9fa42f;
+//		color: rgb(159,164,47);
+	}
+	.alert {
+//		color: rgba(159,0,0,0.92);
+		color: #e43d5d;
+//		color: rgb(228,61,93);
+	}
+}

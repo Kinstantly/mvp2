@@ -1,7 +1,10 @@
 class HomeController < ApplicationController
 	before_filter :authorize_admin, only: [:admin]
 	# before_filter :authenticate_user!
-	# layout 'no_user_registration'
+	
+	def index
+		render layout: 'application'
+	end
 	
 	private
 	

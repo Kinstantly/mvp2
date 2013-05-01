@@ -1,4 +1,7 @@
 class ProfilesController < ApplicationController
+	
+	respond_to :html, :js
+	
 	before_filter :authenticate_user!, except: [:index, :show, :link_index, :search]
 	
 	# Side effect: loads @profiles or @profile as appropriate.
@@ -34,6 +37,16 @@ class ProfilesController < ApplicationController
 		@profiles = @profiles.page params[:page]
 	end
 	
+	# while implementing new design
+	def show
+		render layout: 'interior'
+	end
+	
+	# while implementing new design
+	def edit
+		render layout: 'interior'
+	end
+	
 	def create
 		# @profile initialized by load_and_authorize_resource with cancan ability conditions and then parameter values.
 		if @profile.save
@@ -53,6 +66,16 @@ class ProfilesController < ApplicationController
 			set_flash_message :alert, :profile_update_error
 			render action: :edit
 		end
+	end
+	
+	def formlet_update
+		@formlet = params[:formlet]
+		if @formlet.blank?
+			set_flash_message :alert, :profile_update_error
+		else
+			@update_succeeded = @profile.update_attributes(params[:profile])
+		end
+		respond_with @profile, layout: false
 	end
 	
 	# CanCan should prevent access to this action if the profile has been claimed.

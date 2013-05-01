@@ -54,7 +54,7 @@ div.view_profile {
 		}
 	}
 	.rating_info {
-		> div, form {
+		> div, > div > div, form {
 			display: inline-block;
 		}
 		> div {
@@ -76,6 +76,15 @@ div.view_profile {
 
 .edit_profile, .edit_account {
 	margin: $profile_margin;
+	.buttons {
+		margin-bottom: 1em;
+		a {
+			margin: 0 1em 0 1em;
+		}
+		#destroy_profile {
+			float: right;
+		}
+	}
 	form {
 		.account_areas, .profile_areas, .location_contact_profile {
 			> div {

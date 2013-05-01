@@ -1,14 +1,142 @@
-.view_profile
-	%h3#headline= @profile.display_name_or_company
-	.buttons
+- @page_title_prefix = @profile.display_name_or_company
+- if can? :manage, Profile
+	.editor_buttons
 		= edit_profile_link @profile
+		= full_profile_link @profile
+		= edit_full_profile_link @profile
 		- if !@profile.claimed?
 			= new_invitation_profile_link @profile
+		= admin_profiles_link
 		- if can?(:destroy, @profile)
 			= render partial: 'destroy', locals: {profile: @profile}
-	= render partial: 'view', locals: {profile: @profile}
-	.buttons
-		= edit_profile_link @profile
-		- if !@profile.claimed?
-			= new_invitation_profile_link @profile
-	-# = render partial: 'rating_system'
+%article#content
+	%header#content-header.clearfix{itemscope: "", itemtype: "http://schema.org/Person"}
+		= image_tag 'profile-photo.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
+		.profile
+			%h1{itemprop: "name"}= @profile.display_name_or_company
+			= render partial: 'profiles/rating_score', locals: {profile: @profile}
+			%span.title{itemprop: "jobTitle"}= @profile.headline
+			- if @profile.company_name.present? && @profile.display_name.present?
+				%span.title{itemprop: "affiliation"}= @profile.company_name
+			%span.location{itemprop: "street-address"}= @profile.locations.first.try(:display_address)
+			%span.location{itemprop: "telephone"}= @profile.locations.first.try(:display_phone)
+			%span.location{itemprop: "url"}= profile_linked_website @profile
+			- if @profile.email.present?
+				%span.location{itemprop: "email"}
+					email: #{profile_linked_email @profile}
+			- if can? :rate, @profile
+				= render partial: 'profiles/rate', locals: {profile: @profile}
+			- elsif !user_signed_in?
+				.rate
+					.rate-this
+						= link_to 'Sign in', member_sign_in_return_path
+						or
+						= link_to 'sign up', member_sign_up_return_path
+						= "to rate and review #{@profile.display_name_or_company}"
+		%ul.contact-toolbar
+			%li#consult_by_email= profile_consult_by_email_link @profile
+			%li#consult_by_phone= profile_consult_by_phone_link @profile
+			%li#visit_home= profile_visit_home_link @profile
+			%li#appointment
+				%a{href: "#"} Make an appointment
+	%section#details.clearfix
+		.interior
+			.summary-text
+				- if @profile.summary.present?
+					.summary
+						%h3 Summary
+						%p= @profile.summary
+				- if @profile.services.present? || @profile.specialties.present?
+					.services
+						%h3 Services / Specialties
+						/ <p>Pediatrician. Autism specturm, Developmental delay, Integrated functional medicine for kids, Evidence based complementary and alternative healing modalities.</p>
+						%p
+							= profile_display_services(@profile, 3)
+							- if @profile.services.present? && @profile.specialties.present?
+								%br
+							= profile_display_specialties(@profile, 3)
+						%p= @profile.specialties_description
+			%table.info{border: "0", cellpadding: "0", cellspacing: "0"}
+				- if @profile.age_ranges.present?
+					%tr
+						%th
+							%span Ages
+						%td= profile_age_ranges @profile
+				- if @profile.languages.present?
+					%tr
+						%th
+							%span Languages
+						%td= serialize_profile_text @profile.languages
+				- if @profile.education.present?
+					%tr
+						%th
+							%span Education
+						%td= serialize_profile_text @profile.education
+				- if @profile.certifications.present?
+					%tr
+						%th
+							%span Licenses / Certifications
+						%td= serialize_profile_text @profile.certifications
+				- if @profile.insurance_accepted.present?
+					%tr
+						%th
+							%span Insurance
+						%td= serialize_profile_text @profile.insurance_accepted
+				- if @profile.pricing.present?
+					%tr
+						%th
+							%span Rates
+						%td= serialize_profile_text @profile.pricing
+	%section#reviews.clearfix
+		%article.review.even
+			%header.review-header
+				%span.author
+					%a{href: "#"} Illiana Cruz
+				%span.location San Francisco, CA
+				%span.num-reviews
+					%a{href: "#"} 6 reviews
+			%section.review-body
+				.reviews.reviewed-4-star
+					.star.star1
+					.star.star2
+					.star.star3
+					.star.star4
+					.star.star5
+					.review-date 1/25/13
+				%p We've seen Dr. Hurd now 3 times, and each time, she is as personable and helpful as the last, from breastfeeding, to pumping, to sleep training.  I am sorry that there are folks who cannot get into this practice due to the "interview" process.  As one of the lucky ones, we were referred into NVP and went to interview a month before my due date.  Nurse Judy was so helpful and we chose Dr. Hurd based on the info she gave us.  Since then, we have attended one of Nurse Judy's classes, and plan to take many more.  She has classes for: new parents, illness, safety, and more!  I cannot imagine a better resource for new parents with an admittedly average-to-low-maintenance newborn baby (no special needs).  And so far, we've always been seen on time for appointments.
+		%article.review.odd
+			%header.review-header
+				%span.author
+					%a{href: "#"} John Manning
+				%span.location San Francisco, CA
+				%span.num-reviews
+					%a{href: "#"} 10 reviews
+			%section.review-body
+				.reviews.reviewed-4-star
+					.star.star1
+					.star.star2
+					.star.star3
+					.star.star4
+					.star.star5
+					.review-date 11/12/10
+				%p We've been extremely pleased with the practice as a whole and with our pediatrician, Dr Hurd, who figured out that our baby's supposedly drastic weight loss was due to CPMC's mis-converting from grams to pounds and ounces.  Phone calls get answered by a human being (although I'm sometimes asked to hold briefly), and emails and calls to the on-duty nurses are returned quickly.
+-# For editors and administrators only.
+- if can? :manage, Profile
+	.editor_info
+		.publish_state
+			= @profile.is_published ? 'Profile is published' : 'Profile is NOT published'
+		.user_state
+			= @profile.claimed? ? "Profile is claimed by #{@profile.user.email}" : 'Profile is NOT claimed'
+		.invitation_state
+			= profile_invitation_info @profile
+- if current_user.try(:admin?)
+	.admin_info
+		- if @profile.admin_notes.present?
+			.admin_notes
+				%span.label Admin notes:
+				%br
+				.value.text_area= preserve @profile.admin_notes
+		- if @profile.lead_generator.present?
+			.lead_generator
+				Lead generator:
+				= @profile.lead_generator

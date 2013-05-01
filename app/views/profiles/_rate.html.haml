@@ -1,11 +1,15 @@
 .rate_provider_form
 	- tag_class = 'rate_provider'
 	- form_id = "#{tag_class}_#{profile.id}"
-	= "#{profile.ratings.size > 0 ? 'Rate' : 'Be the first to rate'} #{profile.display_name_or_company}:"
+	.rate-this
+		= "#{profile.ratings.size > 0 ? 'Rate' : 'Be the first to rate'} #{profile.display_name_or_company}:"
 	= form_tag rate_profile_path(profile), id: form_id do
 		- current_user_score = profile.rating_by(current_user).try(:score).try(:round).presence || -1
 		- (1..5).each do |i|
 			= radio_button_tag "#{form_id}", i, (i == current_user_score), class: "#{tag_class}", title: provider_rating_title(i)
 
 :coffeescript
-	$("form##{form_id} input.#{tag_class}").rating(callback: (value, link) -> $.post('#{rate_profile_path profile}', score: value))
+	post_rating = (value, link) ->
+		$.post('#{rate_profile_path profile}', {score: value}, -> $('.provider_rating').load('#{rating_score_profile_path profile} .provider_rating > *', window.rating_score_reset))
+	$("form##{form_id} input.#{tag_class}").rating(callback: post_rating)
+	window.rate_reset = -> $("form input.#{tag_class}").rating(callback: post_rating)
