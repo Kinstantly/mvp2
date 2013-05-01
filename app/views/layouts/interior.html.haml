@@ -16,13 +16,13 @@
 							Already a member? #{sign_in_out_link}
 		#masthead.clearfix
 			%h1= home_link
-			#findProvider.aside
+			#search_providers.aside
 				= form_tag search_providers_path, method: :get, id: 'providerSearch' do
 					= text_field_tag :query, @search_query, id: 'provider_search_query', autocomplete: 'off', placeholder: 'doctor, tutor, therapist...'
 					.select-wrapper
 						%span.select-text
 						= select_tag :search_area_tag_id, search_area_tag_options(@search_area_tag_id), id: 'search_area_tag'
-					= submit_tag 'Search for free', disable_with: 'Searching...', class: 'button submit green', id: 'submit'
+					= submit_tag 'Search for free', disable_with: 'Searching...', class: 'button submit green', id: 'provider_search_button'
 					- if !user_signed_in?
 						%p.small
 							Provider? #{provider_sign_up_link 'Join us'}
