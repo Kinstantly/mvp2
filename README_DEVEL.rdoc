@@ -61,6 +61,10 @@ To deploy this release to staging follow the deploy instructions in README_DEPLO
  git flow release finish RELEASE_NAME
  git pull
  git push
+ git checkout master
+ git pull
+ git push
+ git checkout develop
 
 To deploy to production follow the deploy instructions in README_DEPLOY.rdoc.
 
@@ -105,6 +109,10 @@ Merge the bug fix back into the 'master' and 'develop' branches.
  git flow hotfix finish HOTFIX_NAME
  git pull
  git push
+ git checkout master
+ git pull
+ git push
+ git checkout develop
 
 To deploy to production follow the deploy instructions in README_DEPLOY.rdoc.
 
