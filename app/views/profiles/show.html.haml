@@ -2,9 +2,11 @@
 - if can? :manage, Profile
 	.editor_buttons
 		= edit_profile_link @profile
+		= full_profile_link @profile
 		= edit_full_profile_link @profile
 		- if !@profile.claimed?
 			= new_invitation_profile_link @profile
+		= admin_profiles_link
 		- if can?(:destroy, @profile)
 			= render partial: 'destroy', locals: {profile: @profile}
 %article#content

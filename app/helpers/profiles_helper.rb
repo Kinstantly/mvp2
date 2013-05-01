@@ -75,8 +75,12 @@ module ProfilesHelper
 		link_to "Edit profile", edit_profile_path(profile) if can?(:update, profile)
 	end
 	
+	# temporary; until the legacy code is fully merged into the new design; only to be used by profile editors.
+	def full_profile_link(profile)
+		link_to "View full profile", show_plain_profile_path(profile) if can?(:manage, profile)
+	end
 	def edit_full_profile_link(profile)
-		link_to "Edit full profile", edit_plain_profile_path(profile) if can?(:update, profile)
+		link_to "Edit full profile", edit_plain_profile_path(profile) if can?(:manage, profile)
 	end
 	
 	def new_invitation_profile_link(profile)
