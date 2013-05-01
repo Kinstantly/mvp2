@@ -63,6 +63,10 @@ def create_published_profile_2
 	@published_profile_2 = FactoryGirl.create(:profile, @published_profile_data_2)
 end
 
+def display_url(profile_data)
+	profile_data[:url].sub('http://', '')
+end
+
 ### GIVEN ###
 Given /^an empty profile right after registration and confirmation$/ do
 	set_up_new_data
@@ -537,7 +541,7 @@ end
 
 Then /^my edited information should be saved in my profile$/ do
 	page.should have_content @profile_data[:primary_phone]
-	page.should have_content @profile_data[:url].sub('http://', '')
+	page.should have_content display_url(@profile_data)
 end
 
 Then /^my email address should be saved to my user record$/ do
@@ -689,8 +693,8 @@ Then /^the display name should be updated to "(.*?)"$/ do |display_name|
 end
 
 Then /^I should see profile data for that user$/ do
-	within('.view_profile .url') do
-		page.should have_content @profile_data[:url]
+	within('span[itemprop="url"]') do
+		page.should have_content display_url(@profile_data)
 	end
 end
 
