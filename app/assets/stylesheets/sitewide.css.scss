@@ -34,7 +34,7 @@ $default_link_color: #0b99a2;
 	}
 }
 
-span.note {
+span.note, .blank_attr {
 	font: {
 		style: italic;
 		weight: lighter;

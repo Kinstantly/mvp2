@@ -73,6 +73,7 @@ class ProfilesController < ApplicationController
 		if @formlet.blank?
 			set_flash_message :alert, :profile_update_error
 		else
+			@refresh_formlets = params[:refresh_formlets]
 			@update_succeeded = @profile.update_attributes(params[:profile])
 		end
 		respond_with @profile, layout: false

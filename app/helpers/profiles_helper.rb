@@ -12,6 +12,10 @@ module ProfilesHelper
 		DEFAULT_COUNTRY_CODE
 	end
 	
+	def profile_blank_attribute_message(msg)
+		content_tag :span, msg, class: 'blank_attr'
+	end
+	
 	def profile_country(profile=current_user.try(:profile))
 		profile.try(:locations).try(:first).try(:country).presence || default_profile_country
 	end
@@ -25,17 +29,21 @@ module ProfilesHelper
 		age_ranges.sort_by(&:sort_index).map(&:name).join(', ')
 	end
 	
-	def profile_linked_website(profile=current_user.try(:profile))
+	def profile_linked_website(profile=current_user.try(:profile), msg_when_blank=nil)
 		if (url = profile.try(:url)).present?
 			auto_link "http://#{url.strip.gsub(/http:\/\//i, '')}", link: :urls, html: { target: '_blank' } do |body|
 				body.sub(/^http:\/\//, '')
 			end
+		elsif msg_when_blank
+			profile_blank_attribute_message msg_when_blank
 		end
 	end
 	
-	def profile_linked_email(profile=current_user.try(:profile))
+	def profile_linked_email(profile=current_user.try(:profile), msg_when_blank=nil)
 		if (email = profile.try(:email)).present?
 			auto_link email.strip, link: :email_addresses
+		elsif msg_when_blank
+			profile_blank_attribute_message msg_when_blank
 		end
 	end
 	

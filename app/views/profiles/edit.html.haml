@@ -12,18 +12,15 @@
 	%header#content-header.clearfix
 		= image_tag 'profile-photo.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
 		.profile{itemscope: "", itemtype: "http://schema.org/Person"}
-			#display_name.editable
+			#display_name.formlet
 				= render partial: 'formlet', locals: {formlet: 'display_name'}
 			= render partial: 'profiles/rating_score', locals: {profile: @profile}
-			%span.title.editable{itemprop: "jobTitle"} Pediatrician
-			%span.title.editable{itemprop: "affiliation"} Noe Valley Pediatrics
+			#job.formlet
+				= render partial: 'formlet', locals: {formlet: 'job'}
 			%span.location.editable{itemprop: "street-address"} 1234 Dolores St, San Francisco, CA 94110
 			%span.location.editable{itemprop: "telephone"} (415) 555-0123
-			%span.location.editable{itemprop: "url"}
-				%a{href: "http://www.noevalleypediatrics.com", target: "_blank"} www.noevalleypediatrics.com
-			%span.location.editable{itemprop: "email"}
-				email:
-				%a{href: "mailto:info@noevalleypediatrics.com"} info@noevalleypediatrics.com
+			#internet.formlet
+				= render partial: 'formlet', locals: {formlet: 'internet'}
 		%ul.contact-toolbar.editable
 			%li#consult_by_email= profile_consult_by_email_link @profile
 			%li#consult_by_phone= profile_consult_by_phone_link @profile
@@ -33,9 +30,9 @@
 	%section#details.clearfix
 		.interior
 			.summary-text
-				#summary.editable
+				#summary.formlet.editable
 					= render partial: 'formlet', locals: {formlet: 'summary'}
-				#services.editable
+				#services.formlet.editable
 					= render partial: 'formlet', locals: {formlet: 'services'}
 			%table.info{border: "0", cellpadding: "0", cellspacing: "0"}
 				%tr
@@ -67,4 +64,4 @@
 						%span.editable Rates
 					%td $150/hour
 :coffeescript
-	$('.editable').click -> $(this).addClass 'active'
+	$('.formlet').click -> $(this).addClass 'active'

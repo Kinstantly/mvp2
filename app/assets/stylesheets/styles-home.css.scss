@@ -242,6 +242,9 @@ a:hover {
 		text-decoration: underline;
 		color: #FFF;
 	}
+	select option {
+		font-size: 150%;
+	}
 }
 .category-list {
 	background: rgba(255,255,255,0.3);

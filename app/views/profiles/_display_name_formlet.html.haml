@@ -1,4 +1,6 @@
 .edit.popover
+	- if @profile.display_name.blank?
+		%span.note= 'Your company name is shown if these fields are left blank.'
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
@@ -20,13 +22,8 @@
 				= profile_display_name @profile
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
-%h1.editable{itemprop: "name"}= @profile.display_name_or_company
+%h1.editable{itemprop: "name"}= @profile.display_name_or_company.presence || profile_blank_attribute_message('Your name')
 :coffeescript
-	$('##{formlet} .cancel').click (e) ->
-		$('##{formlet}').removeClass 'active'
-		$('##{formlet} h1.editable').removeClass 'active'
-		false # prevent click action and don't propagate to the parent editable element.
-	
 	# Refresh display name as contributing input tags are modified.
 	refresh_display_name = () ->
 		$('##{formlet} span.display_name').text profile_display_name($('#profile_first_name').val(), $('#profile_middle_name').val(), $('#profile_last_name').val(), $('#profile_credentials').val())

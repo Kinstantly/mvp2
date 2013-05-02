@@ -3,4 +3,8 @@
 - else
 	- if @update_succeeded
 		$('##{@formlet}').removeClass('active');
-	$('##{@formlet}').html('#{escape_javascript(render partial: 'formlet')}');
+	- if @refresh_formlets
+		- @refresh_formlets.split.each do |f|
+			$('##{f}').html('#{escape_javascript(render partial: 'formlet', locals: {formlet: f})}');
+	- else
+		$('##{@formlet}').html('#{escape_javascript(render partial: 'formlet')}');

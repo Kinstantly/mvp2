@@ -23,7 +23,8 @@
 			%span.location{itemprop: "url"}= profile_linked_website @profile
 			- if @profile.email.present?
 				%span.location{itemprop: "email"}
-					email: #{profile_linked_email @profile}
+					email:
+					= profile_linked_email @profile
 			- if can? :rate, @profile
 				= render partial: 'profiles/rate', locals: {profile: @profile}
 			- elsif !user_signed_in?

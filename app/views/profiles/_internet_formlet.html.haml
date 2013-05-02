@@ -1,11 +1,16 @@
-%h3 Summary
 .edit.popover
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
 		.text_field
-			= f.label :summary, 'Summary:'
-			= f.text_area :summary, size: '45x5', class: 'attr'
+			= f.label :url, 'Website'
+			= f.text_field :url
+		.text_field
+			= f.label :email, "Public email"
+			= f.text_field :email
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
-%p= @profile.summary
+%span.location.editable{itemprop: "url"}= profile_linked_website @profile, 'Website URL'
+%span.location.editable{itemprop: "email"}
+	email:
+	= profile_linked_email @profile, 'Email address'

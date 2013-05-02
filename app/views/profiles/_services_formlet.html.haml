@@ -101,10 +101,6 @@
 %p= @profile.specialties_description
 
 :coffeescript
-	$('##{formlet} .cancel').click (e) ->
-		$('##{formlet}').removeClass 'active'
-		false # prevent click action and don't propagate to the parent editable element.
-	
 	# Show check boxes for children that belong to the currently checked parents.
 	# In addition, always show check boxes for children that were originally checked (i.e., are currently persisted).
 	show_check_boxes = (children) ->
