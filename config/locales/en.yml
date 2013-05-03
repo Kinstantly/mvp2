@@ -52,6 +52,13 @@ en:
         add_text_field: 'Hit ENTER to add another field'
         custom_service_placeholder: 'Type in a service'
         custom_specialty_placeholder: 'Type in a specialty'
+      consult_by_email: 'Email consultations'
+      consult_by_phone: 'Phone consultations'
+      consult_by_video: 'Video consultations'
+      consult_in_person: 'Office consultations'
+      consult_in_group: 'Group consultations'
+      visit_home: 'Home visits'
+      visit_school: 'School visits'
   rating:
     score_1: 'Really did not like'
     score_2: 'Did not like'

@@ -640,7 +640,7 @@ Then /^I should see published profile data$/ do
 end
 
 Then /^I should see (?:a new|an edit) profile form$/ do
-	within('.check_box') do
+	within('.edit.popover .categories') do
 		page.should have_content @predefined_category.name
 	end
 end

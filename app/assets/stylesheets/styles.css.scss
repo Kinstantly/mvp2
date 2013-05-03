@@ -170,20 +170,25 @@ a:hover {
 #access ul li a:hover {
 	text-decoration: underline;
 }
-#masthead {
-	background: #e23e5d;
-	padding: 32px 0px 22px 40px;
-	-webkit-border-top-left-radius: 8px;
-	-webkit-border-bottom-left-radius: 8px;
-	-moz-border-radius-topleft: 8px;
-	-moz-border-radius-bottomleft: 8px;
-	border-top-left-radius: 8px;
-	border-bottom-left-radius: 8px;
+
+$corner_radius: 8px;
+@mixin masthead-style {
+	padding-right: 0px;
+	padding-left: 40px;
+	-webkit-border-radius: $corner_radius;
+	-moz-border-radius: $corner_radius;
+	border-radius: $corner_radius;
 	-webkit-background-clip: padding-box;
 	clear: both;
 	width: 920px;
 	margin: 0px auto;
 	z-index: 100 !important;
+}
+#masthead {
+	background: #e23e5d;
+	padding-top: 32px;
+	padding-bottom: 22px;
+	@include masthead-style;
 }
 
 #search_providers {
@@ -404,7 +409,7 @@ a:hover {
 	padding-top: 3px;
 }
 .contact-toolbar {
-	width: 170px;
+	width: 210px;
 	float: left;
 	li {
 		float: left;
@@ -414,25 +419,50 @@ a:hover {
 			text-indent: -999em;
 			width: 20px;
 			height: 20px;
+			margin: 0px 3px 0px 5px;
 			float: left;
 		}
 	}
 	li#consult_by_email {
 		a, span {
-			background: url('contact-icons.gif') 0px 0px no-repeat;
+			background: url('contact-icons.png') 0px 0px no-repeat;
+			width: 20px;
 		}
 	}
 	li#consult_by_phone {
 		a, span {
-			background: url('contact-icons.gif') -25px 0px no-repeat;
+			background: url('contact-icons.png') -25px 0px no-repeat;
 			width: 19px;
-			margin: 0px 3px 0px 5px;
+		}
+	}
+	li#consult_by_video {
+		a, span {
+			background: url('contact-icons.png') -79px 0px no-repeat;
+			width: 19px;
+		}
+	}
+	li#consult_in_person {
+		a, span {
+			background: url('contact-icons.png') -160px 0px no-repeat;
+			width: 25px;
+		}
+	}
+	li#consult_in_group {
+		a, span {
+			background: url('contact-icons.png') -132px 0px no-repeat;
+			width: 22px;
 		}
 	}
 	li#visit_home {
 		a, span {
-			background: url('contact-icons.gif') -47px 0px no-repeat;
-			width: 23px;
+			background: url('contact-icons.png') -48px 0px no-repeat;
+			width: 24px;
+		}
+	}
+	li#visit_school {
+		a, span {
+			background: url('contact-icons.png') -105px 0px no-repeat;
+			width: 20px;
 		}
 	}
 }
@@ -451,8 +481,10 @@ a:hover {
 	background: url('make-appointment.gif') 0px -33px;
 }
 .editor_buttons, .editor_info, .admin_info {
+	@include masthead-style;
 	background: #F5F5F5;
-	padding: 8px 8px 8px 68px;
+	padding-top: 8px;
+	padding-bottom: 8px;
 	font-family: $default_font_family;
 	a {
 		margin: 0 1em 0 1em;

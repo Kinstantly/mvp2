@@ -243,12 +243,12 @@ Feature: Edit my expert profile
 		When I check "Email consultations"
 			And I check "Phone consultations"
 			And I check "Video consultations"
-			And I check "In-person consultations"
+			And I check "Office consultations"
 			And I save my profile
 		Then my profile should show "email" within "consultations"
 			And my profile should show "phone" within "consultations"
 			And my profile should show "video" within "consultations"
-			And my profile should show "in-person" within "consultations"
+			And my profile should show "office" within "consultations"
 	
 	Scenario: Enter specialties description
 		Given I exist as a user

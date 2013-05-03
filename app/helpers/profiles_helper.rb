@@ -53,24 +53,22 @@ module ProfilesHelper
 		end
 	end
 	
-	def profile_consult_by_email_link(profile=current_user.try(:profile))
+	def profile_consult_by_email_element(profile=current_user.try(:profile))
 		if profile.try(:consult_by_email).present?
-			profile_linked_email(profile).presence || tag('span')
+			profile_linked_email(profile).presence || content_tag(:span, t('views.profile.consult_by_email'))
 		end
 	end
 	
-	def profile_consult_by_phone_link(profile=current_user.try(:profile))
+	def profile_consult_by_phone_element(profile=current_user.try(:profile))
 		if profile.try(:consult_by_phone).present?
-			location_linked_phone(profile.try(:locations).try(:first)).presence || tag('span')
+			location_linked_phone(profile.try(:locations).try(:first)).presence || content_tag(:span, t('views.profile.consult_by_phone'))
 		end
 	end
 	
-	def profile_visit_home_link(profile=current_user.try(:profile))
-		if profile.try(:visit_home).present?
-			profile_linked_website(profile).presence || tag('span')
-		end
+	def profile_contact_icon_element(attribute, profile=current_user.try(:profile))
+		content_tag(:span, t("views.profile.#{attribute}")) if profile.try(attribute.to_sym).present?
 	end
-		
+	
 	def profile_attribute_tag_name(attr_name, form_builder=nil)
 		"#{form_builder.try(:object_name).presence || 'profile'}[#{attr_name}][]"
 	end
@@ -376,7 +374,7 @@ module ProfilesHelper
 		modes.push 'email' if profile.consult_by_email
 		modes.push 'phone' if profile.consult_by_phone
 		modes.push 'video' if profile.consult_by_video
-		modes.push 'in-person' if profile.consult_in_person
+		modes.push 'office' if profile.consult_in_person
 		modes.push 'group' if profile.consult_in_group
 		modes.join ', '
 	end
@@ -438,7 +436,7 @@ module ProfilesHelper
 		icons << 'email' if profile.consult_by_email
 		icons << 'phone' if profile.consult_by_phone
 		icons << 'video' if profile.consult_by_video
-		icons << 'in-person' if profile.consult_in_person
+		icons << 'office' if profile.consult_in_person
 		icons << 'group' if profile.consult_in_group
 		icons << 'home' if profile.visit_home
 		icons << 'school' if profile.visit_school
