@@ -264,13 +264,24 @@ end
 
 ### WHEN ###
 
-When /^I enter new profile information$/ do
-	fill_in 'profile_first_name', with: @unattached_profile_data[:first_name]
-	fill_in 'profile_middle_name', with: @unattached_profile_data[:middle_name]
-	fill_in 'profile_last_name', with: @unattached_profile_data[:last_name]
-	fill_in 'Website', with: @unattached_profile_data[:url]
-	within('.categories') do
+# Requires javascript.
+When /^I enter (?:new )?profile information$/ do
+	find('#display_name').click
+	within('#display_name') do
+		fill_in 'profile_first_name', with: @unattached_profile_data[:first_name]
+		fill_in 'profile_middle_name', with: @unattached_profile_data[:middle_name]
+		fill_in 'profile_last_name', with: @unattached_profile_data[:last_name]
+		click_button 'Save'
+	end
+	find('#internet').click
+	within('#internet') do
+		fill_in 'Website', with: @unattached_profile_data[:url]
+		click_button 'Save'
+	end
+	find('#services').click
+	within('#services') do
 		check MyHelpers.profile_categories_id(@predefined_category.id)
+		click_button 'Save'
 	end
 end
 
@@ -314,10 +325,6 @@ end
 
 When /^(?:I )?click edit my profile$/ do
 	click_link 'Edit my profile'
-end
-
-When /^I click on the cancel link$/ do
-	click_link 'Cancel'
 end
 
 When /^I save my profile$/ do
@@ -424,11 +431,6 @@ end
 
 When /^I visit the profile link index page$/ do
 	visit providers_path
-end
-
-When /^I visit the new profile page$/ do
-	set_up_new_data
-	visit new_profile_path
 end
 
 When /^I visit the profile admin page$/ do
@@ -645,12 +647,11 @@ Then /^I should see (?:a new|an edit) profile form$/ do
 	end
 end
 
-Then /^the new profile should be saved$/ do
-	find_unattached_profile
-	@profile.first_name.should == @unattached_profile_data[:first_name]
-	@profile.middle_name.should == @unattached_profile_data[:middle_name]
-	@profile.last_name.should == @unattached_profile_data[:last_name]
-	@profile.url.should == @unattached_profile_data[:url]
+Then /^I should see the new profile data$/ do
+	page.should have_content @unattached_profile_data[:first_name]
+	page.should have_content @unattached_profile_data[:middle_name]
+	page.should have_content @unattached_profile_data[:last_name]
+	page.should have_content display_url(@unattached_profile_data)
 end
 
 Then /^I should land on the view page for the unclaimed profile$/ do

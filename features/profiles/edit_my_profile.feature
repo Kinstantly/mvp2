@@ -30,7 +30,7 @@ Feature: Edit my expert profile
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I click on the cancel link
+		When I click on the "Cancel" link
 		Then I should land on the profile view page
 	
 	Scenario: Edit location address
