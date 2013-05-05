@@ -131,13 +131,18 @@
 			.check_box
 				= f.check_box :consult_in_group
 				= f.label :consult_in_group, "Group consultations"
-		.visits
 			.check_box
 				= f.check_box :visit_home
 				= f.label :visit_home, "Home visits"
 			.check_box
 				= f.check_box :visit_school
 				= f.label :visit_school, "School visits"
+			.check_box
+				= f.check_box :consult_at_hospital
+				= f.label :consult_at_hospital, "Hospital consultations"
+			.check_box
+				= f.check_box :consult_at_camp
+				= f.label :consult_at_camp, "Camp consultations"
 		.education
 			.label_area
 				= f.label :education, "Education"

@@ -59,6 +59,8 @@ en:
       consult_in_group: 'Group consultations'
       visit_home: 'Home visits'
       visit_school: 'School visits'
+      consult_at_hospital: 'Hospital visits'
+      consult_at_camp: 'Camp visits'
   rating:
     score_1: 'Really did not like'
     score_2: 'Did not like'

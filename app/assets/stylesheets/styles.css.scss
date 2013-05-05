@@ -409,7 +409,7 @@ $corner_radius: 8px;
 	padding-top: 3px;
 }
 .contact-toolbar {
-	width: 210px;
+	width: 270px;
 	float: left;
 	li {
 		float: left;
@@ -463,6 +463,18 @@ $corner_radius: 8px;
 		a, span {
 			background: url('contact-icons.png') -105px 0px no-repeat;
 			width: 20px;
+		}
+	}
+	li#consult_at_hospital {
+		a, span {
+			background: url('contact-icons.png') -189px 0px no-repeat;
+			width: 20px;
+		}
+	}
+	li#consult_at_camp {
+		a, span {
+			background: url('contact-icons.png') -211px 0px no-repeat;
+			width: 21px;
 		}
 	}
 }

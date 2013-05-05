@@ -112,6 +112,10 @@ module ApplicationHelper
 		link_to "Request a meeting", path if show_link?(path)
 	end
 	
+	def strip_url(url)
+		url.gsub(/https?:\/\//i, '').strip
+	end
+	
 	# Use this helper to work around a bug that causes an unchecked undefined value when using jQuery 1.9.
 	# http://github.com/crowdint/rails3-jquery-autocomplete/issues/210
 	def autocomplete_form_field(attribute, value, path, options={})

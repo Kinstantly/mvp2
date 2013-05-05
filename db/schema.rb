@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130329213833) do
+ActiveRecord::Schema.define(:version => 20130504234230) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -101,6 +101,8 @@ ActiveRecord::Schema.define(:version => 20130329213833) do
     t.float    "rating_average_score"
     t.boolean  "consult_in_group"
     t.text     "service_area"
+    t.boolean  "consult_at_hospital"
+    t.boolean  "consult_at_camp"
   end
 
   create_table "profiles_services", :force => true do |t|

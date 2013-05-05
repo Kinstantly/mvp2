@@ -189,25 +189,26 @@ describe Profile do
 		end
 	end
 	
-	context "consultations and visits" do
+	context "consultations" do
 		it "stores consultation preferences" do
 			@profile.consult_in_person = true
 			@profile.consult_in_group = false
 			@profile.consult_by_email = true
 			@profile.consult_by_phone = true
 			@profile.consult_by_video = false
+			@profile.visit_home = true
+			@profile.visit_school = false
+			@profile.consult_at_hospital = true
+			@profile.consult_at_camp = false
 			@profile.should have(:no).errors_on(:consult_in_person)
 			@profile.should have(:no).errors_on(:consult_in_group)
 			@profile.should have(:no).errors_on(:consult_by_email)
 			@profile.should have(:no).errors_on(:consult_by_phone)
 			@profile.should have(:no).errors_on(:consult_by_video)
-		end
-		
-		it "stores visitation preferences" do
-			@profile.visit_home = true
-			@profile.visit_school = false
 			@profile.should have(:no).errors_on(:visit_home)
 			@profile.should have(:no).errors_on(:visit_school)
+			@profile.should have(:no).errors_on(:consult_at_hospital)
+			@profile.should have(:no).errors_on(:consult_at_camp)
 		end
 	end
 	

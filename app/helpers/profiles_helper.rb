@@ -29,44 +29,61 @@ module ProfilesHelper
 		age_ranges.sort_by(&:sort_index).map(&:name).join(', ')
 	end
 	
-	def profile_linked_website(profile=current_user.try(:profile), msg_when_blank=nil)
+	def profile_linked_website(profile=current_user.try(:profile), title=nil)
 		if (url = profile.try(:url)).present?
-			auto_link "http://#{url.strip.gsub(/http:\/\//i, '')}", link: :urls, html: { target: '_blank' } do |body|
-				body.sub(/^http:\/\//, '')
+			auto_link "http://#{strip_url url}", link: :urls, html: { target: '_blank', title: title } do |body|
+				strip_url body
 			end
+		end
+	end
+	
+	def profile_display_website(profile=current_user.try(:profile), msg_when_blank=nil)
+		if (url = profile.try(:url)).present?
+			strip_url url
 		elsif msg_when_blank
 			profile_blank_attribute_message msg_when_blank
 		end
 	end
 	
-	def profile_linked_email(profile=current_user.try(:profile), msg_when_blank=nil)
+	def profile_linked_email(profile=current_user.try(:profile), title=nil)
 		if (email = profile.try(:email)).present?
-			auto_link email.strip, link: :email_addresses
+			auto_link email.strip, link: :email_addresses, html: { title: title }
+		end
+	end
+	
+	def profile_display_email(profile=current_user.try(:profile), msg_when_blank=nil)
+		if (email = profile.try(:email)).present?
+			email.strip
 		elsif msg_when_blank
 			profile_blank_attribute_message msg_when_blank
 		end
 	end
 	
-	def location_linked_phone(location=current_user.try(:profile).try(:locations).try(:first))
+	def location_linked_phone(location=current_user.try(:profile).try(:locations).try(:first), title=nil)
 		if (phone = location.try(:phone)).present? && (parsed_phone = Phonie::Phone.parse(phone))
-			link_to location.display_phone, parsed_phone.format('tel:+%c%a%f%l')
+			link_to location.display_phone, parsed_phone.format('tel:+%c%a%f%l'), title: title
 		end
 	end
 	
 	def profile_consult_by_email_element(profile=current_user.try(:profile))
 		if profile.try(:consult_by_email).present?
-			profile_linked_email(profile).presence || content_tag(:span, t('views.profile.consult_by_email'))
+			title = t 'views.profile.consult_by_email'
+			profile_linked_email(profile, title).presence || content_tag(:span, title, title: title)
 		end
 	end
 	
 	def profile_consult_by_phone_element(profile=current_user.try(:profile))
 		if profile.try(:consult_by_phone).present?
-			location_linked_phone(profile.try(:locations).try(:first)).presence || content_tag(:span, t('views.profile.consult_by_phone'))
+			title = t 'views.profile.consult_by_phone'
+			location_linked_phone(profile.try(:locations).try(:first), title).presence || content_tag(:span, title, title: title)
 		end
 	end
 	
 	def profile_contact_icon_element(attribute, profile=current_user.try(:profile))
-		content_tag(:span, t("views.profile.#{attribute}")) if profile.try(attribute.to_sym).present?
+		if profile.try(attribute.to_sym).present?
+			title = t "views.profile.#{attribute}"
+			content_tag :span, title, title: title
+		end
 	end
 	
 	def profile_attribute_tag_name(attr_name, form_builder=nil)
@@ -376,14 +393,10 @@ module ProfilesHelper
 		modes.push 'video' if profile.consult_by_video
 		modes.push 'office' if profile.consult_in_person
 		modes.push 'group' if profile.consult_in_group
-		modes.join ', '
-	end
-	
-	def profile_display_visitation_modes(profile)
-		return '' unless profile
-		modes = []
 		modes.push 'home' if profile.visit_home
 		modes.push 'school' if profile.visit_school
+		modes.push 'hospital' if profile.consult_at_hospital
+		modes.push 'camp' if profile.consult_at_camp
 		modes.join ', '
 	end
 	
@@ -431,7 +444,7 @@ module ProfilesHelper
 		[loc.try(:city).presence, loc.try(:region).presence].compact.join(', ')
 	end
 	
-	def search_result_consultations_visits(profile)
+	def search_result_consultations(profile)
 		icons = []
 		icons << 'email' if profile.consult_by_email
 		icons << 'phone' if profile.consult_by_phone
@@ -440,6 +453,8 @@ module ProfilesHelper
 		icons << 'group' if profile.consult_in_group
 		icons << 'home' if profile.visit_home
 		icons << 'school' if profile.visit_school
+		icons << 'hospital' if profile.consult_at_hospital
+		icons << 'camp' if profile.consult_at_camp
 		icons.join(' | ')
 	end
 	

@@ -32,7 +32,7 @@
 								= render partial: 'profiles/rating_score', locals: {profile: profile}
 							.availability.text_area.right= preserve "Availability:\n#{profile.availability}" if profile.availability.present?
 							.accepting_new_clients.right= profile_display_accepting_new_clients profile
-							.consultations.right= search_result_consultations_visits profile
+							.consultations.right= search_result_consultations profile
 
 :coffeescript
 	window.onload = ->

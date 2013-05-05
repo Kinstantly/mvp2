@@ -3,7 +3,7 @@
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
 		#consultations
-			= f.label :consultations, "Consultations"
+			= f.label :consultations, "Consultation methods and locations"
 			%br
 			.check_box
 				= f.check_box :consult_by_email
@@ -20,15 +20,18 @@
 			.check_box
 				= f.check_box :consult_in_group
 				= f.label :consult_in_group, "Group"
-		#visits
-			= f.label :visits, "Visits"
-			%br
 			.check_box
 				= f.check_box :visit_home
 				= f.label :visit_home, "Home"
 			.check_box
 				= f.check_box :visit_school
 				= f.label :visit_school, "School"
+			.check_box
+				= f.check_box :consult_at_hospital
+				= f.label :consult_at_hospital, "Hospital"
+			.check_box
+				= f.check_box :consult_at_camp
+				= f.label :consult_at_camp, "Camp"
 		#separator
 			&nbsp;
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
@@ -41,5 +44,7 @@
 	%li#consult_in_group= profile_contact_icon_element :consult_in_group, @profile
 	%li#visit_home= profile_contact_icon_element :visit_home, @profile
 	%li#visit_school= profile_contact_icon_element :visit_school, @profile
+	%li#consult_at_hospital= profile_contact_icon_element :consult_at_hospital, @profile
+	%li#consult_at_camp= profile_contact_icon_element :consult_at_camp, @profile
 	%li#appointment
 		%a{href: "#"} Make an appointment
