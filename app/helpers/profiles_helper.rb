@@ -65,27 +65,6 @@ module ProfilesHelper
 		end
 	end
 	
-	def profile_consult_by_email_element(profile=current_user.try(:profile))
-		if profile.try(:consult_by_email).present?
-			title = t 'views.profile.consult_by_email'
-			profile_linked_email(profile, title).presence || content_tag(:span, title, title: title)
-		end
-	end
-	
-	def profile_consult_by_phone_element(profile=current_user.try(:profile))
-		if profile.try(:consult_by_phone).present?
-			title = t 'views.profile.consult_by_phone'
-			location_linked_phone(profile.try(:locations).try(:first), title).presence || content_tag(:span, title, title: title)
-		end
-	end
-	
-	def profile_contact_icon_element(attribute, profile=current_user.try(:profile))
-		if profile.try(attribute.to_sym).present?
-			title = t "views.profile.#{attribute}"
-			content_tag :span, title, title: title
-		end
-	end
-	
 	def profile_attribute_tag_name(attr_name, form_builder=nil)
 		"#{form_builder.try(:object_name).presence || 'profile'}[#{attr_name}][]"
 	end
@@ -384,6 +363,33 @@ module ProfilesHelper
 	end
 	
 	# Consultations and visits
+	
+	def profile_consult_by_email_element(profile=current_user.try(:profile))
+		if profile.try(:consult_by_email).present?
+			title = t 'views.profile.consult_by_email'
+			profile_linked_email(profile, title).presence || content_tag(:span, title, title: title)
+		end
+	end
+	
+	def profile_consult_by_phone_element(profile=current_user.try(:profile))
+		if profile.try(:consult_by_phone).present?
+			title = t 'views.profile.consult_by_phone'
+			location_linked_phone(profile.try(:locations).try(:first), title).presence || content_tag(:span, title, title: title)
+		end
+	end
+	
+	def profile_contact_icon_element(attribute, profile=current_user.try(:profile))
+		if profile.try(attribute.to_sym).present?
+			title = t "views.profile.#{attribute}"
+			content_tag :span, title, title: title
+		end
+	end
+	
+	def profile_has_consultation_mode(profile)
+		profile.consult_by_email || profile.consult_by_phone || profile.consult_by_video ||
+			profile.consult_in_person || profile.consult_in_group || profile.visit_home || profile.visit_school ||
+			profile.consult_at_hospital || profile.consult_at_camp
+	end
 	
 	def profile_display_consultation_modes(profile)
 		return '' unless profile

@@ -408,8 +408,9 @@ $corner_radius: 8px;
 	margin-right: 6px;
 	padding-top: 3px;
 }
+$contact_toolbar_width: 270px;
 .contact-toolbar {
-	width: 270px;
+	width: $contact_toolbar_width;
 	float: left;
 	li {
 		float: left;
@@ -422,6 +423,10 @@ $corner_radius: 8px;
 			margin: 0px 3px 0px 5px;
 			float: left;
 		}
+	}
+	li .blank_attr {
+		text-indent: 0 !important;
+		width: $contact_toolbar_width;
 	}
 	li#consult_by_email {
 		a, span {
@@ -479,12 +484,12 @@ $corner_radius: 8px;
 	}
 }
 #appointment {
+	clear: left;
 	height: 33px;
 	margin-top: 17px;
 	margin-right: -3px;
 }
 #appointment a {
-	clear: left;
 	width: 170px;
 	height: 33px;
 	background: url('make-appointment.gif') 0px 0px;
@@ -714,6 +719,7 @@ div.popover {
 .formlet {
 	.blank_attr {
 		display: inline;
+		color: #807f7f;
 	}
 }
 

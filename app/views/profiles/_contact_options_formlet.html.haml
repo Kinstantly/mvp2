@@ -3,7 +3,7 @@
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
 		#consultations
-			= f.label :consultations, "Consultation methods and locations"
+			= f.label :consultations, t('views.profile.consultation_modes_title')
 			%br
 			.check_box
 				= f.check_box :consult_by_email
@@ -35,6 +35,8 @@
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
 %ul.contact-toolbar.editable
+	- unless profile_has_consultation_mode @profile
+		%li= profile_blank_attribute_message t('views.profile.consultation_modes_title')
 	%li#consult_by_email= profile_contact_icon_element :consult_by_email, @profile
 	%li#consult_by_phone= profile_contact_icon_element :consult_by_phone, @profile
 	%li#consult_by_video= profile_contact_icon_element :consult_by_video, @profile
