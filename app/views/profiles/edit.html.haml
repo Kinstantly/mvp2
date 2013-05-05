@@ -33,25 +33,15 @@
 			%table.info{border: "0", cellpadding: "0", cellspacing: "0"}
 				%tr#age_ranges.formlet
 					= render partial: 'formlet', locals: {formlet: 'age_ranges'}
-				%tr
-					%th
-						%span.editable Languages
-					%td English, Spanish
-				%tr
-					%th
-						%span.editable Education
-					%td Medical Degree, University of Washington
-				%tr
-					%th
-						%span.editable Licenses / Certifications
-					%td licensed in California
-				%tr
-					%th
-						%span.editable Insurance
-					%td Blue Shield of CA, Aetna, Blue Cross
-				%tr
-					%th
-						%span.editable Rates
-					%td $150/hour
+				%tr#languages.formlet
+					= render partial: 'formlet', locals: {formlet: 'languages'}
+				%tr#education.formlet
+					= render partial: 'formlet', locals: {formlet: 'education'}
+				%tr#certifications.formlet
+					= render partial: 'formlet', locals: {formlet: 'certifications'}
+				%tr#insurance_accepted.formlet
+					= render partial: 'formlet', locals: {formlet: 'insurance_accepted'}
+				%tr#pricing.formlet
+					= render partial: 'formlet', locals: {formlet: 'pricing'}
 :coffeescript
 	$('.formlet').click -> $(this).addClass 'active'

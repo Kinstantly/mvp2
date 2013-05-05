@@ -158,7 +158,7 @@ module ProfilesHelper
 	end
 	
 	def serialize_profile_text(text)
-		text.gsub(/\s*\n+\s*/, ', ')
+		text.strip.gsub(/\s*\n+\s*/, ', ') if text
 	end
 	
 	def profile_display_categories_services_specialties(profile, n=nil)

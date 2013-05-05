@@ -1,0 +1,14 @@
+%th
+	%span.editable Rates
+%td
+	= serialize_profile_text @profile.pricing
+	.edit.popover
+		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+			= f.error_messages
+			= hidden_field_tag 'formlet', formlet
+			.text_field
+				= f.label :pricing, "Rates"
+				= f.text_area :pricing, size: '45x5', class: 'attr'
+				%span.note= t('views.profile.pricing_example')
+			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+			= link_to 'Cancel', '#', class: 'cancel button'

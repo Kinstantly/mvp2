@@ -63,6 +63,7 @@ en:
       consult_at_hospital: 'Hospital visits'
       consult_at_camp: 'Camp visits'
       age_ranges_title: 'Ages/stages of clients/children (check all that apply)'
+      pricing_example: 'Example: $1/minute, $40/15 minutes, $120/hour'
   rating:
     score_1: 'Really did not like'
     score_2: 'Did not like'
