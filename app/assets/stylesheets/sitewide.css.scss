@@ -22,9 +22,9 @@ $default_link_color: #0b99a2;
 }
 
 @mixin check-box-style {
-	float: left;
+	display: inline-block;
 	margin-left: 1em;
-	margin-bottom: 0.5em;
+	margin-top: 0.5em;
 	background-color: #F5F5F5;
 	label {
 		margin-left: 0.5em;
