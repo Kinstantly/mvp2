@@ -1,0 +1,18 @@
+%th
+	%span.editable Ages
+%td
+	= profile_age_ranges @profile
+	.edit.popover
+		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+			= f.error_messages
+			= hidden_field_tag 'formlet', formlet
+			#age_range_checkboxes
+				= f.label :age_ranges, t('views.profile.age_ranges_title')
+				%br
+				= profile_age_ranges_hidden_field_tag(f)
+				- AgeRange.all.sort_by(&:sort_index).each do |age_range|
+					.check_box
+						= profile_age_ranges_check_box_tag(@profile, age_range, f)
+						= profile_age_ranges_check_box_label age_range
+			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+			= link_to 'Cancel', '#', class: 'cancel button'
