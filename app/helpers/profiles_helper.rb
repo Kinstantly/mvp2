@@ -468,4 +468,17 @@ module ProfilesHelper
 	def provider_rating_title(rating)
 		I18n.t "rating.score_#{rating.floor}"
 	end
+	
+	# Profile error messages
+	def profile_error_messages(profile, attr_names={})
+		if (errors = profile.errors).present?
+			content_tag :ul, class: 'errors' do
+				msgs = ''
+				errors.each do |attribute, error|
+					msgs << content_tag(:li, "#{attr_names[attribute].presence || attribute.to_s.humanize} #{h error}")
+				end
+				msgs.html_safe
+			end
+		end
+	end
 end

@@ -1,16 +1,16 @@
 .edit.popover
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
-		= f.error_messages
+		= profile_error_messages @profile, url: 'Website', email: 'Public email'
 		= hidden_field_tag 'formlet', formlet
 		.text_field
 			= f.label :url, 'Website'
 			= f.text_field :url
 		.text_field
-			= f.label :email, "Public email"
+			= f.label :email, 'Public email'
 			= f.text_field :email
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
-%span.location.editable{itemprop: "url"}= profile_display_website @profile, 'Website URL'
+%span.location.editable{itemprop: "url"}= profile_display_website @profile.errorfree, 'Website URL'
 %span.location.editable{itemprop: "email"}
 	email:
-	= profile_display_email @profile, 'Email address'
+	= profile_display_email @profile.errorfree, 'Email address'

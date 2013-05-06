@@ -5,6 +5,14 @@ class ActiveRecord::Base
 			}.compact.join(separator)
 	end
 	
+	def errorfree
+		@errorfree ||= begin
+			errors.present? && persisted? ? self.class.find(id) : self
+		rescue ActiveRecord::RecordNotFound
+			self
+		end
+	end
+	
 	private
 	
 	# Display country code, area code, number, and if present, extension.

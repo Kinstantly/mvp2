@@ -44,6 +44,10 @@ span.note, .blank_attr {
 
 /* Messages */
 
+// $notice_color: #afb434;
+$notice_color: #9fa42f;
+$alert_color: #e43d5d;
+
 .flash_messages {
 	font-family: $default_font_family;
 	line-height: 20px;
@@ -51,15 +55,15 @@ span.note, .blank_attr {
 	text-align: center;
 	margin-top: 0.5em;
 	.notice {
-//		color: rgba(0,127,0,0.92);
-//		color: #afb434;
-//		color: rgb(175,180,52);
-		color: #9fa42f;
-//		color: rgb(159,164,47);
+		color: $notice_color;
 	}
 	.alert {
-//		color: rgba(159,0,0,0.92);
-		color: #e43d5d;
-//		color: rgb(228,61,93);
+		color: $alert_color;
+	}
+}
+
+.formlet {
+	.errors {
+		color: $alert_color;
 	}
 }

@@ -67,6 +67,15 @@ def display_url(profile_data)
 	profile_data[:url].sub('http://', '')
 end
 
+def formlet_id(name)
+	case name
+	when 'display name'
+		'display_name'
+	else
+		name
+	end
+end
+
 ### GIVEN ###
 Given /^an empty profile right after registration and confirmation$/ do
 	set_up_new_data
@@ -451,13 +460,13 @@ When /^I enter "(.*?)" in the "(.*?)" field$/ do |text, field|
 	fill_in field, with: text
 end
 
-When /^I enter "(.*?)" in the "(.*?)" display name field$/ do |text, field|
-	find('#display_name').click
+When /^I enter "(.*?)" in the "(.*?)" field of the "(.*?)" formlet$/ do |text, field, formlet|
+	find("##{formlet_id formlet}").click
 	fill_in field, with: text
 end
 
-When /^I save the display name$/ do
-	within('#display_name') do
+When /^I save the "(.*?)" formlet$/ do |formlet|
+	within("##{formlet_id formlet}") do
 		click_button 'Save'
 	end
 end
