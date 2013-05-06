@@ -1,13 +1,13 @@
 %th
-	%span.editable Education
+	%span.editable= Profile.human_attribute_name(:education)
 %td
-	= serialize_profile_text @profile.education
+	= serialize_profile_text @profile.errorfree.education
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
 			= hidden_field_tag 'formlet', formlet
 			.text_field
-				= f.label :education, "Education"
+				= f.label :education
 				= f.text_area :education, size: '45x5', class: 'attr'
 			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 			= link_to 'Cancel', '#', class: 'cancel button'

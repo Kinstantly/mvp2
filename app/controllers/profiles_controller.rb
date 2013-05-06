@@ -64,7 +64,7 @@ class ProfilesController < ApplicationController
 			redirect_to profile_path @profile
 		else
 			set_flash_message :alert, :profile_update_error
-			render action: :edit
+			render action: :edit_plain
 		end
 	end
 	

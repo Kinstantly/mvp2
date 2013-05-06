@@ -1,10 +1,10 @@
-%h3 Categories / Services / Specialties
+%h3= "#{Profile.human_attribute_name :categories} / #{Profile.human_attribute_name :services} / #{Profile.human_attribute_name :specialties}"
 .edit.popover
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
 		.categories
-			= f.label :categories, "Categories"
+			= f.label :categories
 			%br
 			= profile_categories_hidden_field_tag(f)
 			- profile_category_choices(@profile).each do |category|
@@ -12,13 +12,13 @@
 					= profile_categories_check_box_tag(@profile, category, f)
 					= profile_categories_check_box_label category
 		.services
-			= f.label :services, "Services"
+			= f.label :services
 			%br
 			%span.predefined_services
 		.custom_services
-			= f.label :custom_service_names, 'Additional services'
+			= f.label :custom_service_names
 			= button_tag id: 'add_custom_services_text_field' do
-				= content_tag :strong, 'Enter a service not shown above'
+				= content_tag :strong, t('views.profile.edit.custom_service_button')
 			%br
 			= profile_custom_services_hidden_field_tag(f)
 			- i = 0; @profile.custom_service_names.each do |name|
@@ -27,13 +27,13 @@
 			- @profile_custom_services_i = i
 			- @profile_custom_services_text_field_template = profile_custom_services_autocomplete_field_tag(@profile, '', 'INDEX', f)
 		.specialties
-			= f.label :specialties, "Specialties"
+			= f.label :specialties
 			%br
 			%span.predefined_specialties
 		.custom_specialties
-			= f.label :custom_specialty_names, 'Additional specialties'
+			= f.label :custom_specialty_names
 			= button_tag id: 'add_custom_specialties_text_field' do
-				= content_tag :strong, 'Enter a specialty not shown above'
+				= content_tag :strong, t('views.profile.edit.custom_specialty_button')
 			%br
 			= profile_custom_specialties_hidden_field_tag(f)
 			- i = 0; @profile.custom_specialty_names.each do |name|
@@ -42,7 +42,7 @@
 			- @profile_custom_specialties_i = i
 			- @profile_custom_specialties_text_field_template = profile_custom_specialties_autocomplete_field_tag(@profile, '', 'INDEX', f)
 		.specialties_description.text_field
-			= f.label :specialties_description, "My specialties"
+			= f.label :specialties_description
 			= f.text_area :specialties_description, size: '25x4'
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
@@ -67,7 +67,7 @@
 			edit_profile.hidden_field_tags['services'] = 
 				"#{escape_javascript profile_services_hidden_field_tag(f)}";
 			edit_profile.prompts['services'] = 
-				"#{escape_javascript content_tag(:div, 'Choose a category and we\'ll show you a list of services.', class: 'notice')}";
+				"#{escape_javascript content_tag(:span, t('views.profile.edit.custom_service_prompt'), class: 'note')}";
 			// services -> specialties
 			edit_profile.parents['specialties'] = 'services';
 			edit_profile.check_box_caches['specialties'] = 
@@ -81,24 +81,24 @@
 			edit_profile.hidden_field_tags['specialties'] = 
 				"#{escape_javascript profile_specialties_hidden_field_tag(f)}";
 			edit_profile.prompts['specialties'] = 
-				"#{escape_javascript content_tag(:div, 'Choose a service and we\'ll show you a list of specialties.', class: 'notice')}";
+				"#{escape_javascript content_tag(:span, t('views.profile.edit.custom_specialty_prompt'), class: 'note')}";
 
 %p
-	- if @profile.categories.present?
-		= profile_display_categories(@profile)
+	- if @profile.errorfree.categories.present?
+		= profile_display_categories(@profile.errorfree)
 	- else
-		%span.note= 'No categories'
+		%span.note= t 'views.profile.edit.categories_blank'
 	%br
-	- if @profile.services.present?
-		= profile_display_services(@profile)
+	- if @profile.errorfree.services.present?
+		= profile_display_services(@profile.errorfree)
 	- else
-		%span.note= 'No services'
+		%span.note= t 'views.profile.edit.services_blank'
 	%br
-	- if @profile.specialties.present?
-		= profile_display_specialties(@profile)
+	- if @profile.errorfree.specialties.present?
+		= profile_display_specialties(@profile.errorfree)
 	- else
-		%span.note= 'No specialties'
-%p= @profile.specialties_description
+		%span.note=  t 'views.profile.edit.specialties_blank'
+%p= @profile.errorfree.specialties_description
 
 :coffeescript
 	# Show check boxes for children that belong to the currently checked parents.

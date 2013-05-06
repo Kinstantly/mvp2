@@ -380,7 +380,7 @@ module ProfilesHelper
 	
 	def profile_contact_icon_element(attribute, profile=current_user.try(:profile))
 		if profile.try(attribute.to_sym).present?
-			title = t "views.profile.#{attribute}"
+			title = Profile.human_attribute_name attribute
 			content_tag :span, title, title: title
 		end
 	end
@@ -469,16 +469,4 @@ module ProfilesHelper
 		I18n.t "rating.score_#{rating.floor}"
 	end
 	
-	# Profile error messages
-	def profile_error_messages(profile, attr_names={})
-		if (errors = profile.errors).present?
-			content_tag :ul, class: 'errors' do
-				msgs = ''
-				errors.each do |attribute, error|
-					msgs << content_tag(:li, "#{attr_names[attribute].presence || attribute.to_s.humanize} #{h error}")
-				end
-				msgs.html_safe
-			end
-		end
-	end
 end

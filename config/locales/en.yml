@@ -26,10 +26,6 @@ en:
     invite:
       subject: 'Claim your profile at Kinstantly!'
   models:
-    phone_number:
-      invalid: '^Phone number must be valid and properly formatted, e.g., "(800) 555-1234 x47"'
-    email:
-      invalid: 'must be a valid email address'
     profile:
       invitation_sent_at:
         save_error: 'could not be recorded'
@@ -46,24 +42,61 @@ en:
       custom_specialty_names:
         too_long: '^The name of each additional specialty must have no more than %{max} characters.'
       claimed: 'is already claimed. You cannot send an invitation.'
+  activerecord:
+    attributes:
+      profile:
+        age_ranges: 'Ages / Stages'
+        categories: 'Categories'
+        certifications: 'Licenses / Certifications'
+        credentials: 'Degrees / credentials'
+        company_name: 'Company name'
+        consult_by_email: 'Email consultations'
+        consult_by_phone: 'Phone consultations'
+        consult_by_video: 'Video consultations'
+        consult_in_person: 'Office consultations'
+        consult_in_group: 'Groups/classes'
+        consult_at_hospital: 'Hospitals/birth centers'
+        consult_at_camp: 'Camps/outdoors'
+        custom_service_names: 'Additional services'
+        custom_specialty_names: 'Additional specialties'
+        display_name: 'Display name'
+        education: 'Education'
+        email: 'Public email'
+        first_name: 'First name'
+        headline: "Professional headline as you'd like it to appear"
+        insurance_accepted: 'Insurance'
+        languages: 'Languages'
+        last_name: 'Last name'
+        middle_name: 'Middle name or initial'
+        pricing: 'Rates'
+        services: 'Services'
+        specialties: 'Specialties'
+        specialties_description: 'My specialties'
+        summary: 'About'
+        url: 'Website'
+        visit_home: 'Home visits'
+        visit_school: 'School visits'
+    errors:
+      messages:
+        invalid_phone_number: '^Phone number must be valid and properly formatted, e.g., "(800) 555-1234 x47"'
+        invalid_email: 'must be a valid address'
   views:
     profile:
       edit:
         add_text_field: 'Hit ENTER to add another field'
+        categories_blank: 'No categories'
         custom_service_placeholder: 'Type in a service'
+        custom_service_button: 'Enter a service not shown above'
+        custom_service_prompt: "Choose a category and we'll show you a list of services."
         custom_specialty_placeholder: 'Type in a specialty'
-      consultation_modes_title: 'Consultation methods and locations'
-      consult_by_email: 'Email consultations'
-      consult_by_phone: 'Phone consultations'
-      consult_by_video: 'Video consultations'
-      consult_in_person: 'Office consultations'
-      consult_in_group: 'Group consultations'
-      visit_home: 'Home visits'
-      visit_school: 'School visits'
-      consult_at_hospital: 'Hospital visits'
-      consult_at_camp: 'Camp visits'
-      age_ranges_title: 'Ages/stages of clients/children (check all that apply)'
-      pricing_example: 'Example: $1/minute, $40/15 minutes, $120/hour'
+        custom_specialty_button: 'Enter a specialty not shown above'
+        custom_specialty_prompt: "Choose a service and we'll show you a list of specialties."
+        consultation_modes_title: 'Consultation methods and locations'
+        display_name_blank: 'Your company name is shown if these fields are left blank.'
+        display_name_or_company_blank: 'Your name'
+        pricing_example: 'Example: $1/minute, $40/15 minutes, $120/hour'
+        services_blank: 'No services'
+        specialties_blank: 'No specialties'
   rating:
     score_1: 'Really did not like'
     score_2: 'Did not like'

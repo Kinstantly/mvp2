@@ -1,13 +1,13 @@
 %th
-	%span.editable Ages
+	%span.editable= Profile.human_attribute_name(:age_ranges)
 %td
-	= profile_age_ranges @profile
+	= profile_age_ranges @profile.errorfree
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
 			= hidden_field_tag 'formlet', formlet
 			#age_range_checkboxes
-				= f.label :age_ranges, t('views.profile.age_ranges_title')
+				= f.label :age_ranges
 				%br
 				= profile_age_ranges_hidden_field_tag(f)
 				- AgeRange.all.sort_by(&:sort_index).each do |age_range|

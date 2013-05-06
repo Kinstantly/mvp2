@@ -63,7 +63,13 @@ $alert_color: #e43d5d;
 }
 
 .formlet {
-	.errors {
+	.errorExplanation {
 		color: $alert_color;
+		h2, p {
+			display: none;
+		}
+	}
+	.field_with_errors label {
+		background-color: rgba(228,61,93,0.2);
 	}
 }

@@ -1,13 +1,13 @@
 %th
-	%span.editable Insurance
+	%span.editable= Profile.human_attribute_name(:insurance_accepted)
 %td
-	= serialize_profile_text @profile.insurance_accepted
+	= serialize_profile_text @profile.errorfree.insurance_accepted
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
 			= hidden_field_tag 'formlet', formlet
 			.text_field
-				= f.label :insurance_accepted, "Insurance"
+				= f.label :insurance_accepted
 				= f.text_area :insurance_accepted, size: '45x5', class: 'attr'
 			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 			= link_to 'Cancel', '#', class: 'cancel button'

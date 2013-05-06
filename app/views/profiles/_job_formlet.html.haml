@@ -4,12 +4,14 @@
 		= hidden_field_tag 'formlet', formlet
 		= hidden_field_tag 'refresh_formlets', "#{formlet} display_name"
 		.text_field
-			= f.label :headline, "Professional headline as you'd like it to appear"
+			= f.label :headline
 			= f.text_field :headline
 		.text_field
-			= f.label :company_name, 'Company name'
+			= f.label :company_name
 			= f.text_field :company_name
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
-%span.title.editable{itemprop: "jobTitle"}= @profile.headline.presence || profile_blank_attribute_message('Professional headline')
-%span.title.editable{itemprop: "affiliation"}= @profile.company_name.presence || profile_blank_attribute_message('Company name')
+%span.title.editable{itemprop: "jobTitle"}
+	= @profile.errorfree.headline.presence || profile_blank_attribute_message(Profile.human_attribute_name :headline)
+%span.title.editable{itemprop: "affiliation"}
+	= @profile.errorfree.company_name.presence || profile_blank_attribute_message(Profile.human_attribute_name :company_name)

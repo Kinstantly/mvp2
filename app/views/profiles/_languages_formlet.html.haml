@@ -1,13 +1,13 @@
 %th
-	%span.editable Languages
+	%span.editable= Profile.human_attribute_name(:languages)
 %td
-	= serialize_profile_text @profile.languages
+	= serialize_profile_text @profile.errorfree.languages
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
 			= hidden_field_tag 'formlet', formlet
 			.text_field
-				= f.label :languages, "Languages"
+				= f.label :languages
 				= f.text_field :languages, class: 'attr'
 			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 			= link_to 'Cancel', '#', class: 'cancel button'

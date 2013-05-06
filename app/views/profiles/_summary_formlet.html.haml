@@ -1,11 +1,11 @@
-%h3 Summary
+%h3= Profile.human_attribute_name(:summary)
 .edit.popover
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
 		.text_field
-			= f.label :summary, 'Summary:'
+			= f.label :summary
 			= f.text_area :summary, size: '45x5', class: 'attr'
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
-%p= @profile.summary
+%p= @profile.errorfree.summary
