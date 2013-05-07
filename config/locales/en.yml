@@ -98,8 +98,15 @@ en:
         services_blank: 'No services'
         specialties_blank: 'No specialties'
   rating:
+    no_score: 'Not rated yet'
     score_1: 'Really did not like'
     score_2: 'Did not like'
     score_3: 'OK'
     score_4: 'Liked'
     score_5: 'Liked a lot!'
+    prompt_for_score: 'Rate %{name}'
+    prompt_for_first_score: 'Be the first to rate %{name}'
+    none: 'No ratings'
+    how_many:
+      one: '1 rating'
+      other: '%{count} ratings'

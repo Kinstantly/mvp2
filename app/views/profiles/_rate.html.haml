@@ -2,7 +2,10 @@
 	- tag_class = 'rate_provider'
 	- form_id = "#{tag_class}_#{profile.id}"
 	.rate-this
-		= "#{profile.ratings.size > 0 ? 'Rate' : 'Be the first to rate'} #{profile.display_name_or_company}:"
+		- if profile.ratings.size > 0
+			= t 'rating.prompt_for_score', name: profile.display_name_or_company
+		- else
+			= t 'rating.prompt_for_first_score', name: profile.display_name_or_company
 	= form_tag rate_profile_path(profile), id: form_id do
 		- current_user_score = profile.rating_by(current_user).try(:score).try(:round).presence || -1
 		- (1..5).each do |i|
