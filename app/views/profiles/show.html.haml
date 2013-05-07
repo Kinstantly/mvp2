@@ -30,10 +30,7 @@
 			- elsif !user_signed_in?
 				.rate
 					.rate-this
-						= link_to 'Sign in', member_sign_in_return_path
-						or
-						= link_to 'sign up', member_sign_up_return_path
-						= "to rate and review #{@profile.display_name_or_company}"
+						= render partial: 'profiles/rate_prompt_signed_out', locals: {profile: @profile}
 		%ul.contact-toolbar
 			%li#consult_by_email= profile_consult_by_email_element @profile
 			%li#consult_by_phone= profile_consult_by_phone_element @profile
@@ -51,48 +48,47 @@
 			.summary-text
 				- if @profile.summary.present?
 					.summary
-						%h3 Summary
+						%h3= Profile.human_attribute_name :summary
 						%p= @profile.summary
 				- if @profile.services.present? || @profile.specialties.present?
 					.services
-						%h3 Services / Specialties
-						/ <p>Pediatrician. Autism specturm, Developmental delay, Integrated functional medicine for kids, Evidence based complementary and alternative healing modalities.</p>
+						%h3= Profile.human_attribute_name :specialties
 						%p
-							= profile_display_services(@profile, 3)
+							= profile_display_services(@profile, 6)
 							- if @profile.services.present? && @profile.specialties.present?
 								%br
-							= profile_display_specialties(@profile, 3)
+							= profile_display_specialties(@profile, 6)
 						%p= @profile.specialties_description
 			%table.info{border: "0", cellpadding: "0", cellspacing: "0"}
 				- if @profile.age_ranges.present?
 					%tr
 						%th
-							%span Ages
+							%span= Profile.human_attribute_name :age_ranges
 						%td= profile_age_ranges @profile
 				- if @profile.languages.present?
 					%tr
 						%th
-							%span Languages
+							%span= Profile.human_attribute_name :languages
 						%td= serialize_profile_text @profile.languages
 				- if @profile.education.present?
 					%tr
 						%th
-							%span Education
+							%span= Profile.human_attribute_name :education
 						%td= serialize_profile_text @profile.education
 				- if @profile.certifications.present?
 					%tr
 						%th
-							%span Licenses / Certifications
+							%span= Profile.human_attribute_name :certifications
 						%td= serialize_profile_text @profile.certifications
 				- if @profile.insurance_accepted.present?
 					%tr
 						%th
-							%span Insurance
+							%span= Profile.human_attribute_name :insurance_accepted
 						%td= serialize_profile_text @profile.insurance_accepted
 				- if @profile.pricing.present?
 					%tr
 						%th
-							%span Rates
+							%span= Profile.human_attribute_name :pricing
 						%td= serialize_profile_text @profile.pricing
 	%section#reviews.clearfix
 		%article.review.even

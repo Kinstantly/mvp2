@@ -366,14 +366,14 @@ module ProfilesHelper
 	
 	def profile_consult_by_email_element(profile=current_user.try(:profile))
 		if profile.try(:consult_by_email).present?
-			title = t 'views.profile.consult_by_email'
+			title = Profile.human_attribute_name :consult_by_email
 			profile_linked_email(profile, title).presence || content_tag(:span, title, title: title)
 		end
 	end
 	
 	def profile_consult_by_phone_element(profile=current_user.try(:profile))
 		if profile.try(:consult_by_phone).present?
-			title = t 'views.profile.consult_by_phone'
+			title = Profile.human_attribute_name :consult_by_phone
 			location_linked_phone(profile.try(:locations).try(:first), title).presence || content_tag(:span, title, title: title)
 		end
 	end
