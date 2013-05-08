@@ -140,8 +140,7 @@ describe ProfilesController do
 	
 		describe "GET 'edit'" do
 			before(:each) do
-				FactoryGirl.create(:profile)
-				@profile = Profile.all.first
+				@profile = FactoryGirl.create(:profile)
 				get :edit, id: @profile.id
 			end
 		
@@ -151,6 +150,10 @@ describe ProfilesController do
 		
 			it "assigns @profile" do
 				assigns[:profile].should == @profile
+			end
+			
+			it "ensures the profile has a location record to edit or fill in" do
+				assigns[:profile].should have_at_least(1).location
 			end
 		end
 	
