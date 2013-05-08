@@ -181,16 +181,26 @@ Feature: Edit my expert profile
 		When I am on my profile edit page
 		Then I should be offered no specialties
 
-	Scenario: Select age ranges
+	Scenario: Select non-adjacent age ranges
 		Given I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I select the "0 to 6" age range
-			And I select the "6 to 12" age range
+		When I select the "0-1" age range
+			And I select the "3-5" age range
 			And I save my profile
-		Then my profile should show the "0 to 6" age range
-			And my profile should show the "6 to 12" age range
+		Then my profile should show the "0-1" age range
+			And my profile should show the "3-5" age range
+	
+	Scenario: Merge adjacent age ranges
+		Given I exist as a user
+			And I want my profile
+			And I am logged in
+			And I am on my profile edit page
+		When I select the "1-3" age range
+			And I select the "3-5" age range
+			And I save my profile
+		Then my profile should show the "1-5" age range
 	
 	@javascript
 	Scenario: Show display name as editing

@@ -36,8 +36,9 @@ def create_profile
 	@profile = FactoryGirl.create(:profile, @profile_data)
 	@user.profile = @profile
 	@user.save
-	FactoryGirl.create(:age_range, name: '0 to 6')
-	FactoryGirl.create(:age_range, name: '6 to 12')
+	FactoryGirl.create(:age_range, name: '0-1', sort_index: 1, start: '0', end: '1')
+	FactoryGirl.create(:age_range, name: '1-3', sort_index: 2, start: '1', end: '3')
+	FactoryGirl.create(:age_range, name: '3-5', sort_index: 3, start: '3', end: '5')
 end
 
 def create_profile_2

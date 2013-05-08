@@ -25,8 +25,15 @@ module ProfilesHelper
 	end
 	
 	def profile_age_ranges(profile=current_user.try(:profile))
-		age_ranges = profile.try(:age_ranges).presence || []
-		age_ranges.sort_by(&:sort_index).map(&:name).join(', ')
+		(profile.try(:age_ranges).presence || []).sort_by(&:sort_index).inject([]) { |display_ranges, age_range|
+			if (start = age_range.start).present? && (last = display_ranges.last).present? && start == last[:end]
+				last[:end] = age_range.end
+				last[:name] = "#{last[:start]}-#{last[:end]}"
+				display_ranges
+			else
+				display_ranges << {name: age_range.name, start: age_range.start, end: age_range.end}
+			end
+		}.map{ |range| range[:name] }.join(', ')
 	end
 	
 	def profile_linked_website(profile=current_user.try(:profile), title=nil)
