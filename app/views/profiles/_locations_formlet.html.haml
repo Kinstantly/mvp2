@@ -1,0 +1,41 @@
+- locations = @profile.locations.sort_by(&:created_at)
+- @country ||= (locations.first.try(:country).presence || default_profile_country)
+.edit.popover
+	= nested_form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+		%h3{class: 'form_section'}= Profile.human_attribute_name :locations
+		= f.error_messages
+		= hidden_field_tag 'formlet', formlet
+		= f.fields_for :locations, locations do |lf|
+			.text_field
+				= lf.label :address1
+				- address1_prompt = t 'views.location.edit.address1_prompt'
+				= lf.text_field :address1, placeholder: address1_prompt, title: address1_prompt
+				- address2_prompt = t 'views.location.edit.address2_prompt'
+				= lf.text_field :address2, placeholder: address2_prompt, title: address2_prompt
+			.text_field
+				= lf.label :city
+				= autocomplete_form_field :city, nil, autocomplete_location_city_profiles_path, form_builder: lf
+				= lf.label :region
+				= lf.subregion_select :region, @country, include_blank: '--'
+			.text_field
+				= lf.label :postal_code
+				= lf.text_field :postal_code
+				= lf.hidden_field :country, value: @country
+			.text_field
+				= lf.label :phone
+				= lf.text_field :phone
+			- if current_user.profile_editor?
+				.text_field
+					= lf.label :search_area_tag_id
+					= lf.collection_select :search_area_tag_id, SearchAreaTag.all, :id, :name, {include_blank: 'Other'}
+			= lf.link_to_remove t('views.location.edit.remove'), confirm: t('views.location.edit.remove_confirm')
+		= f.link_to_add t('views.location.edit.add'), :locations, class: 'form_section'
+		#locations_buttons
+			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+			= link_to 'Cancel', '#', class: 'cancel button'
+-# Display the first-created location (if any) of the STORED profile.
+- location = @profile.errorfree.locations.sort_by(&:created_at).first
+%span.location.editable{itemprop: "street-address"}
+	= location.try(:display_address).presence || profile_blank_attribute_message(Location.human_attribute_name :display_address)
+%span.location.editable{itemprop: "telephone"}
+	= location.try(:display_phone).presence || profile_blank_attribute_message(Location.human_attribute_name :display_phone)

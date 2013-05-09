@@ -18,8 +18,9 @@
 			%span.title{itemprop: "jobTitle"}= @profile.headline
 			- if @profile.company_name.present? && @profile.display_name.present?
 				%span.title{itemprop: "affiliation"}= @profile.company_name
-			%span.location{itemprop: "street-address"}= @profile.locations.first.try(:display_address)
-			%span.location{itemprop: "telephone"}= @profile.locations.first.try(:display_phone)
+			- location = @profile.locations.sort_by(&:created_at).first
+			%span.location{itemprop: "street-address"}= location.try(:display_address)
+			%span.location{itemprop: "telephone"}= location.try(:display_phone)
 			%span.location{itemprop: "url"}= profile_linked_website @profile
 			- if @profile.email.present?
 				%span.location{itemprop: "email"}

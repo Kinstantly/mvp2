@@ -76,6 +76,15 @@ en:
         url: 'Website'
         visit_home: 'Home visits'
         visit_school: 'School visits'
+      location:
+        address1: 'Address'
+        city: 'City'
+        region: 'State'
+        postal_code: 'Zip code'
+        phone: 'Phone'
+        search_area_tag_id: 'Region for search'
+        display_address: 'Address'
+        display_phone: 'Phone'
     errors:
       messages:
         invalid_phone_number: '^Phone number must be valid and properly formatted, e.g., "(800) 555-1234 x47"'
@@ -97,6 +106,13 @@ en:
         pricing_example: 'Example: $1/minute, $40/15 minutes, $120/hour'
         services_blank: 'No services'
         specialties_blank: 'No specialties'
+    location:
+      edit:
+        address1_prompt: 'number and street'
+        address2_prompt: 'room, suite, floor if any'
+        remove: 'Mark the above location for removal upon saving'
+        remove_confirm: 'This location will be removed when you click save.'
+        add: 'Fill in a new location'
   rating:
     no_score: 'Not rated yet'
     score_1: 'Really did not like'

@@ -17,8 +17,8 @@
 			= render partial: 'profiles/rating_score', locals: {profile: @profile}
 			#job.formlet
 				= render partial: 'formlet', locals: {formlet: 'job'}
-			%span.location.editable{itemprop: "street-address"} 1234 Dolores St, San Francisco, CA 94110
-			%span.location.editable{itemprop: "telephone"} (415) 555-0123
+			#locations.formlet
+				= render partial: 'formlet', locals: {formlet: 'locations'}
 			#internet.formlet
 				= render partial: 'formlet', locals: {formlet: 'internet'}
 		#contact_options.formlet

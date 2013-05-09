@@ -651,15 +651,17 @@ div.popover {
 	box-shadow: 1px 3px 8px #CCC;
 	border: 1px solid #DDD;
 	margin-left: -25px;
-	form > div {
-		margin: 12px 0px 13px 0px;
-		clear: left;
-		> label {
-			margin-bottom: 6px;
+	form {
+		> div, .form_section {
+			margin: 12px 0px 13px 0px;
+			clear: left;
+			> label {
+				margin-bottom: 6px;
+			}
 		}
 	}
 	.text_field {
-		textarea, input {
+		textarea, input, select {
 			border: 1px solid #D5D5D5;
 			padding: 14px;
 			-moz-box-shadow: inset 4px 4px 10px #E5E5E5;
