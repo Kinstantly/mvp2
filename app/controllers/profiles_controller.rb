@@ -12,8 +12,10 @@ class ProfilesController < ApplicationController
 	# *After* profile is loaded:
 	#   ensure it has at least one location
 	#   set publish state based on parameter
+	#   set SEO keywords for profile show page
 	before_filter :require_location_in_profile, only: [:new, :edit, :edit_plain]
 	before_filter :process_profile_admin_params, only: [:create, :update]
+	before_filter :seo_keywords, only: :show
 	
 	# Autocomplete custom service and specialty names.
 	autocomplete :service, :name, full: true
@@ -117,5 +119,14 @@ class ProfilesController < ApplicationController
 	
 	def rate
 		render json: !!@profile.try(:rate, params[:score], current_user)
+	end
+	
+	private
+	
+	def seo_keywords
+		@meta_keywords = [@meta_keywords,
+			@profile.categories.map(&:lower_case_name),
+			@profile.services.map(&:lower_case_name),
+			@profile.specialties.map(&:lower_case_name)].flatten.compact.uniq.join(', ')
 	end
 end

@@ -13,6 +13,10 @@ class ActiveRecord::Base
 		end
 	end
 	
+	def lower_case_name
+		name.try :downcase
+	end
+	
 	private
 	
 	# Display area code, number, and if present, extension.
