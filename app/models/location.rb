@@ -41,4 +41,8 @@ class Location < ActiveRecord::Base
 	def display_phone
 		display_phone_number phone
 	end
+	
+	def search_phone
+		display_phone_number phone, true # Show country code.
+	end
 end

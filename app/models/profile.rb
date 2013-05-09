@@ -73,7 +73,7 @@ class Profile < ActiveRecord::Base
 			locations.map &:city
 		end
 		text :phones do
-			locations.map &:display_phone
+			locations.map &:search_phone
 		end
 		latlon :first_location do
 			locations.first.coordinates if locations.first

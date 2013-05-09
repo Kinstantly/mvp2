@@ -15,9 +15,10 @@ class ActiveRecord::Base
 	
 	private
 	
-	# Display country code, area code, number, and if present, extension.
-	def display_phone_number(value)
+	# Display area code, number, and if present, extension.
+	# Display country code if so designated.
+	def display_phone_number(value, show_country_code=false)
 		phone = Phonie::Phone.parse value.try(:strip)
-		phone.try :format, '%c (%a) %f-%l' + (phone.try(:extension).present? ? ', x%x' : '')
+		phone.try :format, "#{'%c ' if show_country_code}(%a) %f-%l#{', x%x' if phone.try(:extension).present?}"
 	end
 end
