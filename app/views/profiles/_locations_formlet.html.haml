@@ -39,3 +39,6 @@
 	= location.try(:display_address).presence || profile_blank_attribute_message(Location.human_attribute_name :display_address)
 %span.location.editable{itemprop: "telephone"}
 	= location.try(:display_phone).presence || profile_blank_attribute_message(Location.human_attribute_name :display_phone)
+:coffeescript
+	# In case we are re-rendering on an error, make sure locations marked for destruction are not visible.
+	$('.fields.marked_for_destruction').css('display', 'none')
