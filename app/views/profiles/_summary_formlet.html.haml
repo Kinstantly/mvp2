@@ -8,4 +8,4 @@
 			= f.text_area :summary, size: '45x5', class: 'attr'
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
-%p= @profile.errorfree.summary
+%p.text_area= preserve_profile_text @profile.errorfree.summary

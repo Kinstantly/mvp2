@@ -1,4 +1,4 @@
-%h3= "#{Profile.human_attribute_name :categories} / #{Profile.human_attribute_name :services} / #{Profile.human_attribute_name :specialties}"
+%h3= "#{Profile.human_attribute_name :categories}/#{Profile.human_attribute_name :services}/#{Profile.human_attribute_name :specialties}"
 .edit.popover
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages

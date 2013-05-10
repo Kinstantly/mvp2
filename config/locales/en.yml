@@ -45,10 +45,10 @@ en:
   activerecord:
     attributes:
       profile:
-        age_ranges: 'Ages / Stages'
+        age_ranges: 'Ages/Stages'
         categories: 'Categories'
-        certifications: 'Licenses / Certifications'
-        credentials: 'Degrees / credentials'
+        certifications: 'Certifications'
+        credentials: 'Degrees/credentials'
         company_name: 'Company name'
         consult_by_email: 'Email consultations'
         consult_by_phone: 'Phone consultations'
@@ -69,7 +69,7 @@ en:
         languages: 'Languages'
         last_name: 'Last name'
         middle_name: 'Middle name or initial'
-        pricing: 'Rates'
+        pricing: 'Fees'
         services: 'Services'
         specialties: 'Specialties'
         specialties_description: 'My specialties'

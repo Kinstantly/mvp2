@@ -25,11 +25,15 @@ class Profile < ActiveRecord::Base
 	has_many :ratings, as: :rateable, dependent: :destroy
 	has_many :raters, through: :ratings
 	
+	MAX_STRING_LENGTH = 254
 	MAX_TEXT_LENGTH = 1000
 	MAX_CUSTOM_NAME_LENGTH = 100
 	
 	validate :publishing_requirements
 	# validates :categories, length: {maximum: 1}
+	validates :first_name, :last_name, :middle_name, :credentials, :email, :company_name, :url, :headline,
+		:certifications, :languages, :specialties_description, :invitation_email, :lead_generator,
+		length: {maximum: MAX_STRING_LENGTH}
 	validates :availability, :awards, :education, :experience, :insurance_accepted, :pricing, :summary, :service_area,
 		:hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: MAX_TEXT_LENGTH}
 	validates :email, email: true, allow_blank: true

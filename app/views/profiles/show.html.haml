@@ -50,7 +50,7 @@
 				- if @profile.summary.present?
 					.summary
 						%h3= Profile.human_attribute_name :summary
-						%p= @profile.summary
+						%p.text_area= preserve_profile_text @profile.summary
 				- if @profile.services.present? || @profile.specialties.present?
 					.services
 						-# Only display specialties.  Put categories and services in meta tags and hidden elements.
