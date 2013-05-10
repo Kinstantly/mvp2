@@ -64,6 +64,7 @@ en:
         email: 'Public email'
         first_name: 'First name'
         headline: "Professional headline as you'd like it to appear"
+        hours: 'Hours'
         insurance_accepted: 'Insurance'
         languages: 'Languages'
         last_name: 'Last name'

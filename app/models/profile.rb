@@ -10,7 +10,7 @@ class Profile < ActiveRecord::Base
 		:consult_in_person, :consult_in_group, :consult_by_email, :consult_by_phone, :consult_by_video, 
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, 
 		:pricing, :availability, :service_area, 
-		:office_hours, :phone_hours, :video_hours, :accepting_new_clients, 
+		:hours, :phone_hours, :video_hours, :accepting_new_clients, 
 		:invitation_email
 	
 	belongs_to :user
@@ -31,7 +31,7 @@ class Profile < ActiveRecord::Base
 	validate :publishing_requirements
 	# validates :categories, length: {maximum: 1}
 	validates :availability, :awards, :education, :experience, :insurance_accepted, :pricing, :summary, :service_area,
-		:office_hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: MAX_TEXT_LENGTH}
+		:hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: MAX_TEXT_LENGTH}
 	validates :email, email: true, allow_blank: true
 	validates :invitation_email, email: true, allow_blank: true
 	

@@ -171,6 +171,10 @@ module ProfilesHelper
 		text.strip.gsub(/\s*\n+\s*/, ', ') if text
 	end
 	
+	def preserve_profile_text(text)
+		preserve text.strip if text
+	end
+	
 	def profile_display_categories_services_specialties(profile, n=nil)
 		[profile_display_categories(profile, n).presence,
 			profile_display_services(profile, n).presence,

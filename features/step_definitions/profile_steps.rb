@@ -327,7 +327,6 @@ When /^I set my credentials to "(.*?)"$/ do |credentials|
 end
 
 When /^I edit my profile information$/ do
-	fill_in 'Office', with: @profile_data[:primary_phone]
 	fill_in 'Website', with: @profile_data[:url]
 	click_button 'Save'
 	find_user_profile
@@ -552,7 +551,6 @@ Then /^my basic information should be saved in my profile$/ do
 end
 
 Then /^my edited information should be saved in my profile$/ do
-	page.should have_content @profile_data[:primary_phone]
 	page.should have_content display_url(@profile_data)
 end
 
