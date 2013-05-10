@@ -64,6 +64,9 @@ module Mvp2
     # See https://devcenter.heroku.com/articles/rails3x-asset-pipeline-cedar#troubleshooting
     config.assets.initialize_on_precompile = false
 
+    # Default cache store.
+    config.cache_store = :memory_store
+
     # We’re using Cucumber scenarios (integration tests) so unit tests of helpers and views are redundant.
     # Tell the Rails generator to not create Rspec test templates for helpers and views.
     config.generators do |g|

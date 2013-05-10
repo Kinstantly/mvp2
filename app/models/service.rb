@@ -6,4 +6,7 @@ class Service < ActiveRecord::Base
 	has_and_belongs_to_many :specialties
 	
 	scope :predefined, where(is_predefined: true).order('lower(name)')
+	
+	include CachingForModel
+	predefined_info_parent :category
 end

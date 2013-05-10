@@ -128,24 +128,27 @@ module ProfilesHelper
 		profile_list_view_link(profile, (profile_display_name(profile).presence || profile.company_name))
 	end
 	
-	def profile_categories_services_info(profile)
-		map = {}
-		names = {}
-		(Category.predefined + profile.categories).uniq.each { |cat|
-			map[cat.id] = cat.services.collect(&:id)
-			cat.services.each { |svc| names[svc.id] = svc.name.html_escape unless names[svc.id] }
+	def profile_parent_child_info(parents, child_association, map={}, names={})
+		parents.each { |parent|
+			children = parent.send child_association
+			map[parent.id] ||= children.map &:id
+			children.each { |child| names[child.id] ||= child.name.html_escape }
 		}
 		[map, names]
 	end
+	
+	def profile_categories_services_info(profile)
+		predefined_info = Category.predefined_parent_child_info do
+			profile_parent_child_info Category.predefined, :services
+		end
+		profile_parent_child_info profile.categories, :services, *predefined_info
+	end
 
 	def profile_services_specialties_info(profile)
-		map = {}
-		names = {}
-		(Service.predefined + profile.services).uniq.each { |svc|
-			map[svc.id] = svc.specialties.collect(&:id)
-			svc.specialties.each { |spec| names[spec.id] = spec.name.html_escape unless names[spec.id] }
-		}
-		[map, names]
+		predefined_info = Service.predefined_parent_child_info do
+			profile_parent_child_info Service.predefined, :specialties
+		end
+		profile_parent_child_info profile.services, :specialties, *predefined_info
 	end
 	
 	def profile_page_title(profile=nil)

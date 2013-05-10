@@ -5,4 +5,6 @@ class Category < ActiveRecord::Base
 	has_and_belongs_to_many :services
 	
 	scope :predefined, where(is_predefined: true).order('lower(name)')
+	
+	include CachingForModel
 end
