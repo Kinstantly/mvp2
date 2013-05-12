@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130510211358) do
+ActiveRecord::Schema.define(:version => 20130512043620) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
@@ -68,8 +68,8 @@ ActiveRecord::Schema.define(:version => 20130510211358) do
     t.string   "url"
     t.string   "secondary_phone"
     t.string   "primary_phone"
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
     t.integer  "user_id"
     t.string   "credentials"
     t.string   "headline"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(:version => 20130510211358) do
     t.text     "experience"
     t.string   "certifications"
     t.text     "awards"
-    t.string   "languages"
+    t.string   "languages",               :default => "English"
     t.text     "summary"
     t.string   "email"
     t.boolean  "consult_by_email"
