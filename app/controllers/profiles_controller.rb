@@ -4,9 +4,12 @@ class ProfilesController < ApplicationController
 	
 	before_filter :authenticate_user!, except: [:index, :show, :link_index, :search]
 	
+	before_filter :set_up_my_profile, only: :my_profile
+	
 	# Side effect: loads @profiles or @profile as appropriate.
 	# e.g., for index action, @profiles is set to Profile.accessible_by(current_ability)
 	load_and_authorize_resource new: :admin
+	skip_load_resource only: :my_profile
 	skip_load_and_authorize_resource only: [:search, :autocomplete_service_name, :autocomplete_specialty_name, :autocomplete_location_city]
 	
 	# *After* profile is loaded:
@@ -39,12 +42,12 @@ class ProfilesController < ApplicationController
 		@profiles = @profiles.page params[:page]
 	end
 	
-	# while implementing new design
+	# While implementing the new design, explicitly specify the new layout for views using the new design.
 	def show
 		render layout: 'interior'
 	end
 	
-	# while implementing new design
+	# While implementing the new design, explicitly specify the new layout for views using the new design.
 	def edit
 		render layout: 'interior'
 	end
@@ -88,6 +91,11 @@ class ProfilesController < ApplicationController
 		redirect_to admin_profiles_path
 	end
 	
+	# While implementing the new design, explicitly specify the new layout for views using the new design.
+	def my_profile
+		render action: :show, layout: 'interior'
+	end
+	
 	def search
 		options = {}
 		@search_query = params[:query]
@@ -122,6 +130,14 @@ class ProfilesController < ApplicationController
 	end
 	
 	private
+	
+	def set_up_my_profile
+		@user = current_user
+		if @user.is_provider?
+			@user.create_profile unless @user.profile
+			@profile = @user.profile
+		end
+	end
 	
 	def seo_keywords
 		@meta_keywords = [@meta_keywords,

@@ -48,7 +48,7 @@ describe ProfilesController do
 		end
 	end
 	
-	context "as expert user" do
+	context "as a provider" do
 		before (:each) do
 			@me = FactoryGirl.create(:expert_user, email: 'me@example.com')
 			sign_in @me
@@ -77,6 +77,21 @@ describe ProfilesController do
 				@profile = FactoryGirl.create(:published_profile)
 				put :formlet_update, id: @profile.id, formlet: 'summary', profile: {summary: 'A short story.'}
 				response.should_not render_template('formlet')
+			end
+		end
+		
+		describe "GET 'my_profile'" do
+			before(:each) do
+				get :my_profile
+			end
+			
+			it "renders show" do
+				response.should render_template('show')
+			end
+			
+			it "creates my profile if needed" do
+				assigns[:profile].should_not be_nil
+				assigns[:profile].user.should == @me
 			end
 		end
 	end

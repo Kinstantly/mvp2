@@ -20,7 +20,7 @@ Mvp2::Application.routes.draw do
 		get '/member/sign_in_return', to: 'devise/sessions#new', store_referrer: true
 	end
 	
-	# Profile is accessed via user.
+	# When profile is accessed via user.
 	# Only current_user should have access to the profile.
 	match 'edit_user_profile' => 'users#edit_profile'
 	match 'update_user_profile' => 'users#update_profile'
@@ -49,6 +49,9 @@ Mvp2::Application.routes.draw do
 			get :autocomplete_profile_lead_generator
 		end
 	end
+	
+	# Accessing my profile (for providers).
+	match 'my_profile' => 'profiles#my_profile'
 	
 	# Links to profiles for search engine crawlers.
 	match 'providers' => 'profiles#link_index'

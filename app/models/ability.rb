@@ -12,15 +12,16 @@ class Ability
 		can :rate, Profile, is_published: true if user.confirmed_at
 		cannot :rate, Profile, user_id: user.id
 		
-		# Experts should only be able to edit their profile via nested attributes on the user model.
+		# Experts should only be able to edit the profile attached to their user.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.
 		if user.expert?
-			alias_action :view_profile, :edit_profile, :update_profile, :claim_profile, to: :manage_profile
-			can :manage_profile, User, id: user.id
+			alias_action :view_profile, :edit_profile, :update_profile, :claim_profile, to: :manage_my_user_profile
+			can :manage_my_user_profile, User, id: user.id
 			can :create, User, id: user.id
 			can :update, User, id: user.id
 			can :show, User, id: user.id
-			can :formlet_update, Profile, user_id: user.id
+			alias_action :my_profile, :formlet_update, to: :manage_my_profile
+			can :manage_my_profile, Profile, user_id: user.id
 		end
 		
 		if user.profile_editor?
