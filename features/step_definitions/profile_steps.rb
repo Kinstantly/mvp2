@@ -64,10 +64,6 @@ def create_published_profile_2
 	@published_profile_2 = FactoryGirl.create(:profile, @published_profile_data_2)
 end
 
-def display_url(profile_data)
-	profile_data[:url].sub('http://', '')
-end
-
 def formlet_id(name)
 	case name
 	when 'display name'
@@ -551,7 +547,7 @@ Then /^my basic information should be saved in my profile$/ do
 end
 
 Then /^my edited information should be saved in my profile$/ do
-	page.should have_content display_url(@profile_data)
+	page.should have_content MyHelpers.strip_url(@profile_data[:url])
 end
 
 Then /^my email address should be saved to my user record$/ do
@@ -659,7 +655,7 @@ Then /^I should see the new profile data$/ do
 	page.should have_content @unattached_profile_data[:first_name]
 	page.should have_content @unattached_profile_data[:middle_name]
 	page.should have_content @unattached_profile_data[:last_name]
-	page.should have_content display_url(@unattached_profile_data)
+	page.should have_content MyHelpers.strip_url(@unattached_profile_data[:url])
 end
 
 Then /^I should land on the view page for the unclaimed profile$/ do
@@ -703,7 +699,7 @@ end
 
 Then /^I should see profile data for that user$/ do
 	within('span[itemprop="url"]') do
-		page.should have_content display_url(@profile_data)
+		page.should have_content MyHelpers.strip_url(@profile_data[:url])
 	end
 end
 

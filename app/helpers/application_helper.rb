@@ -116,6 +116,10 @@ module ApplicationHelper
 		url.gsub(/https?:\/\//i, '').strip
 	end
 	
+	def display_url(url, max_length=44)
+		truncate strip_url(url), length: max_length
+	end
+	
 	# Use this helper to work around a bug that causes an unchecked undefined value when using jQuery 1.9.
 	# http://github.com/crowdint/rails3-jquery-autocomplete/issues/210
 	def autocomplete_form_field(attribute, value, path, options={})

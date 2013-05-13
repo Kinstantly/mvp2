@@ -39,14 +39,14 @@ module ProfilesHelper
 	def profile_linked_website(profile=current_user.try(:profile), title=nil)
 		if (url = profile.try(:url)).present?
 			auto_link "http://#{strip_url url}", link: :urls, html: { target: '_blank', title: title } do |body|
-				strip_url body
+				display_url body
 			end
 		end
 	end
 	
 	def profile_display_website(profile=current_user.try(:profile), msg_when_blank=nil)
 		if (url = profile.try(:url)).present?
-			strip_url url
+			display_url url
 		elsif msg_when_blank
 			profile_blank_attribute_message msg_when_blank
 		end
