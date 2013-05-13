@@ -1,6 +1,7 @@
 - @page_title_prefix = @profile.display_name_or_company
-- if can? :manage, Profile
+- if can?(:manage, Profile) || can?(:manage_my_profile, @profile)
 	.editor_buttons
+		= edit_my_profile_link @profile
 		= edit_profile_link @profile
 		= full_profile_link @profile
 		= edit_full_profile_link @profile

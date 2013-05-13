@@ -67,6 +67,36 @@ describe ProfilesController do
 			end
 		end
 		
+		describe "GET 'view_my_profile'" do
+			before(:each) do
+				get :view_my_profile
+			end
+			
+			it "renders show" do
+				response.should render_template('show')
+			end
+			
+			it "creates my profile if needed" do
+				assigns[:profile].should_not be_nil
+				assigns[:profile].user.should == @me
+			end
+		end
+		
+		describe "GET 'edit_my_profile'" do
+			before(:each) do
+				get :edit_my_profile
+			end
+			
+			it "renders edit" do
+				response.should render_template('edit')
+			end
+			
+			it "creates my profile if needed" do
+				assigns[:profile].should_not be_nil
+				assigns[:profile].user.should == @me
+			end
+		end
+		
 		describe "PUT 'formlet_update'" do
 			it "successfully updates the profile via a formlet" do
 				put :formlet_update, id: @me.profile.id, formlet: 'summary', profile: {summary: 'A short story.'}
@@ -77,21 +107,6 @@ describe ProfilesController do
 				@profile = FactoryGirl.create(:published_profile)
 				put :formlet_update, id: @profile.id, formlet: 'summary', profile: {summary: 'A short story.'}
 				response.should_not render_template('formlet')
-			end
-		end
-		
-		describe "GET 'my_profile'" do
-			before(:each) do
-				get :my_profile
-			end
-			
-			it "renders show" do
-				response.should render_template('show')
-			end
-			
-			it "creates my profile if needed" do
-				assigns[:profile].should_not be_nil
-				assigns[:profile].user.should == @me
 			end
 		end
 	end

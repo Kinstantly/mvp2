@@ -4,12 +4,12 @@ class ProfilesController < ApplicationController
 	
 	before_filter :authenticate_user!, except: [:index, :show, :link_index, :search]
 	
-	before_filter :set_up_my_profile, only: :my_profile
+	before_filter :set_up_my_profile, only: [:view_my_profile, :edit_my_profile]
 	
 	# Side effect: loads @profiles or @profile as appropriate.
 	# e.g., for index action, @profiles is set to Profile.accessible_by(current_ability)
 	load_and_authorize_resource new: :admin
-	skip_load_resource only: :my_profile
+	skip_load_resource only: [:view_my_profile, :edit_my_profile]
 	skip_load_and_authorize_resource only: [:search, :autocomplete_service_name, :autocomplete_specialty_name, :autocomplete_location_city]
 	
 	# *After* profile is loaded:
@@ -92,8 +92,13 @@ class ProfilesController < ApplicationController
 	end
 	
 	# While implementing the new design, explicitly specify the new layout for views using the new design.
-	def my_profile
+	def view_my_profile
 		render action: :show, layout: 'interior'
+	end
+	
+	# While implementing the new design, explicitly specify the new layout for views using the new design.
+	def edit_my_profile
+		render action: :edit, layout: 'interior'
 	end
 	
 	def search

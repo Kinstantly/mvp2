@@ -51,7 +51,8 @@ Mvp2::Application.routes.draw do
 	end
 	
 	# Accessing my profile (for providers).
-	match 'my_profile' => 'profiles#my_profile'
+	match 'my_profile' => 'profiles#view_my_profile'
+	match 'edit_my_profile' => 'profiles#edit_my_profile'
 	
 	# Links to profiles for search engine crawlers.
 	match 'providers' => 'profiles#link_index'

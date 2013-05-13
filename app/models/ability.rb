@@ -20,7 +20,7 @@ class Ability
 			can :create, User, id: user.id
 			can :update, User, id: user.id
 			can :show, User, id: user.id
-			alias_action :my_profile, :formlet_update, to: :manage_my_profile
+			alias_action :view_my_profile, :edit_my_profile, :formlet_update, to: :manage_my_profile
 			can :manage_my_profile, Profile, user_id: user.id
 		end
 		
