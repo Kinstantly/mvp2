@@ -194,6 +194,10 @@ class Profile < ActiveRecord::Base
 		!user.nil?
 	end
 	
+	def owned_by?(user)
+		user.try(:profile) == self
+	end
+	
 	# If param was used, set to true if param is not blank.
 	# If param was not used, do nothing.
 	def assign_boolean_param_if_used(attr_name, value)

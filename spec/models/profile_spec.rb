@@ -430,4 +430,19 @@ describe Profile do
 			@profile.rating_average_score.should be_nil
 		end
 	end
+	
+	context "profile ownership" do
+		before (:each) do
+			@me = FactoryGirl.create(:expert_user, email: 'me@example.com')
+		end
+		
+		it "is not my profile" do
+			@profile.should_not be_owned_by(@me)
+		end
+		
+		it "is my profile" do
+			@me.profile = @profile
+			@profile.should be_owned_by(@me)
+		end
+	end
 end

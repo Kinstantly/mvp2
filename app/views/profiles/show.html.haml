@@ -2,7 +2,8 @@
 - if can?(:manage, Profile) || can?(:manage_my_profile, @profile)
 	.editor_buttons
 		= edit_my_profile_link @profile
-		= edit_profile_link @profile
+		- unless @profile.owned_by? current_user
+			= edit_profile_link @profile
 		= full_profile_link @profile
 		= edit_full_profile_link @profile
 		- if !@profile.claimed?

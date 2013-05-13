@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
 		stored_referrer ||
 		stored_location_for(resource) ||
 			if resource.is_a?(User)
-				resource.is_provider? ? edit_user_profile_path : root_path
+				resource.is_provider? ? edit_my_profile_path : root_path
 			else
 				super
 			end
