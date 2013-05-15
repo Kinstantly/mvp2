@@ -4,7 +4,8 @@ Feature: View only published profiles
 	 I want to see a table listing of published expert profiles
 
 	Scenario: Cannot view all unpublished expert profiles
-		Given I am logged in
+		Given I exist as a user
+			And I am logged in
 			And there are multiple unpublished profiles in the system
 		When I visit the profile link index page
 		Then I should not see profile data that is not my own

@@ -4,14 +4,6 @@ Feature: Edit my expert profile
 	I want to edit in my profile information
 	
 	@javascript
-	Scenario: Enter basic information
-		Given I exist as a user
-			And I am logged in
-			And I am on my profile edit page
-		When I edit my profile information
-		Then my edited information should be saved in my profile
-	
-	@javascript
 	Scenario: Enter insurance accepted
 		Given I exist as a user
 			And I am logged in
@@ -27,7 +19,9 @@ Feature: Edit my expert profile
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I edit my profile information
+		When I open the "website" formlet
+			And I enter "www.sfopera.com" in the "Website" field of the "website" formlet
+			And I click on the "Save" button of the "website" formlet
 		Then I should remain on the profile edit page
 	
 	@javascript

@@ -10,7 +10,8 @@ Feature: View existing users
 		Then I should see more than one user
 
 	Scenario: Unpriveleged user cannot view all users
-		Given I am logged in
+		Given I exist as a user
+			And I am logged in
 			And there are multiple users with profiles in the system
 		When I visit the user index page
 		Then I should not see user data that is not my own

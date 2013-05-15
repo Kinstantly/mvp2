@@ -4,26 +4,30 @@ Feature: View my expert profile
 	so I can know how it looks to potential clients
 
 		Scenario: See profile information
-			Given I am logged in
+			Given I exist as a user
 				And I want my profile
+				And I am logged in
 			When I view my profile
 			Then I should see my profile information
 
 		Scenario: Edit link on profile view page
-			Given I am logged in
+			Given I exist as a user
 				And I want my profile
+				And I am logged in
 			When I view my profile
 				And click edit my profile
 			Then I should land on the profile edit page
 
-		Scenario: See at least one category
-			Given I am logged in
+		Scenario: At least one service is in meta-data
+			Given I exist as a user
 				And I want my profile
+				And I am logged in
 			When I view my profile
-			Then I should see one of my categories
+			Then meta-data should contain one of my services
 
 		Scenario: See at least one specialty
-			Given I am logged in
+			Given I exist as a user
 				And I want my profile
+				And I am logged in
 			When I view my profile
 			Then I should see one of my specialties

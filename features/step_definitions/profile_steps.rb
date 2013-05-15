@@ -89,13 +89,6 @@ def formlet_id(name)
 end
 
 ### GIVEN ###
-Given /^an empty profile right after registration and confirmation$/ do
-	set_up_new_data
-	sign_up
-	# Open confirmation email and click confirmation link.
-	open_last_email
-	click_first_link_in_email
-end
 
 Given /^I am on my profile edit page$/ do
 	set_up_new_data
@@ -285,18 +278,23 @@ end
 
 ### WHEN ###
 
+When /^I view my profile$/ do
+  visit my_profile_path
+end
+
 # Requires javascript.
-When /^I enter (?:new )?profile information$/ do
+When /^I enter( | new | my )profile information$/ do |which|
+	profile_data = (which.strip == 'my' ? @profile_data : @unattached_profile_data)
 	find('#display_name').click
 	within('#display_name') do
-		fill_in 'profile_first_name', with: @unattached_profile_data[:first_name]
-		fill_in 'profile_middle_name', with: @unattached_profile_data[:middle_name]
-		fill_in 'profile_last_name', with: @unattached_profile_data[:last_name]
+		fill_in 'profile_first_name', with: profile_data[:first_name]
+		fill_in 'profile_middle_name', with: profile_data[:middle_name]
+		fill_in 'profile_last_name', with: profile_data[:last_name]
 		click_button 'Save'
 	end
 	find('#internet').click
 	within('#internet') do
-		fill_in 'Website', with: @unattached_profile_data[:url]
+		fill_in 'Website', with: profile_data[:url]
 		click_button 'Save'
 	end
 	find('#services').click
@@ -304,21 +302,6 @@ When /^I enter (?:new )?profile information$/ do
 		check MyHelpers.profile_categories_id(@predefined_category.id)
 		click_button 'Save'
 	end
-end
-
-When /^I view my profile$/ do
-  visit my_profile_path
-end
-
-When /^I enter my basic profile information$/ do
-	fill_in 'profile_first_name', with: @profile_data[:first_name]
-	fill_in 'profile_middle_name', with: @profile_data[:middle_name]
-	fill_in 'profile_last_name', with: @profile_data[:last_name]
-	within('.categories') do
-		check MyHelpers.profile_categories_id(@predefined_category.id)
-	end
-	click_button 'Save'
-	find_user_profile
 end
 
 When /^I set my first name to "(.*?)"$/ do |first_name|
@@ -335,15 +318,6 @@ end
 
 When /^I set my credentials to "(.*?)"$/ do |credentials|
 	fill_in 'profile_credentials', with: credentials
-end
-
-When /^I edit my profile information$/ do
-	find("#internet").click
-	within("#internet") do
-		fill_in 'Website', with: @profile_data[:url]
-		click_button 'Save'
-	end
-	find_user_profile
 end
 
 When /^(?:I )?click edit my profile$/ do
@@ -542,20 +516,18 @@ end
 ### THEN ###
 
 Then /^I should see my profile information$/ do
-	within('.view_profile .display_name') do
+	within('.profile h1') do
 		page.should have_content @profile.first_name
 		page.should have_content @profile.last_name
 	end
 end
 
-Then /^I should see one of my categories$/ do
-	within('.view_profile .categories') do
-		page.should have_content @profile.categories.first.name
-	end
+Then /^meta\-data should contain one of my services$/ do
+	pending 'on profile view page, list categories and services in meta-data'
 end
 
 Then /^I should see one of my specialties$/ do
-	within('.view_profile .specialties') do
+	within('.services') do
 		page.should have_content @profile.specialties.first.name
 	end
 end
@@ -566,16 +538,6 @@ end
 
 Then /^I should (?:land|remain) on the profile edit page$/ do
 	current_path.should == edit_my_profile_path
-end
-
-Then /^my basic information should be saved in my profile$/ do
-	@profile.first_name.should == @profile_data[:first_name]
-	@profile.middle_name.should == @profile_data[:middle_name]
-	@profile.last_name.should == @profile_data[:last_name]
-end
-
-Then /^my edited information should be saved in my profile$/ do
-	page.should have_content MyHelpers.strip_url(@profile_data[:url])
 end
 
 Then /^my email address should be saved to my user record$/ do

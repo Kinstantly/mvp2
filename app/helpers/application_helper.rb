@@ -113,7 +113,7 @@ module ApplicationHelper
 	end
 	
 	def strip_url(url)
-		url.gsub(/https?:\/\//i, '').strip
+		url.strip.sub(/^https?:\/\//i, '')
 	end
 	
 	def display_url(url, max_length=44)

@@ -9,8 +9,3 @@ Feature: Start building my expert profile
 			And I open the email
 		 	And I follow "confirm" in the email
 		Then I should land on the profile edit page
-	
-	Scenario: Enter basic information
-		Given an empty profile right after registration and confirmation
-		When I enter my basic profile information
-		Then my basic information should be saved in my profile
