@@ -3,6 +3,7 @@ Feature: Edit my expert profile
 	As a registered expert
 	I want to edit in my profile information
 	
+	@javascript
 	Scenario: Enter basic information
 		Given I exist as a user
 			And I am logged in
@@ -10,68 +11,81 @@ Feature: Edit my expert profile
 		When I edit my profile information
 		Then my edited information should be saved in my profile
 	
+	@javascript
 	Scenario: Enter insurance accepted
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I enter "Blue Cross\nKaiser Permanente" in the "Health insurance accepted" field
-			And I save my profile
-		Then my profile should show "Blue Cross"
-			And my profile should show "Kaiser Permanente"
+		When I open the "insurance" formlet
+			And I enter "Blue Cross\nKaiser Permanente" in the "Insurance" field of the "insurance" formlet
+			And I click on the "Save" button of the "insurance" formlet
+		Then my profile edit page should show "Blue Cross" displayed in the "insurance" area
+			And my profile edit page should show "Kaiser Permanente" displayed in the "insurance" area
 	
-	Scenario: Land on view page after edit
+	@javascript
+	Scenario: Remain on edit page while editing
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
 		When I edit my profile information
-		Then I should land on the profile view page
+		Then I should remain on the profile edit page
 	
-	Scenario: Land on view page after cancel edit
+	@javascript
+	Scenario: Remain on edit page after cancel edit
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I click on the "Cancel" link
-		Then I should land on the profile view page
+		When I open the "insurance" formlet
+			And I click on the "Cancel" link of the "website" formlet
+		Then I should remain on the profile edit page
 	
+	@javascript
 	Scenario: Edit location address
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I enter "123 Main St." in the "Address" field
-			And I enter "Ames" in the "City" field
-			And I select "Iowa" as the state
-			And I enter "50010" in the "Zip code" field
-			And I save my profile
-		Then my profile should show "123 Main St." in the location area
-			And my profile should show "Ames" in the location area
-			And my profile should show "IA" in the location area
-			And my profile should show "50010" in the location area
+		When I open the "locations" formlet
+			And I enter "123 Main St." in the "Address" field of the "locations" formlet
+			And I enter "Ames" in the "City" field of the "locations" formlet
+			And I select "Iowa" as the state in the "locations" formlet
+			And I enter "50010" in the "Zip code" field of the "locations" formlet
+			And I click on the "Save" button of the "locations" formlet
+		Then my profile edit page should show "123 Main St." displayed in the "locations" area
+			And my profile edit page should show "Ames" displayed in the "locations" area
+			And my profile edit page should show "IA" displayed in the "locations" area
+			And my profile edit page should show "50010" displayed in the "locations" area
 	
+	@javascript
 	Scenario: Country code is US by default
 		Given I exist as a user
 			And I am logged in
 			And I have no country code in my profile
 		When I am on my profile edit page
-			And I save my profile
+			And I open the "locations" formlet
+			And I click on the "Save" button of the "locations" formlet
 		Then my country code should be set to "US"
 	
+	@javascript
 	Scenario: Country code is preserved
 		Given I exist as a user
 			And I am logged in
 			And I have a country code of "CA" in my profile
 		When I am on my profile edit page
-			And I save my profile
+			And I open the "locations" formlet
+			And I click on the "Save" button of the "locations" formlet
 		Then my country code should be set to "CA"
 	
+	@javascript
 	Scenario: Select categories
 		Given the "THERAPISTS & PARENTING COACHES" and "TUTORS & COUNSELORS" categories are predefined
 			And I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I select the "TUTORS & COUNSELORS" category
-			And I save my profile
-		Then my profile should show me as being in the "TUTORS & COUNSELORS" category
+		When I open the "categories" formlet
+			And I select the "TUTORS & COUNSELORS" category
+			And I click on the "Save" button of the "categories" formlet
+		Then my profile edit page should show "TUTORS & COUNSELORS" displayed in the "categories" area
 		
 	@javascript
 	Scenario: Select services associated with my category
@@ -79,9 +93,10 @@ Feature: Edit my expert profile
 			And I am logged in
 			And I have a category of "THERAPISTS & PARENTING COACHES" in my profile that is associated with the "child psychologist" and "child psychiatrist" services
 			And I am on my profile edit page
-		When I select the "child psychologist" and "child psychiatrist" services
-			And I save my profile
-		Then my profile should show me as having the "child psychologist" and "child psychiatrist" services
+		When I open the "services" formlet
+			And I select the "child psychologist" and "child psychiatrist" services
+			And I click on the "Save" button of the "services" formlet
+		Then my profile edit page should show "child psychologist" and "child psychiatrist" displayed in the "services" area
 	
 	@javascript
 	Scenario: Offer services for predefined category
@@ -90,7 +105,8 @@ Feature: Edit my expert profile
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I select the "THERAPISTS & PARENTING COACHES" category
+		When I open the "services" formlet
+			And I select the "THERAPISTS & PARENTING COACHES" category
 		Then then I should be offered the "child psychologist" and "child psychiatrist" services
 	
 	@javascript
@@ -98,7 +114,8 @@ Feature: Edit my expert profile
 		Given I exist as a user
 			And I am logged in
 			And I have no predefined categories and no services in my profile
-		When I am on my profile edit page
+			And I am on my profile edit page
+		When I open the "services" formlet
 		Then I should be offered no services
 
 	@javascript
@@ -107,9 +124,10 @@ Feature: Edit my expert profile
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I add the "story-book reader" and "dream catcher" custom services
-			And I save my profile
-		Then my profile should show me as being in the "story-book reader" and "dream catcher" services
+		When I open the "services" formlet
+			And I add the "story-book reader" and "dream catcher" custom services
+			And I click on the "Save" button of the "services" formlet
+		Then my profile edit page should show "story-book reader" and "dream catcher" displayed in the "services" area
 		
 	@javascript
 	Scenario: Added custom services appear in check list on next profile edit
@@ -117,9 +135,10 @@ Feature: Edit my expert profile
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I add the "story-book reader" and "dream catcher" custom services
-			And I save my profile
-			And I go to my profile edit page
+		When I open the "services" formlet
+			And I add the "story-book reader" and "dream catcher" custom services
+			And I click on the "Save" button of the "services" formlet
+			And I open the "services" formlet
 		Then the "story-book reader" and "dream catcher" services should appear in the profile edit check list
 		
 	@javascript
@@ -128,9 +147,10 @@ Feature: Edit my expert profile
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I add the "story-book reader" and "dream catcher" custom services using enter
-			And I save my profile
-		Then my profile should show me as being in the "story-book reader" and "dream catcher" services
+		When I open the "services" formlet
+			And I add the "story-book reader" and "dream catcher" custom services using enter
+			And I click on the "Save" button of the "services" formlet
+		Then my profile edit page should show "story-book reader" and "dream catcher" displayed in the "services" area
 		
 	@javascript
 	Scenario: Select specialties associated with my service
@@ -138,9 +158,10 @@ Feature: Edit my expert profile
 			And I am logged in
 			And I have a service of "child psychiatrist" in my profile that is associated with the "behavior" and "adoption" specialties
 			And I am on my profile edit page
-		When I select the "behavior" and "adoption" specialties
-			And I save my profile
-		Then my profile should show me as having the "behavior" and "adoption" specialties
+		When I open the "specialties" formlet
+			And I select the "behavior" and "adoption" specialties
+			And I click on the "Save" button of the "specialties" formlet
+		Then my profile edit page should show "behavior" and "adoption" displayed in the "specialties" area
 	
 	@javascript
 	Scenario: Add custom specialties
@@ -148,9 +169,10 @@ Feature: Edit my expert profile
 			And I am logged in
 			And I have a category of "THERAPISTS & PARENTING COACHES" in my profile
 			And I am on my profile edit page
-		When I add the "story-books" and "dreams" custom specialties
-			And I save my profile
-		Then my profile should show me as having the "story-books" and "dreams" specialties
+		When I open the "specialties" formlet
+			And I add the "story-books" and "dreams" custom specialties
+			And I click on the "Save" button of the "specialties" formlet
+		Then my profile edit page should show "story-books" and "dreams" displayed in the "specialties" area
 	
 	@javascript
 	Scenario: Add custom specialties using enter
@@ -158,9 +180,10 @@ Feature: Edit my expert profile
 			And I am logged in
 			And I have a category of "THERAPISTS & PARENTING COACHES" in my profile
 			And I am on my profile edit page
-		When I add the "story-books" and "dreams" custom specialties using enter
-			And I save my profile
-		Then my profile should show me as having the "story-books" and "dreams" specialties
+		When I open the "specialties" formlet
+			And I add the "story-books" and "dreams" custom specialties using enter
+			And I click on the "Save" button of the "specialties" formlet
+		Then my profile edit page should show "story-books" and "dreams" displayed in the "specialties" area
 	
 	@javascript
 	Scenario: Offer specialties for predefined service
@@ -169,7 +192,8 @@ Feature: Edit my expert profile
 			And I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I select the "THERAPISTS & PARENTING COACHES" category
+		When I open the "specialties" formlet
+			And I select the "THERAPISTS & PARENTING COACHES" category
 			And I select the "child psychiatrist" service
 		Then then I should be offered the "adoption" and "toilet training" specialties
 	
@@ -178,29 +202,34 @@ Feature: Edit my expert profile
 		Given I exist as a user
 			And I am logged in
 			And I have no predefined services and no specialties in my profile
-		When I am on my profile edit page
+			And I am on my profile edit page
+		When I open the "specialties" formlet
 		Then I should be offered no specialties
-
+	
+	@javascript
 	Scenario: Select non-adjacent age ranges
 		Given I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I select the "0-1" age range
+		When I open the "age ranges" formlet
+			And I select the "0-1" age range
 			And I select the "3-5" age range
-			And I save my profile
-		Then my profile should show the "0-1" age range
-			And my profile should show the "3-5" age range
+			And I click on the "Save" button of the "age ranges" formlet
+		Then my profile edit page should show "0-1" displayed in the "age ranges" area
+			And my profile edit page should show "3-5" displayed in the "age ranges" area
 	
+	@javascript
 	Scenario: Merge adjacent age ranges
 		Given I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I select the "1-3" age range
+		When I open the "age ranges" formlet
+			And I select the "1-3" age range
 			And I select the "3-5" age range
-			And I save my profile
-		Then my profile should show the "1-5" age range
+			And I click on the "Save" button of the "age ranges" formlet
+		Then my profile edit page should show "1-5" displayed in the "age ranges" area
 	
 	@javascript
 	Scenario: Show display name as editing
@@ -208,72 +237,85 @@ Feature: Edit my expert profile
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I set my first name to "Philo"
+		When I open the "display name" formlet
+			And I set my first name to "Philo"
 			And I set my middle name to "T."
 			And I set my last name to "Farnsworth"
 			And I set my credentials to "MD, PhD"
 		Then the display name should be dynamically shown as "Philo T. Farnsworth, MD, PhD"
 	
+	@javascript
 	Scenario: Update display name
 		Given I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
-		When I set my first name to "Philo"
+		When I open the "display name" formlet
+			And I set my first name to "Philo"
 			And I set my middle name to "T."
 			And I set my last name to "Farnsworth"
 			And I set my credentials to "MD, PhD"
-			And I save my profile
-		Then the display name should be updated to "Philo T. Farnsworth, MD, PhD"
+			And I click on the "Save" button of the "display name" formlet
+		Then my profile edit page should show "Philo T. Farnsworth, MD, PhD" displayed in the "display name" area
 	
+	@javascript
 	Scenario: Enter pricing
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I enter "$1/minute\n$40/15 minutes\n$120/hour" in the "Pricing" field
-			And I save my profile
-		Then my profile should show "$1/minute"
-			And my profile should show "$40/15 minutes"
-			And my profile should show "$120/hour"
+		When I open the "pricing" formlet
+			And I enter "$1/minute\n$40/15 minutes\n$120/hour" in the "Fees" field of the "pricing" formlet
+			And I click on the "Save" button of the "pricing" formlet
+		Then my profile edit page should show "$1/minute" displayed in the "pricing" area
+			And my profile edit page should show "$40/15 minutes" displayed in the "pricing" area
+			And my profile edit page should show "$120/hour" displayed in the "pricing" area
 	
+	@javascript
 	Scenario: Enter service area
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I enter "East Bay\nSan Francisco\nDaly City" in the "Service area" field
-			And I save my profile
-		Then my profile should show "East Bay"
-			And my profile should show "San Francisco"
-			And my profile should show "Daly City"
+		When I open the "service area" formlet
+			And I enter "East Bay\nSan Francisco\nDaly City" in the "Service area" field of the "service area" formlet
+			And I click on the "Save" button of the "service area" formlet
+		Then my profile edit page should show "East Bay" displayed in the "service area" area
+			And my profile edit page should show "San Francisco" displayed in the "service area" area
+			And my profile edit page should show "Daly City" displayed in the "service area" area
 	
+	@javascript
 	Scenario: Specify consultation modes
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I check "Email consultations"
-			And I check "Phone consultations"
-			And I check "Video consultations"
-			And I check "Office consultations"
-			And I save my profile
-		Then my profile should show "email" within "consultations"
-			And my profile should show "phone" within "consultations"
-			And my profile should show "video" within "consultations"
-			And my profile should show "office" within "consultations"
+		When I open the "consultation methods" formlet
+			And I check "Email consultations" in the "consultation methods" formlet
+			And I check "Phone consultations" in the "consultation methods" formlet
+			And I check "Video consultations" in the "consultation methods" formlet
+			And I check "Office consultations" in the "consultation methods" formlet
+			And I click on the "Save" button of the "consultation methods" formlet
+		Then my profile edit page should show "Email consultations" displayed in the "consultation methods" area
+			And my profile edit page should show "Phone consultations" displayed in the "consultation methods" area
+			And my profile edit page should show "Video consultations" displayed in the "consultation methods" area
+			And my profile edit page should show "Office consultations" displayed in the "consultation methods" area
 	
+	@javascript
 	Scenario: Enter specialties description
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I enter "challenging behavior, attachment issues, temperament" in the "My specialties" field
-			And I save my profile
-		Then my profile should show "challenging behavior, attachment issues, temperament" within "specialties_description"
+		When I open the "specialties" formlet
+			And I enter "challenging behavior, attachment issues, temperament" in the "My specialties" field of the "specialties" formlet
+			And I click on the "Save" button of the "specialties" formlet
+		Then my profile edit page should show "challenging behavior, attachment issues, temperament" displayed second in the "specialties" area
 	
 	@javascript
 	Scenario: Request extra location
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I click on the "Fill in another location" link
+		When I open the "locations" formlet
+			And I click on the "Fill in a new location" link of the "locations" formlet
+			And I click on the "Save" button of the "locations" formlet
 		Then I should see form fields for an extra location
 	
 	@javascript
@@ -281,32 +323,38 @@ Feature: Edit my expert profile
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I click on the "Fill in another location" link
+		When I open the "locations" formlet
+			And I click on the "Fill in a new location" link
 			And I enter "La Fenice" in the "Address" field of the second location
-			And I save my profile
-		Then my profile should show "La Fenice" in the location area
+			And I click on the "Save" button of the "locations" formlet
+		Then my profile edit page should show "La Fenice" displayed in the "locations" overlay area
 	
 	@javascript
 	Scenario: Delete location
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I click on the "Mark this location for removal" link
-			And I save my profile
+		When I open the "locations" formlet
+			And I click on the "Mark the above location for removal" link
+			And I click on the "Save" button of the "locations" formlet
 		Then my profile should have no locations
 	
+	@javascript
 	Scenario: Enter phone number
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I enter "505-555-9087x47 " in the "Phone" field of the first location
-			And I save my profile
-		Then my profile should show "(505) 555-9087, x47" in the location area
+		When I open the "locations" formlet
+			And I enter "505-555-9087x47 " in the "Phone" field of the first location
+			And I click on the "Save" button of the "locations" formlet
+		Then my profile edit page should show "(505) 555-9087, x47" displayed second in the "locations" area
 	
 	Scenario: My profile should display my website with a link
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I enter "www.sfopera.com" in the "Website" field
-			And I save my profile
-		Then my profile should show "www.sfopera.com" within "url a"
+		When I open the "website" formlet
+			And I enter "www.sfopera.com" in the "Website" field of the "website" formlet
+			And I click on the "Save" button of the "website" formlet
+			And I view my profile
+		Then my profile should show "www.sfopera.com" within "location a"

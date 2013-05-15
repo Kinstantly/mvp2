@@ -10,8 +10,8 @@
 			= f.text_field :email
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
-%span.location.editable{itemprop: "url"}
+%span.location.editable.attribute_display{itemprop: "url"}
 	= profile_display_website @profile.errorfree, Profile.human_attribute_name(:url)
-%span.location.editable{itemprop: "email"}
+%span.location.editable.attribute_display{itemprop: "email"}
 	email:
 	= profile_display_email @profile.errorfree, Profile.human_attribute_name(:email)

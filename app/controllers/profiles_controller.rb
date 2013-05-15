@@ -4,7 +4,7 @@ class ProfilesController < ApplicationController
 	
 	before_filter :authenticate_user!, except: [:index, :show, :link_index, :search]
 	
-	before_filter :set_up_my_profile, only: [:view_my_profile, :edit_my_profile]
+	before_filter :create_profile_if_needed, only: [:view_my_profile, :edit_my_profile]
 	
 	# Side effect: loads @profiles or @profile as appropriate.
 	# e.g., for index action, @profiles is set to Profile.accessible_by(current_ability)
@@ -16,7 +16,7 @@ class ProfilesController < ApplicationController
 	#   ensure it has at least one location
 	#   set publish state based on parameter
 	#   set SEO keywords for profile show page
-	before_filter :require_location_in_profile, only: [:new, :edit, :edit_plain]
+	before_filter :require_location_in_profile, only: [:new, :edit, :edit_my_profile, :edit_plain]
 	before_filter :process_profile_admin_params, only: [:create, :update]
 	before_filter :seo_keywords, only: :show
 	
@@ -56,7 +56,7 @@ class ProfilesController < ApplicationController
 		# @profile initialized by load_and_authorize_resource with cancan ability conditions and then parameter values.
 		if @profile.save
 			set_flash_message :notice, :profile_created
-			redirect_to(params[:admin] ? edit_profile_path(@profile) : profile_path(@profile))
+			redirect_to(params[:admin] ? edit_profile_url(@profile) : profile_url(@profile))
 		else
 			set_flash_message :alert, :profile_create_error
 			render action: (params[:admin] ? :admin : :new)
@@ -66,7 +66,7 @@ class ProfilesController < ApplicationController
 	def update
 		if @profile.update_attributes(params[:profile])
 			set_flash_message :notice, :profile_updated
-			redirect_to profile_path @profile
+			redirect_to profile_url @profile
 		else
 			set_flash_message :alert, :profile_update_error
 			render action: :edit_plain
@@ -88,11 +88,12 @@ class ProfilesController < ApplicationController
 	def destroy
 		@profile.destroy
 		set_flash_message :notice, :profile_destroyed
-		redirect_to admin_profiles_path
+		redirect_to admin_profiles_url
 	end
 	
 	# While implementing the new design, explicitly specify the new layout for views using the new design.
 	def view_my_profile
+		@claim_token = params[:claim_token] # Exists if we are confirming replacement of current profile with a claimed one.
 		render action: :show, layout: 'interior'
 	end
 	
@@ -123,7 +124,7 @@ class ProfilesController < ApplicationController
 	def send_invitation
 		if @profile.update_attributes(params[:profile]) && @profile.invite
 			set_flash_message :notice, :invitation_sent
-			redirect_to profile_path @profile
+			redirect_to profile_url @profile
 		else
 			set_flash_message :alert, :invitation_error
 			render action: :new_invitation
@@ -136,12 +137,16 @@ class ProfilesController < ApplicationController
 	
 	private
 	
-	def set_up_my_profile
+	def set_up_profile(method=:build_profile)
 		@user = current_user
 		if @user.is_provider?
-			@user.create_profile unless @user.profile
+			@user.send method unless @user.profile
 			@profile = @user.profile
 		end
+	end
+	
+	def create_profile_if_needed
+		set_up_profile :create_profile
 	end
 	
 	def seo_keywords

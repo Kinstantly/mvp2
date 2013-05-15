@@ -10,7 +10,8 @@ Feature: Claim profile
 		Then "asleep@thewheel.wv.us" should have an email
 	
 	Scenario: Attach profile to my existing account
-		Given I am logged in
+		Given I exist as a user
+			And I am logged in
 			And I have no profile
 			And I have been invited to claim a profile
 		When I click on the profile claim link
@@ -30,4 +31,14 @@ Feature: Claim profile
 		When I sign up with valid user data
 			And I open the email with subject "Confirmation instructions"
 		 	And I follow "confirm" in the email
+		Then the profile should be attached to my account
+	
+	Scenario: Replace my existing profile with confirmation when claiming
+		Given I exist as a user
+			And I want a profile
+			And I am logged in
+			And I have been invited to claim a profile
+		When I click on the profile claim link
+		Then I should be asked to replace my existing profile
+		When I click on the profile claim confirm link
 		Then the profile should be attached to my account

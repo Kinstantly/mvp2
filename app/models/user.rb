@@ -67,10 +67,15 @@ class User < ActiveRecord::Base
 	
 	alias :is_provider? :expert?
 	
+	def has_persisted_profile?
+		!!profile.try(:persisted?)
+	end
+	
 	# Attempt to attach the profile specified by the token.  The profile must not already be claimed.
 	# This user must be a provider and must not already have a persistent profile.
-	def claim_profile(token)
-		is_provider? && (profile.nil? || profile.new_record?) && token.present? &&
+	# If we are forcing, then any existing profile will be replaced.
+	def claim_profile(token, force=false)
+		is_provider? && (profile.nil? || profile.new_record? || force) && token.present? &&
 			(profile_to_claim = Profile.find_by_invitation_token(token.to_s)) && !profile_to_claim.claimed? &&
 			(self.profile = profile_to_claim) && save
 	end

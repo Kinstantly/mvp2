@@ -1,7 +1,7 @@
 %th
 	%span.editable= Profile.human_attribute_name(:insurance_accepted)
 %td
-	= serialize_profile_text @profile.errorfree.insurance_accepted
+	%span.attribute_display= serialize_profile_text @profile.errorfree.insurance_accepted
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages

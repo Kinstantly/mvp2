@@ -83,7 +83,7 @@
 			edit_profile.prompts['specialties'] = 
 				"#{escape_javascript content_tag(:span, t('views.profile.edit.custom_specialty_prompt'), class: 'note')}";
 
-%p
+%p.attribute_display
 	- if @profile.errorfree.categories.present?
 		= profile_display_categories(@profile.errorfree)
 	- else
@@ -98,7 +98,7 @@
 		= profile_display_specialties(@profile.errorfree)
 	- else
 		%span.note=  t 'views.profile.edit.specialties_blank'
-%p= @profile.errorfree.specialties_description
+%p.attribute_display= @profile.errorfree.specialties_description
 
 :coffeescript
 	# Show check boxes for children that belong to the currently checked parents.

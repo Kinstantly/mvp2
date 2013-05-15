@@ -1,4 +1,8 @@
 - @page_title_prefix = @profile.display_name_or_company
+- if @claim_token
+	.confirm_claim_profile
+		= link_to t('views.profile.claim.link_body'), force_claim_user_profile_path(token: @claim_token)
+		= t 'views.profile.claim.message'
 - if can?(:manage, Profile) || can?(:manage_my_profile, @profile)
 	.editor_buttons
 		= edit_my_profile_link @profile

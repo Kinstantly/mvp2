@@ -13,6 +13,7 @@ en:
       profile_update_error: 'There was a problem saving your profile.'
       profile_claimed: 'You have claimed your profile.'
       profile_claim_error: 'There was a problem claiming your profile.'
+      already_has_profile: 'You have an existing profile.'
     profiles:
       profile_created: 'The profile was created.'
       profile_create_error: 'There was a problem creating the profile.'
@@ -107,6 +108,9 @@ en:
         pricing_example: 'Example: $1/minute, $40/15 minutes, $120/hour'
         services_blank: 'No services'
         specialties_blank: 'No specialties'
+      claim:
+        link_body: 'Click here'
+        message: 'if you want to replace your existing profile with the one you want claim.'
     location:
       edit:
         address1_prompt: 'number and street'

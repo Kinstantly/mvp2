@@ -23,6 +23,7 @@ end
 
 def find_user_profile
 	refresh_user
+	# find_user
 	@profile = @user.profile
 end
 
@@ -68,6 +69,20 @@ def formlet_id(name)
 	case name
 	when 'display name'
 		'display_name'
+	when 'age ranges'
+		'age_ranges'
+	when 'insurance'
+		'insurance_accepted'
+	when 'website'
+		'internet'
+	when 'categories'
+		'services'
+	when 'specialties'
+		'services'
+	when 'consultation methods'
+		'contact_options'
+	when 'service area'
+		pending 'decision on whether to include service area on the new profile edit page'
 	else
 		name
 	end
@@ -84,11 +99,11 @@ end
 
 Given /^I am on my profile edit page$/ do
 	set_up_new_data
-	visit edit_user_profile_path
+	visit edit_my_profile_path
 end
 
 Given /^I go to my profile edit page$/ do
-	visit edit_user_profile_path
+	visit edit_my_profile_path
 end
 
 Given /^I want (?:my|a|an)(?: unpublished)? profile$/ do
@@ -292,7 +307,7 @@ When /^I enter (?:new )?profile information$/ do
 end
 
 When /^I view my profile$/ do
-  visit view_user_profile_path
+  visit my_profile_path
 end
 
 When /^I enter my basic profile information$/ do
@@ -323,8 +338,11 @@ When /^I set my credentials to "(.*?)"$/ do |credentials|
 end
 
 When /^I edit my profile information$/ do
-	fill_in 'Website', with: @profile_data[:url]
-	click_button 'Save'
+	find("#internet").click
+	within("#internet") do
+		fill_in 'Website', with: @profile_data[:url]
+		click_button 'Save'
+	end
 	find_user_profile
 end
 
@@ -332,36 +350,31 @@ When /^(?:I )?click edit my profile$/ do
 	click_link 'Edit my profile'
 end
 
-When /^I save my profile$/ do
-	click_button 'Save'
-	find_user_profile
-end
-
 When /^I check "(.*?)"$/ do |field|
 	check field
 end
 
 When /^I select the "(.*?)" category$/ do |cat|
-	within('.categories') do
+	within('#services .categories') do
 		check MyHelpers.profile_categories_id(cat.to_category.id)
 	end
 end
 
 When /^I select the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
-	within('.categories') do
+	within('#services .categories') do
 		check MyHelpers.profile_categories_id(cat1.to_category.id)
 		check MyHelpers.profile_categories_id(cat2.to_category.id)
 	end
 end
 
 When /^I select the "(.*?)" service$/ do |svc|
-	within('.services') do
+	within('#services .services') do
 		check MyHelpers.profile_services_id(svc.to_service.id)
 	end
 end
 
 When /^I select the "(.*?)" and "(.*?)" services$/ do |svc1, svc2|
-	within('.services') do
+	within('#services .services') do
 		check MyHelpers.profile_services_id(svc1.to_service.id)
 		check MyHelpers.profile_services_id(svc2.to_service.id)
 	end
@@ -369,7 +382,7 @@ end
 
 # This step requires javascript.
 When /^I add the "(.*?)" and "(.*?)" custom services$/ do |svc1, svc2|
-	within('.custom_services') do
+	within('#services .custom_services') do
 		click_button 'add_custom_services_text_field'
 		fill_in MyHelpers.profile_custom_services_id('1'), with: svc1
 		click_button 'add_custom_services_text_field'
@@ -379,7 +392,7 @@ end
 
 # This step requires javascript.
 When /^I add the "(.*?)" and "(.*?)" custom services using enter$/ do |svc1, svc2|
-	within('.custom_services') do
+	within('#services .custom_services') do
 		click_button 'add_custom_services_text_field'
 		fill_in MyHelpers.profile_custom_services_id('1'), with: "#{svc1}\r"
 		fill_in MyHelpers.profile_custom_services_id('2'), with: svc2
@@ -388,7 +401,7 @@ end
 
 # This step requires javascript.
 When /^I select the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
-	within('.specialties') do
+	within('#services .specialties') do
 		check MyHelpers.profile_specialties_id(spec1.to_specialty.id)
 		check MyHelpers.profile_specialties_id(spec2.to_specialty.id)
 	end
@@ -396,7 +409,7 @@ end
 
 # This step requires javascript.
 When /^I add the "(.*?)" and "(.*?)" custom specialties$/ do |spec1, spec2|
-	within('.custom_specialties') do
+	within('#services .custom_specialties') do
 		click_button 'add_custom_specialties_text_field'
 		fill_in MyHelpers.profile_custom_specialties_id('1'), with: spec1
 		click_button 'add_custom_specialties_text_field'
@@ -406,7 +419,7 @@ end
 
 # This step requires javascript.
 When /^I add the "(.*?)" and "(.*?)" custom specialties using enter$/ do |spec1, spec2|
-	within('.custom_specialties') do
+	within('#services .custom_specialties') do
 		click_button 'add_custom_specialties_text_field'
 		fill_in MyHelpers.profile_custom_specialties_id('1'), with: "#{spec1}\r"
 		fill_in MyHelpers.profile_custom_specialties_id('2'), with: spec2
@@ -421,12 +434,6 @@ When /^I select "(.*?)" as the search area tag$/ do |tag|
 	pending 'missing attributes in new design'
 	within('.location_contact_profile') do
 		select tag, from: 'Region for search'
-	end
-end
-
-When /^I select "(.*?)" as the state$/ do |name|
-	within('.location_contact_profile') do
-		select name, from: 'State'
 	end
 end
 
@@ -451,20 +458,34 @@ When /^I click on the link for an unclaimed profile$/ do
 	click_link "#{@unattached_profile_data[:first_name]} #{@unattached_profile_data[:middle_name]} #{@unattached_profile_data[:last_name]}"
 end
 
-When /^I enter "(.*?)" in the "(.*?)" field$/ do |text, field|
-	pending 'editor and admin functions in new design' if ['Admin notes', 'Lead generator'].include? field
-	fill_in field, with: text
+When /^I open the "(.*?)" formlet$/ do |formlet|
+	find("##{formlet_id formlet}").click
 end
 
 When /^I enter "(.*?)" in the "(.*?)" field of the "(.*?)" formlet$/ do |text, field, formlet|
-	find("##{formlet_id formlet}").click
-	fill_in field, with: text
+	pending 'editor and admin functions in new design' if ['Admin notes', 'Lead generator'].include? field
+	within("##{formlet_id formlet}") do
+		fill_in field, with: text
+	end
 end
 
-When /^I save the "(.*?)" formlet$/ do |formlet|
+When /^I select "(.*?)" as the state in the "(.*?)" formlet$/ do |name, formlet|
 	within("##{formlet_id formlet}") do
-		click_button 'Save'
+		select name, from: 'State'
 	end
+end
+
+When /^I check "(.*?)" in the "(.*?)" formlet$/ do |field, formlet|
+	within("##{formlet_id formlet}") do
+		check field
+	end
+end
+
+When /^I click on the "(.*?)" (?:link|button) of the "(.*?)" formlet$/ do |link, formlet|
+	within("##{formlet_id formlet}") do
+		click_link_or_button link
+	end
+	sleep 1 # In case this click caused an AJAX call, give it some time to finish to avoid database deadlock with later cleanup phase.
 end
 
 When /^I check the publish box$/ do
@@ -484,8 +505,15 @@ When /^I click on a user profile link$/ do
 	click_link MyHelpers.user_list_profile_link_id(@profile)
 end
 
-When /^I click on the profile claim link$/ do
-	visit claim_user_profile_url(token: @unattached_profile.invitation_token)
+When /^I click on the profile claim (confirm )?link$/ do |force|
+	token = @unattached_profile.invitation_token
+	if force.present?
+		within('.confirm_claim_profile') do
+			click_link 'Click here'
+		end
+	else
+		visit claim_user_profile_url(token: token)
+	end
 end
 
 When /^I invite "(.*?)" to claim the profile$/ do |email|
@@ -501,11 +529,11 @@ end
 When /^I enter "(.*?)" in the "(.*?)" field of the (first|second) location$/ do |text, field, which|
 	case which
 	when 'first'
-		within('.location_contact_profile .fields:first-of-type') do
+		within('#locations form .fields') do
 			fill_in field, with: text
 		end
 	when 'second'
-		within('.location_contact_profile .fields + .fields') do
+		within('#locations form .fields + .fields') do
 			fill_in field, with: text
 		end
 	end
@@ -533,11 +561,11 @@ Then /^I should see one of my specialties$/ do
 end
 
 Then /^I should land on the profile view page$/ do
-	current_path.should == view_user_profile_path
+	current_path.should == my_profile_path
 end
 
-Then /^I should land on the profile edit page$/ do
-	current_path.should == edit_user_profile_path
+Then /^I should (?:land|remain) on the profile edit page$/ do
+	current_path.should == edit_my_profile_path
 end
 
 Then /^my basic information should be saved in my profile$/ do
@@ -555,7 +583,8 @@ Then /^my email address should be saved to my user record$/ do
 end
 
 Then /^my country code should be set to "(.*?)"$/ do |country|
-	@profile.locations.first.country.should == country
+	find_user_profile
+	@profile.locations.each { |location| location.country.should == country}
 end
 
 Then /^(?:my|the) profile should show "([^\"]+)"$/ do |value|
@@ -572,59 +601,46 @@ Then /^my profile should show "([^\"]+)" within "([^\"]+)"$/ do |value, css_clas
 	end
 end
 
-Then /^my profile should show "(.*?)" in the location area$/ do |value|
-	within('.view_profile .location_contact_profile') do
-		page.should have_content value
-	end
-end
-
 Then /^my profile should have no locations$/ do
+	find_user_profile
 	@profile.locations.should have(:no).things
 end
 
-Then /^my profile should show me as being in the "(.*?)" (category|service|specialty)$/ do |name, thing|
-	within(".view_profile .#{thing.pluralize}") do
-		page.should have_content name
-	end
-end
-
-Then /^my profile should show me as being in the "(.*?)" and "(.*?)" (.*?)$/ do |name1, name2, things|
-	within(".view_profile .#{things}") do
-		page.should have_content name1
-		page.should have_content name2
-	end
-end
-
 Then /^the "(.*?)" and "(.*?)" services should appear in the profile edit check list$/ do |svc1, svc2|
-	within('.edit_profile .services') do
+	within('#services .services') do
 		page.should have_content svc1
 		page.should have_content svc2
 	end
 end
 
 Then /^then I should be offered the "(.*?)" and "(.*?)" (.*?)$/ do |name1, name2, things|
-	within(".edit_profile .#{things}") do
-		page.should have_content name1
-		page.should have_content name2
-	end
-end
-
-Then /^my profile should show me as having the "(.*?)" and "(.*?)" (.*?)$/ do |name1, name2, things|
-	within(".view_profile .#{things}") do
+	within("#services .#{things}") do
 		page.should have_content name1
 		page.should have_content name2
 	end
 end
 
 Then /^I should be offered no (.*?)$/ do |things|
-	within(".edit_profile .#{things}") do
+	within("#services .#{things}") do
 		page.should_not have_content FactoryGirl.attributes_for(things.singularize.to_sym)[:name]
 	end
 end
 
-Then /^my profile should show the "(.*?)" age range$/ do |age_range|
-	within('.view_profile .age_ranges') do
-		page.should have_content age_range
+Then /^my profile edit page should show "([^\"]+)" displayed( | second )in the "([^\"]+)" (overlay )?area$/ do |value, which, formlet, overlay|
+	pending "implementation of more-info overlay" if overlay.present?
+	selector = "##{formlet_id formlet}#{' .overlay' if overlay.present?} .attribute_display"
+	selector += ' + .attribute_display' if which.strip == 'second'
+	within(selector) do
+		page.should have_content value
+	end
+end
+
+Then /^my profile edit page should show "([^\"]+)" and "([^\"]+)" displayed( | second )in the "([^\"]+)" area$/ do |value1, value2, which, formlet|
+	selector = "##{formlet_id formlet} .attribute_display"
+	selector += ' + .attribute_display' if which.strip == 'second'
+	within(selector) do
+		page.should have_content value1
+		page.should have_content value2
 	end
 end
 
@@ -685,14 +701,7 @@ end
 
 # Dynamic display showing what the display name will be after saving.
 Then /^the display name should be dynamically shown as "(.*?)"$/ do |display_name|
-	within('.edit_profile .display_name') do
-		page.should have_content display_name
-	end 
-end
-
-# Display name based on various profile fields.
-Then /^the display name should be updated to "(.*?)"$/ do |display_name|
-	within('.top_nav') do
+	within('.display_name_area') do
 		page.should have_content display_name
 	end 
 end
@@ -716,4 +725,10 @@ end
 
 Then /^I should see form fields for an extra location$/ do
 	have_css '.location_contact_profile .fields + .fields'
+end
+
+Then /^I should be asked to replace my existing profile$/ do
+	within('.confirm_claim_profile') do
+		page.should have_content 'Click here'
+	end
 end

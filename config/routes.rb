@@ -26,6 +26,7 @@ Mvp2::Application.routes.draw do
 	match 'update_user_profile' => 'users#update_profile'
 	match 'view_user_profile' => 'users#view_profile'
 	match 'claim_profile/:token' => 'users#claim_profile', as: :claim_user_profile
+	match 'claim_profile/:token/confirm' => 'users#force_claim_profile', as: :force_claim_user_profile
 	# Except admin can see all profiles.
 	match 'users' => 'users#index'
 	
@@ -52,6 +53,7 @@ Mvp2::Application.routes.draw do
 	
 	# Accessing my profile (for providers).
 	match 'my_profile' => 'profiles#view_my_profile'
+	match 'confirm_claim_profile/:claim_token' => 'profiles#view_my_profile', as: :confirm_claim_profile
 	match 'edit_my_profile' => 'profiles#edit_my_profile'
 	
 	# Links to profiles for search engine crawlers.

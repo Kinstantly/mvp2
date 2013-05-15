@@ -64,6 +64,20 @@ describe User do
 				@kelly.build_profile
 				@kelly.profile.should_not be_nil
 			end
+			
+			it "should not have a persisted profile if new" do
+				@kelly.has_persisted_profile?.should_not be_true
+			end
+			
+			it "should not have a persisted profile if merely built" do
+				@kelly.build_profile
+				@kelly.has_persisted_profile?.should_not be_true
+			end
+			
+			it "should have a persisted profile if it was created" do
+				@kelly.create_profile
+				@kelly.has_persisted_profile?.should be_true
+			end
 		
 			context "claiming" do
 				before(:each) do
@@ -74,6 +88,10 @@ describe User do
 			
 				it "should fail if this user already has a persistent profile" do
 					@ralph.claim_profile(@token).should_not be_true
+				end
+				
+				it "should succeed if we force a claim of the profile even if the user already has an existing profile" do
+					@ralph.claim_profile(@token, true).should be_true
 				end
 			
 				context "this user does not already have a persistent profile" do

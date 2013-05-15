@@ -1,7 +1,7 @@
 %th
 	%span.editable= Profile.human_attribute_name(:age_ranges)
 %td
-	= profile_age_ranges @profile.errorfree
+	%span.attribute_display= profile_age_ranges @profile.errorfree
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages

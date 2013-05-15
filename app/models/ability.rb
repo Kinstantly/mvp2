@@ -15,7 +15,7 @@ class Ability
 		# Experts should only be able to edit the profile attached to their user.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.
 		if user.expert?
-			alias_action :view_profile, :edit_profile, :update_profile, :claim_profile, to: :manage_my_user_profile
+			alias_action :view_profile, :edit_profile, :update_profile, :claim_profile, :force_claim_profile, to: :manage_my_user_profile
 			can :manage_my_user_profile, User, id: user.id
 			can :create, User, id: user.id
 			can :update, User, id: user.id

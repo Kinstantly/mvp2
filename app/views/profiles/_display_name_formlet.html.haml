@@ -22,7 +22,7 @@
 				= profile_display_name @profile
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
-%h1.editable{itemprop: "name"}
+%h1.editable.attribute_display{itemprop: "name"}
 	= @profile.errorfree.display_name_or_company.presence || profile_blank_attribute_message(t 'views.profile.edit.display_name_or_company_blank')
 :coffeescript
 	# Refresh display name as contributing input tags are modified.

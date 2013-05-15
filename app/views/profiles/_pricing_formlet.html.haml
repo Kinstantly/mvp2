@@ -1,7 +1,7 @@
 %th
 	%span.editable= Profile.human_attribute_name(:pricing)
 %td
-	%span.text_area= preserve_profile_text @profile.errorfree.pricing
+	%span.text_area.attribute_display= preserve_profile_text @profile.errorfree.pricing
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages

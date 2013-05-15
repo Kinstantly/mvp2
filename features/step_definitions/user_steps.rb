@@ -87,7 +87,7 @@ Given /^I am not logged in$/ do
 end
 
 Given /^I am logged in$/ do
-  create_user
+  # create_user
   sign_in
 end
 

@@ -35,9 +35,9 @@
 			= link_to 'Cancel', '#', class: 'cancel button'
 -# Display the first-created location (if any) of the STORED profile.
 - location = @profile.errorfree.locations.sort_by(&:created_at).first
-%span.location.editable{itemprop: "street-address"}
+%span.location.editable.attribute_display{itemprop: "street-address"}
 	= location.try(:display_address).presence || profile_blank_attribute_message(Location.human_attribute_name :display_address)
-%span.location.editable{itemprop: "telephone"}
+%span.location.editable.attribute_display{itemprop: "telephone"}
 	= location.try(:display_phone).presence || profile_blank_attribute_message(Location.human_attribute_name :display_phone)
 :coffeescript
 	# In case we are re-rendering on an error, make sure locations marked for destruction are not visible.
