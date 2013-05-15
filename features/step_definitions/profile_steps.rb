@@ -83,6 +83,8 @@ def formlet_id(name)
 		'contact_options'
 	when 'service area'
 		pending 'decision on whether to include service area on the new profile edit page'
+	when 'admin'
+		pending 'implement admin formlet'
 	else
 		name
 	end
@@ -404,9 +406,8 @@ When /^I select the "(.*?)" age range$/ do |age_range|
 	check MyHelpers.profile_age_ranges_id(age_range)
 end
 
-When /^I select "(.*?)" as the search area tag$/ do |tag|
-	pending 'missing attributes in new design'
-	within('.location_contact_profile') do
+When /^I select "(.*?)" as the search area tag in the "(.*?)" formlet$/ do |tag, formlet|
+	within("##{formlet_id formlet} .fields") do
 		select tag, from: 'Region for search'
 	end
 end
@@ -462,9 +463,10 @@ When /^I click on the "(.*?)" (?:link|button) of the "(.*?)" formlet$/ do |link,
 	sleep 1 # In case this click caused an AJAX call, give it some time to finish to avoid database deadlock with later cleanup phase.
 end
 
-When /^I check the publish box$/ do
-	pending 'editor and admin functions in new design'
-	check 'is_published'
+When /^I check the publish box in the "(.*?)" formlet$/ do |formlet|
+	within("##{formlet_id formlet}") do
+		check 'is_published'
+	end
 end
 
 When /^I save the profile$/ do

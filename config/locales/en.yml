@@ -106,6 +106,7 @@ en:
         display_name_blank: 'Your company name is shown if these fields are left blank.'
         display_name_or_company_blank: 'Your name'
         pricing_example: 'Example: $1/minute, $40/15 minutes, $120/hour'
+        search_area_tag_other: 'Other'
         services_blank: 'No services'
         specialties_blank: 'No specialties'
       claim:

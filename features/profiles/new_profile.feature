@@ -24,7 +24,9 @@ Feature: Create a new expert profile
 		When I visit the profile admin page
 			And I create the profile
 			And I enter profile information
-			And I check the publish box
+			And I open the "admin" formlet
+			And I check the publish box in the "admin" formlet
+			And I click on the "Save" button of the "admin" formlet
 		Then the new profile should be published
 	
 	Scenario: Create new profile as a profile editor

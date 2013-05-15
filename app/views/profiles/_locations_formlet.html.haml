@@ -27,7 +27,7 @@
 			- if current_user.profile_editor?
 				.text_field
 					= lf.label :search_area_tag_id
-					= lf.collection_select :search_area_tag_id, SearchAreaTag.all, :id, :name, {include_blank: 'Other'}
+					= lf.collection_select :search_area_tag_id, SearchAreaTag.all, :id, :name, {include_blank: t('views.profile.edit.search_area_tag_other')}
 			= lf.link_to_remove t('views.location.edit.remove'), confirm: t('views.location.edit.remove_confirm')
 		= f.link_to_add t('views.location.edit.add'), :locations, class: 'form_section'
 		#locations_buttons
