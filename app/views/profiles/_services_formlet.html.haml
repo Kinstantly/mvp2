@@ -98,7 +98,7 @@
 		= profile_display_specialties(@profile.errorfree)
 	- else
 		%span.note=  t 'views.profile.edit.specialties_blank'
-%p.attribute_display= @profile.errorfree.specialties_description
+%p.attribute_display= profile_display_text @profile.errorfree.specialties_description, links: true
 
 :coffeescript
 	# Show check boxes for children that belong to the currently checked parents.

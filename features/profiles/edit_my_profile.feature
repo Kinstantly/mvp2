@@ -15,6 +15,16 @@ Feature: Edit my expert profile
 			And my profile edit page should show "Kaiser Permanente" displayed in the "insurance" area
 	
 	@javascript
+	Scenario: Enter insurance accepted with an embedded link
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I open the "insurance" formlet
+			And I enter "For info click here: http://en.wikipedia.org/wiki/Health_insurance" in the "Insurance" field of the "insurance" formlet
+			And I click on the "Save" button of the "insurance" formlet
+		Then my profile edit page should show "en.wikipedia.org" displayed as a link in the "insurance" area
+	
+	@javascript
 	Scenario: Remain on edit page while editing
 		Given I exist as a user
 			And I am logged in

@@ -590,10 +590,11 @@ Then /^I should be offered no (.*?)$/ do |things|
 	end
 end
 
-Then /^my profile edit page should show "([^\"]+)" displayed( | second )in the "([^\"]+)" (overlay )?area$/ do |value, which, formlet, overlay|
+Then /^my profile edit page should show "([^\"]+)" displayed( | second )(as a link )?in the "([^\"]+)" (overlay )?area$/ do |value, which, link, formlet, overlay|
 	pending "implementation of more-info overlay" if overlay.present?
 	selector = "##{formlet_id formlet}#{' .overlay' if overlay.present?} .attribute_display"
 	selector += ' + .attribute_display' if which.strip == 'second'
+	selector += ' a' if link.present?
 	within(selector) do
 		page.should have_content value
 	end

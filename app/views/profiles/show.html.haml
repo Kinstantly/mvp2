@@ -56,19 +56,19 @@
 				- if @profile.summary.present?
 					.summary
 						%h3= Profile.human_attribute_name :summary
-						%p.text_area= preserve_profile_text @profile.summary
+						%p.text_area= profile_display_text @profile.summary, preserve: true, links: true
 				- if @profile.services.present? || @profile.specialties.present?
 					.services
 						-# Only display specialties.  Put categories and services in meta tags and hidden elements.
 						%h3= Profile.human_attribute_name :specialties
 						%p= profile_display_specialties(@profile, 6)
-						%p= @profile.specialties_description
+						%p= profile_display_text @profile.specialties_description, links: true
 			%table.info{border: "0", cellpadding: "0", cellspacing: "0"}
 				- if @profile.hours.present?
 					%tr
 						%th
 							%span= Profile.human_attribute_name :hours
-						%td.text_area= preserve_profile_text @profile.hours
+						%td.text_area= profile_display_text @profile.hours, preserve: true, links: true
 				- if @profile.age_ranges.present?
 					%tr
 						%th
@@ -78,27 +78,27 @@
 					%tr
 						%th
 							%span= Profile.human_attribute_name :languages
-						%td= serialize_profile_text @profile.languages
+						%td= profile_display_text @profile.languages, serialize: true
 				- if @profile.education.present?
 					%tr
 						%th
 							%span= Profile.human_attribute_name :education
-						%td= serialize_profile_text @profile.education
+						%td= profile_display_text @profile.education, serialize: true, links: true
 				- if @profile.certifications.present?
 					%tr
 						%th
 							%span= Profile.human_attribute_name :certifications
-						%td= serialize_profile_text @profile.certifications
+						%td= profile_display_text @profile.certifications, serialize: true, links: true
 				- if @profile.insurance_accepted.present?
 					%tr
 						%th
 							%span= Profile.human_attribute_name :insurance_accepted
-						%td= serialize_profile_text @profile.insurance_accepted
+						%td= profile_display_text @profile.insurance_accepted, serialize: true, links: true
 				- if @profile.pricing.present?
 					%tr
 						%th
 							%span= Profile.human_attribute_name :pricing
-						%td.text_area= preserve_profile_text @profile.pricing
+						%td.text_area= profile_display_text @profile.pricing, preserve: true, links: true
 	%section#reviews.clearfix
 		%article.review.even
 			%header.review-header

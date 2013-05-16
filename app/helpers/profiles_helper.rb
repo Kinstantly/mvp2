@@ -36,6 +36,12 @@ module ProfilesHelper
 		}.map{ |range| range[:name] }.join(', ')
 	end
 	
+	def profile_create_links(text)
+		auto_link text, link: :urls, html: { target: '_blank', class: 'dont_popover' } do |body|
+			display_url body, 40
+		end
+	end
+	
 	def profile_linked_website(profile=current_user.try(:profile), title=nil)
 		if (url = profile.try(:url)).present?
 			auto_link "http://#{strip_url url}", link: :urls, html: { target: '_blank', title: title } do |body|
@@ -181,6 +187,14 @@ module ProfilesHelper
 	
 	def preserve_profile_text(text)
 		preserve text.strip if text
+	end
+	
+	# The order of processing matters.
+	def profile_display_text(text, options={})
+		text = serialize_profile_text text if options[:serialize]
+		text = profile_create_links text if options[:links]
+		text = preserve_profile_text text if options[:preserve]
+		text
 	end
 	
 	def profile_display_categories_services_specialties(profile, n=nil)

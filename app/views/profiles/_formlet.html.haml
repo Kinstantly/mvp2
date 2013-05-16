@@ -4,3 +4,5 @@
 	$('##{formlet} .cancel').click (e) ->
 		$('##{formlet}').removeClass 'active'
 		false # Prevent click action. Prevent reactivation by stopping propagation to the parent formlet element.
+	$('.dont_popover').click (e) ->
+		e.stopPropagation() # Allow clicking on the element without activating the formlet.
