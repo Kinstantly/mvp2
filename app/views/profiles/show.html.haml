@@ -138,19 +138,19 @@
 - if can? :manage, Profile
 	.editor_info
 		.publish_state
-			= @profile.is_published ? 'Profile is published' : 'Profile is NOT published'
+			= @profile.is_published ? t('views.profile.view.profile_is_published') : t('views.profile.view.profile_is_not_published')
 		.user_state
-			= @profile.claimed? ? "Profile is claimed by #{@profile.user.email}" : 'Profile is NOT claimed'
+			= @profile.claimed? ? t('views.profile.view.profile_is_claimed_by', owner: @profile.user.email) : t('views.profile.view.profile_is_not_claimed')
 		.invitation_state
 			= profile_invitation_info @profile
 - if current_user.try(:admin?)
 	.admin_info
 		- if @profile.admin_notes.present?
 			.admin_notes
-				%span.label Admin notes:
+				%span.label= "#{Profile.human_attribute_name(:admin_notes)}:"
 				%br
 				.value.text_area= preserve_profile_text @profile.admin_notes
 		- if @profile.lead_generator.present?
 			.lead_generator
-				Lead generator:
+				= "#{Profile.human_attribute_name(:lead_generator)}:"
 				= @profile.lead_generator

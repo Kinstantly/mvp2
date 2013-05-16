@@ -107,13 +107,13 @@ module ProfilesHelper
 	end
 	
 	def new_invitation_profile_link(profile)
-		link_to "Send invitation to claim", new_invitation_profile_path(profile), id: 'new_invitation_profile' if can?(:update, profile)
+		link_to t('views.profile.view.invitation_to_claim_link'), new_invitation_profile_path(profile), id: 'new_invitation_profile' if can?(:update, profile)
 	end
 	
 	def profile_invitation_info(profile)
 		if can?(:manage, profile) && !profile.claimed?
 			if profile.invitation_sent_at
-				"Invitation to claim has been sent to #{profile.invitation_email} at #{display_profile_time profile.invitation_sent_at}"
+				t 'views.profile.view.invitation_to_claim_info', invitee: profile.invitation_email, time: display_profile_time(profile.invitation_sent_at)
 			else
 				new_invitation_profile_link profile
 			end
@@ -444,7 +444,7 @@ module ProfilesHelper
 	
 	# Accepting new clients
 	def profile_display_accepting_new_clients(profile)
-		profile.accepting_new_clients ? 'Accepting new clients' : 'Not accepting new clients at this time'
+		profile.accepting_new_clients ? t('views.profile.view.accepting_new_clients') : t('views.profile.view.not_accepting_new_clients')
 	end
 	
 	# Search

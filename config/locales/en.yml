@@ -67,6 +67,7 @@ en:
         headline: "Professional headline as you'd like it to appear"
         hours: 'Hours'
         insurance_accepted: 'Insurance'
+        is_published: 'Check to publish'
         languages: 'Languages'
         last_name: 'Last name'
         middle_name: 'Middle name or initial'
@@ -94,8 +95,22 @@ en:
   views:
     profile:
       view:
-        my_profile_link: 'My profile'
+        accepting_new_clients: 'Accepting new clients'
+        claimed_by: 'Claimed by'
+        consultation_modes: 'Consultation methods and locations'
         edit_my_profile_link: 'Make your profile better.  Click here.'
+        headline: 'Professional headline'
+        invitation_to_claim_info: 'Invitation to claim has been sent to %{invitee} at %{time}'
+        invitation_to_claim_link: 'Send invitation to claim'
+        my_profile_link: 'My profile'
+        not_accepting_new_clients: 'Not accepting new clients at this time'
+        not_published: 'Not published'
+        profile_is_claimed_by: 'Profile is claimed by %{owner}'
+        profile_is_published: 'Profile is published'
+        profile_is_not_claimed: 'Profile is NOT claimed'
+        profile_is_not_published: 'Profile is NOT published'
+        published: 'Published'
+        rating: 'Rating'
       edit:
         add_text_field: 'Hit ENTER to add another field'
         categories_blank: 'No categories'

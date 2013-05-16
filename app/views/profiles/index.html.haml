@@ -9,54 +9,51 @@
 		%table
 			%thead
 				%tr
-					%th Name
-					%th Company name
+					%th= Profile.human_attribute_name(:display_name)
+					%th= Profile.human_attribute_name(:company_name)
 					- if can? :manage, Profile
-						%th Published?
-						%th Claimed by
+						%th= "#{t 'views.profile.view.published'} or #{t 'views.profile.view.not_published'}"
+						%th= t 'views.profile.view.claimed_by'
 					- if current_user.try(:admin?)
-						%th.large Admin notes
-						%th Lead generator
-					%th Rating
-					%th Website
-					%th Headline
-					%th= current_user.try(:admin?) ? 'Public email' : 'Email'
-					%th Address
-					%th Phone
-					%th Search region
-					%th.large Categories
-					%th.large Jobs or Services
-					%th.large Specialties
-					%th.large My specialties
-					%th Ages
-					%th Consultation modes
-					%th.large Education
-					%th Licenses, certifications
-					%th Languages
-					%th.large Insurance accepted
-					%th.large Summary
-					%th Pricing
-					%th.large Availability
-					%th.large Hours
-					%th.large Phone consultation hours
-					%th.large Video consultation hours
-					%th Service area
+						%th.large= Profile.human_attribute_name(:admin_notes)
+						%th= Profile.human_attribute_name(:lead_generator)
+					%th= t 'views.profile.view.rating'
+					%th= Profile.human_attribute_name(:url)
+					%th= t 'views.profile.view.headline'
+					%th= Profile.human_attribute_name(:email)
+					%th= Location.human_attribute_name(:address1)
+					%th= Location.human_attribute_name(:phone)
+					%th= Location.human_attribute_name(:search_area_tag_id)
+					%th.large= Profile.human_attribute_name(:categories)
+					%th.large= Profile.human_attribute_name(:services)
+					%th.large= Profile.human_attribute_name(:specialties)
+					%th.large= Profile.human_attribute_name(:specialties_description)
+					%th= Profile.human_attribute_name(:age_ranges)
+					%th= t 'views.profile.view.consultation_modes'
+					%th.large= Profile.human_attribute_name(:education)
+					%th= Profile.human_attribute_name(:certifications)
+					%th= Profile.human_attribute_name(:languages)
+					%th.large= Profile.human_attribute_name(:insurance_accepted)
+					%th.large= Profile.human_attribute_name(:summary)
+					%th= Profile.human_attribute_name(:pricing)
+					%th.large= Profile.human_attribute_name(:hours)
+					%th= Profile.human_attribute_name(:service_area)
 			%tbody
 				- @profiles.each do |p|
 					%tr
 						%td= profile_list_name_link p
-						%td= p.try(:company_name)
+						%td= p.company_name
 						- if can? :manage, Profile
-							%td= p.try(:is_published) ? 'Published' : 'Not published'
-							%td= p.try(:claimed?) ? p.user.email : 'Not claimed'
+							%td= p.is_published ? t('views.profile.view.published') : t('views.profile.view.not_published')
+							%td= p.claimed? ? p.user.email : 'Not claimed'
 						- if current_user.try(:admin?)
-							%td= p.try(:admin_notes)
-							%td= p.try(:lead_generator)
-						%td= p.try(:rating_average_score).try(:round, 1)
+							%td= p.admin_notes
+							%td= p.lead_generator
+						%td= p.rating_average_score.try(:round, 1)
 						%td= profile_linked_website p
-						%td= p.try(:headline)
+						%td= p.headline
 						%td= profile_linked_email p
-						- location = p.try(:locations).try(:first)
+						- location = p.locations.first
 						%td= location.try(:display_address)
 						%td= location.try(:display_phone)
 						%td= location.try(:search_area_tag).try(:name)
@@ -66,15 +63,12 @@
 						%td= p.specialties_description
 						%td= profile_age_ranges p
 						%td= profile_display_consultation_modes p
-						%td.text_area= preserve_profile_text p.try(:education)
-						%td.text_area= preserve_profile_text p.try(:certifications)
-						%td.text_area= preserve_profile_text p.try(:languages)
-						%td.text_area= preserve_profile_text p.try(:insurance_accepted)
-						%td.text_area= preserve_profile_text p.try(:summary)
-						%td.text_area= preserve_profile_text p.try(:pricing)
-						%td.text_area= preserve_profile_text p.try(:availability)
-						%td.text_area= preserve_profile_text p.try(:hours)
-						%td.text_area= preserve_profile_text p.try(:phone_hours)
-						%td.text_area= preserve_profile_text p.try(:video_hours)
-						%td.text_area= preserve_profile_text p.try(:service_area)
+						%td.text_area= preserve_profile_text p.education
+						%td.text_area= preserve_profile_text p.certifications
+						%td.text_area= preserve_profile_text p.languages
+						%td.text_area= preserve_profile_text p.insurance_accepted
+						%td.text_area= preserve_profile_text p.summary
+						%td.text_area= preserve_profile_text p.pricing
+						%td.text_area= preserve_profile_text p.hours
+						%td.text_area= preserve_profile_text p.service_area
 		= paginate @profiles

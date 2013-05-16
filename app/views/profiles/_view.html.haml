@@ -3,21 +3,21 @@
 	- if can? :manage, Profile
 		.editor_info
 			.publish_state
-				= profile.is_published ? 'Profile is published' : 'Profile is NOT published'
+				= profile.is_published ? t('views.profile.view.profile_is_published') : t('views.profile.view.profile_is_not_published')
 			.user_state
-				= profile.claimed? ? "Profile is claimed by #{profile.user.email}" : 'Profile is NOT claimed'
+				= profile.claimed? ? t('views.profile.view.profile_is_claimed_by', owner: profile.user.email) : t('views.profile.view.profile_is_not_claimed')
 			.invitation_state
 				= profile_invitation_info profile
 	- if current_user.try(:admin?)
 		.admin_info
 			- if profile.admin_notes.present?
 				.admin_notes
-					%span.label Admin notes:
+					%span.label= "#{Profile.human_attribute_name(:admin_notes)}:"
 					%br
 					.value.text_area= preserve_profile_text profile.admin_notes
 			- if profile.lead_generator.present?
 				.lead_generator
-					Lead generator:
+					= "#{Profile.human_attribute_name(:lead_generator)}:"
 					= profile.lead_generator
 	.rating_info
 		-# If these partials are called from a users view, we need an explicit reference to profiles.
@@ -32,96 +32,84 @@
 			= "to rate and review #{profile.display_name_or_company}"
 	.basic_profile
 		.display_name
-			Name:
+			= "#{Profile.human_attribute_name(:display_name)}:"
 			= profile_display_name profile
 		.email
-			Public email:
+			= "#{Profile.human_attribute_name(:email)}:"
 			= profile_linked_email profile
 		.company_name
-			Company name:
+			= "#{Profile.human_attribute_name(:company_name)}:"
 			= profile.company_name
 		.url
-			Website:
+			= "#{Profile.human_attribute_name(:url)}:"
 			= profile_linked_website profile
 		.headline
-			%span.label Professional headline:
+			%span.label= "#{t 'views.profile.view.headline'}:"
 			%br
 			.value= profile.headline
 	.location_contact_profile
 		- profile.locations.each do |location|
 			.address
-				Address:
+				= "#{Location.human_attribute_name(:address1)}:"
 				= location.display_address
 			.phone
-				Phone:
+				= "#{Location.human_attribute_name(:phone)}:"
 				= location.display_phone
 			.search_area_tag
-				Region:
+				= "#{Location.human_attribute_name(:search_area_tag_id)}:"
 				= location.search_area_tag.try(:name)
 	.expertise_profile
 		.categories
-			%span.label Category:
+			%span.label= "#{Profile.human_attribute_name(:categories)}:"
 			= profile_display_categories profile
 		.services
-			%span.label Services:
+			%span.label= "#{Profile.human_attribute_name(:services)}:"
 			= profile_display_services profile
 		.specialties
-			%span.label Specialties:
+			%span.label= "#{Profile.human_attribute_name(:specialties)}:"
 			= profile_display_specialties profile
 		.specialties_description
-			%span.label My specialties:
+			%span.label= "#{Profile.human_attribute_name(:specialties_description)}:"
 			= profile.specialties_description
 		.age_ranges
-			%span.label Ages:
+			%span.label= "#{Profile.human_attribute_name(:age_ranges)}:"
 			= profile_age_ranges profile
 	.professional_profile
 		.accepting_new_clients
 			%span.label
 				= profile_display_accepting_new_clients profile
 		.consultations
-			%span.label Consultation modes:
+			%span.label= "#{t 'views.profile.view.consultation_modes'}:"
 			= profile_display_consultation_modes profile
 		.education
-			%span.label Education:
+			%span.label= "#{Profile.human_attribute_name(:education)}:"
 			%br
 			.value.text_area= preserve_profile_text profile.education
 		.certifications
-			%span.label Licenses, certifications:
+			%span.label= "#{Profile.human_attribute_name(:certifications)}:"
 			%br
 			.value.text_area= preserve_profile_text profile.certifications
 		.languages
-			%span.label Languages:
+			%span.label= "#{Profile.human_attribute_name(:languages)}:"
 			%br
 			.value.text_area= preserve_profile_text profile.languages
 		.insurance_accepted
-			%span.label Health insurance accepted:
+			%span.label= "#{Profile.human_attribute_name(:insurance_accepted)}:"
 			%br
 			.value.text_area= preserve_profile_text profile.insurance_accepted
 		.summary
-			%span.label Summary:
+			%span.label= "#{Profile.human_attribute_name(:summary)}:"
 			%br
 			.value.text_area= preserve_profile_text profile.summary
 		.pricing
-			%span.label Pricing:
+			%span.label= "#{Profile.human_attribute_name(:pricing)}:"
 			%br
 			.value.text_area= preserve_profile_text profile.pricing
-		.availability
-			%span.label Availability:
-			%br
-			.value.text_area= preserve_profile_text profile.availability
 		.hours
-			%span.label Hours:
+			%span.label= "#{Profile.human_attribute_name(:hours)}:"
 			%br
 			.value.text_area= preserve_profile_text profile.hours
-		.phone_hours
-			%span.label Phone consultation hours:
-			%br
-			.value.text_area= preserve_profile_text profile.phone_hours
-		.video_hours
-			%span.label Video consultation hours:
-			%br
-			.value.text_area= preserve_profile_text profile.video_hours
 		.service_area
-			%span.label Service area:
+			%span.label= "#{Profile.human_attribute_name(:service_area)}:"
 			%br
 			.value.text_area= preserve_profile_text profile.service_area
