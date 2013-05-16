@@ -148,11 +148,13 @@ a:hover {
 	margin-left: .5em;
 	font-size: 0.9375em;
 }
-#access ul li#contact:before, #access ul li#signout:before {
-	content: '|';
-	font-size: 0.9375em;
-	color: #BDBCBD;	
-	padding: 0 0.5em;
+#access ul {
+	li#contact:before, li#myprofile:before, li#signout:before {
+		content: '|';
+		font-size: 0.9375em;
+		color: #BDBCBD;
+		padding: 0 0.5em;
+	}
 }
 
 #access ul li a {

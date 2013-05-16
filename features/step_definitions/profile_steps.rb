@@ -323,7 +323,7 @@ When /^I set my credentials to "(.*?)"$/ do |credentials|
 end
 
 When /^(?:I )?click edit my profile$/ do
-	click_link 'Edit my profile'
+	click_link 'edit_my_profile_link'
 end
 
 When /^I check "(.*?)"$/ do |field|
@@ -484,8 +484,8 @@ end
 When /^I click on the profile claim (confirm )?link$/ do |force|
 	token = @unattached_profile.invitation_token
 	if force.present?
-		within('.confirm_claim_profile') do
-			click_link 'Click here'
+		within('.provider_buttons') do
+			click_link 'claim_profile_confirm_link'
 		end
 	else
 		visit claim_user_profile_url(token: token)
@@ -693,7 +693,7 @@ Then /^I should see form fields for an extra location$/ do
 end
 
 Then /^I should be asked to replace my existing profile$/ do
-	within('.confirm_claim_profile') do
+	within('a[id="claim_profile_confirm_link"]') do
 		page.should have_content 'Click here'
 	end
 end

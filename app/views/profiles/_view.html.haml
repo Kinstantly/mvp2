@@ -14,7 +14,7 @@
 				.admin_notes
 					%span.label Admin notes:
 					%br
-					.value.text_area= preserve profile.admin_notes
+					.value.text_area= preserve_profile_text profile.admin_notes
 			- if profile.lead_generator.present?
 				.lead_generator
 					Lead generator:
@@ -84,44 +84,44 @@
 		.education
 			%span.label Education:
 			%br
-			.value.text_area= preserve profile.education
+			.value.text_area= preserve_profile_text profile.education
 		.certifications
 			%span.label Licenses, certifications:
 			%br
-			.value.text_area= preserve profile.certifications
+			.value.text_area= preserve_profile_text profile.certifications
 		.languages
 			%span.label Languages:
 			%br
-			.value.text_area= preserve profile.languages
+			.value.text_area= preserve_profile_text profile.languages
 		.insurance_accepted
 			%span.label Health insurance accepted:
 			%br
-			.value.text_area= preserve profile.insurance_accepted
+			.value.text_area= preserve_profile_text profile.insurance_accepted
 		.summary
 			%span.label Summary:
 			%br
-			.value.text_area= preserve profile.summary
+			.value.text_area= preserve_profile_text profile.summary
 		.pricing
 			%span.label Pricing:
 			%br
-			.value.text_area= preserve profile.pricing
+			.value.text_area= preserve_profile_text profile.pricing
 		.availability
 			%span.label Availability:
 			%br
-			.value.text_area= preserve profile.availability
+			.value.text_area= preserve_profile_text profile.availability
 		.hours
 			%span.label Hours:
 			%br
-			.value.text_area= preserve profile.hours
+			.value.text_area= preserve_profile_text profile.hours
 		.phone_hours
 			%span.label Phone consultation hours:
 			%br
-			.value.text_area= preserve profile.phone_hours
+			.value.text_area= preserve_profile_text profile.phone_hours
 		.video_hours
 			%span.label Video consultation hours:
 			%br
-			.value.text_area= preserve profile.video_hours
+			.value.text_area= preserve_profile_text profile.video_hours
 		.service_area
 			%span.label Service area:
 			%br
-			.value.text_area= preserve profile.service_area
+			.value.text_area= preserve_profile_text profile.service_area

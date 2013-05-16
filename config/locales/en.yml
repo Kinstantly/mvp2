@@ -93,6 +93,9 @@ en:
         invalid_email: 'must be a valid address'
   views:
     profile:
+      view:
+        my_profile_link: 'My profile'
+        edit_my_profile_link: 'Make your profile better.  Click here.'
       edit:
         add_text_field: 'Hit ENTER to add another field'
         categories_blank: 'No categories'

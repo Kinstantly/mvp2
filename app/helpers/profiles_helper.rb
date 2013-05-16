@@ -90,12 +90,12 @@ module ProfilesHelper
 		link_to "Edit profile", edit_profile_path(profile) if can?(:update, profile)
 	end
 	
-	def view_my_profile_link(profile)
-		link_to "View my profile", my_profile_path if can?(:view_my_profile, profile)
+	def view_my_profile_link
+		link_to t('views.profile.view.my_profile_link'), my_profile_path, id: 'view_my_profile_link' if can?(:view_my_profile, current_user.profile)
 	end
 	
-	def edit_my_profile_link(profile)
-		link_to "Edit my profile", edit_my_profile_path if can?(:edit_my_profile, profile)
+	def edit_my_profile_link
+		link_to t('views.profile.view.edit_my_profile_link'), edit_my_profile_path, id: 'edit_my_profile_link' if can?(:edit_my_profile, current_user.profile)
 	end
 	
 	# temporary; until the legacy code is fully merged into the new design; only to be used by profile editors.
@@ -186,7 +186,7 @@ module ProfilesHelper
 	end
 	
 	def preserve_profile_text(text)
-		preserve text.strip if text
+		preserve (text.html_safe? ? text : text.html_escape) if text
 	end
 	
 	# The order of processing matters.

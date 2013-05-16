@@ -1,15 +1,15 @@
 - @body_class ||= 'interior edit'
-.editor_buttons
-	= view_my_profile_link @profile
-	- unless @profile.owned_by? current_user
-		= profile_link @profile
-	= full_profile_link @profile
-	= edit_full_profile_link @profile
-	- if !@profile.claimed?
-		= new_invitation_profile_link @profile
-	= admin_profiles_link
-	- if can?(:destroy, @profile)
-		= render partial: 'destroy', locals: {profile: @profile}
+- if can?(:manage, Profile)
+	.editor_buttons
+		- unless @profile.owned_by? current_user
+			= profile_link @profile
+		= full_profile_link @profile
+		= edit_full_profile_link @profile
+		- if !@profile.claimed?
+			= new_invitation_profile_link @profile
+		= admin_profiles_link
+		- if can?(:destroy, @profile)
+			= render partial: 'destroy', locals: {profile: @profile}
 %article#content
 	%header#content-header.clearfix
 		= image_tag 'profile-photo.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'

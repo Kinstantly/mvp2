@@ -26,11 +26,11 @@
 							.name= search_result_name_headline profile
 							.specialties= search_result_specialties profile
 							.location= search_result_location profile
-							.summary.text_area= preserve profile.summary
+							.summary.text_area= preserve_profile_text profile.summary
 						%td.right
 							- if profile.ratings.size > 0
 								= render partial: 'profiles/rating_score', locals: {profile: profile}
-							.availability.text_area.right= preserve "Availability:\n#{profile.availability}" if profile.availability.present?
+							.availability.text_area.right= preserve_profile_text "Availability:\n#{profile.availability}" if profile.availability.present?
 							.accepting_new_clients.right= profile_display_accepting_new_clients profile
 							.consultations.right= search_result_consultations profile
 

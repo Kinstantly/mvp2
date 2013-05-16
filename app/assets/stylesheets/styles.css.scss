@@ -155,11 +155,13 @@ a:hover {
 	margin-left: 35px;
 	font-size: 0.9375em;
 }
-#access ul li#contact:before, #access ul li#signout:before {
-	content: '|';
-	font-size: 0.9375em;
-	color: #BDBCBD;	
-	padding: 0 0.7333em;
+#access ul {
+	li#contact:before, li#myprofile:before, li#signout:before {
+		content: '|';
+		font-size: 0.9375em;
+		color: #BDBCBD;	
+		padding: 0 0.7333em;
+	}
 }
 
 #access ul li a {
@@ -528,7 +530,7 @@ $contact_toolbar_width: 270px;
 .editor_info, .admin_info {
 	@include profile-admin-style;
 }
-.confirm_claim_profile {
+.provider_buttons {
 	@include profile-info-style;
 	text-align: center;
 }

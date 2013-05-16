@@ -10,6 +10,8 @@
 					%li#about= about_link
 					%li#contact= contact_link
 					- if user_signed_in?
+						- if current_user.is_provider?
+							%li#myprofile= view_my_profile_link
 						%li#signout= sign_in_out_link
 					- else
 						%li#signin
