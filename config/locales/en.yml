@@ -109,6 +109,7 @@ en:
         profile_is_published: 'Profile is published'
         profile_is_not_claimed: 'Profile is NOT claimed'
         profile_is_not_published: 'Profile is NOT published'
+        profile_photo_placeholder: 'Photo upload coming soon'
         published: 'Published'
         rating: 'Rating'
       edit:

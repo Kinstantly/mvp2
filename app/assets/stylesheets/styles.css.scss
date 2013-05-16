@@ -322,11 +322,24 @@ $corner_radius: 8px;
 
 /*  Profile header -------------------------------------------------------------------------- */
 
-.profile-photo {
-	width: 168px;
-	height: auto;
+@mixin profile-photo-style {
 	float: left;
 	margin-right: 34px;
+}
+#profile-photo-placeholder {
+	@include profile-photo-style;
+	width: 152px;
+	height: 108px;
+	padding: 60px 8px 0 8px;
+	border: 0;
+	background: url('profile-photo-placeholder.jpg') 0px 0px no-repeat;
+	text-align: center;
+	color: #807f7f;
+}
+.profile-photo {
+	@include profile-photo-style;
+	width: 168px;
+	height: auto;
 }
 .profile {
 	width: 410px;

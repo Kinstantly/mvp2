@@ -19,7 +19,9 @@
 			= render partial: 'destroy', locals: {profile: @profile}
 %article#content
 	%header#content-header.clearfix{itemscope: "", itemtype: "http://schema.org/Person"}
-		= image_tag 'profile-photo.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
+		-# = image_tag 'profile-photo-placeholder.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
+		#profile-photo-placeholder
+			= t 'views.profile.view.profile_photo_placeholder'
 		.profile
 			%h1{itemprop: "name"}= @profile.display_name_or_company
 			= render partial: 'profiles/rating_score', locals: {profile: @profile}
