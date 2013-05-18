@@ -295,12 +295,12 @@ Feature: Edit my expert profile
 			And I check "Email consultations" in the "consultation methods" formlet
 			And I check "Phone consultations" in the "consultation methods" formlet
 			And I check "Video consultations" in the "consultation methods" formlet
-			And I check "Office consultations" in the "consultation methods" formlet
+			And I check "Office/clinic" in the "consultation methods" formlet
 			And I click on the "Save" button of the "consultation methods" formlet
 		Then my profile edit page should show "Email consultations" displayed in the "consultation methods" area
 			And my profile edit page should show "Phone consultations" displayed in the "consultation methods" area
 			And my profile edit page should show "Video consultations" displayed in the "consultation methods" area
-			And my profile edit page should show "Office consultations" displayed in the "consultation methods" area
+			And my profile edit page should show "Office/clinic" displayed in the "consultation methods" area
 	
 	@javascript
 	Scenario: Enter specialties description

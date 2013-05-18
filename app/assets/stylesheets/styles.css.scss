@@ -174,6 +174,7 @@ a:hover {
 }
 
 $corner_radius: 8px;
+$masthead_width: 920px;
 @mixin masthead-style {
 	padding-right: 0px;
 	padding-left: 40px;
@@ -182,7 +183,7 @@ $corner_radius: 8px;
 	border-radius: $corner_radius;
 	-webkit-background-clip: padding-box;
 	clear: both;
-	width: 920px;
+	width: $masthead_width;
 	margin: 0px auto;
 	z-index: 100 !important;
 }
@@ -193,19 +194,22 @@ $corner_radius: 8px;
 	@include masthead-style;
 }
 
+@mixin search-text-input-border-style {
+	border-top: 1px solid #514447;
+	border-left: 1px solid #514447;
+	border-bottom: 1px solid #a89b9e;
+	border-right: 1px solid #a89b9e;
+	-moz-box-shadow: inset 1px 1px #d0c4c6;
+	-webkit-box-shadow: inset 1px 1px #d0c4c6;
+	box-shadow: inset 1px 1px #d0c4c6;
+}
 #search_providers {
 	float: left;
 	margin-left: 14px;
 	input {
+		@include search-text-input-border-style;
 		padding: 10px 12px;
 		background: #fdf0f2;
-		border-top: 1px solid #514447;
-		border-left: 1px solid #514447;
-		border-bottom: 1px solid #a89b9e;
-		border-right: 1px solid #a89b9e;
-		-moz-box-shadow: inset 1px 1px #d0c4c6;
-		-webkit-box-shadow: inset 1px 1px #d0c4c6;
-		box-shadow: inset 1px 1px #d0c4c6;
 		width: 218px;
 		height: 16px;
 		font-size: 1.125em;
@@ -513,16 +517,16 @@ $contact_toolbar_width: 270px;
 	background: url('make-appointment.gif') 0px -33px;
 }
 
-@mixin profile-info-style {
+@mixin profile-info-style($bg) {
 	@include masthead-style;
-	background: #F5F5F5;
+	background: $bg;
 	padding-top: 8px;
 	padding-bottom: 8px;
 	font-family: $default_font_family;
 }
 
 .editor_buttons, .editor_info, .admin_info {
-	@include profile-info-style;
+	@include profile-info-style(#F5F5F5);
 	a {
 		margin: 0 1em 0 1em;
 	}
@@ -544,10 +548,59 @@ $contact_toolbar_width: 270px;
 	@include profile-admin-style;
 }
 .provider_buttons {
-	@include profile-info-style;
+	@include profile-info-style(#F5F5F5);
 	text-align: center;
 }
 
+/*  Search results -------------------------------------------------------------------------- */
+
+@mixin search-results-header-style {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+.search_results {
+	font-family: $default_font_family;
+	h1 {
+		@include search-results-header-style;
+		font-weight: bold;
+		font-size: 28px;
+		line-height: 28px;
+		margin: 20px auto;
+		width: $masthead_width;
+	}
+	.search_results_options {
+		@include profile-info-style(#b0acae);
+		@include search-results-header-style;
+		color: #ffffff;
+		#get_location_button_area input {
+			margin-left: 4px;
+		}
+		#get_location_button_area:before {
+			content: '|';
+			font-size: 0.9375em;
+			padding: 0 0.7333em;
+		}
+		form {
+			display: inline-block;
+			input[type="text"] {
+				@include search-text-input-border-style;
+				padding: 5px 6px;
+				background: #fafafa;
+				color: rgb(153,153,153);
+				line-height: 1em;
+				margin: auto 8px;
+			}
+			input[type="submit"] {
+				background: url('search.png');
+				background-size: contain;
+				text-indent: -999em;
+				width: 24px;
+				height: 24px;
+				border: none;
+			}
+		}
+	}
+}
 /*  Profile summary -------------------------------------------------------------------------- */
 
 .summary-text {

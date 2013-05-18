@@ -451,7 +451,7 @@ module ProfilesHelper
 	
 	def search_query_string(search)
 		q = search.try(:query).try(:to_params).try(:'[]', :q)
-		q != '*:*' && q || ''
+		q == '*:*' ? '' : q
 	end
 	
 	def search_area_tag_options(selected=nil)
@@ -459,8 +459,21 @@ module ProfilesHelper
 		options_from_collection_for_select(SearchAreaTag.all_ordered.unshift(anywhere_tag), :id, :name, selected)
 	end
 	
-	def search_results_title(search)
-		(search.results.size > 0 ? "You searched for" : "No one found for") + " \"#{search_query_string(search)}\""
+	def in_search_area(id)
+		id.present? && (name = SearchAreaTag.find_by_id(id).try(:name)) ? t('views.search_results.in_search_area', name: name) : nil
+	end
+	
+	def search_results_title(search, search_area_tag_id=nil)
+		total = search.total
+		query_string = search_query_string search
+		search_area = in_search_area search_area_tag_id
+		if query_string.present?
+			t_scope = 'views.search_results.found_for'
+			"#{total > 0 ? t('how_many', scope: t_scope, count: total, query: query_string) : t('none', scope: t_scope, query: query_string)} #{search_area}"
+		else
+			t_scope = 'views.search_results.found'
+			"#{total > 0 ? t('how_many', scope: t_scope, count: total) : t('none', scope: t_scope)} #{search_area}"
+		end
 	end
 	
 	def search_result_name_specialties(profile)

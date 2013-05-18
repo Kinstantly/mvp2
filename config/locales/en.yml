@@ -54,7 +54,7 @@ en:
         consult_by_email: 'Email consultations'
         consult_by_phone: 'Phone consultations'
         consult_by_video: 'Video consultations'
-        consult_in_person: 'Office consultations'
+        consult_in_person: 'Office/clinic'
         consult_in_group: 'Groups/classes'
         consult_at_hospital: 'Hospitals/birth centers'
         consult_at_camp: 'Camps/outdoors'
@@ -93,6 +93,7 @@ en:
         invalid_phone_number: '^Phone number must be valid and properly formatted, e.g., "(800) 555-1234 x47"'
         invalid_email: 'must be a valid address'
   views:
+    or: 'or'
     profile:
       view:
         accepting_new_clients: 'Accepting new clients'
@@ -138,6 +139,22 @@ en:
         remove: 'Mark the above location for removal upon saving'
         remove_confirm: 'This location will be removed when you click save.'
         add: 'Fill in a new location'
+    search_results:
+      in_search_area: 'in %{name}'
+      nearest_to_city_postal_code: 'Show closest to'
+      nearest_to_you: 'Show nearest to you'
+      found:
+        none: 'No search results'
+        how_many:
+          one: '1 search result'
+          other: '%{count} search results'
+      found_for:
+        none: "No search results for '%{query}'"
+        how_many:
+          one: "1 search result for '%{query}'"
+          other: "%{count} search results for '%{query}'"
+      searching: 'Searching...'
+      showing_nearest_to_you: 'Showing nearest to you'
   rating:
     no_score: 'Not rated yet'
     score_1: 'Really did not like'

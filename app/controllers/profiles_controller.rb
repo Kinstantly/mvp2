@@ -118,7 +118,7 @@ class ProfilesController < ApplicationController
 		end
 		options[:published_only] = !current_user.try(:profile_editor?)
 		@search = Profile.fuzzy_search @search_query, options
-		render :search_results
+		render :search_results, layout: 'interior'
 	end
 	
 	def send_invitation

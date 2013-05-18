@@ -1,23 +1,23 @@
 .search_results
-	%h3= search_results_title @search
-	.buttons
-		- if @search.results.present?
-			#get_location_button_area{style: 'display: none'}
-				= button_tag 'Show nearest to you', id: 'get_location_button'
-				%strong= '|'
-			= form_tag search_providers_path, method: :get, id: 'get_location_form' do
+	%h1= search_results_title @search, @search_area_tag_id
+	- if @search.results.present?
+		.search_results_options
+			= form_tag search_providers_path, method: :get, id: 'nearest_to_city_postal_code_form' do
 				= hidden_field_tag :query, @search_query
 				= hidden_field_tag :search_area_tag_id, @search_area_tag_id
-				= submit_tag 'Show closest to', disable_with: 'Searching...', id: 'order_by_distance_button'
+				= t 'views.search_results.nearest_to_city_postal_code'
 				- city_prompt = 'city in California'
 				= text_field_tag :city, @search_city, size: 12, id: 'search_city', placeholder: city_prompt, title: city_prompt
 				= hidden_field_tag :region, DEFAULT_REGION
-				or
+				= t 'views.or'
 				- postal_code_prompt = 'zip code'
 				= text_field_tag :postal_code, @search_postal_code, size: 10, id: 'search_postal_code', placeholder: postal_code_prompt, title: postal_code_prompt
+				= submit_tag 'Show', disable_with: 'Show...', id: 'order_by_distance_button'
+			#get_location_button_area{style: 'display: none'}
+				= form_tag '#' do
+					= t 'views.search_results.nearest_to_you'
+					= submit_tag 'Nearest', id: 'get_location_button'
 	.search_results_list
-		%span#search_by_location_placeholder{style: 'display: none'}
-			Searching...
 		- @search.results.each_with_index do |profile, i|
 			.expert_result{id: "expert_result_#{i}"}
 				%table
@@ -45,11 +45,13 @@
 		$('#search_city').val('')
 	$('#get_location_button').click (e) ->
 		e.preventDefault()
-		$('#get_location_button_area').css('display', 'none')
+		$('#get_location_button_area').html('#{t "views.search_results.searching"}')
 		if Modernizr.geolocation
 			navigator.geolocation.getCurrentPosition(search_by_location)
 	search_by_location = (position) ->
-		$('#search_by_location_placeholder').css('display', 'inline')
 		search_path = '#{escape_javascript search_providers_path(query: @search_query, search_area_tag_id: @search_area_tag_id)} .expert_result'
 		params = 'latitude='+position.coords.latitude+'&longitude='+position.coords.longitude
-		$('.search_results_list').load(search_path, params, window.rating_score_reset)
+		$('.search_results_list').load(search_path, params, search_by_location_complete)
+	search_by_location_complete = ->
+		window.rating_score_reset() if window.rating_score_reset
+		$('#get_location_button_area').html('#{t "views.search_results.showing_nearest_to_you"}')
