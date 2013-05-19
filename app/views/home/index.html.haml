@@ -3,8 +3,10 @@
 	= stylesheet_link_tag 'home_page', media: 'screen, handheld, print'
 #container.clearfix
 	%header#branding.clearfix
-		#access.clearfix
+		%nav#access.clearfix
 			%ul
+				%li#skip
+					%a{href: '#content'}= t 'views.accessibility'
 				%li#about= about_link
 				%li#contact= contact_link
 				- if user_signed_in?

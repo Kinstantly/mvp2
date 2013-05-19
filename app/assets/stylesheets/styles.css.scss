@@ -156,7 +156,7 @@ a:hover {
 	font-size: 0.9375em;
 }
 #access ul {
-	li#contact:before, li#myprofile:before, li#signout:before {
+	li#skip a:after, li#contact:before, li#myprofile:before, li#signout:before {
 		content: '|';
 		font-size: 0.9375em;
 		color: #BDBCBD;	
@@ -813,7 +813,7 @@ div.popover {
 	margin-top: 37px;
 	padding: 14px 0;
 }
-#bottom {
+#bottom, #copyright {
 	width: 100%;
 	margin: 0px auto;
 	text-align: center;
@@ -823,7 +823,7 @@ div.popover {
 	font-family: $default_font_family;
 	-webkit-font-smoothing: antialiased;
 }
-#bottom a {
+#bottom a, #copyright a {
 	color: #FFF;
 }
 

@@ -149,7 +149,7 @@ a:hover {
 	font-size: 0.9375em;
 }
 #access ul {
-	li#contact:before, li#myprofile:before, li#signout:before {
+	li#skip a:after, li#contact:before, li#myprofile:before, li#signout:before {
 		content: '|';
 		font-size: 0.9375em;
 		color: #BDBCBD;
@@ -308,7 +308,7 @@ span.help {
 	margin-top: 37px;
 	padding: 14px 0;
 }
-#bottom {
+#bottom, #copyright {
 	width: 100%;
 	margin: 0px auto;
 	text-align: center;
@@ -318,7 +318,7 @@ span.help {
 	font-family: Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 }
-#bottom a {
+#bottom a, #copyright a {
 	color: #FFF;
 }
 
@@ -557,7 +557,7 @@ you can add resource intensive styles.
 		margin: 32px 0 0 0;
 		font-size: 1em;
 	}
-	#bottom {
+	#bottom, #copyright {
 		width: 970px;
 	}
 	.home {

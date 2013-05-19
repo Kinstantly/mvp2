@@ -5,8 +5,10 @@
 	%header#branding.clearfix
 		.container
 			%h3#tagline When parenting challenges can't wait.
-			#access.clearfix
+			%nav#access.clearfix
 				%ul
+					%li#skip
+						%a{href: '#content'}= t 'views.accessibility'
 					%li#about= about_link
 					%li#contact= contact_link
 					- if user_signed_in?

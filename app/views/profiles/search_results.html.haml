@@ -17,7 +17,7 @@
 				= form_tag '#' do
 					= t 'views.search_results.nearest_to_you'
 					= submit_tag 'Nearest', id: 'get_location_button'
-	.search_results_list
+	.search_results_list#content
 		- @search.results.each_with_index do |profile, i|
 			.expert_result{id: "expert_result_#{i}"}
 				%table

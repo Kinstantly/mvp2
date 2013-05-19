@@ -77,3 +77,21 @@ $alert_color: #e43d5d;
 		background-color: rgba(228,61,93,0.2);
 	}
 }
+
+/* Accessibility */
+
+#skip {
+	a, a:hover, a:visited {
+		position: absolute;
+		left: 0px;
+		top: -500px;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+	}
+	a:active, a:focus {
+		position: static;
+		width: auto;
+		height: auto;
+	}
+}

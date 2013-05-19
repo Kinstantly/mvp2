@@ -94,6 +94,7 @@ en:
         invalid_email: 'must be a valid address'
   views:
     or: 'or'
+    accessibility: 'Skip to content'
     profile:
       view:
         accepting_new_clients: 'Accepting new clients'
