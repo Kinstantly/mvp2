@@ -495,8 +495,7 @@ module ProfilesHelper
 	end
 	
 	def search_result_location(profile)
-		loc = profile.locations.first
-		[loc.try(:city).presence, loc.try(:region).presence].compact.join(', ')
+		profile.locations.sort_by(&:created_at).first.try(:display_city_region)
 	end
 	
 	def search_result_consultations(profile)

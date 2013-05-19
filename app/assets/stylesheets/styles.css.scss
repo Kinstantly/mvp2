@@ -330,7 +330,7 @@ $masthead_width: 920px;
 	float: left;
 	margin-right: 34px;
 }
-#profile-photo-placeholder {
+.profile-photo-placeholder {
 	@include profile-photo-style;
 	width: 152px;
 	height: 108px;
@@ -447,74 +447,74 @@ $contact_toolbar_width: 270px;
 		text-indent: 0 !important;
 		width: $contact_toolbar_width;
 	}
-	li#consult_by_email {
+	li.consult_by_email {
 		a, span {
 			background: url('contact-icons.png') 0px 0px no-repeat;
 			width: 20px;
 		}
 	}
-	li#consult_by_phone {
+	li.consult_by_phone {
 		a, span {
 			background: url('contact-icons.png') -25px 0px no-repeat;
 			width: 19px;
 		}
 	}
-	li#consult_by_video {
+	li.consult_by_video {
 		a, span {
 			background: url('contact-icons.png') -79px 0px no-repeat;
 			width: 19px;
 		}
 	}
-	li#consult_in_person {
+	li.consult_in_person {
 		a, span {
 			background: url('contact-icons.png') -160px 0px no-repeat;
 			width: 25px;
 		}
 	}
-	li#consult_in_group {
+	li.consult_in_group {
 		a, span {
 			background: url('contact-icons.png') -132px 0px no-repeat;
 			width: 22px;
 		}
 	}
-	li#visit_home {
+	li.visit_home {
 		a, span {
 			background: url('contact-icons.png') -48px 0px no-repeat;
 			width: 24px;
 		}
 	}
-	li#visit_school {
+	li.visit_school {
 		a, span {
 			background: url('contact-icons.png') -105px 0px no-repeat;
 			width: 20px;
 		}
 	}
-	li#consult_at_hospital {
+	li.consult_at_hospital {
 		a, span {
 			background: url('contact-icons.png') -189px 0px no-repeat;
 			width: 20px;
 		}
 	}
-	li#consult_at_camp {
+	li.consult_at_camp {
 		a, span {
 			background: url('contact-icons.png') -211px 0px no-repeat;
 			width: 21px;
 		}
 	}
-}
-#appointment {
-	clear: left;
-	height: 33px;
-	margin-top: 17px;
-	margin-right: -3px;
-}
-#appointment a {
-	width: 170px;
-	height: 33px;
-	background: url('make-appointment.gif') 0px 0px;
-}
-#appointment a:hover {
-	background: url('make-appointment.gif') 0px -33px;
+	li.appointment {
+		clear: left;
+		height: 33px;
+		margin-top: 17px;
+		margin-right: -3px;
+		a {
+			width: 170px;
+			height: 33px;
+			background: url('make-appointment.gif') 0px 0px;
+		}
+		a:hover {
+			background: url('make-appointment.gif') 0px -33px;
+		}
+	}
 }
 
 @mixin profile-info-style($bg) {
@@ -563,10 +563,14 @@ $contact_toolbar_width: 270px;
 	h1 {
 		@include search-results-header-style;
 		font-weight: bold;
-		font-size: 28px;
-		line-height: 28px;
+		font-size: 20px;
+		line-height: 20px;
 		margin: 20px auto;
 		width: $masthead_width;
+		a {
+			font-size: 22px;
+			line-height: 22px;
+		}
 	}
 	.search_results_options {
 		@include profile-info-style(#b0acae);
@@ -597,6 +601,40 @@ $contact_toolbar_width: 270px;
 				width: 24px;
 				height: 24px;
 				border: none;
+			}
+		}
+	}
+	.search_result {
+		width: 900px;
+		margin: 0px auto 42px auto;
+		.profile-photo-placeholder {
+			@include profile-photo-style;
+			width: 56px;
+			height: 40px;
+			padding: 20px 2px 0 2px;
+			margin-right: 16px;
+			background-size: contain;
+		}
+		.profile {
+			width: 550px;
+			h1 {
+				font-size: 20px;
+				line-height: 20px;
+				margin: 0;
+				padding: 0;
+			}
+		}
+		.rating-contact {
+			float: left;
+			.provider_rating {
+				float: left;
+			}
+			.contact-toolbar {
+				clear: left;
+				margin-top: 12px;
+				.appointment {
+					margin-top: 12px;
+				}
 			}
 		}
 	}

@@ -50,7 +50,7 @@ Then /^I should see "(.*?)" and "(.*?)" in the search results list$/ do |arg1, a
 end
 
 Then /^I should see "(.*?)" first in the search results list$/ do |arg1|
-	within('#expert_result_0') do
+	within('#search_result_0') do
 		page.should have_content arg1
 	end
 end

@@ -20,7 +20,7 @@
 %article#content
 	%header#content-header.clearfix{itemscope: "", itemtype: "http://schema.org/Person"}
 		-# = image_tag 'profile-photo-placeholder.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
-		#profile-photo-placeholder
+		.profile-photo-placeholder
 		.profile
 			%h1{itemprop: "name"}= @profile.display_name_or_company
 			= render partial: 'profiles/rating_score', locals: {profile: @profile}
@@ -42,16 +42,16 @@
 					.rate-this
 						= render partial: 'profiles/rate_prompt_signed_out', locals: {profile: @profile}
 		%ul.contact-toolbar
-			%li#consult_by_email= profile_consult_by_email_element @profile
-			%li#consult_by_phone= profile_consult_by_phone_element @profile
-			%li#consult_by_video= profile_contact_icon_element :consult_by_video, @profile
-			%li#consult_in_person= profile_contact_icon_element :consult_in_person, @profile
-			%li#consult_in_group= profile_contact_icon_element :consult_in_group, @profile
-			%li#visit_home= profile_contact_icon_element :visit_home, @profile
-			%li#visit_school= profile_contact_icon_element :visit_school, @profile
-			%li#consult_at_hospital= profile_contact_icon_element :consult_at_hospital, @profile
-			%li#consult_at_camp= profile_contact_icon_element :consult_at_camp, @profile
-			%li#appointment
+			%li.consult_by_email= profile_consult_by_email_element @profile
+			%li.consult_by_phone= profile_consult_by_phone_element @profile
+			%li.consult_by_video= profile_contact_icon_element :consult_by_video, @profile
+			%li.consult_in_person= profile_contact_icon_element :consult_in_person, @profile
+			%li.consult_in_group= profile_contact_icon_element :consult_in_group, @profile
+			%li.visit_home= profile_contact_icon_element :visit_home, @profile
+			%li.visit_school= profile_contact_icon_element :visit_school, @profile
+			%li.consult_at_hospital= profile_contact_icon_element :consult_at_hospital, @profile
+			%li.consult_at_camp= profile_contact_icon_element :consult_at_camp, @profile
+			%li.appointment
 				%a{href: "#"} Make an appointment
 	%section#details.clearfix
 		.interior
