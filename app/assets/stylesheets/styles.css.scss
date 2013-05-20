@@ -95,6 +95,12 @@ audio:not([controls]) {
 	font-style: normal;
 }
 
+@mixin pipe-separator-style {
+	content: '|';
+	font-size: 0.9375em;
+	padding: 0 0.7333em;
+}
+
 /*
 Base styles
 */
@@ -157,10 +163,8 @@ a:hover {
 }
 #access ul {
 	li#skip a:after, li#contact:before, li#myprofile:before, li#signout:before {
-		content: '|';
-		font-size: 0.9375em;
-		color: #BDBCBD;	
-		padding: 0 0.7333em;
+		@include pipe-separator-style;
+		color: #BDBCBD;
 	}
 }
 
@@ -512,7 +516,7 @@ $contact_toolbar_width: 270px;
 			background: url('make-appointment.gif') 0px 0px;
 		}
 		a:hover {
-			background: url('make-appointment.gif') 0px -33px;
+			background: url('make-appointment.gif') 0px 33px;
 		}
 	}
 }
@@ -554,10 +558,13 @@ $contact_toolbar_width: 270px;
 
 /*  Search results -------------------------------------------------------------------------- */
 
+$search_result_profile_width: 534px;
+
 @mixin search-results-header-style {
 	padding-left: 20px;
 	padding-right: 20px;
 }
+
 .search_results {
 	font-family: $default_font_family;
 	h1 {
@@ -580,9 +587,7 @@ $contact_toolbar_width: 270px;
 			margin-left: 4px;
 		}
 		#get_location_button_area:before {
-			content: '|';
-			font-size: 0.9375em;
-			padding: 0 0.7333em;
+			@include pipe-separator-style;
 		}
 		form {
 			display: inline-block;
@@ -619,12 +624,32 @@ $contact_toolbar_width: 270px;
 			background-size: contain;
 		}
 		.profile {
-			width: 550px;
+			width: $search_result_profile_width;
+			margin-right: 16px;
 			h1 {
-				font-size: 20px;
+				width: $search_result_profile_width;
+				font-size: 18px;
 				line-height: 20px;
 				margin: 0;
 				padding: 0;
+				a {
+					font-size: 20px;
+				}
+				span {
+					display: inline;
+					color: #000000;
+				}
+				span:before {
+					@include pipe-separator-style;
+					font-weight: normal;
+					color: #807F7F;
+				}
+			}
+			span.specialties, span.location {
+				color: #000000;
+			}
+			span.summary {
+				font-size: 14px;
 			}
 		}
 		.rating-contact {

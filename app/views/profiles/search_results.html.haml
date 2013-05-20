@@ -23,10 +23,13 @@
 				-# = image_tag 'profile-photo-placeholder.jpg', alt: "#{profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
 				.profile-photo-placeholder
 				.profile
-					%h1{itemprop: "name"}= search_result_name_headline profile
-					%span= search_result_specialties profile
+					%h1{itemprop: "name"}
+						= profile_list_name_or_company_link profile
+						- if profile.headline.present?
+							%span.headline= profile.headline
+					%span.specialties= search_result_specialties profile
 					%span.location{itemprop: "street-address"}= search_result_location profile
-					%span= profile.summary
+					%span.summary= profile.summary
 				.rating-contact
 					= render partial: 'profiles/rating_score', locals: {profile: profile}
 					%ul.contact-toolbar
