@@ -31,6 +31,7 @@ class Location < ActiveRecord::Base
 	
 	# Always return an array with latitude and longitude values, even if address failed geocoding (in which case, values are nil).
 	def geocode_address
+		sleep 0.1 # Throttle. We get blocked if we hit Google (perhaps other services too) with multiple, rapid requests.
 		(geocodable_address.present? and geocode) or (self.latitude, self.longitude = nil, nil)
 	end
 	
