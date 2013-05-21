@@ -342,7 +342,7 @@ $masthead_width: 920px;
 	border: 0;
 	background: url('profile-photo-placeholder.jpg') 0px 0px no-repeat;
 	text-align: center;
-	color: #807f7f;
+	color: $text_light_color;
 }
 .profile-photo {
 	@include profile-photo-style;
@@ -363,7 +363,7 @@ $masthead_width: 920px;
 }
 .profile span {
 	line-height: 20px;
-	color: #807f7f;
+	color: $text_light_color;
 	display: block;
 	width: 100%;
 	clear: left;
@@ -408,7 +408,7 @@ $masthead_width: 920px;
 }
 .reviews .review-num, .provider_rating .rating-num {
 	font-size: 13px;
-	color: #807f7f;
+	color: $text_light_color;
 	padding-top: 3px;
 	font-style: italic;
 	float: left;
@@ -612,9 +612,21 @@ $search_result_profile_width: 534px;
 			}
 		}
 	}
+	.search_result:first-of-type {
+		padding-top: 0;
+		border: {
+			top-style: none;
+		}
+	}
 	.search_result {
 		width: 900px;
-		margin: 0px auto 42px auto;
+		margin: 0px auto 20px auto;
+		padding-top: 22px;
+		border: {
+			top-style: solid;
+			top-width: thin;
+			color: $text_lighter_color;
+		}
 		.profile-photo-placeholder {
 			@include profile-photo-style;
 			width: 56px;
@@ -642,7 +654,7 @@ $search_result_profile_width: 534px;
 				span:before {
 					@include pipe-separator-style;
 					font-weight: normal;
-					color: #807F7F;
+					color: $text_light_color;
 				}
 			}
 			span.specialties, span.location {
@@ -866,7 +878,7 @@ div.popover {
 .formlet {
 	.blank_attr {
 		display: inline;
-		color: #807f7f;
+		color: $text_light_color;
 	}
 }
 
