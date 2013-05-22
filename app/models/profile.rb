@@ -56,6 +56,8 @@ class Profile < ActiveRecord::Base
 		self.custom_service_names, self.custom_specialty_names = nil, nil
 	end
 	
+	scope :order_by_id, order('id')
+	scope :order_by_last_name, order('lower(last_name)')
 	scope :unique_by_lead_generator, select(:lead_generator).uniq
 	scope :with_admin_notes, where('admin_notes IS NOT NULL')
 	

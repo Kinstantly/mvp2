@@ -35,11 +35,11 @@ class ProfilesController < ApplicationController
 	
 	def index
 		@profiles = @profiles.with_admin_notes if current_user.try(:admin?) && params[:with_admin_notes].present?
-		@profiles = @profiles.order('lower(last_name)').page params[:page]
+		@profiles = @profiles.order_by_last_name.page params[:page]
 	end
 	
 	def link_index
-		@profiles = @profiles.page params[:page]
+		@profiles = @profiles.order_by_id.page params[:page]
 	end
 	
 	# While implementing the new design, explicitly specify the new layout for views using the new design.
