@@ -586,11 +586,14 @@ $search_result_profile_width: 534px;
 		#get_location_button_area input {
 			margin-left: 4px;
 		}
-		#get_location_button_area:before {
+		#nearest_results_msg {
+			display: inline;
+		}
+		#get_location_button_area:before, #nearest_results_msg:before {
 			@include pipe-separator-style;
 		}
 		form {
-			display: inline-block;
+			display: inline;
 			input[type="text"] {
 				@include search-text-input-border-style;
 				padding: 5px 6px;
@@ -677,6 +680,9 @@ $search_result_profile_width: 534px;
 				}
 			}
 		}
+	}
+	nav.pagination span {
+		margin-right: 1em;
 	}
 }
 /*  Profile summary -------------------------------------------------------------------------- */

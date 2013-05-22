@@ -107,7 +107,8 @@ class ProfilesController < ApplicationController
 		@search_query = params[:query]
 		options[:search_area_tag_id] = @search_area_tag_id = params[:search_area_tag_id]
 		if params[:latitude].present? && params[:longitude].present?
-			options[:order_by_distance] = { latitude: params[:latitude], longitude: params[:longitude] }
+			@search_latitude, @search_longitude = params[:latitude], params[:longitude]
+			options[:order_by_distance] = { latitude: @search_latitude, longitude: @search_longitude }
 		elsif params[:city].present? && params[:region].present?
 			@search_city = params[:city]
 			@search_region = params[:region]
@@ -116,6 +117,8 @@ class ProfilesController < ApplicationController
 			@search_postal_code = params[:postal_code]
 			options[:location] = Location.new(postal_code: @search_postal_code)
 		end
+		@search_page = ((options[:page] = params[:page]).presence || 1).to_i
+		@search_per_page = options[:per_page] = params[:per_page].to_i if params[:per_page].present?
 		options[:published_only] = !current_user.try(:profile_editor?)
 		@search = Profile.fuzzy_search @search_query, options
 		render :search_results, layout: 'interior'

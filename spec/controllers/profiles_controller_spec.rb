@@ -386,16 +386,34 @@ describe ProfilesController do
 		
 		it "should show the nearest provider at the top when searching by postal code" do
 			get :search, query: 'river brewing co', postal_code: @bear_location.postal_code
-			assigns[:search].results.should have(2).things
+			assigns[:search].should have(2).results
 			assigns[:search].results.first.should == @bear_profile
 			assigns[:search].results.second.should == @rr_profile
 		end
 		
 		it "should show the nearest provider at the top when searching by city and state" do
 			get :search, query: 'river brewing co', city: @bear_location.city, region: @bear_location.region
-			assigns[:search].results.should have(2).things
+			assigns[:search].should have(2).results
 			assigns[:search].results.first.should == @bear_profile
 			assigns[:search].results.second.should == @rr_profile
+		end
+	end
+	
+	context "paginated search" do
+		before(:each) do
+			FactoryGirl.create_list(:published_profile, 10, company_name: 'Magnolia Gastropub and Brewery')
+			Profile.reindex
+			Sunspot.commit
+		end
+		
+		it "should show 4 results on the first page" do
+			get :search, query: 'magnolia', per_page: '4'
+			assigns[:search].should have(4).results
+		end
+		
+		it "should show 2 results on the third page" do
+			get :search, query: 'magnolia', per_page: '4', page: 3
+			assigns[:search].should have(2).results
 		end
 	end
 	

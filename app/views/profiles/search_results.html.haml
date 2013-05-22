@@ -17,6 +17,8 @@
 				= form_tag '#' do
 					= t 'views.search_results.nearest_to_you'
 					= submit_tag 'Nearest', id: 'get_location_button'
+			- if @search_latitude && @search_longitude
+				#nearest_results_msg= t 'views.search_results.nearest_results_msg', page: @search_page
 	.search_results_list#content
 		- @search.results.each_with_index do |profile, i|
 			%article.search_result.clearfix{itemscope: "", itemtype: "http://schema.org/Person", id: "search_result_#{i}"}
@@ -44,6 +46,8 @@
 						%li.consult_at_camp= profile_contact_icon_element :consult_at_camp, profile
 						%li.appointment
 							%a{href: "#"} Make an appointment
+		- if @search.results.present?
+			.search_result= paginate @search.results
 
 :coffeescript
 	window.onload = ->
@@ -66,3 +70,4 @@
 	search_by_location_complete = ->
 		window.rating_score_reset() if window.rating_score_reset
 		$('#get_location_button_area').html('#{t "views.search_results.showing_nearest_to_you"}')
+		$('#nearest_results_msg').remove()

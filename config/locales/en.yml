@@ -142,6 +142,7 @@ en:
         add: 'Fill in a new location'
     search_results:
       in_search_area: 'in %{name}'
+      nearest_results_msg: 'Page %{page} of nearest results'
       nearest_to_city_postal_code: 'Show closest to'
       nearest_to_you: 'Show nearest to you'
       found:

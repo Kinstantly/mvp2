@@ -318,6 +318,22 @@ describe Profile do
 				end
 			end
 		end
+	
+		context "paginated" do
+			before(:each) do
+				FactoryGirl.create_list(:published_profile, 10, company_name: 'Moonlight Brewery')
+				Profile.reindex
+				Sunspot.commit
+			end
+		
+			it "should return 4 results for the first page" do
+				Profile.fuzzy_search('moonlight', per_page: '4').should have(4).results
+			end
+		
+			it "should return 2 results for the third page" do
+				Profile.fuzzy_search('moonlight', per_page: '4', page: 3).should have(2).results
+			end
+		end
 	end
 	
 	context "character limits on text attributes" do

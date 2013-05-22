@@ -125,7 +125,7 @@ class Profile < ActiveRecord::Base
 	# Use the is_published scope only if the published_only option is true.  Default is to restrict to published profiles.
 	# Use the search_area_tag_ids scope only if the search_area_tag_id or search_area_tag_ids options have value(s).
 	def self.fuzzy_search(query, new_opts={})
-		opts = {published_only: true}.merge(new_opts)
+		opts = {published_only: true, per_page: (SEARCH_DEFAULT_PER_PAGE.presence || nil)}.merge(new_opts)
 		opts[:search_area_tag_ids] = [opts[:search_area_tag_id]] if opts[:search_area_tag_id].present?
 		opts[:search_area_tag_ids].delete_if(&:blank?) if opts[:search_area_tag_ids].present?
 		opts[:order_by_distance] = self.geocode_location opts[:location] if opts[:location]
@@ -144,6 +144,11 @@ class Profile < ActiveRecord::Base
 			
 			order_by_distance = opts[:order_by_distance]
 			order_by_geodist(:first_location, order_by_distance[:latitude], order_by_distance[:longitude]) if order_by_distance.try(:values_present?, :latitude, :longitude)
+			
+			paginate_opts = {}
+			paginate_opts[:page] = opts[:page].to_i if opts[:page].present?
+			paginate_opts[:per_page] = opts[:per_page].to_i if opts[:per_page].present?
+			paginate paginate_opts if paginate_opts.present?
 		end
 	end
 	
