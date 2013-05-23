@@ -2,6 +2,9 @@
 - country ||= (profile.try(:locations).try(:first).try(:country).presence || default_profile_country)
 - @page_title = profile_page_title profile
 .profile_areas
+	- if can? :manage, Profile
+		.profile_id
+			= t 'views.profile.view.id', id: profile.id
 	.basic_profile
 		.name
 			Name
@@ -34,6 +37,9 @@
 		.headline
 			= f.label :headline
 			= f.text_field :headline, size: 50
+		.photo_source_url
+			= f.label :photo_source_url
+			= f.text_field :photo_source_url, size: 70
 	.location_contact_profile
 		= f.fields_for :locations do |lf|
 			.address

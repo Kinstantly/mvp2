@@ -42,12 +42,12 @@ module ProfilesHelper
 		end
 	end
 	
+	def profile_linked_photo_source(profile=current_user.try(:profile), title=nil)
+		display_linked_url profile.try(:photo_source_url), title
+	end
+	
 	def profile_linked_website(profile=current_user.try(:profile), title=nil)
-		if (url = profile.try(:url)).present?
-			auto_link "http://#{strip_url url}", link: :urls, html: { target: '_blank', title: title } do |body|
-				display_url body
-			end
-		end
+		display_linked_url profile.try(:url), title
 	end
 	
 	def profile_display_website(profile=current_user.try(:profile), msg_when_blank=nil)

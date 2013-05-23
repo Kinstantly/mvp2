@@ -11,7 +11,7 @@ class Profile < ActiveRecord::Base
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, :consult_at_other, 
 		:pricing, :availability, :service_area, 
 		:hours, :phone_hours, :video_hours, :accepting_new_clients, 
-		:invitation_email
+		:invitation_email, :photo_source_url
 	
 	belongs_to :user
 	has_and_belongs_to_many :age_ranges
@@ -32,7 +32,7 @@ class Profile < ActiveRecord::Base
 	validate :publishing_requirements
 	# validates :categories, length: {maximum: 1}
 	validates :first_name, :last_name, :middle_name, :credentials, :email, :company_name, :url, :headline,
-		:certifications, :languages, :specialties_description, :invitation_email, :lead_generator,
+		:certifications, :languages, :specialties_description, :invitation_email, :lead_generator, :photo_source_url,
 		length: {maximum: MAX_STRING_LENGTH}
 	validates :availability, :awards, :education, :experience, :insurance_accepted, :pricing, :summary, :service_area,
 		:hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: MAX_TEXT_LENGTH}

@@ -120,6 +120,14 @@ module ApplicationHelper
 		truncate strip_url(url), length: max_length
 	end
 	
+	def display_linked_url(url, title=nil)
+		if url.present?
+			auto_link "http://#{strip_url url}", link: :urls, html: { target: '_blank', title: title } do |body|
+				display_url body
+			end
+		end
+	end
+	
 	# Use this helper to work around a bug that causes an unchecked undefined value when using jQuery 1.9.
 	# http://github.com/crowdint/rails3-jquery-autocomplete/issues/210
 	def autocomplete_form_field(attribute, value, path, options={})

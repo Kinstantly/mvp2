@@ -2,6 +2,8 @@
 .profile_areas
 	- if can? :manage, Profile
 		.editor_info
+			.profile_id
+				= t 'views.profile.view.id', id: profile.id
 			.publish_state
 				= profile.is_published ? t('views.profile.view.profile_is_published') : t('views.profile.view.profile_is_not_published')
 			.user_state
@@ -47,6 +49,11 @@
 			%span.label= "#{t 'views.profile.view.headline'}:"
 			%br
 			.value= profile.headline
+	.photo
+		.photo_source_url
+			= "#{Profile.human_attribute_name(:photo_source_url)}:"
+			= profile_linked_photo_source profile
+			= image_tag profile.photo_source_url.strip, height: '168', border: '1' if profile.photo_source_url.present?
 	.location_contact_profile
 		- profile.locations.each do |location|
 			.address
