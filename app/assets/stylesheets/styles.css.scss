@@ -643,6 +643,50 @@ $search_result_profile_width: 534px;
 			margin-right: 16px;
 			background-size: contain;
 		}
+		.short-profile {
+			position: relative;
+			.popover {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 580px;
+				.profile-photo-placeholder {
+					width: 106px;
+					height: 90px;
+				}
+				.profile {
+					width: 420px;
+				}
+				.summary {
+					clear: left;
+					float: left;
+					margin-top: 8px;
+					color: $text_light_color;
+					font-size: 14px;
+				}
+				.appointment {
+					clear: left;
+					float: left;
+					height: 33px;
+					margin-top: 8px;
+					a {
+						display: block;
+						text-indent: -999em;
+						width: 170px;
+						height: 33px;
+						background: url('make-appointment.gif') 0px 0px;
+					}
+					a:hover {
+						background: url('make-appointment.gif') 0px 33px;
+					}
+				}
+				.close {
+					position: absolute;
+					right: 22px;
+					bottom: 26px;
+				}
+			}
+		}
 		.profile {
 			width: $search_result_profile_width;
 			margin-right: 16px;

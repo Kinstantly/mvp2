@@ -21,11 +21,34 @@
 				#nearest_results_msg= t 'views.search_results.nearest_results_msg', page: @search_page
 	.search_results_list#content
 		- @search.results.each_with_index do |profile, i|
+			- profile_id = "profile_#{i}"
 			%article.search_result.clearfix{itemscope: "", itemtype: "http://schema.org/Person", id: "search_result_#{i}"}
+				.short-profile{id: profile_id}
+					.popover
+						.profile-photo-placeholder
+						.profile
+							%h1{itemprop: "name"}
+								= profile_list_name_or_company_link profile
+								- if profile.headline.present?
+									%span.headline= profile.headline
+							%span.specialties= search_result_specialties profile
+							- location = profile.locations.sort_by(&:created_at).first
+							%span.location{itemprop: "street-address"}= location.try(:display_address)
+							%span.location{itemprop: "telephone"}= location.try(:display_phone)
+							%span.location{itemprop: "url"}= profile_linked_website profile
+							- if profile.email.present?
+								%span.location{itemprop: "email"}
+									email:
+									= profile_linked_email profile
+						.summary
+							%span= profile.summary
+						%span.appointment
+							%a{href: "#"} Make an appointment
+						%a.close{href: '#', 'data-profile-id' => profile_id} Close
 				-# = image_tag 'profile-photo-placeholder.jpg', alt: "#{profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
 				.profile-photo-placeholder
 				.profile
-					%h1{itemprop: "name"}
+					%h1.show_profile{itemprop: "name", 'data-profile-id' => profile_id}
 						= profile_list_name_or_company_link profile
 						- if profile.headline.present?
 							%span.headline= profile.headline
@@ -72,3 +95,12 @@
 		window.rating_score_reset() if window.rating_score_reset
 		$('#get_location_button_area').html('#{t "views.search_results.showing_nearest_to_you"}')
 		$('#nearest_results_msg').remove()
+	# Pop-up short profiles
+	$('.show_profile a').click ->
+		id = $(this).parent().attr('data-profile-id')
+		$('#'+id).addClass 'active'
+		false
+	$('.short-profile a.close').click ->
+		id = $(this).attr('data-profile-id')
+		$('#'+id).removeClass 'active'
+		false
