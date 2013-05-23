@@ -58,6 +58,7 @@ en:
         consult_in_group: 'Groups/classes'
         consult_at_hospital: 'Hospitals/birth centers'
         consult_at_camp: 'Camps/outdoors'
+        consult_at_other: 'Other'
         custom_service_names: 'Additional services'
         custom_specialty_names: 'Additional specialties'
         display_name: 'Display name'

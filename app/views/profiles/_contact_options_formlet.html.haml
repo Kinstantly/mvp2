@@ -32,6 +32,9 @@
 			.check_box
 				= f.check_box :consult_at_camp
 				= f.label :consult_at_camp
+			.check_box
+				= f.check_box :consult_at_other
+				= f.label :consult_at_other
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
 %ul.contact-toolbar.editable.attribute_display
@@ -46,5 +49,6 @@
 	%li.visit_school= profile_contact_icon_element :visit_school, @profile.errorfree
 	%li.consult_at_hospital= profile_contact_icon_element :consult_at_hospital, @profile.errorfree
 	%li.consult_at_camp= profile_contact_icon_element :consult_at_camp, @profile.errorfree
+	%li.consult_at_other= profile_contact_icon_element :consult_at_other, @profile.errorfree
 	%li.appointment
 		%a{href: "#"} Make an appointment

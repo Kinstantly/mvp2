@@ -424,22 +424,23 @@ module ProfilesHelper
 	def profile_has_consultation_mode(profile)
 		profile.consult_by_email || profile.consult_by_phone || profile.consult_by_video ||
 			profile.consult_in_person || profile.consult_in_group || profile.visit_home || profile.visit_school ||
-			profile.consult_at_hospital || profile.consult_at_camp
+			profile.consult_at_hospital || profile.consult_at_camp || profile.consult_at_other
 	end
 	
 	def profile_display_consultation_modes(profile)
 		return '' unless profile
 		modes = []
-		modes.push 'email' if profile.consult_by_email
-		modes.push 'phone' if profile.consult_by_phone
-		modes.push 'video' if profile.consult_by_video
-		modes.push 'office' if profile.consult_in_person
-		modes.push 'group' if profile.consult_in_group
-		modes.push 'home' if profile.visit_home
-		modes.push 'school' if profile.visit_school
-		modes.push 'hospital' if profile.consult_at_hospital
-		modes.push 'camp' if profile.consult_at_camp
-		modes.join ', '
+		modes.push Profile.human_attribute_name :consult_by_email if profile.consult_by_email
+		modes.push Profile.human_attribute_name :consult_by_phone if profile.consult_by_phone
+		modes.push Profile.human_attribute_name :consult_by_video if profile.consult_by_video
+		modes.push Profile.human_attribute_name :consult_in_person if profile.consult_in_person
+		modes.push Profile.human_attribute_name :consult_in_group if profile.consult_in_group
+		modes.push Profile.human_attribute_name :visit_home if profile.visit_home
+		modes.push Profile.human_attribute_name :visit_school if profile.visit_school
+		modes.push Profile.human_attribute_name :consult_at_hospital if profile.consult_at_hospital
+		modes.push Profile.human_attribute_name :consult_at_camp if profile.consult_at_camp
+		modes.push Profile.human_attribute_name :consult_at_other if profile.consult_at_other
+		modes.join ' | '
 	end
 	
 	# Accepting new clients
@@ -509,6 +510,7 @@ module ProfilesHelper
 		icons << 'school' if profile.visit_school
 		icons << 'hospital' if profile.consult_at_hospital
 		icons << 'camp' if profile.consult_at_camp
+		icons << 'other' if profile.consult_at_other
 		icons.join(' | ')
 	end
 	

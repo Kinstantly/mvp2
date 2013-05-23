@@ -200,6 +200,7 @@ describe Profile do
 			@profile.visit_school = false
 			@profile.consult_at_hospital = true
 			@profile.consult_at_camp = false
+			@profile.consult_at_other = true
 			@profile.should have(:no).errors_on(:consult_in_person)
 			@profile.should have(:no).errors_on(:consult_in_group)
 			@profile.should have(:no).errors_on(:consult_by_email)
@@ -209,6 +210,7 @@ describe Profile do
 			@profile.should have(:no).errors_on(:visit_school)
 			@profile.should have(:no).errors_on(:consult_at_hospital)
 			@profile.should have(:no).errors_on(:consult_at_camp)
+			@profile.should have(:no).errors_on(:consult_at_other)
 		end
 	end
 	

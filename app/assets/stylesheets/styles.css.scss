@@ -505,6 +505,11 @@ $contact_toolbar_width: 270px;
 			width: 21px;
 		}
 	}
+	li.consult_at_other {
+		a, span {
+			background-color: #B0ACAE;
+		}
+	}
 	li.appointment {
 		clear: left;
 		height: 33px;
