@@ -431,6 +431,21 @@ $masthead_width: 920px;
 	margin-right: 6px;
 	padding-top: 3px;
 }
+
+@mixin appointment-style {
+	height: 33px;
+	a {
+		display: block;
+		text-indent: -999em;
+		width: 170px;
+		height: 33px;
+		background: url('make-appointment.gif') 0px 0px;
+	}
+	a:hover {
+		background: url('make-appointment.gif') 0px 33px;
+	}
+}
+
 $contact_toolbar_width: 270px;
 .contact-toolbar {
 	width: $contact_toolbar_width;
@@ -511,18 +526,10 @@ $contact_toolbar_width: 270px;
 		}
 	}
 	li.appointment {
+		@include appointment-style;
 		clear: left;
-		height: 33px;
 		margin-top: 17px;
 		margin-right: -3px;
-		a {
-			width: 170px;
-			height: 33px;
-			background: url('make-appointment.gif') 0px 0px;
-		}
-		a:hover {
-			background: url('make-appointment.gif') 0px 33px;
-		}
 	}
 }
 
@@ -917,20 +924,10 @@ div.popover {
 					font-size: 14px;
 				}
 				.appointment {
+					@include appointment-style;
 					clear: left;
 					float: left;
-					height: 33px;
 					margin-top: 8px;
-					a {
-						display: block;
-						text-indent: -999em;
-						width: 170px;
-						height: 33px;
-						background: url('make-appointment.gif') 0px 0px;
-					}
-					a:hover {
-						background: url('make-appointment.gif') 0px 33px;
-					}
 				}
 				.close {
 					position: absolute;
