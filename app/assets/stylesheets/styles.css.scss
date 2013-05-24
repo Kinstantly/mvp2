@@ -911,9 +911,15 @@ div.popover {
 					height: 90px;
 				}
 				.profile {
-					width: 420px;
+					width: 450px;
+					margin-right: 0;
 					h1 {
 						width: 100%;
+					}
+					.show_full_profile {
+						float: right;
+						font-size: 14px;
+						font-weight: bold;
 					}
 				}
 				.summary {
@@ -931,7 +937,7 @@ div.popover {
 				}
 				.close {
 					position: absolute;
-					right: 22px;
+					right: 30px;
 					bottom: 26px;
 				}
 			}
@@ -963,6 +969,11 @@ div.popover {
 			}
 			span.summary {
 				font-size: 14px;
+				a {
+					float: right;
+					margin-right: 22px;
+					font-weight: bold;
+				}
 			}
 		}
 		.rating-contact {

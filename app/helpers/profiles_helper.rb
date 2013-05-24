@@ -125,21 +125,21 @@ module ProfilesHelper
 			check_box_tag(tag_name, '1', profile.is_published, id: 'is_published')
 	end
 	
-	def profile_list_view_link(profile, name)
+	def profile_list_view_link(profile, name, html_options={})
 		if can?(:view, profile)
-			html_options = name.blank? ? {class: 'emphasized'} : {}
+			html_options[:class] = [html_options[:class].presence, 'emphasized'].compact.join(' ') if name.blank?
 			link_to(html_escape(name.presence || 'Click to view'), profile_path(profile), html_options).html_safe
 		else
 			name
 		end
 	end
 	
-	def profile_list_name_link(profile)
-		profile_list_view_link profile, profile_display_name(profile)
+	def profile_list_name_link(profile, html_options={})
+		profile_list_view_link profile, profile_display_name(profile), html_options
 	end
 	
-	def profile_list_name_or_company_link(profile)
-		profile_list_view_link(profile, (profile_display_name(profile).presence || profile.company_name))
+	def profile_list_name_or_company_link(profile, html_options={})
+		profile_list_view_link profile, (profile_display_name(profile).presence || profile.company_name), html_options
 	end
 	
 	def profile_parent_child_info(parents, child_association, map={}, names={})
@@ -194,6 +194,13 @@ module ProfilesHelper
 		text = serialize_profile_text text if options[:serialize]
 		text = profile_create_links text if options[:links]
 		text = preserve_profile_text text if options[:preserve]
+		text
+	end
+	
+	def profile_display_truncated(text, options={})
+		create_links = options.delete :links
+		text = truncate text, {length: 80, separator: ' ', omission: ' ...'}.merge(options)
+		text = profile_create_links text if create_links
 		text
 	end
 	
