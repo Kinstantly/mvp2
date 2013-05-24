@@ -561,179 +561,6 @@ $contact_toolbar_width: 270px;
 	text-align: center;
 }
 
-/*  Search results -------------------------------------------------------------------------- */
-
-$search_result_profile_width: 534px;
-
-@mixin search-results-header-style {
-	padding-left: 20px;
-	padding-right: 20px;
-}
-
-.search_results {
-	font-family: $default_font_family;
-	h1 {
-		@include search-results-header-style;
-		font-weight: bold;
-		font-size: 20px;
-		line-height: 20px;
-		margin: 20px auto;
-		width: $masthead_width;
-		a {
-			font-size: 22px;
-			line-height: 22px;
-		}
-	}
-	.search_results_options {
-		@include profile-info-style(#b0acae);
-		@include search-results-header-style;
-		color: #ffffff;
-		#get_location_button_area input {
-			margin-left: 4px;
-		}
-		#nearest_results_msg {
-			display: inline;
-		}
-		#get_location_button_area:before, #nearest_results_msg:before {
-			@include pipe-separator-style;
-		}
-		form {
-			display: inline;
-			input[type="text"] {
-				@include search-text-input-border-style;
-				padding: 5px 6px;
-				background: #fafafa;
-				color: rgb(153,153,153);
-				line-height: 1em;
-				margin: auto 8px;
-			}
-			input[type="submit"] {
-				background: url('search.png');
-				background-size: contain;
-				text-indent: -999em;
-				width: 24px;
-				height: 24px;
-				border: none;
-			}
-			#search_city {
-				width: 120px;
-			}
-		}
-	}
-	.search_result:first-of-type {
-		padding-top: 0;
-		border: {
-			top-style: none;
-		}
-	}
-	.search_result {
-		width: 900px;
-		margin: 0px auto 20px auto;
-		padding-top: 22px;
-		border: {
-			top-style: solid;
-			top-width: thin;
-			color: $text_lighter_color;
-		}
-		.profile-photo-placeholder {
-			@include profile-photo-style;
-			width: 56px;
-			height: 40px;
-			padding: 20px 2px 0 2px;
-			margin-right: 16px;
-			background-size: contain;
-		}
-		.short-profile {
-			position: relative;
-			.popover {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 580px;
-				.profile-photo-placeholder {
-					width: 106px;
-					height: 90px;
-				}
-				.profile {
-					width: 420px;
-				}
-				.summary {
-					clear: left;
-					float: left;
-					margin-top: 8px;
-					color: $text_light_color;
-					font-size: 14px;
-				}
-				.appointment {
-					clear: left;
-					float: left;
-					height: 33px;
-					margin-top: 8px;
-					a {
-						display: block;
-						text-indent: -999em;
-						width: 170px;
-						height: 33px;
-						background: url('make-appointment.gif') 0px 0px;
-					}
-					a:hover {
-						background: url('make-appointment.gif') 0px 33px;
-					}
-				}
-				.close {
-					position: absolute;
-					right: 22px;
-					bottom: 26px;
-				}
-			}
-		}
-		.profile {
-			width: $search_result_profile_width;
-			margin-right: 16px;
-			h1 {
-				width: $search_result_profile_width;
-				font-size: 18px;
-				line-height: 20px;
-				margin: 0;
-				padding: 0;
-				a {
-					font-size: 20px;
-				}
-				span {
-					display: inline;
-					color: #000000;
-				}
-				span:before {
-					@include pipe-separator-style;
-					font-weight: normal;
-					color: $text_light_color;
-				}
-			}
-			span.specialties, span.location {
-				color: #000000;
-			}
-			span.summary {
-				font-size: 14px;
-			}
-		}
-		.rating-contact {
-			float: left;
-			.provider_rating {
-				float: left;
-			}
-			.contact-toolbar {
-				clear: left;
-				margin-top: 12px;
-				.appointment {
-					margin-top: 12px;
-				}
-			}
-		}
-	}
-	nav.pagination span {
-		margin-right: 1em;
-	}
-}
 /*  Profile summary -------------------------------------------------------------------------- */
 
 .summary-text {
@@ -983,4 +810,179 @@ div.popover {
 	background: url('line-complete.gif');
 	height: 154px;
 	z-index: -1 !important;
+}
+
+/*  Search results -------------------------------------------------------------------------- */
+
+@mixin search-results-header-style {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.search_results {
+	font-family: $default_font_family;
+	h1 {
+		@include search-results-header-style;
+		font-weight: bold;
+		font-size: 20px;
+		line-height: 20px;
+		margin: 20px auto;
+		width: $masthead_width;
+		a {
+			font-size: 22px;
+			line-height: 22px;
+		}
+	}
+	.search_results_options {
+		@include profile-info-style(#b0acae);
+		@include search-results-header-style;
+		color: #ffffff;
+		#get_location_button_area input {
+			margin-left: 4px;
+		}
+		#nearest_results_msg {
+			display: inline;
+		}
+		#get_location_button_area:before, #nearest_results_msg:before {
+			@include pipe-separator-style;
+		}
+		form {
+			display: inline;
+			input[type="text"] {
+				@include search-text-input-border-style;
+				padding: 5px 6px;
+				background: #fafafa;
+				color: rgb(153,153,153);
+				line-height: 1em;
+				margin: auto 8px;
+			}
+			input[type="submit"] {
+				background: url('search.png');
+				background-size: contain;
+				text-indent: -999em;
+				width: 24px;
+				height: 24px;
+				border: none;
+			}
+			#search_city {
+				width: 120px;
+			}
+		}
+	}
+	.search_result:first-of-type {
+		padding-top: 0;
+		border: {
+			top-style: none;
+		}
+	}
+	.search_result {
+		width: 900px;
+		margin: 0px auto 20px auto;
+		padding-top: 22px;
+		border: {
+			top-style: solid;
+			top-width: thin;
+			color: $text_lighter_color;
+		}
+		.profile-photo-placeholder {
+			@include profile-photo-style;
+			width: 56px;
+			height: 40px;
+			padding: 20px 2px 0 2px;
+			margin-right: 16px;
+			background-size: contain;
+		}
+		.short-profile {
+			position: relative;
+			.popover {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 580px;
+				.profile-photo-placeholder {
+					width: 106px;
+					height: 90px;
+				}
+				.profile {
+					width: 420px;
+					h1 {
+						width: 100%;
+					}
+				}
+				.summary {
+					clear: left;
+					float: left;
+					margin-top: 8px;
+					color: $text_light_color;
+					font-size: 14px;
+				}
+				.appointment {
+					clear: left;
+					float: left;
+					height: 33px;
+					margin-top: 8px;
+					a {
+						display: block;
+						text-indent: -999em;
+						width: 170px;
+						height: 33px;
+						background: url('make-appointment.gif') 0px 0px;
+					}
+					a:hover {
+						background: url('make-appointment.gif') 0px 33px;
+					}
+				}
+				.close {
+					position: absolute;
+					right: 22px;
+					bottom: 26px;
+				}
+			}
+		}
+		.profile {
+			width: 534px;
+			margin-right: 16px;
+			h1 {
+				width: 100%;
+				font-size: 18px;
+				line-height: 20px;
+				margin: 0;
+				padding: 0;
+				a {
+					font-size: 20px;
+				}
+				span {
+					display: inline;
+					color: #000000;
+				}
+				span:before {
+					@include pipe-separator-style;
+					font-weight: normal;
+					color: $text_light_color;
+				}
+			}
+			span.specialties, span.location {
+				color: #000000;
+			}
+			span.summary {
+				font-size: 14px;
+			}
+		}
+		.rating-contact {
+			float: left;
+			.provider_rating {
+				float: left;
+			}
+			.contact-toolbar {
+				clear: left;
+				margin-top: 12px;
+				.appointment {
+					margin-top: 12px;
+				}
+			}
+		}
+	}
+	nav.pagination span {
+		margin-right: 1em;
+	}
 }
