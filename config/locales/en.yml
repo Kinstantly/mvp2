@@ -103,6 +103,7 @@ en:
         claimed_by: 'Claimed by'
         consultation_modes: 'Consultation methods and locations'
         edit_my_profile_link: 'Make your profile better.  Click here.'
+        email: 'email:'
         headline: 'Professional headline'
         id: 'Profile ID: %{id}'
         invitation_to_claim_info: 'Invitation to claim has been sent to %{invitee} at %{time}'
@@ -144,6 +145,7 @@ en:
         remove_confirm: 'This location will be removed when you click save.'
         add: 'Fill in a new location'
     search_results:
+      city_prompt: 'city in California'
       in_search_area: 'in %{name}'
       nearest_results_msg: 'Page %{page} of nearest results'
       nearest_to_city_postal_code: 'Show closest to'
@@ -158,8 +160,12 @@ en:
         how_many:
           one: "1 search result for '%{query}'"
           other: "%{count} search results for '%{query}'"
+      more: 'More details'
+      postal_code_prompt: 'zip code'
       searching: 'Searching...'
       showing_nearest_to_you: 'Showing nearest to you'
+      short_profile:
+        more: "See full details"
   rating:
     no_score: 'Not rated yet'
     score_1: 'Really did not like'

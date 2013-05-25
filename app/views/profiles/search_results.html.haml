@@ -6,11 +6,11 @@
 				= hidden_field_tag :query, @search_query
 				= hidden_field_tag :search_area_tag_id, @search_area_tag_id
 				= t 'views.search_results.nearest_to_city_postal_code'
-				- city_prompt = 'city in California'
+				- city_prompt = t 'views.search_results.city_prompt'
 				= text_field_tag :city, @search_city, size: 12, id: 'search_city', placeholder: city_prompt, title: city_prompt
 				= hidden_field_tag :region, DEFAULT_REGION
 				= t 'views.or'
-				- postal_code_prompt = 'zip code'
+				- postal_code_prompt = t 'views.search_results.postal_code_prompt'
 				= text_field_tag :postal_code, @search_postal_code, size: 10, id: 'search_postal_code', placeholder: postal_code_prompt, title: postal_code_prompt
 				= submit_tag 'Show', disable_with: 'Show...', id: 'order_by_distance_button'
 			#get_location_button_area{style: 'display: none'}
@@ -33,14 +33,16 @@
 									%span.headline= profile.headline
 							%span.specialties= search_result_specialties profile
 							- location = profile.locations.sort_by(&:created_at).first
-							%span.location{itemprop: "street-address"}= location.try(:display_address)
-							%span.location{itemprop: "telephone"}= location.try(:display_phone)
-							%span.location{itemprop: "url"}= profile_linked_website profile
-							- if profile.email.present?
-								%span.location{itemprop: "email"}
-									email:
-									= profile_linked_email profile
-							= link_to 'More details', profile_path(profile), class: 'show_full_profile'
+							%span
+								%span.location{itemprop: "street-address"}= location.try(:display_address)
+								%span.location{itemprop: "telephone"}= location.try(:display_phone)
+							%span
+								%span.location{itemprop: "url"}= profile_linked_website profile
+								- if profile.email.present?
+									%span.location{itemprop: "email"}
+										= t 'views.profile.view.email'
+										= profile_linked_email profile
+							= link_to t('views.search_results.short_profile.more'), profile_path(profile), class: 'show_full_profile'
 						.summary
 							%span.text_area= profile_display_text profile.summary, preserve: true, links: true
 						%span.appointment
@@ -57,7 +59,7 @@
 					%span.location{itemprop: "street-address"}= search_result_location profile
 					%span.summary.show_profile{'data-profile-id' => profile_id}
 						= profile_display_truncated profile.summary, length: 200, links: true
-						= link_to 'More details', profile_path(profile), class: 'open'
+						= link_to t('views.search_results.more'), profile_path(profile), class: 'open'
 				.rating-contact
 					= render partial: 'profiles/rating_score', locals: {profile: profile}
 					%ul.contact-toolbar
