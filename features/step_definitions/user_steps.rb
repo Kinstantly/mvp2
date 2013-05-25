@@ -62,10 +62,10 @@ end
 def sign_up(sign_up_path='/provider/sign_up')
   delete_user
   visit sign_up_path
-  fill_in "Email", :with => @visitor[:email]
-  fill_in "Password", :with => @visitor[:password]
-  fill_in "Password confirmation", :with => @visitor[:password_confirmation]
-  fill_in "Username", :with => @visitor[:username] if @visitor[:username]
+  fill_in User.human_attribute_name(:email), :with => @visitor[:email]
+  fill_in User.human_attribute_name(:password), :with => @visitor[:password]
+  fill_in User.human_attribute_name(:password_confirmation), :with => @visitor[:password_confirmation]
+  fill_in User.human_attribute_name(:username), :with => @visitor[:username] if @visitor[:username]
   click_button "Join us!"
   find_user
 end
@@ -76,8 +76,8 @@ end
 
 def sign_in
   visit '/users/sign_in'
-  fill_in "Email", :with => @visitor[:email]
-  fill_in "Password", :with => @visitor[:password]
+  fill_in User.human_attribute_name(:email), :with => @visitor[:email]
+  fill_in User.human_attribute_name(:password), :with => @visitor[:password]
   click_button "Login"
 end
 
@@ -259,23 +259,23 @@ Then /^I should see a successful sign up message$/ do
 end
 
 Then /^I should see an invalid email message$/ do
-  page.should have_content "Email is invalid"
+  page.should have_content "#{User.human_attribute_name :email} is invalid"
 end
 
 Then /^I should see a missing password message$/ do
-  page.should have_content "Password can't be blank"
+  page.should have_content "#{User.human_attribute_name :password} #{I18n.t 'activerecord.errors.messages.blank'}"
 end
 
 Then /^I should see a missing password confirmation message$/ do
-  page.should have_content "Password doesn't match confirmation"
+  page.should have_content "#{User.human_attribute_name :password} doesn't match confirmation"
 end
 
 Then /^I should see a mismatched password message$/ do
-  page.should have_content "Password doesn't match confirmation"
+  page.should have_content "#{User.human_attribute_name :password} doesn't match confirmation"
 end
 
 Then /^I should see a missing username message$/ do
-  page.should have_content "Username can't be blank"
+  page.should have_content "#{User.human_attribute_name :username} #{I18n.t 'activerecord.errors.messages.blank'}"
 end
 
 Then /^I should see a signed out message$/ do
