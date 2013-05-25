@@ -181,6 +181,10 @@ module ProfilesHelper
 		"Unclaimed: #{Profile.where(user_id: nil).count}"
 	end
 	
+	def profile_published_count
+		"Published: #{Profile.where(is_published: true).count}"
+	end
+	
 	def serialize_profile_text(text)
 		text.strip.gsub(/\s*\n+\s*/, ', ') if text
 	end
