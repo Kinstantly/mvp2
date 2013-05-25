@@ -6,27 +6,27 @@
 		.account_areas
 			.basic_account
 				.email
-					= f.label :email, 'Your login email', class: 'required'
+					= f.label :email, class: 'required'
 					= f.email_field :email
-					%span.note We also use this email to contact you.
+					%span.note= t 'views.user.edit.email_note'
 				.password
-					= f.label :password, "Password"
+					= f.label :password
 					= f.password_field :password, :autocomplete => "off"
-					%span.note Leave blank if you don't want to change it.
+					%span.note= t 'views.user.edit.password_note'
 				.password_confirmation
-					= f.label :password_confirmation, "Retype password"
+					= f.label :password_confirmation
 					= f.password_field :password_confirmation
 				.current_password
-					= f.label :current_password, "Current password", class: 'required'
+					= f.label :current_password, class: 'required'
 					= f.password_field :current_password
-					%span.note We need your current password to confirm your changes.
+					%span.note= t 'views.user.edit.current_password_note'
 				- if resource.client?
 					.username
-						= f.label :username, "Username"
+						= f.label :username, class: 'required'
 						= f.text_field :username
 				- if resource.is_provider?
 					.phone
-						= f.label :phone, "Phone number we use to contact you"
+						= f.label :phone
 						= f.text_field :phone
 		.buttons
 			= f.submit 'Save changes', disable_with: 'Saving...'

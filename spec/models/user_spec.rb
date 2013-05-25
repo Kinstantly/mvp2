@@ -124,14 +124,24 @@ describe User do
 		end
 		
 		context "username" do
-			it "should not allow a username with fewer than 4 characters" do
-				@kelly.username = 'kel'
+			it "should not allow a username that is too short" do
+				@kelly.username = 'a' * (UsernameValidator::MIN_LENGTH - 1)
+				@kelly.should have(1).error_on(:username)
+			end
+			
+			it "should not allow a username that is too long" do
+				@kelly.username = 'a' * (UsernameValidator::MAX_LENGTH + 1)
 				@kelly.should have(1).error_on(:username)
 			end
 	
-			it "should be happy if we set a username with at least 4 characters" do
-				@kelly.username = 'kell'
+			it "should be happy if we set a username that is not too short or long" do
+				@kelly.username = 'a' * (UsernameValidator::MIN_LENGTH + 1)
 				@kelly.should have(:no).errors_on(:username)
+			end
+			
+			it "should allow only alphanumeric and underscore characters in the username" do
+				@kelly.username = 'kel&ly'
+				@kelly.should have(1).error_on(:username)
 			end
 	
 			it "should fail if saved without a username" do
@@ -139,6 +149,14 @@ describe User do
 				@kelly.password = '123456'
 				status = @kelly.save
 				status.should == false
+			end
+			
+			it "limits the length of string attributes not checked by other validators" do
+				s = 'a' * (User::MAX_STRING_LENGTH + 1)
+				[:email, :phone].each do |attr|
+					@kelly.send "#{attr}=", s
+					@kelly.should have_at_least(1).error_on(attr)
+				end
 			end
 		end
 	end

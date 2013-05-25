@@ -90,10 +90,18 @@ en:
         search_area_tag_id: 'Region for search'
         display_address: 'Address'
         display_phone: 'Phone'
+      user:
+        email: 'Your login email'
+        password_confirmation: 'Retype password'
+        phone: 'Phone number we use to contact you'
     errors:
       messages:
         invalid_phone_number: '^Phone number must be valid and properly formatted, e.g., "(800) 555-1234 x47"'
         invalid_email: 'must be a valid address'
+        blank: 'is required'
+        not_alphanumeric: 'must contain only letters, numbers, or underscores'
+        too_long: 'must have no more than %{count} characters'
+        too_short: 'must have at least %{count} characters'
   views:
     or: 'or'
     accessibility: 'Skip to content'
@@ -166,6 +174,11 @@ en:
       showing_nearest_to_you: 'Showing nearest to you'
       short_profile:
         more: "See full details"
+    user:
+      edit:
+        email_note: 'We also use this email to contact you.'
+        password_note: "Leave blank if you don't want to change it."
+        current_password_note: 'We need your current password to confirm your changes.'
   rating:
     no_score: 'Not rated yet'
     score_1: 'Really did not like'

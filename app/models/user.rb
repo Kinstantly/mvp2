@@ -16,9 +16,12 @@ class User < ActiveRecord::Base
 	
 	serialize :roles, Array
 	
-	validates :username, presence: true, if: 'client?'
-	validates :username, length: {minimum: 4}, if: 'client? && username.present?'
+	MAX_STRING_LENGTH = 254
+	
+	validates :username, username: true, if: 'client?'
 	validates :phone, phone_number: true, allow_blank: true
+	# Password length is checked by Devise.  Username length is check by its own validator.
+	validates :email, :phone, length: {maximum: MAX_STRING_LENGTH}
 	
 	# Solr search configuration.
 	# searchable do
