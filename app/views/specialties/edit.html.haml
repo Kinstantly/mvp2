@@ -1,0 +1,23 @@
+- @page_title = "#{company_name} - Edit specialty '#{@specialty.name}'"
+.edit
+	%h1= "Edit specialty '#{@specialty.name}'"
+	#top_bar
+		%nav.buttons
+			= admin_link
+			= link_to 'Categories', categories_path
+			= link_to 'Services', services_path
+			= link_to 'Specialties', specialties_path
+	#forms
+		= simple_form_for @specialty do |f|
+			= f.input :name, required: true
+			= f.input :is_predefined
+			= f.button :submit
+			= link_to 'Cancel', specialties_path
+		- if can?(:destroy, @specialty)
+			= form_for @specialty, method: :delete, html: {id: 'destroy_specialty', class: 'destroy_button'} do |f|
+				= f.submit t('views.specialty.edit.destroy_button'), disable_with: 'Trashing...', confirm: t('views.specialty.edit.destroy_confirm')
+	#links
+		%h1= Specialty.human_attribute_name :services
+		%ul
+			- @specialty.services.each do |record|
+				%li= link_to record.name, edit_service_path(record), class: 'name'

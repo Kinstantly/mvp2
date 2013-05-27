@@ -55,20 +55,20 @@ class ProfilesController < ApplicationController
 	def create
 		# @profile initialized by load_and_authorize_resource with cancan ability conditions and then parameter values.
 		if @profile.save
-			set_flash_message :notice, :profile_created
+			set_flash_message :notice, :created
 			redirect_to(params[:admin] ? edit_profile_url(@profile) : profile_url(@profile))
 		else
-			set_flash_message :alert, :profile_create_error
+			set_flash_message :alert, :create_error
 			render action: (params[:admin] ? :admin : :new)
 		end
 	end
 	
 	def update
 		if @profile.update_attributes(params[:profile])
-			set_flash_message :notice, :profile_updated
+			set_flash_message :notice, :updated
 			redirect_to profile_url @profile
 		else
-			set_flash_message :alert, :profile_update_error
+			set_flash_message :alert, :update_error
 			render action: :edit_plain
 		end
 	end
@@ -76,7 +76,7 @@ class ProfilesController < ApplicationController
 	def formlet_update
 		@formlet = params[:formlet]
 		if @formlet.blank?
-			set_flash_message :alert, :profile_update_error
+			set_flash_message :alert, :update_error
 		else
 			@refresh_formlets = params[:refresh_formlets]
 			@update_succeeded = @profile.update_attributes(params[:profile])
@@ -87,7 +87,7 @@ class ProfilesController < ApplicationController
 	# CanCan should prevent access to this action if the profile has been claimed.
 	def destroy
 		@profile.destroy
-		set_flash_message :notice, :profile_destroyed
+		set_flash_message :notice, :destroyed
 		redirect_to admin_profiles_url
 	end
 	

@@ -87,6 +87,9 @@ gem 'rails_autolink'
 # Pagination.
 gem 'kaminari'
 
+# Form helpers
+gem 'simple_form'
+
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
 	gem 'cucumber-rails', '~> 1.0', require: false

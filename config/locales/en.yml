@@ -8,6 +8,13 @@ en:
     description: "Kinstantly connects families with the parenting experts, children's health providers, and other services they need in smart, convenient ways"
   controllers:
     access_denied: 'Sorry, you do not have access to that area.'
+    categories:
+      created: "Category '%{name}' was created."
+      create_error: 'The was a problem creating the category.'
+      destroyed: "Category '%{name}' was trashed."
+      destroy_error: 'The was a problem trashing the category.'
+      updated: "Category '%{name}' was updated."
+      update_error: 'The was a problem updating the category.'
     users:
       profile_updated: 'Your profile changes were saved.'
       profile_update_error: 'There was a problem saving your profile.'
@@ -15,14 +22,30 @@ en:
       profile_claim_error: 'There was a problem claiming your profile.'
       already_has_profile: 'You have an existing profile.'
     profiles:
-      profile_created: 'The profile was created.'
-      profile_create_error: 'There was a problem creating the profile.'
-      profile_updated: 'The profile was saved.'
-      profile_update_error: 'There was a problem saving the profile.'
-      profile_destroyed: 'The profile was destroyed!'
-      profile_destroy_error: 'The profile was not removed.  Perhaps it is owned by a user.'
+      created: 'The profile was created.'
+      create_error: 'There was a problem creating the profile.'
+      updated: 'The profile was saved.'
+      update_error: 'There was a problem saving the profile.'
+      destroyed: 'The profile was destroyed!'
+      destroy_error: 'The profile was not removed.  Perhaps it is owned by a user.'
       invitation_sent: 'The invitation was sent.'
       invitation_error: 'There was a problem sending the invitation.'
+    services:
+      created: "Service '%{name}' was created."
+      create_error: 'The was a problem creating the service.'
+      destroyed: "Service '%{name}' was trashed."
+      destroy_error: 'The was a problem trashing the service.'
+      not_found_by_name: "Service '%{name}' was not found."
+      updated: "Service '%{name}' was updated."
+      update_error: 'The was a problem updating the service.'
+    specialties:
+      created: "Specialty '%{name}' was created."
+      create_error: 'The was a problem creating the specialty.'
+      destroyed: "Specialty '%{name}' was trashed."
+      destroy_error: 'The was a problem trashing the specialty.'
+      not_found_by_name: "Specialty '%{name}' was not found."
+      updated: "Specialty '%{name}' was updated."
+      update_error: 'The was a problem updating the specialty.'
   profile_mailer:
     invite:
       subject: 'Claim your profile at Kinstantly!'
@@ -105,6 +128,12 @@ en:
   views:
     or: 'or'
     accessibility: 'Skip to content'
+    find_button: 'Find'
+    category:
+      name: 'Category'
+      edit:
+        destroy_button: 'Move category to trash'
+        destroy_confirm: 'This category will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
     profile:
       view:
         accepting_new_clients: 'Accepting new clients'
@@ -174,6 +203,20 @@ en:
       showing_nearest_to_you: 'Showing nearest to you'
       short_profile:
         more: "See full details"
+    service:
+      name: 'Service'
+      edit:
+        destroy_button: 'Move service to trash'
+        destroy_confirm: 'This service will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
+      view:
+        find_by_name: 'Service name'
+    specialty:
+      name: 'Specialty'
+      edit:
+        destroy_button: 'Move specialty to trash'
+        destroy_confirm: 'This specialty will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
+      view:
+        find_by_name: 'Specialty name'
     user:
       edit:
         email_note: 'We also use this email to contact you.'

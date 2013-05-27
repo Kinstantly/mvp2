@@ -1,0 +1,15 @@
+- @page_title = "#{company_name} - New service"
+.edit
+	#top_bar
+		%nav.buttons
+			= admin_link
+			= link_to 'Categories', categories_path
+			= link_to 'Services', services_path
+			= link_to 'Specialties', specialties_path
+	#forms
+		= simple_form_for @service do |f|
+			= f.input :name, required: true
+			= f.input :is_predefined
+			= f.association :specialties, as: :check_boxes, collection: Specialty.predefined
+			= f.button :submit
+			= link_to 'Cancel', services_path

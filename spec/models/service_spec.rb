@@ -16,6 +16,23 @@ describe Service do
 		Service.predefined.include?(@service).should be_true
 	end
 	
+	context "finding services that belong to a category" do
+		before(:each) do
+			@service.save
+			@category = FactoryGirl.create(:category, name: 'psychiatrists')
+		end
+		
+		it "does not belong to a category" do
+			Service.belongs_to_a_category.include?(@service).should be_false
+		end
+		
+		it "belongs to a category" do
+			@category.services << @service
+			Service.belongs_to_a_category.include?(@service).should be_true
+		end
+	end
+	
+	
 	context "specialties" do
 		before(:each) do
 			@specialties = [FactoryGirl.create(:specialty, name: 'behavior'),

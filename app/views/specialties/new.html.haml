@@ -1,0 +1,14 @@
+- @page_title = "#{company_name} - New specialty"
+.edit
+	#top_bar
+		%nav.buttons
+			= admin_link
+			= link_to 'Categories', categories_path
+			= link_to 'Services', services_path
+			= link_to 'Specialties', specialties_path
+	#forms
+		= simple_form_for @specialty do |f|
+			= f.input :name, required: true
+			= f.input :is_predefined
+			= f.button :submit
+			= link_to 'Cancel', specialties_path

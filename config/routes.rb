@@ -63,6 +63,16 @@ Mvp2::Application.routes.draw do
 	# Profile search.
 	match 'search_providers' => 'profiles#search'
 	
+	resources :categories
+	
+	resources :services do
+		get 'find_by_name', on: :collection
+	end
+	
+	resources :specialties do
+		get 'find_by_name', on: :collection
+	end
+	
 	# Where to go after sign-up or sign-in.
 	#  Using this option causes the response path to be user_root; kind of weird.
 	#  Better to override in the ApplicationController.

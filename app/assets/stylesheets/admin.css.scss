@@ -1,0 +1,77 @@
+// Styles for the admin interface.
+
+@mixin header-style {
+	text-align: center;
+	font: {
+		size: 16px;
+		weight: bold;
+	}
+}
+
+.index {
+	h1 {
+		@include header-style;
+	}
+	.list {
+		.name {
+			display: inline-block;
+			margin-right: 1em;
+			margin-bottom: 0.2em;
+		}
+		span.name {
+			background-color: #EEEEEE;
+		}
+		a.name {
+			color: black;
+			background-color: #EEEEEE;
+		}
+		.predefined {
+			color: green;
+		}
+		.not_predefined {
+			color: gray;
+		}
+	}
+}
+
+.edit {
+	h1 {
+		@include header-style;
+	}
+	#forms {
+		.input {
+			margin: 1em 0.25em;
+			input {
+				margin-left: 1em;
+			}
+		}
+		.checkbox {
+			@include check-box-style;
+			float: none;
+			display: inline-block;
+		}
+		.check_boxes input:checked {
+			box-shadow: green 0 0 16px 6px;
+		}
+		.destroy_button {
+			float: right;
+			margin-bottom: 1em;
+		}
+	}
+	#links {
+		clear: both;
+		margin-top: 1em;
+		border-top-style: solid;
+		border-top-width: thin;
+		h1 {
+			text-align: left;
+		}
+		li {
+			list-style-type: none;
+		}
+		a.name {
+			color: black;
+			background-color: #EEEEEE;
+		}
+	}
+}
