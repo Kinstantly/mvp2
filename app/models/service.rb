@@ -11,6 +11,15 @@ class Service < ActiveRecord::Base
 	scope :predefined, where(is_predefined: true).order('lower(name)')
 	scope :order_by_name, order('lower(name)')
 	
+	MAX_STRING_LENGTH = 254
+	
+	validates :name, presence: true
+	validates :name, length: {maximum: MAX_STRING_LENGTH}
+	
 	include CachingForModel
 	predefined_info_parent :category
+	
+	def browsable?
+		categories.any? &:browsable?
+	end
 end

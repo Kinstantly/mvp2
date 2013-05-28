@@ -2,11 +2,7 @@
 .index
 	%h1 Specialties
 	#top_bar
-		%nav.buttons
-			= admin_link
-			= link_to 'Categories', categories_path
-			= link_to 'Services', services_path
-			= link_to "Create a new specialty", new_specialty_path
+		= render partial: 'home/admin_nav'
 	.list{align: 'center'}
 		= form_tag find_by_name_specialties_path, method: :get do
 			= submit_tag t('views.find_button'), disable_with: 'Finding...'
@@ -15,15 +11,18 @@
 		%table
 			%thead
 				%tr
-					%th= t 'views.specialty.name'
+					%th
+						= t 'views.specialty.name'
+						%br
+						= t 'views.specialty.view.not_browsable'
 					%th= Specialty.human_attribute_name(:is_predefined)
 					%th.large= Specialty.human_attribute_name(:services)
 			%tbody
 				- @specialties.each do |specialty|
 					%tr
-						%td= link_to specialty.name, edit_specialty_path(specialty)
+						%td= link_to specialty.name, edit_specialty_path(specialty), class: "#{specialty.browsable? ? 'browsable' : 'not_browsable'}"
 						%td{class: "#{specialty.is_predefined ? 'predefined' : 'not_predefined'}"}= specialty.is_predefined
 						%td
-							- specialty.services.each do |record|
-								= link_to record.name, edit_service_path(record), class: 'name'
+							- specialty.services.order_by_name.each do |record|
+								= link_to record.name, edit_service_path(record), class: "name #{record.browsable? ? 'browsable' : 'not_browsable'}"
 		= paginate @specialties

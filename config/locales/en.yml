@@ -68,6 +68,8 @@ en:
       claimed: 'is already claimed. You cannot send an invitation.'
   activerecord:
     attributes:
+      category:
+        is_predefined: 'Show in Browse by Category'
       profile:
         age_ranges: 'Ages/Stages'
         categories: 'Categories'
@@ -113,6 +115,10 @@ en:
         search_area_tag_id: 'Region for search'
         display_address: 'Address'
         display_phone: 'Phone'
+      service:
+        is_predefined: 'Can be assigned to a category'
+      specialty:
+        is_predefined: 'Can be assigned to a service'
       user:
         email: 'Your login email'
         password_confirmation: 'Retype password'
@@ -129,6 +135,8 @@ en:
     or: 'or'
     accessibility: 'Skip to content'
     find_button: 'Find'
+    not_browsable: '(grayed-out not browsable)'
+    form_is_modified: 'You have changes that have not been saved.'
     category:
       name: 'Category'
       edit:
@@ -217,6 +225,7 @@ en:
         destroy_confirm: 'This specialty will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
       view:
         find_by_name: 'Specialty name'
+        not_browsable: '(grayed-out not assigned to a browsable service)'
     user:
       edit:
         email_note: 'We also use this email to contact you.'

@@ -16,7 +16,7 @@ class CategoriesController < ApplicationController
 	def create
 		if @category.save
 			set_flash_message :notice, :created, name: @category.name
-			redirect_to categories_url
+			redirect_to edit_category_path(@category)
 		else
 			set_flash_message :alert, :create_error
 			render action: :new
@@ -26,7 +26,7 @@ class CategoriesController < ApplicationController
 	def update
 		if @category.update_attributes(params[:category])
 			set_flash_message :notice, :updated, name: @category.name
-			redirect_to categories_url
+			redirect_to edit_category_path(@category)
 		else
 			set_flash_message :alert, :update_error
 			render action: :edit

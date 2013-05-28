@@ -2,11 +2,7 @@
 .index
 	%h1 Services
 	#top_bar
-		%nav.buttons
-			= admin_link
-			= link_to 'Categories', categories_path
-			= link_to 'Specialties', specialties_path
-			= link_to "Create a new service", new_service_path
+		= render partial: 'home/admin_nav'
 	.list{align: 'center'}
 		= form_tag find_by_name_services_path, method: :get do
 			= submit_tag t('views.find_button'), disable_with: 'Finding...'
@@ -15,19 +11,22 @@
 		%table
 			%thead
 				%tr
-					%th= t 'views.service.name'
+					%th
+						= t 'views.service.name'
+						%br
+						= t 'views.not_browsable'
 					%th.large= Service.human_attribute_name(:specialties)
 					%th= Service.human_attribute_name(:is_predefined)
 					%th.large= Service.human_attribute_name(:categories)
 			%tbody
 				- @services.each do |service|
 					%tr
-						%td= link_to service.name, edit_service_path(service)
+						%td= link_to service.name, edit_service_path(service), class: "#{service.browsable? ? 'browsable' : 'not_browsable'}"
 						%td
-							- service.specialties.each do |record|
-								= link_to record.name, edit_specialty_path(record), class: 'name'
+							- service.specialties.order_by_name.each do |record|
+								= link_to record.name, edit_specialty_path(record), class: "name #{record.browsable? ? 'browsable' : 'not_browsable'}"
 						%td{class: "#{service.is_predefined ? 'predefined' : 'not_predefined'}"}= service.is_predefined
 						%td
-							- service.categories.each do |record|
-								= link_to record.name, edit_category_path(record), class: 'name'
+							- service.categories.order_by_name.each do |record|
+								= link_to record.name, edit_category_path(record), class: "name #{record.browsable? ? 'browsable' : 'not_browsable'}"
 		= paginate @services

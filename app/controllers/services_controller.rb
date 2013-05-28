@@ -16,7 +16,7 @@ class ServicesController < ApplicationController
 	def create
 		if @service.save
 			set_flash_message :notice, :created, name: @service.name
-			redirect_to services_url
+			redirect_to edit_service_path(@service)
 		else
 			set_flash_message :alert, :create_error
 			render action: :new
@@ -26,7 +26,7 @@ class ServicesController < ApplicationController
 	def update
 		if @service.update_attributes(params[:service])
 			set_flash_message :notice, :updated, name: @service.name
-			redirect_to services_url
+			redirect_to edit_service_path(@service)
 		else
 			set_flash_message :alert, :update_error
 			render action: :edit

@@ -17,7 +17,7 @@ class SpecialtiesController < ApplicationController
 	def create
 		if @specialty.save
 			set_flash_message :notice, :created, name: @specialty.name
-			redirect_to specialties_url
+			redirect_to edit_specialty_path(@specialty)
 		else
 			set_flash_message :alert, :create_error
 			render action: :new
@@ -27,7 +27,7 @@ class SpecialtiesController < ApplicationController
 	def update
 		if @specialty.update_attributes(params[:specialty])
 			set_flash_message :notice, :updated, name: @specialty.name
-			redirect_to specialties_url
+			redirect_to edit_specialty_path(@specialty)
 		else
 			set_flash_message :alert, :update_error
 			render action: :edit

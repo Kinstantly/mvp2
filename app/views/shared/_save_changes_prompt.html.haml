@@ -1,0 +1,8 @@
+-# If any changes were made, prompt for confirmation if leaving page without saving them.
+:coffeescript
+	formIsModified = false
+	$(':input').change -> formIsModified = true
+	window.onbeforeunload = -> return '#{t "views.form_is_modified"}' if formIsModified
+	$('form').submit ->
+		formIsModified = false
+		return true

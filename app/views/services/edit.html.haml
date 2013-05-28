@@ -2,14 +2,11 @@
 .edit
 	%h1= "Edit service '#{@service.name}'"
 	#top_bar
-		%nav.buttons
-			= admin_link
-			= link_to 'Categories', categories_path
-			= link_to 'Services', services_path
-			= link_to 'Specialties', specialties_path
+		= render partial: 'home/admin_nav'
 	#forms
 		= simple_form_for @service do |f|
-			= f.input :name, required: true
+			= f.input :name do
+				= f.autocomplete_field :name, autocomplete_service_name_profiles_path, size: 50
 			= f.input :is_predefined
 			= f.association :specialties, as: :check_boxes, collection: Specialty.predefined
 			= f.button :submit
@@ -20,9 +17,10 @@
 	#links
 		%h1= Service.human_attribute_name :categories
 		%ul
-			- @service.categories.each do |record|
+			- @service.categories.order_by_name.each do |record|
 				%li= link_to record.name, edit_category_path(record), class: 'name'
 		%h1= Service.human_attribute_name :specialties
 		%ul
-			- @service.specialties.each do |record|
+			- @service.specialties.order_by_name.each do |record|
 				%li= link_to record.name, edit_specialty_path(record), class: 'name'
+= render partial: 'shared/save_changes_prompt'
