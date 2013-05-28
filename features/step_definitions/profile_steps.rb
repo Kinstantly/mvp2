@@ -529,7 +529,7 @@ Then /^meta\-data should contain one of my services$/ do
 end
 
 Then /^I should see one of my specialties$/ do
-	within('.services') do
+	within('.specialties') do
 		page.should have_content @profile.specialties.first.name
 	end
 end

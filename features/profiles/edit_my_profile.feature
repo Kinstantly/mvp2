@@ -303,16 +303,6 @@ Feature: Edit my expert profile
 			And my profile edit page should show "Office/clinic" displayed in the "consultation methods" area
 	
 	@javascript
-	Scenario: Enter specialties description
-		Given I exist as a user
-			And I am logged in
-			And I am on my profile edit page
-		When I open the "specialties" formlet
-			And I enter "challenging behavior, attachment issues, temperament" in the "My specialties" field of the "specialties" formlet
-			And I click on the "Save" button of the "specialties" formlet
-		Then my profile edit page should show "challenging behavior, attachment issues, temperament" displayed second in the "specialties" area
-	
-	@javascript
 	Scenario: Request extra location
 		Given I exist as a user
 			And I am logged in

@@ -61,12 +61,11 @@
 					.summary
 						%h3= Profile.human_attribute_name :summary
 						%p.text_area= profile_display_text @profile.summary, preserve: true, links: true
-				- if @profile.services.present? || @profile.specialties.present?
-					.services
+				- if @profile.specialties.present?
+					.specialties
 						-# Only display specialties.  Put categories and services in meta tags and hidden elements.
 						%h3= Profile.human_attribute_name :specialties
-						%p= profile_display_specialties(@profile, 6)
-						%p= profile_display_text @profile.specialties_description, links: true
+						%p= profile_display_specialties @profile
 			%table.info{border: "0", cellpadding: "0", cellspacing: "0"}
 				- if @profile.hours.present?
 					%tr

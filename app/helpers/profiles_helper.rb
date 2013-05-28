@@ -139,7 +139,7 @@ module ProfilesHelper
 	end
 	
 	def profile_list_name_or_company_link(profile, html_options={})
-		profile_list_view_link profile, (profile_display_name(profile).presence || profile.company_name), html_options
+		profile_list_view_link profile, profile.display_name_or_company, html_options
 	end
 	
 	def profile_parent_child_info(parents, child_association, map={}, names={})
@@ -503,7 +503,7 @@ module ProfilesHelper
 	end
 	
 	def search_result_specialties(profile)
-		profile.specialties_description.presence || display_profile_item_names(profile.specialties, 3)
+		display_profile_item_names profile.specialties
 	end
 	
 	def search_result_location(profile)
