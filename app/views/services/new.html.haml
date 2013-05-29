@@ -4,11 +4,5 @@
 	#top_bar
 		= render partial: 'home/admin_nav'
 	#forms
-		= simple_form_for @service do |f|
-			= f.input :name do
-				= f.autocomplete_field :name, autocomplete_service_name_profiles_path, size: 50
-			= f.input :is_predefined
-			= f.association :specialties, as: :check_boxes, collection: Specialty.predefined
-			= f.button :submit
-			= link_to 'Cancel', services_path
+		= render partial: 'edit_form'
 = render partial: 'shared/save_changes_prompt'

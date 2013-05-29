@@ -1,0 +1,6 @@
+= simple_form_for @specialty do |f|
+	= f.input :name do
+		= f.autocomplete_field :name, autocomplete_specialty_name_profiles_path, size: 50
+	= f.input :is_predefined
+	= f.button :submit
+	= link_to 'Cancel', specialties_path

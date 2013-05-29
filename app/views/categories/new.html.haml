@@ -4,10 +4,5 @@
 	#top_bar
 		= render partial: 'home/admin_nav'
 	#forms
-		= simple_form_for @category do |f|
-			= f.input :name, required: true
-			= f.input :is_predefined
-			= f.association :services, as: :check_boxes, collection: Service.predefined
-			= f.button :submit
-			= link_to 'Cancel', categories_path
+		= render partial: 'edit_form'
 = render partial: 'shared/save_changes_prompt'

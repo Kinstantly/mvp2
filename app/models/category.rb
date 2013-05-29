@@ -1,5 +1,5 @@
 class Category < ActiveRecord::Base
-	attr_accessible :name, :is_predefined, :service_ids
+	attr_accessible :name, :is_predefined, :service_ids, :display_order
 	
 	has_and_belongs_to_many :profiles
 	has_and_belongs_to_many :services
@@ -8,6 +8,7 @@ class Category < ActiveRecord::Base
 	scope :trash, where(trash: true)
 	scope :predefined, where(is_predefined: true).order('lower(name)')
 	scope :order_by_name, order('lower(name)')
+	scope :display_order, order(:display_order)
 	
 	MAX_STRING_LENGTH = 254
 	

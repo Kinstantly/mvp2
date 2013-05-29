@@ -142,6 +142,7 @@ en:
       edit:
         destroy_button: 'Move category to trash'
         destroy_confirm: 'This category will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
+        display_order_hint: 'Home page browse by category: less than 10 for left column, more than 10 for right column'
     profile:
       view:
         accepting_new_clients: 'Accepting new clients'
@@ -216,6 +217,7 @@ en:
       edit:
         destroy_button: 'Move service to trash'
         destroy_confirm: 'This service will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
+        display_order_hint: 'Within category on the home page'
       view:
         find_by_name: 'Service name'
     specialty:

@@ -1,5 +1,5 @@
 class Service < ActiveRecord::Base
-	attr_accessible :name, :is_predefined, :specialty_ids
+	attr_accessible :name, :is_predefined, :specialty_ids, :display_order
 	
 	has_and_belongs_to_many :profiles
 	has_and_belongs_to_many :categories
@@ -10,6 +10,7 @@ class Service < ActiveRecord::Base
 	scope :belongs_to_a_category, joins(:categories).order('lower(services.name)') # may contain duplicates
 	scope :predefined, where(is_predefined: true).order('lower(name)')
 	scope :order_by_name, order('lower(name)')
+	scope :display_order, order(:display_order)
 	
 	MAX_STRING_LENGTH = 254
 	

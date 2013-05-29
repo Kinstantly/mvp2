@@ -41,7 +41,7 @@
 	#forms {
 		.input {
 			margin: 1em 0.25em;
-			input {
+			input, .hint {
 				margin-left: 1em;
 			}
 		}
@@ -70,6 +70,13 @@
 		}
 		li {
 			list-style-type: none;
+		}
+		.miniform_header {
+			text-align: left;
+		}
+		.miniform {
+			text-align: right;
+			padding-right: 1em;
 		}
 		a.name {
 			color: black;

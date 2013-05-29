@@ -4,12 +4,7 @@
 	#top_bar
 		= render partial: 'home/admin_nav'
 	#forms
-		= simple_form_for @specialty do |f|
-			= f.input :name do
-				= f.autocomplete_field :name, autocomplete_specialty_name_profiles_path, size: 50
-			= f.input :is_predefined
-			= f.button :submit
-			= link_to 'Cancel', specialties_path
+		= render partial: 'edit_form'
 		- if can?(:destroy, @specialty)
 			= form_for @specialty, method: :delete, html: {id: 'destroy_specialty', class: 'destroy_button'} do |f|
 				= f.submit t('views.specialty.edit.destroy_button'), disable_with: 'Trashing...', confirm: t('views.specialty.edit.destroy_confirm')

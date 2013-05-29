@@ -543,6 +543,9 @@ $contact_toolbar_width: 270px;
 
 .editor_buttons, .editor_info, .admin_info {
 	@include profile-info-style(#F5F5F5);
+	padding-left: 8px;
+	padding-right: 8px;
+	width: 946px;
 	a {
 		margin: 0 1em 0 1em;
 	}

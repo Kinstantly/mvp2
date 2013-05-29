@@ -4,23 +4,31 @@
 	#top_bar
 		= render partial: 'home/admin_nav'
 	#forms
-		= simple_form_for @service do |f|
-			= f.input :name do
-				= f.autocomplete_field :name, autocomplete_service_name_profiles_path, size: 50
-			= f.input :is_predefined
-			= f.association :specialties, as: :check_boxes, collection: Specialty.predefined
-			= f.button :submit
-			= link_to 'Cancel', services_path
+		= render partial: 'edit_form'
 		- if can?(:destroy, @service)
 			= form_for @service, method: :delete, html: {id: 'destroy_service', class: 'destroy_button'} do |f|
 				= f.submit t('views.service.edit.destroy_button'), disable_with: 'Trashing...', confirm: t('views.service.edit.destroy_confirm')
 	#links
+		%a{name: 'links'}
 		%h1= Service.human_attribute_name :categories
 		%ul
 			- @service.categories.order_by_name.each do |record|
 				%li= link_to record.name, edit_category_path(record), class: 'name'
 		%h1= Service.human_attribute_name :specialties
-		%ul
-			- @service.specialties.order_by_name.each do |record|
-				%li= link_to record.name, edit_specialty_path(record), class: 'name'
+		%table
+			%thead
+				%tr
+					%th.miniform_header
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						= t 'views.specialty.name'
+					%th Edit
+			%tbody
+				- @service.specialties.order_by_name.each do |record|
+					%tr
+						%td.miniform
+							= form_for record do |f|
+								= f.submit 'Save', disable_with: 'Save'
+								= f.text_field :name, size: 30
+								= hidden_field_tag :service_id, @service.id
+						%td= link_to record.name, edit_specialty_path(record), class: 'name'
 = render partial: 'shared/save_changes_prompt'

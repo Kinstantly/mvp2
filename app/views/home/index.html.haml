@@ -20,7 +20,7 @@
 		#msg Marketing message goes here
 	#search_providers.aside
 		= form_tag search_providers_path, method: :get, id: 'providerSearch' do
-			%h3 Find a provider
+			%h2 Find a provider
 			= text_field_tag :query, @search_query, id: 'provider_search_query', autocomplete: 'off', placeholder: 'doctor, tutor, therapist...'
 			.select-wrapper
 				%span.select-text
@@ -30,102 +30,31 @@
 				%p.small
 					Provider? #{provider_sign_up_link 'Join us'}
 	#content.category-list.clearfix
-		%h3 Browse by category
+		%h2 Browse by category
 		%span.help
 			Not sure
 			%a{:href => "#"} where to start?
 		#col1.col
-			%h4 Therapists &amp; Coaches
-			%ul
-				%li
-					%a{:href => "#"} Applied Behavior Analysts
-				%li
-					%a{:href => "#"} Child Psychologists
-				%li
-					%a{:href => "#"} Child Psychiatrists
-				%li
-					%a{:href => "#"} Couples/Family Therapists
-				%li
-					%a{:href => "#"} Eating Disorder Therapists
-				%li
-					%a{:href => "#"} Occupational Therapists
-				%li
-					%a{:href => "#"} Parenting Coaches
-				%li
-					%a{:href => "#"} Physical Therapists
-				%li
-					%a{:href => "#"} Social Skills Therapists
-				%li
-					%a{:href => "#"} Speech Therapists
-			%h4 TUTORS
-			%ul
-				%li
-					%a{:href => "#"} Executive Function/Time Management
-				%li
-					%a{:href => "#"} Languages
-				%li
-					%a{:href => "#"} Math
-				%li
-					%a{:href => "#"} Reading
-				%li
-					%a{:href => "#"} Sciences
-				%li
-					%a{:href => "#"} Study skills
-				%li
-					%a{:href => "#"} Test prep
-				%li
-					%a{:href => "#"} Writing
+			- home_column_categories(1).each do |category|
+				%h3= category.name
+				%ul
+					- category.services.display_order.order_by_name.each do |svc|
+						%li
+							= link_to svc.name, search_providers_path(query: svc.name)
 		#col2.col
-			%h4 SPECIAL NEEDS
-			%ul
-				%li
-					%a{:href => "#"} ADHD
-				%li
-					%a{:href => "#"} Autism spectrum Specialists
-				%li
-					%a{:href => "#"} Dyslexia Specialists
-				%li
-					%a{:href => "#"} Learning Disorders Specialists
-				%li
-					%a{:href => "#"} School Advocates
-			%h4 HEALTH
-			%ul
-				%li
-					%a{:href => "#"} Child Psychiatrists
-				%li
-					%a{:href => "#"} Developmental-Behavioral
-				%li
-					%a{:href => "#"} Pediatricians
-				%li
-					%a{:href => "#"} Fertility Specialists
-				%li
-					%a{:href => "#"} Nutritionists
-				%li
-					%a{:href => "#"} Pediatricians
-				%li
-					%a{:href => "#"} Pediatric Dentists
-				%li
-					%a{:href => "#"} Sports Medicine Specialists
-			%h4 NEW MOM SUPPORT
-			%ul
-				%li
-					%a{:href => "#"} Doulas
-				%li
-					%a{:href => "#"} Lactation/infant feeding
-				%li
-					%a{:href => "#"} Midwives
-			%h4 MORE
-			%ul
-				%li
-					%a{:href => "#"} Adoption facilitators
-				%li
-					%a{:href => "#"} Home allergen inspectors
-			#all-cats.see-all.select-wrapper
-				%span.select-text
-				%select
-					%option{:selected => "selected"} See all
-					%option This is a dropdown
-					%option of all categories?
+			- home_column_categories(2).each do |category|
+				%h3= category.name
+				%ul
+					- category.services.display_order.order_by_name.each do |svc|
+						%li
+							= link_to svc.name, search_providers_path(query: svc.name)
+			-#
+				#all-cats.see-all.select-wrapper
+					%span.select-text
+					%select
+						%option{:selected => "selected"} See all
+						%option This is a dropdown
+						%option of all categories?
 	#social
 		= link_to 'Follow us on twitter', 'http://twitter.com/kinstantly', target: '_blank', id: 'twitter'
-		= link_to 'Follow us on facebook', 'http://facebook.com', target: '_blank', id: 'facebook'
+		-#= link_to 'Follow us on facebook', 'http://facebook.com', target: '_blank', id: 'facebook'

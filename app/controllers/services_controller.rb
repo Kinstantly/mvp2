@@ -25,8 +25,13 @@ class ServicesController < ApplicationController
 	
 	def update
 		if @service.update_attributes(params[:service])
-			set_flash_message :notice, :updated, name: @service.name
-			redirect_to edit_service_path(@service)
+			if (category_id = params[:category_id]).present?
+				# We came from a mini-form on a category admin page.
+				redirect_to edit_category_path(category_id, anchor: 'links')
+			else
+				set_flash_message :notice, :updated, name: @service.name
+				redirect_to edit_service_path(@service)
+			end
 		else
 			set_flash_message :alert, :update_error
 			render action: :edit

@@ -1,0 +1,7 @@
+= simple_form_for @category do |f|
+	= f.input :name, required: true
+	= f.input :is_predefined
+	= f.input :display_order, hint: t('views.category.edit.display_order_hint'), input_html: {size: 4}
+	= f.association :services, as: :check_boxes, collection: Service.predefined
+	= f.button :submit
+	= link_to 'Cancel', categories_path

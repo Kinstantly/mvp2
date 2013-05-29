@@ -26,8 +26,13 @@ class SpecialtiesController < ApplicationController
 	
 	def update
 		if @specialty.update_attributes(params[:specialty])
-			set_flash_message :notice, :updated, name: @specialty.name
-			redirect_to edit_specialty_path(@specialty)
+			if (service_id = params[:service_id]).present?
+				# We came from a mini-form on a service admin page.
+				redirect_to edit_service_path(service_id, anchor: 'links')
+			else
+				set_flash_message :notice, :updated, name: @specialty.name
+				redirect_to edit_specialty_path(@specialty)
+			end
 		else
 			set_flash_message :alert, :update_error
 			render action: :edit

@@ -65,9 +65,8 @@ class Profile < ActiveRecord::Base
 	searchable do
 		text :first_name, :last_name, :middle_name, :credentials, 
 			:email, :company_name, :url, 
-			:headline, :education, :experience, :certifications, :awards, 
-			:languages, :insurance_accepted, :pricing, :availability, :service_area, 
-			:specialties_description
+			:headline, :education, :certifications, :hours, 
+			:languages, :insurance_accepted, :pricing, :service_area
 		
 		# Stored for highlighting.
 		text :summary, stored: true
@@ -99,11 +98,6 @@ class Profile < ActiveRecord::Base
 		end
 		
 		boolean :is_published
-		boolean :consult_by_email
-		boolean :consult_by_phone
-		boolean :consult_by_video
-		boolean :visit_home
-		boolean :visit_school
 		boolean :accepting_new_clients
 		integer :age_range_ids, multiple: true
 		integer :category_ids, multiple: true
