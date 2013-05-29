@@ -7,13 +7,18 @@ class ApplicationController < ActionController::Base
 	# Store referrer for use after sign-in or sign-up if so directed.
 	before_filter :store_referrer, only: :new
 	
-	# What to do if access is denied.
-	# Also, prevent fishing for existing, but protected, records on production by making it look like access was denied.
+	# What to do if access is denied or record not found.
+	# On production, prevent fishing for existing, but protected, records by making it look like the page was not found.
 	rescue_from CanCan::AccessDenied, ActiveRecord::RecordNotFound do |exception|
 		raise exception if exception.is_a?(ActiveRecord::RecordNotFound) && ENV["RAILS_ENV"] != 'production'
 		# render file: "#{Rails.root}/public/403", formats: [:html], status: 403, layout: false
-		set_flash_message :alert, :access_denied
-		redirect_to(user_signed_in? ? root_path : new_user_session_path)
+		if user_signed_in?
+			set_flash_message :alert, :page_not_found
+			redirect_to root_path
+		else
+			set_flash_message :alert, :page_not_found_sign_in
+			redirect_to new_user_session_path
+		end
 	end
 
 	# After sign-up or sign-in and if we are a User,

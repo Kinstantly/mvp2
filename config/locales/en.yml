@@ -8,6 +8,8 @@ en:
     description: "Kinstantly connects families with the parenting experts, children's health providers, and other services they need in smart, convenient ways"
   controllers:
     access_denied: 'Sorry, you do not have access to that area.'
+    page_not_found: 'Sorry, that page was not found.'
+    page_not_found_sign_in: 'Sorry, that page was not found. You might need to sign in.'
     categories:
       created: "Category '%{name}' was created."
       create_error: 'The was a problem creating the category.'
@@ -46,6 +48,9 @@ en:
       not_found_by_name: "Specialty '%{name}' was not found."
       updated: "Specialty '%{name}' was updated."
       update_error: 'The was a problem updating the specialty.'
+  devise:
+    failure:
+      unauthenticated: 'Sorry, that page was not found. You might need to sign in.'
   profile_mailer:
     invite:
       subject: 'Claim your profile at Kinstantly!'
