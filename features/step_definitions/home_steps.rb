@@ -1,3 +1,12 @@
+Given /^a category authored to appear on the home page$/ do
+	@authored_category = FactoryGirl.create :category_on_home_page
+end
+
+Given /^a service authored to appear on the home page$/ do
+	@authored_service = FactoryGirl.create :predefined_service
+	@authored_category = FactoryGirl.create :category_on_home_page, services: [@authored_service]
+end
+
 When /^I visit the "(.*?)" page$/ do |path|
 	visit path
 end
@@ -21,4 +30,12 @@ end
 
 Then /^I should see explanations of our terms of use$/ do
 	page.should have_content('Terms of Use')
+end
+
+Then /^I should see that authored category$/ do
+	page.should have_content(@authored_category.name)
+end
+
+Then /^I should see that authored service$/ do
+	page.should have_content(@authored_service.name)
 end

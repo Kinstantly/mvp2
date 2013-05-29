@@ -14,11 +14,7 @@ def set_up_new_data
 		primary_phone: '888-555-7777', url: 'http://KnownExpert.com', is_published: true }
 	@published_profile_data_2 ||= { first_name: 'Yeti', middle_name: 'B', last_name: 'Foot_6594098385732',
 		primary_phone: '888-555-6666', url: 'http://yetibfoot.com', is_published: true }
-	unless @predefined_category
-		@predefined_category = 'TUTORS'.to_category
-		@predefined_category.is_predefined = true
-		@predefined_category.save
-	end
+	@predefined_category = FactoryGirl.create(:predefined_category, name: 'TUTORS') unless @predefined_category
 end
 
 def find_user_profile

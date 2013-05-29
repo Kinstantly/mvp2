@@ -7,5 +7,10 @@ FactoryGirl.define do
 		factory :predefined_category do
 			is_predefined true
 		end
+		
+		factory :category_on_home_page do
+			is_predefined true
+			display_order 1
+		end
 	end
 end
