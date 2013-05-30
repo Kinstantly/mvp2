@@ -1,4 +1,5 @@
-- locations = @profile.locations.sort_by{|loc| loc.id.presence || 100} # If there was an error on creation, location ID will be nil.
+- dummy_loc_id = 100 # If there was an error on creation, location ID will be nil.
+- locations = @profile.locations.sort_by{|loc| loc.id.presence || (dummy_loc_id += 1)}
 - @country ||= (locations.first.try(:country).presence || default_profile_country)
 .edit.popover
 	= nested_form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
