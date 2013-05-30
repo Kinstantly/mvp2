@@ -7,6 +7,7 @@ class Location < ActiveRecord::Base
 	validates :phone, phone_number: true, allow_blank: true
 	
 	scope :unique_by_city, select(:city).uniq
+	scope :order_by_id, order(:id)
 	
 	geocoded_by :geocodable_address # can also be an IP address
 	before_save :geocode_address    # auto-fetch coordinates

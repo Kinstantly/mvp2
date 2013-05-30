@@ -6,6 +6,10 @@ class HomeController < ApplicationController
 		render layout: 'application'
 	end
 	
+	def admin
+		render layout: 'plain'
+	end
+	
 	private
 	
 	def authorize_admin

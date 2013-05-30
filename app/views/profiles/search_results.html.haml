@@ -32,7 +32,7 @@
 								- if profile.headline.present?
 									%span.headline= profile.headline
 							%span.specialties= search_result_specialties profile
-							- location = profile.locations.sort_by(&:created_at).first
+							- location = profile.locations.order_by_id.first
 							%span
 								%span.location{itemprop: "street-address"}= location.try(:display_address)
 								%span.location{itemprop: "telephone"}= location.try(:display_phone)

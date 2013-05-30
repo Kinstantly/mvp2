@@ -36,20 +36,20 @@ class ProfilesController < ApplicationController
 	def index
 		@profiles = @profiles.with_admin_notes if current_user.try(:admin?) && params[:with_admin_notes].present?
 		@profiles = @profiles.order_by_last_name.page params[:page]
+		render layout: 'plain'
 	end
 	
 	def link_index
 		@profiles = @profiles.order_by_id.page params[:page]
+		render layout: 'plain'
 	end
 	
-	# While implementing the new design, explicitly specify the new layout for views using the new design.
-	def show
-		render layout: 'interior'
+	def admin
+		render layout: 'plain'
 	end
 	
-	# While implementing the new design, explicitly specify the new layout for views using the new design.
-	def edit
-		render layout: 'interior'
+	def new
+		render layout: 'plain'
 	end
 	
 	def create
@@ -59,8 +59,16 @@ class ProfilesController < ApplicationController
 			redirect_to(params[:admin] ? edit_profile_url(@profile) : profile_url(@profile))
 		else
 			set_flash_message :alert, :create_error
-			render action: (params[:admin] ? :admin : :new)
+			render action: (params[:admin] ? :admin : :new), layout: 'plain'
 		end
+	end
+	
+	def show_plain
+		render layout: 'plain'
+	end
+	
+	def edit_plain
+		render layout: 'plain'
 	end
 	
 	def update
@@ -69,7 +77,7 @@ class ProfilesController < ApplicationController
 			redirect_to profile_url @profile
 		else
 			set_flash_message :alert, :update_error
-			render action: :edit_plain
+			render action: :edit_plain, layout: 'plain'
 		end
 	end
 	
@@ -91,15 +99,13 @@ class ProfilesController < ApplicationController
 		redirect_to admin_profiles_url
 	end
 	
-	# While implementing the new design, explicitly specify the new layout for views using the new design.
 	def view_my_profile
 		@claim_token = params[:claim_token] # Exists if we are confirming replacement of current profile with a claimed one.
-		render action: :show, layout: 'interior'
+		render action: :show
 	end
 	
-	# While implementing the new design, explicitly specify the new layout for views using the new design.
 	def edit_my_profile
-		render action: :edit, layout: 'interior'
+		render action: :edit
 	end
 	
 	def search
@@ -121,7 +127,11 @@ class ProfilesController < ApplicationController
 		@search_per_page = options[:per_page] = params[:per_page].to_i if params[:per_page].present?
 		options[:published_only] = !current_user.try(:profile_editor?)
 		@search = Profile.fuzzy_search @search_query, options
-		render :search_results, layout: 'interior'
+		render :search_results
+	end
+	
+	def new_invitation
+		render layout: 'plain'
 	end
 	
 	def send_invitation
@@ -130,7 +140,7 @@ class ProfilesController < ApplicationController
 			redirect_to profile_url @profile
 		else
 			set_flash_message :alert, :invitation_error
-			render action: :new_invitation
+			render action: :new_invitation, layout: 'plain'
 		end
 	end
 	

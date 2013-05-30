@@ -136,6 +136,11 @@ en:
         not_alphanumeric: 'must contain only letters, numbers, or underscores'
         too_long: 'must have no more than %{count} characters'
         too_short: 'must have at least %{count} characters'
+      models:
+        user:
+          attributes:
+            password:
+              confirmation: 'and retyped password must be the same'
   views:
     or: 'or'
     accessibility: 'Skip to content'
@@ -225,6 +230,12 @@ en:
         display_order_hint: 'Within category on the home page'
       view:
         find_by_name: 'Service name'
+    sign_in:
+      label: 'Sign in'
+    sign_up:
+      label: 'Join us!'
+      member_title: 'Become a member'
+      provider_title: 'Become a provider'
     specialty:
       name: 'Specialty'
       edit:

@@ -4,6 +4,11 @@ $default_font_family: Helvetica, Arial, sans-serif;
 $default_link_color: #0b99a2;
 $text_light_color: #807f7f;
 $text_lighter_color: #d9d8d8;
+$kinstantly_light_gray: #bebebe;
+$kinstantly_gray: #aeaeae;
+$kinstantly_light_chartreuse: #afb434;
+$kinstantly_chartreuse: #9fa42f;
+$kinstantly_pink: #e43d5d;
 
 @mixin cell-style {
 	border: {
@@ -36,6 +41,40 @@ $text_lighter_color: #d9d8d8;
 	}
 }
 
+$button_corner_radius: 4px;
+
+@mixin button-style {
+	background-color: $kinstantly_light_chartreuse;
+	font: {
+		size: 15px;
+		weight: bold;
+	}
+	text-transform: lowercase;
+	color: #ffffff;
+	padding: 4px;
+	-webkit-border-radius: $button_corner_radius;
+	-moz-border-radius: $button_corner_radius;
+	border-radius: $button_corner_radius;
+}
+
+@mixin default-button-style {
+	@include button-style;
+	background-color: $kinstantly_light_chartreuse;
+}
+@mixin default-button-hover-style {
+	@include button-style;
+	background-color: $kinstantly_chartreuse;
+}
+
+@mixin cancel-button-style {
+	@include button-style;
+	background-color: $kinstantly_light_gray;
+}
+@mixin cancel-button-hover-style {
+	@include button-style;
+	background-color: $kinstantly_gray;
+}
+
 span.note, .blank_attr {
 	font: {
 		style: italic;
@@ -50,10 +89,6 @@ span.note, .blank_attr {
 
 /* Messages */
 
-// $notice_color: #afb434;
-$notice_color: #9fa42f;
-$alert_color: #e43d5d;
-
 .flash_messages {
 	font-family: $default_font_family;
 	line-height: 20px;
@@ -61,16 +96,16 @@ $alert_color: #e43d5d;
 	text-align: center;
 	margin-top: 0.5em;
 	.notice {
-		color: $notice_color;
+		color: $kinstantly_chartreuse;
 	}
 	.alert {
-		color: $alert_color;
+		color: $kinstantly_pink;
 	}
 }
 
-.formlet {
-	.errorExplanation {
-		color: $alert_color;
+.formlet, .generic_form {
+	.errorExplanation, #error_explanation {
+		color: $kinstantly_pink;
 		h2, p {
 			display: none;
 		}

@@ -675,34 +675,7 @@ table.info .text-area td {
 
 /*  Editing -------------------------------------------------------------------------- */
 
-.editable {
-	background: url('edit.png') 0px 0px no-repeat;
-	background-size: 12px 15px;
-	padding-left: 18px;
-	margin-left: -18px;
-}
-.editable:hover {
-	background: url('edit-over.png') 0px 0px no-repeat;
-	cursor: pointer;
-}
-div.popover {
-	display: none;
-	position: absolute;
-	top: 160px;
-	left: 340px;
-	z-index: 1000;
-	background: #FFF;
-	width: 418px;
-	padding: 22px 26px;
-	-moz-border-radius: 7px;
-	-webkit-border-radius: 7px;
-	border-radius: 7px;
-	-webkit-background-clip: padding-box;
-	-moz-box-shadow: 1px 3px 8px #CCC;
-	-webkit-box-shadow: 1px 3px 8px #CCC;
-	box-shadow: 1px 3px 8px #CCC;
-	border: 1px solid #DDD;
-	margin-left: -25px;
+@mixin form-style {
 	form {
 		> div, .form_section {
 			margin: 12px 0px 13px 0px;
@@ -760,6 +733,37 @@ div.popover {
 	a.cancel:hover {
 		background: url('cancel-button.gif') 0px -26px; 
 	}
+}
+
+.editable {
+	background: url('edit.png') 0px 0px no-repeat;
+	background-size: 12px 15px;
+	padding-left: 18px;
+	margin-left: -18px;
+}
+.editable:hover {
+	background: url('edit-over.png') 0px 0px no-repeat;
+	cursor: pointer;
+}
+div.popover {
+	display: none;
+	position: absolute;
+	top: 160px;
+	left: 340px;
+	z-index: 1000;
+	background: #FFF;
+	width: 418px;
+	padding: 22px 26px;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	-webkit-background-clip: padding-box;
+	-moz-box-shadow: 1px 3px 8px #CCC;
+	-webkit-box-shadow: 1px 3px 8px #CCC;
+	box-shadow: 1px 3px 8px #CCC;
+	border: 1px solid #DDD;
+	margin-left: -25px;
+	@include form-style;
 }
 .active {
 	background: none !important;
@@ -998,5 +1002,29 @@ div.popover {
 	}
 	nav.pagination span {
 		margin-right: 1em;
+	}
+}
+
+/*  Sign up, sign in -------------------------------------------------------------------------- */
+
+.generic_form {
+	@include form-style;
+	width: 418px;
+	margin: 0 auto;
+	.text_field input {
+		font-size: 16px;
+	}
+	.buttons {
+		.default {
+			@include default-button-style;
+		}
+		.default:hover {
+			@include default-button-hover-style;
+		}
+	}
+	.devise_shared_links {
+		clear: both;
+		margin-top: 12px;
+		line-height: 1.5em;
 	}
 }

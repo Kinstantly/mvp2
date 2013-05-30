@@ -1,4 +1,5 @@
 class CategoriesController < ApplicationController
+	layout 'plain'
 	
 	before_filter :authenticate_user!
 	

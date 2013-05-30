@@ -28,7 +28,7 @@
 			%span.title{itemprop: "jobTitle"}= @profile.headline
 			- if @profile.company_name.present? && @profile.display_name.present?
 				%span.title{itemprop: "affiliation"}= @profile.company_name
-			- location = @profile.locations.sort_by(&:created_at).first
+			- location = @profile.locations.order_by_id.first
 			%span.location{itemprop: "street-address"}= location.try(:display_address)
 			%span.location{itemprop: "telephone"}= location.try(:display_phone)
 			%span.location{itemprop: "url"}= profile_linked_website @profile

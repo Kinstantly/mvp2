@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+	layout 'plain'
+	
 	before_filter :authenticate_user!
 	before_filter :set_up_user, except: [:index, :claim_profile, :force_claim_profile]
 	load_and_authorize_resource
@@ -9,12 +11,6 @@ class UsersController < ApplicationController
 	
 	def index
 		@users = User.all
-	end
-	
-	def view_profile
-	end
-	
-	def edit_profile
 	end
 	
 	def update_profile

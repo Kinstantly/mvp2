@@ -66,7 +66,7 @@ def sign_up(sign_up_path='/provider/sign_up')
   fill_in User.human_attribute_name(:password), :with => @visitor[:password]
   fill_in User.human_attribute_name(:password_confirmation), :with => @visitor[:password_confirmation]
   fill_in User.human_attribute_name(:username), :with => @visitor[:username] if @visitor[:username]
-  click_button "Join us!"
+  click_button 'sign_up_button'
   find_user
 end
 
@@ -78,7 +78,7 @@ def sign_in
   visit '/users/sign_in'
   fill_in User.human_attribute_name(:email), :with => @visitor[:email]
   fill_in User.human_attribute_name(:password), :with => @visitor[:password]
-  click_button "Login"
+  click_button 'sign_in_button'
 end
 
 ### GIVEN ###
@@ -267,11 +267,11 @@ Then /^I should see a missing password message$/ do
 end
 
 Then /^I should see a missing password confirmation message$/ do
-  page.should have_content "#{User.human_attribute_name :password} doesn't match confirmation"
+  page.should have_content "#{User.human_attribute_name :password} #{I18n.t 'activerecord.errors.models.user.attributes.password.confirmation'}"
 end
 
 Then /^I should see a mismatched password message$/ do
-  page.should have_content "#{User.human_attribute_name :password} doesn't match confirmation"
+  page.should have_content "#{User.human_attribute_name :password} #{I18n.t 'activerecord.errors.models.user.attributes.password.confirmation'}"
 end
 
 Then /^I should see a missing username message$/ do

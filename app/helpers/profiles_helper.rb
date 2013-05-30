@@ -507,7 +507,7 @@ module ProfilesHelper
 	end
 	
 	def search_result_location(profile)
-		profile.locations.sort_by(&:created_at).first.try(:display_city_region)
+		profile.locations.order_by_id.first.try(:display_city_region)
 	end
 	
 	def search_result_consultations(profile)
