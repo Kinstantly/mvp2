@@ -153,6 +153,8 @@ en:
         destroy_button: 'Move category to trash'
         destroy_confirm: 'This category will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
         display_order_hint: 'Home page browse by category: less than 10 for left column, more than 10 for right column'
+      index:
+        service_explanation: '(listed alphabetically; see edit page for display order)'
     profile:
       view:
         accepting_new_clients: 'Accepting new clients'

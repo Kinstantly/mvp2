@@ -12,7 +12,10 @@
 						= t 'views.category.name'
 						%br
 						= t 'views.not_browsable'
-					%th.large= Category.human_attribute_name(:services)
+					%th.large
+						= Category.human_attribute_name(:services)
+						%br
+						= t 'views.category.index.service_explanation'
 					%th= Category.human_attribute_name(:is_predefined)
 					%th= Category.human_attribute_name(:display_order)
 			%tbody

@@ -96,6 +96,9 @@ class Profile < ActiveRecord::Base
 		text :specialties do
 			specialties.map &:name
 		end
+		text :search_terms do
+			specialties.map{|spec| spec.search_terms.map &:name}.flatten
+		end
 		
 		boolean :is_published
 		boolean :accepting_new_clients

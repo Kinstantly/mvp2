@@ -15,12 +15,16 @@
 						= t 'views.specialty.name'
 						%br
 						= t 'views.specialty.view.not_browsable'
+					%th= Specialty.human_attribute_name(:search_terms)
 					%th= Specialty.human_attribute_name(:is_predefined)
 					%th.large= Specialty.human_attribute_name(:services)
 			%tbody
 				- @specialties.each do |specialty|
 					%tr
 						%td= link_to specialty.name, edit_specialty_path(specialty), class: "#{specialty.browsable? ? 'browsable' : 'not_browsable'}"
+						%td
+							- specialty.search_terms.order_by_name.each do |record|
+								%span.name= record.name
 						%td{class: "#{specialty.is_predefined ? 'predefined' : 'not_predefined'}"}= specialty.is_predefined
 						%td
 							- specialty.services.order_by_name.each do |record|

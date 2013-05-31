@@ -22,4 +22,8 @@ class String
 	def to_specialty
 		to_db_singleton Specialty
 	end
+	
+	def to_search_term
+		to_db_singleton SearchTerm
+	end
 end

@@ -3,6 +3,7 @@ class Specialty < ActiveRecord::Base
 	
 	has_and_belongs_to_many :profiles
 	has_and_belongs_to_many :services
+	has_and_belongs_to_many :search_terms
 	
 	default_scope where(trash: false)
 	scope :trash, where(trash: true)
