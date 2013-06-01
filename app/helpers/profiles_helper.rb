@@ -160,7 +160,7 @@ module ProfilesHelper
 
 	def profile_services_specialties_info(profile)
 		predefined_info = Service.predefined_parent_child_info do
-			profile_parent_child_info Service.belongs_to_a_category, :specialties
+			profile_parent_child_info Category.predefined.map(&:services).flatten, :specialties
 		end
 		profile_parent_child_info profile.services, :specialties, *predefined_info
 	end
@@ -270,11 +270,7 @@ module ProfilesHelper
 	end
 	
 	# Services helpers
-	
-	def profile_service_choices(profile)
-		(Service.belongs_to_a_category + profile.services.reject(&:new_record?)).uniq.sort { |a, b| a.name.casecmp b.name }
-	end
-	
+
 	def profile_new_custom_services(profile)
 		(profile.custom_services.presence || []).select(&:new_record?)
 	end
