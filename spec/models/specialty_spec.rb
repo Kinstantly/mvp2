@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Specialty do
 	before(:each) do
-		@specialty = Specialty.new
+		@specialty = Specialty.new # FactoryGirl products don't have callbacks!
 		@specialty.name = 'behavior'
 	end
 	
@@ -29,6 +29,41 @@ describe Specialty do
 			@search_terms.each do |spec|
 				@specialty.search_terms.include?(spec).should be_true
 			end
+		end
+	end
+	
+	context "Sunspot/SOLR auto-indexing" do
+		before(:each) do
+			@specialty.save
+			@profile = FactoryGirl.create(:published_profile, specialties: [@specialty])
+			Profile.reindex # reset the SOLR index
+			Sunspot.commit
+		end
+		
+		it "after modifying a specialty, reindexes search for any profiles that contain it" do
+			new_name = 'peer social skills'
+			Profile.fuzzy_search(new_name).results.include?(@profile).should be_false
+			@specialty.name = new_name
+			@specialty.save
+			Sunspot.commit
+			Profile.fuzzy_search(new_name).results.include?(@profile).should be_true
+		end
+		
+		it "should not be searchable after trashing" do
+			name = @specialty.name
+			Profile.fuzzy_search(name).results.include?(@profile).should be_true
+			@specialty.trash = true
+			@specialty.save
+			Sunspot.commit
+			Profile.fuzzy_search(name).results.include?(@profile).should be_false
+		end
+		
+		it "after adding an existing search term, reindexes search for any profiles that contain it" do
+			new_name = 'making eye contact'
+			Profile.fuzzy_search(new_name).results.include?(@profile).should be_false
+			@specialty.search_terms << new_name.to_search_term
+			Sunspot.commit
+			Profile.fuzzy_search(new_name).results.include?(@profile).should be_true
 		end
 	end
 end

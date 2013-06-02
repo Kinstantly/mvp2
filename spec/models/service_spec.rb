@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Service do
 	before(:each) do
-		@service = Service.new
+		@service = Service.new # FactoryGirl products don't have callbacks!
 		@service.name = 'child psychiatrist'
 	end
 	
@@ -46,6 +46,33 @@ describe Service do
 			@specialties.each do |spec|
 				@service.specialties.include?(spec).should be_true
 			end
+		end
+	end
+	
+	context "Sunspot/SOLR auto-indexing" do
+		before(:each) do
+			@service.save
+			@profile = FactoryGirl.create(:published_profile, services: [@service])
+			Profile.reindex # reset the SOLR index
+			Sunspot.commit
+		end
+		
+		it "after modifying a service, reindexes search for any profiles that contain it" do
+			new_name = 'Social Skills Therapists'
+			Profile.fuzzy_search(new_name).results.include?(@profile).should be_false
+			@service.name = new_name
+			@service.save
+			Sunspot.commit
+			Profile.fuzzy_search(new_name).results.include?(@profile).should be_true
+		end
+		
+		it "should not be searchable after trashing" do
+			name = @service.name
+			Profile.fuzzy_search(name).results.include?(@profile).should be_true
+			@service.trash = true
+			@service.save
+			Sunspot.commit
+			Profile.fuzzy_search(name).results.include?(@profile).should be_false
 		end
 	end
 end

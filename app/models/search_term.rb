@@ -11,4 +11,6 @@ class SearchTerm < ActiveRecord::Base
 	
 	validates :name, presence: true
 	validates :name, length: {maximum: MAX_STRING_LENGTH}
+	
+	include SunspotIndexing
 end

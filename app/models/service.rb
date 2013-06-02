@@ -20,6 +20,8 @@ class Service < ActiveRecord::Base
 	include CachingForModel
 	predefined_info_parent :category
 	
+	include SunspotIndexing
+	
 	def browsable?
 		categories.any? &:browsable?
 	end

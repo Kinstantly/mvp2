@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Category do
 	before(:each) do
-		@category = Category.new
+		@category = Category.new # FactoryGirl products don't have callbacks!
 		@category.name = 'THERAPISTS & PARENTING COACHES'
 	end
 	
@@ -31,4 +31,31 @@ describe Category do
 			end
 		end
 	end
+	
+	# context "Sunspot/SOLR auto-indexing" do
+	# 	before(:each) do
+	# 		@category.save
+	# 		@profile = FactoryGirl.create(:published_profile, categories: [@category])
+	# 		Profile.reindex # reset the SOLR index
+	# 		Sunspot.commit
+	# 	end
+	# 	
+	# 	it "after modifying a category, reindexes search for any profiles that contain it" do
+	# 		new_name = 'HEALTH'
+	# 		Profile.fuzzy_search(new_name).results.include?(@profile).should be_false
+	# 		@category.name = new_name
+	# 		@category.save
+	# 		Sunspot.commit
+	# 		Profile.fuzzy_search(new_name).results.include?(@profile).should be_true
+	# 	end
+	# 	
+	# 	it "should not be searchable after trashing" do
+	# 		name = @category.name
+	# 		Profile.fuzzy_search(name).results.include?(@profile).should be_true
+	# 		@category.trash = true
+	# 		@category.save
+	# 		Sunspot.commit
+	# 		Profile.fuzzy_search(name).results.include?(@profile).should be_false
+	# 	end
+	# end
 end
