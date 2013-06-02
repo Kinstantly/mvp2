@@ -90,6 +90,9 @@ gem 'kaminari'
 # Form helpers
 gem 'simple_form'
 
+# Background processing
+gem 'delayed_job_active_record'
+
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
 	gem 'cucumber-rails', '~> 1.0', require: false

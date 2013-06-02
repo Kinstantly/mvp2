@@ -4,14 +4,23 @@ module SunspotIndexing
 	end
 	
 	module InstanceMethods
-		# This is bad because it runs during a request.
-		# Better way is to queue a background job (worker).
+		# Queue a background job if so configured.
+		# This can be a big job if there are lots of associated profiles.
 		def reindex_profiles(record=nil)
+			if REINDEX_PROFILES_IN_BACKGROUND
+				delay.do_reindex_profiles
+			else
+				do_reindex_profiles
+			end
+		end
+		
+		def do_reindex_profiles
 			if is_a? SearchTerm
 				specialties.map(&:profiles).flatten.map(&:index)
 			elsif respond_to? :profiles
 				profiles.map(&:index)
 			end
+			Sunspot.commit
 		end
 	end
 	

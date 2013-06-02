@@ -17,10 +17,7 @@ class Category < ActiveRecord::Base
 	
 	include CachingForModel
 	
-	# This is too risky for categories.
-	# This could result in reindexing a huge number of profiles and the request will time out.
-	# Include when we have a way of reindexing with a background job.
-	# include SunspotIndexing
+	include SunspotIndexing
 	
 	def browsable?
 		!!is_predefined
