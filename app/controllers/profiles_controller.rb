@@ -144,6 +144,10 @@ class ProfilesController < ApplicationController
 		end
 	end
 	
+	def rating_score
+		render layout: false
+	end
+	
 	def rate
 		render json: !!@profile.try(:rate, params[:score], current_user)
 	end
