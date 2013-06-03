@@ -74,6 +74,16 @@
 		- if @search.results.present?
 			.search_result= paginate @search.results
 
+-# Interpolate in javascript.  HAML cannot cache coffeescript with embedded ruby interpolation!
+:javascript
+	var my_vars = {
+		search_path: '#{escape_javascript search_providers_path(query: @search_query, search_area_tag_id: @search_area_tag_id)} .search_result',
+		t: {
+			searching: '#{t "views.search_results.searching"}',
+			showing_nearest_to_you: '#{t "views.search_results.showing_nearest_to_you"}'
+		}
+	};
+
 :coffeescript
 	if Modernizr.geolocation
 		$('#get_location_button_area').css('display', 'inline-block')
@@ -83,16 +93,15 @@
 		$('#search_city').val('')
 	$('#get_location_button').click (e) ->
 		e.preventDefault()
-		$('#get_location_button_area').html('#{t "views.search_results.searching"}')
+		$('#get_location_button_area').html(my_vars.t.searching)
 		if Modernizr.geolocation
 			navigator.geolocation.getCurrentPosition(search_by_location)
 	search_by_location = (position) ->
-		search_path = '#{escape_javascript search_providers_path(query: @search_query, search_area_tag_id: @search_area_tag_id)} .search_result'
 		params = 'latitude='+position.coords.latitude+'&longitude='+position.coords.longitude
-		$('.search_results_list').load(search_path, params, search_by_location_complete)
+		$('.search_results_list').load(my_vars.search_path, params, search_by_location_complete)
 	search_by_location_complete = ->
 		window.rating_score_reset() if window.rating_score_reset
-		$('#get_location_button_area').html('#{t "views.search_results.showing_nearest_to_you"}')
+		$('#get_location_button_area').html(my_vars.t.showing_nearest_to_you)
 		$('#nearest_results_msg').remove()
 		window.link_short_profiles()
 	# Pop-up short profiles
