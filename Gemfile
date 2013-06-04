@@ -93,6 +93,9 @@ gem 'simple_form'
 # Background processing
 gem 'delayed_job_active_record'
 
+# Support multiple simultaneous requests by forking multiple rails processes.
+gem 'unicorn'
+
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
 	gem 'cucumber-rails', '~> 1.0', require: false
