@@ -49,8 +49,16 @@ en:
       updated: "Specialty '%{name}' was updated."
       update_error: 'The was a problem updating the specialty.'
   devise:
+    confirmations:
+      new_confirmation_link: "Didn't receive confirmation instructions?"
     failure:
       unauthenticated: 'Sorry, that page was not found. You might need to sign in.'
+    omniauth:
+      authorize_link: 'Sign in with %{provider_name}'
+    passwords:
+      new_password_link: 'Forgot your password?'
+    unlocks:
+      new_unlock_link: "Didn't receive unlock instructions?"
   profile_mailer:
     invite:
       subject: 'Claim your profile at Kinstantly!'
