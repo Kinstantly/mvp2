@@ -14,10 +14,6 @@
 			.password_confirmation.text_field
 				= f.label :password_confirmation
 				= f.password_field :password_confirmation
-			.current_password.text_field
-				= f.label :current_password, class: 'required'
-				= f.password_field :current_password
-				%span.note= t 'views.user.edit.current_password_note'
 			- if resource.client?
 				.username.text_field
 					= f.label :username, class: 'required'
@@ -26,6 +22,10 @@
 				.phone.text_field
 					= f.label :phone
 					= f.text_field :phone
+			.current_password.text_field
+				= f.label :current_password, class: 'required'
+				= f.password_field :current_password
+				%span.note= t 'views.user.edit.current_password_note'
 			.buttons
 				= f.submit t('views.user.edit.submit'), disable_with: t('views.user.edit.submit_disable'), class: 'default'
 				= link_to t('views.user.edit.cancel'), user_home_page, class: 'cancel_link'

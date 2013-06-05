@@ -162,7 +162,7 @@ a:hover {
 	font-size: 0.9375em;
 }
 #access ul {
-	li#skip a:after, li#contact:before, li#myprofile:before, li#signout:before {
+	li#skip a:after, li#contact:before, li#myprofile:before, li#settings:before, li#signout:before {
 		@include pipe-separator-style;
 		color: #BDBCBD;
 	}
