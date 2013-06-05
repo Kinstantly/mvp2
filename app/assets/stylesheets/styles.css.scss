@@ -1005,7 +1005,7 @@ div.popover {
 	}
 }
 
-/*  Sign up, sign in -------------------------------------------------------------------------- */
+/*  Sign up, sign in, confirmation, password, unlock, account settings ------------------------ */
 
 .generic_form {
 	@include form-style;
@@ -1015,11 +1015,21 @@ div.popover {
 		font-size: 16px;
 	}
 	.buttons {
+		input, a {
+			margin-right: 1em;
+		}
 		.default {
 			@include default-button-style;
 		}
 		.default:hover {
 			@include default-button-hover-style;
+		}
+		.cancel_link {
+			@include cancel-button-style;
+		}
+		.cancel_link:hover {
+			@include cancel-button-hover-style;
+			text-decoration: none;
 		}
 	}
 	.devise_shared_links {
@@ -1027,4 +1037,8 @@ div.popover {
 		margin-top: 12px;
 		line-height: 1.5em;
 	}
+}
+
+.cancel_account {
+	margin-top: 32px;
 }

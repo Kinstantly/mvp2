@@ -20,6 +20,10 @@ module ApplicationHelper
 		"Hello, #{profile_display_name.presence || current_user.username.presence || current_user.email}" if user_signed_in?
 	end
 	
+	def user_home_page
+		user_signed_in? && current_user.is_provider? ? my_profile_path : root_path
+	end
+	
 	def sign_up_links
 		"Become a #{link_to 'provider', provider_sign_up_path} or a #{link_to 'member', member_sign_up_path}".html_safe unless user_signed_in? || controller_name == 'registrations'
 	end

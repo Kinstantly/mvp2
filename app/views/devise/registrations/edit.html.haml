@@ -1,36 +1,35 @@
-.edit_account
-	%h2 Account settings
-	= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f|
-		= devise_error_messages!
-		= render partial: 'profiles/info_area'
-		.account_areas
-			.basic_account
-				.email
-					= f.label :email, class: 'required'
-					= f.email_field :email
-					%span.note= t 'views.user.edit.email_note'
-				.password
-					= f.label :password
-					= f.password_field :password, :autocomplete => "off"
-					%span.note= t 'views.user.edit.password_note'
-				.password_confirmation
-					= f.label :password_confirmation
-					= f.password_field :password_confirmation
-				.current_password
-					= f.label :current_password, class: 'required'
-					= f.password_field :current_password
-					%span.note= t 'views.user.edit.current_password_note'
-				- if resource.client?
-					.username
-						= f.label :username, class: 'required'
-						= f.text_field :username
-				- if resource.is_provider?
-					.phone
-						= f.label :phone
-						= f.text_field :phone
-		.buttons
-			= f.submit 'Save changes', disable_with: 'Saving...'
-			= link_to "Cancel", view_user_profile_path
-.cancel_account
-	Unhappy?
-	= link_to "Cancel my account.", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete
+#content
+	.edit_account.generic_form
+		%h1 Account settings
+		= form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put } do |f|
+			= devise_error_messages!
+			.email.text_field
+				= f.label :email, class: 'required'
+				= f.email_field :email
+				%span.note= t 'views.user.edit.email_note'
+			.password.text_field
+				= f.label :password, t('devise.passwords.edit_password_label')
+				= f.password_field :password, :autocomplete => "off"
+				%span.note= t 'views.user.edit.password_note'
+			.password_confirmation.text_field
+				= f.label :password_confirmation
+				= f.password_field :password_confirmation
+			.current_password.text_field
+				= f.label :current_password, class: 'required'
+				= f.password_field :current_password
+				%span.note= t 'views.user.edit.current_password_note'
+			- if resource.client?
+				.username.text_field
+					= f.label :username, class: 'required'
+					= f.text_field :username
+			- if resource.is_provider?
+				.phone.text_field
+					= f.label :phone
+					= f.text_field :phone
+			.buttons
+				= f.submit t('views.user.edit.submit'), disable_with: t('views.user.edit.submit_disable'), class: 'default'
+				= link_to t('views.user.edit.cancel'), user_home_page, class: 'cancel_link'
+	-#
+		.cancel_account.generic_form
+			= t('views.user.edit.cancel_account_prompt')
+			= link_to t('views.user.edit.cancel_account'), registration_path(resource_name), data: { confirm: t('views.user.edit.cancel_account_confirmation') }, method: :delete

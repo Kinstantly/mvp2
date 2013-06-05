@@ -1,0 +1,10 @@
+#content
+	.confirmation.generic_form
+		%h1= t 'devise.confirmations.new_confirmation_title'
+		= form_for resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post } do |f|
+			= devise_error_messages!
+			.email.text_field
+				= f.label :email
+				= f.email_field :email
+			.buttons= f.submit t('devise.confirmations.new_confirmation_submit'), disable_with: t('devise.confirmations.new_confirmation_submit_disable'), class: 'default'
+		= render "devise/shared/links"

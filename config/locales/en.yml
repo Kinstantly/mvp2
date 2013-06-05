@@ -51,14 +51,27 @@ en:
   devise:
     confirmations:
       new_confirmation_link: "Didn't receive confirmation instructions?"
+      new_confirmation_submit: 'Resend confirmation instructions'
+      new_confirmation_submit_disable: 'Resending instructions...'
+      new_confirmation_title: 'Resend confirmation instructions'
     failure:
       unauthenticated: 'Sorry, that page was not found. You might need to sign in.'
     omniauth:
       authorize_link: 'Sign in with %{provider_name}'
     passwords:
+      edit_password_label: 'New password'
+      edit_password_title: 'Change your password'
+      edit_password_submit: 'Change my password'
+      edit_password_submit_disable: 'Changing...'
       new_password_link: 'Forgot your password?'
+      new_password_submit: 'Send me reset password instructions'
+      new_password_submit_disable: 'Sending...'
+      new_password_title: 'Forgot your password?'
     unlocks:
       new_unlock_link: "Didn't receive unlock instructions?"
+      new_unlock_submit: 'Resend unlock instructions'
+      new_unlock_submit_disable: 'Resending instructions...'
+      new_unlock_title: 'Resend unlock instructions'
   profile_mailer:
     invite:
       subject: 'Claim your profile at Kinstantly!'
@@ -257,8 +270,14 @@ en:
     user:
       edit:
         email_note: 'We also use this email to contact you.'
-        password_note: "Leave blank if you don't want to change it."
+        password_note: "Leave password blank if you don't want to change it."
         current_password_note: 'We need your current password to confirm your changes.'
+        submit: 'Save changes'
+        submit_disable: 'Save changes'
+        cancel: 'Cancel'
+        cancel_account: 'Cancel my account'
+        cancel_account_confirmation: 'We will completely remove your account. Are you sure?'
+        cancel_account_prompt: 'Unhappy?'
   rating:
     no_score: 'Not rated yet'
     score_1: 'Really did not like'
