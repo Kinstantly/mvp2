@@ -8,7 +8,8 @@ namespace :import_specialties do
 	
 	desc 'Load the import data.'
 	task :load_lines do
-		@lines = File.open("lib/data/Copy of Browse by Category clean 20130530.csv", "r").read
+		@import_file = ENV['import_file']
+		@lines = File.open(@import_file, "r").read
 	end
 	
 	desc 'Parse the categories, services, specialties, and search terms import data.'
@@ -42,26 +43,27 @@ namespace :import_specialties do
 		record
 	end
 	
-	WRITE_SPECIALTIES_201305 = 'write_specialties_201305'
-	
 	desc 'Write the imported categories, services, specialties, and search terms to the database'
 	task write_specialties: [:environment, :parse_lines] do
-		# We should only run this once.
-		if AdminEvent.find_by_name WRITE_SPECIALTIES_201305
-			puts "!!\nwrite_specialties task has already been run.  It cannot be run again!"
+		# We should only run this once for this import file.
+		admin_event_name = File.basename @import_file
+		if AdminEvent.find_by_name admin_event_name
+			puts "!!\nwrite_specialties task has already been run for '#{admin_event_name}'.  It cannot be run again for that import file!"
 			return
 		end
 		
-		# We want the import to determine which services and specialties are predefined.
+		# The following code was for the first run.  Should not be used anymore.
+		# We NO longer want the import to reset the predefined status.
+		#
 		# Assume categories are already manually set up.
-		Specialty.all.each do |spec|
-			spec.is_predefined = false
-			spec.save
-		end
-		Service.all.each do |svc|
-			svc.is_predefined = false
-			svc.save
-		end
+		# Specialty.all.each do |spec|
+		# 	spec.is_predefined = false
+		# 	spec.save
+		# end
+		# Service.all.each do |svc|
+		# 	svc.is_predefined = false
+		# 	svc.save
+		# end
 		
 		@names.each do |cat_name, svcs|
 			cat = predefine(cat_name.to_category)
@@ -83,7 +85,7 @@ namespace :import_specialties do
 		end
 		
 		# Prevent running the task again.  You must remove this record to run it again.
-		AdminEvent.create name: WRITE_SPECIALTIES_201305
+		AdminEvent.create name: admin_event_name
 		
 		puts 'All done!!'
 	end
