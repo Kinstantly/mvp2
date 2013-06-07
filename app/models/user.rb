@@ -32,6 +32,10 @@ class User < ActiveRecord::Base
 		display_phone_number phone
 	end
 	
+	def name_for_greeting
+		profile.try(:first_name)
+	end
+	
 	def add_role(role)
 		roles << role.to_sym if role && !has_role?(role)
 	end
@@ -81,5 +85,13 @@ class User < ActiveRecord::Base
 		is_provider? && (profile.nil? || profile.new_record? || force) && token.present? &&
 			(profile_to_claim = Profile.find_by_invitation_token(token.to_s)) && !profile_to_claim.claimed? &&
 			(self.profile = profile_to_claim) && save
+	end
+	
+	protected
+	
+	# A callback method used to deliver confirmation instructions on creation.
+	# This overrides the Devise method to map to a nice welcome e-mail.
+	def send_on_create_confirmation_instructions
+		send_devise_notification(:on_create_confirmation_instructions)
 	end
 end

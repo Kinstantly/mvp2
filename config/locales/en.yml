@@ -55,7 +55,11 @@ en:
       new_confirmation_submit_disable: 'Resending instructions...'
       new_confirmation_title: 'Resend confirmation instructions'
     failure:
+      claiming_profile: 'To claim your profile, please sign up below. If you already have an account, please sign in.'
       unauthenticated: 'Sorry, that page was not found. You might need to sign in.'
+    mailer:
+      on_create_confirmation_instructions:
+        subject: 'Confirmation instructions'
     omniauth:
       authorize_link: 'Sign in with %{provider_name}'
     passwords:

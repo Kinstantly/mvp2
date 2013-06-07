@@ -1,5 +1,12 @@
-= "Hello, #{@profile.display_name.presence || 'Provider'},"
+= "Hi #{@profile.first_name.presence || 'there'},"
 = ''
-Please join Kinstantly.  To claim your profile, copy and paste the following link into your browser.
+We have some great news: We've created a profile for you that will make it easier than ever for parents to find you and book your services.
+= ''
+To view and claim your profile, click this link (if you're not already registered and signed in to your account, you'll first be taken to a sign-up/sign-in page):
 = ''
 = claim_user_profile_url(token: @profile.invitation_token)
+= ''
+= "To learn more about Kinstantly, check out our tour: #{root_url}"
+= ''
+Welcome to Kinstantly!
+= '- The Kinstantly Team'

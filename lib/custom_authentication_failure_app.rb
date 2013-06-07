@@ -1,7 +1,15 @@
 class CustomAuthenticationFailureApp < Devise::FailureApp
+	def i18n_message(default = nil)
+		if default.nil? && claiming_profile?
+			super(:claiming_profile)
+		else
+			super
+		end
+	end
+	
 	def redirect_url
 		#return super unless [:worker, :employer, :user].include?(scope) #make it specific to a scope
-		if need_provider_registration?
+		if claiming_profile?
 			provider_sign_up_url
 		else
 			super
@@ -23,7 +31,7 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 	private
 	
 	# If attempting to claim a profile, we need to register as a provider first.
-	def need_provider_registration?
+	def claiming_profile?
 		attempted_path && attempted_path.start_with?(claim_user_profile_path('1').chop)
 	end
 end

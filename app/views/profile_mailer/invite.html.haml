@@ -1,5 +1,11 @@
-= "Hello, #{@profile.display_name.presence || 'Provider'},"
+%p= "Hi #{@profile.first_name.presence || 'there'},"
+%p We have some great news: We've created a profile for you that will make it easier than ever for parents to find you and book your services.
+%p To view and claim your profile, click this link (if you're not already registered and signed in to your account, you'll first be taken to a sign-up/sign-in page):
+%p= link_to 'Claim my profile', claim_user_profile_url(token: @profile.invitation_token)
 %p
-	Please join Kinstantly.
-	= link_to "Click here", claim_user_profile_url(token: @profile.invitation_token)
-	to claim your profile.
+	To learn more about Kinstantly, check out
+	= link_to 'our tour.', root_url
+%p
+	Welcome to Kinstantly!
+	%br
+	&mdash; The Kinstantly Team
