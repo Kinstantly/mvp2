@@ -1,7 +1,7 @@
 module ApplicationHelper
 	
 	def company_name
-		'Kinstantly'
+		t 'company_name'
 	end
 	
 	def show_link?(path=nil)

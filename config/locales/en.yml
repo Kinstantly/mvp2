@@ -2,7 +2,8 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  company_name: 'Kinstantly'
+  tagline: "When parenting challenges can't wait."
   meta:
     keywords: 'parenting children health expert'
     description: "Kinstantly connects families with the parenting experts, children's health providers, and other services they need in smart, convenient ways"

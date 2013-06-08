@@ -1,5 +1,7 @@
 class ProfileMailer < ActionMailer::Base
-	default from: MAILER_DEFAULT_FROM, bcc: MAILER_DEFAULT_BCC
+	helper :mailer # Access to MailerHelper methods in this mailer's views.
+	layout 'user_account_mailer'
+	default from: MAILER_DEFAULT_FROM
 	
 	def invite(profile)
 		@profile = profile

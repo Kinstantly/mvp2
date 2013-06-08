@@ -1,0 +1,8 @@
+= "Hi #{@resource.name_for_greeting.presence || 'there'},"
+= ''
+Please confirm the new Kinstantly account email address you recently created by clicking this link:
+= ''
+= confirmation_url(@resource, confirmation_token: @resource.confirmation_token)
+= ''
+Thanks,
+= '- The Kinstantly Team'
