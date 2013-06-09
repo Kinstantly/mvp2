@@ -30,8 +30,10 @@
 		%a{name: 'top'}
 		= yield :body_header
 		.flash_messages
-			.notice= notice
-			.alert= alert
+			- if notice.present?
+				.notice= notice
+			- if alert.present?
+				.alert= alert
 		= yield
 		%footer#footer
 			%nav

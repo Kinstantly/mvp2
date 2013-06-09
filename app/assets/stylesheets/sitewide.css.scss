@@ -89,17 +89,30 @@ span.note, .blank_attr {
 
 /* Messages */
 
+$message_area_width: 962px;
+$message_corner_radius: 8px;
+
 .flash_messages {
 	font-family: $default_font_family;
 	line-height: 20px;
-	width: 100%;
 	text-align: center;
-	margin-top: 0.5em;
+	width: $message_area_width;
+	margin: 8px auto;
+	> div {
+		font-weight: 700;
+		padding: 4px;
+		border: 1px solid;
+		-webkit-border-radius: $message_corner_radius;
+		-moz-border-radius: $message_corner_radius;
+		border-radius: $message_corner_radius;
+	}
 	.notice {
 		color: $kinstantly_chartreuse;
+		background-color: rgba(162, 250, 162, 0.2);
 	}
 	.alert {
 		color: $kinstantly_pink;
+		background-color: rgba(250, 162, 162, 0.2);
 	}
 }
 
