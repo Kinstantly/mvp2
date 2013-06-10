@@ -1,7 +1,8 @@
 - is_provider = params[:is_provider].nil? ? resource.is_provider? : params[:is_provider]
+- whoami = is_provider ? (params[:claiming_profile] ? 'claiming_profile' : 'provider') : 'member'
 #content
 	.sign_up.generic_form
-		%h1= t "views.sign_up.#{is_provider ? 'provider' : 'member'}_title"
+		%h1= t "views.sign_up.#{whoami}_title"
 
 		= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
 			= devise_error_messages!

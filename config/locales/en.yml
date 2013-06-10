@@ -263,7 +263,8 @@ en:
     sign_up:
       label: 'Join us!'
       member_title: 'Become a member'
-      provider_title: 'Become a provider'
+      provider_title: 'Create your profile'
+      claiming_profile_title: 'Claim your profile'
     specialty:
       name: 'Specialty'
       edit:
