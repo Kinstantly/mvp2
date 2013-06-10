@@ -7,10 +7,14 @@
 				= hidden_field_tag :search_area_tag_id, @search_area_tag_id
 				= t 'views.search_results.nearest_to_city_postal_code'
 				- city_prompt = t 'views.search_results.city_prompt'
+				/[if lt IE 9]
+					= city_prompt
 				= text_field_tag :city, @search_city, size: 12, id: 'search_city', placeholder: city_prompt, title: city_prompt
 				= hidden_field_tag :region, DEFAULT_REGION
 				= t 'views.or'
 				- postal_code_prompt = t 'views.search_results.postal_code_prompt'
+				/[if lt IE 9]
+					= postal_code_prompt
 				= text_field_tag :postal_code, @search_postal_code, size: 10, id: 'search_postal_code', placeholder: postal_code_prompt, title: postal_code_prompt
 				= submit_tag 'Show', disable_with: 'Show...', id: 'order_by_distance_button'
 			#get_location_button_area{style: 'display: none'}
