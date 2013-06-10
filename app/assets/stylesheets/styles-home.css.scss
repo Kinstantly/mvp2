@@ -459,38 +459,7 @@ span.help {
 BIGGER MOBILE
 */
 @media only screen and (min-width: 728px) {
-	body {
-		font-size: 100%;
-	}
-	#access {
-		float: right;
-		min-width: 400px;
-		border-bottom: 1px solid #DADADA;
-		padding-bottom: 8px;
-	}
-	#access ul li#signin {
-		margin-left: 35px;
-		font-size: 1em;
-	}
-	#search_providers {
-		float: right;
-		padding: 60px 66px 62px 66px;
-		width: 290px;
-		margin-top: -70px;
-	}
-	.category-list {
-		float: right;
-		clear: right;
-		width: 341px;
-		margin: 32px 0 0 0;
-	}
-	.home {
-		background: #FFF url('home-img.jpg') center top no-repeat;
-	}
-	#social {
-		float: left;
-		margin: 368px 0 0 282px;
-	}
+	@include bigger-mobile-style;
 }
 
 /*
@@ -500,74 +469,5 @@ in general anyone not viewing on a mobile device. Here's where
 you can add resource intensive styles.
 */
 @media only screen and (min-width: 980px) {
-	body {
-		font-size: 114.3%;
-		overflow-x: hidden;
-	}
-	#container {
-		width: 970px;
-		padding: 0px;
-		overflow: visible;
-	}
-	#access {
-/*		margin: 30px 0px 0 87px;*/
-		padding-left: 11px;
-		padding-right: 51px;
-	}
-	#branding h1 a {
-		display: block;
-		float: left;
-		margin: 16px 0 0 -21px;
-		width: 441px;
-		height: 159px;
-	}
-	#access ul li#signin {
-		margin-left: 35px;
-		font-size: 1em;
-	}
-	#access ul li#about:after {
-		padding: 0 0.7333em;
-	}
-	#msg {
-		float: right;
-		width: 468px;
-		margin: 25px 0 26px 0;
-	}
-	#search_providers {
-		padding: 60px 298px 62px 66px;
-		width: 290px;
-		margin-right: -162px;
-		margin-top: -68px;
-		input {
-			width: 256px;
-		}
-		.select-wrapper {   
-				background: url('arrow.png') no-repeat 245px center #fdf0f2;
-				width: 286px;
-		}
-		#provider_search_button {
-			background: url('search-button.png') no-repeat 0px 0px;
-			width: 288px;
-		}
-		#provider_search_button:hover {
-			cursor: pointer;
-			background: url('search-button.png') no-repeat 0px -41px;
-		}
-	}
-	.category-list {
-		float: right;
-		clear: right;
-		width: 412px;
-		margin: 32px 0 0 0;
-		font-size: 1em;
-	}
-	#bottom, #copyright {
-		width: 970px;
-	}
-	.home {
-		background: #FFF url('home-img.jpg') center top no-repeat;
-	}
-	#social {
-		margin: 489px 0 0 378px;
-	}
+	@include desktop-style;
 }

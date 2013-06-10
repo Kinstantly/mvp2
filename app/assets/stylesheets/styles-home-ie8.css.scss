@@ -1,0 +1,25 @@
+/*
+IE8 can't handle @media tags apparently.
+So we fake it by loading, in the correct order, everything that is normally included in media tags.
+*/
+
+/*
+BIGGER MOBILE
+*/
+@include bigger-mobile-style;
+
+/*
+DESKTOP
+This is the average viewing window. So Desktops, Laptops, and
+in general anyone not viewing on a mobile device. Here's where
+you can add resource intensive styles.
+*/
+@include desktop-style;
+
+/*
+We don't want responsive for IE8 and less (it doesn't work well and isn't needed).
+As such, the home page might be wider than the display area, so let's allow a scroll bar at the bottom.
+*/
+body {
+	overflow-x: visible;
+}
