@@ -112,7 +112,7 @@
 			edit_profile.check_box_caches[children][$('input', this).val()] = this
 		boxes.empty()
 		boxes.append edit_profile.hidden_field_tags[children]
-		names = Object.keys(choices)
+		names = (name for own name, id of choices)
 		if names.length > 0
 			for name in names.sort((a, b) -> a.toLowerCase().localeCompare(b.toLowerCase()))
 				id = choices[name]
