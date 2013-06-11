@@ -29,7 +29,7 @@ module ApplicationHelper
 	end
 	
 	def provider_sign_up_link(body='Provider? Join us')
-		link_to body, provider_sign_up_path unless user_signed_in? || controller_name == 'registrations'
+		link_to body, provider_sign_up_path unless user_signed_in?
 	end
 	
 	def home_link

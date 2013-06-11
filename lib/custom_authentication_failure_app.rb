@@ -10,7 +10,8 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 	def redirect_url
 		#return super unless [:worker, :employer, :user].include?(scope) #make it specific to a scope
 		if claiming_profile?
-			claim_your_profile_sign_up_url
+			session[:claiming_profile] = params[:token]
+			provider_sign_up_url
 		else
 			super
 		end

@@ -1,5 +1,6 @@
-- is_provider = params[:is_provider].nil? ? resource.is_provider? : params[:is_provider]
-- whoami = is_provider ? (params[:claiming_profile] ? 'claiming_profile' : 'provider') : 'member'
+- is_provider = params[:is_provider].present? || resource.is_provider?
+- claiming_profile = session[:claiming_profile].present?
+- whoami = is_provider ? (claiming_profile ? 'claiming_profile' : 'provider') : 'member'
 #content
 	.sign_up.generic_form
 		%h1= t "views.sign_up.#{whoami}_title"

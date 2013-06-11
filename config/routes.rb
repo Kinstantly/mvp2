@@ -15,7 +15,6 @@ Mvp2::Application.routes.draw do
 	# Alternate Devise routes for special uses.
 	devise_scope :user do
 		get '/provider/sign_up', to: 'users/registrations#new', is_provider: true
-		get '/claim_your_profile/sign_up', to: 'users/registrations#new', is_provider: true, claiming_profile: true
 		get '/member/sign_up', to: 'users/registrations#new', is_provider: false
 		get '/member/sign_up_return', to: 'users/registrations#new', is_provider: false, store_referrer: true
 		get '/member/sign_in_return', to: 'devise/sessions#new', store_referrer: true
