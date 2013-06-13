@@ -1,12 +1,17 @@
 FactoryGirl.define do
 	factory :user do
+		ignore do
+			require_confirmation false
+		end
+		
 		email 'example@example.com'
 		password 'please'
 		password_confirmation 'please'
 		
-		# confirmed_at is required if the Devise Confirmable module is used.
-		# However, confirmed_at cannot be mass assigned, so ensure it is not returned by attributes_for().
-		after(:build) { |user| user.confirmed_at = Time.now }
+		# In case we are using the Devise Confirmable module, do not require the confirmation step
+		# unless otherwise specified.
+		# Do it here because confirmed_at cannot be mass assigned.
+		after(:build) { |user, evaluator| user.skip_confirmation! unless evaluator.require_confirmation }
 		
 		profile
 		
