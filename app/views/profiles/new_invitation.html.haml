@@ -6,8 +6,16 @@
 				%p
 					Send an invitation to the following email address requesting to claim the profile for
 					%strong= @profile.display_name_or_company
+				- if !@profile.is_published
+					%p.warning
+						This profile is not published.  The provider will not be able to preview the profile before claiming it.
 				= f.label :invitation_email, "Invitation Email"
 				= f.text_field :invitation_email, id: 'invitation_email'
+				%p
+					%span.hint
+						Hint: to send a custom invitation, fill in your own email address above and send it to yourself.
+						Use the email you receive to copy and paste the bits you like into your own email composer.
+						Be sure to carefully copy any of the links you use so that they will work properly.
 		.buttons
 			= f.submit 'Send invitation', disable_with: 'Sending invitation...', id: 'send_invitation_profile'
 			= link_to "Cancel", profile_path(@profile)

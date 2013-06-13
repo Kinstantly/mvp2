@@ -6,4 +6,12 @@ module MailerHelper
 	def mailer_logo_alt
 		"#{t 'company_name'} | #{t 'tagline'}"
 	end
+	
+	def mailer_show_profile_to_claim_url(profile)
+		if profile.is_published
+			show_claiming_profile_url(profile, token: profile.invitation_token)
+		else # Provider cannot view it without registering first, so let's just give them the claim URL.
+			claim_user_profile_url(token: profile.invitation_token)
+		end
+	end
 end

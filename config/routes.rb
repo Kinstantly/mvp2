@@ -40,6 +40,7 @@ Mvp2::Application.routes.draw do
 			# plain layout; legacy
 			get 'show_plain'
 			get 'edit_plain'
+			get 'claim/:token', action: :show_claiming, as: :show_claiming
 		end
 		collection do
 			get :admin

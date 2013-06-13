@@ -1,8 +1,11 @@
 - @page_title_prefix = @profile.display_name_or_company
 - if @claim_token
 	.provider_buttons
-		= link_to t('views.profile.claim.link_body'), force_claim_user_profile_path(token: @claim_token), id: 'claim_profile_confirm_link'
-		= t 'views.profile.claim.message'
+		= link_to t('views.profile.claim_confirm.link_body'), force_claim_user_profile_path(token: @claim_token), id: 'claim_profile_confirm_link'
+		= t 'views.profile.claim_confirm.message'
+- elsif @show_claiming_token
+	.provider_buttons
+		= link_to t('views.profile.claim.message'), claim_user_profile_url(token: @show_claiming_token)
 - elsif @profile.owned_by? current_user
 	.provider_buttons
 		= edit_my_profile_link

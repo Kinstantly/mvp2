@@ -5,7 +5,7 @@ class Ability
 		user ||= User.new # guest user (not logged in)
 		
 		# The public and crawlers can view published profiles (but not the index because it shows full profiles).
-		alias_action :show, :link_index, :rating_score, to: :view
+		alias_action :show, :show_claiming, :link_index, :rating_score, to: :view
 		can :view, Profile, is_published: true
 		
 		# Any confirmed user can rate a published profile that is not their own.

@@ -79,7 +79,7 @@ en:
       new_unlock_title: 'Resend unlock instructions'
   profile_mailer:
     invite:
-      subject: 'Claim your profile at Kinstantly!'
+      subject: 'Introducing Kinstantly: A smart, simple way to connect with clients'
   models:
     profile:
       invitation_sent_at:
@@ -219,6 +219,8 @@ en:
         services_blank: 'No services'
         specialties_blank: 'No specialties'
       claim:
+        message: 'Click here to claim your profile'
+      claim_confirm:
         link_body: 'Click here'
         message: 'if you want to replace your existing profile with the one you want claim.'
     location:

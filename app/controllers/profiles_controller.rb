@@ -2,7 +2,7 @@ class ProfilesController < ApplicationController
 	
 	respond_to :html, :js
 	
-	before_filter :authenticate_user!, except: [:index, :show, :link_index, :search]
+	before_filter :authenticate_user!, except: [:index, :show, :show_claiming, :link_index, :search]
 	
 	before_filter :create_profile_if_needed, only: [:view_my_profile, :edit_my_profile]
 	
@@ -97,6 +97,13 @@ class ProfilesController < ApplicationController
 		@profile.destroy
 		set_flash_message :notice, :destroyed
 		redirect_to admin_profiles_url
+	end
+	
+	# We are showing a provider their profile.  The token can be used to claim the profile.
+	# Purpose of this action: to give a provider a preview of their profile before they claim it.
+	def show_claiming
+		@show_claiming_token = params[:token]
+		render action: :show
 	end
 	
 	def view_my_profile
