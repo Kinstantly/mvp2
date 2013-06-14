@@ -1,4 +1,6 @@
 class Service < ActiveRecord::Base
+	has_paper_trail # Track changes to each service.
+	
 	attr_accessible :name, :is_predefined, :specialty_ids, :display_order
 	
 	has_and_belongs_to_many :profiles

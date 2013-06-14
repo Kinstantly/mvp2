@@ -168,6 +168,9 @@ GEM
     options (2.3.0)
       fattr
     orm_adapter (0.4.0)
+    paper_trail (2.7.2)
+      activerecord (~> 3.0)
+      railties (~> 3.0)
     pg (0.14.1)
     phonie (1.0.2)
     polyglot (0.3.3)
@@ -290,6 +293,7 @@ DEPENDENCIES
   kaminari
   launchy (~> 2.1)
   nested_form
+  paper_trail (~> 2)
   pg
   phonie
   progress_bar

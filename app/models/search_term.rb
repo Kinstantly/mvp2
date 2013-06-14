@@ -1,4 +1,6 @@
 class SearchTerm < ActiveRecord::Base
+	has_paper_trail # Track changes to each search term.
+	
 	attr_accessible :name
 	
 	has_and_belongs_to_many :specialties

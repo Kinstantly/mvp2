@@ -1,4 +1,6 @@
 class Location < ActiveRecord::Base
+	has_paper_trail # Track changes to each location.
+	
 	attr_accessible :address1, :address2, :city, :country, :phone, :postal_code, :profile_id, :region, :search_area_tag_id
 	
 	belongs_to :profile

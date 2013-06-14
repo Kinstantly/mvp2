@@ -96,6 +96,11 @@ gem 'delayed_job_active_record'
 # Support multiple simultaneous requests by forking multiple rails processes.
 gem 'unicorn'
 
+# PaperTrail lets you track changes to your models' data. It's good for auditing or versioning.
+# You can see how a model looked at any stage in its lifecycle, revert it to any version, and
+# even undelete it after it's been destroyed.
+gem 'paper_trail', '~> 2'
+
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
 	gem 'cucumber-rails', '~> 1.0', require: false

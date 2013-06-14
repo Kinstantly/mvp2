@@ -1,4 +1,6 @@
 class Specialty < ActiveRecord::Base
+	has_paper_trail # Track changes to each specialty.
+	
   attr_accessible :name, :is_predefined
 	
 	has_and_belongs_to_many :profiles

@@ -1,4 +1,6 @@
 class Category < ActiveRecord::Base
+	has_paper_trail # Track changes to each category.
+	
 	attr_accessible :name, :is_predefined, :service_ids, :display_order
 	
 	has_and_belongs_to_many :profiles
