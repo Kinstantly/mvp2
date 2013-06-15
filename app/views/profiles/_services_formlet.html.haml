@@ -45,6 +45,9 @@
 		= link_to 'Cancel', '#', class: 'cancel button'
 		-# Use plain Javascript when using JSON.
 		-# Coffeescript will reformat JSON which takes much too long and creates too much whitespace.
+		-# OK to do ruby interpolation in a javascript filter--do it all here and not in the coffeescript filter!!
+		-# Any interpolated values needed in the coffeescript should be stored here to be referenced by the result
+		-# of the coffeescript filter.  This allows caching of the coffeescript compilation.
 		:javascript
 			window.edit_profile = {
 				parents: {}, maps: {}, names: {}, ids_names: {},
@@ -79,6 +82,14 @@
 				"#{escape_javascript profile_specialties_hidden_field_tag(f)}";
 			edit_profile.prompts['specialties'] = 
 				"#{escape_javascript content_tag(:span, t('views.profile.edit.custom_specialty_prompt'), class: 'note')}";
+			// Values to be used in the next script.
+			edit_profile.custom_services_i = #{@profile_custom_services_i};
+			edit_profile.custom_specialties_i = #{@profile_custom_specialties_i};
+			edit_profile.t_add_text_field = '#{t "views.profile.edit.add_text_field"}';
+			edit_profile.custom_services_template = 
+				'#{escape_javascript @profile_custom_services_text_field_template}';
+			edit_profile.custom_specialties_template = 
+				'#{escape_javascript @profile_custom_specialties_text_field_template}';
 
 %p.attribute_display
 	- if @profile.errorfree.categories.present?
@@ -96,6 +107,7 @@
 	- else
 		%span.note=  t 'views.profile.edit.specialties_blank'
 
+-# No ruby interpolation in the coffeescript filter.  It breaks caching of the coffeescript filter result.
 :coffeescript
 	# Show check boxes for children that belong to the currently checked parents.
 	# In addition, always show check boxes for children that were originally checked (i.e., are currently persisted).
@@ -136,21 +148,23 @@
 	show_check_boxes('specialties')
 	
 	# Add extra text input tags for custom services.
-	profile_custom_services_i = #{@profile_custom_services_i}
 	add_custom_services_text_field = (e) ->
 		e.preventDefault()
-		$('.custom_services').append '<span id="custom_services_field_prompt" class="note">#{t "views.profile.edit.add_text_field"}</span>' if $('#custom_services_field_prompt').length == 0
-		$('#custom_services_field_prompt').before '<div class="text_field">'+'#{escape_javascript @profile_custom_services_text_field_template}'.replace('INDEX', String(++profile_custom_services_i))+'</div>'
+		$('.custom_services').append '<span id="custom_services_field_prompt" class="note">' +
+			edit_profile.t_add_text_field + '</span>' if $('#custom_services_field_prompt').length == 0
+		$('#custom_services_field_prompt').before '<div class="text_field">' +
+			edit_profile.custom_services_template.replace('INDEX', String(++edit_profile.custom_services_i)) + '</div>'
 		$('.custom_services input:last').focus().keydown (e) ->
 			add_custom_services_text_field e if e.which == 13 # carriage return
 	$('#add_custom_services_text_field').click add_custom_services_text_field
 	
 	# Add extra text input tags for custom specialties.
-	profile_custom_specialties_i = #{@profile_custom_specialties_i}
 	add_custom_specialties_text_field = (e) ->
 		e.preventDefault()
-		$('.custom_specialties').append '<span id="custom_specialties_field_prompt" class="note">#{t "views.profile.edit.add_text_field"}</span>' if $('#custom_specialties_field_prompt').length == 0
-		$('#custom_specialties_field_prompt').before '<div class="text_field">'+'#{escape_javascript @profile_custom_specialties_text_field_template}'.replace('INDEX', String(++profile_custom_specialties_i))+'</div>'
+		$('.custom_specialties').append '<span id="custom_specialties_field_prompt" class="note">' +
+			edit_profile.t_add_text_field + '</span>' if $('#custom_specialties_field_prompt').length == 0
+		$('#custom_specialties_field_prompt').before '<div class="text_field">' +
+			edit_profile.custom_specialties_template.replace('INDEX', String(++edit_profile.custom_specialties_i)) + '</div>'
 		$('.custom_specialties input:last').focus().keydown (e) ->
 			add_custom_specialties_text_field e if e.which == 13 # carriage return
 	$('#add_custom_specialties_text_field').click add_custom_specialties_text_field

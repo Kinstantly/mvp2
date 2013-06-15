@@ -52,4 +52,5 @@
 				%tr#pricing.formlet
 					= render partial: 'formlet', locals: {formlet: 'pricing'}
 :coffeescript
-	$('.formlet').click -> $(this).addClass 'active'
+	# Clicking within a formlet element will activate it unless we clicked on a 'dont_popover' element.
+	$('.formlet').click (e) -> $(this).addClass 'active' unless $(e.target).hasClass 'dont_popover'

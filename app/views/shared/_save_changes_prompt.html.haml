@@ -1,8 +1,11 @@
 -# If any changes were made, prompt for confirmation if leaving page without saving them.
+-# (No ruby interpolation in coffeescript!)
+:javascript
+	my_vars.t.views_form_is_modified = '#{t "views.form_is_modified"}';
 :coffeescript
 	formIsModified = false
 	$(':input').change -> formIsModified = true
-	window.onbeforeunload = -> return '#{t "views.form_is_modified"}' if formIsModified
+	window.onbeforeunload = -> my_vars.t.views_form_is_modified if formIsModified
 	$('form').submit ->
 		formIsModified = false
-		return true
+		true
