@@ -1,14 +1,16 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 	# Add this controller to the devise route if you need to customize the registration controller.
 	
-	after_filter :after_registration, :only => [:create], :if => "resource.errors.empty?"
+	after_filter :after_registration, only: :create
 
 	private
 
 	def after_registration
-		# Ensure user is a client if nothing else.
-		resource.add_role :client if resource.roles.blank?
-		resource.save!
+		if resource && resource.errors.empty?
+			# Ensure user is a client if nothing else.
+			resource.add_role :client if resource.roles.blank?
+			resource.save!
+		end
 	end
 
 	# The URL to be used after updating a resource.
