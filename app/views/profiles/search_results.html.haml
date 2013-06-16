@@ -111,9 +111,15 @@
 	# Pop-up short profiles
 	window.link_short_profiles = ->
 		$('.show_profile').mouseenter ->
-			id = $(this).attr('data-profile-id')
-			top = $(this).height() + 8
-			$('#'+id).css('top', top).addClass 'active'
+			win = $(window)
+			viewport_bottom = win.height() + win.scrollTop()
+			popover = $('#' + $(this).attr('data-profile-id') + ' .popover')
+			popover_height = popover.outerHeight() # only the popover DIV has the proper height
+			short_profile = popover.parent() # but position the parent DIV
+			short_profile.css('top', $(this).height() + 8) # first try placing below the mouse-over area
+			if short_profile.offset().top + popover_height > viewport_bottom
+				short_profile.css('top', -(popover_height + 12)) # place above the mouse-over area
+			short_profile.addClass 'active'
 			false
 		$('.show_profile').mouseleave ->
 			id = $(this).attr('data-profile-id')
