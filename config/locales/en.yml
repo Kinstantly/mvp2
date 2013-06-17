@@ -181,6 +181,22 @@ en:
         display_order_hint: 'Home page browse by category: less than 10 for left column, more than 10 for right column'
       index:
         service_explanation: '(listed alphabetically; see edit page for display order)'
+    location:
+      view:
+        more:
+          how_many:
+            one: '(1 more location)'
+            other: '(%{count} more locations)'
+        total:
+          how_many:
+            one: '(1 location)'
+            other: '(%{count} locations)'
+      edit:
+        address1_prompt: 'number and street'
+        address2_prompt: 'room, suite, floor if any'
+        remove: 'Mark the above location for removal upon saving'
+        remove_confirm: 'This location will be removed when you click save.'
+        add: 'Fill in a new location'
     profile:
       view:
         accepting_new_clients: 'Accepting new clients'
@@ -223,13 +239,6 @@ en:
       claim_confirm:
         link_body: 'Click here'
         message: 'if you want to replace your existing profile with the one you want claim.'
-    location:
-      edit:
-        address1_prompt: 'number and street'
-        address2_prompt: 'room, suite, floor if any'
-        remove: 'Mark the above location for removal upon saving'
-        remove_confirm: 'This location will be removed when you click save.'
-        add: 'Fill in a new location'
     search_results:
       city_prompt: 'city in California'
       in_search_area: 'in %{name}'

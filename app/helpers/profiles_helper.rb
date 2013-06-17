@@ -503,7 +503,10 @@ module ProfilesHelper
 	end
 	
 	def search_result_location(profile)
-		profile.locations.order_by_id.first.try(:display_city_region)
+		s = profile.locations.order_by_id.first.try(:display_city_region)
+		n = profile.locations.count
+		s += " #{t 'views.location.view.total.how_many', count: n}" if n > 1
+		s
 	end
 	
 	def search_result_consultations(profile)
