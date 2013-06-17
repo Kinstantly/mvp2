@@ -1,10 +1,13 @@
 - if @update_succeeded.nil?
 	window.location.replace("#{edit_profile_path @profile}");
 - else
+	var formlet;
 	- if @update_succeeded
 		$('##{@formlet}').removeClass('active');
 	- if @refresh_formlets
 		- @refresh_formlets.split.each do |f|
-			$('##{f}').html('#{escape_javascript(render partial: 'formlet', locals: {formlet: f})}');
+			formlet = $('##{f}').html('#{escape_javascript(render partial: 'formlet', locals: {formlet: f})}');
+			my_vars.f.place_formlet(formlet);
 	- else
-		$('##{@formlet}').html('#{escape_javascript(render partial: 'formlet')}');
+		formlet = $('##{@formlet}').html('#{escape_javascript(render partial: 'formlet')}');
+		my_vars.f.place_formlet(formlet);

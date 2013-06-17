@@ -24,7 +24,8 @@
 			= javascript_include_tag '//html5shim.googlecode.com/svn/trunk/html5.js'
 		= javascript_include_tag 'application'
 		= render partial: 'layouts/tracking'
-		%script var my_vars={t:{}};
+		-# Name-space my global variables, e.g., my_vars.a_val, my_vars.t.some_text, my_vars.f.a_function
+		%script var my_vars={t:{},f:{}};
 		= yield :head
 		= csrf_meta_tags
 	%body{class: @body_class}
