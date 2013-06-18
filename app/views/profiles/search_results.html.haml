@@ -111,21 +111,32 @@
 		$('#get_location_button_area').html(my_vars.t.showing_nearest_to_you)
 		$('#nearest_results_msg').remove()
 		window.link_short_profiles()
+	event_is_over_element = (e, el) ->
+		el_coords = el.offset()
+		e.pageY > el_coords.top && e.pageY < el_coords.top + el.outerHeight() &&
+			e.pageX > el_coords.left && e.pageX < el_coords.left + el.outerWidth()
 	# Pop-up short profiles
 	window.link_short_profiles = ->
-		$('.show_profile').mouseenter ->
-			win = $(window)
-			viewport_bottom = win.height() + win.scrollTop()
-			popover = $('#' + $(this).attr('data-profile-id') + ' .popover')
-			popover_height = popover.outerHeight() # only the popover DIV has the proper height
-			short_profile = popover.parent() # but position the parent DIV
+		$('.show_profile').mouseenter (e) ->
+			short_profile = $('#' + $(this).attr('data-profile-id'))
 			short_profile.css('top', $(this).height() + 8) # first try placing below the mouse-over area
-			if short_profile.offset().top + popover_height > viewport_bottom
+			# next see if the short profile is entirely within the viewport
+			win = $(window)
+			viewport_top = win.scrollTop()
+			viewport_bottom = viewport_top + win.height()
+			popover_height = $('.popover', short_profile).outerHeight() # only the popover DIV has the proper height
+			if short_profile.offset().top + popover_height > viewport_bottom # off the bottom of the viewport?
 				short_profile.css('top', -(popover_height + 12)) # place above the mouse-over area
-			short_profile.addClass 'active'
+				if short_profile.offset().top < viewport_top # are we now off the top of the viewport?
+					short_profile.offset({top: viewport_top + 4, left: short_profile.offset().left}) # place below top of viewport
+					my_vars.on_popover = event_is_over_element e, $('.popover', short_profile) # pointer might be on the popover!
+			short_profile.addClass 'active' # make it appear
 			false
 		$('.show_profile').mouseleave ->
-			id = $(this).attr('data-profile-id')
-			$('#'+id).removeClass 'active'
+			$('#' + $(this).attr('data-profile-id')).removeClass 'active' unless my_vars.on_popover
+			false
+		$('.short-profile').mouseleave ->
+			my_vars.on_popover = false
+			$(this).removeClass 'active'
 			false
 	window.link_short_profiles()
