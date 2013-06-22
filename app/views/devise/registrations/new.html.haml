@@ -21,11 +21,11 @@
 
 			.password.text_field
 				= f.label :password
-				= f.password_field :password
+				= f.password_field :password, autocomplete: 'off'
 
 			.password_confirmation.text_field
 				= f.label :password_confirmation
-				= f.password_field :password_confirmation
+				= f.password_field :password_confirmation, autocomplete: 'off'
 
 			.buttons
 				= f.submit t('views.sign_up.label'), disable_with: t('views.sign_up.label'), class: 'default', id: 'sign_up_button'

@@ -6,9 +6,9 @@
 			= f.hidden_field :reset_password_token
 			.password.text_field
 				= f.label :password, t('devise.passwords.edit_password_label')
-				= f.password_field :password
+				= f.password_field :password, autocomplete: 'off'
 			.password_confirmation.text_field
 				= f.label :password_confirmation
-				= f.password_field :password_confirmation
+				= f.password_field :password_confirmation, autocomplete: 'off'
 			.buttons= f.submit t('devise.passwords.edit_password_submit'), disable_with: t('devise.passwords.edit_password_submit_disable'), class: 'default'
 		= render "devise/shared/links"

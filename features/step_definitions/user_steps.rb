@@ -243,7 +243,7 @@ Then /^I should be signed out$/ do
 end
 
 Then /^I see an unconfirmed account message$/ do
-  page.should have_content "A message with a confirmation link has been sent to your email address"
+  page.should have_content I18n.t('devise.registrations.signed_up_but_unconfirmed')
 end
 
 Then /^I see a confirmed account message$/ do

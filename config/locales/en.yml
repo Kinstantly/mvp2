@@ -72,6 +72,8 @@ en:
       new_password_submit: 'Send me reset password instructions'
       new_password_submit_disable: 'Sending...'
       new_password_title: 'Forgot your password?'
+    registrations:
+      signed_up_but_unconfirmed: 'You are signed up now. Before you can use your account, we want to confirm your email address. We have sent an email message to the address you gave us. Please check your email, open the message, and single-click on the confirmation link in that email message.'
     unlocks:
       new_unlock_link: "Didn't receive unlock instructions?"
       new_unlock_submit: 'Resend unlock instructions'

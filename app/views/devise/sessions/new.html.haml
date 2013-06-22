@@ -9,7 +9,7 @@
 
 			.password.text_field
 				= f.label :password
-				= f.password_field :password
+				= f.password_field :password, autocomplete: 'off'
 
 			- if devise_mapping.rememberable?
 				.remember_me

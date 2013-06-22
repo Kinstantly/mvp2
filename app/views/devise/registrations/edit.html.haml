@@ -9,11 +9,11 @@
 				%span.note= t 'views.user.edit.email_note'
 			.password.text_field
 				= f.label :password, t('devise.passwords.edit_password_label')
-				= f.password_field :password, :autocomplete => "off"
+				= f.password_field :password, autocomplete: 'off'
 				%span.note= t 'views.user.edit.password_note'
 			.password_confirmation.text_field
 				= f.label :password_confirmation
-				= f.password_field :password_confirmation
+				= f.password_field :password_confirmation, autocomplete: 'off'
 			- if resource.client?
 				.username.text_field
 					= f.label :username, class: 'required'
@@ -24,7 +24,7 @@
 					= f.text_field :phone
 			.current_password.text_field
 				= f.label :current_password, class: 'required'
-				= f.password_field :current_password
+				= f.password_field :current_password, autocomplete: 'off'
 				%span.note= t 'views.user.edit.current_password_note'
 			.buttons
 				= f.submit t('views.user.edit.submit'), disable_with: t('views.user.edit.submit_disable'), class: 'default'
