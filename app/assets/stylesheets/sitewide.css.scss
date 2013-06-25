@@ -108,7 +108,7 @@ $message_corner_radius: 8px;
 	}
 	.notice, .alert {
 		color: $kinstantly_pink;
-		background-color: rgba(254, 254, 0, 0.4);
+		background-color: rgba(255, 255, 255, 0.5);
 	}
 }
 
@@ -117,6 +117,9 @@ $message_corner_radius: 8px;
 		color: $kinstantly_pink;
 		h2, p {
 			display: none;
+		}
+		li {
+			line-height: 1.2em;
 		}
 	}
 	.field_with_errors label {

@@ -6,7 +6,7 @@
 	To make things as simple as possible, we've already created a profile for you. Take a look:
 	= link_to 'My profile', mailer_show_profile_to_claim_url(@profile)
 %p
-	And, of course, when you're ready, it's easy to make any changes you'd like. To get started, click here:
+	And, of course, when you're ready, it's easy to make any changes you'd like. To get started, <i>single-click</i> here:
 	= link_to 'Claim my profile', claim_user_profile_url(token: @profile.invitation_token)
 	(Note: You'll first be taken to a sign-in page; it will just take a few seconds to enter your name and email address&mdash;and yes, it's free.)
 %p Please don't hesitate to email me directly (see link below) if you have any questions, concerns, or just want to talk.

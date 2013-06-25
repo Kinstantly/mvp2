@@ -49,36 +49,6 @@ en:
       not_found_by_name: "Specialty '%{name}' was not found."
       updated: "Specialty '%{name}' was updated."
       update_error: 'The was a problem updating the specialty.'
-  devise:
-    confirmations:
-      new_confirmation_link: "Didn't receive confirmation instructions?"
-      new_confirmation_submit: 'Resend confirmation instructions'
-      new_confirmation_submit_disable: 'Resending instructions...'
-      new_confirmation_title: 'Resend confirmation instructions'
-    failure:
-      claiming_profile: 'To claim your profile, please sign up below. If you already have an account, please sign in.'
-      unauthenticated: 'Sorry, that page was not found. You might need to sign in.'
-    mailer:
-      on_create_confirmation_instructions:
-        subject: 'Confirmation instructions'
-    omniauth:
-      authorize_link: 'Sign in with %{provider_name}'
-    passwords:
-      edit_password_label: 'New password'
-      edit_password_title: 'Change your password'
-      edit_password_submit: 'Change my password'
-      edit_password_submit_disable: 'Changing...'
-      new_password_link: 'Forgot your password?'
-      new_password_submit: 'Send me reset password instructions'
-      new_password_submit_disable: 'Sending...'
-      new_password_title: 'Forgot your password?'
-    registrations:
-      signed_up_but_unconfirmed: 'You are signed up now. Before you can use your account, we want to confirm your email address. We have sent an email message to the address you gave us. Please check your email, open the message, and single-click on the confirmation link in that email message.'
-    unlocks:
-      new_unlock_link: "Didn't receive unlock instructions?"
-      new_unlock_submit: 'Resend unlock instructions'
-      new_unlock_submit_disable: 'Resending instructions...'
-      new_unlock_title: 'Resend unlock instructions'
   profile_mailer:
     invite:
       subject: 'Introducing Kinstantly: A smart, simple way to connect with clients'

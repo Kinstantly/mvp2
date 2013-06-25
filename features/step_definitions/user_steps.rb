@@ -247,7 +247,7 @@ Then /^I see an unconfirmed account message$/ do
 end
 
 Then /^I see a confirmed account message$/ do
-  page.should have_content "Your account was successfully confirmed"
+  page.should have_content I18n.t('devise.confirmations.confirmed')
 end
 
 Then /^I see a successful sign in message$/ do
