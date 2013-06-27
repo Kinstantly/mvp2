@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
 	# Store referrer for use after sign-in or sign-up if so directed.
 	before_filter :store_referrer, only: :new
 	
+	# Set security-related HTTP headers for all responses.
+	# (For Rails 4, instead use config.action_dispatch.default_headers in config/application.rb.)
+	after_filter :set_default_response_headers
+	
 	# What to do if access is denied or record not found.
 	# On production, prevent fishing for existing, but protected, records by making it look like the page was not found.
 	rescue_from CanCan::AccessDenied, ActiveRecord::RecordNotFound do |exception|
@@ -66,5 +70,15 @@ class ApplicationController < ActionController::Base
 	
 	def stored_referrer
 		session.delete(:stored_referrer)
+	end
+	
+	# Set security-related HTTP headers in the response.
+	# See https://www.owasp.org/index.php/List_of_useful_HTTP_headers
+	def set_default_response_headers
+		response.headers.merge!({
+			'X-Frame-Options' => 'DENY',
+			'X-XSS-Protection' => '1; mode=block',
+			'X-Content-Type-Options' => 'nosniff'
+		}) if response
 	end
 end
