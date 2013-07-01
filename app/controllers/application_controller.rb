@@ -81,4 +81,10 @@ class ApplicationController < ActionController::Base
 			'X-Content-Type-Options' => 'nosniff'
 		}) if response
 	end
+	
+	# Call this method for responses that should not be cached, e.g., pages with sensitive information.
+	# Be frugal with using this because it can result in a slow experience for the user.
+	def set_no_cache_response_headers
+		expires_now
+	end
 end

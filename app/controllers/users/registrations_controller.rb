@@ -2,6 +2,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	# Add this controller to the devise route if you need to customize the registration controller.
 	
 	after_filter :after_registration, only: :create
+	
+	# User settings page should not be cached because it might display sensitive information.
+	after_filter :set_no_cache_response_headers, only: [:edit, :update]
 
 	private
 
