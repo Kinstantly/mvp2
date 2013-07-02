@@ -187,7 +187,7 @@
 				%span.note.text_area= preserve "\nExample:\nEast Bay\nSan Francisco\nNorth Peninsula"
 			= f.text_area :service_area, size: '30x5'
 	-# Mass assignment is not allowed on admin attributes, so use simple params and tags.
-	- if current_user.admin?
+	- if can? :manage, Profile
 		.admin_options
 			#lead_generator
 				.label_area

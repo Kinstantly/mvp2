@@ -4,6 +4,9 @@ class Ability
 	def initialize(user)
 		user ||= User.new # guest user (not logged in)
 		
+		# Alias for creating or updating.
+		alias_action :create, :update, to: :save
+		
 		# The public and crawlers can view published profiles (but not the index because it shows full profiles).
 		alias_action :show, :show_claiming, :link_index, :rating_score, to: :view
 		can :view, Profile, is_published: true
@@ -24,11 +27,14 @@ class Ability
 			can :manage_my_profile, Profile, user_id: user.id
 		end
 		
+		# Profile editors can do anything to profiles, except remove an unclaimed profile.
 		if user.profile_editor?
 			can :manage, Profile
 			cannot :destroy, Profile
+			can :destroy, Profile, user: nil
 		end
 		
+		# Administrators can do anything, except remove an unclaimed profile.
 		if user.admin?
 			can :any, :admin
 			can :manage, :all

@@ -148,7 +148,6 @@
 			= @profile.claimed? ? t('views.profile.view.profile_is_claimed_by', owner: @profile.user.email) : t('views.profile.view.profile_is_not_claimed')
 		.invitation_state
 			= profile_invitation_info @profile
-- if current_user.try(:admin?)
 	.admin_info
 		- if @profile.admin_notes.present?
 			.admin_notes

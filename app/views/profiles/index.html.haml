@@ -14,7 +14,6 @@
 					- if can? :manage, Profile
 						%th= "#{t 'views.profile.view.published'} or #{t 'views.profile.view.not_published'}"
 						%th= t 'views.profile.view.claimed_by'
-					- if current_user.try(:admin?)
 						%th.large= Profile.human_attribute_name(:admin_notes)
 						%th= Profile.human_attribute_name(:lead_generator)
 					%th= t 'views.profile.view.rating'
@@ -46,7 +45,6 @@
 						- if can? :manage, Profile
 							%td= p.is_published ? t('views.profile.view.published') : t('views.profile.view.not_published')
 							%td= p.claimed? ? p.user.email : 'Not claimed'
-						- if current_user.try(:admin?)
 							%td= p.admin_notes
 							%td= p.lead_generator
 						%td= p.rating_average_score.try(:round, 1)

@@ -53,11 +53,11 @@ class ApplicationController < ActionController::Base
 		@profile.require_location
 	end
 	
-	# If current user is an admin and
+	# If current user is a profile editor, can save this profile, and
 	#   * the is_published param was used, use it to set the publish state of @profile,
 	#   * if any of the admin_notes and lead_generator params are used, set the corresponding profile attribute.
 	def process_profile_admin_params
-		if current_user.admin?
+		if current_user.profile_editor? && can?(:save, @profile)
 			@profile.assign_boolean_param_if_used :is_published, params[:is_published]
 			@profile.assign_text_param_if_used :admin_notes, params[:admin_notes]
 			@profile.assign_text_param_if_used :lead_generator, params[:lead_generator]

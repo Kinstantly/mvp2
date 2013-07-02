@@ -259,6 +259,12 @@ Given /^a published profile with admin notes "(.*?)"$/ do |notes|
 	@published_profile.save
 end
 
+Given /^(?:my|the) profile with admin notes "(.*?)"$/ do |notes|
+	create_profile
+	@profile.admin_notes = notes
+	@profile.save
+end
+
 Given /^there is a search area tag named "(.*?)"$/ do |tag|
 	FactoryGirl.create(:search_area_tag, name: tag)
 end

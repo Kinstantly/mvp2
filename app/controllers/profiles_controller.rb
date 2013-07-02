@@ -34,7 +34,7 @@ class ProfilesController < ApplicationController
 	autocomplete :profile, :lead_generator, scopes: [:unique_by_lead_generator], full_model: true
 	
 	def index
-		@profiles = @profiles.with_admin_notes if current_user.try(:admin?) && params[:with_admin_notes].present?
+		@profiles = @profiles.with_admin_notes if can?(:manage, Profile) && params[:with_admin_notes].present?
 		@profiles = @profiles.order_by_last_name.page params[:page]
 		render layout: 'plain'
 	end

@@ -57,7 +57,7 @@ module ApplicationHelper
 	end
 	
 	def admin_change_profile_list_link
-		if current_user.try(:admin?)
+		if can? :manage, Profile
 			if params[:with_admin_notes].present?
 				link_to 'Show all profiles', profiles_path
 			else

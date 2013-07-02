@@ -15,11 +15,18 @@ Feature: View a provider's profile
 		When I visit the published profile page
 		Then the profile should show "Nessun dorma"
 
-	Scenario: Profile editor cannot see admin notes
+	Scenario: Profile editor can see admin notes
 		Given a published profile with admin notes "Nessun dorma"
 			And I am logged in as a profile editor
 		When I visit the published profile page
-		Then the profile should not show "Nessun dorma"
+		Then the profile should show "Nessun dorma"
+
+	Scenario: Provider cannot see admin notes in their own profile
+		Given my profile with admin notes "Nessun dorma"
+			And I am logged in
+		When I view my profile
+		Then I should see my profile information
+			And my profile should not show "Nessun dorma"
 
 	Scenario: Public cannot see admin notes
 		Given a published profile with admin notes "Nessun dorma"

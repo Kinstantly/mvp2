@@ -1,5 +1,23 @@
 require 'spec_helper'
 
+def destroys_unattached_profile
+	id = FactoryGirl.create(:profile).id
+	delete :destroy, id: id
+	response.should redirect_to(controller: 'profiles', action: 'admin')
+	Profile.find_by_id(id).should be_nil
+end
+
+def protects_attached_profile
+	profile = FactoryGirl.create(:profile)
+	id = profile.id
+	user = FactoryGirl.create(:expert_user)
+	user.profile = profile
+	user.save
+	delete :destroy, id: id
+	response.should redirect_to(root_path)
+	Profile.find_by_id(id).should_not be_nil
+end
+
 describe ProfilesController do
 	context "as site visitor attempting to access a published profile" do
 		before(:each) do
@@ -44,6 +62,33 @@ describe ProfilesController do
 			it "can not render the view" do
 				get :edit, id: @profile.id
 				response.should_not render_template('edit')
+			end
+		end
+	end
+	
+	context "as a site visitor attempting to delete a profile" do
+		describe "DELETE 'destroy'" do
+			it "should not destroy a profile" do
+				id = FactoryGirl.create(:profile).id
+				delete :destroy, id: id
+				response.should redirect_to(new_user_session_path)
+				Profile.find_by_id(id).should_not be_nil
+			end
+		end
+	end
+	
+	context "as a non-provider member" do
+		before (:each) do
+			@me = FactoryGirl.create(:client_user, email: 'me@example.com')
+			sign_in @me
+		end
+		
+		describe "DELETE 'destroy'" do
+			it "should not destroy a profile" do
+				id = FactoryGirl.create(:profile).id
+				delete :destroy, id: id
+				response.should redirect_to(root_path)
+				Profile.find_by_id(id).should_not be_nil
 			end
 		end
 	end
@@ -107,6 +152,22 @@ describe ProfilesController do
 				@profile = FactoryGirl.create(:published_profile)
 				put :formlet_update, id: @profile.id, formlet: 'summary', profile: {summary: 'A short story.'}
 				response.should_not render_template('formlet')
+			end
+		end
+		
+		describe "DELETE 'destroy'" do
+			it "should not destroy another profile" do
+				id = FactoryGirl.create(:profile).id
+				delete :destroy, id: id
+				response.should redirect_to(root_path)
+				Profile.find_by_id(id).should_not be_nil
+			end
+			
+			it "should not destroy my profile" do
+				id = @me.profile.id
+				delete :destroy, id: id
+				response.should redirect_to(root_path)
+				Profile.find_by_id(id).should_not be_nil
 			end
 		end
 	end
@@ -212,24 +273,12 @@ describe ProfilesController do
 		end
 		
 		describe "DELETE 'destroy'" do
-			before(:each) do
-				@profile = FactoryGirl.create(:profile)
-				@profile_id = @profile.id
-			end
-			
 			it "destroys unattached profile" do
-				delete :destroy, id: @profile_id
-				response.should redirect_to(controller: 'profiles', action: 'admin')
-				Profile.find_by_id(@profile_id).should be_nil
+				destroys_unattached_profile
 			end
 			
 			it "should not destroy an attached profile" do
-				user = FactoryGirl.create(:expert_user)
-				user.profile = @profile
-				user.save
-				delete :destroy, id: @profile_id
-				response.should redirect_to(root_path)
-				Profile.find_by_id(@profile_id).should_not be_nil
+				protects_attached_profile
 			end
 		end
 	end
@@ -291,6 +340,16 @@ describe ProfilesController do
 				put :update, id: @profile.id, profile: @profile_attrs
 				response.should redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
 				flash[:notice].should_not be_nil
+			end
+		end
+		
+		describe "DELETE 'destroy'" do
+			it "destroys unattached profile" do
+				destroys_unattached_profile
+			end
+			
+			it "should not destroy an attached profile" do
+				protects_attached_profile
 			end
 		end
 	end
