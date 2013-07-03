@@ -9,6 +9,8 @@
 			.text_field
 				= f.label :pricing
 				= f.text_area :pricing, size: '45x5', class: 'attr'
-				%span.note= t('views.profile.edit.pricing_example')
+				%span.note= t 'views.profile.edit.pricing_example'
+				%br
+				%span.note= t 'views.profile.edit.pricing_tip'
 			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 			= link_to 'Cancel', '#', class: 'cancel button'

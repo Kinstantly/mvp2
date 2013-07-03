@@ -1,0 +1,26 @@
+%th
+	%span.editable= Profile.human_attribute_name :stages_ages
+%td
+	%span.attribute_display= @profile.errorfree.display_stages_ages
+	.edit.popover
+		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+			= f.error_messages
+			= hidden_field_tag 'formlet', formlet
+			#stages_ages
+				= f.label :stages, t('views.profile.edit.stages')
+				%br
+				.check_box
+					= f.check_box :adoption_stage
+					= f.label :adoption_stage
+				.check_box
+					= f.check_box :preconception_stage
+					= f.label :preconception_stage
+				.check_box
+					= f.check_box :pregnancy_stage
+					= f.label :pregnancy_stage
+				.text_field
+					= f.label :ages
+					= f.text_field :ages, class: 'attr'
+					%span.note= t('views.profile.edit.ages_example')
+			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+			= link_to 'Cancel', '#', class: 'cancel button'

@@ -74,7 +74,9 @@ en:
       category:
         is_predefined: 'Show in Browse by Category'
       profile:
+        adoption_stage: 'adoption'
         age_ranges: 'Ages/Stages'
+        ages: 'Age span'
         categories: 'Categories'
         certifications: 'Certifications'
         credentials: 'Degrees/credentials'
@@ -101,10 +103,13 @@ en:
         last_name: 'Last name'
         middle_name: 'Middle name or initial'
         photo_source_url: 'Source URL for photo'
+        preconception_stage: 'preconception'
+        pregnancy_stage: 'pregnancy'
         pricing: 'Fees'
         services: 'Services'
         specialties: 'Specialties'
         specialties_description: 'My specialties'
+        stages_ages: 'Ages/Stages'
         summary: 'About'
         url: 'Website'
         visit_home: 'Home visits'
@@ -192,6 +197,7 @@ en:
         rating: 'Rating'
       edit:
         add_text_field: 'Hit ENTER to add another field'
+        ages_example: 'Examples: 0-12, 13-18+, teens and young adults'
         categories_blank: 'No categories'
         custom_service_placeholder: 'Type in a service'
         custom_service_button: 'Enter a service not shown above'
@@ -202,10 +208,13 @@ en:
         consultation_modes_title: 'Consultation methods and locations'
         display_name_blank: 'Your company name is shown if these fields are left blank.'
         display_name_or_company_blank: 'Your name'
-        pricing_example: 'Example: $1/minute, $40/15 minutes, $120/hour'
+        pricing_example: 'Examples: Free initial 15-minute phone consultation; $50/hour; See details: www.allkidstutoring.com/fees'
+        pricing_tip: 'Tip: Keep it short and scan-able; link to more detailed information.'
         search_area_tag_other: 'Other'
+        service_area_example: 'Example: Greater Bay Area for office visits, nationwide by Skype or phone'
         services_blank: 'No services'
         specialties_blank: 'No specialties'
+        stages: 'Stages'
       claim:
         message: 'Click here to claim your profile'
       claim_confirm:

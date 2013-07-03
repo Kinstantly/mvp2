@@ -7,16 +7,17 @@ class Profile < ActiveRecord::Base
 		:company_name, :url, :locations_attributes, 
 		:headline, :education, :experience, :certifications, :awards, 
 		:languages, :insurance_accepted, :summary, 
-		:category_ids, :service_ids, :specialty_ids, :age_range_ids, 
+		:category_ids, :service_ids, :specialty_ids, 
 		:custom_service_names, :custom_specialty_names, :specialties_description, 
 		:consult_in_person, :consult_in_group, :consult_by_email, :consult_by_phone, :consult_by_video, 
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, :consult_at_other, 
 		:pricing, :availability, :service_area, 
 		:hours, :phone_hours, :video_hours, :accepting_new_clients, 
-		:invitation_email, :photo_source_url
+		:invitation_email, :photo_source_url, 
+		:adoption_stage, :preconception_stage, :pregnancy_stage, :ages
 	
 	belongs_to :user
-	has_and_belongs_to_many :age_ranges
+	# has_and_belongs_to_many :age_ranges # superseded by *_stage and ages attributes
 	has_and_belongs_to_many :categories
 	has_and_belongs_to_many :services
 	has_and_belongs_to_many :specialties
@@ -35,7 +36,7 @@ class Profile < ActiveRecord::Base
 	# validates :categories, length: {maximum: 1}
 	validates :first_name, :last_name, :middle_name, :credentials, :email, :company_name, :url, :headline,
 		:certifications, :languages, :specialties_description, :invitation_email, :lead_generator, :photo_source_url,
-		length: {maximum: MAX_STRING_LENGTH}
+		:ages, length: {maximum: MAX_STRING_LENGTH}
 	validates :availability, :awards, :education, :experience, :insurance_accepted, :pricing, :summary, :service_area,
 		:hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: MAX_TEXT_LENGTH}
 	validates :email, email: true, allow_blank: true
@@ -104,7 +105,6 @@ class Profile < ActiveRecord::Base
 		
 		boolean :is_published
 		boolean :accepting_new_clients
-		integer :age_range_ids, multiple: true
 		integer :category_ids, multiple: true
 		integer :service_ids, multiple: true
 		integer :specialty_ids, multiple: true
@@ -185,6 +185,13 @@ class Profile < ActiveRecord::Base
 	
 	def display_name_or_company
 		first_name.present? || last_name.present? ? display_name : (company_name.presence || '')
+	end
+	
+	def display_stages_ages
+		[(self.class.human_attribute_name :adoption_stage if adoption_stage),
+			(self.class.human_attribute_name :preconception_stage if preconception_stage),
+			(self.class.human_attribute_name :pregnancy_stage if pregnancy_stage),
+			ages.presence].compact.join(', ')
 	end
 	
 	def invite

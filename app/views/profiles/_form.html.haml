@@ -108,14 +108,24 @@
 		.specialties_description
 			= f.label :specialties_description
 			= f.text_area :specialties_description, size: '25x4'
-		.age_ranges
-			Ages/stages of clients/children (check all that apply):
+		.stages
+			= f.label :stages, t('views.profile.edit.stages')
 			%br
-			= profile_age_ranges_hidden_field_tag(f)
-			- AgeRange.all.sort_by(&:sort_index).each do |age_range|
-				.check_box
-					= profile_age_ranges_check_box_tag(profile, age_range, f)
-					= profile_age_ranges_check_box_label age_range
+			.check_box
+				= f.check_box :adoption_stage
+				= f.label :adoption_stage
+			.check_box
+				= f.check_box :preconception_stage
+				= f.label :preconception_stage
+			.check_box
+				= f.check_box :pregnancy_stage
+				= f.label :pregnancy_stage
+		.ages
+			.text_field
+				= f.label :ages
+				= f.text_field :ages, size: 50
+				%br
+				%span.note= t('views.profile.edit.ages_example')
 	.professional_profile
 		.accepting_new_clients
 			.check_box
@@ -175,8 +185,11 @@
 		.pricing
 			.label_area
 				= f.label :pricing
-				%span.note.text_area= preserve "\nExample:\n$1/minute\n$40/15 minutes\n$120/hour\nor monthly subscription"
 			= f.text_area :pricing, size: '50x5'
+			%br
+			%span.note= t 'views.profile.edit.pricing_example'
+			%br
+			%span.note= t 'views.profile.edit.pricing_tip'
 		.hours
 			.label_area
 				= f.label :hours
@@ -184,8 +197,9 @@
 		.service_area
 			.label_area
 				= f.label :service_area
-				%span.note.text_area= preserve "\nExample:\nEast Bay\nSan Francisco\nNorth Peninsula"
 			= f.text_area :service_area, size: '30x5'
+			%br
+			%span.note= t 'views.profile.edit.service_area_example'
 	-# Mass assignment is not allowed on admin attributes, so use simple params and tags.
 	- if can? :manage, Profile
 		.admin_options

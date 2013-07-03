@@ -463,4 +463,28 @@ describe Profile do
 			@profile.should be_owned_by(@me)
 		end
 	end
+	
+	context "stages and ages" do
+		it "displays adoption" do
+			@profile.adoption_stage = true
+			@profile.display_stages_ages.include?(Profile.human_attribute_name(:adoption_stage)).should be_true
+		end
+		
+		it "displays preconception and pregnancy" do
+			@profile.preconception_stage = true
+			@profile.pregnancy_stage = true
+			@profile.display_stages_ages.include?(Profile.human_attribute_name(:preconception_stage)).should be_true
+			@profile.display_stages_ages.include?(Profile.human_attribute_name(:pregnancy_stage)).should be_true
+		end
+		
+		it "does not display pregnancy when not checked" do
+			@profile.pregnancy_stage = false
+			@profile.display_stages_ages.include?(Profile.human_attribute_name(:pregnancy_stage)).should be_false
+		end
+		
+		it "displays ages" do
+			@profile.ages = ages = '12-18'
+			@profile.display_stages_ages.include?(ages).should be_true
+		end
+	end
 end

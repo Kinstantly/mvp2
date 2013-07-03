@@ -113,7 +113,7 @@ div.view_profile {
 			.expertise_profile > div {
 				padding-bottom: 1em;
 			}
-			.categories, .services, .specialties, .age_ranges, .accepting_new_clients, .consultations, .visits {
+			.categories, .services, .specialties, .stages, .accepting_new_clients, .consultations, .visits {
 				.check_box {
 					@include check-box-style;
 				}

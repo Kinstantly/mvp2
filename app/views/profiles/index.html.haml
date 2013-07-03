@@ -27,7 +27,7 @@
 					%th.large= Profile.human_attribute_name(:services)
 					%th.large= Profile.human_attribute_name(:specialties)
 					%th.large= Profile.human_attribute_name(:specialties_description)
-					%th= Profile.human_attribute_name(:age_ranges)
+					%th= Profile.human_attribute_name(:stages_ages)
 					%th= t 'views.profile.view.consultation_modes'
 					%th.large= Profile.human_attribute_name(:education)
 					%th= Profile.human_attribute_name(:certifications)
@@ -59,7 +59,7 @@
 						%td= profile_display_services p
 						%td= profile_display_specialties p
 						%td= p.specialties_description
-						%td= profile_age_ranges p
+						%td= p.display_stages_ages
 						%td= profile_display_consultation_modes p
 						%td.text_area= preserve_profile_text p.education
 						%td.text_area= preserve_profile_text p.certifications

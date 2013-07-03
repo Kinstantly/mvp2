@@ -65,8 +65,10 @@ def formlet_id(name)
 	case name
 	when 'display name'
 		'display_name'
-	when 'age ranges'
-		'age_ranges'
+	when 'ages'
+		'stages_ages'
+	when 'stages'
+		'stages_ages'
 	when 'insurance'
 		'insurance_accepted'
 	when 'website'

@@ -76,11 +76,11 @@
 						%th
 							%span= Profile.human_attribute_name :hours
 						%td.text_area= profile_display_text @profile.hours, preserve: true, links: true
-				- if @profile.age_ranges.present?
+				- if (stages_ages = @profile.display_stages_ages).present?
 					%tr
 						%th
-							%span= Profile.human_attribute_name :age_ranges
-						%td= profile_age_ranges @profile
+							%span= Profile.human_attribute_name :stages_ages
+						%td= stages_ages
 				- if @profile.languages.present?
 					%tr
 						%th

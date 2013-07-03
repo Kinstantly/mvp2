@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130614005445) do
+ActiveRecord::Schema.define(:version => 20130702221935) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -133,6 +133,10 @@ ActiveRecord::Schema.define(:version => 20130614005445) do
     t.boolean  "consult_at_other"
     t.string   "photo_source_url"
     t.boolean  "trash",                   :default => false
+    t.boolean  "adoption_stage"
+    t.boolean  "preconception_stage"
+    t.boolean  "pregnancy_stage"
+    t.string   "ages"
   end
 
   create_table "profiles_services", :force => true do |t|
