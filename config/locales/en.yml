@@ -140,6 +140,11 @@ en:
         too_long: 'must have no more than %{count} characters'
         too_short: 'must have at least %{count} characters'
       models:
+        profile:
+          attributes:
+            year_started:
+              not_a_number: 'must be a year number, e.g., 2002'
+              not_an_integer: 'must be a year number, e.g., 2002'
         user:
           attributes:
             password:
@@ -233,6 +238,8 @@ en:
         stages: 'Stages'
         summary_tip: 'Tip: A first-person description ("I advise parents on...") is warmer and more approachable.'
         url_example: 'Example: www.allkidstutoring.com or http://www.allkidstutoring.com'
+        year_started_explanation: '(year you began business or practice)'
+        year_started_example: 'Example: 2002'
       claim:
         message: 'Click here to claim your profile'
       claim_confirm:

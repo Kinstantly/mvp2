@@ -87,6 +87,9 @@
 		.consultations
 			%span.label= "#{t 'views.profile.view.consultation_modes'}:"
 			= profile_display_consultation_modes profile
+		.year_started
+			%span.label= "#{Profile.human_attribute_name(:year_started)}:"
+			= profile.year_started
 		.education
 			%span.label= "#{Profile.human_attribute_name(:education)}:"
 			%br

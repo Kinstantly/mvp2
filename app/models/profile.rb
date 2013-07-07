@@ -5,7 +5,7 @@ class Profile < ActiveRecord::Base
 	
 	attr_accessible :first_name, :last_name, :middle_name, :credentials, :email, 
 		:company_name, :url, :locations_attributes, 
-		:headline, :education, :experience, :certifications, :awards, 
+		:headline, :education, :experience, :certifications, :awards, :year_started, 
 		:languages, :insurance_accepted, :summary, 
 		:category_ids, :service_ids, :specialty_ids, 
 		:custom_service_names, :custom_specialty_names, :specialties_description, 
@@ -41,6 +41,7 @@ class Profile < ActiveRecord::Base
 		:hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: MAX_TEXT_LENGTH}
 	validates :email, email: true, allow_blank: true
 	validates :invitation_email, email: true, allow_blank: true
+	validates :year_started, numericality: { only_integer: true, greater_than: 1900, less_than: 2100 }, allow_blank: true
 	
 	validates_each :custom_service_names, :custom_specialty_names do |record, attribute, names|
 		names.each do |name|

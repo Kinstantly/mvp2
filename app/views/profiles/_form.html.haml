@@ -21,6 +21,7 @@
 			.text_field
 				= f.label :credentials
 				= f.text_field :credentials, id: 'profile_credentials', class: 'display_name_field'
+				%span.note= t 'views.profile.edit.credentials_example'
 		.display_name_area
 			Display name
 			%span.display_name
@@ -28,15 +29,19 @@
 		.email
 			= f.label :email
 			= f.text_field :email
+			%span.note= t 'views.profile.edit.email_example'
 		.company_name
 			= f.label :company_name
 			= f.text_field :company_name
+			%span.note= t 'views.profile.edit.company_name_example'
 		.url
 			= f.label :url
 			= f.text_field :url
+			%span.note= t 'views.profile.edit.url_example'
 		.headline
 			= f.label :headline
 			= f.text_field :headline, size: 50
+			%span.note= t 'views.profile.edit.headline_example'
 		.photo_source_url
 			= f.label :photo_source_url
 			= f.text_field :photo_source_url, size: 70
@@ -48,6 +53,7 @@
 				= lf.text_field :address1, placeholder: address1_prompt, title: address1_prompt
 				- address2_prompt = 'room, suite, floor if any'
 				= lf.text_field :address2, placeholder: address2_prompt, title: address2_prompt
+				%span.note= t 'views.location.edit.address2_example'
 			.city_state
 				= lf.label :city
 				= autocomplete_form_field :city, nil, autocomplete_location_city_profiles_path, form_builder: lf
@@ -60,6 +66,7 @@
 			.phone
 				= lf.label :phone
 				= lf.text_field :phone
+				%span.note= t 'views.location.edit.phone_example'
 			- if current_user.profile_editor?
 				.search_area_tag
 					= lf.label :search_area_tag_id
@@ -69,6 +76,7 @@
 	.expertise_profile
 		.categories
 			= f.label :categories
+			%span= t 'views.profile.edit.categories_tip'
 			%br
 			= profile_categories_hidden_field_tag(f)
 			- profile_category_choices(profile).each do |category|
@@ -77,6 +85,7 @@
 					= profile_categories_check_box_label category
 		.services
 			= f.label :services
+			%span= t 'views.profile.edit.services_tip'
 			%br
 			%span.predefined_services
 		.custom_services
@@ -92,6 +101,7 @@
 			- @profile_custom_services_text_field_template = profile_custom_services_autocomplete_field_tag(profile, '', 'INDEX', f)
 		.specialties
 			= f.label :specialties
+			%span= t 'views.profile.edit.specialties_tip'
 			%br
 			%span.predefined_specialties
 		.custom_specialties
@@ -162,22 +172,38 @@
 			.check_box
 				= f.check_box :consult_at_other
 				= f.label :consult_at_other
+		.year_started
+			.label_area
+				= f.label :year_started
+				= t 'views.profile.edit.year_started_explanation'
+			= f.text_field :year_started
+			%span.note= t 'views.profile.edit.year_started_example'
 		.education
 			.label_area
 				= f.label :education
 			= f.text_area :education, size: '50x5'
+			%br
+			%span.note= t 'views.profile.edit.education_tip'
+			%br
+			%span.note= t 'views.profile.edit.education_example_html'
 		.certifications
 			.label_area
 				= f.label :certifications
 			= f.text_field :certifications
+			%span.note= t 'views.profile.edit.certifications_example'
 		.languages
 			.label_area
 				= f.label :languages
 			= f.text_field :languages
+			%span.note= t 'views.profile.edit.languages_example'
 		.insurance_accepted
 			.label_area
 				= f.label :insurance_accepted
 			= f.text_area :insurance_accepted, size: '50x5'
+			%br
+			%span.note= t 'views.profile.edit.insurance_accepted_example'
+			%br
+			%span.note= t 'views.profile.edit.insurance_accepted_tip'
 		.summary
 			.label_area
 				= f.label :summary
@@ -194,6 +220,8 @@
 			.label_area
 				= f.label :hours
 			= f.text_area :hours, size: '30x5'
+			%br
+			%span.note= t 'views.profile.edit.hours_example'
 		.service_area
 			.label_area
 				= f.label :service_area
