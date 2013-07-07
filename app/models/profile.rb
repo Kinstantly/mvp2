@@ -49,14 +49,16 @@ class Profile < ActiveRecord::Base
 		end
 	end
 
-	# Merge in custom services and specialties.
 	before_save do
+		# Merge in custom services and specialties.
 		self.services = (services + custom_service_names.map(&:to_service)).uniq
 		self.specialties = (specialties + custom_specialty_names.map(&:to_specialty)).uniq
+		# No periods in credentials.
+		self.credentials = credentials.try(:delete, '.')
 	end
 	
-	# Custom services and specialties are now merged and saved, so we don't need their names (especially for AJAX updates).
 	after_save do
+		# Custom services and specialties are now merged and saved, so we don't need their names (especially for AJAX updates).
 		self.custom_service_names, self.custom_specialty_names = nil, nil
 	end
 	
