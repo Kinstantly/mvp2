@@ -9,5 +9,6 @@
 			.text_field
 				= f.label :hours
 				= f.text_area :hours, size: '45x5', class: 'attr'
+				%p.note= t 'views.profile.edit.hours_example'
 			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 			= link_to 'Cancel', '#', class: 'cancel button'

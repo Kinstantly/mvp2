@@ -6,9 +6,11 @@
 		.text_field
 			= f.label :headline
 			= f.text_field :headline
+			%p.note= t 'views.profile.edit.headline_example'
 		.text_field
 			= f.label :company_name
 			= f.text_field :company_name
+			%p.note= t 'views.profile.edit.company_name_example'
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
 %span.title.editable.attribute_display{itemprop: "jobTitle"}

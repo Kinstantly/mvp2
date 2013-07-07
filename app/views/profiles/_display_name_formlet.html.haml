@@ -16,6 +16,7 @@
 		.text_field
 			= f.label :credentials
 			= f.text_field :credentials, id: 'profile_credentials', class: 'display_name_field'
+			%p.note= t 'views.profile.edit.credentials_example'
 		.display_name_area
 			= f.label :display_name
 			%span.display_name

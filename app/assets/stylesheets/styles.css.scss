@@ -618,7 +618,9 @@ table.info th span {
 }
 table.info td {
 	width: 254px;
-	vertical-align: middle;
+	line-height: 18px;
+	padding-top: 4px;
+	vertical-align: top;
 }
 table.info .text-area th {
 	vertical-align: top;
@@ -697,18 +699,28 @@ table.info .text-area td {
 			color: #333;
 			line-height: 18px;
 			margin: 12px 0px 13px 0px;
+			+ .note {
+				margin-top: -4px;
+			}
 		}
 	}
 	label {
 		font-weight: bold;
 		color: #000;
 		font-size: 14px;
+		+ span {
+			font-size: 14px;
+		}
 	}
 	.check_box {
 		@include check-box-style;
+		+ .text_field {
+			margin-top: 16px;
+		}
 	}
-	span.note {
-		margin-left: 1em;
+	.note {
+		margin-bottom: 14px;
+		line-height: normal;
 	}
 	.save {
 		background: url('save-button.gif') 0px 0px;

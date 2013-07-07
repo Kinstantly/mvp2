@@ -6,6 +6,7 @@
 		.text_field
 			= f.label :summary
 			= f.text_area :summary, size: '45x5', class: 'attr'
+			%p.note= t 'views.profile.edit.summary_tip'
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
 %p.text_area.attribute_display= profile_display_text @profile.errorfree.summary, preserve: true, links: true

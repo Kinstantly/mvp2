@@ -21,6 +21,6 @@
 				.text_field
 					= f.label :ages
 					= f.text_field :ages, class: 'attr'
-					%span.note= t('views.profile.edit.ages_example')
+					%p.note= t 'views.profile.edit.ages_example'
 			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 			= link_to 'Cancel', '#', class: 'cancel button'

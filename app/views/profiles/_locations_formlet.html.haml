@@ -13,6 +13,7 @@
 				= lf.text_field :address1, placeholder: address1_prompt, title: address1_prompt
 				- address2_prompt = t 'views.location.edit.address2_prompt'
 				= lf.text_field :address2, placeholder: address2_prompt, title: address2_prompt
+				%p.note= t 'views.location.edit.address2_example'
 			.text_field
 				= lf.label :city
 				= autocomplete_form_field :city, nil, autocomplete_location_city_profiles_path, form_builder: lf
@@ -25,6 +26,7 @@
 			.text_field
 				= lf.label :phone
 				= lf.text_field :phone
+				%p.note= t 'views.location.edit.phone_example'
 			- if current_user.profile_editor?
 				.text_field
 					= lf.label :search_area_tag_id

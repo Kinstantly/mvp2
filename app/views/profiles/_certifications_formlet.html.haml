@@ -9,5 +9,6 @@
 			.text_field
 				= f.label :certifications
 				= f.text_field :certifications, class: 'attr'
+				%p.note= t 'views.profile.edit.certifications_example'
 			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 			= link_to 'Cancel', '#', class: 'cancel button'

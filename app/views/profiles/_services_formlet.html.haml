@@ -5,6 +5,7 @@
 		= hidden_field_tag 'formlet', formlet
 		.categories
 			= f.label :categories
+			%span= t 'views.profile.edit.categories_tip'
 			%br
 			= profile_categories_hidden_field_tag(f)
 			- profile_category_choices(@profile).each do |category|
@@ -13,6 +14,7 @@
 					= profile_categories_check_box_label category
 		.services
 			= f.label :services
+			%span= t 'views.profile.edit.services_tip'
 			%br
 			%span.predefined_services
 		.custom_services
@@ -28,6 +30,7 @@
 			- @profile_custom_services_text_field_template = profile_custom_services_autocomplete_field_tag(@profile, '', 'INDEX', f)
 		.specialties
 			= f.label :specialties
+			%span= t 'views.profile.edit.specialties_tip'
 			%br
 			%span.predefined_specialties
 		.custom_specialties

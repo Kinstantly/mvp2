@@ -5,9 +5,11 @@
 		.text_field
 			= f.label :url
 			= f.text_field :url
+			%p.note= t 'views.profile.edit.url_example'
 		.text_field
 			= f.label :email
 			= f.text_field :email
+			%p.note= t 'views.profile.edit.email_example'
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
 %span.location.editable.attribute_display{itemprop: "url"}

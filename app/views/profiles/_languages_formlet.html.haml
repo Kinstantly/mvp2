@@ -9,5 +9,6 @@
 			.text_field
 				= f.label :languages
 				= f.text_field :languages, class: 'attr'
+				%p.note= t 'views.profile.edit.languages_example'
 			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 			= link_to 'Cancel', '#', class: 'cancel button'
