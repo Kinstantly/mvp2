@@ -90,7 +90,7 @@
 					%tr
 						%th
 							%span= Profile.human_attribute_name :education
-						%td= profile_display_text @profile.education, preserve: true, links: true
+						%td.text_area= profile_display_text @profile.education, preserve: true, links: true
 				- if @profile.certifications.present?
 					%tr
 						%th
