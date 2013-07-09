@@ -1,0 +1,66 @@
+= Developer setup
+
+== Instance set up
+
+I'm sure I'm forgetting something in here.  Please add missing stuff.
+
+I'm using Ruby 1.9.3p194 in devel and Rails 3.2.13.  The Gemfile directs Heroku to use Ruby 1.9.3.  Before going live I want to upgrade to Ruby 2 and Rails 4.
+
+I'm running PostgreSQL 9.2.4 for my devel instance.  Installation and aliases:
+
+ brew install postgresql
+ alias pgstart='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
+ alias pgstop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
+ alias pgps='ps -ef|egrep "postgres|PID"'
+
+I'm running Solr 4.1.0 from a hacked gem.  It should install via bundler from my github repo (see Gemfile).  Everything you need should be in there and in the mvp2 repo under solr.  You need to run two solr instances: one for your devel instance and one for the tests to succeed.
+
+Useful aliases:
+
+ alias solrstart='bundle exec rake sunspot:solr:start'
+ alias solrstop='bundle exec rake sunspot:solr:stop'
+ alias solrps='ps -ef|egrep "solr|PID"'
+ alias solrstarttest='RAILS_ENV=test bundle exec rake sunspot:solr:start'
+ alias solrstoptest='RAILS_ENV=test bundle exec rake sunspot:solr:stop'
+ alias solrstartall='solrstart; solrstarttest'
+ alias solrstopall='solrstop; solrstoptest'
+ alias solrreindex='bundle exec rake sunspot:solr:reindex'
+ alias solrreindexheroku='heroku run rake sunspot:reindex'
+ alias solrlog='less +G log/sunspot-solr-development.log'
+ alias solrlogtest='less +G log/sunspot-solr-test.log'
+
+I'm using Unicorn to start the web process(es).  On devel I usually just run one web process.  The default is to run three.  To run just one, set the WEB_CONCURRENCY variable.
+
+ export WEB_CONCURRENCY=1
+ alias unicornstart='bundle exec unicorn -p 5000 -c ./config/unicorn.rb'
+
+I'm also running a background worker that runs delayed_job_active_record.  Usually, I don't run it on devel.  Currently, you only need it if you're working on part of the admin interface.  To run it, use foreman instead of running unicorn directly.  Foreman will do the same thing as happens on Heroku, i.e., run unicorn and the worker (see Procfile in the mvp2 repo).  The heroku CLI includes foreman, but it's broken.  Instead install the gem yourself:
+
+ gem install foreman
+ foreman start
+
+These aliases help me with bundler, e.g., help me always use 'bundle exec',
+
+ alias be='bundle exec'
+ alias bs='bundle show'
+
+For example:
+
+ be rails -v
+ mate $(bs devise)
+
+== Database contents
+
+Run the database migrations and the rake tasks below.  This should be enough to get you going.
+
+ bundle exec rake db:migrate
+ bundle exec rake import_file='lib/data/Copy\ of\ Browse\ by\ Category\ clean\ 20130530.csv' import_specialties:write_specialties
+ bundle exec rake import_file='lib/data/Copy\ of\ Browse\ by\ Category\ patch\ 20130605.csv' import_specialties:write_specialties
+
+If you are a collaborator on the Heroku app, you can get a production DB dump from the postgres backups with the following command (or ask someone who has the privileges to run it):
+
+ heroku pgbackups:url
+
+If you do a mass update of your database, reindex your Solr instance.
+
+ bundle exec rake sunspot:solr:reindex

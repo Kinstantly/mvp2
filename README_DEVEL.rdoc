@@ -139,3 +139,7 @@ Merge the new code into the 'develop' branch.
  git flow feature finish FEATURE_NAME
  git pull
  git push
+
+= Testing
+
+The goal is to do test-driven development (TDD).  I don't always succeed.  Sometimes I write the tests afterwards.  The main thing is to get coverage for all types of functionality.  We're using Rspec and Cucumber.  See 'spec' and 'features' in the repository root.
