@@ -14,7 +14,9 @@ To see all the remote branches:
 
  git branch -r
 
-For staging, you'll usually want the latest release branch if any. The following commands should check out the latest branch.
+==== Staging deployment (no staging server yet, so skip this for now)
+
+To deploy to staging, you'll usually want the latest release branch if any. The following commands should check out the latest branch.
 
  rel=`git branch | sort -r | perl -ne 'if (m,\s+(release/\S+),) { print "$1"; exit; }'`
  [[ -n "$rel" ]] && git checkout $rel || echo 'Create release branch with:  git flow release finish YYYY-MM-DD-NN'
@@ -22,7 +24,7 @@ For staging, you'll usually want the latest release branch if any. The following
 OR if you already have the release branch locally, just switch to it and update
 
  git checkout release/RELEASE NAME
- git fetch
+ git pull
 
 OR if you know the release name but don't yet have it checked out and want to track it locally:
 
@@ -30,10 +32,17 @@ OR if you know the release name but don't yet have it checked out and want to tr
 
 OR if you are making a hotfix, use the hotfix branch you created using the instructions in README_DEVEL.rdoc.
 
-For *production*, you want the master branch:
+==== Production deployment
 
-  git checkout master
-  git fetch
+To deploy to *production*, you want the master branch:
+
+ git checkout master
+ git pull
+
+Until we get a staging server, we are deploying the latest code on the develop branch:
+
+ git merge develop
+ git push
 
 === Tagging
 
@@ -44,8 +53,8 @@ Create a tag and push it to the remote server:
 
 For example:
 
- git tag 2.1.0
- git push origin 2.1.0
+ git tag 20130703_01
+ git push origin 20130703_01
 
 If you screw up and need to delete a tag:
 
@@ -63,4 +72,4 @@ Issue these deployment commands:
  heroku ps:restart
  heroku maintenance:off
 
-Marvel at the magic.
+Check the site and papertrail (https://papertrailapp.com/systems/get-answers-5555/events).
