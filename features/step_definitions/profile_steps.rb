@@ -80,12 +80,27 @@ def formlet_id(name)
 	when 'consultation methods'
 		'contact_options'
 	when 'service area'
-		pending 'decision on whether to include service area on the new profile edit page'
+		'service_area'
+	when 'year started'
+		'year_started'
 	when 'admin'
 		pending 'implement admin formlet'
 	else
 		name
 	end
+end
+
+def attribute_display_selector(formlet, which, overlay=nil)
+	selector = "##{formlet_id formlet}#{' .overlay' if overlay.present?}" + case formlet
+	when 'services'
+		' .attribute_display + .attribute_display'
+	when 'specialties'
+		' .attribute_display + .attribute_display + .attribute_display'
+	else
+		' .attribute_display'
+	end
+	selector += ' + .attribute_display' if which.strip == 'second'
+	selector
 end
 
 ### GIVEN ###
@@ -533,7 +548,7 @@ Then /^meta\-data should contain one of my services$/ do
 end
 
 Then /^I should see one of my specialties$/ do
-	within('.specialties') do
+	within('#specialties') do
 		page.should have_content @profile.specialties.first.name
 	end
 end
@@ -596,8 +611,7 @@ end
 
 Then /^my profile edit page should show "([^\"]+)" displayed( | second )(as a link )?in the "([^\"]+)" (overlay )?area$/ do |value, which, link, formlet, overlay|
 	pending "implementation of more-info overlay" if overlay.present?
-	selector = "##{formlet_id formlet}#{' .overlay' if overlay.present?} .attribute_display"
-	selector += ' + .attribute_display' if which.strip == 'second'
+	selector = attribute_display_selector formlet, which, overlay
 	selector += ' a' if link.present?
 	within(selector) do
 		page.should have_content value
@@ -605,9 +619,7 @@ Then /^my profile edit page should show "([^\"]+)" displayed( | second )(as a li
 end
 
 Then /^my profile edit page should show "([^\"]+)" and "([^\"]+)" displayed( | second )in the "([^\"]+)" area$/ do |value1, value2, which, formlet|
-	selector = "##{formlet_id formlet} .attribute_display"
-	selector += ' + .attribute_display' if which.strip == 'second'
-	within(selector) do
+	within(attribute_display_selector formlet, which) do
 		page.should have_content value1
 		page.should have_content value2
 	end

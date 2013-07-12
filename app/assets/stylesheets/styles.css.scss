@@ -101,6 +101,14 @@ audio:not([controls]) {
 	padding: 0 0.7333em;
 }
 
+@mixin bullet-separator-style {
+	content: '\2022';
+	font-size: 150%;
+	padding: 0 0.25em;
+	color: $default_link_color;
+	display: inline-block;
+}
+
 /*
 Base styles
 */
@@ -573,27 +581,31 @@ $contact_toolbar_width: 270px;
 
 /*  Profile summary -------------------------------------------------------------------------- */
 
+$profile_content_header_font_size: 15px;
+$profile_content_line_height: 18px;
+
 .summary-text {
-	width: 406px;
+	width: 400px;
 	float: left;
+	p {
+		font-size: 13px;
+		line-height: $profile_content_line_height;
+		color: #333;
+		margin-bottom: 21px;
+	}
+	h3 {
+		font-size: $profile_content_header_font_size;
+		font-weight: bold;
+		color: #000;
+		line-height: $profile_content_line_height;
+		margin-bottom: 2px;
+	}
 }
-.summary-text p {
-	font-size: 13px;
-	line-height: 21px;
-	color: #333;
-	margin-bottom: 21px;
-}
-.summary-text h3 {
-	font-size: 17px;
-	font-weight: bold;
-	color: #000;
-	line-height: 18px;
-	margin-bottom: 2px;
-}
+
 table.info {
 	background: #FFF;
-	padding: 40px;
-	width: 438px;
+	padding: 20px;
+	width: 470px;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
 	border-radius: 6px;
@@ -604,29 +616,42 @@ table.info {
 	float: right;
 	font-size: 13px;
 	color: #333;
-	line-height: 26px;
-}
-table.info th {
-	text-align: right;
-	padding-right: 16px;
-	font-size: 14px;
-	width: 90px;
-	vertical-align: top;
-}
-table.info th span {
-	font-weight: bold;
-}
-table.info td {
-	width: 254px;
-	line-height: 18px;
-	padding-top: 4px;
-	vertical-align: top;
-}
-table.info .text-area th {
-	vertical-align: top;
-}
-table.info .text-area td {
-	white-space: pre-line;
+	line-height: 36px;
+	th {
+		text-align: right;
+		padding-right: 16px;
+		font-size: $profile_content_header_font_size;
+		width: 90px;
+		vertical-align: top;
+		span {
+			font-weight: bold;
+		}
+	}
+	td {
+		width: 254px;
+		line-height: $profile_content_line_height;
+		padding-top: 10px;
+		vertical-align: top;
+	}
+	.text-area {
+		th {
+			vertical-align: top;
+		}
+		td {
+			white-space: pre-line;
+		}
+	}
+	#specialties, #services {
+		td {
+			padding-top: 8px;
+			span + span:before {
+				@include bullet-separator-style;
+			}
+			p + p {
+				margin-top: 0.5em;
+			}
+		}
+	}
 }
 
 /*  Reviews -------------------------------------------------------------------------- */

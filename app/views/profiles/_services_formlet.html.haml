@@ -1,173 +1,19 @@
-%h3= "#{Profile.human_attribute_name :categories}/#{Profile.human_attribute_name :services}/#{Profile.human_attribute_name :specialties}"
-.edit.popover
-	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
-		= f.error_messages
-		= hidden_field_tag 'formlet', formlet
-		.categories
-			= f.label :categories
-			%span= t 'views.profile.edit.categories_tip'
-			%br
-			= profile_categories_hidden_field_tag(f)
-			- profile_category_choices(@profile).each do |category|
-				.check_box
-					= profile_categories_check_box_tag(@profile, category, f)
-					= profile_categories_check_box_label category
-		.services
-			= f.label :services
-			%span= t 'views.profile.edit.services_tip'
-			%br
-			%span.predefined_services
-		.custom_services
-			= f.label :custom_service_names
-			= button_tag id: 'add_custom_services_text_field' do
-				= content_tag :strong, t('views.profile.edit.custom_service_button')
-			%br
-			= profile_custom_services_hidden_field_tag(f)
-			- i = 0; @profile.custom_service_names.each do |name|
-				.text_field
-					= profile_custom_services_autocomplete_field_tag(@profile, name, "#{i = i+1}", f)
-			- @profile_custom_services_i = i
-			- @profile_custom_services_text_field_template = profile_custom_services_autocomplete_field_tag(@profile, '', 'INDEX', f)
-		.specialties
-			= f.label :specialties
-			%span= t 'views.profile.edit.specialties_tip'
-			%br
-			%span.predefined_specialties
-		.custom_specialties
-			= f.label :custom_specialty_names
-			= button_tag id: 'add_custom_specialties_text_field' do
-				= content_tag :strong, t('views.profile.edit.custom_specialty_button')
-			%br
-			= profile_custom_specialties_hidden_field_tag(f)
-			- i = 0; @profile.custom_specialty_names.each do |name|
-				.text_field
-					= profile_custom_specialties_autocomplete_field_tag(@profile, name, "#{i = i+1}", f)
-			- @profile_custom_specialties_i = i
-			- @profile_custom_specialties_text_field_template = profile_custom_specialties_autocomplete_field_tag(@profile, '', 'INDEX', f)
-		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-		= link_to 'Cancel', '#', class: 'cancel button'
-		-# Use plain Javascript when using JSON.
-		-# Coffeescript will reformat JSON which takes much too long and creates too much whitespace.
-		-# OK to do ruby interpolation in a javascript filter--do it all here and not in the coffeescript filter!!
-		-# Any interpolated values needed in the coffeescript should be stored here to be referenced by the result
-		-# of the coffeescript filter.  This allows caching of the coffeescript compilation.
-		:javascript
-			window.edit_profile = {
-				parents: {}, maps: {}, names: {}, ids_names: {},
-				check_box_caches: {}, check_box_templates: {}, hidden_field_tags: {},
-				prompts: {}
-			};
-			// categories -> services
-			edit_profile.parents['services'] = 'categories';
-			edit_profile.check_box_caches['services'] = 
-				#{profile_services_check_box_cache(@profile, 'check_box', f).to_json};
-			edit_profile.check_box_templates['services'] = 
-				"#{escape_javascript profile_services_check_box(@profile, '_ID_', '_NAME_', false, 'check_box', f)}";
-			var info = #{profile_categories_services_info(@profile).to_json};
-			edit_profile.maps['services'] = info[0];
-			edit_profile.names['services'] = info[1];
-			edit_profile.ids_names['services'] = #{@profile.service_ids_names.to_json};
-			edit_profile.hidden_field_tags['services'] = 
-				"#{escape_javascript profile_services_hidden_field_tag(f)}";
-			edit_profile.prompts['services'] = 
-				"#{escape_javascript content_tag(:span, t('views.profile.edit.custom_service_prompt'), class: 'note')}";
-			// services -> specialties
-			edit_profile.parents['specialties'] = 'services';
-			edit_profile.check_box_caches['specialties'] = 
-				#{profile_specialties_check_box_cache(@profile, 'check_box', f).to_json};
-			edit_profile.check_box_templates['specialties'] = 
-				"#{escape_javascript profile_specialties_check_box(@profile, '_ID_', '_NAME_', false, 'check_box', f)}";
-			var info = #{profile_services_specialties_info(@profile).to_json};
-			edit_profile.maps['specialties'] = info[0];
-			edit_profile.names['specialties'] = info[1];
-			edit_profile.ids_names['specialties'] = #{@profile.specialty_ids_names.to_json};
-			edit_profile.hidden_field_tags['specialties'] = 
-				"#{escape_javascript profile_specialties_hidden_field_tag(f)}";
-			edit_profile.prompts['specialties'] = 
-				"#{escape_javascript content_tag(:span, t('views.profile.edit.custom_specialty_prompt'), class: 'note')}";
-			// Values to be used in the next script.
-			edit_profile.custom_services_i = #{@profile_custom_services_i};
-			edit_profile.custom_specialties_i = #{@profile_custom_specialties_i};
-			edit_profile.t_add_text_field = '#{t "views.profile.edit.add_text_field"}';
-			edit_profile.custom_services_template = 
-				'#{escape_javascript @profile_custom_services_text_field_template}';
-			edit_profile.custom_specialties_template = 
-				'#{escape_javascript @profile_custom_specialties_text_field_template}';
-
-%p.attribute_display
-	- if @profile.errorfree.categories.present?
-		= profile_display_categories(@profile.errorfree)
-	- else
-		%span.note= t 'views.profile.edit.categories_blank'
-	%br
-	- if @profile.errorfree.services.present?
-		= profile_display_services(@profile.errorfree)
-	- else
-		%span.note= t 'views.profile.edit.services_blank'
-	%br
-	- if @profile.errorfree.specialties.present?
-		= profile_display_specialties(@profile.errorfree)
-	- else
-		%span.note=  t 'views.profile.edit.specialties_blank'
-
--# No ruby interpolation in the coffeescript filter.  It breaks caching of the coffeescript filter result.
-:coffeescript
-	# Show check boxes for children that belong to the currently checked parents.
-	# In addition, always show check boxes for children that were originally checked (i.e., are currently persisted).
-	show_check_boxes = (children) ->
-		choices = {}
-		$('.'+edit_profile.parents[children]+' .check_box input:checked').each ->
-			ids = edit_profile.maps[children][$(this).val()]
-			if ids
-				choices[edit_profile.names[children][id]] = id for id in ids
-			true
-		choices[id_name.name] = id_name.id for id_name in edit_profile.ids_names[children]
-		boxes = $('.predefined_'+children)
-		$('.check_box', boxes).each ->
-			edit_profile.check_box_caches[children][$('input', this).val()] = this
-		boxes.empty()
-		boxes.append edit_profile.hidden_field_tags[children]
-		names = (name for own name, id of choices)
-		if names.length > 0
-			for name in names.sort((a, b) -> a.toLowerCase().localeCompare(b.toLowerCase()))
-				id = choices[name]
-				check_box = edit_profile.check_box_caches[children][id] || edit_profile.check_box_templates[children].replace(/_ID_/g, id).replace(/_NAME_/g, name)
-				boxes.append check_box
-		else
-			boxes.append edit_profile.prompts[children]
-		# If redisplaying services, we may have a new set of check boxes to monitor.
-		if children == 'services'
-			$('.services .check_box input').change (e) ->
-				show_check_boxes('specialties')
-	
-	# When a category is changed, redisplay all descendent choices.
-	$('.categories .check_box input').change (e) ->
-		show_check_boxes('services')
-		show_check_boxes('specialties')
-	
-	# Show check boxes for services.
-	show_check_boxes('services')
-	# Show check boxes for specialties.
-	show_check_boxes('specialties')
-	
-	# Add extra text input tags for custom services.
-	add_custom_services_text_field = (e) ->
-		e.preventDefault()
-		$('.custom_services').append '<span id="custom_services_field_prompt" class="note">' +
-			edit_profile.t_add_text_field + '</span>' if $('#custom_services_field_prompt').length == 0
-		$('#custom_services_field_prompt').before '<div class="text_field">' +
-			edit_profile.custom_services_template.replace('INDEX', String(++edit_profile.custom_services_i)) + '</div>'
-		$('.custom_services input:last').focus().keydown (e) ->
-			add_custom_services_text_field e if e.which == 13 # carriage return
-	$('#add_custom_services_text_field').click add_custom_services_text_field
-	
-	# Add extra text input tags for custom specialties.
-	add_custom_specialties_text_field = (e) ->
-		e.preventDefault()
-		$('.custom_specialties').append '<span id="custom_specialties_field_prompt" class="note">' +
-			edit_profile.t_add_text_field + '</span>' if $('#custom_specialties_field_prompt').length == 0
-		$('#custom_specialties_field_prompt').before '<div class="text_field">' +
-			edit_profile.custom_specialties_template.replace('INDEX', String(++edit_profile.custom_specialties_i)) + '</div>'
-		$('.custom_specialties input:last').focus().keydown (e) ->
-			add_custom_specialties_text_field e if e.which == 13 # carriage return
-	$('#add_custom_specialties_text_field').click add_custom_specialties_text_field
+%th
+	%span.editable= Profile.human_attribute_name :specialties
+%td
+	%p.attribute_display
+		- if @profile.errorfree.categories.present?
+			= profile_wrap_item_names @profile.errorfree.categories
+		- else
+			%span.note= t 'views.profile.edit.categories_blank'
+	%p.attribute_display
+		- if @profile.errorfree.services.present?
+			= profile_wrap_item_names @profile.errorfree.services
+		- else
+			%span.note= t 'views.profile.edit.services_blank'
+	%p.attribute_display
+		- if @profile.errorfree.specialties.present?
+			= profile_wrap_item_names @profile.errorfree.specialties
+		- else
+			%span.note=  t 'views.profile.edit.specialties_blank'
+	= render partial: "#{formlet}_popover", locals: {formlet: formlet}

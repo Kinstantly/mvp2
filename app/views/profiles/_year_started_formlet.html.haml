@@ -1,12 +1,12 @@
-%h3= Profile.human_attribute_name(:certifications)
+%h3= Profile.human_attribute_name(:year_started)
 .edit.popover
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
 		.text_field
-			= f.label :certifications
-			= f.text_field :certifications, class: 'attr'
-			%p.note= t 'views.profile.edit.certifications_example'
+			= f.label :year_started
+			= f.text_field :year_started, class: 'attr'
+			%p.note= t 'views.profile.edit.year_started_example'
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
-%p.attribute_display= profile_display_text @profile.errorfree.certifications, serialize: true, links: true
+%p.attribute_display= @profile.errorfree.year_started

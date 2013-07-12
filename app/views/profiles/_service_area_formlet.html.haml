@@ -1,0 +1,14 @@
+%th
+	%span.editable= Profile.human_attribute_name(:service_area)
+%td
+	%span.text_area.attribute_display= profile_display_text @profile.errorfree.service_area, preserve: true, links: true
+	.edit.popover
+		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+			= f.error_messages
+			= hidden_field_tag 'formlet', formlet
+			.text_field
+				= f.label :service_area
+				= f.text_area :service_area, size: '45x5', class: 'attr'
+				%p.note= t 'views.profile.edit.service_area_example'
+			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+			= link_to 'Cancel', '#', class: 'cancel button'

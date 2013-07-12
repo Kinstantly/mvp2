@@ -1,7 +1,20 @@
 module ProfilesHelper
-	def display_profile_item_names(items, n=nil)
-		n ||= items.try(:length)
-		items.collect(&:name).sort{|a, b| a.casecmp b}.slice(0, n).join(' | ') if items.present?
+	def display_profile_item_names(items, n=nil, &block)
+		if items.present?
+			n ||= items.length # If n is missing or explicitly passed in as nil, use all items.
+			names = items.collect(&:name).sort{|a, b| a.casecmp b}.slice(0, n)
+			if block.nil?
+				names.join(' | ') # Join with a separator.
+			else
+				names.collect(&block).join('') # Concatenate result of processing each name.
+			end
+		end
+	end
+	
+	def profile_wrap_item_names(items, n=nil)
+		display_profile_item_names items, n do |name|
+			content_tag :span, name.html_escape
+		end.html_safe
 	end
 	
 	def display_profile_time(time_with_zone)
