@@ -353,3 +353,13 @@ Feature: Edit my expert profile
 			And I click on the "Save" button of the "website" formlet
 			And I view my profile
 		Then my profile should show "www.sfopera.com" within "location a"
+
+	@javascript
+	Scenario: Enter year started
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I open the "year started" formlet
+			And I enter "2007" in the "Year started" field of the "year started" formlet
+			And I click on the "Save" button of the "year started" formlet
+		Then my profile edit page should show "2007" displayed in the "year started" area

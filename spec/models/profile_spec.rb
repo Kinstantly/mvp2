@@ -487,4 +487,21 @@ describe Profile do
 			@profile.display_stages_ages.include?(ages).should be_true
 		end
 	end
+	
+	context "year started" do
+		it "accepts a four digit year" do
+			@profile.year_started = '1998'
+			@profile.should have(:no).errors_on(:year_started)
+		end
+		
+		it "rejects a two digit year" do
+			@profile.year_started = '98'
+			@profile.should have(1).error_on(:year_started)
+		end
+		
+		it "requires a number" do
+			@profile.year_started = '10 years ago'
+			@profile.should have(1).error_on(:year_started)
+		end
+	end
 end
