@@ -102,11 +102,16 @@ audio:not([controls]) {
 }
 
 @mixin bullet-separator-style {
-	content: '\2022';
-	font-size: 150%;
-	padding: 0 0.25em;
-	color: $default_link_color;
-	display: inline-block;
+	span {
+		padding-right: 0.38em;
+	}
+	span + span:before {
+		content: '\2022';
+		font-size: 150%;
+		padding-right: 0.25em;
+		color: $default_link_color;
+		display: inline-block;
+	}
 }
 
 /*
@@ -644,12 +649,10 @@ table.info {
 	#specialties, #services {
 		td {
 			padding-top: 8px;
-			span + span:before {
-				@include bullet-separator-style;
-			}
 			p + p {
 				margin-top: 0.5em;
 			}
+			@include bullet-separator-style;
 		}
 	}
 }
