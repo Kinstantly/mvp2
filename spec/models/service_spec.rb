@@ -47,6 +47,18 @@ describe Service do
 				@service.specialties.include?(spec).should be_true
 			end
 		end
+		
+		it "can supply a list of specialties that are eligible for assigning to itself" do
+			predefined_specialties = [FactoryGirl.create(:predefined_specialty, name: 'banjo'),
+				FactoryGirl.create(:predefined_specialty, name: 'algebra')]
+			assignable_specialties = @service.assignable_specialties
+			@service.specialties.each do |spec|
+				assignable_specialties.include?(spec).should be_true
+			end
+			predefined_specialties.each do |spec|
+				assignable_specialties.include?(spec).should be_true
+			end
+		end
 	end
 	
 	context "Sunspot/SOLR auto-indexing" do

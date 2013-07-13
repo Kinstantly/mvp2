@@ -2,7 +2,7 @@ module ProfilesHelper
 	def display_profile_item_names(items, n=nil, &block)
 		if items.present?
 			n ||= items.length # If n is missing or explicitly passed in as nil, use all items.
-			names = items.collect(&:name).sort{|a, b| a.casecmp b}.slice(0, n)
+			names = items.collect(&:name).sort_by(&:downcase).slice(0, n)
 			if block.nil?
 				names.join(' | ') # Join with a separator.
 			else
@@ -235,7 +235,7 @@ module ProfilesHelper
 	# Categories helpers
 	
 	def profile_category_choices(profile)
-		(Category.predefined + profile.categories.reject(&:new_record?)).uniq.sort { |a, b| a.name.casecmp b.name }
+		(Category.predefined + profile.categories.reject(&:new_record?)).uniq.sort_by &:lower_case_name
 	end
 	
 	def profile_new_custom_categories(profile)

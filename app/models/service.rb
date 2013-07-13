@@ -27,4 +27,10 @@ class Service < ActiveRecord::Base
 	def browsable?
 		categories.any? &:browsable?
 	end
+	
+	# Specialties that are eligible to be assigned to this service.
+	# Includes specialties that are already assigned even if they are not predefined.
+	def assignable_specialties
+		(Specialty.predefined + specialties).sort_by(&:lower_case_name).uniq
+	end
 end

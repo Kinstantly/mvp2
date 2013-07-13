@@ -26,8 +26,20 @@ describe Category do
 		end
 		
 		it "it has persistent associated services" do
-			@services.each do |spec|
-				@category.services.include?(spec).should be_true
+			@services.each do |svc|
+				@category.services.include?(svc).should be_true
+			end
+		end
+		
+		it "can supply a list of services that are eligible for assigning to itself" do
+			predefined_services = [FactoryGirl.create(:predefined_service, name: 'music tutor'),
+				FactoryGirl.create(:predefined_service, name: 'math tutor')]
+			assignable_services = @category.assignable_services
+			@category.services.each do |svc|
+				assignable_services.include?(svc).should be_true
+			end
+			predefined_services.each do |svc|
+				assignable_services.include?(svc).should be_true
 			end
 		end
 	end

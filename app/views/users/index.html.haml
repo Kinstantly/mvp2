@@ -13,7 +13,7 @@
 					%th Created
 					%th Updated
 			%tbody
-				- @users.sort{|a, b| a.email.casecmp b.email}.each do |u|
+				- @users.sort_by{|u| u.email.downcase}.each do |u|
 					%tr
 						%td= u.email
 						%td= u.is_provider? ? profile_display_name(u.profile) : u.username

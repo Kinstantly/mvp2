@@ -24,4 +24,10 @@ class Category < ActiveRecord::Base
 	def browsable?
 		!!is_predefined
 	end
+	
+	# Services that are eligible to be assigned to this category.
+	# Includes services that are already assigned even if they are not predefined.
+	def assignable_services
+		(Service.predefined + services).sort_by(&:lower_case_name).uniq
+	end
 end
