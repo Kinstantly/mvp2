@@ -103,14 +103,15 @@ audio:not([controls]) {
 
 @mixin bullet-separator-style {
 	span {
+		display: inline;
 		padding-right: 0.38em;
 	}
 	span + span:before {
+		display: inline-block; // This allows word-wrap to break around a bullet.
 		content: '\2022';
 		font-size: 150%;
 		padding-right: 0.25em;
 		color: $default_link_color;
-		display: inline-block;
 	}
 }
 
@@ -1018,6 +1019,9 @@ div.popover {
 			}
 			span.specialties, span.location {
 				color: #000000;
+			}
+			span.specialties {
+				@include bullet-separator-style;
 			}
 			span.summary {
 				font-size: 14px;

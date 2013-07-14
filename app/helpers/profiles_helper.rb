@@ -14,7 +14,7 @@ module ProfilesHelper
 	def profile_wrap_item_names(items, n=nil)
 		display_profile_item_names items, n do |name|
 			content_tag :span, name.html_escape
-		end.html_safe
+		end.try(:html_safe)
 	end
 	
 	def display_profile_time(time_with_zone)
@@ -216,7 +216,7 @@ module ProfilesHelper
 	
 	def profile_display_truncated(text, options={})
 		create_links = options.delete :links
-		text = truncate text, {length: 80, separator: ' ', omission: ' ...'}.merge(options)
+		text = truncate text, {length: 80, separator: ' ', omission: '...'}.merge(options)
 		text = profile_create_links text if create_links
 		text
 	end
@@ -512,7 +512,11 @@ module ProfilesHelper
 	end
 	
 	def search_result_specialties(profile)
-		display_profile_item_names profile.specialties
+		profile_wrap_item_names profile.specialties
+	end
+	
+	def search_result_specialties_truncated(profile)
+		sanitize profile_display_truncated search_result_specialties(profile), length: 200, separator: '</span><span>', omission: '...</span>'
 	end
 	
 	def search_result_location(profile)
