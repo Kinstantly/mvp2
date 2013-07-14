@@ -36,12 +36,11 @@ class Profile < ActiveRecord::Base
 	# validates :categories, length: {maximum: 1}
 	validates :first_name, :last_name, :middle_name, :credentials, :email, :company_name, :url, :headline,
 		:certifications, :languages, :specialties_description, :invitation_email, :lead_generator, :photo_source_url,
-		:ages, length: {maximum: MAX_STRING_LENGTH}
+		:ages, :year_started, length: {maximum: MAX_STRING_LENGTH}
 	validates :availability, :awards, :education, :experience, :insurance_accepted, :pricing, :summary, :service_area,
 		:hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: MAX_TEXT_LENGTH}
 	validates :email, email: true, allow_blank: true
 	validates :invitation_email, email: true, allow_blank: true
-	validates :year_started, numericality: { only_integer: true, greater_than: 1900, less_than: 2100 }, allow_blank: true
 	
 	validates_each :custom_service_names, :custom_specialty_names do |record, attribute, names|
 		names.each do |name|

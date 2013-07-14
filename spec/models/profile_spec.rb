@@ -338,12 +338,28 @@ describe Profile do
 		end
 	end
 	
+	context "character limits on string attributes" do
+		it "limits the number of input characters for attributes stored as string records" do
+			s = 'a' * (Profile::MAX_STRING_LENGTH)
+			[:first_name, :last_name, :middle_name, :credentials, :company_name, :url, :headline,
+				:certifications, :languages, :specialties_description, :lead_generator,
+				:photo_source_url, :ages, :year_started].each do |attr|
+				@profile.send "#{attr}=", s
+				@profile.should have(:no).errors_on(attr)
+				@profile.send "#{attr}=", (s + 'a')
+				@profile.should have(1).error_on(attr)
+			end
+		end
+	end
+	
 	context "character limits on text attributes" do
 		it "limits the number of input characters for attributes stored as text records" do
-			s = 'a' * (Profile::MAX_TEXT_LENGTH + 1)
+			s = 'a' * (Profile::MAX_TEXT_LENGTH)
 			[:availability, :awards, :education, :experience, :insurance_accepted, :pricing, :summary, :service_area,
 				:hours, :phone_hours, :video_hours, :admin_notes].each do |attr|
 				@profile.send "#{attr}=", s
+				@profile.should have(:no).errors_on(attr)
+				@profile.send "#{attr}=", (s + 'a')
 				@profile.should have(1).error_on(attr)
 			end
 		end
@@ -494,14 +510,25 @@ describe Profile do
 			@profile.should have(:no).errors_on(:year_started)
 		end
 		
-		it "rejects a two digit year" do
-			@profile.year_started = '98'
-			@profile.should have(1).error_on(:year_started)
+		it "accepts alphanumeric text" do
+			@profile.year_started = 'Institute established: 1953; Day School established: 1973'
+			@profile.should have(:no).errors_on(:year_started)
+		end
+	end
+	
+	context "email addresses" do
+		it "accepts a valid email address" do
+			[:email, :invitation_email].each do |attr|
+				@profile.send "#{attr}=", 'a@b.com'
+				@profile.should have(:no).errors_on(attr)
+			end
 		end
 		
-		it "requires a number" do
-			@profile.year_started = '10 years ago'
-			@profile.should have(1).error_on(:year_started)
+		it "rejects an invalid email address" do
+			[:email, :invitation_email].each do |attr|
+				@profile.send "#{attr}=", 'a@b.'
+				@profile.should have(1).error_on(attr)
+			end
 		end
 	end
 end
