@@ -21,7 +21,7 @@
 	= hidden_field_tag search_term_names_to_add_attr
 	#search_terms_to_add
 		- i = 0; (@specialty.search_term_names_to_add + [nil]).each do |name|
-			= autocomplete_form_field search_term_names_to_add_attr, name, autocomplete_search_term_name_specialties_path, id: "search_term_name_#{i = i+1}", placeholder: I18n.t('views.specialty.edit.search_term_name_placeholder')
+			= autocomplete_form_field search_term_names_to_add_attr, name, autocomplete_search_term_name_specialties_path, size: 60, id: "search_term_name_#{i = i+1}", placeholder: I18n.t('views.specialty.edit.search_term_name_placeholder')
 	= button_tag id: 'add_search_term_name_field' do
 		= content_tag :strong, t('views.specialty.edit.add_search_term_name_field')
 	= f.button :submit

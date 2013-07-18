@@ -287,11 +287,11 @@ en:
     specialty:
       name: 'Specialty'
       edit:
-        add_search_term_name_field: 'Add a another search term'
+        add_search_term_name_field: 'Add a another search term field'
         destroy_button: 'Move specialty to trash'
         destroy_confirm: 'This specialty will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
         remove_search_term: 'Remove upon saving'
-        search_term_name_placeholder: 'Search term to add'
+        search_term_name_placeholder: 'Search term to add (hit ENTER to add another field)'
       view:
         find_by_name: 'Specialty name'
         not_browsable: '(grayed-out not assigned to a browsable service)'
