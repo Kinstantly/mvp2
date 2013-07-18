@@ -1,7 +1,9 @@
 class Specialty < ActiveRecord::Base
 	has_paper_trail # Track changes to each specialty.
 	
-  attr_accessible :name, :is_predefined
+	attr_writer :search_term_ids_to_remove, :search_term_names_to_add # readers defined below
+	
+	attr_accessible :name, :is_predefined, :search_term_ids_to_remove, :search_term_names_to_add
 	
 	has_and_belongs_to_many :profiles
 	has_and_belongs_to_many :services
@@ -17,6 +19,18 @@ class Specialty < ActiveRecord::Base
 	validates :name, presence: true
 	validates :name, length: {maximum: MAX_STRING_LENGTH}
 	
+	before_save do
+		# Remove search terms marked for removal.
+		trimmed_search_terms = search_terms.reject{ |term| search_term_ids_to_remove.include? term.id.to_s }
+		# Merge in new search terms and set the new list.
+		self.search_terms = (trimmed_search_terms + search_term_names_to_add.map(&:to_search_term)).uniq
+	end
+	
+	after_save do
+		# New search terms are now merged and saved, so we don't need their names (especially for AJAX updates).
+		self.search_term_names_to_add = nil
+	end
+	
 	include CachingForModel
 	predefined_info_parent :service
 	
@@ -24,5 +38,13 @@ class Specialty < ActiveRecord::Base
 	
 	def browsable?
 		services.any? &:browsable?
+	end
+	
+	def search_term_ids_to_remove
+		remove_blanks @search_term_ids_to_remove
+	end
+	
+	def search_term_names_to_add
+		remove_blanks @search_term_names_to_add
 	end
 end

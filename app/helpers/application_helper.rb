@@ -132,6 +132,12 @@ module ApplicationHelper
 		end
 	end
 	
+	# Returns the name value to be used by an input tag that assigns to an array attribute.
+	# default_object_name is the name of the attribute's parent object to be used in case the object name can't be derived.
+	def array_attribute_tag_name(attr_name, default_object_name, form_builder=nil)
+		"#{form_builder.try(:object_name).presence || default_object_name}[#{attr_name}][]"
+	end
+	
 	# Use this helper to work around a bug that causes an unchecked undefined value when using jQuery 1.9.
 	# http://github.com/crowdint/rails3-jquery-autocomplete/issues/210
 	def autocomplete_form_field(attribute, value, path, options={})

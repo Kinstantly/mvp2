@@ -7,6 +7,7 @@ module SunspotIndexing
 		# Queue a background job if so configured.
 		# This can be a big job if there are lots of associated profiles.
 		def reindex_profiles(record=nil)
+			return if new_record? # For a new record, cannot queue a job and there are no profiles to reindex anyway.
 			if REINDEX_PROFILES_IN_BACKGROUND
 				delay.do_reindex_profiles
 			else
@@ -16,7 +17,7 @@ module SunspotIndexing
 		
 		def do_reindex_profiles
 			if is_a? SearchTerm
-				specialties.map(&:profiles).flatten.map(&:index)
+				specialties.map(&:profiles).flatten.uniq.map(&:index)
 			elsif respond_to? :profiles
 				profiles.map(&:index)
 			end

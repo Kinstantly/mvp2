@@ -6,6 +6,10 @@ class SpecialtiesController < ApplicationController
 	# @specialty and @specialties initialized by load_and_authorize_resource with cancan ability conditions.
 	load_and_authorize_resource
 	skip_load_resource only: :find_by_name
+	skip_load_and_authorize_resource only: :autocomplete_search_term_name
+	
+	# Autocomplete search term names.
+	autocomplete :search_term, :name, full: true
 	
 	def index
 		@specialties = @specialties.order_by_name.page(params[:page]).per(20)

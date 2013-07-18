@@ -252,10 +252,6 @@ class Profile < ActiveRecord::Base
 		end
 	end
 	
-	def remove_blanks(strings)
-		(strings || []).select(&:present?)
-	end
-	
 	# Return an array of hashes holding the id and name values for each of the given items.
 	# Do not return values for new (unsaved) items.
 	def ids_names(items)

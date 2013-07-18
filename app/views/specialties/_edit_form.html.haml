@@ -2,5 +2,34 @@
 	= f.input :name do
 		= f.autocomplete_field :name, autocomplete_specialty_name_profiles_path, size: 50
 	= f.input :is_predefined
+	- search_term_ids_to_remove_attr = array_attribute_tag_name :search_term_ids_to_remove, :specialty, f
+	= hidden_field_tag search_term_ids_to_remove_attr
+	- if @specialty.search_terms.present?
+		- i = 0
+		%table#search_terms_to_remove
+			%thead
+				%tr
+					%th= t 'views.search_term.name'
+					%th= t 'views.specialty.edit.remove_search_term'
+			%tbody
+				- @specialty.search_terms.order_by_name.each do |search_term|
+					- id = search_term.id.to_s
+					%tr{class: "#{((i = i+1) % 2) == 0 ? 'e' : 'o'}"}
+						%td= label_tag specialty_search_term_to_remove_id(id), search_term.name
+						%td= check_box_tag search_term_ids_to_remove_attr, id, @specialty.search_term_ids_to_remove.include?(id), id: specialty_search_term_to_remove_id(id)
+	- search_term_names_to_add_attr = array_attribute_tag_name :search_term_names_to_add, :specialty, f
+	= hidden_field_tag search_term_names_to_add_attr
+	#search_terms_to_add
+		- i = 0; (@specialty.search_term_names_to_add + [nil]).each do |name|
+			= autocomplete_form_field search_term_names_to_add_attr, name, autocomplete_search_term_name_specialties_path, id: "search_term_name_#{i = i+1}", placeholder: I18n.t('views.specialty.edit.search_term_name_placeholder')
+	= button_tag id: 'add_search_term_name_field' do
+		= content_tag :strong, t('views.specialty.edit.add_search_term_name_field')
 	= f.button :submit
 	= link_to 'Cancel', specialties_path
+
+-# No ruby interpolation in the coffeescript filter.  It breaks caching of the coffeescript filter result.
+:coffeescript
+	# Add a search_term_name field.
+	$('#add_search_term_name_field').click (e) ->
+		$('#search_terms_to_add input:first').clone().attr('id', (i, current) -> current.replace(/\d+$/, String((new Date()).getTime()))).val('').appendTo('#search_terms_to_add').focus()
+		false

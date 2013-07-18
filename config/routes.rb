@@ -71,7 +71,10 @@ Mvp2::Application.routes.draw do
 	end
 	
 	resources :specialties do
-		get 'find_by_name', on: :collection
+		collection do
+			get :find_by_name
+			get :autocomplete_search_term_name
+		end
 	end
 	
 	# Where to go after sign-up or sign-in.

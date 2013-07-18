@@ -59,6 +59,31 @@
 			float: right;
 			margin-bottom: 1em;
 		}
+		#search_terms_to_add {
+			margin-top: 2em;
+			input {
+				display: block;
+				margin: 1em 0;
+			}
+		}
+		#add_search_term_name_field {
+			display: block;
+			margin-bottom: 2em;
+		}
+		#search_terms_to_remove {
+			border: {
+				top-style: solid;
+				top-width: thin;
+				bottom-style: solid;
+				bottom-width: thin;
+			}
+			th {
+				padding-right: 2em;
+			}
+			tr.o {
+				background-color: #F5F5F5;
+			}
+		}
 	}
 	#links {
 		clear: both;

@@ -92,7 +92,7 @@ module ProfilesHelper
 	end
 	
 	def profile_attribute_tag_name(attr_name, form_builder=nil)
-		"#{form_builder.try(:object_name).presence || 'profile'}[#{attr_name}][]"
+		array_attribute_tag_name attr_name, 'profile', form_builder
 	end
 	
 	def profile_link(profile)

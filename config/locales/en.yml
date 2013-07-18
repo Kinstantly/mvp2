@@ -267,6 +267,8 @@ en:
       showing_nearest_to_you: 'Showing nearest to you'
       short_profile:
         more: "See full details"
+    search_term:
+      name: 'Search term'
     service:
       name: 'Service'
       edit:
@@ -285,8 +287,11 @@ en:
     specialty:
       name: 'Specialty'
       edit:
+        add_search_term_name_field: 'Add a another search term'
         destroy_button: 'Move specialty to trash'
         destroy_confirm: 'This specialty will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
+        remove_search_term: 'Remove upon saving'
+        search_term_name_placeholder: 'Search term to add'
       view:
         find_by_name: 'Specialty name'
         not_browsable: '(grayed-out not assigned to a browsable service)'
