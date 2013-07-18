@@ -102,7 +102,7 @@ class Profile < ActiveRecord::Base
 			specialties.map &:name
 		end
 		text :search_terms do
-			specialties.map{|spec| spec.search_terms.map &:name}.flatten
+			specialties.map{|spec| spec.search_terms.map &:name}.flatten.uniq
 		end
 		
 		boolean :is_published
