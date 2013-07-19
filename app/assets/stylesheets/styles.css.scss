@@ -375,6 +375,9 @@ $masthead_width: 920px;
 	margin-bottom: 3px;
 	margin-right: 9px;
 }
+.profile #display_name h1 {
+	width: 300px; // On edit page, to keep star rating from underlaying the edit icon.
+}
 .profile span {
 	line-height: 20px;
 	color: $text_light_color;
