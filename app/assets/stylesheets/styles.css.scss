@@ -785,6 +785,9 @@ table.info {
 	padding-left: 18px;
 	margin-left: -18px;
 }
+#contact_options .editable {
+	background-position: 8px 0; // Nudge contact-options edit icon to the right so it isn't confused with the star rating.
+}
 .editable:hover {
 	background: url('edit-over.png') 0px 0px no-repeat;
 	cursor: pointer;
