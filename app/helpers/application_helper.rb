@@ -51,6 +51,11 @@ module ApplicationHelper
 		link_to "Edit my profile", path if show_link?(path) && can?(:update, User)
 	end
 	
+	def admin_profile_list_by_id_link
+		path = providers_path
+		link_to 'List profiles by ID', path if show_link?(path) && can?(:manage, Profile)
+	end
+	
 	def admin_profile_list_link
 		path = profiles_path
 		link_to 'List profiles', path if show_link?(path) && can?(:manage, Profile)

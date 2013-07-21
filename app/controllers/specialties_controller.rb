@@ -12,7 +12,7 @@ class SpecialtiesController < ApplicationController
 	autocomplete :search_term, :name, full: true
 	
 	def index
-		@specialties = @specialties.order_by_name.page(params[:page]).per(20)
+		@specialties = @specialties.order_by_name.page(params[:page]).per(params[:per_page])
 	end
 	
 	def new

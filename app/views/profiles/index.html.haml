@@ -1,3 +1,4 @@
+- can_manage_profiles = can? :manage, Profile
 .profile_index
 	#top_bar
 		.buttons
@@ -5,13 +6,15 @@
 			= admin_change_profile_list_link
 		= render partial: 'stats'
 	.profile_list{align: 'center'}
-		= paginate @profiles
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: Profile }
+			= paginate @profiles
 		%table
 			%thead
 				%tr
 					%th= Profile.human_attribute_name(:display_name)
 					%th= Profile.human_attribute_name(:company_name)
-					- if can? :manage, Profile
+					- if can_manage_profiles
 						%th= "#{t 'views.profile.view.published'} or #{t 'views.profile.view.not_published'}"
 						%th= t 'views.profile.view.claimed_by'
 						%th.large= Profile.human_attribute_name(:admin_notes)
@@ -42,7 +45,7 @@
 					%tr
 						%td= profile_list_name_link p
 						%td= p.company_name
-						- if can? :manage, Profile
+						- if can_manage_profiles
 							%td= p.is_published ? t('views.profile.view.published') : t('views.profile.view.not_published')
 							%td= p.claimed? ? p.user.email : 'Not claimed'
 							%td= p.admin_notes
@@ -69,4 +72,6 @@
 						%td.text_area= preserve_profile_text p.pricing
 						%td.text_area= preserve_profile_text p.hours
 						%td.text_area= preserve_profile_text p.service_area
-		= paginate @profiles
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: Profile }
+			= paginate @profiles

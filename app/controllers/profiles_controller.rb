@@ -35,12 +35,12 @@ class ProfilesController < ApplicationController
 	
 	def index
 		@profiles = @profiles.with_admin_notes if can?(:manage, Profile) && params[:with_admin_notes].present?
-		@profiles = @profiles.order_by_last_name.page params[:page]
+		@profiles = @profiles.order_by_last_name.page(params[:page]).per(params[:per_page])
 		render layout: 'plain'
 	end
 	
 	def link_index
-		@profiles = @profiles.order_by_id.page params[:page]
+		@profiles = @profiles.order_by_id.page(params[:page]).per(params[:per_page])
 		render layout: 'plain'
 	end
 	

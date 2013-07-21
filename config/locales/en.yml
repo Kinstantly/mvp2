@@ -320,3 +320,5 @@ en:
     how_many:
       one: '1 rating'
       other: '%{count} ratings'
+  pagination:
+    per_page_button: 'per page'

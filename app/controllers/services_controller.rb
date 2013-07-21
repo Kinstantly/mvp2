@@ -7,7 +7,7 @@ class ServicesController < ApplicationController
 	load_and_authorize_resource
 	
 	def index
-		@services = @services.order_by_name.page(params[:page]).per(20)
+		@services = @services.order_by_name.page(params[:page]).per(params[:per_page])
 	end
 	
 	def new

@@ -113,3 +113,17 @@
 .warning {
 	color: rgb(200, 0, 0);
 }
+
+.pagination_nav {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	> * {
+		display: inline;
+	}
+	.per_page {
+		float: left;
+	}
+}
+.pagination_nav + * {
+	clear: left;
+}
