@@ -35,6 +35,9 @@
 			.check_box
 				= f.check_box :consult_at_other
 				= f.label :consult_at_other
+		.check_box
+			= f.check_box :consult_remotely_or_at_home
+			= f.label :consult_remotely_or_at_home, t('views.profile.edit.consult_remotely_or_at_home')
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
 %ul.contact-toolbar.editable.attribute_display

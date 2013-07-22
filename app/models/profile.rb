@@ -14,7 +14,8 @@ class Profile < ActiveRecord::Base
 		:pricing, :availability, :service_area, 
 		:hours, :phone_hours, :video_hours, :accepting_new_clients, 
 		:invitation_email, :photo_source_url, 
-		:adoption_stage, :preconception_stage, :pregnancy_stage, :ages
+		:adoption_stage, :preconception_stage, :pregnancy_stage, :ages, 
+		:consult_remotely_or_at_home # the client doesn't have to travel to the provider
 	
 	belongs_to :user
 	# has_and_belongs_to_many :age_ranges # superseded by *_stage and ages attributes

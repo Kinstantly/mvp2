@@ -87,6 +87,8 @@
 		.consultations
 			%span.label= "#{t 'views.profile.view.consultation_modes'}:"
 			= profile_display_consultation_modes profile
+		.consult_remotely_or_at_home
+			%span.label= profile_display_consult_remotely_or_at_home profile
 		.year_started
 			%span.label= "#{Profile.human_attribute_name(:year_started)}:"
 			= profile.year_started

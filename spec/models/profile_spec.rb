@@ -190,7 +190,7 @@ describe Profile do
 	end
 	
 	context "consultations" do
-		it "stores consultation preferences" do
+		it "stores contact options" do
 			@profile.consult_in_person = true
 			@profile.consult_in_group = false
 			@profile.consult_by_email = true
@@ -211,6 +211,11 @@ describe Profile do
 			@profile.should have(:no).errors_on(:consult_at_hospital)
 			@profile.should have(:no).errors_on(:consult_at_camp)
 			@profile.should have(:no).errors_on(:consult_at_other)
+		end
+		
+		it "stores consultation option for providers that the client doesn't have to travel to" do
+			@profile.consult_remotely_or_at_home = true
+			@profile.should have(:no).errors_on(:consult_remotely_or_at_home)
 		end
 	end
 	

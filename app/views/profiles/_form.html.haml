@@ -142,6 +142,8 @@
 				= f.check_box :accepting_new_clients
 				= f.label :accepting_new_clients
 		.consultations
+			= f.label :consultations, t('views.profile.edit.consultation_modes_title')
+			%br
 			.check_box
 				= f.check_box :consult_by_email
 				= f.label :consult_by_email
@@ -172,6 +174,10 @@
 			.check_box
 				= f.check_box :consult_at_other
 				= f.label :consult_at_other
+		.consult_remotely_or_at_home
+			.check_box
+				= f.check_box :consult_remotely_or_at_home
+				= f.label :consult_remotely_or_at_home
 		.year_started
 			.label_area
 				= f.label :year_started
