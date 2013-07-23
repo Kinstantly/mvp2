@@ -4,18 +4,22 @@
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
-		.text_field
+		.text_field#first_name_field
+			%span.char_count
 			= f.label :first_name
-			= f.text_field :first_name, id: 'profile_first_name', class: 'display_name_field'
-		.text_field
+			= f.text_field :first_name, class: 'display_name_field'
+		.text_field#middle_name_field
+			%span.char_count
 			= f.label :middle_name
-			= f.text_field :middle_name, id: 'profile_middle_name', class: 'display_name_field'
-		.text_field
+			= f.text_field :middle_name, class: 'display_name_field'
+		.text_field#last_name_field
+			%span.char_count
 			= f.label :last_name
-			= f.text_field :last_name, id: 'profile_last_name', class: 'display_name_field'
-		.text_field
+			= f.text_field :last_name, class: 'display_name_field'
+		.text_field#credentials_field
+			%span.char_count
 			= f.label :credentials
-			= f.text_field :credentials, id: 'profile_credentials', class: 'display_name_field'
+			= f.text_field :credentials, class: 'display_name_field'
 			%p.note= t 'views.profile.edit.credentials_example'
 		.display_name_area
 			= f.label :display_name
@@ -30,5 +34,10 @@
 :coffeescript
 	# Refresh display name as contributing input tags are modified.
 	refresh_display_name = () ->
-		$(my_vars.display_name_sel).text profile_display_name($('#profile_first_name').val(), $('#profile_middle_name').val(), $('#profile_last_name').val(), $('#profile_credentials').val())
-	$('.display_name_field').keyup (e) -> refresh_display_name()
+		$(my_vars.display_name_sel).text profile_display_name($('#first_name_field input').val(), $('#middle_name_field input').val(), $('#last_name_field input').val(), $('#credentials_field input').val())
+	$('.display_name_field').on 'keyup blur', (e) -> refresh_display_name()
+	
+	# Show character count while filling in fields.
+	max_count = my_vars.edit_profile.max_string_length
+	for id in ['first_name_field', 'middle_name_field', 'last_name_field', 'credentials_field']
+		$('#'+id+' input').simplyCountable({counter: '#'+id+' .char_count', maxCount: max_count})

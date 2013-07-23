@@ -2,11 +2,13 @@
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
-		.text_field
+		.text_field#url_field
+			%span.char_count
 			= f.label :url
 			= f.text_field :url
 			%p.note= t 'views.profile.edit.url_example'
-		.text_field
+		.text_field#email_field
+			%span.char_count
 			= f.label :email
 			= f.text_field :email
 			%p.note= t 'views.profile.edit.email_example'
@@ -17,3 +19,9 @@
 %span.location.editable.attribute_display{itemprop: "email"}
 	= t 'views.profile.view.email'
 	= profile_display_email @profile.errorfree, Profile.human_attribute_name(:email)
+
+:coffeescript
+	# Show character count while filling in fields.
+	max_count = my_vars.edit_profile.max_string_length
+	for id in ['url_field', 'email_field']
+		$('#'+id+' input').simplyCountable({counter: '#'+id+' .char_count', maxCount: max_count})

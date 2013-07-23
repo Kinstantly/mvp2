@@ -18,9 +18,14 @@
 				.check_box
 					= f.check_box :pregnancy_stage
 					= f.label :pregnancy_stage
-				.text_field
+				.text_field#ages_field
+					%span.char_count
 					= f.label :ages
 					= f.text_field :ages, class: 'attr'
 					%p.note= t 'views.profile.edit.ages_example'
 			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 			= link_to 'Cancel', '#', class: 'cancel button'
+
+:coffeescript
+	# Show character count while filling in field.
+	$('#ages_field input').simplyCountable({counter: '#ages_field .char_count', maxCount: my_vars.edit_profile.max_string_length})

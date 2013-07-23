@@ -6,9 +6,14 @@
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
 			= hidden_field_tag 'formlet', formlet
-			.text_field
+			.text_field#service_area_field
+				%span.char_count
 				= f.label :service_area
 				= f.text_area :service_area, size: '45x5', class: 'attr'
 				%p.note= t 'views.profile.edit.service_area_example'
 			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 			= link_to 'Cancel', '#', class: 'cancel button'
+
+:coffeescript
+	# Show character count while filling in field.
+	$('#service_area_field textarea').simplyCountable({counter: '#service_area_field .char_count', maxCount: my_vars.edit_profile.max_text_area_length, valueLength: my_vars.edit_profile.text_area_value_length})

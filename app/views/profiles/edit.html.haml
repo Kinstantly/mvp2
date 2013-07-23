@@ -1,5 +1,10 @@
 - @page_title_prefix = @profile.display_name_or_company
 - @body_class ||= 'interior edit'
+:javascript
+	my_vars.edit_profile = my_vars.edit_profile || {};
+	my_vars.edit_profile.max_string_length = #{Profile::MAX_STRING_LENGTH};
+	my_vars.edit_profile.max_text_area_length = #{Profile::MAX_TEXT_LENGTH};
+	my_vars.edit_profile.text_area_value_length = function(el) { return el.val().replace(/\n/g, '\r\n').length; };
 - if can?(:manage, Profile)
 	.editor_buttons
 		- unless @profile.owned_by? current_user

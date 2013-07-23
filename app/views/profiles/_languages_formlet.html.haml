@@ -6,9 +6,14 @@
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
 			= hidden_field_tag 'formlet', formlet
-			.text_field
+			.text_field#languages_field
+				%span.char_count
 				= f.label :languages
 				= f.text_field :languages, class: 'attr'
 				%p.note= t 'views.profile.edit.languages_example'
 			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 			= link_to 'Cancel', '#', class: 'cancel button'
+
+:coffeescript
+	# Show character count while filling in field.
+	$('#languages_field input').simplyCountable({counter: '#languages_field .char_count', maxCount: my_vars.edit_profile.max_string_length})

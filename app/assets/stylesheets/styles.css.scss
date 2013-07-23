@@ -750,6 +750,15 @@ table.info {
 			margin-top: 16px;
 		}
 	}
+	.char_count {
+		float: right;
+		width: auto;
+		color: $text_light_color;
+		font-size: 16px;
+	}
+	.char_count.over {
+		color: $kinstantly_pink;
+	}
 	.note {
 		margin-bottom: 14px;
 		line-height: normal;

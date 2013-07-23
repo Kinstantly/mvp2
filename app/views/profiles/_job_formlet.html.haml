@@ -3,11 +3,13 @@
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
 		= hidden_field_tag 'refresh_formlets', "#{formlet} display_name"
-		.text_field
+		.text_field#headline_field
+			%span.char_count
 			= f.label :headline
 			= f.text_field :headline
 			%p.note= t 'views.profile.edit.headline_example'
-		.text_field
+		.text_field#company_name_field
+			%span.char_count
 			= f.label :company_name
 			= f.text_field :company_name
 			%p.note= t 'views.profile.edit.company_name_example'
@@ -17,3 +19,9 @@
 	= @profile.errorfree.headline.presence || profile_blank_attribute_message(Profile.human_attribute_name :headline)
 %span.title.editable.attribute_display{itemprop: "affiliation"}
 	= @profile.errorfree.company_name.presence || profile_blank_attribute_message(Profile.human_attribute_name :company_name)
+
+:coffeescript
+	# Show character count while filling in fields.
+	max_count = my_vars.edit_profile.max_string_length
+	for id in ['headline_field', 'company_name_field']
+		$('#'+id+' input').simplyCountable({counter: '#'+id+' .char_count', maxCount: max_count})
