@@ -1,0 +1,41 @@
+= Testing
+
+The goal is to do behavior-driven and test-driven development (BDD and TDD).  I don't always succeed.  Sometimes I write the tests afterwards.  The main thing is to get coverage for all types of functionality.  We're using Rspec and Cucumber.  See 'spec' and 'features' in the repository root.
+
+== Rspec
+
+* https://www.relishapp.com/rspec
+* http://pragprog.com/book/achbd/the-rspec-book
+
+Everything is in the 'spec' folder.
+
+=== TextMate
+
+* https://github.com/rspec/rspec-tmbundle (TextMate bundle)
+
+To run Rspec from inside TextMate, go to Preferences -> Advanced -> Shell Variables.  Set the following shell variables.
+
+ RUBYOPT rubygems
+ TM_RUBY ~/.rvm/bin/rvm-auto-ruby
+
+For the TM_RUBY value, you might have to use the expanded path instead of '~'.
+
+== FactoryGirl
+
+* https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md
+
+Factories are in 'spec/factories'.  There should be a file in there for each model.  If you create a new model, create a factory for it in that folder.
+
+== Cucumber
+
+* http://cukes.info/
+
+Cucumber feature files are in the 'features' folder.  It shares FactoryGirl with rspec, i.e., in 'spec/factories'.
+
+== Capybara
+
+We are using the Capybara DSL for Cucumber.
+
+* https://gist.github.com/zhengjia/428105 (DSL cheat sheet)
+* http://rubydoc.info/github/jnicklas/capybara/master
+* https://github.com/jnicklas/capybara#readme
