@@ -5,14 +5,13 @@ class Profile < ActiveRecord::Base
 	
 	attr_accessible :first_name, :last_name, :middle_name, :credentials, :email, 
 		:company_name, :url, :locations_attributes, 
-		:headline, :education, :experience, :certifications, :awards, :year_started, 
+		:headline, :education, :certifications, :year_started, 
 		:languages, :insurance_accepted, :summary, 
 		:category_ids, :service_ids, :specialty_ids, 
-		:custom_service_names, :custom_specialty_names, :specialties_description, 
+		:custom_service_names, :custom_specialty_names, 
 		:consult_in_person, :consult_in_group, :consult_by_email, :consult_by_phone, :consult_by_video, 
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, :consult_at_other, 
-		:pricing, :availability, :service_area, 
-		:hours, :phone_hours, :video_hours, :accepting_new_clients, 
+		:pricing, :service_area, :hours, :accepting_new_clients, 
 		:invitation_email, :photo_source_url, 
 		:adoption_stage, :preconception_stage, :pregnancy_stage, :ages, 
 		:consult_remotely_or_at_home # the client doesn't have to travel to the provider
@@ -29,23 +28,50 @@ class Profile < ActiveRecord::Base
 	has_many :ratings, as: :rateable, dependent: :destroy
 	has_many :raters, through: :ratings
 	
-	MAX_STRING_LENGTH = 254
-	MAX_TEXT_LENGTH = 1000
-	MAX_CUSTOM_NAME_LENGTH = 100
-	
 	validate :publishing_requirements
 	# validates :categories, length: {maximum: 1}
-	validates :first_name, :last_name, :middle_name, :credentials, :email, :company_name, :url, :headline,
-		:certifications, :languages, :specialties_description, :invitation_email, :lead_generator, :photo_source_url,
-		:ages, :year_started, length: {maximum: MAX_STRING_LENGTH}
-	validates :availability, :awards, :education, :experience, :insurance_accepted, :pricing, :summary, :service_area,
-		:hours, :phone_hours, :video_hours, :admin_notes, length: {maximum: MAX_TEXT_LENGTH}
 	validates :email, email: true, allow_blank: true
 	validates :invitation_email, email: true, allow_blank: true
 	
+	# Define maximum length of each string or text attribute in a publicly accessible way.
+	# This allows them to be used at the view layer for character counts in input and textarea tags.
+	MAX_LENGTHS = {
+		first_name: 50,
+		middle_name: 50,
+		last_name: 50,
+		credentials: 50,
+		email: 200,
+		company_name: 200,
+		url: 250,
+		headline: 200,
+		certifications: 250,
+		languages: 200,
+		invitation_email: 250,
+		lead_generator: 250,
+		photo_source_url: 250,
+		ages: 150,
+		year_started: 100,
+		education: 1000,
+		insurance_accepted: 750,
+		pricing: 750,
+		summary: 1250,
+		service_area: 750,
+		hours: 750,
+		admin_notes: 2000,
+		custom_service_names: 150,
+		custom_specialty_names: 150
+	}
+	
+	[:first_name, :middle_name, :last_name, :credentials, :email, :company_name, :url, :headline, :certifications,
+		:languages, :invitation_email, :lead_generator, :photo_source_url, :ages, :year_started, :education,
+		:insurance_accepted, :pricing, :summary, :service_area, :hours, :admin_notes].each do |attribute|
+			validates attribute, allow_blank: true, length: {maximum: MAX_LENGTHS[attribute]}
+		end
+	
 	validates_each :custom_service_names, :custom_specialty_names do |record, attribute, names|
+		max_length = MAX_LENGTHS[attribute]
 		names.each do |name|
-			record.errors.add attribute, I18n.t("models.profile.#{attribute}.too_long", max: MAX_CUSTOM_NAME_LENGTH) if name.length > MAX_CUSTOM_NAME_LENGTH
+			record.errors.add attribute, I18n.t("models.profile.#{attribute}.too_long", max: max_length) if name.length > max_length
 		end
 	end
 

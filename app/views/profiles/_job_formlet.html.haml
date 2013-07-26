@@ -22,6 +22,5 @@
 
 :coffeescript
 	# Show character count while filling in fields.
-	max_count = my_vars.edit_profile.max_string_length
-	for id in ['headline_field', 'company_name_field']
-		$('#'+id+' input').simplyCountable({counter: '#'+id+' .char_count', maxCount: max_count})
+	for attribute in ['headline', 'company_name']
+		$('#'+attribute+'_field input').simplyCountable({counter: '#'+attribute+'_field .char_count', maxCount: my_vars.edit_profile.max_lengths[attribute]})

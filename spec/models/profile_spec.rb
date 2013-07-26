@@ -141,7 +141,10 @@ describe Profile do
 			end
 			
 			it "limits length of name" do
-				@profile.custom_service_names = ['a' * (Profile::MAX_CUSTOM_NAME_LENGTH + 1)]
+				name = 'a' * Profile::MAX_LENGTHS[:custom_service_names]
+				@profile.custom_service_names = [name]
+				@profile.should have(:no).error_on(:custom_service_names)
+				@profile.custom_service_names = [name + 'a']
 				@profile.should have(1).error_on(:custom_service_names)
 			end
 		end
@@ -178,7 +181,10 @@ describe Profile do
 			end
 			
 			it "limits length of name" do
-				@profile.custom_specialty_names = ['a' * (Profile::MAX_CUSTOM_NAME_LENGTH + 1)]
+				name = 'a' * Profile::MAX_LENGTHS[:custom_specialty_names]
+				@profile.custom_specialty_names = [name]
+				@profile.should have(:no).error_on(:custom_specialty_names)
+				@profile.custom_specialty_names = [name + 'a']
 				@profile.should have(1).error_on(:custom_specialty_names)
 			end
 		end
@@ -343,25 +349,13 @@ describe Profile do
 		end
 	end
 	
-	context "character limits on string attributes" do
-		it "limits the number of input characters for attributes stored as string records" do
-			s = 'a' * (Profile::MAX_STRING_LENGTH)
+	context "character limits on string and text attributes" do
+		it "limits the number of input characters for attributes stored as string or text records" do
 			[:first_name, :last_name, :middle_name, :credentials, :company_name, :url, :headline,
-				:certifications, :languages, :specialties_description, :lead_generator,
-				:photo_source_url, :ages, :year_started].each do |attr|
-				@profile.send "#{attr}=", s
-				@profile.should have(:no).errors_on(attr)
-				@profile.send "#{attr}=", (s + 'a')
-				@profile.should have(1).error_on(attr)
-			end
-		end
-	end
-	
-	context "character limits on text attributes" do
-		it "limits the number of input characters for attributes stored as text records" do
-			s = 'a' * (Profile::MAX_TEXT_LENGTH)
-			[:availability, :awards, :education, :experience, :insurance_accepted, :pricing, :summary, :service_area,
-				:hours, :phone_hours, :video_hours, :admin_notes].each do |attr|
+				:certifications, :languages, :lead_generator, :photo_source_url, :ages, :year_started,
+				:education, :insurance_accepted, :pricing, :summary, :service_area,
+				:hours, :admin_notes].each do |attr|
+				s = 'a' * Profile::MAX_LENGTHS[attr]
 				@profile.send "#{attr}=", s
 				@profile.should have(:no).errors_on(attr)
 				@profile.send "#{attr}=", (s + 'a')
