@@ -18,6 +18,9 @@
 # Ignore dynamically generated sitemaps.
 /public/sitemap[0-9_]*.xml*
 
+# Ignore jquery.simplyCountable.js demo page.
+/public/demo.html
+
 # Ignore Solr dev files that are not configuration.
 /solr/data*
 /solr/pids
