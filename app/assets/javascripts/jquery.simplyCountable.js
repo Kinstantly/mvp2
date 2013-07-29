@@ -15,7 +15,7 @@
 
   $.fn.simplyCountable = function(options){
     
-    options = $.extend({
+    globalOptions = $.extend({
       counter:            '#counter',
       countType:          'characters',
       maxCount:           140,
@@ -24,7 +24,9 @@
       safeClass:          'safe',
       overClass:          'over',
       thousandSeparator:  ',',
+      additionalEvents:   '',
       valueLength:        null,
+      optionsForElement:  function(element){ return {} },
       onOverCount:        function(){},
       onSafeCount:        function(){},
       onMaxCount:         function(){}
@@ -34,6 +36,7 @@
 
     return $(this).each(function(){
 
+      var options = $.extend({}, globalOptions, globalOptions.optionsForElement(this));
       var countable = $(this);
       var counter = $(options.counter);
       if (!counter.length) { return false; }
@@ -118,7 +121,7 @@
       
       countCheck();
 
-      countable.on('keyup blur paste', function(e) {
+      countable.on($.trim('keyup blur paste ' + options.additionalEvents), function(e) {
         switch(e.type) {
           case 'keyup':
             // Skip navigational key presses

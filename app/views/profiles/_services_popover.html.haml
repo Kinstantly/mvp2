@@ -25,6 +25,7 @@
 			- i = 0; @profile.custom_service_names.each do |name|
 				.text_field
 					= profile_custom_services_autocomplete_field_tag(@profile, name, "#{i = i+1}", f)
+					%span.char_count
 			- @profile_custom_services_i = i
 			- @profile_custom_services_text_field_template = profile_custom_services_autocomplete_field_tag(@profile, '', 'INDEX', f)
 		.specialties
@@ -41,6 +42,7 @@
 			- i = 0; @profile.custom_specialty_names.each do |name|
 				.text_field
 					= profile_custom_specialties_autocomplete_field_tag(@profile, name, "#{i = i+1}", f)
+					%span.char_count
 			- @profile_custom_specialties_i = i
 			- @profile_custom_specialties_text_field_template = profile_custom_specialties_autocomplete_field_tag(@profile, '', 'INDEX', f)
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
@@ -54,7 +56,7 @@
 			window.edit_profile = {
 				parents: {}, maps: {}, names: {}, ids_names: {},
 				check_box_caches: {}, check_box_templates: {}, hidden_field_tags: {},
-				prompts: {}
+				prompts: {}, max_lengths: my_vars.edit_profile.max_lengths
 			};
 			// categories -> services
 			edit_profile.parents['services'] = 'categories';
@@ -133,16 +135,30 @@
 	# Show check boxes for specialties.
 	show_check_boxes('specialties')
 	
+	# Configure the input field with character count and ability to add another field.
+	configure_text_field = (selector, max_count, add_field) ->
+		$(selector).simplyCountable({
+			optionsForElement: (element) -> {counter: '#' + $(element).attr('id') + ' ~ .char_count'},
+			maxCount: max_count,
+			additionalEvents: 'railsAutocomplete.select',
+		}).focus().keydown (e) ->
+			add_field e if e.which == 13 # carriage return
+	
 	# Add extra text input tags for custom services.
 	add_custom_services_text_field = (e) ->
 		e.preventDefault()
 		$('.custom_services').append '<span id="custom_services_field_prompt" class="note">' +
 			edit_profile.t_add_text_field + '</span>' if $('#custom_services_field_prompt').length == 0
 		$('#custom_services_field_prompt').before '<div class="text_field">' +
-			edit_profile.custom_services_template.replace('INDEX', String(++edit_profile.custom_services_i)) + '</div>'
-		$('.custom_services input:last').focus().keydown (e) ->
-			add_custom_services_text_field e if e.which == 13 # carriage return
+			edit_profile.custom_services_template.replace('INDEX', String(++edit_profile.custom_services_i)) +
+			'<span class="char_count"></span></div>'
+		configure_text_field '.custom_services input:last', edit_profile.max_lengths.custom_service_names, add_custom_services_text_field
+	
+	# Button for adding a custom services text field.
 	$('#add_custom_services_text_field').click add_custom_services_text_field
+	
+	# Configure custom services text fields that have already been rendered, e.g., on a validation error.
+	configure_text_field '.custom_services .text_field input', edit_profile.max_lengths.custom_service_names, add_custom_services_text_field
 	
 	# Add extra text input tags for custom specialties.
 	add_custom_specialties_text_field = (e) ->
@@ -150,7 +166,12 @@
 		$('.custom_specialties').append '<span id="custom_specialties_field_prompt" class="note">' +
 			edit_profile.t_add_text_field + '</span>' if $('#custom_specialties_field_prompt').length == 0
 		$('#custom_specialties_field_prompt').before '<div class="text_field">' +
-			edit_profile.custom_specialties_template.replace('INDEX', String(++edit_profile.custom_specialties_i)) + '</div>'
-		$('.custom_specialties input:last').focus().keydown (e) ->
-			add_custom_specialties_text_field e if e.which == 13 # carriage return
+			edit_profile.custom_specialties_template.replace('INDEX', String(++edit_profile.custom_specialties_i)) +
+			'<span class="char_count"></span></div>'
+		configure_text_field '.custom_specialties input:last', edit_profile.max_lengths.custom_specialty_names, add_custom_specialties_text_field
+	
+	# Button for adding a custom specialties text field.
 	$('#add_custom_specialties_text_field').click add_custom_specialties_text_field
+
+	# Configure custom specialties text fields that have already been rendered, e.g., on a validation error.
+	configure_text_field '.custom_specialties .text_field input', edit_profile.max_lengths.custom_specialty_names, add_custom_specialties_text_field

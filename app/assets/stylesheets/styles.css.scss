@@ -656,7 +656,16 @@ table.info {
 			p + p {
 				margin-top: 0.5em;
 			}
-			@include bullet-separator-style;
+			.attribute_display {
+				@include bullet-separator-style;
+			}
+		}
+	}
+	#services .popover {
+		width: 468px;
+		.char_count {
+			float: right;
+			padding-top: 25px;
 		}
 	}
 }

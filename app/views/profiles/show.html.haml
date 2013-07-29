@@ -83,7 +83,8 @@
 					%tr#specialties
 						%th
 							%span= Profile.human_attribute_name :specialties
-						%td= profile_wrap_item_names @profile.specialties
+						%td
+							%span.attribute_display= profile_wrap_item_names @profile.specialties
 				- if (stages_ages = @profile.display_stages_ages).present?
 					%tr
 						%th
