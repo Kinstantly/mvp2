@@ -13,6 +13,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /log/*.log.lck
+/log/*.log.gz
 /tmp
 
 # Ignore dynamically generated sitemaps.
