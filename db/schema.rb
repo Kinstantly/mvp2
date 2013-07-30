@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130721055802) do
+ActiveRecord::Schema.define(:version => 20130730042550) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -93,8 +93,8 @@ ActiveRecord::Schema.define(:version => 20130721055802) do
     t.string   "url"
     t.string   "secondary_phone"
     t.string   "primary_phone"
-    t.datetime "created_at",                                         :null => false
-    t.datetime "updated_at",                                         :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
     t.integer  "user_id"
     t.string   "credentials"
     t.string   "headline"
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(:version => 20130721055802) do
     t.text     "experience"
     t.string   "certifications"
     t.text     "awards"
-    t.string   "languages",                   :default => "English"
+    t.string   "languages",               :default => "English"
     t.text     "summary"
     t.string   "email"
     t.boolean  "consult_by_email"
@@ -113,11 +113,11 @@ ActiveRecord::Schema.define(:version => 20130721055802) do
     t.text     "insurance_accepted"
     t.text     "pricing"
     t.text     "availability"
-    t.boolean  "is_published",                :default => false
+    t.boolean  "is_published",            :default => false
     t.text     "hours"
     t.text     "phone_hours"
     t.text     "video_hours"
-    t.boolean  "accepting_new_clients",       :default => true
+    t.boolean  "accepting_new_clients",   :default => true
     t.boolean  "consult_in_person"
     t.string   "specialties_description"
     t.string   "invitation_email"
@@ -132,13 +132,13 @@ ActiveRecord::Schema.define(:version => 20130721055802) do
     t.boolean  "consult_at_camp"
     t.boolean  "consult_at_other"
     t.string   "photo_source_url"
-    t.boolean  "trash",                       :default => false
+    t.boolean  "trash",                   :default => false
     t.boolean  "adoption_stage"
     t.boolean  "preconception_stage"
     t.boolean  "pregnancy_stage"
     t.string   "ages"
     t.string   "year_started"
-    t.boolean  "consult_remotely_or_at_home"
+    t.boolean  "consult_remotely"
   end
 
   create_table "profiles_services", :force => true do |t|

@@ -219,9 +219,9 @@ describe Profile do
 			@profile.should have(:no).errors_on(:consult_at_other)
 		end
 		
-		it "stores consultation option for providers that the client doesn't have to travel to" do
-			@profile.consult_remotely_or_at_home = true
-			@profile.should have(:no).errors_on(:consult_remotely_or_at_home)
+		it "stores consultation option for providers that offer most or all of their services remotely" do
+			@profile.consult_remotely = true
+			@profile.should have(:no).errors_on(:consult_remotely)
 		end
 	end
 	

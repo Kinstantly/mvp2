@@ -468,8 +468,8 @@ module ProfilesHelper
 		profile.accepting_new_clients ? t('views.profile.view.accepting_new_clients') : t('views.profile.view.not_accepting_new_clients')
 	end
 	
-	def profile_display_consult_remotely_or_at_home(profile)
-		profile.consult_remotely_or_at_home ? Profile.human_attribute_name(:consult_remotely_or_at_home) : t('views.profile.view.does_not_consult_remotely_or_at_home')
+	def profile_display_consult_remotely(profile)
+		profile.consult_remotely ? Profile.human_attribute_name(:consult_remotely) : t('views.profile.view.does_not_consult_remotely')
 	end
 	
 	# Search
