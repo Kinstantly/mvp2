@@ -103,6 +103,12 @@ def attribute_display_selector(formlet, which, overlay=nil)
 	selector
 end
 
+def location_address_selector(which)
+	selector = '.location'
+	selector += ' ~ .location ~ .location' if which.strip == 'second'
+	selector
+end
+
 ### GIVEN ###
 
 Given /^I am on my profile edit page$/ do
@@ -268,6 +274,13 @@ Given /^another published profile with city "(.*?)" and state "(.*?)"$/ do |city
 	create_published_profile_2
 	@published_profile_2.locations = [FactoryGirl.create(:location, city: city, region: state)]
 	@published_profile_2.save
+end
+
+Given /^a published profile with cities "(.*?)" and "(.*?)" and states "(.*?)" and "(.*?)"$/ do |city1, city2, state1, state2|
+	create_published_profile
+	@published_profile.locations = [FactoryGirl.create(:location, city: city1, region: state1),
+		FactoryGirl.create(:location, city: city2, region: state2)]
+	@published_profile.save
 end
 
 Given /^a published profile with admin notes "(.*?)"$/ do |notes|
@@ -534,6 +547,10 @@ When /^I enter "(.*?)" in the "(.*?)" field of the (first|second) location$/ do 
 	end
 end
 
+When /^I click on the link to see all locations$/ do
+	click_link 'more_locations'
+end
+
 ### THEN ###
 
 Then /^I should see my profile information$/ do
@@ -578,9 +595,21 @@ Then /^(?:my|the) profile should not show "([^\"]+)"$/ do |value|
 	page.should_not have_content value
 end
 
-Then /^my profile should show "([^\"]+)" within "([^\"]+)"$/ do |value, css_class_name|
+Then /^(?:my|the) profile should show "([^\"]+)" within "([^\"]+)"$/ do |value, css_class_name|
 	within(".#{css_class_name}") do
 		page.should have_content value
+	end
+end
+
+Then /^(?:my|the) profile should show "([^\"]+)" within the (first|second) location address$/ do |value, which|
+	within(location_address_selector which) do
+		page.should have_content value
+	end
+end
+
+Then /^(?:my|the) profile should not show "([^\"]+)" within the (first|second) location address$/ do |value, which|
+	within(location_address_selector which) do
+		page.should_not have_content value
 	end
 end
 

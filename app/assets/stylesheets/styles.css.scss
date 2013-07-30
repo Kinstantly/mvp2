@@ -366,37 +366,43 @@ $masthead_width: 920px;
 .profile {
 	width: 410px;
 	float: left;
-}
-.profile h1 {
-	font-weight: bold;
-	font-size: 22px;
-	line-height: 22px;
-	float: left;
-	margin-bottom: 3px;
-	margin-right: 9px;
-}
-.profile #display_name h1 {
-	width: 300px; // On edit page, to keep star rating from underlaying the edit icon.
-}
-.profile span {
-	line-height: 20px;
-	color: $text_light_color;
-	display: block;
-	width: 100%;
-	clear: left;
-}
-.profile div.reviews {
-	float: left;
-	width: auto;
-	clear: none;
-	margin-top: 2px;
-}
-.profile span.title {
-	font-size: 15px;
-}
-.profile span.location {
-	font-size: 14px;
-	line-height: 19px;
+	h1 {
+		font-weight: bold;
+		font-size: 22px;
+		line-height: 22px;
+		float: left;
+		margin-bottom: 3px;
+		margin-right: 9px;
+	}
+	#display_name h1 {
+		width: 300px; // On edit page, to keep star rating from underlaying the edit icon.
+	}
+	span {
+		line-height: 20px;
+		color: $text_light_color;
+		display: block;
+		width: 100%;
+		clear: left;
+	}
+	div.reviews {
+		float: left;
+		width: auto;
+		clear: none;
+		margin-top: 2px;
+	}
+	span.title {
+		font-size: 15px;
+	}
+	span.location, a#more_locations, a#hide_locations {
+		font-size: 14px;
+		line-height: 19px;
+	}
+	a#more_locations, a#hide_locations {
+		float: right;
+	}
+	span.location.more, a#hide_locations {
+		display: none;
+	}
 }
 .reviews .star {
 	background: url('star.gif') 0px 0px no-repeat;

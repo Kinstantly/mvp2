@@ -31,9 +31,19 @@
 			%span.title{itemprop: "jobTitle"}= @profile.headline
 			- if @profile.company_name.present? && @profile.display_name.present?
 				%span.title{itemprop: "affiliation"}= @profile.company_name
-			- location = @profile.locations.order_by_id.first
-			%span.location{itemprop: "street-address"}= location.try(:display_address)
-			%span.location{itemprop: "telephone"}= location.try(:display_phone)
+			- (locations = @profile.locations.order_by_id).each_index do |i|
+				- if i == 0
+					%span.location{itemprop: "street-address"}= locations[i].display_address
+					- if locations.size > 1
+						%span
+							= link_to t('views.profile.view.more_locations'), '#', id: 'more_locations'
+							= link_to t('views.profile.view.hide_locations'), '#', id: 'hide_locations'
+						%span.location{itemprop: "telephone"}= locations[i].display_phone.presence or raw('&nbsp;')
+					- else
+						%span.location{itemprop: "telephone"}= locations[i].display_phone
+				- else
+					%span.location.more{itemprop: "street-address"}= locations[i].display_address
+					%span.location.more{itemprop: "telephone"}= locations[i].display_phone
 			%span.location{itemprop: "url"}= profile_linked_website @profile
 			- if @profile.email.present?
 				%span.location{itemprop: "email"}
@@ -167,3 +177,16 @@
 			.lead_generator
 				= "#{Profile.human_attribute_name(:lead_generator)}:"
 				= @profile.lead_generator
+
+:coffeescript
+	$('#more_locations').click () ->
+		$(this).css 'display', 'none'
+		$('#hide_locations').css 'display', 'inline'
+		$('span.location.more').css 'display', 'block'
+		false
+	
+	$('#hide_locations').click () ->
+		$(this).css 'display', 'none'
+		$('#more_locations').css 'display', 'inline'
+		$('span.location.more').css 'display', 'none'
+		false
