@@ -33,9 +33,7 @@ def create_profile
 	@profile = FactoryGirl.create(:profile, @profile_data)
 	@user.profile = @profile
 	@user.save
-	FactoryGirl.create(:age_range, name: '0-1', sort_index: 1, start: '0', end: '1')
-	FactoryGirl.create(:age_range, name: '1-3', sort_index: 2, start: '1', end: '3')
-	FactoryGirl.create(:age_range, name: '3-5', sort_index: 3, start: '3', end: '5')
+	@profile
 end
 
 def create_profile_2
@@ -44,6 +42,7 @@ def create_profile_2
 	@profile_2 = FactoryGirl.create(:profile, @profile_data_2)
 	@user_2.profile = @profile_2
 	@user_2.save
+	@profile_2
 end
 
 def create_unattached_profile(override_data={})
@@ -276,11 +275,16 @@ Given /^another published profile with city "(.*?)" and state "(.*?)"$/ do |city
 	@published_profile_2.save
 end
 
-Given /^a published profile with cities "(.*?)" and "(.*?)" and states "(.*?)" and "(.*?)"$/ do |city1, city2, state1, state2|
-	create_published_profile
-	@published_profile.locations = [FactoryGirl.create(:location, city: city1, region: state1),
+Given /^(my|a published) profile with cities "(.*?)" and "(.*?)" and states "(.*?)" and "(.*?)"$/ do |which_profile, city1, city2, state1, state2|
+	profile = case which_profile
+	when 'a published'
+		create_published_profile
+	else
+		create_profile
+	end
+	profile.locations = [FactoryGirl.create(:location, city: city1, region: state1),
 		FactoryGirl.create(:location, city: city2, region: state2)]
-	@published_profile.save
+	profile.save
 end
 
 Given /^a published profile with admin notes "(.*?)"$/ do |notes|
@@ -432,10 +436,6 @@ When /^I add the "(.*?)" and "(.*?)" custom specialties using enter$/ do |spec1,
 		fill_in MyHelpers.profile_custom_specialties_id('1'), with: "#{spec1}\r"
 		fill_in MyHelpers.profile_custom_specialties_id('2'), with: spec2
 	end
-end
-
-When /^I select the "(.*?)" age range$/ do |age_range|
-	check MyHelpers.profile_age_ranges_id(age_range)
 end
 
 When /^I select "(.*?)" as the search area tag in the "(.*?)" formlet$/ do |tag, formlet|
