@@ -157,6 +157,7 @@ class Profile < ActiveRecord::Base
 		opts[:search_area_tag_ids] = [opts[:search_area_tag_id]] if opts[:search_area_tag_id].present?
 		opts[:search_area_tag_ids].delete_if(&:blank?) if opts[:search_area_tag_ids].present?
 		opts[:order_by_distance] = self.geocode_location opts[:location] if opts[:location]
+		
 		self.search do
 			adjust_solr_params { |params|
 				params[:mm] = '2<-1 4<-2 6<50%'
@@ -164,6 +165,8 @@ class Profile < ActiveRecord::Base
 			fulltext(query) {
 				query_phrase_slop 1
 			}
+			
+			with :service_ids, opts[:service_id] if opts[:service_id].present?
 			with :search_area_tag_ids, opts[:search_area_tag_ids] if opts[:search_area_tag_ids].present?
 			with :is_published, true if opts[:published_only]
 			

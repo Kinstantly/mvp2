@@ -347,6 +347,30 @@ describe Profile do
 				Profile.fuzzy_search('moonlight', per_page: '4', page: 3).should have(2).results
 			end
 		end
+		
+		context "searching by service" do
+			let(:service) { FactoryGirl.create :service, name: 'Brew Master' }
+			let(:profile_with_service) { FactoryGirl.create :published_profile, services: [service] }
+			let(:profile_with_name) { FactoryGirl.create :published_profile, headline: service.name }
+		
+			before(:each) do
+				profile_with_name and profile_with_service
+				Profile.reindex
+				Sunspot.commit
+			end
+		
+			it "should find profiles with the service assigned to them" do
+				search = Profile.fuzzy_search nil, service_id: service.id
+				search.should have(1).result
+				search.results.first.should == profile_with_service
+			end
+		
+			it "should ONLY find profiles with the service assigned to them" do
+				search = Profile.fuzzy_search service.name, service_id: service.id
+				search.should have(1).result
+				search.results.first.should == profile_with_service
+			end
+		end
 	end
 	
 	context "character limits on string and text attributes" do

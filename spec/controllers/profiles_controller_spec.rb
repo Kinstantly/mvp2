@@ -434,27 +434,47 @@ describe ProfilesController do
 	end
 	
 	context "as a site visitor searching by distance" do
+		let(:service) { FactoryGirl.create(:service, name: 'Brew Master') }
+		let(:bear_location) {
+			FactoryGirl.create(:location, address1: '345 Healdsburg Ave.', city: 'Healdsburg', region: 'CA', postal_code: '95448')
+		}
+		let(:bear_profile) {
+			FactoryGirl.create(:published_profile, company_name: "Bear Republic Brewing Co",
+				locations: [bear_location], services: [service])
+		}
+		let(:rr_location) {
+			FactoryGirl.create(:location, address1: '725 4th Street', city: 'Santa Rosa', region: 'CA', postal_code: '95404')
+		}
+		let(:rr_profile) {
+			FactoryGirl.create(:published_profile, company_name: 'Russian River Brewing Co',
+				locations: [rr_location], services: [service])
+		}
+		
 		before(:each) do
-			@bear_location = FactoryGirl.create(:location, address1: '345 Healdsburg Ave.', city: 'Healdsburg', region: 'CA', postal_code: '95448')
-			@bear_profile = FactoryGirl.create(:published_profile, company_name: "Bear Republic Brewing Co", locations: [@bear_location])
-			@rr_location = FactoryGirl.create(:location, address1: '725 4th Street', city: 'Santa Rosa', region: 'CA', postal_code: '95404')
-			@rr_profile = FactoryGirl.create(:published_profile, company_name: 'Russian River Brewing Co', locations: [@rr_location])
+			bear_profile and rr_profile
 			Profile.reindex
 			Sunspot.commit
 		end
 		
 		it "should show the nearest provider at the top when searching by postal code" do
-			get :search, query: 'river brewing co', postal_code: @bear_location.postal_code
+			get :search, query: 'river brewing co', postal_code: bear_location.postal_code
 			assigns[:search].should have(2).results
-			assigns[:search].results.first.should == @bear_profile
-			assigns[:search].results.second.should == @rr_profile
+			assigns[:search].results.first.should == bear_profile
+			assigns[:search].results.second.should == rr_profile
 		end
 		
 		it "should show the nearest provider at the top when searching by city and state" do
-			get :search, query: 'river brewing co', city: @bear_location.city, region: @bear_location.region
+			get :search, query: 'river brewing co', city: bear_location.city, region: bear_location.region
 			assigns[:search].should have(2).results
-			assigns[:search].results.first.should == @bear_profile
-			assigns[:search].results.second.should == @rr_profile
+			assigns[:search].results.first.should == bear_profile
+			assigns[:search].results.second.should == rr_profile
+		end
+		
+		it "should show the nearest provider at the top when searching by service and postal code" do
+			get :search, servide_id: service.id, postal_code: rr_location.postal_code
+			assigns[:search].should have(2).results
+			assigns[:search].results.first.should == rr_profile
+			assigns[:search].results.second.should == bear_profile
 		end
 	end
 	
@@ -473,6 +493,30 @@ describe ProfilesController do
 		it "should show 2 results on the third page" do
 			get :search, query: 'magnolia', per_page: '4', page: 3
 			assigns[:search].should have(2).results
+		end
+	end
+	
+	context "as a site visitor searching by service" do
+		let(:service) { FactoryGirl.create :service, name: 'Brew Master' }
+		let(:profile_with_service) { FactoryGirl.create :published_profile, services: [service] }
+		let(:profile_with_name) { FactoryGirl.create :published_profile, headline: service.name }
+		
+		before(:each) do
+			profile_with_name and profile_with_service
+			Profile.reindex
+			Sunspot.commit
+		end
+		
+		it "should show profiles with the service assigned to them" do
+			get :search, service_id: service.id
+			assigns[:search].should have(1).result
+			assigns[:search].results.first.should == profile_with_service
+		end
+		
+		it "should ONLY show profiles with the service assigned to them" do
+			get :search, service_id: service.id, query: service.name
+			assigns[:search].should have(1).result
+			assigns[:search].results.first.should == profile_with_service
 		end
 	end
 	

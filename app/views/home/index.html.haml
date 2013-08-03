@@ -43,14 +43,14 @@
 				%ul
 					- category.services.display_order.order_by_name.each do |svc|
 						%li
-							= link_to svc.name, search_providers_path(query: svc.name)
+							= link_to svc.name, search_providers_path(service_id: svc.id)
 		#col2.col
 			- home_column_categories(2).each do |category|
 				%h3= category.name
 				%ul
 					- category.services.display_order.order_by_name.each do |svc|
 						%li
-							= link_to svc.name, search_providers_path(query: svc.name)
+							= link_to svc.name, search_providers_path(service_id: svc.id)
 			-#
 				#all-cats.see-all.select-wrapper
 					%span.select-text

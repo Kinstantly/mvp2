@@ -1,10 +1,12 @@
 .search_results
-	%h1= search_results_title @search, @search_area_tag_id
+	%h1= search_results_title @search, @search_area_tag_id, @service_id
 	- if @search.results.present?
 		.search_results_options
 			= form_tag search_providers_path, method: :get, id: 'nearest_to_city_postal_code_form' do
-				= hidden_field_tag :query, @search_query
-				= hidden_field_tag :search_area_tag_id, @search_area_tag_id
+				= hidden_field_tag :query, @search_query if @search_query.present?
+				= hidden_field_tag :per_page, @search_per_page if @search_per_page.present?
+				= hidden_field_tag :search_area_tag_id, @search_area_tag_id if @search_area_tag_id.present?
+				= hidden_field_tag :service_id, @service_id if @service_id.present?
 				= t 'views.search_results.nearest_to_city_postal_code'
 				- city_prompt = t 'views.search_results.city_prompt'
 				/[if lt IE 9]
@@ -84,7 +86,7 @@
 -# Interpolate in javascript.  HAML cannot cache coffeescript with embedded ruby interpolation!
 :javascript
 	var my_vars = {
-		search_path: '#{escape_javascript search_providers_path(query: @search_query, search_area_tag_id: @search_area_tag_id)} .search_result',
+		search_path: '#{escape_javascript search_providers_path(query: @search_query.presence, per_page: @search_per_page.presence, search_area_tag_id: @search_area_tag_id.presence, service_id: @service_id.presence)} .search_result',
 		t: {
 			searching: '#{t "views.search_results.searching"}',
 			showing_nearest_to_you: '#{t "views.search_results.showing_nearest_to_you"}'

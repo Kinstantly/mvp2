@@ -488,13 +488,17 @@ module ProfilesHelper
 		id.present? && (name = SearchAreaTag.find_by_id(id).try(:name)) ? t('views.search_results.in_search_area', name: name) : nil
 	end
 	
-	def search_results_title(search, search_area_tag_id=nil)
+	def search_results_title(search, search_area_tag_id=nil, service_id=nil)
 		total = search.total
-		query_string = search_query_string search
+		query = if service_id.present?
+			Service.find_by_id(service_id).try(:name)
+		else
+			search_query_string search
+		end
 		search_area = in_search_area search_area_tag_id
-		if query_string.present?
+		if query.present?
 			t_scope = 'views.search_results.found_for'
-			"#{total > 0 ? t('how_many', scope: t_scope, count: total, query: query_string) : t('none', scope: t_scope, query: query_string)} #{search_area}"
+			"#{total > 0 ? t('how_many', scope: t_scope, count: total, query: query) : t('none', scope: t_scope, query: query)} #{search_area}"
 		else
 			t_scope = 'views.search_results.found'
 			"#{total > 0 ? t('how_many', scope: t_scope, count: total) : t('none', scope: t_scope)} #{search_area}"

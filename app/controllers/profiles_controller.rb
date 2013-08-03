@@ -118,6 +118,7 @@ class ProfilesController < ApplicationController
 	def search
 		options = {}
 		@search_query = params[:query]
+		options[:service_id] = @service_id = params[:service_id]
 		options[:search_area_tag_id] = @search_area_tag_id = params[:search_area_tag_id]
 		if params[:latitude].present? && params[:longitude].present?
 			@search_latitude, @search_longitude = params[:latitude], params[:longitude]
