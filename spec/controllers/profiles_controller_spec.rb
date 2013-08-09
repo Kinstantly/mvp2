@@ -507,16 +507,11 @@ describe ProfilesController do
 			Sunspot.commit
 		end
 		
-		it "should show profiles with the service assigned to them" do
+		it "profiles with the service assigned to them should be listed first" do
 			get :search, service_id: service.id
-			assigns[:search].should have(1).result
+			assigns[:search].should have(2).results
 			assigns[:search].results.first.should == profile_with_service
-		end
-		
-		it "should ONLY show profiles with the service assigned to them" do
-			get :search, service_id: service.id, query: service.name
-			assigns[:search].should have(1).result
-			assigns[:search].results.first.should == profile_with_service
+			assigns[:search].results.second.should == profile_with_name
 		end
 	end
 	

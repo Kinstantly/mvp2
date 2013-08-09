@@ -359,6 +359,13 @@ describe Profile do
 				Sunspot.commit
 			end
 		
+			it "profiles with the service assigned to them should be listed first" do
+				search = Profile.search_by_service service
+				search.should have(2).results
+				search.results.first.should == profile_with_service
+				search.results.second.should == profile_with_name
+			end
+		
 			it "should find profiles with the service assigned to them" do
 				search = Profile.fuzzy_search nil, service_id: service.id
 				search.should have(1).result

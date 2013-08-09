@@ -118,7 +118,7 @@ class ProfilesController < ApplicationController
 	def search
 		options = {}
 		@search_query = params[:query]
-		options[:service_id] = @service_id = params[:service_id]
+		@service = Service.find_by_id params[:service_id].to_i if params[:service_id].present?
 		options[:search_area_tag_id] = @search_area_tag_id = params[:search_area_tag_id]
 		if params[:latitude].present? && params[:longitude].present?
 			@search_latitude, @search_longitude = params[:latitude], params[:longitude]
@@ -134,7 +134,11 @@ class ProfilesController < ApplicationController
 		@search_page = ((options[:page] = params[:page]).presence || 1).to_i
 		@search_per_page = options[:per_page] = params[:per_page].to_i if params[:per_page].present?
 		options[:published_only] = !current_user.try(:profile_editor?)
-		@search = Profile.fuzzy_search @search_query, options
+		@search = if @service
+			Profile.search_by_service @service, options
+		else
+			Profile.fuzzy_search @search_query, options
+		end
 		render :search_results
 	end
 	

@@ -147,24 +147,51 @@ class Profile < ActiveRecord::Base
 		end
 	end
 	
-	# By default, only search published profiles.
+	# Profiles that have the specified service assigned to them should be boosted to the top of the results.
+	# Profiles that exactly match the service name in a full-text search should follow.
+	def self.search_by_service(service, new_opts={})
+		opts = {
+			phrase_fields: {services: 10.0}
+		}.merge(new_opts)
+		self.configurable_search("\"#{service.name}\"", opts) # Specify service name as a phrase.
+	end
+	
+	# Allow one non-matching word between words in a phrase.
+	# Use the "Min Number Should Match" ('mm') Solr parameter.
 	# For explanation of mm param, see
 	#  http://lucene.apache.org/solr/4_0_0/solr-core/org/apache/solr/util/doc-files/min-should-match.html
+	def self.fuzzy_search(query, new_opts={})
+		opts = {
+			solr_params: {mm: '2<-1 4<-2 6<50%'},
+			query_phrase_slop: 1
+		}.merge(new_opts)
+		self.configurable_search(query, opts)
+	end
+	
+	# By default, only search published profiles.
 	# Use the is_published scope only if the published_only option is true.  Default is to restrict to published profiles.
 	# Use the search_area_tag_ids scope only if the search_area_tag_id or search_area_tag_ids options have value(s).
-	def self.fuzzy_search(query, new_opts={})
-		opts = {published_only: true, per_page: (SEARCH_DEFAULT_PER_PAGE.presence || nil)}.merge(new_opts)
+	def self.configurable_search(query, new_opts={})
+		opts = {
+			published_only: true,
+			per_page: (SEARCH_DEFAULT_PER_PAGE.presence || nil)
+		}.merge(new_opts)
 		opts[:search_area_tag_ids] = [opts[:search_area_tag_id]] if opts[:search_area_tag_id].present?
 		opts[:search_area_tag_ids].delete_if(&:blank?) if opts[:search_area_tag_ids].present?
 		opts[:order_by_distance] = self.geocode_location opts[:location] if opts[:location]
 		
 		self.search do
-			adjust_solr_params { |params|
-				params[:mm] = '2<-1 4<-2 6<50%'
-			}
-			fulltext(query) {
-				query_phrase_slop 1
-			}
+			if opts[:solr_params].present?
+				adjust_solr_params do |params|
+					params.merge! opts[:solr_params]
+				end
+			end
+			
+			fulltext(query) do
+				query_phrase_slop opts[:query_phrase_slop] if opts[:query_phrase_slop].present?
+				boost_fields opts[:boost_fields] if opts[:boost_fields].present?
+				phrase_fields opts[:phrase_fields] if opts[:phrase_fields].present?
+			end
 			
 			with :service_ids, opts[:service_id] if opts[:service_id].present?
 			with :search_area_tag_ids, opts[:search_area_tag_ids] if opts[:search_area_tag_ids].present?

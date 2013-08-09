@@ -488,10 +488,10 @@ module ProfilesHelper
 		id.present? && (name = SearchAreaTag.find_by_id(id).try(:name)) ? t('views.search_results.in_search_area', name: name) : nil
 	end
 	
-	def search_results_title(search, search_area_tag_id=nil, service_id=nil)
+	def search_results_title(search, search_area_tag_id=nil, service=nil)
 		total = search.total
-		query = if service_id.present?
-			Service.find_by_id(service_id).try(:name)
+		query = if service
+			service.name
 		else
 			search_query_string search
 		end
