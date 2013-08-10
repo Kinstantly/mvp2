@@ -250,6 +250,8 @@ en:
       claim_confirm:
         link_body: 'Click here'
         message: 'if you want to replace your existing profile with the one you want claim.'
+    search:
+      query_placeholder: 'doctor, tutor, therapist...'
     search_results:
       city_prompt: 'city in California'
       in_search_area: 'in %{name}'

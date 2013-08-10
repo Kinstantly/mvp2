@@ -227,11 +227,11 @@ $masthead_width: 920px;
 	input {
 		@include search-text-input-border-style;
 		padding: 10px 12px;
-		background: #fdf0f2;
+		background: $search_input_background;
 		width: 218px;
 		height: 16px;
 		font-size: 1.125em;
-		color: rgba(153,153,153,0.92);
+		color: $search_input_color;
 		line-height: 1em;
 		float: left;
 		margin-right: 8px;
@@ -252,7 +252,7 @@ $masthead_width: 920px;
 	}
 	.select-wrapper {   
 		-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;
-		background: url('arrow.png') no-repeat 207px center #fdf0f2;
+		background: url('arrow.png') no-repeat 207px center $search_input_background;
 		border-top: 1px solid #514447;
 		border-left: 1px solid #514447;
 		border-bottom: 1px solid #a89b9e;
@@ -264,7 +264,7 @@ $masthead_width: 920px;
 		width: 242px;
 		height: 36px;
 		font-size: 1.125em;
-		color: rgba(153,153,153,0.92);
+		color: $search_input_color;
 		line-height: 1em;
 		position: relative;
 		float: left;
@@ -272,7 +272,7 @@ $masthead_width: 920px;
 	.select-text {
 		display: block;
 		font-size: 1em;
-		color: rgba(153,153,153,0.92);
+		color: $search_input_color;
 		padding: 8px 12px;
 		z-index: 1;
 	}
@@ -936,8 +936,8 @@ div.popover {
 			input[type="text"] {
 				@include search-text-input-border-style;
 				padding: 5px 6px;
-				background: #fafafa;
-				color: rgb(153,153,153);
+				background: $search_input_background;
+				color: $search_input_color;
 				line-height: 1em;
 				margin: auto 8px;
 			}

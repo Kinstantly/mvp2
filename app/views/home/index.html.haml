@@ -24,7 +24,7 @@
 	#search_providers.aside
 		= form_tag search_providers_path, method: :get, id: 'providerSearch' do
 			%h2 Find a provider
-			= text_field_tag :query, @search_query, id: 'provider_search_query', autocomplete: 'off', placeholder: 'doctor, tutor, therapist...'
+			= text_field_tag :query, @search_query, id: 'provider_search_query', autocomplete: 'off', placeholder: t('views.search.query_placeholder')
 			.select-wrapper
 				%span.select-text
 				= select_tag :search_area_tag_id, search_area_tag_options(@search_area_tag_id), id: 'search_area_tag'
