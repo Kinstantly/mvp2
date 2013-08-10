@@ -118,7 +118,7 @@ class ProfilesController < ApplicationController
 	def search
 		options = {}
 		@search_query = params[:query]
-		@service = Service.find_by_id params[:service_id].to_i if params[:service_id].present?
+		@search_service = Service.find_by_id params[:service_id].to_i if params[:service_id].present?
 		options[:search_area_tag_id] = @search_area_tag_id = params[:search_area_tag_id]
 		if params[:latitude].present? && params[:longitude].present?
 			@search_latitude, @search_longitude = params[:latitude], params[:longitude]
@@ -134,9 +134,10 @@ class ProfilesController < ApplicationController
 		@search_page = ((options[:page] = params[:page]).presence || 1).to_i
 		@search_per_page = options[:per_page] = params[:per_page].to_i if params[:per_page].present?
 		options[:published_only] = !current_user.try(:profile_editor?)
-		@search = if @service
-			Profile.search_by_service @service, options
+		@search = if @search_service && (@search_query.blank? || @search_query == @search_service.name)
+			Profile.search_by_service @search_service, options
 		else
+			@search_service = nil # In case the user switched from search-by-service to full-text search.
 			Profile.fuzzy_search @search_query, options
 		end
 		render :search_results
