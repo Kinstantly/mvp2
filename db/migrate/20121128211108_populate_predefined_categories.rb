@@ -7,8 +7,18 @@ class PopulatePredefinedCategories < ActiveRecord::Migration
 		has_and_belongs_to_many :specialties
 	end
 	
+	class Profile < ActiveRecord::Base
+		has_and_belongs_to_many :categories
+	end
+	
+	class Specialty < ActiveRecord::Base
+		has_and_belongs_to_many :categories
+	end
+	
 	def up
 		Category.reset_column_information
+		Profile.reset_column_information
+		Specialty.reset_column_information
 		Category.all.each(&:destroy)
 		@@categories.each do |name|
 			Category.create(name: name, is_predefined: true)
@@ -17,6 +27,8 @@ class PopulatePredefinedCategories < ActiveRecord::Migration
 
 	def down
 		Category.reset_column_information
+		Profile.reset_column_information
+		Specialty.reset_column_information
 		@@categories.each do |name|
 			c = Category.find_by_name name
 			c.destroy if c

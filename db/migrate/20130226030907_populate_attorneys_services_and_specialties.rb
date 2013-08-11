@@ -17,12 +17,12 @@ class PopulateAttorneysServicesAndSpecialties < ActiveRecord::Migration
 		Service.reset_column_information
 		Specialty.reset_column_information
 		parse_lines.each do |cat_name, svcs|
-			cat = predefine(cat_name.to_category)
+			cat = predefine(Category.where(name: cat_name).first_or_create)
 			svcs.each do |svc_name, specs|
-				svc = predefine(svc_name.to_service)
+				svc = predefine(Service.where(name: svc_name).first_or_create)
 				cat.services << svc unless cat.services.include?(svc)
 				specs.each do |spec_name|
-					spec = predefine(spec_name.to_specialty)
+					spec = predefine(Specialty.where(name: spec_name).first_or_create)
 					svc.specialties << spec unless svc.specialties.include?(spec)
 				end
 			end
@@ -37,12 +37,12 @@ class PopulateAttorneysServicesAndSpecialties < ActiveRecord::Migration
 		parse_lines.each do |cat_name, svcs|
 			svcs.each do |svc_name, specs|
 				specs.each do |spec_name|
-					spec_name.to_specialty.destroy
+					Specialty.where(name: spec_name).first_or_create.destroy
 				end
-				svc = svc_name.to_service
+				svc = Service.where(name: svc_name).first_or_create
 				svc.destroy if svc.specialties.blank?
 			end
-			# cat = cat_name.to_category
+			# cat = Category.where(name: cat_name).first_or_create
 			# cat.destroy if cat.services.blank?
 		end
 	end

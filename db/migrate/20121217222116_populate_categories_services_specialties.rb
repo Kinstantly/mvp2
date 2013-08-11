@@ -20,12 +20,12 @@ class PopulateCategoriesServicesSpecialties < ActiveRecord::Migration
 		clear_all
 		@lines.strip.split("\n").each { |line|
 			cat_name, svc_name, spec_names, comments = line.strip.split(';')
-			cat = predefine(cat_name.strip.to_category)
-			svc = predefine(svc_name.strip.to_service)
+			cat = predefine(Category.where(name: cat_name.strip).first_or_create)
+			svc = predefine(Service.where(name: svc_name.strip).first_or_create)
 			cat.services << svc unless cat.services.include?(svc)
 			# Split specialty names on commas. Ignore and remove escaped commas.
 			spec_names.strip.split(/(?<!\\),/).each { |spec_name|
-				spec = predefine(spec_name.strip.delete("\\").to_specialty)
+				spec = predefine(Specialty.where(name: spec_name.strip.delete("\\")).first_or_create)
 				svc.specialties << spec unless svc.specialties.include?(spec)
 			} if spec_names
 		}
