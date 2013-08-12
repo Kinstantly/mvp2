@@ -311,7 +311,7 @@ Feature: Edit my expert profile
 		When I open the "locations" formlet
 			And I click on the "Fill in a new location" link of the "locations" formlet
 			And I click on the "Save" button of the "locations" formlet
-		Then I should see form fields for an extra location
+		Then I should see form fields for an extra location on my profile edit page
 	
 	@javascript
 	Scenario: Enter extra location
@@ -320,9 +320,10 @@ Feature: Edit my expert profile
 			And I am on my profile edit page
 		When I open the "locations" formlet
 			And I click on the "Fill in a new location" link
-			And I enter "La Fenice" in the "Address" field of the second location
+			And I enter "La Fenice" in the "Address" field of the second location on my profile edit page
 			And I click on the "Save" button of the "locations" formlet
-		Then my profile edit page should show "La Fenice" displayed in the "locations" overlay area
+			And I click on the link to see all locations
+		Then my profile edit page should show "La Fenice" displayed second in the "locations" area
 	
 	@javascript
 	Scenario: Delete location
@@ -340,7 +341,7 @@ Feature: Edit my expert profile
 			And I am logged in
 			And I am on my profile edit page
 		When I open the "locations" formlet
-			And I enter "505-555-9087x47 " in the "Phone" field of the first location
+			And I enter "505-555-9087x47 " in the "Phone" field of the first location on my profile edit page
 			And I click on the "Save" button of the "locations" formlet
 		Then my profile edit page should show "(505) 555-9087, x47" displayed second in the "locations" area
 	
