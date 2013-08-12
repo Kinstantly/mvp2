@@ -36,22 +36,23 @@
 		#locations_buttons
 			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 			= link_to 'Cancel', '#', class: 'cancel button'
--# Display the locations (if any) of the STORED profile.
-- (locations = @profile.errorfree.locations.order_by_id).each_index do |i|
+-# Display the locations of the STORED profile.
+-# However, if there are none, display a dummy entry to provide a way to activate this formlet.
+- (locations = @profile.errorfree.locations.order_by_id.presence || [Location.new]).each_index do |i|
 	- if i == 0
 		%span.location.editable.attribute_display{itemprop: "street-address"}
-			= locations[i].try(:display_address).presence || profile_blank_attribute_message(Location.human_attribute_name :display_address)
+			= locations[i].display_address.presence || profile_blank_attribute_message(Location.human_attribute_name :display_address)
 		- if locations.size > 1
 			%span
 				= link_to t('views.profile.view.more_locations'), '#', id: 'more_locations'
 				= link_to t('views.profile.view.hide_locations'), '#', id: 'hide_locations'
 		%span.location.editable.attribute_display{itemprop: "telephone"}
-			= locations[i].try(:display_phone).presence || profile_blank_attribute_message(Location.human_attribute_name :display_phone)
+			= locations[i].display_phone.presence || profile_blank_attribute_message(Location.human_attribute_name :display_phone)
 	- else
 		%span.location.more.editable.attribute_display{itemprop: "street-address"}
-			= locations[i].try(:display_address).presence || profile_blank_attribute_message(Location.human_attribute_name :display_address)
+			= locations[i].display_address.presence || profile_blank_attribute_message(Location.human_attribute_name :display_address)
 		%span.location.more.editable.attribute_display{itemprop: "telephone"}
-			= locations[i].try(:display_phone).presence || profile_blank_attribute_message(Location.human_attribute_name :display_phone)
+			= locations[i].display_phone.presence || profile_blank_attribute_message(Location.human_attribute_name :display_phone)
 
 :coffeescript
 	# In case we are re-rendering on an error, make sure locations marked for destruction are not visible.
