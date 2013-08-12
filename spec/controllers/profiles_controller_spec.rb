@@ -352,6 +352,18 @@ describe ProfilesController do
 				protects_attached_profile
 			end
 		end
+		
+		it "should add two locations" do
+			location_1_attrs = FactoryGirl.attributes_for(:location, address1: 'First house on the right')
+			location_2_attrs = FactoryGirl.attributes_for(:location, address1: 'Second house on the left')
+			profile = FactoryGirl.create(:profile)
+			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, locations_attributes: {
+				'0' => location_1_attrs, '1' => location_2_attrs
+			})
+			response.should redirect_to(controller: 'profiles', action: 'show', id: profile.id)
+			assigns[:profile].locations[0].address1.should == location_1_attrs[:address1]
+			assigns[:profile].locations[1].address1.should == location_2_attrs[:address1]
+		end
 	end
 	
 	context "for a search engine crawler" do
