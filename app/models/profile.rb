@@ -4,7 +4,7 @@ class Profile < ActiveRecord::Base
 	attr_writer :custom_service_names, :custom_specialty_names # readers defined below
 	
 	attr_accessible :first_name, :last_name, :middle_name, :credentials, :email, 
-		:company_name, :url, :locations_attributes, 
+		:company_name, :url, :locations_attributes, :reviews_attributes, 
 		:headline, :education, :certifications, :year_started, 
 		:languages, :insurance_accepted, :summary, 
 		:category_ids, :service_ids, :specialty_ids, 
@@ -24,6 +24,9 @@ class Profile < ActiveRecord::Base
 	
 	has_many :locations, dependent: :destroy
 	accepts_nested_attributes_for :locations, allow_destroy: true
+	
+	has_many :reviews, dependent: :destroy
+	accepts_nested_attributes_for :reviews, allow_destroy: true
 	
 	has_many :ratings, as: :rateable, dependent: :destroy
 	has_many :raters, through: :ratings

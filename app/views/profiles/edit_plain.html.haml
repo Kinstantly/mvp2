@@ -12,3 +12,5 @@
 		.buttons
 			= f.submit 'Save changes', disable_with: 'Saving...'
 			= link_to "Cancel", profile_path(@profile)
+			= full_profile_link @profile
+			= edit_profile_link @profile

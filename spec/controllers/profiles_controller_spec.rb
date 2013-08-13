@@ -364,6 +364,18 @@ describe ProfilesController do
 			assigns[:profile].locations[0].address1.should == location_1_attrs[:address1]
 			assigns[:profile].locations[1].address1.should == location_2_attrs[:address1]
 		end
+		
+		it "should add two reviews" do
+			review_1_attrs = FactoryGirl.attributes_for(:review, body: 'This provider is fantastic!')
+			review_2_attrs = FactoryGirl.attributes_for(:review, body: 'This provider is adequate.')
+			profile = FactoryGirl.create(:profile)
+			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, reviews_attributes: {
+				'0' => review_1_attrs, '1' => review_2_attrs
+			})
+			response.should redirect_to(controller: 'profiles', action: 'show', id: profile.id)
+			assigns[:profile].reviews[0].body.should == review_1_attrs[:body]
+			assigns[:profile].reviews[1].body.should == review_2_attrs[:body]
+		end
 	end
 	
 	context "for a search engine crawler" do

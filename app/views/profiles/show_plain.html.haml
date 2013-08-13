@@ -10,7 +10,9 @@
 			= render partial: 'destroy', locals: {profile: @profile}
 	= render partial: 'view', locals: {profile: @profile}
 	.buttons
+		= profile_link @profile
 		= edit_profile_link @profile
+		= edit_full_profile_link @profile
 		- if !@profile.claimed?
 			= new_invitation_profile_link @profile
 	-# = render partial: 'rating_system'

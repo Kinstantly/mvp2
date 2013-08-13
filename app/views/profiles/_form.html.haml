@@ -3,9 +3,10 @@
 - @page_title = profile_page_title profile
 .profile_areas
 	- if can? :manage, Profile
-		.profile_id
+		%fieldset.profile_id
 			= t 'views.profile.view.id', id: profile.id
-	.basic_profile
+	%fieldset.basic_profile
+		%legend= t 'views.profile.legend.basic_profile'
 		.name
 			Name
 			%br
@@ -45,7 +46,8 @@
 		.photo_source_url
 			= f.label :photo_source_url
 			= f.text_field :photo_source_url, size: 70
-	.location_contact_profile
+	%fieldset.location_contact_profile
+		%legend= Profile.human_attribute_name :locations
 		= f.fields_for :locations do |lf|
 			.address
 				= lf.label :address1
@@ -71,9 +73,10 @@
 				.search_area_tag
 					= lf.label :search_area_tag_id
 					= lf.collection_select :search_area_tag_id, SearchAreaTag.all, :id, :name, {include_blank: 'Other'}
-			= lf.link_to_remove 'Mark this location for removal upon saving', confirm: 'This location will be removed when you save the profile.'
-		= f.link_to_add 'Fill in another location', :locations
-	.expertise_profile
+			= lf.link_to_remove t('views.location.edit.remove'), confirm: t('views.location.edit.remove_confirm_admin')
+		= f.link_to_add t('views.location.edit.add'), :locations
+	%fieldset.expertise_profile
+		%legend= t 'views.profile.legend.expertise_profile'
 		.categories
 			= f.label :categories
 			%span= t 'views.profile.edit.categories_tip'
@@ -133,7 +136,8 @@
 				= f.text_field :ages, size: 50
 				%br
 				%span.note= t('views.profile.edit.ages_example')
-	.professional_profile
+	%fieldset.professional_profile
+		%legend= t 'views.profile.legend.professional_profile'
 		.accepting_new_clients
 			.check_box
 				= f.check_box :accepting_new_clients
@@ -231,9 +235,19 @@
 			= f.text_area :service_area, size: '30x5'
 			%br
 			%span.note= t 'views.profile.edit.service_area_example'
+	%fieldset.reviews
+		%legend= Profile.human_attribute_name :reviews
+		= f.fields_for :reviews do |rf|
+			.body
+				= rf.label :body
+				%br
+				= rf.text_area :body, size: '80x10'
+			= rf.link_to_remove t('views.review.edit.remove'), confirm: t('views.review.edit.remove_confirm_admin')
+		= f.link_to_add t('views.review.edit.add'), :reviews
 	-# Mass assignment is not allowed on admin attributes, so use simple params and tags.
 	- if can? :manage, Profile
-		.admin_options
+		%fieldset.admin_options
+			%legend= t 'views.profile.legend.admin_info'
 			#lead_generator
 				.label_area
 					= label_tag :lead_generator, Profile.human_attribute_name(:lead_generator)

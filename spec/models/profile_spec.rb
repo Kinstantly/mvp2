@@ -245,6 +245,17 @@ describe Profile do
 		end
 	end
 	
+	context "reviews" do
+		it "has multiple reviews" do
+			@profile.reviews.build(body: 'This provider is fantastic!')
+			@profile.should have(:no).errors_on(:reviews)
+			@profile.reviews.first.should have(:no).errors_on(:body)
+			@profile.reviews.build(body: 'This provider is adequate.')
+			@profile.should have(:no).errors_on(:reviews)
+			@profile.reviews.last.should have(:no).errors_on(:body)
+		end
+	end
+	
 	context "search" do
 		context "matching crieria" do
 			before(:each) do
