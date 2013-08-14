@@ -37,7 +37,6 @@
 								= profile.display_name_or_company
 								- if profile.headline.present?
 									%span.headline= profile.headline
-							%span.specialties= search_result_specialties profile
 							- location = profile.locations.order_by_id.first
 							%span
 								%span.location{itemprop: "street-address"}
@@ -51,8 +50,11 @@
 									%span.location{itemprop: "email"}
 										= t 'views.profile.view.email'
 										= profile_display_email profile
+							%span.location= profile_display_age profile.ages
+							%span.specialties= search_result_specialties profile
 						.summary
-							%span.text_area= profile_display_text profile.summary, preserve: true
+							%span.text_area= profile_display_text profile.summary, preserve: true, truncate: 180
+
 				-# = image_tag 'profile-photo-placeholder.jpg', alt: "#{profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
 				.profile-photo-placeholder
 				.profile
