@@ -50,7 +50,8 @@
 									%span.location{itemprop: "email"}
 										= t 'views.profile.view.email'
 										= profile_display_email profile
-							%span.location= profile_display_age profile.ages
+							- if profile.ages.present?
+								%span.location= "Ages: #{profile.ages}"
 							%span.specialties= search_result_specialties profile
 						.summary
 							%span.text_area= profile_display_text profile.summary, preserve: true, truncate: 180

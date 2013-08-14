@@ -419,11 +419,6 @@ module ProfilesHelper
 		label_tag profile_age_ranges_id(age_range.name), age_range.name
 	end
 
-	def profile_display_age(age_range)
-		ages = age_range.gsub(/\s?\-\s?/,' to ')
-		"Ages: #{ages}"
-	end
-
 	# Consultations and visits
 
 	def profile_consult_by_email_element(profile=current_user.try(:profile))
