@@ -9,17 +9,6 @@ The goal is to do behavior-driven and test-driven development (BDD and TDD).  I 
 
 Everything is in the 'spec' folder.
 
-=== TextMate
-
-* https://github.com/rspec/rspec-tmbundle (TextMate bundle)
-
-To run Rspec from inside TextMate, go to Preferences -> Advanced -> Shell Variables.  Set the following shell variables.
-
- RUBYOPT rubygems
- TM_RUBY ~/.rvm/bin/rvm-auto-ruby
-
-For the TM_RUBY value, you might have to use the expanded path instead of '~'.
-
 == FactoryGirl
 
 * https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md
@@ -39,3 +28,44 @@ We are using the Capybara DSL for Cucumber.
 * https://gist.github.com/zhengjia/428105 (DSL cheat sheet)
 * http://rubydoc.info/github/jnicklas/capybara/master
 * https://github.com/jnicklas/capybara#readme
+
+== Database table modifications
+
+If you create, drop, or modify any of the database tables, you'll need to rebuild the test database.  Use this rake task:
+
+ bundle exec rake db:test:prepare
+
+== TextMate
+
+* https://github.com/rspec/rspec-tmbundle (TextMate bundle)
+
+To run Rspec and Cucumber from inside TextMate, go to Preferences -> Advanced -> Shell Variables.  Set the following shell variables.
+
+ RUBYOPT rubygems
+ TM_RUBY ~/.rvm/bin/rvm-auto-ruby
+ TM_RSPEC_OPTS --drb
+ TM_CUCUMBER_OPTS --drb
+ CUCUMBER_FORMAT html
+
+For the TM_RUBY value, you might have to use the expanded path instead of '~'.
+
+Note: the --drb option is used to run Rspec and Cucumber via the Spork server (see below).
+
+== Spork
+
+Rspec is configured to use a Spork DRb server when such a server is running for Rspec.  The same goes for Cucumber.  You don't need to run Spork servers, but it speeds things up if you do.  To use Spork, you should run a server for each of Rspec and Cucumber (see below for the start-up commands).
+
+The '.rspec' file contains the '--drb' switch, which tells Rspec to use Spork if it is available.  So you don't need to specify it on the command line.  For example, to run all of the specs use this command:
+
+ bundle exec rspec spec
+
+To use Spork with Cucumber, you need to specify the '--drb' switch.  For example, to run all of the features use this command:
+
+ bundle exec cucumber --drb
+
+Here are some useful aliases for starting and monitoring the Rspec and Cucumber Spork servers.  You need to use these aliases from the repository root.
+
+ alias sporkrspecstart='bundle exec spork rspec >> log/sporkrspec.log 2>&1 &'
+ alias sporkrspeclog='less log/sporkrspec.log'
+ alias sporkcukestart='bundle exec spork cucumber >> log/sporkcuke.log 2>&1 &'
+ alias sporkcukelog='less log/sporkcuke.log'
