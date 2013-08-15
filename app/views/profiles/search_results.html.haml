@@ -39,17 +39,17 @@
 									%span.headline= profile.headline
 							- location = profile.locations.order_by_id.first
 							%span
-								%span.location{itemprop: "street-address"}
-									= location.try(:display_address)
-									- if (location_count = profile.locations.count) > 1
-										= t 'views.location.view.more.how_many', count: (location_count - 1)
 								%span.location{itemprop: "telephone"}= location.try(:display_phone)
-							%span
-								%span.location{itemprop: "url"}= profile_display_website profile
 								- if profile.email.present?
 									%span.location{itemprop: "email"}
 										= t 'views.profile.view.email'
 										= profile_display_email profile
+								%span.location{itemprop: "url"}= profile_display_website profile
+							%span
+								%span.location{itemprop: "street-address"}
+									= location.try(:display_address)
+									- if (location_count = profile.locations.count) > 1
+										= t 'views.location.view.more.how_many', count: (location_count - 1)
 							- if profile.ages.present?
 								%span.location= "Ages: #{profile.ages}"
 							%span.specialties= search_result_specialties profile
