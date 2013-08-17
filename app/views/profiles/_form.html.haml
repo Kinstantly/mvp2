@@ -242,6 +242,14 @@
 				= rf.label :body
 				%br
 				= rf.text_area :body, size: '80x10'
+			.reviewer_email
+				.label_area
+					= rf.label :reviewer_email
+				= rf.text_field :reviewer_email
+			.reviewer_username
+				.label_area
+					= rf.label :reviewer_username
+				= rf.text_field :reviewer_username
 			= rf.link_to_remove t('views.review.edit.remove'), confirm: t('views.review.edit.remove_confirm_admin')
 		= f.link_to_add t('views.review.edit.add'), :reviews
 	-# Mass assignment is not allowed on admin attributes, so use simple params and tags.

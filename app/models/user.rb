@@ -12,21 +12,39 @@ class User < ActiveRecord::Base
 	has_one :profile # If we do "dependent: :destroy", it will be hard to detach or move the profile.
 	accepts_nested_attributes_for :profile
 	
-	has_many :ratings_given, class_name: 'Rate', foreign_key: :rater_id
+	has_many :reviews_given, class_name: 'Review', foreign_key: :reviewer_id
+	has_many :ratings_given, class_name: 'Rating', foreign_key: :rater_id
 	
 	serialize :roles, Array
 	
-	MAX_STRING_LENGTH = 254
+	# Define minimum and/or maximum lengths of string and text attributes in a publicly accessible way.
+	# This allows them to be used at the view layer for character counts in input and textarea tags.
+	MIN_LENGTHS = {
+		password: Devise.password_length.begin,
+		username: UsernameValidator::MIN_LENGTH
+	}
+	MAX_LENGTHS = {
+		email: EmailValidator::MAX_LENGTH,
+		password: Devise.password_length.end,
+		phone: PhoneNumberValidator::MAX_LENGTH,
+		username: UsernameValidator::MAX_LENGTH
+	}
 	
-	validates :username, username: true, if: 'client?'
+	# Email format and password length are checked by Devise.
+	# Username and phone lengths are checked by their own validators.
+	validates :email, length: {maximum: MAX_LENGTHS[:email]}
+	validates :username, username: true, if: :validate_username?
+	validates :username, uniqueness: { case_sensitive: false }, if: 'username.present?'
 	validates :phone, phone_number: true, allow_blank: true
-	# Password length is checked by Devise.  Username length is check by its own validator.
-	validates :email, :phone, length: {maximum: MAX_STRING_LENGTH}
 	
 	# Solr search configuration.
 	# searchable do
 	# 	text :email, :display_phone
 	# end
+	
+	def validate_username?
+		client? or username.present?
+	end
 	
 	def display_phone
 		display_phone_number phone
@@ -85,6 +103,11 @@ class User < ActiveRecord::Base
 		is_provider? && (profile.nil? || profile.new_record? || force) && token.present? &&
 			(profile_to_claim = Profile.find_by_invitation_token(token.to_s)) && !profile_to_claim.claimed? &&
 			(self.profile = profile_to_claim) && save
+	end
+	
+	# Generate a password that is not too long.
+	def self.generate_password
+		generate_token('encrypted_password').slice(0, MAX_LENGTHS[:password])
 	end
 	
 	protected

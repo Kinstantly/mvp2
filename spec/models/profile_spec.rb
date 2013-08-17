@@ -483,7 +483,7 @@ describe Profile do
 		
 		it "maintains an average rating score" do
 			@profile.rate(3.0, @user)
-			new_user = FactoryGirl.create(:client_user, email: 'caballe@barcelona.es')
+			new_user = FactoryGirl.create(:client_user, email: 'caballe@barcelona.es', username: 'caballe')
 			@profile.rate(4.0, new_user)
 			@profile.should have(2).ratings
 			@profile.rating_average_score.should be_within(0.01).of(3.5)

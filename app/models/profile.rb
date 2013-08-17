@@ -23,10 +23,10 @@ class Profile < ActiveRecord::Base
 	has_and_belongs_to_many :specialties
 	
 	has_many :locations, dependent: :destroy
-	accepts_nested_attributes_for :locations, allow_destroy: true
+	accepts_nested_attributes_for :locations, allow_destroy: true, limit: 100
 	
 	has_many :reviews, dependent: :destroy
-	accepts_nested_attributes_for :reviews, allow_destroy: true
+	accepts_nested_attributes_for :reviews, allow_destroy: true, limit: 1000
 	
 	has_many :ratings, as: :rateable, dependent: :destroy
 	has_many :raters, through: :ratings
@@ -43,13 +43,13 @@ class Profile < ActiveRecord::Base
 		middle_name: 50,
 		last_name: 50,
 		credentials: 50,
-		email: 200,
+		email: EmailValidator::MAX_LENGTH,
 		company_name: 200,
 		url: 250,
 		headline: 200,
 		certifications: 250,
 		languages: 200,
-		invitation_email: 250,
+		invitation_email: EmailValidator::MAX_LENGTH,
 		lead_generator: 250,
 		photo_source_url: 250,
 		ages: 150,
@@ -65,8 +65,9 @@ class Profile < ActiveRecord::Base
 		custom_specialty_names: 150
 	}
 	
-	[:first_name, :middle_name, :last_name, :credentials, :email, :company_name, :url, :headline, :certifications,
-		:languages, :invitation_email, :lead_generator, :photo_source_url, :ages, :year_started, :education,
+	# Note: lengths of the email and invitation_email attributes are checked by the email validator.
+	[:first_name, :middle_name, :last_name, :credentials, :company_name, :url, :headline, :certifications,
+		:languages, :lead_generator, :photo_source_url, :ages, :year_started, :education,
 		:insurance_accepted, :pricing, :summary, :service_area, :hours, :admin_notes].each do |attribute|
 			validates attribute, allow_blank: true, length: {maximum: MAX_LENGTHS[attribute]}
 		end

@@ -66,6 +66,18 @@ describe ProfilesController do
 		end
 	end
 	
+	context "as a site visitor attempting to update a profile" do
+		describe "PUT 'update'" do
+			it "cannot update the profile" do
+				id = FactoryGirl.create(:profile).id
+				headline = 'Koji Tano'
+				put :update, id: id, profile: FactoryGirl.attributes_for(:profile, headline: headline)
+				response.should_not redirect_to(controller: 'profiles', action: 'show', id: id)
+				Profile.find_by_id(id).headline.should_not == headline
+			end
+		end
+	end
+	
 	context "as a site visitor attempting to delete a profile" do
 		describe "DELETE 'destroy'" do
 			it "should not destroy a profile" do
@@ -78,9 +90,20 @@ describe ProfilesController do
 	end
 	
 	context "as a non-provider member" do
+		let(:me) { FactoryGirl.create(:client_user, email: 'me@example.com') }
+		
 		before (:each) do
-			@me = FactoryGirl.create(:client_user, email: 'me@example.com')
-			sign_in @me
+			sign_in me
+		end
+		
+		describe "PUT 'update'" do
+			it "cannot update a profile" do
+				id = FactoryGirl.create(:profile).id
+				headline = 'Koji Tano'
+				put :update, id: id, profile: FactoryGirl.attributes_for(:profile, headline: headline)
+				response.should_not redirect_to(controller: 'profiles', action: 'show', id: id)
+				Profile.find_by_id(id).headline.should_not == headline
+			end
 		end
 		
 		describe "DELETE 'destroy'" do
@@ -94,19 +117,19 @@ describe ProfilesController do
 	end
 	
 	context "as a provider" do
+		let(:me) { FactoryGirl.create(:expert_user, email: 'me@example.com') }
+		let(:my_profile_id) { me.profile.id }
+		let(:other_profile_id) { FactoryGirl.create(:profile).id }
+		let(:other_published_profile_id) { FactoryGirl.create(:published_profile).id }
+		
 		before (:each) do
-			@me = FactoryGirl.create(:expert_user, email: 'me@example.com')
-			sign_in @me
+			sign_in me
 		end
 		
 		context "attempting to access another profile" do
-			before(:each) do
-				@profile = FactoryGirl.create(:published_profile)
-			end
-		
 			describe "GET 'edit'" do
 				it "can not render the view" do
-					get :edit, id: @profile.id
+					get :edit, id: other_published_profile_id
 					response.should_not render_template('edit')
 				end
 			end
@@ -123,7 +146,7 @@ describe ProfilesController do
 			
 			it "creates my profile if needed" do
 				assigns[:profile].should_not be_nil
-				assigns[:profile].user.should == @me
+				assigns[:profile].user.should == me
 			end
 		end
 		
@@ -138,36 +161,76 @@ describe ProfilesController do
 			
 			it "creates my profile if needed" do
 				assigns[:profile].should_not be_nil
-				assigns[:profile].user.should == @me
+				assigns[:profile].user.should == me
 			end
 		end
 		
 		describe "PUT 'formlet_update'" do
 			it "successfully updates the profile via a formlet" do
-				put :formlet_update, id: @me.profile.id, formlet: 'summary', profile: {summary: 'A short story.'}
+				put :formlet_update, id: my_profile_id, formlet: 'summary', profile: {summary: 'A short story.'}
 				response.should render_template('formlet')
 			end
 			
+			it "successfully updates a profile attribute via a formlet" do
+				attrs = {summary: 'A short story.'}
+				put :formlet_update, id: my_profile_id, formlet: 'summary', profile: attrs
+				assigns[:profile].summary.should == attrs[:summary]
+			end
+			
 			it "cannot update a profile I don't own" do
-				@profile = FactoryGirl.create(:published_profile)
-				put :formlet_update, id: @profile.id, formlet: 'summary', profile: {summary: 'A short story.'}
+				put :formlet_update, id: other_published_profile_id, formlet: 'summary', profile: {summary: 'A short story.'}
 				response.should_not render_template('formlet')
+			end
+			
+			it "fails to self-publish my profile" do
+				expect {
+					put :formlet_update, id: my_profile_id, formlet: 'summary', profile: {is_published: true}
+				}.to raise_error(/protected attributes/i)
+			end
+			
+			it "fails to update my admin notes" do
+				expect {
+					put :formlet_update, id: my_profile_id, formlet: 'summary', profile: {admin_notes: 'Sneaky notes'}
+				}.to raise_error(/protected attributes/i)
 			end
 		end
 		
 		describe "DELETE 'destroy'" do
 			it "should not destroy another profile" do
-				id = FactoryGirl.create(:profile).id
+				id = other_profile_id
 				delete :destroy, id: id
 				response.should redirect_to(root_path)
 				Profile.find_by_id(id).should_not be_nil
 			end
 			
 			it "should not destroy my profile" do
-				id = @me.profile.id
+				id = my_profile_id
 				delete :destroy, id: id
 				response.should redirect_to(root_path)
 				Profile.find_by_id(id).should_not be_nil
+			end
+		end
+		
+		describe "PUT 'update'" do
+			let(:attrs) { {first_name: 'Billie Jean'} }
+			
+			it "should not update another profile" do
+				id = other_profile_id
+				put :update, id: id, profile: attrs
+				response.should_not redirect_to(controller: 'profiles', action: 'show', id: id)
+				flash[:alert].should_not be_nil
+			end
+			
+			it "should not update my profile" do
+				id = my_profile_id
+				put :update, id: id, profile: attrs
+				response.should_not redirect_to(controller: 'profiles', action: 'show', id: id)
+				flash[:alert].should_not be_nil
+			end
+			
+			it "should not update a profile attribute via this action" do
+				put :update, id: my_profile_id, profile: attrs
+				assigns[:profile].first_name.should_not == attrs[:first_name]
 			end
 		end
 	end
@@ -361,8 +424,10 @@ describe ProfilesController do
 				'0' => location_1_attrs, '1' => location_2_attrs
 			})
 			response.should redirect_to(controller: 'profiles', action: 'show', id: profile.id)
-			assigns[:profile].locations[0].address1.should == location_1_attrs[:address1]
-			assigns[:profile].locations[1].address1.should == location_2_attrs[:address1]
+			assigns[:profile].should have(2).locations
+			addresses = [location_1_attrs[:address1], location_2_attrs[:address1]]
+			addresses.include?(assigns[:profile].locations[0].address1).should be_true
+			addresses.include?(assigns[:profile].locations[1].address1).should be_true
 		end
 		
 		it "should add two reviews" do
@@ -373,8 +438,24 @@ describe ProfilesController do
 				'0' => review_1_attrs, '1' => review_2_attrs
 			})
 			response.should redirect_to(controller: 'profiles', action: 'show', id: profile.id)
-			assigns[:profile].reviews[0].body.should == review_1_attrs[:body]
-			assigns[:profile].reviews[1].body.should == review_2_attrs[:body]
+			assigns[:profile].should have(2).reviews
+			bodies = [review_1_attrs[:body], review_2_attrs[:body]]
+			bodies.include?(assigns[:profile].reviews[0].body).should be_true
+			bodies.include?(assigns[:profile].reviews[1].body).should be_true
+		end
+		
+		it "should create a record for the reviewer" do
+			review_attrs = FactoryGirl.attributes_for(:review, reviewer_email: 'egaranca@mezzo.lv', reviewer_username: 'egaranca')
+			profile = FactoryGirl.create(:profile)
+			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, reviews_attributes: {
+				'0' => review_attrs
+			})
+			response.should redirect_to(controller: 'profiles', action: 'show', id: profile.id)
+			assigns[:profile].should have(1).review
+			reviewer = assigns[:profile].reviews.first.reviewer
+			reviewer.should_not be_nil
+			reviewer.email.should == review_attrs[:reviewer_email]
+			reviewer.username.should == review_attrs[:reviewer_username]
 		end
 	end
 	

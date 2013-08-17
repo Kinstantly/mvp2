@@ -132,3 +132,9 @@
 		- profile.reviews.each do |review|
 			.review
 				.value.text_area= preserve_profile_text review.body
+				- if can? :manage, Profile
+					%span.label= "#{Review.human_attribute_name(:reviewer_email)}:"
+					= review.reviewer_email
+					%br
+				%span.label= "#{Review.human_attribute_name(:reviewer_username)}:"
+				= review.reviewer_username

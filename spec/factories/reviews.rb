@@ -2,6 +2,8 @@
 
 FactoryGirl.define do
 	factory :review do
-		body "FactoryBody"
+		body 'FactoryBody FactoryBody FactoryBody FactoryBody FactoryBody'
+		reviewer_email 'FactoryReviewerEmail@example.com'
+		reviewer_username 'FactoryReviewerUsername'
 	end
 end

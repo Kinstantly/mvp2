@@ -18,41 +18,65 @@ describe User do
 				@kelly.should have(:no).errors_on(:email)
 			end
 	
-			it "should fail if saved without an email address" do
-				@kelly.password = '123456'
-				status = @kelly.save
-				status.should == false
+			it "should require an email address" do
+				@kelly.email = nil
+				@kelly.should have(1).error_on(:email)
+			end
+			
+			it "should reject an email input field that is too long" do
+				email = 'example@example.com'
+				@kelly.email = ('a' * (User::MAX_LENGTHS[:email] - email.length)) + email
+				@kelly.should have(:no).errors_on(:email)
+				@kelly.email = 'a' + @kelly.email
+				@kelly.should have(1).error_on(:email)
 			end
 		end
 	
 		context "password" do
-			it "should not allow a password with fewer than 6 characters" do
-				@kelly.password = '12345'
+			it "should require a password" do
+				@kelly.password = nil
 				@kelly.should have(1).error_on(:password)
 			end
-	
-			it "should be happy if we set a password with at least 6 characters" do
-				@kelly.password = '123456'
+			
+			it "should not allow a password that is too short" do
+				@kelly.password = 'a' * (User::MIN_LENGTHS[:password] - 1)
+				@kelly.should have(1).error_on(:password)
+				@kelly.password += 'a'
 				@kelly.should have(:no).errors_on(:password)
 			end
-	
-			it "should fail if saved without a password" do
-				@kelly.email = 'kelly@example.com'
-				status = @kelly.save
-				status.should == false
+			
+			it "should not allow a password that is too long" do
+				@kelly.password = 'a' * User::MAX_LENGTHS[:password]
+				@kelly.should have(:no).errors_on(:password)
+				@kelly.password += 'a'
+				@kelly.should have(1).error_on(:password)
 			end
 		end
 	
 		it "should succeed if saved with both an email address and a password" do
 			@kelly.email = 'kelly@example.com'
 			@kelly.password = '123456'
-			status = @kelly.save
-			status.should == true
+			@kelly.save.should be_true
 		end
 		
-		it "should fail with an invalid US phone number" do
-			@kelly.phone = '(111) 555-1234'
-			@kelly.should have(1).errors_on(:phone)
+		context "phone number" do
+			it "he happy with a valid US phone number and extension" do
+				@kelly.phone = '(800) 555-1234 x56'
+				@kelly.should have(:no).errors_on(:phone)
+			end
+			
+			it "should fail with an invalid US phone number" do
+				@kelly.phone = '(111) 555-1234'
+				@kelly.should have(1).error_on(:phone)
+			end
+			
+			it "should reject a phone input field that is too long" do
+				phone = '(800) 555-1234 x56'
+				@kelly.phone = phone + ('0' * (User::MAX_LENGTHS[:phone] - phone.length))
+				@kelly.should have(:no).errors_on(:phone)
+				@kelly.phone += '0'
+				@kelly.should have(1).error_on(:phone)
+			end
 		end
 	
 		context "profile" do
@@ -125,18 +149,17 @@ describe User do
 		
 		context "username" do
 			it "should not allow a username that is too short" do
-				@kelly.username = 'a' * (UsernameValidator::MIN_LENGTH - 1)
+				@kelly.username = 'a' * (User::MIN_LENGTHS[:username] - 1)
 				@kelly.should have(1).error_on(:username)
+				@kelly.username += 'a'
+				@kelly.should have(:no).errors_on(:username)
 			end
 			
 			it "should not allow a username that is too long" do
-				@kelly.username = 'a' * (UsernameValidator::MAX_LENGTH + 1)
-				@kelly.should have(1).error_on(:username)
-			end
-	
-			it "should be happy if we set a username that is not too short or long" do
-				@kelly.username = 'a' * (UsernameValidator::MIN_LENGTH + 1)
+				@kelly.username = 'a' * User::MAX_LENGTHS[:username]
 				@kelly.should have(:no).errors_on(:username)
+				@kelly.username += 'a'
+				@kelly.should have(1).error_on(:username)
 			end
 			
 			it "should allow only alphanumeric and underscore characters in the username" do
@@ -144,19 +167,16 @@ describe User do
 				@kelly.should have(1).error_on(:username)
 			end
 	
-			it "should fail if saved without a username" do
-				@kelly.email = 'kelly@example.com'
-				@kelly.password = '123456'
-				status = @kelly.save
-				status.should == false
+			it "should require a username if a client" do
+				@kelly.username = nil
+				@kelly.should have(1).error_on(:username)
 			end
 			
-			it "limits the length of string attributes not checked by other validators" do
-				s = 'a' * (User::MAX_STRING_LENGTH + 1)
-				[:email, :phone].each do |attr|
-					@kelly.send "#{attr}=", s
-					@kelly.should have_at_least(1).error_on(attr)
-				end
+			it "should require a unique username" do
+				username = 'gotta_be_me'
+				FactoryGirl.create(:client_user, username: username)
+				@kelly.username = username
+				@kelly.should have(1).error_on(:username)
 			end
 		end
 	end

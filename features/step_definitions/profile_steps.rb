@@ -580,16 +580,24 @@ When /^I click on the link to see all locations$/ do
 	click_link 'more_locations'
 end
 
-When /^I enter "(.*?)" in the (first|second) review on the admin profile edit page$/ do |text, which|
-	field = Review.human_attribute_name :body
+When /^I enter "(.*?)"(?: as the )?(reviewer email|reviewer username)? (?:of|in) the (first|second) review on the admin profile edit page$/ do |text, field, which|
+	attribute = case field
+	when 'reviewer email'
+		:reviewer_email
+	when 'reviewer username'
+		:reviewer_username
+	else
+		:body
+	end
+	label = Review.human_attribute_name attribute
 	case which
 	when 'first'
 		within('.reviews .fields') do
-			fill_in field, with: text
+			fill_in label, with: text
 		end
 	when 'second'
 		within('.reviews .fields + .fields') do
-			fill_in field, with: text
+			fill_in label, with: text
 		end
 	end
 end

@@ -40,6 +40,9 @@ Feature: Site administrator edits a profile
 			And I visit the admin edit page for an unclaimed profile with no reviews
 		When I click on the "Fill in a new review" link
 			And I enter "Hank Williams is the best!" in the first review on the admin profile edit page
+			And I enter "jett@example.com" as the reviewer email of the first review on the admin profile edit page
+			And I enter "jett_williams" as the reviewer username of the first review on the admin profile edit page
 			And I save the profile
 			And I click on the "View full profile" link
 		Then the profile should show "Hank Williams is the best!"
+			And the profile should show "jett_williams"
