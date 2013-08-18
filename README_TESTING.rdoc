@@ -49,23 +49,32 @@ To run Rspec and Cucumber from inside TextMate, go to Preferences -> Advanced ->
 
 For the TM_RUBY value, you might have to use the expanded path instead of '~'.
 
-Note: the --drb option is used to run Rspec and Cucumber via the Spork server (see below).
+Note: the \-\-drb option is used to run Rspec and Cucumber via the Spork server (see below).
 
 == Spork
 
 Rspec is configured to use a Spork DRb server when such a server is running for Rspec.  The same goes for Cucumber.  You don't need to run Spork servers, but it speeds things up if you do.  To use Spork, you should run a server for each of Rspec and Cucumber (see below for the start-up commands).
 
-The '.rspec' file contains the '--drb' switch, which tells Rspec to use Spork if it is available.  So you don't need to specify it on the command line.  For example, to run all of the specs use this command:
+To use Spork with Rspec, you need to specify the '\-\-drb' option.  For example, to run all of the specs use this command:
 
- bundle exec rspec spec
+ bundle exec rspec --drb spec
 
-To use Spork with Cucumber, you need to specify the '--drb' switch.  For example, to run all of the features use this command:
+To use Spork with Cucumber, you need to specify the '\-\-drb' option.  For example, to run all of the features use this command:
 
  bundle exec cucumber --drb
 
 Here are some useful aliases for starting and monitoring the Rspec and Cucumber Spork servers.  You need to use these aliases from the repository root.
 
  alias sporkrspecstart='bundle exec spork rspec >> log/sporkrspec.log 2>&1 &'
- alias sporkrspeclog='less log/sporkrspec.log'
+ alias sporkrspeclog='tail -f log/sporkrspec.log'
  alias sporkcukestart='bundle exec spork cucumber >> log/sporkcuke.log 2>&1 &'
- alias sporkcukelog='less log/sporkcuke.log'
+ alias sporkcukelog='tail -f log/sporkcuke.log'
+
+=== Restarting Spork
+
+Some of your source files are preloaded by Spork.  If you modify any of these files and your tests depend on them, you will need to restart Spork to pick up the modifications.  You can kill and start the process, or you can send it a USR2 signal, e.g.,
+
+ # Replace PID with the process ID of the relevant spork process.
+ kill -s USR2 PID
+
+It helps to know which files are preloaded.  You can discover that with diagnostic mode.  For more information see https://github.com/sporkrb/spork#diagnostic-mode
