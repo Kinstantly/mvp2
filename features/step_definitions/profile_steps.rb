@@ -89,8 +89,8 @@ def formlet_id(name)
 	end
 end
 
-def attribute_display_selector(formlet, which, overlay=nil)
-	selector = "##{formlet_id formlet}#{' .overlay' if overlay.present?}" + case formlet
+def attribute_display_selector(formlet, which)
+	selector = "##{formlet_id formlet}" + case formlet
 	when 'services'
 		' .attribute_display + .attribute_display'
 	when 'specialties'
@@ -223,14 +223,18 @@ Given /^there is an unclaimed profile$/ do
 	create_unattached_profile
 end
 
-Given /^I visit the (view|edit) page for an (?:unclaimed|unpublished) profile$/ do |page|
-	create_unattached_profile
+Given /^I visit the (view|edit|admin view|admin edit) page for an (?:unclaimed|unpublished) profile( with no locations)?$/ do |page, no_locations|
+	create_unattached_profile(no_locations.present? ? {locations: []} : {})
 	find_unattached_profile
 	case page
 	when 'view'
 		visit profile_path(@profile)
 	when 'edit'
 		visit edit_profile_path(@profile)
+	when 'admin view'
+		visit show_plain_profile_path(@profile)
+	when 'admin edit'
+		visit edit_plain_profile_path(@profile)
 	end
 end
 
@@ -534,7 +538,7 @@ When /^I click on the "(.*?)" (?:link|button)$/ do |link|
 	click_link_or_button link
 end
 
-When /^I enter "(.*?)" in the "(.*?)" field of the (first|second) location$/ do |text, field, which|
+When /^I enter "(.*?)" in the "(.*?)" field of the (first|second) location on my profile edit page$/ do |text, field, which|
 	case which
 	when 'first'
 		within('#locations form .fields') do
@@ -542,6 +546,19 @@ When /^I enter "(.*?)" in the "(.*?)" field of the (first|second) location$/ do 
 		end
 	when 'second'
 		within('#locations form .fields + .fields') do
+			fill_in field, with: text
+		end
+	end
+end
+
+When /^I enter "(.*?)" in the "(.*?)" field of the (first|second) location on the admin profile edit page$/ do |text, field, which|
+	case which
+	when 'first'
+		within('.location_contact_profile .fields') do
+			fill_in field, with: text
+		end
+	when 'second'
+		within('.location_contact_profile .fields + .fields') do
 			fill_in field, with: text
 		end
 	end
@@ -638,9 +655,8 @@ Then /^I should be offered no (.*?)$/ do |things|
 	end
 end
 
-Then /^my profile edit page should show "([^\"]+)" displayed( | second )(as a link )?in the "([^\"]+)" (overlay )?area$/ do |value, which, link, formlet, overlay|
-	pending "implementation of more-info overlay" if overlay.present?
-	selector = attribute_display_selector formlet, which, overlay
+Then /^my profile edit page should show "([^\"]+)" displayed( | second )(as a link )?in the "([^\"]+)" area$/ do |value, which, link, formlet|
+	selector = attribute_display_selector formlet, which
 	selector += ' a' if link.present?
 	within(selector) do
 		page.should have_content value
@@ -733,8 +749,12 @@ Then /^the profile should be attached to my account$/ do
 	@profile.should == @unattached_profile
 end
 
-Then /^I should see form fields for an extra location$/ do
-	have_css '.location_contact_profile .fields + .fields'
+Then /^I should see form fields for an extra location on my profile edit page$/ do
+	page.should have_css '#locations form .fields + .fields'
+end
+
+Then /^I should see form fields for an extra location on the admin profile edit page$/ do
+	page.should have_css '.location_contact_profile .fields + .fields'
 end
 
 Then /^I should be asked to replace my existing profile$/ do
