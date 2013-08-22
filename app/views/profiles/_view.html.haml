@@ -117,20 +117,22 @@
 			.value.text_area= preserve_profile_text profile.service_area
 	%fieldset.rating_info
 		%legend= t 'views.profile.legend.rating_info'
-		-# If these partials are called from a users view, we need an explicit reference to profiles.
+		-# If this partial is called from a users view, we need an explicit reference to profiles.
 		- if profile.ratings.size > 0
 			= render partial: 'profiles/rating_score', locals: {profile: profile}
-		- if can? :rate, profile
-			= render partial: 'profiles/rate', locals: {profile: profile}
-		- elsif !user_signed_in?
-			= link_to 'Sign in', member_sign_in_return_path
-			or
-			= link_to 'sign up', member_sign_up_return_path
-			= "to rate and review #{profile.display_name_or_company}"
+			%br
+			%span.label= "#{Rating.human_attribute_name(:score)}:"
+			= provider_rating_average_score profile
 	%fieldset.reviews
 		%legend= Profile.human_attribute_name :reviews
 		- profile.reviews.each do |review|
 			.review
+				- rating_score = review.rating.try(:score)
+				- rating_title = rating_score || t('rating.no_score')
+				= form_tag do
+					- (Rating::SCORES).each do |i|
+						= radio_button_tag 'rating_score', i, (i == rating_score), class: 'provider_score', title: rating_title
+				%br
 				.value.text_area= preserve_profile_text review.body
 				- if can? :manage, Profile
 					%span.label= "#{Review.human_attribute_name(:reviewer_email)}:"

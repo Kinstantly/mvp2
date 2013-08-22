@@ -602,6 +602,12 @@ When /^I enter "(.*?)"(?: as the )?(reviewer email|reviewer username)? (?:of|in)
 	end
 end
 
+When /^I give a rating of "(.*?)" on the first review on the admin profile edit page$/ do |score|
+	within('.reviews .rating') do
+		choose "profile_reviews_attributes_0_rating_attributes_score_#{score}"
+	end
+end
+
 ### THEN ###
 
 Then /^I should see my profile information$/ do

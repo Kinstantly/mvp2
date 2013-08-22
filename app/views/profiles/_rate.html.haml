@@ -7,18 +7,18 @@
 			= t 'rating.prompt_for_first_score', name: profile.display_name_or_company
 	= form_tag rate_profile_path(profile), id: form_id do
 		- current_user_score = profile.rating_by(current_user).try(:score).try(:round).presence || -1
-		- (1..5).each do |i|
+		- Rating::SCORES.each do |i|
 			= radio_button_tag "#{form_id}", i, (i == current_user_score), class: "rate_provider", title: provider_rating_title(i)
 :javascript
 	(function() {
 		var post_rating;
 		post_rating = function(value, link) {
 			return $.post('#{rate_profile_path profile}', { score: value }, function() {
-				return $('.provider_rating').load('#{rating_score_profile_path profile} .provider_rating > *', window.rating_score_reset);
+				return $('.provider_rating').load('#{rating_score_profile_path profile} .provider_rating > *', my_vars.f.rating_score_reset);
 			});
 		};
 		$('form##{form_id} input.rate_provider').rating({ callback: post_rating });
-		window.rate_reset = function() {
+		my_vars.f.rate_reset = function() {
 			return $('form input.rate_provider').rating({ callback: post_rating });
 		};
 	}).call(this);

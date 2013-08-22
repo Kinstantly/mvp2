@@ -471,38 +471,42 @@ describe Profile do
 	end
 	
 	context "ratings" do
-		before(:each) do
-			@user = FactoryGirl.create(:client_user)
-		end
-		
-		it "is rateable" do
-			@profile.rate(2.5, @user)
-			@profile.should have(1).rating
-			@profile.ratings.last.score.should be_within(0.01).of(2.5)
-		end
+		let(:profile) { FactoryGirl.create(:published_profile) }
+		let(:user) { FactoryGirl.create(:client_user) }
+		let(:profile_with_reviews) { 
+			review_attrs = { body: 'This review must have enough words to be substantial.', reviewer_email: user.email }
+			review = profile.reviews.build(review_attrs)
+			rating = review.build_rating(score: 3)
+			review.save
+			rating.save
+			review = profile.reviews.build(review_attrs)
+			rating = review.build_rating(score: 4)
+			review.save
+			rating.save
+			Profile.find(profile.id)
+		}
 		
 		it "maintains an average rating score" do
-			@profile.rate(3.0, @user)
-			new_user = FactoryGirl.create(:client_user, email: 'caballe@barcelona.es', username: 'caballe')
-			@profile.rate(4.0, new_user)
-			@profile.should have(2).ratings
-			@profile.rating_average_score.should be_within(0.01).of(3.5)
+			profile_with_reviews.should have(2).ratings
+			reviews = profile_with_reviews.reviews
+			expected_average_score = (reviews[0].rating.score + reviews[1].rating.score) / 2.0
+			profile_with_reviews.rating_average_score.should be_within(0.01).of(expected_average_score)
 		end
 		
-		it "can rerate for a given user" do
-			@profile.rate(2.5, @user)
-			@profile.rate(4.5, @user)
-			@profile.should have(1).rating
-			@profile.ratings.last.score.should be_within(0.01).of(4.5)
-			@profile.rating_average_score.should be_within(0.01).of(4.5)
+		it "can rerate a review" do
+			reviews = profile_with_reviews.reviews
+			rating = reviews[0].rating
+			rating.score += 1
+			rating.save
+			expected_average_score = (reviews[0].rating.score + reviews[1].rating.score) / 2.0
+			updated_profile = Profile.find(profile_with_reviews.id)
+			updated_profile.rating_average_score.should be_within(0.01).of(expected_average_score)
 		end
 		
-		it "can remove a rating by a given user" do
-			@profile.rate(3.0, @user)
-			@profile.should have(1).rating
-			@profile.rate(nil, @user)
-			@profile.should have(:no).rating
-			@profile.rating_average_score.should be_nil
+		it "can remove a rating" do
+			profile_with_reviews.reviews.first.destroy
+			updated_profile = Profile.find(profile_with_reviews.id)
+			updated_profile.rating_average_score.should be_within(0.01).of(updated_profile.reviews.first.rating.score)
 		end
 	end
 	

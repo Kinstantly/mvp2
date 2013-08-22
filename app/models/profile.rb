@@ -28,8 +28,8 @@ class Profile < ActiveRecord::Base
 	has_many :reviews, dependent: :destroy
 	accepts_nested_attributes_for :reviews, allow_destroy: true, limit: 1000
 	
-	has_many :ratings, as: :rateable, dependent: :destroy
-	has_many :raters, through: :ratings
+	has_many :ratings, through: :reviews
+	has_many :reviewers, through: :reviews
 	
 	validate :publishing_requirements
 	# validates :categories, length: {maximum: 1}
@@ -286,12 +286,16 @@ class Profile < ActiveRecord::Base
 		send "#{attr_name}=", value.strip.presence if value
 	end
 	
+	def update_rating_score
+		update_attribute :rating_average_score, ratings.average(:score)
+	end
+	
 	def rate(score, user)
 		return false unless user
 		if score.present?
 			rating = rating_by(user).presence || ratings.build
 			rating.rater ||= user
-			rating.score = score.to_f
+			rating.score = score
 			return false unless rating.save
 		else
 			rating_by(user).try(:destroy)

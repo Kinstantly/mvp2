@@ -1,7 +1,11 @@
 class Review < ActiveRecord::Base
-	attr_accessible :body, :reviewer_email, :reviewer_username
+	has_paper_trail # Track changes to each review.
+	
+	attr_accessible :body, :reviewer_email, :reviewer_username, :rating_attributes
 	
 	belongs_to :profile
+	has_one :rating, dependent: :destroy
+	accepts_nested_attributes_for :rating, allow_destroy: true
 	belongs_to :reviewer, class_name: 'User'
 	
 	attr_writer :reviewer_username
@@ -19,6 +23,7 @@ class Review < ActiveRecord::Base
 	
 	# reviewer_email and reviewer_username are validated indirectly by the user model.
 	before_validation :require_reviewer
+	validate :validate_rating
 	validates :body, length: {minimum: MIN_LENGTHS[:body], maximum: MAX_LENGTHS[:body]}
 	
 	# If we are doing a nested update and the editor is attempting to change the reviewer,
@@ -34,6 +39,10 @@ class Review < ActiveRecord::Base
 	
 	def reviewer_username
 		@reviewer_username || reviewer.try(:username)
+	end
+	
+	def rating
+		super || build_rating
 	end
 	
 	private
@@ -60,6 +69,17 @@ class Review < ActiveRecord::Base
 			errors.add :reviewer, user_errors.full_messages.join('; ') if user_errors.present?
 		else
 			self.reviewer = user
+		end
+		true
+	end
+	
+	def validate_rating
+		unless rating.valid?
+			if rating.errors.present?
+				errors.add :rating, rating.errors.full_messages.join('; ')
+			else
+				errors.add :rating, I18n.t('activerecord.errors.review.attributes.rating.invalid')
+			end
 		end
 		true
 	end

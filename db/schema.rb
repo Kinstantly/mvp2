@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130815234517) do
+ActiveRecord::Schema.define(:version => 20130820035320) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -167,16 +167,18 @@ ActiveRecord::Schema.define(:version => 20130815234517) do
   add_index "profiles_specialties", ["profile_id"], :name => "index_profiles_specialties_on_profile_id"
 
   create_table "ratings", :force => true do |t|
-    t.float    "score",         :null => false
     t.integer  "rater_id"
     t.integer  "rateable_id"
     t.string   "rateable_type"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.integer  "review_id"
+    t.integer  "score",         :null => false
   end
 
   add_index "ratings", ["rateable_id", "rateable_type"], :name => "index_ratings_on_rateable_id_and_rateable_type"
   add_index "ratings", ["rater_id"], :name => "index_ratings_on_rater_id"
+  add_index "ratings", ["review_id"], :name => "index_ratings_on_review_id"
 
   create_table "reviews", :force => true do |t|
     t.integer  "profile_id"

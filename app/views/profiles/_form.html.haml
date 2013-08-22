@@ -237,20 +237,23 @@
 			%span.note= t 'views.profile.edit.service_area_example'
 	%fieldset.reviews
 		%legend= Profile.human_attribute_name :reviews
-		= f.fields_for :reviews do |rf|
+		= f.fields_for :reviews do |review_form|
+			= review_form.fields_for :rating do |rating_form|
+				.rating
+					.label_area= rating_form.label :rating
+					- Rating::SCORES.each do |score|
+						= rating_form.radio_button :score, score, class: 'review_rating required', title: provider_rating_title(score)
 			.body
-				= rf.label :body
+				= review_form.label :body
 				%br
-				= rf.text_area :body, size: '80x10'
+				= review_form.text_area :body, size: '80x10'
 			.reviewer_email
-				.label_area
-					= rf.label :reviewer_email
-				= rf.text_field :reviewer_email
+				.label_area= review_form.label :reviewer_email
+				= review_form.text_field :reviewer_email
 			.reviewer_username
-				.label_area
-					= rf.label :reviewer_username
-				= rf.text_field :reviewer_username
-			= rf.link_to_remove t('views.review.edit.remove'), confirm: t('views.review.edit.remove_confirm_admin')
+				.label_area= review_form.label :reviewer_username
+				= review_form.text_field :reviewer_username
+			= review_form.link_to_remove t('views.review.edit.remove'), confirm: t('views.review.edit.remove_confirm_admin')
 		= f.link_to_add t('views.review.edit.add'), :reviews
 	-# Mass assignment is not allowed on admin attributes, so use simple params and tags.
 	- if can? :manage, Profile
@@ -379,3 +382,9 @@
 		$('.custom_specialties input:last').focus().keydown (e) ->
 			add_custom_specialties_text_field e if e.which == 13 # carriage return
 	$('#add_custom_specialties_text_field').click add_custom_specialties_text_field
+
+	# Prettify the star-rating inputs for each existing provider review.
+	$('form input.review_rating').rating()
+	
+	# Prettify the star-rating inputs for a newly added review.
+	$(document).on 'nested:fieldAdded:reviews', (e) -> $('input.review_rating', e.field).rating()

@@ -148,6 +148,10 @@ en:
             year_started:
               not_a_number: 'must be a year number, e.g., 2002'
               not_an_integer: 'must be a year number, e.g., 2002'
+        review:
+          attributes:
+            rating:
+              invalid: 'is invalid'
         user:
           attributes:
             password:
@@ -191,7 +195,7 @@ en:
         basic_profile: 'Basic profile'
         expertise_profile: 'Expertise'
         professional_profile: 'Professional profile'
-        rating_info: 'Rating'
+        rating_info: 'Average rating'
       view:
         accepting_new_clients: 'Accepting new clients'
         claimed_by: 'Claimed by'
@@ -215,6 +219,7 @@ en:
         profile_photo_placeholder: 'Photo upload coming soon'
         published: 'Published'
         rating: 'Rating'
+        review_provider_link: 'Review %{name}'
       edit:
         add_text_field: 'Hit ENTER to add another field'
         ages_example: 'Examples: 0-12, 13-18+, teens and young adults'
@@ -342,5 +347,10 @@ en:
     how_many:
       one: '1 rating'
       other: '%{count} ratings'
+  review:
+    none: 'No reviews'
+    how_many:
+      one: '1 review'
+      other: '%{count} reviews'
   pagination:
     per_page_button: 'per page'

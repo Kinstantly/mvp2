@@ -347,6 +347,8 @@ describe ProfilesController do
 	end
 	
 	context "as profile editor" do
+		let(:review_rating_attrs) { {rating_attributes: FactoryGirl.attributes_for(:rating)} }
+		
 		before (:each) do
 			@profile_editor = FactoryGirl.create(:profile_editor, email: 'editor@example.com')
 			sign_in @profile_editor
@@ -431,8 +433,8 @@ describe ProfilesController do
 		end
 		
 		it "should add two reviews" do
-			review_1_attrs = FactoryGirl.attributes_for(:review, body: 'This provider is fantastic!')
-			review_2_attrs = FactoryGirl.attributes_for(:review, body: 'This provider is adequate.')
+			review_1_attrs = FactoryGirl.attributes_for(:review, body: 'This provider is fantastic!').merge(review_rating_attrs)
+			review_2_attrs = FactoryGirl.attributes_for(:review, body: 'This provider is adequate.').merge(review_rating_attrs)
 			profile = FactoryGirl.create(:profile)
 			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, reviews_attributes: {
 				'0' => review_1_attrs, '1' => review_2_attrs
@@ -445,7 +447,7 @@ describe ProfilesController do
 		end
 		
 		it "should create a record for the reviewer" do
-			review_attrs = FactoryGirl.attributes_for(:review, reviewer_email: 'egaranca@mezzo.lv', reviewer_username: 'egaranca')
+			review_attrs = FactoryGirl.attributes_for(:review, reviewer_email: 'egaranca@mezzo.lv', reviewer_username: 'egaranca').merge(review_rating_attrs)
 			profile = FactoryGirl.create(:profile)
 			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, reviews_attributes: {
 				'0' => review_attrs
@@ -456,6 +458,38 @@ describe ProfilesController do
 			reviewer.should_not be_nil
 			reviewer.email.should == review_attrs[:reviewer_email]
 			reviewer.username.should == review_attrs[:reviewer_username]
+		end
+		
+		it "should create a rating record" do
+			review_attrs = FactoryGirl.attributes_for(:review, rating_attributes: {score: 3})
+			profile = FactoryGirl.create(:profile)
+			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, reviews_attributes: {
+				'0' => review_attrs
+			})
+			response.should redirect_to(controller: 'profiles', action: 'show', id: profile.id)
+			assigns[:profile].should have(1).review
+			rating = assigns[:profile].reviews.first.rating
+			rating.should_not be_nil
+			rating.score.should == review_attrs[:rating_attributes][:score]
+		end
+		
+		it "should require a rating score" do
+			profile = FactoryGirl.create(:profile)
+			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, reviews_attributes: {
+				'0' => FactoryGirl.attributes_for(:review)
+			})
+			response.should render_template('edit')
+			assigns[:profile].errors.should be_present
+		end
+		
+		it "should delete a review" do
+			profile = FactoryGirl.create(:profile_with_one_review)
+			profile.should have(1).review
+			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, reviews_attributes: {
+				'0' => {'_destroy' => '1', 'id' => profile.reviews.first.id}
+			})
+			response.should redirect_to(controller: 'profiles', action: 'show', id: profile.id)
+			assigns[:profile].should have(:no).reviews
 		end
 	end
 	
@@ -654,45 +688,6 @@ describe ProfilesController do
 			response.should render_template('new_invitation')
 			flash[:alert].should_not be_nil
 		end
-	end
-	
-	context "rating published profiles" do
-		before(:each) do
-			@profile = FactoryGirl.create(:published_profile)
-		end
-		
-		it "should rate a profile" do
-			sign_in FactoryGirl.create(:client_user)
-			post :rate, id: @profile.id, score: '2.0'
-			@profile.should have(1).rating
-			@profile.ratings.find_by_rater_id(@profile.id).score.should be_within(0.01).of(2.0)
-		end
-		
-		it "should fail to rate if not signed in" do
-			post :rate, id: @profile.id, score: '2.0'
-			@profile.should have(:no).ratings
-		end
-		
-		it "should fail to rate the rater's profile" do
-			sign_in FactoryGirl.create(:expert_user, profile: @profile)
-			post :rate, id: @profile.id, score: '2.0'
-			@profile.should have(:no).ratings
-		end
-		
-		it "should remove a rating" do
-			sign_in FactoryGirl.create(:client_user)
-			post :rate, id: @profile.id, score: '2.0'
-			@profile.should have(1).rating
-			post :rate, id: @profile.id
-			@profile.should have(:no).rating
-		end
-	end
-	
-	it "should fail to rate an unpublished profile" do
-		@profile = FactoryGirl.create(:unpublished_profile)
-		sign_in FactoryGirl.create(:client_user)
-		post :rate, id: @profile.id, score: '2.0'
-		@profile.should have(:no).rating
 	end
 	
 	describe "GET admin" do
