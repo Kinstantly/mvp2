@@ -521,12 +521,11 @@ module ProfilesHelper
 	end
 
 	def search_result_specialties(profile)
-		displayed_specialties = 22
-		profile_wrap_item_names profile.specialties, displayed_specialties
+		profile_wrap_item_names profile.specialties
 	end
 
-	def search_result_specialties_truncated(profile)
-		sanitize profile_display_truncated search_result_specialties(profile), length: 200, separator: '</span><span>', omission: '...</span>'
+	def search_result_specialties_truncated(profile, options={})
+		sanitize profile_display_truncated search_result_specialties(profile), length: options[:length], separator: '</span><span>', omission: '...</span>'
 	end
 
 	def search_result_location(profile)

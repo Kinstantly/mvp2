@@ -39,20 +39,20 @@
 									%span.headline= profile.headline
 							- location = profile.locations.order_by_id.first
 							%span
-								%span.location{itemprop: "street-address"}
-									= location.try(:display_address)
-									- if (location_count = profile.locations.count) > 1
-										= t 'views.location.view.more.how_many', count: (location_count - 1)
 								%span.location{itemprop: "telephone"}= location.try(:display_phone)
-							%span
-								%span.location{itemprop: "url"}= profile_display_website profile
 								- if profile.email.present?
 									%span.location{itemprop: "email"}
 										= t 'views.profile.view.email'
 										= profile_display_email profile
+								%span.location{itemprop: "url"}= profile_display_website profile
+							%span
+								%span.location{itemprop: "street-address"}
+									= location.try(:display_address)
+									- if (location_count = profile.locations.count) > 1
+										= t 'views.location.view.more.how_many', count: (location_count - 1)
 							- if profile.ages.present?
-								%span.location= "Ages: #{profile.ages}"
-							%span.specialties= search_result_specialties profile
+								%span.location= profile.display_stages_ages
+						.specialties= search_result_specialties_truncated profile, length: 700
 						.summary
 							%span.text_area= profile_display_text profile.summary, preserve: true, truncate: 180
 
@@ -63,7 +63,7 @@
 						= profile_list_name_or_company_link profile, class: 'open'
 						- if profile.headline.present?
 							%span.headline= profile.headline
-					%span.specialties= search_result_specialties_truncated profile
+					%span.specialties= search_result_specialties_truncated profile, length: 200
 					%span.location{itemprop: "street-address"}= search_result_location profile
 					%span.summary
 						= profile_display_truncated profile.summary, length: 200, links: true
