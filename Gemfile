@@ -41,7 +41,8 @@ gem 'jquery-rails'
 # HAML 4 includes coffeescript support.
 # gem 'coffee-filter'
 
-gem 'ruby-prof', :git => 'git://github.com/wycats/ruby-prof.git'
+# ruby-prof is a fast code profiler for Ruby
+gem 'ruby-prof'
 
 # Authentication based on Warden.
 gem 'devise'
