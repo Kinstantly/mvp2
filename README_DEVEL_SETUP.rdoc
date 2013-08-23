@@ -1,32 +1,58 @@
 = Developer setup
 
+Please add missing information to this document.
+
 == Instance set up
 
-I'm sure I'm forgetting something in here.  Please add missing stuff.
+=== Ruby
 
-I'm using Ruby 1.9.3p194 in devel and Rails 3.2.13.  The Gemfile directs Heroku to use Ruby 1.9.3.  Before going live I want to upgrade to Ruby 2 and Rails 4.
+We are using Ruby 1.9.3 and Rails 3.2.13.  The Gemfile directs Heroku to use Ruby 1.9.3.  Before going live I want to upgrade to Ruby 2 and maybe Rails 4.
 
-To get started clone the repository on GutHub.
+For Ruby you should use at least patch level 448, i.e., ruby 1.9.3-p448.  That has a security update.  You can install or upgrade using RVM.
+
+ \curl -L https://get.rvm.io | bash -s stable --ruby=1.9.3
+
+=== Source repository
+
+To get started clone the repository from GitHub.
 
  git clone https://github.com/Kinstantly/mvp2.git
 
-Do all development on the 'develop' branch!  (The 'master' branch is only used for deployment.)
+*IMPORTANT:* Do all development on the 'develop' branch!  (The 'master' branch is only used for deployment.)
 
  cd mvp2
  git checkout develop
+
+=== Bundler and ruby gems
 
 Install needed gems.
 
  bundle install
 
-I'm running PostgreSQL 9.2.4 for my devel instance.  Installation and aliases:
+Always run anything that uses ruby with 'bundle exec', e.g., rake, rails, unicorn, etc.  This will ensure that those commands are using the ruby gem versions that are specified by bundler.  Thus all developers and the production site will be working in the same environment.
+
+These aliases help me with bundler, e.g., help me always use 'bundle exec',
+
+ alias be='bundle exec'
+ alias bs='bundle show'
+
+For example:
+
+ be rails -v
+ mate $(bs devise)
+
+=== Database
+
+I'm running PostgreSQL 9.2.4 for my development instance.  Installation and aliases:
 
  brew install postgresql
  alias pgstart='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
  alias pgstop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
  alias pgps='ps -ef|egrep "postgres|PID"'
 
-I'm running Solr 4.1.0 from a hacked gem.  It should install via bundler from my github repo (see Gemfile).  Everything you need should be in there and in the mvp2 repo under solr.  You need to run two solr instances: one for your devel instance and one for the tests to succeed.
+=== Search engine
+
+For development, you can run Solr 4.1.0 from a gem.  It should install via bundler from my github repo (see Gemfile).  Everything you need should be in there and in the mvp2 repo under solr.  You need to run two solr instances: one for your devel instance and one for the tests to succeed.
 
 Useful aliases:
 
@@ -42,25 +68,19 @@ Useful aliases:
  alias solrlog='less +G log/sunspot-solr-development.log'
  alias solrlogtest='less +G log/sunspot-solr-test.log'
 
-I'm using Unicorn to start the web process(es).  On devel I usually just run one web process.  The default is to run three.  To run just one, set the WEB_CONCURRENCY variable.
+FYI, in production we are using a cloud-based Solr instance on Websolr.
+
+=== Web and background worker processes
+
+I'm using Unicorn to start the web process(es).  In development I usually just run one web process.  The default is to run three.  To run just one, set the WEB_CONCURRENCY variable.
 
  export WEB_CONCURRENCY=1
  alias unicornstart='bundle exec unicorn -p 5000 -c ./config/unicorn.rb'
 
-I'm also running a background worker that runs delayed_job_active_record.  Usually, I don't run it on devel.  Currently, you only need it if you're working on part of the admin interface.  To run it, use foreman instead of running unicorn directly.  Foreman will do the same thing as happens on Heroku, i.e., run unicorn and the worker (see Procfile in the mvp2 repo).  The heroku CLI includes foreman, but it's broken.  Instead install the gem yourself:
+I'm also running a background worker that runs delayed_job_active_record.  Usually, I don't run it during development.  Currently, you only need it if you're working on part of the admin interface.  To run it, use foreman instead of running unicorn directly.  Foreman will do the same thing as happens on Heroku, i.e., run unicorn and the worker (see Procfile in the mvp2 repo).  The heroku command-line-interface includes foreman, but it's broken.  Instead install the gem yourself:
 
  gem install foreman
  foreman start
-
-These aliases help me with bundler, e.g., help me always use 'bundle exec',
-
- alias be='bundle exec'
- alias bs='bundle show'
-
-For example:
-
- be rails -v
- mate $(bs devise)
 
 == Database contents
 
@@ -79,11 +99,15 @@ If you ever do a mass update of your database, reindex your Solr instance.
 
  bundle exec rake sunspot:solr:reindex
 
+=== Provider profiles
+
+You'll need to manualy create a few provider profiles using the admin interface.  Create an admin user (see below).  Then you can start creating profiles here: http://localhost:5000/profiles/admin
+
 == Create an admin user
 
 You'll want an admin user.  Start up your instance using the above 'unicorn' or 'foreman' command.  Go to the home page and click on the "Provider? Join us" link.  Then sign up as a provider.  You'll need to confirm your email address from a link "sent" in email.  However, in the development environment transaction emails are not really sent, but they are logged.  So look in 'log/development.log' for an email. Copy the link in the email into your browser's location bar and hit enter.  That should confirm your new account.
 
-Next add the 'admin' role to your new account using the console.
+Next add the 'admin' role to your new account using the rails console.
 
  bundle exec rails console
  user = User.last
