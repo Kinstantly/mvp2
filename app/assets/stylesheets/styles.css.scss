@@ -988,6 +988,7 @@ div.popover {
 				.profile-photo-placeholder {
 					width: 106px;
 					height: 90px;
+					margin-bottom: 10px;
 					background: url('profile-photo-placeholder-110.jpg') 0px 0px no-repeat;
 				}
 				.profile {
@@ -1003,6 +1004,7 @@ div.popover {
 					}
 				}
 				.specialties {
+					clear: left;
 					color: $text_light_color;
 					line-height: 20px;
 					@include bullet-separator-style;
