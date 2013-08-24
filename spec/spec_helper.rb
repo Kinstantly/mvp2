@@ -15,6 +15,11 @@ Spork.prefork do
   # need to restart spork for it take effect.
 
   ENV["RAILS_ENV"] ||= 'test'
+
+  # Delay loading of routes, Devise, and the User model!
+  require 'rails/application'
+  Spork.trap_method(Rails::Application::RoutesReloader, :reload!)
+
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
   require 'rspec/autorun'
@@ -71,6 +76,8 @@ end
 Spork.each_run do
   # This code will be run each time you run your specs.
 
+  FactoryGirl.reload
+  I18n.backend.reload!
 end
 
 # --- Instructions ---
