@@ -550,9 +550,23 @@ module ProfilesHelper
 		icons.join(' | ')
 	end
 
-	# Provider rating
+	# Provider rating and review
 	def provider_rating_title(rating)
 		I18n.t "rating.score_#{rating.floor}"
 	end
 
+	def provider_rating_average_score(profile)
+		profile.rating_average_score.try(:round, 1) || t('rating.no_score')
+	end
+
+	def profile_review_link(profile)
+		provider_name = profile.display_name_or_company
+		uri = 'https://docs.google.com/forms/d/1dD9rrSGzhrCRyozj1qJwUrrBbANinm4BLJfrz7QfIQw/viewform?entry.1072639882=' +
+			CGI.escape(provider_name.presence || '')
+		if user_signed_in?
+			uri += '&entry.288618633=' + CGI.escape(current_user.email.presence || '')
+			uri += '&entry.1551105972=' + CGI.escape(current_user.username.presence || '')
+		end
+		link_to t('views.profile.view.review_provider_link', name: provider_name), uri.html_safe, target: '_blank'
+	end
 end

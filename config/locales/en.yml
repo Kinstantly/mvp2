@@ -124,6 +124,8 @@ en:
         search_area_tag_id: 'Region for search'
         display_address: 'Address'
         display_phone: 'Phone'
+      review:
+        body: 'What makes this provider worth a shout-out--or a call-out?'
       service:
         is_predefined: 'Can be assigned to a category'
       specialty:
@@ -146,6 +148,10 @@ en:
             year_started:
               not_a_number: 'must be a year number, e.g., 2002'
               not_an_integer: 'must be a year number, e.g., 2002'
+        review:
+          attributes:
+            rating:
+              invalid: 'is invalid'
         user:
           attributes:
             password:
@@ -181,8 +187,15 @@ en:
         phone_example: 'Example: (415) 555-5555 or (415) 555-5555 x12'
         remove: 'Mark the above location for removal upon saving'
         remove_confirm: 'This location will be removed when you click save.'
+        remove_confirm_admin: 'This location will be removed when you save the profile.'
         add: 'Fill in a new location'
     profile:
+      legend:
+        admin_info: 'Admin'
+        basic_profile: 'Basic profile'
+        expertise_profile: 'Expertise'
+        professional_profile: 'Professional profile'
+        rating_info: 'Average rating'
       view:
         accepting_new_clients: 'Accepting new clients'
         claimed_by: 'Claimed by'
@@ -206,6 +219,7 @@ en:
         profile_photo_placeholder: 'Photo upload coming soon'
         published: 'Published'
         rating: 'Rating'
+        review_provider_link: 'Review %{name}'
       edit:
         add_text_field: 'Hit ENTER to add another field'
         ages_example: 'Examples: 0-12, 13-18+, teens and young adults'
@@ -250,6 +264,12 @@ en:
       claim_confirm:
         link_body: 'Click here'
         message: 'if you want to replace your existing profile with the one you want claim.'
+    review:
+      edit:
+        remove: 'Mark the above review for removal upon saving'
+        remove_confirm: 'This review will be removed when you click save.'
+        remove_confirm_admin: 'This review will be removed when you save the profile.'
+        add: 'Fill in a new review'
     search:
       query_placeholder: 'doctor, tutor, therapist...'
     search_results:
@@ -327,5 +347,10 @@ en:
     how_many:
       one: '1 rating'
       other: '%{count} ratings'
+  review:
+    none: 'No reviews'
+    how_many:
+      one: '1 review'
+      other: '%{count} reviews'
   pagination:
     per_page_button: 'per page'

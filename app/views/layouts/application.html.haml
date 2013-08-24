@@ -51,8 +51,8 @@
 		:coffeescript
 			# Ensure rating stars render properly after everything is loaded.
 			window.onload = ->
-				window.rating_score_reset() if window.rating_score_reset
-				window.rate_reset() if window.rate_reset
+				my_vars.f.rating_score_reset() if my_vars.f.rating_score_reset
+				my_vars.f.rate_reset() if my_vars.f.rate_reset
 			#
 			# Add change event to selects, and trigger it on load, so the span is up to date
 			selects = $('.select-wrapper > select').on('change', ->

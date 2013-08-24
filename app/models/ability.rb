@@ -11,15 +11,12 @@ class Ability
 		alias_action :show, :show_claiming, :link_index, :rating_score, to: :view
 		can :view, Profile, is_published: true
 		
-		# Any confirmed user can rate a published profile that is not their own.
-		can :rate, Profile, is_published: true if user.confirmed_at
-		cannot :rate, Profile, user_id: user.id
-		
 		# Experts should only be able to edit the profile attached to their user.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.
+		# But don't allow expert to view or edit their profile via the users_controller, because it is too permissive.
 		if user.expert?
-			alias_action :view_profile, :edit_profile, :update_profile, :claim_profile, :force_claim_profile, to: :manage_my_user_profile
-			can :manage_my_user_profile, User, id: user.id
+			alias_action :claim_profile, :force_claim_profile, to: :claim_my_profile
+			can :claim_my_profile, User, id: user.id
 			can :create, User, id: user.id
 			can :update, User, id: user.id
 			can :show, User, id: user.id

@@ -223,8 +223,20 @@ Given /^there is an unclaimed profile$/ do
 	create_unattached_profile
 end
 
-Given /^I visit the (view|edit|admin view|admin edit) page for an (?:unclaimed|unpublished) profile( with no locations)?$/ do |page, no_locations|
-	create_unattached_profile(no_locations.present? ? {locations: []} : {})
+Given /^I visit the (view|edit|admin view|admin edit) page for an (?:unclaimed|unpublished) profile( with no locations| with one location| with no reviews| with one review)?$/ do |page, items|
+	attrs = case items.try(:sub, /\A\s*with\s*/, '')
+	when 'no locations'
+		{ locations: [] }
+	when 'one location'
+		{ locations: [FactoryGirl.create(:location)] }
+	when 'no reviews'
+		{ reviews: [] }
+	when 'one review'
+		{ reviews: [FactoryGirl.create(:review)] }
+	else
+		{}
+	end
+	create_unattached_profile attrs
 	find_unattached_profile
 	case page
 	when 'view'
@@ -568,6 +580,34 @@ When /^I click on the link to see all locations$/ do
 	click_link 'more_locations'
 end
 
+When /^I enter "(.*?)"(?: as the )?(reviewer email|reviewer username)? (?:of|in) the (first|second) review on the admin profile edit page$/ do |text, field, which|
+	attribute = case field
+	when 'reviewer email'
+		:reviewer_email
+	when 'reviewer username'
+		:reviewer_username
+	else
+		:body
+	end
+	label = Review.human_attribute_name attribute
+	case which
+	when 'first'
+		within('.reviews .fields') do
+			fill_in label, with: text
+		end
+	when 'second'
+		within('.reviews .fields + .fields') do
+			fill_in label, with: text
+		end
+	end
+end
+
+When /^I give a rating of "(.*?)" on the first review on the admin profile edit page$/ do |score|
+	within('.reviews .rating') do
+		choose "profile_reviews_attributes_0_rating_attributes_score_#{score}"
+	end
+end
+
 ### THEN ###
 
 Then /^I should see my profile information$/ do
@@ -632,6 +672,11 @@ end
 
 Then /^my profile should have no locations$/ do
 	find_user_profile
+	@profile.locations.should have(:no).things
+end
+
+Then /^the unclaimed profile should have no locations$/ do
+	find_unattached_profile
 	@profile.locations.should have(:no).things
 end
 
@@ -755,6 +800,10 @@ end
 
 Then /^I should see form fields for an extra location on the admin profile edit page$/ do
 	page.should have_css '.location_contact_profile .fields + .fields'
+end
+
+Then /^I should see form fields for a (second )?review on the admin profile edit page$/ do |which|
+	page.should have_css ".reviews .fields#{' + .fields' if which.try(:strip) == 'second'}"
 end
 
 Then /^I should be asked to replace my existing profile$/ do

@@ -112,7 +112,7 @@
 		params = 'latitude='+position.coords.latitude+'&longitude='+position.coords.longitude
 		$('.search_results_list').load(my_vars.search_path, params, search_by_location_complete)
 	search_by_location_complete = ->
-		window.rating_score_reset() if window.rating_score_reset
+		my_vars.f.rating_score_reset() if my_vars.f.rating_score_reset
 		$('#get_location_button_area').html(my_vars.t.showing_nearest_to_you)
 		$('#nearest_results_msg').remove()
 		window.link_short_profiles()

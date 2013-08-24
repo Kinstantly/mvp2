@@ -41,7 +41,8 @@ gem 'jquery-rails'
 # HAML 4 includes coffeescript support.
 # gem 'coffee-filter'
 
-gem 'ruby-prof', :git => 'git://github.com/wycats/ruby-prof.git'
+# ruby-prof is a fast code profiler for Ruby
+gem 'ruby-prof'
 
 # Authentication based on Warden.
 gem 'devise'
@@ -116,6 +117,8 @@ group :development, :test do
 	git 'git://github.com/edsimpson/sunspot.git' do
 		gem 'sunspot_solr'
 	end
+	# Run a test server (DRb server) via spork.
+	gem 'spork-rails'
 end
 
 # To use ActiveModel has_secure_password

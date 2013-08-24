@@ -62,15 +62,23 @@ div.view_profile {
 		}
 	}
 	.account_areas, .profile_areas {
-		> div {
+		> div, > fieldset {
 			@include profile-areas-div-style;
-			> div {
+			> div, > fieldset {
 				margin-bottom: 0.5em;
 				.value {
 					@include cell-style;
 				}
 			}
 		}
+	}
+	.location + .location, .review + .review {
+		border-top: {
+			width: thin;
+			color: gray;
+			style: solid;
+		}
+		padding-top: 0.5em;
 	}
 }
 
@@ -86,10 +94,10 @@ div.view_profile {
 		}
 	}
 	form {
-		.account_areas, .profile_areas, .location_contact_profile {
-			> div {
+		.account_areas, .profile_areas, .location_contact_profile, .reviews {
+			> div, > fieldset {
 				@include profile-areas-div-style;
-				> div {
+				> div, > fieldset {
 					padding-top: 0.5em;
 					padding-bottom: 0.5em;
 					clear: left;
@@ -270,6 +278,7 @@ span.note, span.hint {
 
 .text_area {
 	white-space: pre-line;
+	margin-bottom: 0.5em;
 }
 
 a.emphasized {

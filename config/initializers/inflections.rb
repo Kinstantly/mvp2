@@ -13,3 +13,8 @@
 # ActiveSupport::Inflector.inflections do |inflect|
 #   inflect.acronym 'RESTful'
 # end
+
+ActiveSupport::Inflector.inflections do |inflect|
+	inflect.irregular 'review_given', 'reviews_given'
+	inflect.irregular 'rating_given', 'ratings_given'
+end

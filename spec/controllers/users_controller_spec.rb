@@ -7,16 +7,9 @@ describe UsersController do
 	end
 	
 	describe "GET view_profile" do
-		before(:each) do
+		it "should not show the profile via the users controller" do
 			get :view_profile
-		end
-		
-		it "renders the view" do
-			response.should render_template('view_profile')
-		end
-		
-		it "assigns @profile" do
-			assigns[:profile].should == @kelly.profile
+			response.should_not render_template('view_profile')
 		end
 	end
 	
@@ -45,42 +38,23 @@ describe UsersController do
 	end
 	
 	describe "GET edit_profile" do
-		before(:each) do
+		it "should not render the profile edit view via the users controller" do
 			get :edit_profile
-		end
-	
-		it "renders the view" do
-			response.should render_template('edit_profile')
-		end
-		
-		it "assigns @profile" do
-			assigns[:profile].should == @kelly.profile
+			response.should_not render_template('edit_profile')
 		end
 	end
 	
 	describe "POST update_profile" do
-		it "successfully updates the profile" do
+		it "should not update the profile via the users controller" do
 			post :update_profile, user: FactoryGirl.attributes_for(:user)
-			response.should redirect_to(controller: 'users', action: 'view_profile')
-			flash[:notice].should_not be_nil
-		end
-		
-		it "fails to update the profile with no email" do
-			post :update_profile, user: FactoryGirl.attributes_for(:user_with_no_email)
-			response.should render_template('edit_profile')
+			response.should_not redirect_to(controller: 'users', action: 'view_profile')
 			flash[:alert].should_not be_nil
 		end
 		
-		it "fails to self-publish the profile" do
-			expect {
-				post :update_profile, user: {profile_attributes: {is_published: true}}
-			}.to raise_error(/protected attributes/i)
-		end
-		
-		it "fails to update the admin notes" do
-			expect {
-				post :update_profile, user: {profile_attributes: {admin_notes: 'Sneaky notes'}}
-			}.to raise_error(/protected attributes/i)
+		it "should not update a profile attribute via the users controller" do
+			new_first_name = 'Billie Joe'
+			post :update_profile, user: FactoryGirl.attributes_for(:user, profile: {first_name: new_first_name})
+			assigns[:profile].first_name.should_not == new_first_name
 		end
 	end
 	

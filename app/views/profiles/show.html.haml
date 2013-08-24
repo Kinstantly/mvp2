@@ -49,12 +49,8 @@
 				%span.location{itemprop: "email"}
 					= t 'views.profile.view.email'
 					= profile_linked_email @profile
-			- if can? :rate, @profile
-				= render partial: 'profiles/rate', locals: {profile: @profile}
-			- elsif !user_signed_in?
-				.rate
-					.rate-this
-						= render partial: 'profiles/rate_prompt_signed_out', locals: {profile: @profile}
+			.rate
+				.rate-this= profile_review_link @profile
 		%ul.contact-toolbar
 			%li.consult_by_email= profile_consult_by_email_element @profile
 			%li.consult_by_phone= profile_consult_by_phone_element @profile

@@ -158,7 +158,7 @@ a:hover {
 }
 #branding h1 a {
 	display: block;
-	background: transparent url('kinstantly-logo.png');
+	background: transparent url('kinstantly-logo.png') no-repeat;
 	text-indent: -999em;
 	margin: 0;
 	width: 196px;
@@ -429,7 +429,7 @@ $masthead_width: 920px;
 .provider_rating form {
 	float: left;
 }
-.reviews .review-num, .provider_rating .rating-num {
+.reviews .review-num, .provider_rating .review-num {
 	font-size: 13px;
 	color: $text_light_color;
 	padding-top: 3px;

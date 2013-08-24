@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130730042550) do
+ActiveRecord::Schema.define(:version => 20130820035320) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(:version => 20130730042550) do
     t.integer "profile_id"
   end
 
+  add_index "age_ranges_profiles", ["profile_id"], :name => "index_age_ranges_profiles_on_profile_id"
+
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.datetime "created_at",                       :null => false
@@ -48,10 +50,15 @@ ActiveRecord::Schema.define(:version => 20130730042550) do
     t.integer "profile_id"
   end
 
+  add_index "categories_profiles", ["profile_id"], :name => "index_categories_profiles_on_profile_id"
+
   create_table "categories_services", :force => true do |t|
     t.integer "category_id"
     t.integer "service_id"
   end
+
+  add_index "categories_services", ["category_id"], :name => "index_categories_services_on_category_id"
+  add_index "categories_services", ["service_id"], :name => "index_categories_services_on_service_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -84,6 +91,8 @@ ActiveRecord::Schema.define(:version => 20130730042550) do
     t.float    "longitude"
     t.string   "phone"
   end
+
+  add_index "locations", ["profile_id"], :name => "index_locations_on_profile_id"
 
   create_table "profiles", :force => true do |t|
     t.string   "first_name"
@@ -141,27 +150,46 @@ ActiveRecord::Schema.define(:version => 20130730042550) do
     t.boolean  "consult_remotely"
   end
 
+  add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"
+
   create_table "profiles_services", :force => true do |t|
     t.integer "profile_id"
     t.integer "service_id"
   end
+
+  add_index "profiles_services", ["profile_id"], :name => "index_profiles_services_on_profile_id"
 
   create_table "profiles_specialties", :force => true do |t|
     t.integer "profile_id"
     t.integer "specialty_id"
   end
 
+  add_index "profiles_specialties", ["profile_id"], :name => "index_profiles_specialties_on_profile_id"
+
   create_table "ratings", :force => true do |t|
-    t.float    "score",         :null => false
     t.integer  "rater_id"
     t.integer  "rateable_id"
     t.string   "rateable_type"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.integer  "review_id"
+    t.integer  "score",         :null => false
   end
 
   add_index "ratings", ["rateable_id", "rateable_type"], :name => "index_ratings_on_rateable_id_and_rateable_type"
   add_index "ratings", ["rater_id"], :name => "index_ratings_on_rater_id"
+  add_index "ratings", ["review_id"], :name => "index_ratings_on_review_id"
+
+  create_table "reviews", :force => true do |t|
+    t.integer  "profile_id"
+    t.text     "body"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "reviewer_id"
+  end
+
+  add_index "reviews", ["profile_id"], :name => "index_reviews_on_profile_id"
+  add_index "reviews", ["reviewer_id"], :name => "index_reviews_on_reviewer_id"
 
   create_table "search_area_tags", :force => true do |t|
     t.string   "name"
@@ -182,6 +210,9 @@ ActiveRecord::Schema.define(:version => 20130730042550) do
     t.integer "specialty_id"
   end
 
+  add_index "search_terms_specialties", ["search_term_id"], :name => "index_search_terms_specialties_on_search_term_id"
+  add_index "search_terms_specialties", ["specialty_id"], :name => "index_search_terms_specialties_on_specialty_id"
+
   create_table "services", :force => true do |t|
     t.string   "name"
     t.boolean  "is_predefined", :default => false
@@ -195,6 +226,9 @@ ActiveRecord::Schema.define(:version => 20130730042550) do
     t.integer "service_id"
     t.integer "specialty_id"
   end
+
+  add_index "services_specialties", ["service_id"], :name => "index_services_specialties_on_service_id"
+  add_index "services_specialties", ["specialty_id"], :name => "index_services_specialties_on_specialty_id"
 
   create_table "specialties", :force => true do |t|
     t.string   "name"
@@ -233,6 +267,7 @@ ActiveRecord::Schema.define(:version => 20130730042550) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
+  add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 
   create_table "versions", :force => true do |t|
     t.string   "item_type",  :null => false
