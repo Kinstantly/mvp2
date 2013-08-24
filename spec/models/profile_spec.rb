@@ -127,7 +127,10 @@ describe Profile do
 	context "services" do
 		it "stores multiple services" do
 			@profile.save.should be_true
-			Profile.find_by_last_name(@profile_data[:last_name]).services.should == @profile_data[:services]
+			stored_services = Profile.find_by_last_name(@profile_data[:last_name]).services
+			@profile_data[:services].each do |svc|
+				stored_services.include?(svc).should be_true
+			end
 		end
 		
 		context "custom services" do
@@ -153,7 +156,10 @@ describe Profile do
 	context "specialties" do
 		it "stores multiple specialties" do
 			@profile.save.should be_true
-			Profile.find_by_last_name(@profile_data[:last_name]).specialties.should == @profile_data[:specialties]
+			stored_specialties = Profile.find_by_last_name(@profile_data[:last_name]).specialties
+			@profile_data[:specialties].each do |spc|
+				stored_specialties.include?(spc).should be_true
+			end
 		end
 		
 		it "does not require a specialty" do

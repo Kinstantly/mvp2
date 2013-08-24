@@ -60,6 +60,9 @@ class Review < ActiveRecord::Base
 			u.username = reviewer_username
 			u.add_role :client
 			u.password = User.generate_password
+			# Don't notify user that they have an account.
+			# We will notify them once we have implemented a mechanism to force them to set their password after confirming.
+			u.skip_confirmation_notification!
 		end
 		
 		user.save if user.new_record?
