@@ -78,3 +78,13 @@ Some of your source files are preloaded by Spork.  If you modify any of these fi
  kill -s USR2 PID
 
 It helps to know which files are preloaded.  You can discover that with diagnostic mode.  For more information see https://github.com/sporkrb/spork#diagnostic-mode
+
+== Guard
+
+TODO: Install and configure Guard for Spork, Rspec, and Cucumber.  Guard will detect changes to relevant files and restart Spork or run the modified Rspec or Cucumber tests.
+
+Gems to install and configure:
+
+* https://github.com/guard/guard-spork
+* https://github.com/guard/guard-rspec
+* https://github.com/guard/guard-cucumber
