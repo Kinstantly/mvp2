@@ -76,8 +76,8 @@ audio:not([controls]) {
 	display: none;
 }
 .clearfix:before, .clearfix:after {
-	content: "\0020"; display: block; height: 0; visibility: hidden;	
-} 
+	content: "\0020"; display: block; height: 0; visibility: hidden;
+}
 .clearfix:after { clear: both; }
 /* Fix clearfix: blueprintcss.lighthouseapp.com/projects/15318/tickets/5-extra-margin-padding-bottom-of-page */
 .clearfix { zoom: 1; }
@@ -183,7 +183,7 @@ a:hover {
 }
 
 #access ul li a {
-	color: #0b99a2;	
+	color: #0b99a2;
 	font-weight: bold;
 	text-decoration: none;
 }
@@ -250,7 +250,7 @@ $masthead_width: 920px;
 	#provider_search_button:hover {
 		cursor: pointer;
 	}
-	.select-wrapper {   
+	.select-wrapper {
 		-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;
 		background: url('arrow.png') no-repeat 207px center $search_input_background;
 		border-top: 1px solid #514447;
@@ -268,7 +268,7 @@ $masthead_width: 920px;
 		line-height: 1em;
 		position: relative;
 		float: left;
-	}   
+	}
 	.select-text {
 		display: block;
 		font-size: 1em;
@@ -412,19 +412,19 @@ $masthead_width: 920px;
 	display: block;
 }
 .reviewed-5-star .star1, .reviewed-5-star .star2, .reviewed-5-star .star3, .reviewed-5-star .star4, .reviewed-5-star .star5 {
-	background: url('star.gif') 0px -17px; 
+	background: url('star.gif') 0px -17px;
 }
 .reviewed-4-star .star1, .reviewed-4-star .star2, .reviewed-4-star .star3, .reviewed-4-star .star4 {
-	background: url('star.gif') 0px -17px; 
+	background: url('star.gif') 0px -17px;
 }
 .reviewed-3-star .star1, .reviewed-3-star .star2, .reviewed-3-star .star3 {
-	background: url('star.gif') 0px -17px; 
+	background: url('star.gif') 0px -17px;
 }
 .reviewed-2-star .star1, .reviewed-2-star .star2 {
-	background: url('star.gif') 0px -17px; 
+	background: url('star.gif') 0px -17px;
 }
 .reviewed-1-star .star1 {
-	background: url('star.gif') 0px -17px; 
+	background: url('star.gif') 0px -17px;
 }
 .provider_rating form {
 	float: left;
@@ -791,15 +791,15 @@ table.info {
 		cursor: pointer;
 	}
 	a.cancel {
-		background: url('cancel-button.gif') 0px 0px; 
+		background: url('cancel-button.gif') 0px 0px;
 		width: 61px;
 		height: 26px;
-		text-indent: -999em; 
+		text-indent: -999em;
 		display: block;
 		float: left;
 	}
 	a.cancel:hover {
-		background: url('cancel-button.gif') 0px -26px; 
+		background: url('cancel-button.gif') 0px -26px;
 	}
 }
 
@@ -988,6 +988,7 @@ div.popover {
 				.profile-photo-placeholder {
 					width: 106px;
 					height: 90px;
+					margin-bottom: 10px;
 					background: url('profile-photo-placeholder-110.jpg') 0px 0px no-repeat;
 				}
 				.profile {
@@ -1001,6 +1002,12 @@ div.popover {
 						font-size: 14px;
 						font-weight: bold;
 					}
+				}
+				.specialties {
+					clear: left;
+					color: $text_light_color;
+					line-height: 20px;
+					@include bullet-separator-style;
 				}
 				.summary {
 					clear: left;
