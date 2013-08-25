@@ -127,7 +127,7 @@
 			- reviewer = review.reviewer
 			%article.review{class: (i % 2 == 0 ? 'even' : 'odd')}
 				%header.review-header
-					%span.author= link_to reviewer.username, '#'
+					%span.author= user_profile_link reviewer
 					-# %span.location San Francisco, CA
 					- n_reviews = reviewer.reviews_given.length
 					%span.num-reviews= link_to (n_reviews == 0 ? t('review.none') : t('review.how_many', count: n_reviews)), '#'

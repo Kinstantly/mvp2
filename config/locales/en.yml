@@ -334,6 +334,8 @@ en:
         cancel_account: 'Cancel my account'
         cancel_account_confirmation: 'We will completely remove your account. Are you sure?'
         cancel_account_prompt: 'Unhappy?'
+      view:
+        no_name: 'Anonymous'
   rating:
     no_score: 'Not rated yet'
     score_1: 'Really did not like'
