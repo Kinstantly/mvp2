@@ -55,7 +55,7 @@
 								%span.location= "#{Profile.human_attribute_name(:stages_ages).downcase}: #{stages_ages}"
 						.specialties= search_result_specialties_truncated profile, length: 700
 						.summary
-							%span.text_area= profile_display_text profile.summary, preserve: true, truncate: 180
+							%span= profile_display_truncated profile.summary, length: 180
 
 				-# = image_tag 'profile-photo-placeholder.jpg', alt: "#{profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
 				.profile-photo-placeholder
