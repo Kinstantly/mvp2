@@ -433,8 +433,10 @@ describe ProfilesController do
 		end
 		
 		it "should add two reviews" do
-			review_1_attrs = FactoryGirl.attributes_for(:review, body: 'This provider is fantastic!').merge(review_rating_attrs)
-			review_2_attrs = FactoryGirl.attributes_for(:review, body: 'This provider is adequate.').merge(review_rating_attrs)
+			review_1_attrs = FactoryGirl.attributes_for(:review, body: 'This provider is fantastic!',
+				reviewer_email: 'reviewer1@example.com', reviewer_username: 'reviewer1').merge(review_rating_attrs)
+			review_2_attrs = FactoryGirl.attributes_for(:review, body: 'This provider is adequate.',
+				reviewer_email: 'reviewer2@example.com', reviewer_username: 'reviewer2').merge(review_rating_attrs)
 			profile = FactoryGirl.create(:profile)
 			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, reviews_attributes: {
 				'0' => review_1_attrs, '1' => review_2_attrs
@@ -483,7 +485,8 @@ describe ProfilesController do
 		end
 		
 		it "should delete a review" do
-			profile = FactoryGirl.create(:profile_with_one_review)
+			profile = FactoryGirl.create(:profile)
+			profile.reviews = FactoryGirl.create_list(:review, 1)
 			profile.should have(1).review
 			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, reviews_attributes: {
 				'0' => {'_destroy' => '1', 'id' => profile.reviews.first.id}

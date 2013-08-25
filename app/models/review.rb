@@ -16,7 +16,7 @@ class Review < ActiveRecord::Base
 		body: 20
 	}
 	MAX_LENGTHS = {
-		body: 1000,
+		body: 4000,
 		reviewer_email: User::MAX_LENGTHS[:email],
 		reviewer_username: User::MAX_LENGTHS[:username]
 	}
@@ -31,7 +31,7 @@ class Review < ActiveRecord::Base
 	# If we are doing a nested update and the editor is attempting to change the reviewer,
 	#   force a save even if no other attribute is being modified.
 	def reviewer_email=(new_value)
-		@reviewer_email = new_value
+		@reviewer_email = new_value.try(:strip)
 		self.updated_at = Time.zone.now if persisted? && (reviewer.nil? || reviewer.email.try(:casecmp, new_value) != 0)
 	end
 	

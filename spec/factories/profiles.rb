@@ -22,15 +22,5 @@ FactoryGirl.define do
 		factory :unpublished_profile do
 			is_published false
 		end
-		
-		factory :profile_with_one_review do
-			after(:build) do |profile|
-				profile.reviews = FactoryGirl.build_list(:review, 1)
-			end
-			
-			after(:create) do |profile|
-				profile.reviews = FactoryGirl.create_list(:review, 1)
-			end
-		end
 	end
 end
