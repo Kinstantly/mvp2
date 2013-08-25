@@ -127,11 +127,8 @@
 		%legend= Profile.human_attribute_name :reviews
 		- profile.reviews.each do |review|
 			.review
-				- rating_score = review.rating.try(:score)
-				- rating_title = rating_score || t('rating.no_score')
-				= form_tag do
-					- (Rating::SCORES).each do |i|
-						= radio_button_tag 'rating_score', i, (i == rating_score), class: 'provider_score', title: rating_title
+				-# If this partial is called from a users view, we need an explicit reference to profiles.
+				= render partial: 'profiles/single_rating_score', locals: {rating: review.rating}
 				%br
 				.value.text_area= preserve_profile_text review.body
 				- if can? :manage, Profile

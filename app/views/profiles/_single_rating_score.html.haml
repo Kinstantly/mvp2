@@ -1,0 +1,17 @@
+- rating_score = rating.try(:score)
+- rating_title = rating_score || t('rating.no_score')
+- form_id = "single_rating_score_#{rating.id}"
+= form_tag '#', id: form_id do
+	- (Rating::SCORES).each do |i|
+		= radio_button_tag 'rating_score', i, (i == rating_score), class: 'single_rating_score', title: rating_title
+:javascript
+	$('form##{form_id} input.single_rating_score').rating().rating('readOnly', true);
+
+-# (function() {
+-# 	$('form##{form_id} input.single_rating_score').rating().rating('readOnly', true);
+-# 	if (!my_vars.f.single_rating_score_reset) {
+-# 		my_vars.f.single_rating_score_reset = function() {
+-# 			return $('form input.single_rating_score').rating().rating('readOnly', true);
+-# 		};
+-# 	}
+-# }).call(this);

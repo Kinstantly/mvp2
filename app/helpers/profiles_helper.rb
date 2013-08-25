@@ -20,6 +20,10 @@ module ProfilesHelper
 	def display_profile_time(time_with_zone)
 		time_with_zone.localtime.strftime('%a, %b %d, %Y %l:%M %p %Z')
 	end
+	
+	def display_profile_date(time_with_zone)
+		time_with_zone.localtime.strftime('%b %-d, %Y')
+	end
 
 	def default_profile_country
 		DEFAULT_COUNTRY_CODE

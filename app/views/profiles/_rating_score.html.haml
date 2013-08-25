@@ -12,9 +12,9 @@
 		- else
 			= t 'review.how_many', count: n_reviews
 :javascript
-	(function() {
-		$('form##{form_id} input.provider_score').rating().rating('readOnly', true);
+	$('form##{form_id} input.provider_score').rating().rating('readOnly', true);
+	if (!my_vars.f.rating_score_reset) {
 		my_vars.f.rating_score_reset = function() {
 			return $('form input.provider_score').rating().rating('readOnly', true);
 		};
-	}).call(this);
+	}

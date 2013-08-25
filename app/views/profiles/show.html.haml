@@ -122,38 +122,20 @@
 							%span= Profile.human_attribute_name :service_area
 						%td.text_area= profile_display_text @profile.service_area, preserve: true, links: true
 	%section#reviews.clearfix
-		%article.review.even
-			%header.review-header
-				%span.author
-					%a{href: "#"} Illiana Cruz
-				%span.location San Francisco, CA
-				%span.num-reviews
-					%a{href: "#"} 6 reviews
-			%section.review-body
-				.reviews.reviewed-4-star
-					.star.star1
-					.star.star2
-					.star.star3
-					.star.star4
-					.star.star5
-					.review-date 1/25/13
-				%p We've seen Dr. Hurd now 3 times, and each time, she is as personable and helpful as the last, from breastfeeding, to pumping, to sleep training.  I am sorry that there are folks who cannot get into this practice due to the "interview" process.  As one of the lucky ones, we were referred into NVP and went to interview a month before my due date.  Nurse Judy was so helpful and we chose Dr. Hurd based on the info she gave us.  Since then, we have attended one of Nurse Judy's classes, and plan to take many more.  She has classes for: new parents, illness, safety, and more!  I cannot imagine a better resource for new parents with an admittedly average-to-low-maintenance newborn baby (no special needs).  And so far, we've always been seen on time for appointments.
-		%article.review.odd
-			%header.review-header
-				%span.author
-					%a{href: "#"} John Manning
-				%span.location San Francisco, CA
-				%span.num-reviews
-					%a{href: "#"} 10 reviews
-			%section.review-body
-				.reviews.reviewed-4-star
-					.star.star1
-					.star.star2
-					.star.star3
-					.star.star4
-					.star.star5
-					.review-date 11/12/10
-				%p We've been extremely pleased with the practice as a whole and with our pediatrician, Dr Hurd, who figured out that our baby's supposedly drastic weight loss was due to CPMC's mis-converting from grams to pounds and ounces.  Phone calls get answered by a human being (although I'm sometimes asked to hold briefly), and emails and calls to the on-duty nurses are returned quickly.
+		- (reviews = @profile.reviews.order_by_descending_updated_at).each_index do |i|
+			- review = reviews[i]
+			- reviewer = review.reviewer
+			%article.review{class: (i % 2 == 0 ? 'even' : 'odd')}
+				%header.review-header
+					%span.author= link_to reviewer.username, '#'
+					-# %span.location San Francisco, CA
+					- n_reviews = reviewer.reviews_given.length
+					%span.num-reviews= link_to (n_reviews == 0 ? t('review.none') : t('review.how_many', count: n_reviews)), '#'
+				%section.review-body
+					.reviews
+						= render partial: 'single_rating_score', locals: {rating: review.rating}
+						.review-date= display_profile_date review.updated_at
+					%p= profile_display_text review.body, preserve: true
 -# For editors and administrators only.
 - if can? :manage, Profile
 	.editor_info

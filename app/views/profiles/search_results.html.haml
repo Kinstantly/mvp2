@@ -19,12 +19,13 @@
 					= postal_code_prompt
 				= text_field_tag :postal_code, @search_postal_code, size: 10, id: 'search_postal_code', placeholder: postal_code_prompt, title: postal_code_prompt
 				= submit_tag 'Show', disable_with: 'Show...', id: 'order_by_distance_button'
-			#get_location_button_area{style: 'display: none'}
-				= form_tag '#' do
-					= t 'views.search_results.nearest_to_you'
-					= submit_tag 'Nearest', id: 'get_location_button'
 			- if @search_latitude && @search_longitude
 				#nearest_results_msg= t 'views.search_results.nearest_results_msg', page: @search_page
+			- else
+				#get_location_button_area{style: 'display: none'}
+					= form_tag '#' do
+						= t 'views.search_results.nearest_to_you'
+						= submit_tag 'Nearest', id: 'get_location_button'
 	.search_results_list#content
 		- @search.results.each_with_index do |profile, i|
 			- profile_id = "profile_#{i}"
@@ -88,13 +89,9 @@
 
 -# Interpolate in javascript.  HAML cannot cache coffeescript with embedded ruby interpolation!
 :javascript
-	var my_vars = {
-		search_path: '#{escape_javascript search_providers_path(query: @search_query.presence, per_page: @search_per_page.presence, search_area_tag_id: @search_area_tag_id.presence, service_id: @search_service.try(:id))} .search_result',
-		t: {
-			searching: '#{t "views.search_results.searching"}',
-			showing_nearest_to_you: '#{t "views.search_results.showing_nearest_to_you"}'
-		}
-	};
+	my_vars.search_path = '#{escape_javascript search_providers_path(query: @search_query.presence, per_page: @search_per_page.presence, search_area_tag_id: @search_area_tag_id.presence, service_id: @search_service.try(:id))} .search_result';
+	my_vars.t.searching = '#{t "views.search_results.searching"}';
+	my_vars.t.showing_nearest_to_you = '#{t "views.search_results.showing_nearest_to_you"}';
 
 :coffeescript
 	if Modernizr.geolocation

@@ -26,6 +26,8 @@ class Review < ActiveRecord::Base
 	validate :validate_rating
 	validates :body, length: {minimum: MIN_LENGTHS[:body], maximum: MAX_LENGTHS[:body]}
 	
+	scope :order_by_descending_updated_at, order('updated_at DESC')
+	
 	# If we are doing a nested update and the editor is attempting to change the reviewer,
 	#   force a save even if no other attribute is being modified.
 	def reviewer_email=(new_value)

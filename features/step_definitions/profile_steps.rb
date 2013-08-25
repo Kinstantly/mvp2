@@ -27,6 +27,10 @@ def find_unattached_profile
 	@profile = Profile.find_by_url @unattached_profile_data[:url]
 end
 
+def find_published_profile
+	@profile = Profile.find_by_url @published_profile_data[:url]
+end
+
 def create_profile
 	set_up_new_data
 	create_user unless @user
@@ -50,9 +54,9 @@ def create_unattached_profile(override_data={})
 	@unattached_profile = FactoryGirl.create(:profile, @unattached_profile_data.merge(override_data))
 end
 
-def create_published_profile
+def create_published_profile(override_data={})
 	set_up_new_data
-	@published_profile = FactoryGirl.create(:profile, @published_profile_data)
+	@published_profile = FactoryGirl.create(:profile, @published_profile_data.merge(override_data))
 end
 
 def create_published_profile_2
@@ -223,7 +227,7 @@ Given /^there is an unclaimed profile$/ do
 	create_unattached_profile
 end
 
-Given /^I visit the (view|edit|admin view|admin edit) page for an (?:unclaimed|unpublished) profile( with no locations| with one location| with no reviews| with one review)?$/ do |page, items|
+Given /^I visit the (view|edit|admin view|admin edit) page for an? (claimed|published|unclaimed|unpublished) profile( with no locations| with one location| with no reviews| with one review)?$/ do |page, type, items|
 	attrs = case items.try(:sub, /\A\s*with\s*/, '')
 	when 'no locations'
 		{ locations: [] }
@@ -236,8 +240,16 @@ Given /^I visit the (view|edit|admin view|admin edit) page for an (?:unclaimed|u
 	else
 		{}
 	end
-	create_unattached_profile attrs
-	find_unattached_profile
+	
+	case type
+	when /unclaimed|unpublished/
+		create_unattached_profile attrs
+		find_unattached_profile
+	else
+		create_published_profile attrs
+		find_published_profile
+	end
+	
 	case page
 	when 'view'
 		visit profile_path(@profile)
@@ -809,5 +821,11 @@ end
 Then /^I should be asked to replace my existing profile$/ do
 	within('a[id="claim_profile_confirm_link"]') do
 		page.should have_content 'Click here'
+	end
+end
+
+Then /^the profile should show the review$/ do
+	within('#reviews') do
+	  page.should have_content @profile.reviews.first.body
 	end
 end

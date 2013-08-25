@@ -33,3 +33,8 @@ Feature: View a provider's profile
 			And I am not logged in
 		When I visit the published profile page
 		Then the profile should not show "Nessun dorma"
+
+	Scenario: Provider has a review on their profile page
+		Given I am not logged in
+		When I visit the view page for a published profile with one review
+		Then the profile should show the review
