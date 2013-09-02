@@ -1,5 +1,68 @@
-- @page_title = "#{company_name} - Contact us"
+- @company_name = "#{t('company_legal_name')}"
+- @contact_intro = "#{t('contact_intro')}"
+- @feedback_email = "#{t('contact_emails.feedback.value')}@#{t('email_domain')}"
+- @technical_email = "#{t('contact_emails.technical.value')}@#{t('email_domain')}"
+- @providers_email = "#{t('contact_emails.providers.value')}@#{t('email_domain')}"
+- @press_email = "#{t('contact_emails.press.value')}@#{t('email_domain')}"
+- @jobs_email = "#{t('contact_emails.jobs.value')}@#{t('email_domain')}"
+- @contact_address_line_1 = "#{t('company_location.street_address')}"
+- @contact_address_line_2 = "#{t('company_location.city')} #{t('company_location.zip')}"
+- @contact_phone = "#{t('company_location.phone')}"
+- @connect_invite = "Connect with #{company_name}"
 .contact
 	.content{align: 'center'}
-		%iframe(onLoad="window.scrollTo(0,0);" src="https://docs.google.com/spreadsheet/embeddedform?formkey=dG1tVE5ZUU5Zd3Y3ZzJfM0ZNT1pEb0E6MQ" width="760" height="700" frameborder="0" marginheight="0" marginwidth="0")
-			Loading...
+		.content-wrapper
+			.column.left-rail
+			.column.main-column
+				.column-inner-content
+					%div(hidden) Marketing message by editor (optional for the first phase)
+					%h1.highlight Let’s talk...
+					.contact-content-block
+						%p= @contact_intro
+						%ul.email-contact-list
+							%li
+								%span= t('contact_emails.feedback.display') + ':'
+								%span= mail_to @feedback_email
+							%li
+								%span= t('contact_emails.technical.display') + ':'
+								%span= mail_to @technical_email
+							%li
+								%span= t('contact_emails.providers.display') + ':'
+								%span= mail_to @providers_email
+							%li
+								%span= t('contact_emails.press.display') + ':'
+								%span= mail_to @press_email
+							%li
+								%span= t('contact_emails.jobs.display') + ':'
+								%span= mail_to @jobs_email
+					.address-block.contact-content-block.left
+						.contact-mail
+						%div
+							%p.bold= @company_name
+							%p= @contact_address_line_1
+							%p= @contact_address_line_2
+					.address-block.contact-content-block.right
+						.contact-phone
+						%div
+							%p= @contact_phone
+					.ui-helper-clearfix
+					%h2.highlight= @connect_invite
+					%ul.social-contact-list
+						%li
+							%span= t('contact_social.twitter.display')
+							= link_to('', t('contact_social.twitter.value'), :class => 'twitter_link ui-corner-all')
+						%li
+							%span= t('contact_social.facebook.display')
+							= link_to('', t('contact_social.facebook.value'), :class => 'facebook_link ui-corner-all')
+						%li
+							%span= t('contact_social.google.display')
+							= link_to('', t('contact_social.google.value'), :class => 'google_link ui-corner-all')
+						%li
+							%span= t('contact_social.newsletter.display_html')
+						%li
+							%span= t('contact_social.blog.display_html')
+						%li
+							%span= link_to 'Our Story', 'about'
+						%li
+							%span= link_to 'Home', user_home_page
+			.column.right-rail
