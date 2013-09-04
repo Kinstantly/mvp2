@@ -176,9 +176,16 @@ a:hover {
 	font-size: 0.9375em;
 }
 #access ul {
-	li#skip a:after, li#contact:before, li#myprofile:before, li#settings:before, li#signout:before {
+	li#skip a:after {
 		@include pipe-separator-style;
 		color: #BDBCBD;
+	}
+	// The extra 'li +' matches the skip link that is used for accessibility.
+	li + li + {
+			li#about:before, li#contact:before, li#myprofile:before, li#settings:before, li#signout:before {
+			@include pipe-separator-style;
+			color: #BDBCBD;
+		}
 	}
 }
 

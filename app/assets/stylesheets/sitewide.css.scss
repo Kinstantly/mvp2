@@ -146,3 +146,12 @@ $message_corner_radius: 8px;
 		height: auto;
 	}
 }
+
+/* Footer */
+
+#footer {
+	#bottom span + span:before {
+		content: '|';
+		padding-right: 0.24em;
+	}
+}

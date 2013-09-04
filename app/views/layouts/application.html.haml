@@ -40,11 +40,9 @@
 		%footer#footer
 			%nav
 				%p#bottom
-					= about_link
-					|
-					= contact_link
-					|
-					= terms_link
+					= about_link wrapper: {tag: :span}
+					= contact_link wrapper: {tag: :span}
+					= terms_link wrapper: {tag: :span}
 			%p#copyright
 				\&copy; Copyright 2013 Kinstantly, Inc. All Rights Reserved.
 		-# #line

@@ -107,12 +107,13 @@ module ProfilesHelper
 		link_to "Edit profile", edit_profile_path(profile) if can?(:update, profile)
 	end
 
-	def view_my_profile_link
-		link_to t('views.profile.view.my_profile_link'), my_profile_path, id: 'view_my_profile_link' if can?(:view_my_profile, current_user.profile)
+	def view_my_profile_link(options={})
+		path = my_profile_path
+		link_wrapper link_to(t('views.profile.view.my_profile_link'), path, id: 'view_my_profile_link'), options if can?(:view_my_profile, current_user.profile) && show_link?(path)
 	end
 
-	def edit_my_profile_link
-		link_to t('views.profile.view.edit_my_profile_link'), edit_my_profile_path, id: 'edit_my_profile_link' if can?(:edit_my_profile, current_user.profile)
+	def edit_my_profile_link(options={})
+		link_wrapper link_to(t('views.profile.view.edit_my_profile_link'), edit_my_profile_path, id: 'edit_my_profile_link'), options if can?(:edit_my_profile, current_user.profile)
 	end
 
 	# temporary; until the legacy code is fully merged into the new design; only to be used by profile editors.

@@ -9,14 +9,14 @@
 				%ul
 					%li#skip
 						%a{href: '#content'}= t 'views.accessibility'
-					%li#about= about_link
-					%li#contact= contact_link
+					= about_link wrapper: {tag: :li, id: :about}
+					= contact_link wrapper: {tag: :li, id: :contact}
 					- if user_signed_in?
 						- if current_user.is_provider?
-							%li#myprofile= view_my_profile_link
-						%li#settings= account_settings_link
-						%li#signout= sign_in_out_link
-					- else
+							= view_my_profile_link wrapper: {tag: :li, id: :myprofile}
+						= account_settings_link wrapper: {tag: :li, id: :settings}
+						= sign_in_out_link wrapper: {tag: :li, id: :signout}
+					- elsif show_sign_in_link?
 						%li#signin
 							Already a member? #{sign_in_out_link}
 		#masthead.clearfix

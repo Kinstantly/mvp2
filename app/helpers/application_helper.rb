@@ -12,11 +12,25 @@ module ApplicationHelper
 		request.path != path
 	end
 	
-	def sign_in_out_link
+	def link_wrapper(link, options={})
+		wrapper_options = options[:wrapper] || {}
+		wrapper_tag = wrapper_options.delete(:tag)
+		if wrapper_tag
+			content_tag wrapper_tag, link, wrapper_options
+		else
+			link
+		end
+	end
+	
+	def show_sign_in_link?
+		controller_name != 'sessions'
+	end
+	
+	def sign_in_out_link(options={})
 		if user_signed_in?
-			link_to 'Sign out', destroy_user_session_path, method: :delete
-		elsif controller_name != 'sessions'
-			link_to 'Sign in', new_user_session_path
+			link_wrapper link_to('Sign out', destroy_user_session_path, method: :delete), options
+		elsif show_sign_in_link?
+			link_wrapper link_to('Sign in', new_user_session_path), options
 		end
 	end
 	
@@ -40,9 +54,9 @@ module ApplicationHelper
 		link_to "#{company_name}", root_path
 	end
 	
-	def account_settings_link
+	def account_settings_link(options={})
 		path = edit_user_registration_path
-		link_to t('views.user.edit.link'), path if user_signed_in?
+		link_wrapper link_to(t('views.user.edit.link'), path), options if user_signed_in? && show_link?(path)
 	end
 	
 	def view_user_profile_link
@@ -95,29 +109,29 @@ module ApplicationHelper
 		link_to 'User admin', path if show_link?(path) && can?(:manage, User)
 	end
 	
-	def about_link
+	def about_link(options={})
 		path = about_path
-		link_to "About us", path if show_link?(path)
+		link_wrapper link_to("About us", path), options if show_link?(path)
+	end
+	
+	def contact_link(options={})
+		path = contact_path
+		link_wrapper link_to("Contact us", path), options if show_link?(path)
+	end
+	
+	def faq_link(options={})
+		path = faq_path
+		link_wrapper link_to("FAQ", path), options if show_link?(path)
+	end
+	
+	def terms_link(options={})
+		path = terms_path
+		link_wrapper link_to("Terms of use", path), options if show_link?(path)
 	end
 	
 	def become_expert_link
 		path = become_expert_path
 		link_to "Expert registration", path if show_link?(path)
-	end
-	
-	def contact_link
-		path = contact_path
-		link_to "Contact us", path if show_link?(path)
-	end
-	
-	def faq_link
-		path = faq_path
-		link_to "FAQ", path if show_link?(path)
-	end
-	
-	def terms_link
-		path = terms_path
-		link_to "Terms of use", path if show_link?(path)
 	end
 	
 	def request_expert_link
