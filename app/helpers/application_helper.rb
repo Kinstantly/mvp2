@@ -1,7 +1,11 @@
 module ApplicationHelper
 	
 	def company_name
-		t 'company_name'
+		t 'company.name'
+	end
+	
+	def company_tagline
+		t 'company.tagline'
 	end
 	
 	def show_link?(path=nil)

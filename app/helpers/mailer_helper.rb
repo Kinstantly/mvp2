@@ -4,7 +4,7 @@ module MailerHelper
 	end
 	
 	def mailer_logo_alt
-		"#{t 'company_name'} | #{t 'tagline'}"
+		"#{t 'company.name'} | #{t 'company.tagline'}"
 	end
 	
 	def mailer_show_profile_to_claim_url(profile)

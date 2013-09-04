@@ -2,15 +2,17 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  company_name: 'Kinstantly'
-  company_legal_name: 'Kinstantly, Inc.'
-  company_location:
+  company:
+    legal_name: 'Kinstantly, Inc.'
+    location:
       street_address: '350 Townsend St., #683'
       city: 'San Francisco'
-      zip: 'CA 94107'
+      region: 'CA'
+      postal_code: '94107'
       phone: '(415) 250-2512'
+    name: 'Kinstantly'
+    tagline: "When parenting challenges can't wait."
   email_domain: 'kinstantly.com'
-  tagline: "When parenting challenges can't wait."
   meta:
     keywords: 'parenting children health expert'
     description: "Kinstantly connects families with the parenting experts, children's health providers, and other services they need in smart, convenient ways"
@@ -363,8 +365,10 @@ en:
       other: '%{count} reviews'
   pagination:
     per_page_button: 'per page'
-  contact_intro: 'Have a question, comment, or just want to chat? Email us at one of these addresses:'
-  contact_emails:
+  contact:
+    intro: 'Have a question, comment, or just want to chat? Email us at one of these addresses:'
+    tagline: "Let’s talk..."
+    emails:
       feedback:
           display: 'Feedback or General Questions'
           value: 'feedback'
@@ -380,17 +384,17 @@ en:
       jobs:
           display: 'Jobs'
           value: 'jobs'
-  contact_social:
+    social:
       twitter:
           display: 'Follow us on Twitter'
           value: 'http://twitter.com/Kinstantly'
       facebook:
           display: 'Like us on Facebook'
-          value: 'http://facebook.com/kinstant'
+          value: 'http://facebook.com/pages/Kinstantly/144758479018753'
       google:
           display: 'Add us to your Google+ circle'
-          value: 'providers'
+          value: '#'
       newsletter:
-          display_html: "Get our <a href='' title='Newsletter for parents'>newsletter for parents</a> or <a href='' title='Newsletter for providers'>newsletter for providers</a>"
+          display_html: "Get our <a href='#' title='Newsletter for parents'>newsletter for parents</a> or <a href='#' title='Newsletter for providers'>newsletter for providers</a>"
       blog:
-          display_html: "Read our blogs: <a href='' title='Kinstant Messages'>Kinstant Messages</a> and <a href='' title='TK'>TK</a>"
+          display_html: "Read our blogs: <a href='#' title='Kinstant Messages'>Kinstant Messages</a> and <a href='#' title='TK'>TK</a>"

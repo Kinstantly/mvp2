@@ -6,4 +6,4 @@ Feature: Contact
 	Scenario: show contact-us and/or feedback form
 		Given I am not logged in
 		When I visit the "contact" page
-		Then I should see a Google form
+		Then I should see contact information

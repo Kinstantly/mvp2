@@ -20,6 +20,10 @@ Then /^I should see a Google form$/ do
 	page.should have_css('iframe')
 end
 
+Then /^I should see contact information$/ do
+	page.should have_content I18n.t('contact.intro')
+end
+
 Then /^I should see a statement about us$/ do
 	page.should have_content('About us')
 end

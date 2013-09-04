@@ -1126,3 +1126,137 @@ div.popover {
 .cancel_account {
 	margin-top: 32px;
 }
+
+/* Contact */
+$railwidth: 160px;
+$masterwidth: 960px;
+
+.contact *{
+	font-family: $default_font_family;
+	text-shadow: 0 1px #ccc;
+}
+
+.content-wrapper{
+	width: $masterwidth;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.column {
+	float: left;
+	margin: 0;
+	padding: 0;
+	min-height: 720px;
+	height: 100%;
+}
+
+.left-rail, .right-rail{
+	width: $railwidth;
+}
+
+.main-column{
+	width: $masterwidth - 2 * $railwidth;
+}
+
+.column-inner-content{
+	padding: 25px;
+}
+
+.contact .bold{
+	font-weight: bold;
+}
+
+.contact .left{
+	float: left;
+}
+
+.contact .right{
+	float: right;
+}
+
+.contact-content-block{
+	text-align: left;
+	vertical-align: top;
+	padding: 0 30px;
+}
+
+.contact-content-block p{
+	font-size: 18px;
+}
+
+.contact-content-block ul{
+	padding: 20px 40px;
+}
+
+.contact .address-block{
+	display: inline-block;
+	padding-top: 15px;
+}
+
+.contact .highlight{
+	color: #d05365;
+}
+
+.contact h1{
+	font-size: 32px;
+	padding: 45px 0 10px 0;
+	font-weight: bold;
+	text-shadow: 1px 1px #aaa;
+}
+
+.contact h2{
+	font-size: 25px;
+	padding: 75px 0 10px 0;
+	font-weight: bold;
+	text-shadow: 1px 1px #aaa;
+}
+
+@mixin contact-icon-style{
+	width: 45px;
+	height: 45px;
+	background-size: 1000%
+}
+
+.contact-mail{
+	background: url("contact-icons.png") no-repeat scroll 0px 0 transparent;
+	@include contact-icon-style;
+}
+
+.contact-phone{
+	background: url("contact-icons.png") no-repeat scroll -48px 0 transparent;
+	@include contact-icon-style;
+}
+
+ul.social-contact-list{
+	line-height: 34px;
+}
+
+ul.email-contact-list{
+	padding: 20px 40px;
+}
+
+ul.email-contact-list li:before{
+	content: '\25B8';
+}
+
+@mixin social-icon-style{
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	vertical-align: middle;
+}
+
+.twitter_link{
+	background: url("twitter.png") no-repeat scroll 0px 0 transparent;
+	@include social-icon-style;
+}
+
+.facebook_link{
+	background: url("facebook.png") no-repeat scroll 0px 0 transparent;
+	@include social-icon-style;
+}
+
+.google_link{
+	background: url("googleone.png") no-repeat scroll 0px 0 transparent;
+	@include social-icon-style;
+}

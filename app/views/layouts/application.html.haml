@@ -17,7 +17,7 @@
 		%title
 			- if @page_title_prefix.present?
 				= "#{@page_title_prefix} |"
-			= "#{t 'company_name'} | #{t 'tagline'}"
+			= "#{company_name} | #{company_tagline}"
 		-# Allow option to load CSS before javascript so we do not see a flash of unformatted HTML.
 		= yield :head_before_js
 		/[if lt IE 9]

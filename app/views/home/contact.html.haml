@@ -1,13 +1,13 @@
-- @company_name = "#{t('company_legal_name')}"
-- @contact_intro = "#{t('contact_intro')}"
-- @feedback_email = "#{t('contact_emails.feedback.value')}@#{t('email_domain')}"
-- @technical_email = "#{t('contact_emails.technical.value')}@#{t('email_domain')}"
-- @providers_email = "#{t('contact_emails.providers.value')}@#{t('email_domain')}"
-- @press_email = "#{t('contact_emails.press.value')}@#{t('email_domain')}"
-- @jobs_email = "#{t('contact_emails.jobs.value')}@#{t('email_domain')}"
-- @contact_address_line_1 = "#{t('company_location.street_address')}"
-- @contact_address_line_2 = "#{t('company_location.city')} #{t('company_location.zip')}"
-- @contact_phone = "#{t('company_location.phone')}"
+- @company_name = "#{t('company.legal_name')}"
+- @contact_intro = "#{t('contact.intro')}"
+- @feedback_email = "#{t('contact.emails.feedback.value')}@#{t('email_domain')}"
+- @technical_email = "#{t('contact.emails.technical.value')}@#{t('email_domain')}"
+- @providers_email = "#{t('contact.emails.providers.value')}@#{t('email_domain')}"
+- @press_email = "#{t('contact.emails.press.value')}@#{t('email_domain')}"
+- @jobs_email = "#{t('contact.emails.jobs.value')}@#{t('email_domain')}"
+- @contact_address_line_1 = "#{t('company.location.street_address')}"
+- @contact_address_line_2 = "#{t('company.location.city')}, #{t('company.location.region')} #{t('company.location.postal_code')}"
+- @contact_phone = "#{t('company.location.phone')}"
 - @connect_invite = "Connect with #{company_name}"
 .contact
 	.content{align: 'center'}
@@ -16,24 +16,24 @@
 			.column.main-column
 				.column-inner-content
 					%div(hidden) Marketing message by editor (optional for the first phase)
-					%h1.highlight Let’s talk...
+					%h1.highlight= t('contact.tagline')
 					.contact-content-block
 						%p= @contact_intro
 						%ul.email-contact-list
 							%li
-								%span= t('contact_emails.feedback.display') + ':'
+								%span= t('contact.emails.feedback.display') + ':'
 								%span= mail_to @feedback_email
 							%li
-								%span= t('contact_emails.technical.display') + ':'
+								%span= t('contact.emails.technical.display') + ':'
 								%span= mail_to @technical_email
 							%li
-								%span= t('contact_emails.providers.display') + ':'
+								%span= t('contact.emails.providers.display') + ':'
 								%span= mail_to @providers_email
 							%li
-								%span= t('contact_emails.press.display') + ':'
+								%span= t('contact.emails.press.display') + ':'
 								%span= mail_to @press_email
 							%li
-								%span= t('contact_emails.jobs.display') + ':'
+								%span= t('contact.emails.jobs.display') + ':'
 								%span= mail_to @jobs_email
 					.address-block.contact-content-block.left
 						.contact-mail
@@ -49,18 +49,18 @@
 					%h2.highlight= @connect_invite
 					%ul.social-contact-list
 						%li
-							%span= t('contact_social.twitter.display')
-							= link_to('', t('contact_social.twitter.value'), :class => 'twitter_link ui-corner-all')
+							%span= t('contact.social.twitter.display')
+							= link_to('', t('contact.social.twitter.value'), :class => 'twitter_link ui-corner-all')
 						%li
-							%span= t('contact_social.facebook.display')
-							= link_to('', t('contact_social.facebook.value'), :class => 'facebook_link ui-corner-all')
+							%span= t('contact.social.facebook.display')
+							= link_to('', t('contact.social.facebook.value'), :class => 'facebook_link ui-corner-all')
 						%li
-							%span= t('contact_social.google.display')
-							= link_to('', t('contact_social.google.value'), :class => 'google_link ui-corner-all')
+							%span= t('contact.social.google.display')
+							= link_to('', t('contact.social.google.value'), :class => 'google_link ui-corner-all')
 						%li
-							%span= t('contact_social.newsletter.display_html')
+							%span= t('contact.social.newsletter.display_html')
 						%li
-							%span= t('contact_social.blog.display_html')
+							%span= t('contact.social.blog.display_html')
 						%li
 							%span= link_to 'Our Story', 'about'
 						%li
