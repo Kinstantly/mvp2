@@ -375,9 +375,15 @@ en:
       technical:
           display: 'Technical Questions'
           value: 'technical'
-      providers:
-          display: 'Provider Inquiries'
-          value: 'providers'
+      support:
+          display: 'Support Questions'
+          value: 'support'
+      copyright:
+          display: 'Copyright Questions'
+          value: 'copyright'
+      privacy:
+          display: 'Privacy Questions'
+          value: 'privacy'
       press:
           display: 'Press Inquiries'
           value: 'press'

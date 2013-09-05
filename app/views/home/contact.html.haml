@@ -2,7 +2,9 @@
 - @contact_intro = "#{t('contact.intro')}"
 - @feedback_email = "#{t('contact.emails.feedback.value')}@#{t('email_domain')}"
 - @technical_email = "#{t('contact.emails.technical.value')}@#{t('email_domain')}"
-- @providers_email = "#{t('contact.emails.providers.value')}@#{t('email_domain')}"
+- @support_email = "#{t('contact.emails.support.value')}@#{t('email_domain')}"
+- @copyright_email = "#{t('contact.emails.copyright.value')}@#{t('email_domain')}"
+- @privacy_email = "#{t('contact.emails.privacy.value')}@#{t('email_domain')}"
 - @press_email = "#{t('contact.emails.press.value')}@#{t('email_domain')}"
 - @jobs_email = "#{t('contact.emails.jobs.value')}@#{t('email_domain')}"
 - @contact_address_line_1 = "#{t('company.location.street_address')}"
@@ -27,8 +29,14 @@
 								%span= t('contact.emails.technical.display') + ':'
 								%span= mail_to @technical_email
 							%li
-								%span= t('contact.emails.providers.display') + ':'
-								%span= mail_to @providers_email
+								%span= t('contact.emails.support.display') + ':'
+								%span= mail_to @support_email
+							%li
+								%span= t('contact.emails.copyright.display') + ':'
+								%span= mail_to @copyright_email
+							%li
+								%span= t('contact.emails.privacy.display') + ':'
+								%span= mail_to @privacy_email
 							%li
 								%span= t('contact.emails.press.display') + ':'
 								%span= mail_to @press_email
