@@ -179,6 +179,10 @@ en:
         display_order_hint: 'Home page browse by category: less than 10 for left column, more than 10 for right column'
       index:
         service_explanation: '(listed alphabetically; see edit page for display order)'
+    home:
+      view:
+        browse_title: 'Browse by category'
+        tutorial_link_html: 'Not sure <a href="#">where to start?</a>'
     location:
       view:
         more:
