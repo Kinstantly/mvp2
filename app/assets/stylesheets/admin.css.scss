@@ -41,8 +41,9 @@
 	#forms {
 		.input {
 			margin: 1em 0.25em;
-			input, .hint {
+			input, select, .hint {
 				margin-left: 1em;
+				margin-right: 1em;
 			}
 		}
 		.checkbox {

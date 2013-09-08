@@ -6,11 +6,15 @@ FactoryGirl.define do
 		
 		factory :predefined_category do
 			is_predefined true
-		end
+			see_all_column 1 # required if predefined
 		
-		factory :category_on_home_page do
-			is_predefined true
-			display_order 1
+			factory :category_on_home_page do
+				home_page_column 1
+			end
+		
+			factory :category_not_on_home_page do
+				home_page_column nil
+			end
 		end
 	end
 end

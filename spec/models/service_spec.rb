@@ -16,6 +16,11 @@ describe Service do
 		Service.predefined.include?(@service).should be_true
 	end
 	
+	it "can be shown on the home page" do
+		@service.show_on_home_page = true
+		@service.should have(:no).errors_on(:show_on_home_page)
+	end
+	
 	context "finding services that belong to a category" do
 		before(:each) do
 			@service.save

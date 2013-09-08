@@ -81,7 +81,7 @@ en:
   activerecord:
     attributes:
       category:
-        is_predefined: 'Show in Browse by Category'
+        is_predefined: 'Show category'
       profile:
         adoption_stage: 'adoption'
         age_ranges: 'Ages/Stages'
@@ -309,6 +309,10 @@ en:
         more: "See full details"
     search_term:
       name: 'Search term'
+    show_all_categories:
+      view:
+        header: 'All categories'
+        page_title: 'All categories'
     service:
       name: 'Service'
       edit:

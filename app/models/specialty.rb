@@ -11,7 +11,7 @@ class Specialty < ActiveRecord::Base
 	
 	default_scope where(trash: false)
 	scope :trash, where(trash: true)
-	scope :predefined, where(is_predefined: true).order('lower(name)')
+	scope :predefined, where(is_predefined: true)
 	scope :order_by_name, order('lower(name)')
 	
 	MAX_STRING_LENGTH = 254

@@ -5,9 +5,9 @@ class Rating < ActiveRecord::Base
 	
 	belongs_to :review
 	
-	validates :score, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
-	
 	SCORES = 1..5
+	
+	validates :score, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: SCORES.first, less_than_or_equal_to: SCORES.last }
 	
 	after_save :update_profile_rating_score
 	after_destroy :update_profile_rating_score

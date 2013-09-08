@@ -17,6 +17,8 @@
 						%br
 						= t 'views.category.index.service_explanation'
 					%th= Category.human_attribute_name(:is_predefined)
+					%th= Category.human_attribute_name(:home_page_column)
+					%th= Category.human_attribute_name(:see_all_column)
 					%th= Category.human_attribute_name(:display_order)
 			%tbody
 				- @categories.each do |category|
@@ -26,5 +28,7 @@
 							- category.services.order_by_name.each do |record|
 								= link_to record.name, edit_service_path(record), class: "name #{record.browsable? ? 'browsable' : 'not_browsable'}"
 						%td{class: "#{category.is_predefined ? 'predefined' : 'not_predefined'}"}= category.is_predefined
+						%td= category.home_page_column
+						%td= category.see_all_column
 						%td= category.display_order
 		= paginate @categories

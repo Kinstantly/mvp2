@@ -1267,3 +1267,50 @@ ul.email-contact-list li:before{
 	background: url("googleone.png") no-repeat scroll 0px 0 transparent;
 	@include social-icon-style;
 }
+
+/*  Show all categories --------------------------------------------- */
+
+#show_all_categories {
+	font-family: $default_font_family;
+	.content {
+		width: 880px;
+		padding-left: 20px;
+		padding-right: 20px;
+		margin: 0px auto 0px auto;
+		font-size: 1.05em;
+		h1 {
+			font-family: 'museo_slab500', Helvetica, Arial, sans-serif;
+			text-align: center;
+			font-size: 24px;
+			line-height: 24px;
+			margin: 20px auto;
+			a {
+				font-size: 22px;
+				line-height: 22px;
+			}
+		}
+		.col {
+			float: left;
+			width: 264px;
+			h3 {
+				color: #000;
+				font-weight: bold;
+				text-transform: uppercase;
+				font-size: 0.8125em;
+				line-height: 1.3846em;
+			}
+			ul {
+				font-size: 0.8125em;
+				font-weight: bold;
+				line-height: 1.30769em;
+				margin-bottom: 22px;
+			}
+		}
+		#col1 {
+			clear: left;
+		}
+		#col1, #col2 {
+			margin-right: 36px;
+		}
+	}
+}

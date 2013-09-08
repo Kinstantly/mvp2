@@ -35,20 +35,14 @@
 	#content.category-list.clearfix
 		%h2= t 'views.home.view.browse_title'
 		%span.help= t 'views.home.view.tutorial_link_html'
-		#col1.col
-			- home_column_categories(1).each do |category|
-				%h3= category.name
-				%ul
-					- category.services.display_order.order_by_name.each do |svc|
-						%li
-							= link_to svc.name, search_providers_path(service_id: svc.id)
-		#col2.col
-			- home_column_categories(2).each do |category|
-				%h3= category.name
-				%ul
-					- category.services.display_order.order_by_name.each do |svc|
-						%li
-							= link_to svc.name, search_providers_path(service_id: svc.id)
+		- Category::HOME_PAGE_COLUMNS.each do |column|
+			.col{id: "col#{column}"}
+				- home_column_categories(column).each do |category|
+					%h3= category.name
+					%ul
+						- category.services_for_home_page.each do |svc|
+							%li
+								= link_to svc.name, search_providers_path(service_id: svc.id)
 			-#
 				#all-cats.see-all.select-wrapper
 					%span.select-text
@@ -57,5 +51,5 @@
 						%option This is a dropdown
 						%option of all categories?
 	#social
-		= link_to 'Follow us on twitter', 'http://twitter.com/kinstantly', target: '_blank', id: 'twitter'
-		-#= link_to 'Follow us on facebook', 'http://facebook.com', target: '_blank', id: 'facebook'
+		= link_to t('contact.social.twitter.display'), t('contact.social.twitter.value'), target: '_blank', id: 'twitter'
+		= link_to t('contact.social.facebook.display'), t('contact.social.facebook.value'), target: '_blank', id: 'facebook'

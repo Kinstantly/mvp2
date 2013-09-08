@@ -1,10 +1,9 @@
 module HomeHelper
-	def home_column_categories(col)
-		case col
-		when 1
-			Category.where('display_order < 10').display_order
-		else
-			Category.where('display_order >= 10').display_order
-		end
+	def home_column_categories(column)
+		Category.predefined.where(home_page_column: column).display_order.order_by_name
+	end
+	
+	def show_all_column_categories(column)
+		Category.predefined.where(see_all_column: column).display_order.order_by_name
 	end
 end

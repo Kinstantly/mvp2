@@ -6,6 +6,14 @@ FactoryGirl.define do
 		
 		factory :predefined_service do
 			is_predefined true
+			
+			factory :service_on_home_page do
+				show_on_home_page true
+			end
+			
+			factory :service_not_on_home_page do
+				show_on_home_page false
+			end
 		end
 	end
 end

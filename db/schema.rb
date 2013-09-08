@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130820035320) do
+ActiveRecord::Schema.define(:version => 20130908011434) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -38,11 +38,13 @@ ActiveRecord::Schema.define(:version => 20130820035320) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.boolean  "is_predefined", :default => false
-    t.boolean  "trash",         :default => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+    t.boolean  "is_predefined",    :default => false
+    t.boolean  "trash",            :default => false
     t.integer  "display_order"
+    t.integer  "home_page_column"
+    t.integer  "see_all_column",   :default => 1
   end
 
   create_table "categories_profiles", :force => true do |t|
@@ -215,11 +217,12 @@ ActiveRecord::Schema.define(:version => 20130820035320) do
 
   create_table "services", :force => true do |t|
     t.string   "name"
-    t.boolean  "is_predefined", :default => false
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.boolean  "trash",         :default => false
+    t.boolean  "is_predefined",     :default => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+    t.boolean  "trash",             :default => false
     t.integer  "display_order"
+    t.boolean  "show_on_home_page"
   end
 
   create_table "services_specialties", :force => true do |t|

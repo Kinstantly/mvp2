@@ -12,8 +12,25 @@ describe Category do
 	
 	it "can be flagged as predefined" do
 		@category.is_predefined = true
+		@category.see_all_column = 1 # required if predefined
 		@category.save.should be_true
 		Category.predefined.include?(@category).should be_true
+	end
+	
+	it "can be shown in the second column of the home page" do
+		@category.home_page_column = 2
+		@category.should have(:no).errors_on(:home_page_column)
+	end
+	
+	it "can be shown in the third column of the see-all page" do
+		@category.see_all_column = 3
+		@category.should have(:no).errors_on(:see_all_column)
+	end
+	
+	it "must display on the see-all page if predefined" do
+		@category.is_predefined = true
+		@category.see_all_column = nil
+		@category.should have(1).error_on(:see_all_column)
 	end
 	
 	context "services" do
