@@ -19,8 +19,10 @@
 %article#content
 	%header#content-header.clearfix
 		-# = image_tag 'profile-photo.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
-		.profile-photo-placeholder
-			= t 'views.profile.view.profile_photo_placeholder'
+		-#.profile-photo-placeholder
+		-#	= t 'views.profile.view.profile_photo_placeholder'
+		.photo-wrapper-large
+			= image_tag @profile.photo_path, alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
 		.profile{itemscope: "", itemtype: "http://schema.org/Person"}
 			#display_name.formlet
 				= render partial: 'formlet', locals: {formlet: 'display_name'}

@@ -1314,3 +1314,43 @@ ul.email-contact-list li:before{
 		}
 	}
 }
+
+/* Profile photo */
+$large_photo_y: 168px;
+$medium_photo_y: 110px;
+$small_photo_y: 60px;
+
+@mixin photo-wrapper-style{
+	float:left;
+	overflow:hidden;
+	img{
+		border: 0;
+	}
+}
+
+div.photo-wrapper-large{
+	@include photo-wrapper-style;
+	max-width: $large_photo_y;
+	margin-right: 34px;
+	img{
+		height: $large_photo_y;
+	}
+}
+
+div.photo-wrapper-medium{
+	@include photo-wrapper-style;
+	max-width: $medium_photo_y;
+	margin-right: 16px;
+	img{
+		height: $medium_photo_y;
+	}
+}
+
+div.photo-wrapper-small{
+	@include photo-wrapper-style;
+	max-width: $small_photo_y;
+	margin-right: 16px;
+	img{
+		height: $small_photo_y;
+	}
+}
