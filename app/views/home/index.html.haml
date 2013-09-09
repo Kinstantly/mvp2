@@ -43,13 +43,15 @@
 						- category.services_for_home_page.each do |svc|
 							%li
 								= link_to svc.name, search_providers_path(service_id: svc.id)
-			-#
-				#all-cats.see-all.select-wrapper
-					%span.select-text
-					%select
-						%option{:selected => "selected"} See all
-						%option This is a dropdown
-						%option of all categories?
+						%li= link_to t('views.home.view.more_services'), show_all_categories_path
+		= link_to t('views.home.view.see_all_categories'), show_all_categories_path
+		-#
+			#all-cats.see-all.select-wrapper
+				%span.select-text
+				%select
+					%option{:selected => "selected"} See all
+					%option This is a dropdown
+					%option of all categories?
 	#social
 		= link_to t('contact.social.twitter.display'), t('contact.social.twitter.value'), target: '_blank', id: 'twitter'
 		= link_to t('contact.social.facebook.display'), t('contact.social.facebook.value'), target: '_blank', id: 'facebook'

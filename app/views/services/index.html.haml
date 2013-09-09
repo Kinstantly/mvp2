@@ -19,6 +19,7 @@
 						= t 'views.not_browsable'
 					%th.large= Service.human_attribute_name(:specialties)
 					%th= Service.human_attribute_name(:is_predefined)
+					%th= Service.human_attribute_name(:show_on_home_page)
 					%th= Service.human_attribute_name(:display_order)
 					%th.large= Service.human_attribute_name(:categories)
 			%tbody
@@ -29,6 +30,7 @@
 							- service.specialties.order_by_name.each do |record|
 								= link_to record.name, edit_specialty_path(record), class: "name #{record.browsable? ? 'browsable' : 'not_browsable'}"
 						%td{class: "#{service.is_predefined ? 'predefined' : 'not_predefined'}"}= service.is_predefined
+						%td= service.show_on_home_page ? t('views.service.view.show_on_home_page') : t('views.service.view.do_not_show_on_home_page')
 						%td= service.display_order
 						%td
 							- service.categories.order_by_name.each do |record|

@@ -2,6 +2,7 @@
 	= f.input :name do
 		= f.autocomplete_field :name, autocomplete_service_name_profiles_path, size: 50
 	= f.input :is_predefined
+	= f.input :show_on_home_page
 	= f.input :display_order, hint: t('views.service.edit.display_order_hint'), input_html: {size: 4}
 	= f.association :specialties, as: :check_boxes, collection: @service.assignable_specialties
 	= f.button :submit
