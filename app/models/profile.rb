@@ -253,10 +253,10 @@ class Profile < ActiveRecord::Base
 	end
 
 	def photo_path
-		if photo_source_url.strip.present?
+		if photo_source_url.try(:strip).present?
 			photo_source_url.strip
 		else
-			self.DEFAULT_PHOTO_PATH
+			DEFAULT_PHOTO_PATH
 		end
 	end
 	
