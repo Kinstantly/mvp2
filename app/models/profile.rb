@@ -64,6 +64,8 @@ class Profile < ActiveRecord::Base
 		custom_service_names: 150,
 		custom_specialty_names: 150
 	}
+
+	DEFAULT_PHOTO_PATH = 'profile-photo-placeholder.jpg'
 	
 	# Note: lengths of the email and invitation_email attributes are checked by the email validator.
 	[:first_name, :middle_name, :last_name, :credentials, :company_name, :url, :headline, :certifications,
@@ -248,6 +250,14 @@ class Profile < ActiveRecord::Base
 	
 	def display_name_or_company
 		first_name.present? || last_name.present? ? display_name : (company_name.presence || '')
+	end
+
+	def photo_path
+		if photo_source_url.try(:strip).present?
+			photo_source_url.strip
+		else
+			DEFAULT_PHOTO_PATH
+		end
 	end
 	
 	def display_stages_ages
