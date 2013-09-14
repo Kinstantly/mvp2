@@ -213,9 +213,9 @@ a:hover {
 		-moz-box-shadow: inset 1px 1px #d0c4c6;
 		-webkit-box-shadow: inset 1px 1px #d0c4c6;
 		box-shadow: inset 1px 1px #d0c4c6;
-		width: 226px;
+		width: 236px;
 		height: 21px;
-		font-size: 1.3125em;
+		//font-size: 1.3125em;
 		color: $search_input_color;
 		line-height: 1em;
 		margin-bottom: 12px;
@@ -229,6 +229,7 @@ a:hover {
 		-moz-box-shadow: none;
 		-webkit-box-shadow: none;
 		box-shadow: none;
+		margin-left: 5px;
 	}
 	#provider_search_button:hover {
 		cursor: pointer;

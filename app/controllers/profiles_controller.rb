@@ -123,6 +123,9 @@ class ProfilesController < ApplicationController
 		if params[:latitude].present? && params[:longitude].present?
 			@search_latitude, @search_longitude = params[:latitude], params[:longitude]
 			options[:order_by_distance] = { latitude: @search_latitude, longitude: @search_longitude }
+		elsif params[:address].present?
+			@search_address = params[:address]
+			options[:address] = @search_address
 		elsif params[:city].present? && params[:region].present?
 			@search_city = params[:city]
 			@search_region = params[:region]

@@ -84,7 +84,7 @@ you can add resource intensive styles.
 		margin-right: -162px;
 		margin-top: -68px;
 		input {
-			width: 256px;
+			width: 266px;
 		}
 		.select-wrapper {   
 				background: url('arrow.png') no-repeat 245px center #ffffff;
@@ -93,6 +93,7 @@ you can add resource intensive styles.
 		#provider_search_button {
 			background: url('search-button.png') no-repeat 0px 0px;
 			width: 288px;
+			margin-left: 5px;
 		}
 		#provider_search_button:hover {
 			cursor: pointer;

@@ -85,3 +85,4 @@ MAILER_DEFAULT_BCC = 'monitor@kinstantly.com'
 Phonie::Phone.default_country_code = '1'
 SEARCH_DEFAULT_PER_PAGE = ENV['SEARCH_DEFAULT_PER_PAGE'].presence || 20
 PaperTrail.config.version_limit = 20
+GOOGLE_BROWSER_API_KEY = 'AIzaSyAcg1gF_tDu3I3qOnYDLD8KUkvnAPXYVow'

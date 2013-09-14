@@ -23,6 +23,7 @@
 		/[if lt IE 9]
 			= javascript_include_tag '//html5shim.googlecode.com/svn/trunk/html5.js'
 		= javascript_include_tag 'application'
+		= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{GOOGLE_BROWSER_API_KEY}&libraries=places&sensor=false".html_safe
 		= render partial: 'layouts/tracking'
 		-# Name-space my global variables, e.g., my_vars.a_val, my_vars.t.some_text, my_vars.f.a_function
 		%script var my_vars={t:{},f:{}};
@@ -64,3 +65,6 @@
 			# Workaround for Firefox which doesn't trigger the change event
 			# if the user is using the keyboard to navigate through the options
 			selects.on('keypress', -> selects.trigger('change'))
+			#
+			# Autocomplete location field in search form.
+			new google.maps.places.Autocomplete(document.getElementById('provider_search_location'), {types: ['geocode']})

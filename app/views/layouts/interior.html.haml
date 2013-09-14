@@ -24,12 +24,10 @@
 			#search_providers.aside
 				= form_tag search_providers_path, method: :get, id: 'providerSearch' do
 					= hidden_field_tag :service_id, @search_service.id if @search_service
-					= text_field_tag :query, (@search_service.try(:name).presence || @search_query), id: 'provider_search_query', autocomplete: 'off', placeholder: t('views.search.query_placeholder')
-					.select-wrapper
-						%span.select-text
-						= select_tag :search_area_tag_id, search_area_tag_options(@search_area_tag_id), id: 'search_area_tag'
+					= text_field_tag :query, default_search_query(@search_query, @search_service), id: 'provider_search_query', autocomplete: 'off', placeholder: t('views.search.query_placeholder')
+					= text_field_tag :address, @search_address, id: 'provider_search_location', placeholder: t('views.search.address_placeholder')
 					= submit_tag 'Search for free', disable_with: 'Searching...', class: 'button submit green', id: 'provider_search_button'
-					- if !user_signed_in?
-						%p.small
-							Provider? #{provider_sign_up_link 'Join us'}
+				- if !user_signed_in? && show_link?(provider_sign_up_path)
+					%p#provider_sign_up_link.small
+						Provider? #{provider_sign_up_link 'Join us'}
 = render template: 'layouts/application'

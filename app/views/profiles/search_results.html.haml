@@ -1,31 +1,9 @@
 .search_results
-	%h1= search_results_title @search, @search_area_tag_id, @search_service
-	- if @search.results.present?
-		.search_results_options
-			= form_tag search_providers_path, method: :get, id: 'nearest_to_city_postal_code_form' do
-				= hidden_field_tag :query, @search_query if @search_query.present?
-				= hidden_field_tag :per_page, @search_per_page if @search_per_page.present?
-				= hidden_field_tag :search_area_tag_id, @search_area_tag_id if @search_area_tag_id.present?
-				= hidden_field_tag :service_id, @search_service.id if @search_service
-				= t 'views.search_results.nearest_to_city_postal_code'
-				- city_prompt = t 'views.search_results.city_prompt'
-				/[if lt IE 9]
-					= city_prompt
-				= text_field_tag :city, @search_city, size: 12, id: 'search_city', placeholder: city_prompt, title: city_prompt
-				= hidden_field_tag :region, DEFAULT_REGION
-				= t 'views.or'
-				- postal_code_prompt = t 'views.search_results.postal_code_prompt'
-				/[if lt IE 9]
-					= postal_code_prompt
-				= text_field_tag :postal_code, @search_postal_code, size: 10, id: 'search_postal_code', placeholder: postal_code_prompt, title: postal_code_prompt
-				= submit_tag 'Show', disable_with: 'Show...', id: 'order_by_distance_button'
-			- if @search_latitude && @search_longitude
-				#nearest_results_msg= t 'views.search_results.nearest_results_msg', page: @search_page
-			- else
-				#get_location_button_area{style: 'display: none'}
-					= form_tag '#' do
-						= t 'views.search_results.nearest_to_you'
-						= submit_tag 'Nearest', id: 'get_location_button'
+	%h1= search_results_title @search, address: @search_address, service: @search_service
+	- if default_search_query(@search_query, @search_service).blank?
+		.search_results_prompt= t 'views.search_results.search_query_prompt'
+	- if @search_address.blank? and @search.total > 1
+		.search_results_prompt= t 'views.search_results.sorted_by_proximity_prompt'
 	.search_results_list#content
 		- @search.results.each_with_index do |profile, i|
 			- profile_id = "profile_#{i}"

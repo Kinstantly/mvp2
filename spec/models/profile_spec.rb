@@ -346,6 +346,32 @@ describe Profile do
 					results = Profile.fuzzy_search(@summary_1, within_radius: @geocode_1.merge(radius_km: 100)).results
 					results.should have(2).things
 				end
+				
+				context "using address option" do
+					it "orders results by distance from a postal code" do
+						# Order wrt @location_2.postal_code, so expect @profile_2 first.
+						results = Profile.fuzzy_search(@summary_1, address: @location_2.postal_code).results
+						results.should have(2).things
+						results.first.should == @profile_2
+						results.second.should == @profile_1
+					end
+				
+					it "orders results by distance from a city" do
+						# Order wrt @location_2 city and state, so expect @profile_2 first.
+						results = Profile.fuzzy_search(@summary_1, address: "#{@location_2.city}, #{@location_2.region}").results
+						results.should have(2).things
+						results.first.should == @profile_2
+						results.second.should == @profile_1
+					end
+				
+					it "orders results by distance from a city with postal code" do
+						# Order wrt @location_2 city, state, and postal code, so expect @profile_2 first.
+						results = Profile.fuzzy_search(@summary_1, address: "#{@location_2.city}, #{@location_2.region} #{@location_2.postal_code}").results
+						results.should have(2).things
+						results.first.should == @profile_2
+						results.second.should == @profile_1
+					end
+				end
 			end
 		end
 	

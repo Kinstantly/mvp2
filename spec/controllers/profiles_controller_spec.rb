@@ -618,6 +618,36 @@ describe ProfilesController do
 			assigns[:search].results.first.should == rr_profile
 			assigns[:search].results.second.should == bear_profile
 		end
+		
+		context "using address option" do
+			it "should show the nearest provider at the top when searching by postal code" do
+				get :search, query: 'river brewing co', address: bear_location.postal_code
+				assigns[:search].should have(2).results
+				assigns[:search].results.first.should == bear_profile
+				assigns[:search].results.second.should == rr_profile
+			end
+		
+			it "should show the nearest provider at the top when searching by city and state" do
+				get :search, query: 'river brewing co', address: "#{bear_location.city}, #{bear_location.region}"
+				assigns[:search].should have(2).results
+				assigns[:search].results.first.should == bear_profile
+				assigns[:search].results.second.should == rr_profile
+			end
+		
+			it "should show the nearest provider at the top when searching by city, state, and postal code" do
+				get :search, query: 'river brewing co', address: "#{bear_location.city}, #{bear_location.region} #{bear_location.postal_code}"
+				assigns[:search].should have(2).results
+				assigns[:search].results.first.should == bear_profile
+				assigns[:search].results.second.should == rr_profile
+			end
+		
+			it "should show the nearest provider at the top when searching by service and postal code" do
+				get :search, servide_id: service.id, address: rr_location.postal_code
+				assigns[:search].should have(2).results
+				assigns[:search].results.first.should == rr_profile
+				assigns[:search].results.second.should == bear_profile
+			end
+		end
 	end
 	
 	context "paginated search" do

@@ -286,7 +286,8 @@ en:
         remove_confirm_admin: 'This review will be removed when you save the profile.'
         add: 'Fill in a new review'
     search:
-      query_placeholder: 'doctor, tutor, therapist...'
+      address_placeholder: 'ZIP code or city, state'
+      query_placeholder: 'name, specialty, or parenting need...'
     search_results:
       city_prompt: 'city in California'
       in_search_area: 'in %{name}'
@@ -305,10 +306,13 @@ en:
           other: "%{count} search results for '%{query}'"
       more: 'More details'
       postal_code_prompt: 'zip code'
+      search_query_prompt: 'Want the results selected by provider types? Enter a search term in the red search bar above.'
       searching: 'Searching...'
       showing_nearest_to_you: 'Showing nearest to you'
       short_profile:
         more: "See full details"
+      sorted_by_proximity_prompt: 'Want the results sorted by proximity? Enter a city, state, or zip code in the red search bar above.'
+      sorted_by_proximity_to: 'sorted by proximity to %{address}'
     search_term:
       name: 'Search term'
     show_all_categories:

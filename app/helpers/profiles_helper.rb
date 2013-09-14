@@ -494,21 +494,27 @@ module ProfilesHelper
 		id.present? && (name = SearchAreaTag.find_by_id(id).try(:name)) ? t('views.search_results.in_search_area', name: name) : nil
 	end
 
-	def search_results_title(search, search_area_tag_id=nil, service=nil)
+	def search_results_title(search, options={})
 		total = search.total
-		query = if service
-			service.name
+		query = if options[:service]
+			options[:service].name
 		else
 			search_query_string search
 		end
-		search_area = in_search_area search_area_tag_id
+		search_area = in_search_area options[:search_area_tag_id]
+		sorted_by_proximity = options[:address].present? && total > 1 ? t('views.search_results.sorted_by_proximity_to', address: options[:address]) : nil
+		addendum = [search_area, sorted_by_proximity].compact.join(' ')
 		if query.present?
 			t_scope = 'views.search_results.found_for'
-			"#{total > 0 ? t('how_many', scope: t_scope, count: total, query: query) : t('none', scope: t_scope, query: query)} #{search_area}"
+			"#{total > 0 ? t('how_many', scope: t_scope, count: total, query: query) : t('none', scope: t_scope, query: query)} #{addendum}"
 		else
 			t_scope = 'views.search_results.found'
-			"#{total > 0 ? t('how_many', scope: t_scope, count: total) : t('none', scope: t_scope)} #{search_area}"
+			"#{total > 0 ? t('how_many', scope: t_scope, count: total) : t('none', scope: t_scope)} #{addendum}"
 		end
+	end
+
+	def default_search_query(query, service)
+		service.try(:name).presence || query
 	end
 
 	def search_result_name_specialties(profile)

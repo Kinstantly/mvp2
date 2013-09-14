@@ -235,9 +235,9 @@ $masthead_width: 920px;
 		@include search-text-input-border-style;
 		padding: 10px 12px;
 		background: $search_input_background;
-		width: 218px;
+		width: 268px;
 		height: 16px;
-		font-size: 1.125em;
+		//font-size: 1.125em;
 		color: $search_input_color;
 		line-height: 1em;
 		float: left;
@@ -298,6 +298,9 @@ $masthead_width: 920px;
 		-khtml-opacity: 0;
 		-webkit-opacity: 0;
 		opacity: 0;
+	}
+	#provider_sign_up_link {
+		float: right;
 	}
 	.small {
 		font-size: 0.9375em;
@@ -925,6 +928,14 @@ div.popover {
 			font-size: 22px;
 			line-height: 22px;
 		}
+	}
+	.search_results_prompt {
+		@include search-results-header-style;
+		color: $text_light_color;
+		font-size: 14px;
+		line-height: 14px;
+		margin: 20px auto;
+		width: $masthead_width;
 	}
 	.search_results_options {
 		@include profile-info-style(#b0acae);

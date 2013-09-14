@@ -184,7 +184,11 @@ class Profile < ActiveRecord::Base
 		}.merge(new_opts)
 		opts[:search_area_tag_ids] = [opts[:search_area_tag_id]] if opts[:search_area_tag_id].present?
 		opts[:search_area_tag_ids].delete_if(&:blank?) if opts[:search_area_tag_ids].present?
-		opts[:order_by_distance] = self.geocode_location opts[:location] if opts[:location]
+		if opts[:address].present?
+			opts[:order_by_distance] = self.geocode_address opts[:address]
+		elsif opts[:location]
+			opts[:order_by_distance] = self.geocode_location opts[:location]
+		end
 		
 		self.search do
 			if opts[:solr_params].present?
@@ -219,6 +223,12 @@ class Profile < ActiveRecord::Base
 	# Convert a Location object to a hash with latitude and longitude.
 	def self.geocode_location(location)
 		latlon = location.geocode_address
+		{latitude: latlon[0], longitude: latlon[1]}
+	end
+	
+	# Convert an address string to a hash with latitude and longitude.
+	def self.geocode_address(address)
+		latlon = address.present? ? Geocoder.coordinates(address) : [nil, nil]
 		{latitude: latlon[0], longitude: latlon[1]}
 	end
 	
