@@ -244,17 +244,19 @@ $masthead_width: 920px;
 		margin-right: 8px;
 	}
 	#provider_search_button {
-		background: url('search.png') no-repeat center 0px;
+		background: url('search-sprite-grn.png') no-repeat center 0px;
 		text-indent: -999em;
-		width: 36px;
-		height: 36px;
+		width: 44px;
+		height: 44px;
 		border: none;
 		-moz-box-shadow: none;
 		-webkit-box-shadow: none;
 		box-shadow: none;
+		margin-top: -4px;
 		margin-left: 10px;
 	}
 	#provider_search_button:hover {
+		background: url('search-sprite-grn.png') no-repeat center -44px;
 		cursor: pointer;
 	}
 	.select-wrapper {
