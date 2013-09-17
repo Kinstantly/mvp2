@@ -81,6 +81,11 @@ Spork.prefork do
   # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
   Cucumber::Rails::Database.javascript_strategy = :truncation
 
+  # Make sure the search index is clean before running a search scenario.
+  Before('@search') do
+    Sunspot.remove_all!
+  end
+
   # End of Spork.prefork
 end
 
