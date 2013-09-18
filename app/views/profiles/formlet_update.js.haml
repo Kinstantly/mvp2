@@ -11,3 +11,5 @@
 	- else
 		formlet = $('##{@formlet}').html('#{escape_javascript(render partial: 'formlet')}');
 		my_vars.f.place_formlet(formlet);
+	-# Fix text field placeholders for IE if any.
+	my_vars.f.text_field_placeholders($('##{@formlet}'));

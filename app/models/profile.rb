@@ -228,7 +228,7 @@ class Profile < ActiveRecord::Base
 	
 	# Convert an address string to a hash with latitude and longitude.
 	def self.geocode_address(address)
-		latlon = address.present? ? Geocoder.coordinates(address) : [nil, nil]
+		latlon = address.present? && Geocoder.coordinates(address).presence || [nil, nil]
 		{latitude: latlon[0], longitude: latlon[1]}
 	end
 	
