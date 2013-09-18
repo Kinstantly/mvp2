@@ -69,38 +69,13 @@
 		- if @search.results.present?
 			.search_result= paginate @search.results
 
--# Interpolate in javascript.  HAML cannot cache coffeescript with embedded ruby interpolation!
-:javascript
-	my_vars.search_path = '#{escape_javascript search_providers_path(query: @search_query.presence, per_page: @search_per_page.presence, search_area_tag_id: @search_area_tag_id.presence, service_id: @search_service.try(:id))} .search_result';
-	my_vars.t.searching = '#{t "views.search_results.searching"}';
-	my_vars.t.showing_nearest_to_you = '#{t "views.search_results.showing_nearest_to_you"}';
-
 :coffeescript
-	if Modernizr.geolocation
-		$('#get_location_button_area').css('display', 'inline-block')
-	$('#search_city').focusin ->
-		$('#search_postal_code').val('')
-	$('#search_postal_code').focusin ->
-		$('#search_city').val('')
-	$('#get_location_button').click (e) ->
-		e.preventDefault()
-		$('#get_location_button_area').html(my_vars.t.searching)
-		if Modernizr.geolocation
-			navigator.geolocation.getCurrentPosition(search_by_location)
-	search_by_location = (position) ->
-		params = 'latitude='+position.coords.latitude+'&longitude='+position.coords.longitude
-		$('.search_results_list').load(my_vars.search_path, params, search_by_location_complete)
-	search_by_location_complete = ->
-		my_vars.f.rating_score_reset() if my_vars.f.rating_score_reset
-		$('#get_location_button_area').html(my_vars.t.showing_nearest_to_you)
-		$('#nearest_results_msg').remove()
-		window.link_short_profiles()
 	event_is_over_element = (e, el) ->
 		el_coords = el.offset()
 		e.pageY > el_coords.top && e.pageY < el_coords.top + el.outerHeight() &&
 			e.pageX > el_coords.left && e.pageX < el_coords.left + el.outerWidth()
 	# Pop-up short profiles
-	window.link_short_profiles = ->
+	my_vars.f.setup_popup_profiles = ->
 		$('.show_profile').mouseenter (e) ->
 			short_profile = $('#' + $(this).attr('data-profile-id'))
 			short_profile.css('top', $(this).height() + 8) # first try placing below the mouse-over area
@@ -123,4 +98,4 @@
 			my_vars.on_popover = false
 			$(this).removeClass 'active'
 			false
-	window.link_short_profiles()
+	my_vars.f.setup_popup_profiles()
