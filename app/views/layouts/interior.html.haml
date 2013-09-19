@@ -4,7 +4,7 @@
 - content_for :body_header do
 	%header#branding.clearfix
 		.container
-			%h3#tagline When parenting challenges can't wait.
+			%h3#tagline= t 'company.tagline'
 			%nav#access.clearfix
 				%ul
 					%li#skip
@@ -18,7 +18,8 @@
 						= sign_in_out_link wrapper: {tag: :li, id: :signout}
 					- elsif show_sign_in_link?
 						%li#signin
-							Already a member? #{sign_in_out_link}
+							= t 'views.sign_in.prompt'
+							= sign_in_out_link
 		#masthead.clearfix
 			%h1= home_link
 			#search_providers.aside
@@ -29,5 +30,6 @@
 					= submit_tag 'Search for free', disable_with: 'Searching...', class: 'button submit green', id: 'provider_search_button'
 				- if !user_signed_in? && show_link?(provider_sign_up_path)
 					%p#provider_sign_up_link.small
-						Provider? #{provider_sign_up_link 'Join us'}
+						= t 'views.sign_up.provider_prompt'
+						= provider_sign_up_link t('views.sign_up.provider_link')
 = render template: 'layouts/application'
