@@ -3,6 +3,9 @@ class Service < ActiveRecord::Base
 	
 	attr_accessible :name, :is_predefined, :specialty_ids, :display_order, :show_on_home_page
 	
+	# Strip leading and trailing whitespace from (admin) input intended for these attributes.
+	auto_strip_attributes :name
+	
 	has_and_belongs_to_many :profiles
 	has_and_belongs_to_many :categories
 	has_and_belongs_to_many :specialties
@@ -19,6 +22,7 @@ class Service < ActiveRecord::Base
 	
 	validates :name, presence: true
 	validates :name, length: {maximum: MAX_STRING_LENGTH}
+	validates :display_order, numericality: {only_integer: true}, allow_nil: true
 	
 	include CachingForModel
 	predefined_info_parent :category

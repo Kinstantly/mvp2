@@ -48,6 +48,8 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.2)
     arel (3.0.2)
+    auto_strip_attributes (2.0.2)
+      activerecord (>= 3.0)
     bcrypt-ruby (3.1.1)
     builder (3.0.4)
     cancan (1.6.8)
@@ -271,6 +273,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  auto_strip_attributes
   cancan
   capybara (~> 1.1)
   capybara-webkit

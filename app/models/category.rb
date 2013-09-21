@@ -3,6 +3,9 @@ class Category < ActiveRecord::Base
 	
 	attr_accessible :name, :is_predefined, :service_ids, :display_order, :home_page_column, :see_all_column
 	
+	# Strip leading and trailing whitespace from (admin) input intended for these attributes.
+	auto_strip_attributes :name
+	
 	has_and_belongs_to_many :profiles
 	has_and_belongs_to_many :services
 	
@@ -18,6 +21,7 @@ class Category < ActiveRecord::Base
 	
 	validates :name, presence: true
 	validates :name, length: {maximum: MAX_STRING_LENGTH}
+	validates :display_order, numericality: {only_integer: true}, allow_nil: true
 	validates :home_page_column, numericality: {only_integer: true, greater_than_or_equal_to: HOME_PAGE_COLUMNS.first, less_than_or_equal_to: HOME_PAGE_COLUMNS.last}, allow_nil: true
 	validates :see_all_column, numericality: {only_integer: true, greater_than_or_equal_to: SEE_ALL_COLUMNS.first, less_than_or_equal_to: SEE_ALL_COLUMNS.last}, allow_nil: true
 	validates :see_all_column, presence: true, if: :is_predefined

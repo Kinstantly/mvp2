@@ -6,8 +6,18 @@ describe Category do
 		@category.name = 'THERAPISTS & PARENTING COACHES'
 	end
 	
+	# Integer attributes will be set to 0 if you try to give them a non-numeric value,
+	# so no use testing here for numericality.
+	
 	it "has a name" do
 		@category.save.should be_true
+	end
+	
+	it "strips whitespace from the name" do
+		name = 'MUSIC TEACHERS'
+		@category.name = " #{name} "
+		@category.should have(:no).errors_on(:name)
+		@category.name.should == name
 	end
 	
 	it "can be flagged as predefined" do

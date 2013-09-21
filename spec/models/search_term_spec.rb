@@ -10,6 +10,13 @@ describe SearchTerm do
 		@search_term.save.should be_true
 	end
 	
+	it "strips whitespace from the name" do
+		name = 'music instruction'
+		@search_term.name = " #{name} "
+		@search_term.should have(:no).errors_on(:name)
+		@search_term.name.should == name
+	end
+	
 	context "Sunspot/SOLR auto-indexing" do
 		before(:each) do
 			@search_term.save

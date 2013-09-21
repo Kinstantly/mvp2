@@ -5,6 +5,9 @@ class Specialty < ActiveRecord::Base
 	
 	attr_accessible :name, :is_predefined, :search_term_ids_to_remove, :search_term_names_to_add
 	
+	# Strip leading and trailing whitespace from (admin) input intended for these attributes.
+	auto_strip_attributes :name
+	
 	has_and_belongs_to_many :profiles
 	has_and_belongs_to_many :services
 	has_and_belongs_to_many :search_terms, after_add: :reindex_profiles, after_remove: :reindex_profiles

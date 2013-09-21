@@ -16,6 +16,10 @@ class Profile < ActiveRecord::Base
 		:adoption_stage, :preconception_stage, :pregnancy_stage, :ages, 
 		:consult_remotely # provider offers most or all services remotely
 	
+	# Strip leading and trailing whitespace from input intended for these attributes.
+	auto_strip_attributes :first_name, :last_name, :middle_name, :credentials, :email, :company_name, :url,
+		:headline, :year_started, :invitation_email, :photo_source_url
+	
 	belongs_to :user
 	# has_and_belongs_to_many :age_ranges # superseded by *_stage and ages attributes
 	has_and_belongs_to_many :categories
@@ -233,11 +237,11 @@ class Profile < ActiveRecord::Base
 	end
 	
 	def custom_service_names
-		remove_blanks @custom_service_names
+		remove_blanks_and_strip @custom_service_names
 	end
 	
 	def custom_specialty_names
-		remove_blanks @custom_specialty_names
+		remove_blanks_and_strip @custom_specialty_names
 	end
 	
 	def service_ids_names
