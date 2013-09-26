@@ -49,6 +49,20 @@ Mvp2::Application.configure do
   # config.action_mailer.delivery_method = :smtp
   # config.action_mailer.raise_delivery_errors = true
 
+  # Paperclip config.
+  config.paperclip_defaults = {
+    #:url => '/tmp/:class/:attachment/:id_partition/:style/:filename',
+		#:path => ':rails_root:url',
+    #S3 config. Comment out for local storage.
+    #:storage => :s3,
+    :s3_host_name => 's3-us-west-2.amazonaws.com',
+    :s3_protocol => 'https',
+    :s3_credentials => {
+      :bucket => 'paper-es',
+      :access_key_id => 'AKIAIEZKVDG5PVS2DRWA',
+      :secret_access_key => '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'
+    }
+  }
 end
 
 SITEMAP_DEFAULT_HOST = 'http://localhost:5000/'

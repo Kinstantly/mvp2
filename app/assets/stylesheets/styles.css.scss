@@ -1346,7 +1346,8 @@ div.photo-wrapper-large{
 	max-width: $large_photo_y;
 	margin-right: 34px;
 	img{
-		height: $large_photo_y;
+		max-height: $large_photo_y;
+	  	max-width: $large_photo_y;
 	}
 }
 
@@ -1366,4 +1367,31 @@ div.photo-wrapper-small{
 	img{
 		height: $small_photo_y;
 	}
+}
+
+.profile-photo-update{
+  	width:508px !important;
+}
+.profile-photo-update p{
+  color: #807f7f;
+  font-size: 14px;
+  padding: 5px 0 0 0;
+}
+
+.profile-photo-update span{
+  	color: #aaa;
+  	font-size:14px;
+  	padding: 30px;
+}
+.file-drop{
+  	height: $large_photo_y;
+  	width: $large_photo_y;
+  	border: 1px solid red;
+  	background-color: #efefef;
+  	margin: 10px 0 5px 135px;
+}
+
+.upload-result{
+  	@extend .file-drop;
+	border:0;
 }

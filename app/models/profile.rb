@@ -1,4 +1,6 @@
 class Profile < ActiveRecord::Base
+	DEFAULT_PHOTO_PATH = 'profile-photo-placeholder.jpg'
+
 	has_paper_trail # Track changes to each profile.
 	
 	attr_writer :custom_service_names, :custom_specialty_names # readers defined below
@@ -12,7 +14,9 @@ class Profile < ActiveRecord::Base
 		:consult_in_person, :consult_in_group, :consult_by_email, :consult_by_phone, :consult_by_video, 
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, :consult_at_other, 
 		:pricing, :service_area, :hours, :accepting_new_clients, 
-		:invitation_email, :photo_source_url, 
+		:invitation_email, :photo_source_url, :profile_photo,
+		:profile_photo_clip_top, :profile_photo_clip_right,
+		:profile_photo_clip_bottom, :profile_photo_clip_left, 
 		:adoption_stage, :preconception_stage, :pregnancy_stage, :ages, 
 		:consult_remotely # provider offers most or all services remotely
 	
@@ -30,12 +34,18 @@ class Profile < ActiveRecord::Base
 	
 	has_many :ratings, through: :reviews
 	has_many :reviewers, through: :reviews
+
+	has_attached_file :profile_photo,
+										:styles => {:medium => "110x110", :large => "168x168" },
+										:default_url => DEFAULT_PHOTO_PATH
 	
 	validate :publishing_requirements
 	# validates :categories, length: {maximum: 1}
 	validates :email, email: true, allow_blank: true
 	validates :invitation_email, email: true, allow_blank: true
-	
+	validates_attachment :profile_photo, :content_type => {:content_type => ['image/jpeg', 'image/jpg', 'image/gif', 'image/png']},
+											 :size => {:less_than => 10.megabytes}
+
 	# Define maximum length of each string or text attribute in a publicly accessible way.
 	# This allows them to be used at the view layer for character counts in input and textarea tags.
 	MAX_LENGTHS = {
@@ -65,8 +75,6 @@ class Profile < ActiveRecord::Base
 		custom_specialty_names: 150
 	}
 
-	DEFAULT_PHOTO_PATH = 'profile-photo-placeholder.jpg'
-	
 	# Note: lengths of the email and invitation_email attributes are checked by the email validator.
 	[:first_name, :middle_name, :last_name, :credentials, :company_name, :url, :headline, :certifications,
 		:languages, :lead_generator, :photo_source_url, :ages, :year_started, :education,

@@ -73,7 +73,8 @@ module Mvp2
       g.view_specs false
       g.helper_specs false
     end
-    
+
+		config.middleware.use 'Rack::RawUpload'
   end
 end
 

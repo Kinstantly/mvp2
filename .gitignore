@@ -32,3 +32,6 @@
 # Ignore Solr dev files that are not configuration.
 /solr/data*
 /solr/pids
+
+#Ignor public uploads
+/public/system

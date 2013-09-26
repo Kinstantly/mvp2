@@ -79,8 +79,19 @@ Mvp2::Application.configure do
 	# Devise needs this for its email.
 	config.action_mailer.default_url_options = { :host => 'get-answers-5555.herokuapp.com' }
 
+  # Paperclip config for S3.
+  config.paperclip_defaults = {
+    :storage => :s3,
+    :s3_credentials => {
+      :bucket => ENV['AWS_BUCKET'],
+      :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
+      :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
+    }
+  }
+
 end
 
 SITEMAP_DEFAULT_HOST = 'http://get-answers-5555.herokuapp.com/'
 SITEMAP_SITEMAPS_PATH = 'sitemaps/'
 REINDEX_PROFILES_IN_BACKGROUND = true
+

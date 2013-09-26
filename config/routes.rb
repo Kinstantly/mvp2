@@ -38,6 +38,7 @@ Mvp2::Application.routes.draw do
 			get 'rating_score'
 			post 'rate'
 			put 'formlet_update'
+			post 'photo_update'
 			# plain layout; legacy
 			get 'show_plain'
 			get 'edit_plain'

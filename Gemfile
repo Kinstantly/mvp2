@@ -121,6 +121,19 @@ group :development, :test do
 	gem 'spork-rails'
 end
 
+#Image processor and model manager for photo uploads
+gem 'paperclip', '~> 3.5.0'
+
+#S3 storage
+gem 'aws-sdk', '~> 1.5.7'
+
+#AJAX file uploader
+gem 'jack_up', :git => 'https://github.com/thoughtbot/jack_up.git'
+
+gem 'underscore-rails'
+
+gem 'rack-raw-upload'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

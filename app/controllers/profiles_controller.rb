@@ -91,7 +91,32 @@ class ProfilesController < ApplicationController
 		end
 		respond_with @profile, layout: false
 	end
-	
+
+	def photo_update
+		if params[:file]
+			@profile.profile_photo = params[:file]
+			if @profile.update_attributes({:profile_photo => params[:file]})
+					render json: {:profile_photo_src =>  @profile.profile_photo.url(:large)}
+			else
+				errors_array = Array.new
+				options={}
+				options[:scope] = "controllers"
+				@profile.errors[:profile_photo_file_size].blank? == false
+					tag = 'profile_photo_filesize_error'
+					options[:default] = Array(options[:default]).unshift(tag.to_sym)
+					errors_array.push(I18n.t("#{controller_name}.#{tag}", options))
+				@profile.errors[:profile_photo_content_type].blank? == false
+					tag = 'profile_photo_filetype_error'
+					options[:default] = Array(options[:default]).unshift(tag.to_sym)
+					errors_array.push(I18n.t("#{controller_name}.#{tag}", options))
+
+				render json: {:error => 'true', :errors_array => errors_array}
+			end
+		else
+			head :bad_request
+		end
+	end
+
 	# CanCan should prevent access to this action if the profile has been claimed.
 	def destroy
 		@profile.destroy
