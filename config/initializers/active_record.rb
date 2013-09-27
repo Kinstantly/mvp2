@@ -23,6 +23,10 @@ class ActiveRecord::Base
 		(strings || []).select(&:present?)
 	end
 	
+	def remove_blanks_and_strip(strings)
+		remove_blanks(strings).map &:strip
+	end
+	
 	# Display area code, number, and if present, extension.
 	# Display country code if so designated.
 	def display_phone_number(value, show_country_code=false)

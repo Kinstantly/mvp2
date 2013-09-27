@@ -102,6 +102,11 @@ gem 'unicorn'
 # even undelete it after it's been destroyed.
 gem 'paper_trail', '~> 2'
 
+# AutoStripAttributes helps to remove unnecessary whitespace from ActiveRecord or ActiveModel attributes.
+# It's good for removing accidental spaces from user inputs
+# (e.g. when user copy/pastes some value to a form and the value has extra spaces at the end).
+gem 'auto_strip_attributes'
+
 group :development, :test do
 	gem 'rspec-rails', '~> 2.0'
 	gem 'cucumber-rails', '~> 1.0', require: false

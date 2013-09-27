@@ -14,25 +14,18 @@ When /^I enter "(.*?)" in the search box$/ do |query|
 	end
 end
 
+When /^I enter "(.*?)" in the search location box$/ do |location|
+	within('#search_providers') do
+		fill_in 'provider_search_location', with: location
+		click_button 'provider_search_button'
+	end
+end
+
 When /^I enter "(.*?)" in the search box and select the "(.*?)" search area tag$/ do |query, tag|
 	within('#search_providers') do
 		fill_in 'provider_search_query', with: query
 		select tag, from: 'search_area_tag'
 		click_button 'provider_search_button'
-	end
-end
-
-When /^I enter "(.*?)" in the search-by-distance box$/ do |postal_code|
-	within('#nearest_to_city_postal_code_form') do
-		fill_in 'search_postal_code', with: postal_code
-		click_button 'order_by_distance_button'
-	end
-end
-
-When /^I enter "(.*?)" in the search-by-city box$/ do |city|
-	within('#nearest_to_city_postal_code_form') do
-		fill_in 'search_city', with: city
-		click_button 'order_by_distance_button'
 	end
 end
 

@@ -216,4 +216,12 @@ describe User do
 			@kelly.should be_profile_editor
 		end
 	end
+	
+	it "automatically strips leading and trailing whitespace from selected attributes" do
+		user = User.new
+		username = 'SteveEarle'
+		user.username = " #{username} "
+		user.should have(:no).errors_on(:username)
+		user.username.should == username
+	end
 end

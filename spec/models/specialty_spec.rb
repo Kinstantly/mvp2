@@ -10,6 +10,13 @@ describe Specialty do
 		@specialty.save.should be_true
 	end
 	
+	it "strips whitespace from the name" do
+		name = 'music instruction'
+		@specialty.name = " #{name} "
+		@specialty.should have(:no).errors_on(:name)
+		@specialty.name.should == name
+	end
+	
 	it "can be flagged as predefined" do
 		@specialty.is_predefined = true
 		@specialty.save.should be_true

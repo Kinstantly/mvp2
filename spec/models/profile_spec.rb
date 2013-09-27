@@ -150,6 +150,14 @@ describe Profile do
 				@profile.custom_service_names = [name + 'a']
 				@profile.should have(1).error_on(:custom_service_names)
 			end
+			
+			it "filters out blanks and strips" do
+				name = 'Theremin Teacher'
+				@profile.custom_service_names = [nil, '', ' ', " #{name} "]
+				@profile.should have(:no).errors_on(:custom_service_names)
+				@profile.should have(1).custom_service_name
+				@profile.custom_service_names.first.should == name
+			end
 		end
 	end
 	
@@ -192,6 +200,14 @@ describe Profile do
 				@profile.should have(:no).error_on(:custom_specialty_names)
 				@profile.custom_specialty_names = [name + 'a']
 				@profile.should have(1).error_on(:custom_specialty_names)
+			end
+			
+			it "filters out blanks and strips" do
+				name = 'theremin instruction'
+				@profile.custom_specialty_names = [nil, '', ' ', " #{name} "]
+				@profile.should have(:no).errors_on(:custom_specialty_names)
+				@profile.should have(1).custom_specialty_name
+				@profile.custom_specialty_names.first.should == name
 			end
 		end
 		
@@ -607,5 +623,12 @@ describe Profile do
 				@profile.should have(1).error_on(attr)
 			end
 		end
+	end
+	
+	it "automatically strips leading and trailing whitespace from selected attributes" do
+		email = 'a@b.com'
+		@profile.email = " #{email} "
+		@profile.should have(:no).errors_on(:email)
+		@profile.email.should == email
 	end
 end

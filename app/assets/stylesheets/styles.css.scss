@@ -244,19 +244,17 @@ $masthead_width: 920px;
 		margin-right: 8px;
 	}
 	#provider_search_button {
-		background: url('search-sprite-grn.png') no-repeat center 0px;
+		background: url('search-sprite-rec-grn.png') no-repeat center 0px;
 		text-indent: -999em;
-		width: 44px;
-		height: 44px;
+		width: 64px;
+		height: 38px;
 		border: none;
 		-moz-box-shadow: none;
 		-webkit-box-shadow: none;
 		box-shadow: none;
-		margin-top: -4px;
-		margin-left: 10px;
 	}
 	#provider_search_button:hover {
-		background: url('search-sprite-grn.png') no-repeat center -44px;
+		background: url('search-sprite-rec-grn.png') no-repeat center -38px;
 		cursor: pointer;
 	}
 	.select-wrapper {
@@ -302,6 +300,7 @@ $masthead_width: 920px;
 		opacity: 0;
 	}
 	#provider_sign_up_link {
+		clear: left;
 		float: right;
 	}
 	.small {

@@ -6,8 +6,18 @@ describe Service do
 		@service.name = 'child psychiatrist'
 	end
 	
+	# Integer attributes will be set to 0 if you try to give them a non-numeric value,
+	# so no use testing here for numericality.
+	
 	it "has a name" do
 		@service.save.should be_true
+	end
+	
+	it "strips whitespace from the name" do
+		name = 'music teacher'
+		@service.name = " #{name} "
+		@service.should have(:no).errors_on(:name)
+		@service.name.should == name
 	end
 	
 	it "can be flagged as predefined" do

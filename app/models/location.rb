@@ -3,6 +3,9 @@ class Location < ActiveRecord::Base
 	
 	attr_accessible :address1, :address2, :city, :country, :phone, :postal_code, :profile_id, :region, :search_area_tag_id
 	
+	# Strip leading and trailing whitespace from input intended for these attributes.
+	auto_strip_attributes :address1, :address2, :city, :region, :postal_code, :country, :phone
+	
 	belongs_to :profile
 	belongs_to :search_area_tag
 	

@@ -55,11 +55,16 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.2)
     arel (3.0.2)
+<<<<<<< HEAD
     aws-sdk (1.5.8)
       httparty (~> 0.7)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
       uuidtools (~> 2.1)
+=======
+    auto_strip_attributes (2.0.2)
+      activerecord (>= 3.0)
+>>>>>>> a2468b514a0766eaddf2a46829920585f15ecb1a
     bcrypt-ruby (3.1.1)
     builder (3.0.4)
     cancan (1.6.8)
@@ -299,7 +304,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+<<<<<<< HEAD
   aws-sdk (~> 1.5.7)
+=======
+  auto_strip_attributes
+>>>>>>> a2468b514a0766eaddf2a46829920585f15ecb1a
   cancan
   capybara (~> 1.1)
   capybara-webkit

@@ -11,6 +11,7 @@ $kinstantly_chartreuse: #9fa42f;
 $kinstantly_pink: #e43d5d;
 $search_input_color: #000;
 $search_input_background: #ffffff;
+$text_field_placeholder_color: #aaa;
 
 @mixin cell-style {
 	border: {
@@ -87,6 +88,11 @@ $button_corner_radius: 4px;
 
 .text_area {
 	white-space: pre-line;
+}
+
+// Text field placeholders that were fixed for browsers that don't support them as an attribute.
+input.placeholder, textarea.placeholder {
+	color: $text_field_placeholder_color;
 }
 
 /* Messages */

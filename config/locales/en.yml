@@ -184,7 +184,9 @@ en:
     home:
       view:
         browse_title: 'Browse by category'
+        marketing_message_default: 'Find top-rated parenting experts, therapists, tutors, and more'
         more_services: 'more...'
+        search_title: "I'm looking for..."
         see_all_categories: 'See all'
         tutorial_link_html: 'Not sure <a href="#">where to start?</a>'
     location:
@@ -333,9 +335,12 @@ en:
         show_on_home_page: 'show'
     sign_in:
       label: 'Sign in'
+      prompt: 'Already a member?'
     sign_up:
       label: 'Join us!'
       member_title: 'Become a member'
+      provider_link: 'Join us'
+      provider_prompt: 'Provider?'
       provider_title: 'Create your profile'
       claiming_profile_title: 'Claim your profile'
     specialty:

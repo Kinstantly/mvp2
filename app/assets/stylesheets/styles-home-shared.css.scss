@@ -82,7 +82,7 @@ you can add resource intensive styles.
 		padding: 60px 298px 62px 66px;
 		width: 290px;
 		margin-right: -162px;
-		margin-top: -68px;
+		margin-top: -98px;
 		input {
 			width: 266px;
 		}
@@ -91,13 +91,12 @@ you can add resource intensive styles.
 				width: 286px;
 		}
 		#provider_search_button {
-			background: url('search-button.png') no-repeat 0px 0px;
-			width: 288px;
-			margin-left: 5px;
+			background: url('search-mag-button.png') no-repeat center 0px 0px;
+			width: 296px;
 		}
 		#provider_search_button:hover {
 			cursor: pointer;
-			background: url('search-button.png') no-repeat 0px -41px;
+			background: url('search-mag-button.png') no-repeat center 0px -41px;
 		}
 	}
 	.category-list {

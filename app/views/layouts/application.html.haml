@@ -53,18 +53,28 @@
 				my_vars.f.rating_score_reset() if my_vars.f.rating_score_reset
 				my_vars.f.rate_reset() if my_vars.f.rate_reset
 			#
-			# Add change event to selects, and trigger it on load, so the span is up to date
-			selects = $('.select-wrapper > select').on('change', ->
-				# Assign the jquery object to a variable 
-				select = $(this)
-				# Get placeholder element
-				placeholder = select.prev('.select-text')
-				# Use the text from the selected option to update the placeholder text
-				placeholder.html(select.children('option:selected').text()) if placeholder.length
-			).change()
-			# Workaround for Firefox which doesn't trigger the change event
-			# if the user is using the keyboard to navigate through the options
-			selects.on('keypress', -> selects.trigger('change'))
+			# # Add change event to selects, and trigger it on load, so the span is up to date
+			# selects = $('.select-wrapper > select').on('change', ->
+			# 	# Assign the jquery object to a variable 
+			# 	select = $(this)
+			# 	# Get placeholder element
+			# 	placeholder = select.prev('.select-text')
+			# 	# Use the text from the selected option to update the placeholder text
+			# 	placeholder.html(select.children('option:selected').text()) if placeholder.length
+			# ).change()
+			# # Workaround for Firefox which doesn't trigger the change event
+			# # if the user is using the keyboard to navigate through the options
+			# selects.on('keypress', -> selects.trigger('change'))
 			#
 			# Autocomplete location field in search form.
 			new google.maps.places.Autocomplete(document.getElementById('provider_search_location'), {types: ['geocode']})
+			# Google autocomplete is mucking with the placeholder in a way that breaks on IE,
+			# specifically when you focus on the input and then immediately unfocus.  This is the fix.
+			$('#search_providers').submit ->
+				el = $('#provider_search_location')
+				el.val '' if el.val() == el.attr('placeholder')
+			#
+			# Implement text input and textarea placeholders for broken browsers, e.g., IE.
+			my_vars.f.text_field_placeholders = (context) -> $('input:text, textarea', context).placeholder()
+			my_vars.f.text_field_placeholders document
+			$(document).on 'nested:fieldAdded', (e) -> my_vars.f.text_field_placeholders e.field

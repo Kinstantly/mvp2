@@ -49,4 +49,12 @@ describe Location do
 			@location.should have(1).errors_on(:phone)
 		end
 	end
+	
+	it "automatically strips leading and trailing whitespace from selected attributes" do
+		location = Location.new
+		phone = '(800) 555-1001'
+		location.phone = " #{phone} "
+		location.should have(:no).errors_on(:phone)
+		location.phone.should == phone
+	end
 end

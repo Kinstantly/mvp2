@@ -221,19 +221,18 @@ a:hover {
 		margin-bottom: 12px;
 	}
 	#provider_search_button {
-		background: url('search-button.png') no-repeat center 0px;
+		background: url('search-mag-button.png') no-repeat center 0px;
 		text-indent: -999em;
-		width: 256px;
+		width: 266px;
 		height: 41px;
 		border: none;
 		-moz-box-shadow: none;
 		-webkit-box-shadow: none;
 		box-shadow: none;
-		margin-left: 5px;
 	}
 	#provider_search_button:hover {
 		cursor: pointer;
-		background: url('search-button.png') no-repeat center -41px;
+		background: url('search-mag-button.png') no-repeat center -41px;
 	}
 	.small {
 		font-size: 0.9375em;
