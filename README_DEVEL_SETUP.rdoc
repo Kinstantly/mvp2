@@ -122,3 +122,52 @@ Next you'll want to get some categories to appear on the home page.  The best th
 On your development instance, sign in with your new admin user and then go to http://localhost:5000/categories
 
 To make a category appear on the home page, set its display order.  You can do this by choosing a category to edit from the left-hand column of the listing at the above URL.
+
+== PostgreSQL database upgrade
+
+PostgreSQL major versions are represented by the first two digit groups of the version number, e.g., 9.3.  If you upgrade from one major version to a new one, then you'll need to upgrade your databases.  This involves
+
+1. running the previous server version
+1. dumping your databases using the new pg_dumpall executable
+1. stopping the old server
+1. backing up or renaming the old database cluster
+1. creating a new database cluster using the new initdb executable
+1. starting the new server
+1. importing your dumped databases using the new psql executable
+1. recompiling the libraries for your installed 'pg' gem
+
+For more information see the upgrade page for your new server version, e.g., http://www.postgresql.org/docs/9.3/static/upgrading.html
+
+Here's an example using homebrew with the following conditions:
+
+* postgresql was upgraded from 9.2.4 to 9.3.0
+* the 'pg' gem was version 0.14.1
+* the architecture is x86_64
+
+ brew update
+ brew upgrade postgresql
+ # The default postgresql executables should now be the new version.
+ # You can check with the --version option before running each executable.
+ 
+ /usr/local/Cellar/postgresql/9.2.4/bin/pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+ 
+ pg_dumpall --version
+ pg_dumpall > mvp2_20130927.dump
+ 
+ /usr/local/Cellar/postgresql/9.2.4/bin/pg_ctl -D /usr/local/var/postgres stop
+ 
+ mv /usr/local/var/postgres /usr/local/var/postgres_9.2
+ 
+ initdb --version
+ initdb /usr/local/var/postgres -E utf8
+ 
+ pg_ctl --version
+ pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+ 
+ psql --version
+ psql -d postgres -f mvp2_20130927.dump
+ 
+ gem list pg
+ ARCHFLAGS="-arch x86_64" gem install pg -v 0.14.1
+
+When done upgrading, run all the Cucumber and Rspec tests to make sure all is well.
