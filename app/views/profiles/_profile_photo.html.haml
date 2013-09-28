@@ -36,6 +36,9 @@
 %span.editable.attribute_display{itemprop: "profilePhoto"}
 	%span.blank_attr= if @profile.errorfree.profile_photo.presence then 'Click to update your photo' else 'Click to add your photo' end
 
+:javascript
+	my_vars.photo_update_profile_path = '#{photo_update_profile_path @profile}';
+
 :coffeescript
 	show_step_one = ->
 		$('.step_two').css("display", "none");
@@ -63,7 +66,7 @@
 		show_step_one()
 
 		# create a new processor with the endpoint to where your assets are uploaded
-		jackUp = new JackUp.Processor(path: "#{Rails.root.join(photo_update_profile_path(@profile))}")
+		jackUp = new JackUp.Processor(path: my_vars.photo_update_profile_path)
 
 		# called if upload is an image; returns an image jQuery object with src attribute assigned
 		jackUp.on 'upload:imageRenderReady', (e, options) ->
