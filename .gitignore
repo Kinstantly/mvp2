@@ -33,5 +33,11 @@
 /solr/data*
 /solr/pids
 
-#Ignor public uploads
+# Ignore public uploads
 /public/system
+
+# Ignore user-specific and sensitive RubyMine project configuration files.
+/.idea/workspace.xml
+/.idea/tasks.xml
+/.idea/dataSources.ids
+/.idea/dataSources.xml
