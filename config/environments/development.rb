@@ -54,13 +54,21 @@ Mvp2::Application.configure do
     #:url => '/tmp/:class/:attachment/:id_partition/:style/:filename',
 		#:path => ':rails_root:url',
     #S3 config. Comment out for local storage.
-    #:storage => :s3,
-    :s3_host_name => 's3-us-west-2.amazonaws.com',
+    :storage => :s3,
+    :path => ':hash.:extension',
+    :bucket => 'kinstantly-assets-development',
+    #:bucket => 'assets.kinstantly-develop.com',
+    #:s3_host_alias => 'assets.kinstantly-develop.com',
+    #:url => ':s3_alias_url',
+    :url => ":s3_domain_url",
+    :default_url => "profile-photo-placeholder.jpg",
+    :hash_secret => SecureRandom.base64(128),
+    :hash_data => ":attachment/:id_partition/:style/:filename",
     :s3_protocol => 'https',
+    :s3_permissions => :public_read,
     :s3_credentials => {
-      :bucket => 'paper-es',
-      :access_key_id => 'AKIAIEZKVDG5PVS2DRWA',
-      :secret_access_key => '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'
+      :access_key_id => 'AKIAICTCJIOBR3CFCHBQ',
+      :secret_access_key => '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'
     }
   }
 end

@@ -19,7 +19,7 @@
 		%label Step 2 of 2
 		%p Photo successfully uploaded and saved
 		.upload-result
-			= image_tag ' ', id: 'upload_result_img', alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+			= image_tag @profile.profile_photo.url(:original), id: 'upload_result_img', alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
 		%p.like-profile-photo
 			Like it?
 			= link_to "Click here to continue editing your profile", '#', id: 'like_profile_photo'
@@ -40,54 +40,68 @@
 	my_vars.photo_update_profile_path = '#{photo_update_profile_path @profile}';
 
 :coffeescript
+	toggle_popover = ->
+		$('.edit.popover.profile-photo-update').toggle()
+
 	show_step_one = ->
-		$('.step_two').css("display", "none");
-		$('.step_one .file-drop img').remove();
-		$('.step_one').fadeIn(1000)
+		$('.file-drop .upload_waiter').remove()
+		$('.step_two').css("display", "none")
+		$('.step_one .file-drop img').remove()
+		$('.file-drop').css borderColor: 'red'
+		$('.step_one').css("display", "block")
 
 	show_step_two = ->
+		$('.file-drop .upload_waiter').remove()
 		$('.step_one').fadeOut(500)
 		$('.step_two').fadeIn(2000)
 
-	close_popup = (event) ->
-		event.preventDefault()
-		formlet = $(event.target).parents('div.formlet').get(0)
-		$(formlet).removeClass("active")
-		$(formlet).find('div.popover').css("display", "none");
-		updated_src = $("img#upload_result_img").attr('src');
-		$('.photo-wrapper-large img').attr('src', updated_src);
+	update_main_view = ->
+		updated_src = $("img#upload_result_img").attr('src')
+		$('.photo-wrapper-large img').attr('src', updated_src)
 
-	$ -> # when the document is ready
-		$('#like_profile_photo').on 'click', (e) -> close_popup(e)
+	$ ->
+		$('#like_profile_photo').on 'click', (e) ->
+			e.preventDefault()
+			show_step_one()
+			update_main_view()
+			toggle_popover()
+
 		$('#show_step_one').on 'click', (e) ->
 			e.preventDefault()
 			show_step_one()
 
+		$('.photo-wrapper-large img, span.editable').on 'click', (e) ->
+			toggle_popover()
+
 		show_step_one()
 
-		# create a new processor with the endpoint to where your assets are uploaded
+		# create a new processor with the endpoint to where the assets are uploaded
 		jackUp = new JackUp.Processor(path: my_vars.photo_update_profile_path)
+
+		$('.file-drop').jackUpDragAndDrop(jackUp)
+
+		# prevent the browser to redirect to the file when droped anywhere else on the page
+		$(document).bind 'drop dragover', (e) ->
+			e.preventDefault()
+
+		$('.standard-attachment').jackUpAjax(jackUp)
 
 		# called if upload is an image; returns an image jQuery object with src attribute assigned
 		jackUp.on 'upload:imageRenderReady', (e, options) ->
-			# assigns a data-attribute with the file guid for later referencing
-			# set the border color to red, denoting that the image is still being uploaded
-			$( "img[data-id]").remove()
-			$( "div.errorExplanation").remove()
+			$('img[data-id]').remove()
+			$('div.errorExplanation').remove()
 			options.image.attr("data-id", options.file.__guid__)
-			$('.file-drop').append(options.image).css(border: "1px solid red")
+			$('.file-drop').append(options.image).css(border: "1px solid green")
+			$('.file-drop').append($("<div class='upload_waiter'>"))
 
 		# upload has been sent to server; server will handle processing
 		jackUp.on "upload:sentToServer", (e, options) ->
-			# change the border color to yellow to signify successful upload (server is still processing)
-			#$("img[data-id='" + options.file.__guid__ + "']").css borderColor: 'yellow'
-			$('.file-drop').css borderColor: 'yellow'
+			#$("img[data-id='" + options.file.__guid__ + "']").css borderColor: 'yellow'	
 
 		# when server responds successfully
 		jackUp.on "upload:success", (e, options) ->
-			# server has completed processing the image and has returned a response
-
-			# read the response from the server
+			$('.file-drop .upload_waiter').remove()
+			$('div.errorExplanation').remove()
 			response = JSON.parse(options.responseText)
 
 			save_error = if response.error == 'true' then true else false
@@ -105,22 +119,12 @@
 				errorDiv.append(errorUl)
 				$(".file-drop").parent("div").prepend(errorDiv)
 			else
-				#$("img[data-id='\#{options.file.__guid__}']").css(borderColor: "green")
-				$('.file-drop').css borderColor: 'green'
 				$("img#upload_result_img").attr('src', response.profile_photo_src)
 				show_step_two()
 
 		# when server returns a non-200 response
 		jackUp.on "upload:failure", (e, options) ->
-			# alert the file name
 			alert("'\#{options.file.name}' upload failed; please retry")
-			# remove the image from the dom since the upload failed
 			$("img[data-id='\#{options.file.__guid__}']").remove()
-
-		$('.file-drop').jackUpDragAndDrop(jackUp)
-
-		# if you do not want the browser to redirect to the file when droped anywhere else on the page
-		$(document).bind 'drop dragover', (e) ->
-			e.preventDefault()
-
-		$('.standard-attachment').jackUpAjax(jackUp)
+			$('.file-drop .upload_waiter').remove()
+			$('div.errorExplanation').remove()

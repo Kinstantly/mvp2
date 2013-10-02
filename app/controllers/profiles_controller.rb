@@ -93,27 +93,35 @@ class ProfilesController < ApplicationController
 	end
 
 	def photo_update
-		if params[:file]
-			@profile.profile_photo = params[:file]
-			if @profile.update_attributes({:profile_photo => params[:file]})
-					render json: {:profile_photo_src =>  @profile.profile_photo.url(:large)}
-			else
-				errors_array = Array.new
-				options={}
-				options[:scope] = "controllers"
-				@profile.errors[:profile_photo_file_size].blank? == false
-					tag = 'profile_photo_filesize_error'
-					options[:default] = Array(options[:default]).unshift(tag.to_sym)
-					errors_array.push(I18n.t("#{controller_name}.#{tag}", options))
-				@profile.errors[:profile_photo_content_type].blank? == false
-					tag = 'profile_photo_filetype_error'
-					options[:default] = Array(options[:default]).unshift(tag.to_sym)
-					errors_array.push(I18n.t("#{controller_name}.#{tag}", options))
+		begin
+			if params[:file]
+				@profile.profile_photo = params[:file]
+				if @profile.save
+					render json: {:profile_photo_src =>  @profile.profile_photo.url(:original)}
+				else
+					errors_array = Array.new
+					options={}
+					options[:scope] = "controllers"
+					if @profile.errors[:profile_photo_file_size].present?
+						tag = 'profile_photo_filesize_error'
+						options[:default] = Array(options[:default]).unshift(tag.to_sym)
+						errors_array.push(I18n.t("#{controller_name}.#{tag}", options))
+					end
+					if @profile.errors[:profile_photo_content_type].present?
+						tag = 'profile_photo_filetype_error'
+						options[:default] = Array(options[:default]).unshift(tag.to_sym)
+						errors_array.push(I18n.t("#{controller_name}.#{tag}", options))
+					end
 
-				render json: {:error => 'true', :errors_array => errors_array}
+					render json: {:error => 'true', :errors_array => errors_array}
+				end
+			else
+				head :bad_request
 			end
-		else
-			head :bad_request
+		rescue
+			logger.debug "Profile.save failed during photo upload: #{error}"
+			render json: {:error => 'true', 
+				:errors_array => ["There was a problem with the photo upload.  Please try again."]}
 		end
 	end
 

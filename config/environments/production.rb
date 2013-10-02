@@ -82,6 +82,8 @@ Mvp2::Application.configure do
   # Paperclip config for S3.
   config.paperclip_defaults = {
     :storage => :s3,
+    :s3_protocol => 'https',
+    :s3_permissions => :private,
     :s3_credentials => {
       :bucket => ENV['AWS_BUCKET'],
       :access_key_id => ENV['AWS_ACCESS_KEY_ID'],

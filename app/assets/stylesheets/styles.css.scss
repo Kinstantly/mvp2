@@ -1377,20 +1377,34 @@ div.photo-wrapper-small{
   padding: 5px 0 0 0;
 }
 
-.profile-photo-update span{
-  	color: #aaa;
-  	font-size:14px;
-  	padding: 30px;
-}
 .file-drop{
   	height: $large_photo_y;
   	width: $large_photo_y;
   	border: 1px solid red;
   	background-color: #efefef;
   	margin: 10px 0 5px 135px;
+  	position: relative;
 }
-
+.file-drop span{
+  	color: #aaa;
+  	font-size:14px;
+  	top: 70px;
+	position: relative;
+	width: 100%;
+	text-align: center;
+	display: inline-block;
+}
 .upload-result{
   	@extend .file-drop;
 	border:0;
+}
+
+.upload_waiter{
+	background: url('loading_large.gif') no-repeat center center;
+	background-color:rgba(240,240,240,0.7);
+	position: absolute;
+	top: 0px;
+	right: 0;
+	height: $large_photo_y;
+  	width: $large_photo_y;
 }
