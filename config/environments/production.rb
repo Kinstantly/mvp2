@@ -85,9 +85,9 @@ Mvp2::Application.configure do
     :s3_protocol => 'https',
     :s3_permissions => :private,
     :s3_credentials => {
-      :bucket => ENV['AWS_BUCKET'],
-      :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
-      :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
+      :bucket => ENV['PAPERCLIP_AWS_BUCKET'],
+      :access_key_id => ENV['PAPERCLIP_AWS_ACCESS_KEY_ID'],
+      :secret_access_key => ENV['PAPERCLIP_AWS_SECRET_ACCESS_KEY']
     }
   }
 

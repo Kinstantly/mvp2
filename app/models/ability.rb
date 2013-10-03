@@ -20,18 +20,18 @@ class Ability
 			can :create, User, id: user.id
 			can :update, User, id: user.id
 			can :show, User, id: user.id
-			alias_action :view_my_profile, :edit_my_profile, :formlet_update, to: :manage_my_profile
+			alias_action :view_my_profile, :edit_my_profile, :formlet_update, :photo_update, to: :manage_my_profile
 			can :manage_my_profile, Profile, user_id: user.id
 		end
 		
-		# Profile editors can do anything to profiles, except remove an unclaimed profile.
+		# Profile editors can do anything to profiles, except remove a claimed profile.
 		if user.profile_editor?
 			can :manage, Profile
 			cannot :destroy, Profile
 			can :destroy, Profile, user: nil
 		end
 		
-		# Administrators can do anything, except remove an unclaimed profile.
+		# Administrators can do anything, except remove a claimed profile.
 		if user.admin?
 			can :any, :admin
 			can :manage, :all
