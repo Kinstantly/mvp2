@@ -88,7 +88,7 @@ Mvp2::Application.configure do
     :hash_secret => ENV['PAPERCLIP_HASH_SECRET'],
     :hash_data => ":attachment/:id_partition/:style/:filename",
     :s3_protocol => 'https',
-    :s3_permissions => :private,
+    :s3_permissions => :public_read,
     :s3_credentials => {
       :bucket => ENV['PAPERCLIP_AWS_BUCKET'],
       :access_key_id => ENV['PAPERCLIP_AWS_ACCESS_KEY_ID'],
