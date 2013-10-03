@@ -82,6 +82,11 @@ Mvp2::Application.configure do
   # Paperclip config for S3.
   config.paperclip_defaults = {
     :storage => :s3,
+    :path => 'images/profiles/:hash.:extension',
+    :url => ":s3_domain_url",
+    :default_url => "profile-photo-placeholder.jpg",
+    :hash_secret => ENV['PAPERCLIP_HASH_SECRET'],
+    :hash_data => ":attachment/:id_partition/:style/:filename",
     :s3_protocol => 'https',
     :s3_permissions => :private,
     :s3_credentials => {
