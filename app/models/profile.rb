@@ -40,7 +40,7 @@ class Profile < ActiveRecord::Base
 	has_many :reviewers, through: :reviews
 
 	has_attached_file :profile_photo,
-					:styles => {:medium => "110x110", :original => "300x300" }
+					:styles => {:medium => "110x110", :original => "168x168" }
 	
 	validate :publishing_requirements
 	# validates :categories, length: {maximum: 1}
