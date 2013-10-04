@@ -47,7 +47,7 @@ class Profile < ActiveRecord::Base
 	validates :email, email: true, allow_blank: true
 	validates :invitation_email, email: true, allow_blank: true
 	validates_attachment :profile_photo, :content_type => {:content_type => ['image/jpeg', 'image/jpg', 'image/gif', 'image/png']},
-											 :size => {:less_than => 10.megabytes}
+											 :size => {:less_than => 1.megabyte}
 
 	# Define maximum length of each string or text attribute in a publicly accessible way.
 	# This allows them to be used at the view layer for character counts in input and textarea tags.
