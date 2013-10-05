@@ -7,4 +7,9 @@ class UserAccountMailer < Devise::Mailer
 	def on_create_confirmation_instructions(record, opts={})
 		devise_mail(record, :on_create_confirmation_instructions, opts)
 	end
+	
+	# Send on user creation when claiming a profile, i.e., simple welcome email.
+	def on_create_welcome(record, opts={})
+		devise_mail(record, :on_create_welcome, opts)
+	end
 end

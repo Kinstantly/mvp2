@@ -1,0 +1,18 @@
+- name = @resource.profile_claiming.try :first_name
+%p= "Hi#{' '+name if name.present?},"
+%p Welcome to Kinstantly: a fast, simple way to list your services, so the clients you want can find you.
+%p
+	%strong Key benefits:
+%ul
+	%li It takes just minutes to create your listing &mdash; get discovered right away
+	%li You can highlight your most important information on just one page &mdash; spend less time answering clients' initial questions
+	%li You can change or update your information easily, whenever you want &mdash; keep clients up to date if you change your hours or location
+	%li It's free &mdash;&nbsp; :)
+%p
+	%strong To get started
+	= link_to 'click here.', edit_my_profile_url
+%p And if you have any questions or need help, just reply to this email.
+%p
+	Thanks,
+	%br
+	&ndash; The Kinstantly Team

@@ -4,6 +4,9 @@ class User < ActiveRecord::Base
 	# :timeoutable and :omniauthable
 	devise :database_authenticatable, :registerable, :confirmable,
 		:recoverable, :rememberable, :trackable, :validatable, :lockable
+	
+	before_create :skip_confirmation!, if: :claiming_profile?
+	after_create :send_on_create_welcome, if: :claiming_profile?
 
 	# Setup accessible (or protected) attributes for your model
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
@@ -99,6 +102,21 @@ class User < ActiveRecord::Base
 		!!profile.try(:persisted?)
 	end
 	
+	# This method declares that this user is in the process of claiming their profile.
+	def claiming_profile!(token)
+		@claim_token = token
+	end
+	
+	# True if this user is in the process of claiming their profile.
+	def claiming_profile?
+		@claim_token.present?
+	end
+	
+	# If we are in the process of claiming a profile, returns that profile.
+	def profile_claiming
+		@profile_claiming ||= claiming_profile? && Profile.find_by_invitation_token(@claim_token.to_s) || nil
+	end
+	
 	# Attempt to attach the profile specified by the token.  The profile must not already be claimed.
 	# This user must be a provider and must not already have a persistent profile.
 	# If we are forcing, then any existing profile will be replaced.
@@ -116,8 +134,13 @@ class User < ActiveRecord::Base
 	protected
 	
 	# A callback method used to deliver confirmation instructions on creation.
-	# This overrides the Devise method to map to a nice welcome e-mail.
+	# This overrides the Devise method to allow us to define our own email.
 	def send_on_create_confirmation_instructions
-		send_devise_notification(:on_create_confirmation_instructions)
+		send_devise_notification :on_create_confirmation_instructions
+	end
+	
+	# A callback method used to deliver a welcome email on creation.
+	def send_on_create_welcome
+		send_devise_notification :on_create_welcome
 	end
 end

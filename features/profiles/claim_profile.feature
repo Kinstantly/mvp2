@@ -23,15 +23,14 @@ Feature: Claim profile
 	  When I click on the profile claim link
 	  Then I should be on the provider registration page
 	
-	Scenario: Newly registered provider must confirm to claim profile
+	Scenario: Newly registered provider claims profile without confirmation
 	  Given I am not logged in
 			And I have been invited to claim a profile
 	  When I click on the profile claim link
 	  Then I should be on the provider registration page
 		When I sign up with valid user data
-			And I open the email with subject "Confirmation instructions"
-		 	And I follow "confirm" in the email
-		Then the profile should be attached to my account
+		Then I should receive a welcome email
+			And the profile should be attached to my account
 	
 	Scenario: Replace my existing profile with confirmation when claiming
 		Given I exist as a user
