@@ -47,3 +47,9 @@ Feature: Sign up
 				And I open the email with subject "Confirmation instructions"
 			 	And I follow "confirm" in the email
 			Then I see a confirmed account message
+
+		Scenario: Newly registered and confirmed user receives a welcome email
+			When I sign up with valid user data
+				And I open the email with subject "Confirmation instructions"
+			 	And I follow "confirm" in the email
+			Then I should receive a welcome email

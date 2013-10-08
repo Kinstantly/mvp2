@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 		:recoverable, :rememberable, :trackable, :validatable, :lockable
 	
 	before_create :skip_confirmation!, if: :claiming_profile?
-	after_create :send_on_create_welcome, if: :claiming_profile?
+	after_create :send_welcome_email, if: :claiming_profile?
 
 	# Setup accessible (or protected) attributes for your model
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
@@ -139,8 +139,20 @@ class User < ActiveRecord::Base
 		send_devise_notification :on_create_confirmation_instructions
 	end
 	
-	# A callback method used to deliver a welcome email on creation.
-	def send_on_create_welcome
-		send_devise_notification :on_create_welcome
+	# A Devise callback that runs after the user confirms their email address.
+	# This can happen as part of registration or if the user changed their email address.
+	def after_confirmation
+		send_welcome_email
+	end
+	
+	private
+	
+	# Delivers a welcome email that is intended for a newly registered user.
+	# Sets welcome_sent_at to the delivery time. This attribute is used to prevent duplicate deliveries.
+	def send_welcome_email
+		unless welcome_sent_at
+			send_devise_notification :on_create_welcome
+			update_attribute :welcome_sent_at, Time.now.utc
+		end
 	end
 end
