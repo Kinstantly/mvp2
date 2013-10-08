@@ -48,8 +48,14 @@ Feature: Sign up
 			 	And I follow "confirm" in the email
 			Then I see a confirmed account message
 
-		Scenario: Newly registered and confirmed user receives a welcome email
+		Scenario: Newly registered and confirmed expert receives a welcome email
 			When I sign up with valid user data
 				And I open the email with subject "Confirmation instructions"
 			 	And I follow "confirm" in the email
 			Then I should receive a welcome email
+
+		Scenario: Newly registered and confirmed non-expert should NOT receive a welcome email
+			When I sign up as a non-expert with valid user data
+			And I open the email with subject "Confirmation instructions"
+			 	And I follow "confirm" in the email
+			Then I should receive no welcome email

@@ -142,7 +142,7 @@ class User < ActiveRecord::Base
 	# A Devise callback that runs after the user confirms their email address.
 	# This can happen as part of registration or if the user changed their email address.
 	def after_confirmation
-		send_welcome_email
+		send_welcome_email if is_provider?
 	end
 	
 	private
