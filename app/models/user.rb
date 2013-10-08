@@ -152,7 +152,7 @@ class User < ActiveRecord::Base
 	def send_welcome_email
 		unless welcome_sent_at
 			send_devise_notification :on_create_welcome
-			update_attribute :welcome_sent_at, Time.now.utc
+			update_column :welcome_sent_at, Time.now.utc
 		end
 	end
 end

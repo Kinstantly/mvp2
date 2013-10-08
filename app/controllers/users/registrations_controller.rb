@@ -28,8 +28,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	def after_registration
 		if resource && resource.errors.empty?
 			# Ensure user is a client if nothing else.
-			resource.add_role :client if resource.roles.blank?
-			resource.save!
+			if resource.roles.blank?
+				resource.add_role :client
+				resource.save!
+			end
 		end
 	end
 

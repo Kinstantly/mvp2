@@ -10,7 +10,7 @@ class AddWelcomeSentAtToUser < ActiveRecord::Migration
 		User.reset_column_information
 		User.all.each do |user|
 			# Set to the epoch to signify that it's just a marker.
-			user.update_attribute :welcome_sent_at, Time.at(0).utc
+			user.update_column :welcome_sent_at, Time.at(0).utc
 		end
 	end
 	
