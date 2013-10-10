@@ -18,8 +18,8 @@ class User < ActiveRecord::Base
 	has_one :profile # If we do "dependent: :destroy", it will be hard to detach or move the profile.
 	accepts_nested_attributes_for :profile
 	
-	has_many :reviews_given, class_name: 'Review', foreign_key: :reviewer_id
-	has_many :ratings_given, class_name: 'Rating', foreign_key: :rater_id
+	has_many :reviews_given, class_name: 'Review', foreign_key: :reviewer_id, dependent: :destroy
+	has_many :ratings_given, class_name: 'Rating', foreign_key: :rater_id # review has destroy dependency for rating
 	
 	serialize :roles, Array
 	
