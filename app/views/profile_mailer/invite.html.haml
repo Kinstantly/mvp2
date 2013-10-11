@@ -1,19 +1,30 @@
-%p= "Hi #{@profile.first_name.presence || 'there'},"
-%p Have you ever thought there has to be a better way for parents and providers like you to find one another?
-%p After talking to hundreds of parents and providers across the country, we heard that wish expressed over and over&mdash;and we've spent the last 10 months building a solution that we hope you'll love.
-%p We call it Kinstantly. It offers a better, more convenient way for potential clients to find you, learn about you and your services, and&mdash;soon (if you want)&mdash;self-schedule time with you.
-%p
-	To make things as simple as possible, we've already created a profile for you. Take a look:
-	= link_to 'My profile', mailer_show_profile_to_claim_url(@profile)
-%p
-	And, of course, when you're ready, it's easy to make any changes you'd like. To get started, <i>single-click</i> here:
-	= link_to 'Claim my profile', claim_user_profile_url(token: @profile.invitation_token)
-	(Note: You'll first be taken to a sign-in page; it will just take a few seconds to enter your name and email address&mdash;and yes, it's free.)
-%p Please don't hesitate to email me directly (see link below) if you have any questions, concerns, or just want to talk.
-%p
-	Jim Scott
-	%br
-	Founder and CEO
-	%br
-	= mail_to 'jscott@kinstantly.com'
+= "Hi #{@profile.first_name.presence || 'there'},"
+%br
+%br
+Have you ever thought there has to be a better way for parents and providers like you to find one another?
+%br
+%br
+After talking to hundreds of parents and providers across the country, we heard that wish expressed over and over&mdash;and we've spent the last 10 months building a solution that we hope you'll love.
+%br
+%br
+We call it Kinstantly. It offers a better, more convenient way for potential clients to find you, learn about you and your services, and&mdash;soon (if you want)&mdash;self-schedule time with you.
+%br
+%br
+To make things as simple as possible, we've already created a profile for you. Take a look:
+= link_to 'My profile', mailer_show_profile_to_claim_url(@profile)
+%br
+%br
+And, of course, when you're ready, it's easy to make any changes you'd like. To get started, <i>single-click</i> here:
+= link_to 'Claim my profile', claim_user_profile_url(token: @profile.invitation_token)
+(Note: You'll first be taken to a sign-in page; it will just take a few seconds to enter your name and email address&mdash;and yes, it's free.)
+%br
+%br
+Please don't hesitate to email me directly (see link below) if you have any questions, concerns, or just want to talk.
+%br
+%br
+Jim Scott
+%br
+Founder and CEO
+%br
+= mail_to 'jscott@kinstantly.com'
 -#	See Our Story

@@ -4,6 +4,9 @@ class User < ActiveRecord::Base
 	# :timeoutable and :omniauthable
 	devise :database_authenticatable, :registerable, :confirmable,
 		:recoverable, :rememberable, :trackable, :validatable, :lockable
+	
+	before_create :skip_confirmation!, if: :claiming_profile?
+	after_create :send_welcome_email, if: :claiming_profile?
 
 	# Setup accessible (or protected) attributes for your model
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
@@ -15,8 +18,8 @@ class User < ActiveRecord::Base
 	has_one :profile # If we do "dependent: :destroy", it will be hard to detach or move the profile.
 	accepts_nested_attributes_for :profile
 	
-	has_many :reviews_given, class_name: 'Review', foreign_key: :reviewer_id
-	has_many :ratings_given, class_name: 'Rating', foreign_key: :rater_id
+	has_many :reviews_given, class_name: 'Review', foreign_key: :reviewer_id, dependent: :destroy
+	has_many :ratings_given, class_name: 'Rating', foreign_key: :rater_id # review has destroy dependency for rating
 	
 	serialize :roles, Array
 	
@@ -99,6 +102,21 @@ class User < ActiveRecord::Base
 		!!profile.try(:persisted?)
 	end
 	
+	# This method declares that this user is in the process of claiming their profile.
+	def claiming_profile!(token)
+		@claim_token = token
+	end
+	
+	# True if this user is in the process of claiming their profile.
+	def claiming_profile?
+		@claim_token.present?
+	end
+	
+	# If we are in the process of claiming a profile, returns that profile.
+	def profile_claiming
+		@profile_claiming ||= claiming_profile? && Profile.find_by_invitation_token(@claim_token.to_s) || nil
+	end
+	
 	# Attempt to attach the profile specified by the token.  The profile must not already be claimed.
 	# This user must be a provider and must not already have a persistent profile.
 	# If we are forcing, then any existing profile will be replaced.
@@ -116,8 +134,25 @@ class User < ActiveRecord::Base
 	protected
 	
 	# A callback method used to deliver confirmation instructions on creation.
-	# This overrides the Devise method to map to a nice welcome e-mail.
+	# This overrides the Devise method to allow us to define our own email.
 	def send_on_create_confirmation_instructions
-		send_devise_notification(:on_create_confirmation_instructions)
+		send_devise_notification :on_create_confirmation_instructions
+	end
+	
+	# A Devise callback that runs after the user confirms their email address.
+	# This can happen as part of registration or if the user changed their email address.
+	def after_confirmation
+		send_welcome_email if is_provider?
+	end
+	
+	private
+	
+	# Delivers a welcome email that is intended for a newly registered user.
+	# Sets welcome_sent_at to the delivery time. This attribute is used to prevent duplicate deliveries.
+	def send_welcome_email
+		unless welcome_sent_at
+			send_devise_notification :on_create_welcome
+			update_column :welcome_sent_at, Time.now.utc
+		end
 	end
 end

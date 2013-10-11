@@ -1,7 +1,12 @@
-%p= "Hi #{@resource.name_for_greeting.presence || 'there'},"
-%p Please confirm the new Kinstantly account email address you recently created by <i>single-clicking</i> this link:
-%p= link_to 'Confirm my email address', confirmation_url(@resource, confirmation_token: @resource.confirmation_token)
-%p
-	Thanks,
-	%br
-	&ndash; The Kinstantly Team
+= "Hi #{@resource.name_for_greeting.presence || 'there'},"
+%br
+%br
+Please confirm the new Kinstantly account email address you recently created by <i>single-clicking</i> this link:
+%br
+%br
+= link_to 'Confirm my email address', confirmation_url(@resource, confirmation_token: @resource.confirmation_token)
+%br
+%br
+Thanks,
+%br
+&ndash; The Kinstantly Team

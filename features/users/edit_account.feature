@@ -27,3 +27,13 @@ Feature: Edit account
 		When I enter a new username
 			And I save the account settings
 		Then I should see an account edited message
+
+	Scenario: Changing email address should NOT produce a welcome email
+		Given I exist as a user
+			And I am logged in
+			And I am on my account edit page
+		When I enter a new email address of "gyorgy@ligeti.com"
+			And I save the account settings
+			And "gyorgy@ligeti.com" opens the email
+		 	And I follow "confirm" in the email
+		Then I should receive no welcome email

@@ -1,18 +1,37 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 	# Add this controller to the devise route if you need to customize the registration controller.
 	
+	before_filter :before_registration, only: :create
 	after_filter :after_registration, only: :create
 	
 	# User settings page should not be cached because it might display sensitive information.
 	after_filter :set_no_cache_response_headers, only: [:edit, :update]
 
+	protected
+
+	# Override build_resource method in superclass.
+	# This override allows us to pre-build the resource before the create action is executed.
+	def build_resource(hash=nil)
+		super unless resource
+	end
+
 	private
 
+	# Note: session[:claiming_profile] was set to the token by lib/custom_authentication_failure_app.rb.
+	def before_registration
+		if session[:claiming_profile].present?
+			build_resource sign_up_params
+			resource.claiming_profile! session[:claiming_profile]
+		end
+	end
+	
 	def after_registration
 		if resource && resource.errors.empty?
 			# Ensure user is a client if nothing else.
-			resource.add_role :client if resource.roles.blank?
-			resource.save!
+			if resource.roles.blank?
+				resource.add_role :client
+				resource.save!
+			end
 		end
 	end
 

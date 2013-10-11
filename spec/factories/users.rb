@@ -2,6 +2,7 @@ FactoryGirl.define do
 	factory :user do
 		ignore do
 			require_confirmation false
+			pending_welcome false
 		end
 		
 		email 'example@example.com'
@@ -21,6 +22,10 @@ FactoryGirl.define do
 		
 		factory :expert_user do
 			roles [:expert]
+		
+			# Assume the user has received the welcome email unless otherwise specified.
+			# Do it here because welcome_sent_at cannot be mass assigned.
+			after(:build) { |user, evaluator| user.welcome_sent_at = Time.at(0).utc unless evaluator.pending_welcome }
 		end
 		
 		factory :admin_user do

@@ -68,6 +68,11 @@ Then /^(?:I|they|"([^"]*?)") should receive an email with the following body:$/ 
   open_email(address, :with_text => expected_body)
 end
 
+Then /^(?:I|they|"([^"]*?)") should receive (a|an|no|\d+) welcome emails?$/ do |address, amount|
+  amount = 1 if amount == 'a' # parse_email_count doesn't recognize 'a'.
+  unread_emails_for(address).select { |m| m.subject =~ Regexp.new(Regexp.escape(I18n.t('devise.mailer.on_create_welcome.subject'))) }.size.should == parse_email_count(amount)
+end
+
 #
 # Accessing emails
 #

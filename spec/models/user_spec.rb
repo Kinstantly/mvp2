@@ -106,7 +106,7 @@ describe User do
 			context "claiming" do
 				before(:each) do
 					@token = '2857251c-64e2-11e2-93ca-00264afffe0a'
-					FactoryGirl.create(:profile, invitation_email: 'Ralph@VaughanWilliams.com', invitation_token: @token)
+					@profile_to_claim = FactoryGirl.create(:profile, invitation_email: 'Ralph@VaughanWilliams.com', invitation_token: @token)
 					@ralph = FactoryGirl.create(:expert_user, email: 'Ralph@VaughanWilliams.com')
 				end
 			
@@ -136,6 +136,12 @@ describe User do
 						@ralph.claim_profile(@token).should be_true
 						@ralph.claim_profile(@token).should_not be_true
 					end
+				end
+				
+				it "should declare that this user is in the process of claiming their profile" do
+					@ralph.claiming_profile! @token
+					@ralph.should be_claiming_profile
+					@ralph.profile_claiming.should == @profile_to_claim
 				end
 			end
 		end
