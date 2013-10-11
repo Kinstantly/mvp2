@@ -1,8 +1,9 @@
 # Unicorn configuration.
 # FYI, Heroku’s router enforces a 30 second window before there is a request timeout.
+#   Unicorn's timeout value should be greater than the timeout value in config/initializers/timeout.rb.
 # https://devcenter.heroku.com/articles/rails-unicorn
 worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
-timeout 20
+timeout 30
 preload_app true
 
 before_fork do |server, worker|

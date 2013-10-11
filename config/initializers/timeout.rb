@@ -5,4 +5,5 @@
 #    gem 'rack-timeout'
 # See https://github.com/kch/rack-timeout
 #
-# Rack::Timeout.timeout = 15  # seconds
+# Until we implement direct uploads to our asset storage (S3), allow time for photo upload to the Rails app.
+Rack::Timeout.timeout = 25  # seconds
