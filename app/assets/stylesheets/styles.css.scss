@@ -1368,13 +1368,19 @@ div.photo-wrapper-small{
 	}
 }
 
+span.inline_block_attr{
+  	display: inline-block;
+    width: 100%;
+  	text-align: center;
+}
+
 .profile-photo-update{
   	width:508px !important;
 }
 .profile-photo-update p{
-  color: #807f7f;
-  font-size: 14px;
-  padding: 5px 0 0 0;
+	color: #807f7f;
+	font-size: 14px;
+	padding: 5px 0 0 0;
 }
 
 .file-drop{
@@ -1399,7 +1405,7 @@ div.photo-wrapper-small{
 	border:0;
 }
 
-.upload_waiter{
+.upload-waiter{
 	background: url('loading_large.gif') no-repeat center center;
 	background-color:rgba(240,240,240,0.7);
 	position: absolute;
@@ -1407,4 +1413,26 @@ div.photo-wrapper-small{
 	right: 0;
 	height: $large_photo_y;
   	width: $large_photo_y;
+}
+
+.upload-button{
+  	font-family: "Goudy Old Style", Garamond, "Big Caslon", "Times New Roman", serif;
+ 	font-weight: bold;
+  	font-size: 17px;
+  	color:#fff;
+  	background-color: #afb434;
+  	padding: 13px 9px;
+    cursor: pointer;
+}
+
+.upload-button:after{
+  	content: "upload";
+}
+
+.upload-button:hover{
+  background-color: #9fa42f;
+}
+
+.aria-hidden{
+  	display: none;
 }

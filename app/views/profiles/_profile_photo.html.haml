@@ -1,21 +1,31 @@
+- source_url_prompt = t 'views.profile.edit.profile_photo_source_url_prompt'
+- profile_photo_upload_generic_error = t 'controllers.profiles.profile_photo_generic_error'
+- profile_photo_source_url_example = t 'views.profile.edit.profile_photo_source_url_example'
 .edit.popover.profile-photo-update
 	.step_one
+		.errorExplanation.aria-hidden
 		%label Step 1 of 2
 		%p Please drop an image from your computer in the image area below
 		.file-drop
 			%span{ 'data-placeholder' => 'Drop files here' } Drop files here
+			.upload-waiter.aria-hidden
 		%p
 			Or you can browse for an image file
 			%input.standard-attachment{ name: 'standard_attachment', accept: 'image/*', type: :file}
 		%p
 			Or
-			= link_to "import an image from a URL", '#'
+			= link_to "import an image from a URL", '#', id: 'import_from_url_link'
 			\.
+			.text_field.aria-hidden
+				%input{type: :text, name: 'source_url', placeholder: source_url_prompt, title: 'import an image from a URL'}
+				%span#upload_from_url.upload-button.ui-corner-all
+				%p.note= profile_photo_source_url_example
+
 		%p
 			Or you can ask for
 			= link_to "more detailed help", '#'
 			\.
-	.step_two{:style => "display: none;"}
+	.step_two.aria-hidden
 		%label Step 2 of 2
 		%p Photo successfully uploaded and saved
 		.upload-result
@@ -33,98 +43,144 @@
 		%p
 			Get
 			= link_to "more detailed help", '#'
-%span.editable.attribute_display{itemprop: "profilePhoto"}
-	%span.blank_attr= if @profile.errorfree.profile_photo.presence then 'Click to update your photo' else 'Click to add your photo' end
+%span.editable.attribute_display.inline_block_attr{itemprop: "profilePhoto"}
+	%span.blank_attr= if @profile.errorfree.profile_photo.presence then 'Update a photo' else 'Add a photo' end
 
 :javascript
 	my_vars.photo_update_profile_path = '#{photo_update_profile_path @profile}';
+	my_vars.profile_photo_upload_generic_error =  '#{profile_photo_upload_generic_error}';
 
 :coffeescript
 	toggle_popover = ->
-		$('.edit.popover.profile-photo-update').toggle()
+		popover = $('.edit.popover.profile-photo-update')
+		if popover.is(":visible")
+			reset_step_one()
+		popover.toggle()
+
+	reset_step_one = ->
+		$('.step_one div.errorExplanation').hide()
+		$('.file-drop .upload-waiter').hide()
+		$('.step_one .file-drop img').remove()
+		$('.step_one .file-drop').css borderColor: 'red'
+		$('.step_one input[name="standard_attachment"]').val('')
+		$('.step_one input[name="source_url"]').val('')
+		$('#import_from_url_link').parent().next('div.text_field').hide()
 
 	show_step_one = ->
-		$('.file-drop .upload_waiter').remove()
+		reset_step_one()
 		$('.step_two').css("display", "none")
-		$('.step_one .file-drop img').remove()
-		$('.file-drop').css borderColor: 'red'
 		$('.step_one').css("display", "block")
 
 	show_step_two = ->
-		$('.file-drop .upload_waiter').remove()
-		$('.step_one').fadeOut(500)
+		reset_step_one()
+		$('.step_one').hide()
 		$('.step_two').fadeIn(2000)
 
 	update_main_view = ->
 		updated_src = $("img#upload_result_img").attr('src')
 		$('.photo-wrapper-large img').attr('src', updated_src)
 
+	show_errors = (error_array) ->
+		errorDiv = $(".step_one div.errorExplanation").empty()
+		$('.file-drop').css borderColor: 'red'
+		errorUl = $("<ul>")
+		if error_array.length == 0
+			errorUl.append("<li>An unexpected error occurred while uploading your image, please try again later</li>")
+		for key, value of error_array
+			errorUl.append("<li>").html(value)
+		errorDiv.append(errorUl).slideDown()
+
+	upload_request_start = ->
+		$('.step_one img[data-id]').remove()
+		$('.step_one div.errorExplanation').fadeOut(500)
+		$('.step_one #upload_from_url').prop('disabled', true)
+		$('.step_one input[name="standard_attachment"]').prop('disabled', true)
+		$('.step_one .file-drop .upload-waiter').show()
+
+	upload_request_complete = ->
+		$('.file-drop .upload-waiter').hide()
+		$('.step_one input[name="standard_attachment"]').prop('disabled', false)
+		$('.step_one #upload_from_url').prop('disabled', false)
+
 	$ ->
-		$('#like_profile_photo').on 'click', (e) ->
+		$('.step_two #like_profile_photo').on 'click', (e) ->
 			e.preventDefault()
 			show_step_one()
 			update_main_view()
 			toggle_popover()
 
-		$('#show_step_one').on 'click', (e) ->
+		$('.step_one #import_from_url_link').on 'click', (e) ->
+			e.preventDefault()
+			source_url_area = $(this).parent().next('div.text_field')
+			if source_url_area.is(":visible")
+				source_url_area.slideUp()
+			else
+				source_url_area.slideDown()
+
+		$('.step_two #show_step_one').on 'click', (e) ->
 			e.preventDefault()
 			show_step_one()
 
-		$('.photo-wrapper-large img').on 'click', (e) ->
+		$('.photo-wrapper-large img, span[itemprop="profilePhoto"]').on 'click', (e) ->
 			toggle_popover()
 
 		show_step_one()
 
 		# create a new processor with the endpoint to where the assets are uploaded
-		jackUp = new JackUp.Processor(path: my_vars.photo_update_profile_path)
+		jackUp = new JackUp.Processor({path: my_vars.photo_update_profile_path, timeout: 2000})
 
-		$('.file-drop').jackUpDragAndDrop(jackUp)
+		$('.step_one .file-drop').jackUpDragAndDrop(jackUp)
 
 		# prevent the browser to redirect to the file when droped anywhere else on the page
 		$(document).bind 'drop dragover', (e) ->
 			e.preventDefault()
 
-		$('.standard-attachment').jackUpAjax(jackUp)
+		$('.step_one .standard-attachment').jackUpAjax(jackUp)
 
 		# called if upload is an image; returns an image jQuery object with src attribute assigned
 		jackUp.on 'upload:imageRenderReady', (e, options) ->
-			$('img[data-id]').remove()
-			$('div.errorExplanation').remove()
+			if $('.step_one input[name="standard_attachment"]').is(":disabled")
+				return false
+			upload_request_start()
 			options.image.attr("data-id", options.file.__guid__)
-			$('.file-drop').append(options.image).css(border: "1px solid green")
-			$('.file-drop').append($("<div class='upload_waiter'>"))
-
-		# upload has been sent to server; server will handle processing
-		jackUp.on "upload:sentToServer", (e, options) ->
-			#$("img[data-id='" + options.file.__guid__ + "']").css borderColor: 'yellow'	
+			$('.step_one .file-drop').append(options.image).css(border: "1px solid green")
 
 		# when server responds successfully
 		jackUp.on "upload:success", (e, options) ->
-			$('.file-drop .upload_waiter').remove()
-			$('div.errorExplanation').remove()
+			upload_request_complete()
 			response = JSON.parse(options.responseText)
-
 			save_error = if response.error == 'true' then true else false
-			# show errors
 			if save_error
-				errors_array = response.errors_array
-				errorDiv = $("<div class='errorExplanation'>")
-				errorUl = $("<ul>")
-				if errors_array.length > 0
-					errorUl.append("<li>An unexpected error occurred while uploading your image, please try again later</li>")
-
-				for key, value of errors_array
-					errorUl.append("<li>").text(value)
-
-				errorDiv.append(errorUl)
-				$(".file-drop").parent("div").prepend(errorDiv)
+				show_errors response.error_array
 			else
 				$("img#upload_result_img").attr('src', response.profile_photo_src)
 				show_step_two()
 
 		# when server returns a non-200 response
 		jackUp.on "upload:failure", (e, options) ->
-			alert("'\#{options.file.name}' upload failed; please retry")
-			$("img[data-id='\#{options.file.__guid__}']").remove()
-			$('.file-drop .upload_waiter').remove()
-			$('div.errorExplanation').remove()
+			upload_request_complete()
+			show_errors ["'\#{options.file.name}' upload failed. Please retry."]
+
+		$('#upload_from_url').on 'click', (e) ->
+			if $('.step_one #upload_from_url').is(":disabled")
+				return false
+			$.ajax
+				url: my_vars.photo_update_profile_path,
+				type: 'POST',
+				dataType: 'json',
+				timeout: 30000,
+				data: $('.step_one input[name=source_url]').serialize(),
+				beforeSend: ->
+					upload_request_start()
+				complete: ->
+					upload_request_complete()
+				error: ->
+					show_errors [my_vars.profile_photo_upload_generic_error]
+				success: (data, textStatus, jqXHR) ->
+					save_error = if data.error == 'true' then true else false
+					if save_error
+						show_errors data.error_array
+					else
+						$("img#upload_result_img").attr('src', data.profile_photo_src)
+						show_step_two()
+

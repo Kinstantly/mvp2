@@ -47,6 +47,14 @@ class ApplicationController < ActionController::Base
 		flash[level] = message if message.present?
 	end
 
+	# Translates system error codes into localized error messages
+	def get_error_message(tag, options={})
+		options[:scope] = "controllers"
+		options[:default] = Array(options[:default]).unshift(tag.to_sym)
+		message = I18n.t("#{controller_name}.#{tag}", options)
+		message if message.present?
+	end
+
 	private
 	
 	def require_location_in_profile

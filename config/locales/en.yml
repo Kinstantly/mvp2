@@ -44,6 +44,8 @@ en:
       invitation_error: 'There was a problem sending the invitation.'
       profile_photo_filesize_error: 'Photo file size must be less than 1MB.'
       profile_photo_filetype_error: 'Invalid file type. Only .jpeg, .gif, .png files allowed.'
+      profile_photo_source_url_error: 'There was a problem importing the photo. Verify URL and try again.'
+      profile_photo_generic_error: 'There was a problem with the photo upload. Please try again.'
     services:
       created: "Service '%{name}' was created."
       create_error: 'The was a problem creating the service.'
@@ -278,6 +280,8 @@ en:
         url_example: 'Example: www.allkidstutoring.com or http://www.allkidstutoring.com'
         year_started_explanation: '(year you began business or practice)'
         year_started_example: 'Example: 2002'
+        profile_photo_source_url_prompt: 'http:// or https://'
+        profile_photo_source_url_example: 'Example: http://allkidstutoring.com/images/photo.jpg'
       claim:
         message: 'Click here to claim your profile'
       claim_confirm:

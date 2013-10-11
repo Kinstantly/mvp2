@@ -94,34 +94,37 @@ class ProfilesController < ApplicationController
 
 	def photo_update
 		begin
-			if params[:file]
-				@profile.profile_photo = params[:file]
-				if @profile.save
-					render json: {:profile_photo_src =>  @profile.profile_photo.url(:original)}
-				else
-					errors_array = Array.new
-					options={}
-					options[:scope] = "controllers"
-					if @profile.errors[:profile_photo_file_size].present?
-						tag = 'profile_photo_filesize_error'
-						options[:default] = Array(options[:default]).unshift(tag.to_sym)
-						errors_array.push(I18n.t("#{controller_name}.#{tag}", options))
-					end
-					if @profile.errors[:profile_photo_content_type].present?
-						tag = 'profile_photo_filetype_error'
-						options[:default] = Array(options[:default]).unshift(tag.to_sym)
-						errors_array.push(I18n.t("#{controller_name}.#{tag}", options))
-					end
-
-					render json: {:error => 'true', :errors_array => errors_array}
+			if params[:source_url]
+				begin
+					@profile.profile_photo = URI.parse(params[:source_url])
+				rescue
+					render json: {:error => 'true',
+										:error_array => [get_error_message('profile_photo_source_url_error')]} and return
 				end
+			elsif params[:file]
+				@profile.profile_photo = params[:file]
 			else
 				head :bad_request
 			end
-		rescue
-			logger.debug "Profile.save failed during photo upload: #{error}"
+
+			if @profile.save
+				render json: {:profile_photo_src =>  @profile.profile_photo.url(:original)}
+			else
+				error_array = Array.new
+				if @profile.errors[:profile_photo_file_size].present?
+					error_message = get_error_message :profile_photo_filesize_error
+					error_array.push(error_message) if error_message
+				end
+				if @profile.errors[:profile_photo_content_type].present?
+					error_message = get_error_message :profile_photo_filetype_error
+					error_array.push(error_message) if error_message
+				end
+				render json: {:error => 'true', :error_array => error_array}
+			end
+		rescue Exception => exc
+			logger.debug "Profile.save failed during photo upload: #{exc.message}"
 			render json: {:error => 'true', 
-				:errors_array => ["There was a problem with the photo upload.  Please try again."]}
+				:error_array => [get_error_message('profile_photo_generic_error')]}
 		end
 	end
 

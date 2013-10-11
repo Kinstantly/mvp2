@@ -134,9 +134,9 @@ gem 'aws-sdk', '~> 1.5.7'
 
 #AJAX file uploader
 gem 'jack_up', :git => 'https://github.com/thoughtbot/jack_up.git'
-
+#Required for Jack_up
 gem 'underscore-rails'
-
+#Required for Jack_up
 gem 'rack-raw-upload'
 
 # To use ActiveModel has_secure_password
