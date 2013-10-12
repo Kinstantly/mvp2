@@ -42,10 +42,11 @@ en:
       destroy_error: 'The profile was not removed.  Perhaps it is owned by a user.'
       invitation_sent: 'The invitation was sent.'
       invitation_error: 'There was a problem sending the invitation.'
-      profile_photo_filesize_error: 'Photo file size must be less than 1MB.'
+      profile_photo_filesize_error: 'Photo file size must be less than 5MB.'
       profile_photo_filetype_error: 'Invalid file type. Only .jpeg, .gif, .png files allowed.'
       profile_photo_source_url_error: 'There was a problem importing the photo. Verify URL and try again.'
       profile_photo_generic_error: 'There was a problem with the photo upload. Please try again.'
+      profile_photo_processing_timeout: 'Photo processing took too long.  Please try a smaller photo file size.'
     services:
       created: "Service '%{name}' was created."
       create_error: 'The was a problem creating the service.'

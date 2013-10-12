@@ -122,9 +122,9 @@ class ProfilesController < ApplicationController
 				render json: {:error => 'true', :error_array => error_array}
 			end
 		rescue Exception => exc
-			logger.debug "Profile.save failed during photo upload: #{exc.message}"
+			logger.error "Profile.save failed during photo upload: #{exc.message}"
 			render json: {:error => 'true', 
-				:error_array => [get_error_message('profile_photo_generic_error')]}
+				:error_array => [get_error_message(exc.is_a?(Timeout::Error) ? 'profile_photo_processing_timeout' : 'profile_photo_generic_error')]}
 		end
 	end
 

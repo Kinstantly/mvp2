@@ -41,19 +41,20 @@ class ApplicationController < ActionController::Base
 
 	# borrowed from devise
 	def set_flash_message(level, tag, options={}) #:nodoc:
+		message = translated_message tag, options
+		flash[level] = message if message.present?
+	end
+	
+	# Returns the localized message matching the given tag associated with the current controller.
+	# If no such tag specified for this controller, then looks for a default for all controllers.
+	def translated_message(tag, options={})
 		options[:scope] = "controllers"
 		options[:default] = Array(options[:default]).unshift(tag.to_sym)
-		message = I18n.t("#{controller_name}.#{tag}", options)
-		flash[level] = message if message.present?
+		I18n.t("#{controller_name}.#{tag}", options).presence
 	end
 
 	# Translates system error codes into localized error messages
-	def get_error_message(tag, options={})
-		options[:scope] = "controllers"
-		options[:default] = Array(options[:default]).unshift(tag.to_sym)
-		message = I18n.t("#{controller_name}.#{tag}", options)
-		message if message.present?
-	end
+	alias :get_error_message :translated_message
 
 	private
 	
