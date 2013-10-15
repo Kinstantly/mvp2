@@ -79,6 +79,7 @@
 	update_main_view = ->
 		updated_src = $("img#upload_result_img").attr('src')
 		$('.photo-wrapper-large img').attr('src', updated_src)
+		$('#profile_photo .blank_attr').text('Update a photo')
 
 	show_errors = (error_array) ->
 		errorDiv = $(".step_one div.errorExplanation").empty()
