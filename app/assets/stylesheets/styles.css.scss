@@ -1355,7 +1355,8 @@ div.photo-wrapper-medium{
 	max-width: $medium_photo_y;
 	margin-right: 16px;
 	img{
-		height: $medium_photo_y;
+		max-height: $medium_photo_y;
+		max-width: $medium_photo_y;
 	}
 }
 
@@ -1364,7 +1365,8 @@ div.photo-wrapper-small{
 	max-width: $small_photo_y;
 	margin-right: 16px;
 	img{
-		height: $small_photo_y;
+		max-height: $small_photo_y;
+		max-width: $small_photo_y;
 	}
 }
 
