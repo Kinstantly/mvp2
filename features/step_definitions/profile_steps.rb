@@ -103,12 +103,13 @@ def attribute_display_selector(formlet, which)
 		' .attribute_display'
 	end
 	selector += ' + .attribute_display' if which.strip == 'second'
+	selector += ' + .attribute_display + .attribute_display' if which.strip == 'third'
 	selector
 end
 
 def location_address_selector(which)
 	selector = '.location'
-	selector += ' ~ .location ~ .location' if which.strip == 'second'
+	selector += ' ~ .location ~ .location ~ .location' if which.strip == 'second'
 	selector
 end
 
@@ -712,7 +713,7 @@ Then /^I should be offered no (.*?)$/ do |things|
 	end
 end
 
-Then /^my profile edit page should show "([^\"]+)" displayed( | second )(as a link )?in the "([^\"]+)" area$/ do |value, which, link, formlet|
+Then /^my profile edit page should show "([^\"]+)" displayed( | second | third )(as a link )?in the "([^\"]+)" area$/ do |value, which, link, formlet|
 	selector = attribute_display_selector formlet, which
 	selector += ' a' if link.present?
 	within(selector) do

@@ -15,6 +15,7 @@
 		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 		= link_to 'Cancel', '#', class: 'cancel button'
 %span.location.editable.attribute_display{itemprop: "url"}
+	= t 'views.profile.view.url'
 	= profile_display_website @profile.errorfree, Profile.human_attribute_name(:url)
 %span.location.editable.attribute_display{itemprop: "email"}
 	= t 'views.profile.view.email'

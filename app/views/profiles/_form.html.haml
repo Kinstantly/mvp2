@@ -51,11 +51,9 @@
 		= f.fields_for :locations do |lf|
 			.address
 				= lf.label :address1
-				- address1_prompt = 'number and street'
-				= lf.text_field :address1, placeholder: address1_prompt, title: address1_prompt
-				- address2_prompt = 'room, suite, floor if any'
-				= lf.text_field :address2, placeholder: address2_prompt, title: address2_prompt
-				%span.note= t 'views.location.edit.address2_example'
+				= lf.text_field :address1
+				= lf.label :address2
+				= lf.text_field :address2
 			.city_state
 				= lf.label :city
 				= autocomplete_form_field :city, nil, autocomplete_location_city_profiles_path, form_builder: lf
@@ -69,6 +67,10 @@
 				= lf.label :phone
 				= lf.text_field :phone
 				%span.note= t 'views.location.edit.phone_example'
+			.location_note
+				= lf.label :note
+				= lf.text_field :note
+				%span.note= t 'views.location.edit.note_example'
 			- if current_user.profile_editor?
 				.search_area_tag
 					= lf.label :search_area_tag_id

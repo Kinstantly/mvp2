@@ -15,7 +15,7 @@ Feature: Site administrator edits a profile
 		Given I am logged in as an administrator
 			And I visit the admin edit page for an unclaimed profile with no locations
 		When I click on the "Fill in a new location" link
-			And I enter "La Fenice" in the "Address" field of the second location on the admin profile edit page
+			And I enter "La Fenice" in the "Street address" field of the second location on the admin profile edit page
 			And I save the profile
 			And I click on the link to see all locations
 		Then the profile should show "La Fenice"

@@ -49,15 +49,19 @@ Feature: Edit my expert profile
 			And I am logged in
 			And I am on my profile edit page
 		When I open the "locations" formlet
-			And I enter "123 Main St." in the "Address" field of the "locations" formlet
+			And I enter "123 Main St." in the "Street address" field of the "locations" formlet
 			And I enter "Ames" in the "City" field of the "locations" formlet
 			And I select "Iowa" as the state in the "locations" formlet
-			And I enter "50010" in the "Zip code" field of the "locations" formlet
+			And I enter "50010" in the "Zip Code" field of the "locations" formlet
+			And I enter "505-555-0123" in the "Phone" field of the "locations" formlet
+			And I enter "Bike parking in front." in the "Add a comment" field of the "locations" formlet
 			And I click on the "Save" button of the "locations" formlet
 		Then my profile edit page should show "123 Main St." displayed in the "locations" area
 			And my profile edit page should show "Ames" displayed in the "locations" area
 			And my profile edit page should show "IA" displayed in the "locations" area
 			And my profile edit page should show "50010" displayed in the "locations" area
+			And my profile edit page should show "(505) 555-0123" displayed second in the "locations" area
+			And my profile edit page should show "Bike parking in front." displayed third in the "locations" area
 	
 	@javascript
 	Scenario: Country code is US by default
@@ -320,10 +324,10 @@ Feature: Edit my expert profile
 			And I am on my profile edit page
 		When I open the "locations" formlet
 			And I click on the "Fill in a new location" link
-			And I enter "La Fenice" in the "Address" field of the second location on my profile edit page
+			And I enter "La Fenice" in the "Street address" field of the second location on my profile edit page
 			And I click on the "Save" button of the "locations" formlet
 			And I click on the link to see all locations
-		Then my profile edit page should show "La Fenice" displayed second in the "locations" area
+		Then my profile edit page should show "La Fenice" displayed third in the "locations" area
 	
 	@javascript
 	Scenario: Delete location

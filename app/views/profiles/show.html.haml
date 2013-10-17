@@ -26,7 +26,7 @@
 		-# = image_tag 'profile-photo-placeholder.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
 		-#.profile-photo-placeholder
 		.photo-wrapper-large
-			= image_tag @profile.photo_path, alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+			= image_tag @profile.photo_path, alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(@profile)
 		.profile
 			%h1{itemprop: "name"}= @profile.display_name_or_company
 			= render partial: 'profiles/rating_score', locals: {profile: @profile}
@@ -35,7 +35,7 @@
 				%span.title{itemprop: "affiliation"}= @profile.company_name
 			- (locations = @profile.locations.order_by_id).each_index do |i|
 				- if i == 0
-					%span.location{itemprop: "street-address"}= locations[i].display_address
+					%span.location.location_address{itemprop: "street-address"}= locations[i].display_address
 					- if locations.size > 1
 						%span
 							= link_to t('views.profile.view.more_locations'), '#', id: 'more_locations'
@@ -43,10 +43,15 @@
 						%span.location{itemprop: "telephone"}= locations[i].display_phone.presence or raw('&nbsp;')
 					- else
 						%span.location{itemprop: "telephone"}= locations[i].display_phone
+					%span.location.location_note= locations[i].note
 				- else
-					%span.location.more{itemprop: "street-address"}= locations[i].display_address
+					%span.location.location_address.more{itemprop: "street-address"}= locations[i].display_address
 					%span.location.more{itemprop: "telephone"}= locations[i].display_phone
-			%span.location{itemprop: "url"}= profile_linked_website @profile
+					%span.location.location_note.more= locations[i].note
+			- if @profile.url.present?
+				%span.location{itemprop: "url"}
+					= t 'views.profile.view.url'
+					= profile_linked_website @profile
 			- if @profile.email.present?
 				%span.location{itemprop: "email"}
 					= t 'views.profile.view.email'

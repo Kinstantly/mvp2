@@ -414,6 +414,12 @@ $masthead_width: 920px;
 	span.location.more, a#hide_locations {
 		display: none;
 	}
+	.location_address {
+		margin-top: 4px;
+	}
+	.location_note {
+		margin-bottom: 4px;
+	}
 }
 .reviews .star {
 	background: url('star.gif') 0px 0px no-repeat;
@@ -609,6 +615,7 @@ $contact_toolbar_width: 270px;
 
 $profile_content_header_font_size: 15px;
 $profile_content_line_height: 18px;
+$profile_table_cell_top_padding: 14px;
 
 .summary-text {
 	width: 400px;
@@ -645,6 +652,8 @@ table.info {
 	line-height: 36px;
 	th {
 		text-align: right;
+		line-height: $profile_content_line_height;
+		padding-top: $profile_table_cell_top_padding;
 		padding-right: 16px;
 		font-size: $profile_content_header_font_size;
 		width: 90px;
@@ -656,7 +665,7 @@ table.info {
 	td {
 		width: 254px;
 		line-height: $profile_content_line_height;
-		padding-top: 10px;
+		padding-top: $profile_table_cell_top_padding;
 		vertical-align: top;
 	}
 	.text-area {

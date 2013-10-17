@@ -54,6 +54,10 @@ module ApplicationHelper
 		link_to "#{company_name}", root_path
 	end
 	
+	def home_link_with_tagline
+		link_to "#{company_name} | #{t 'company.tagline'}", root_path
+	end
+	
 	def account_settings_link(options={})
 		path = edit_user_registration_path
 		link_wrapper link_to(t('views.user.edit.link'), path), options if user_signed_in? && show_link?(path)

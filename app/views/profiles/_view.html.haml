@@ -53,6 +53,9 @@
 				.phone
 					= "#{Location.human_attribute_name(:phone)}:"
 					= location.display_phone
+				.location_note
+					= "#{Location.human_attribute_name(:note)}:"
+					= location.note
 				.search_area_tag
 					= "#{Location.human_attribute_name(:search_area_tag_id)}:"
 					= location.search_area_tag.try(:name)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131008020925) do
+ActiveRecord::Schema.define(:version => 20131015000409) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(:version => 20131008020925) do
     t.float    "latitude"
     t.float    "longitude"
     t.string   "phone"
+    t.string   "note"
   end
 
   add_index "locations", ["profile_id"], :name => "index_locations_on_profile_id"

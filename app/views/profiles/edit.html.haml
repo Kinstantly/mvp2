@@ -4,6 +4,8 @@
 	my_vars.edit_profile = my_vars.edit_profile || {};
 	my_vars.edit_profile.max_lengths = #{Profile::MAX_LENGTHS.to_json};
 	my_vars.edit_profile.text_area_value_length = function(el) { return el.val().replace(/\n/g, '\r\n').length; };
+	my_vars.edit_location = my_vars.edit_location || {};
+	my_vars.edit_location.max_lengths = #{Location::MAX_LENGTHS.to_json};
 - if can?(:manage, Profile)
 	.editor_buttons
 		- unless @profile.owned_by? current_user

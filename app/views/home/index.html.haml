@@ -20,7 +20,7 @@
 					%li#signin
 						= t 'views.sign_in.prompt'
 						= sign_in_out_link
-		%h1= home_link
+		%h1= home_link_with_tagline
 		-# #msg= t 'views.home.view.marketing_message_default'
 	#search_providers.aside
 		= form_tag search_providers_path, method: :get, id: 'providerSearch' do

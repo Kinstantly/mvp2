@@ -1,13 +1,26 @@
 class Location < ActiveRecord::Base
 	has_paper_trail # Track changes to each location.
 	
-	attr_accessible :address1, :address2, :city, :country, :phone, :postal_code, :profile_id, :region, :search_area_tag_id
+	attr_accessible :address1, :address2, :city, :region, :postal_code, :country, :phone, :note, :profile_id, :search_area_tag_id
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
-	auto_strip_attributes :address1, :address2, :city, :region, :postal_code, :country, :phone
+	auto_strip_attributes :address1, :address2, :city, :region, :postal_code, :country, :phone, :note
 	
 	belongs_to :profile
 	belongs_to :search_area_tag
+
+	# Define maximum length of each string or text attribute in a publicly accessible way.
+	# This allows them to be used at the view layer for character counts in input and textarea tags.
+	MAX_LENGTHS = {
+		address1: 250, address2: 250, city: 100, region: 100, postal_code: 20, country: 100,
+		phone: PhoneNumberValidator::MAX_LENGTH,
+		note: 250
+	}
+
+	# Note: length of the phone attribute is checked by the phone number validator.
+	[:address1, :address2, :city, :region, :postal_code, :country, :note].each do |attribute|
+			validates attribute, allow_blank: true, length: {maximum: MAX_LENGTHS[attribute]}
+		end
 	
 	validates :phone, phone_number: true, allow_blank: true
 	

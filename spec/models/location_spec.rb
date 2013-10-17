@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Location do
-	it "has two address fields, city, region, country, and postal code" do
+	it "has two address fields, city, region, country, postal code, and a note" do
 		location = Location.new
 		location.address1 = '2 Carrer de Campana'
 		location.address2 = 'Suite 65'
@@ -9,12 +9,25 @@ describe Location do
 		location.region = 'Balearic Islands'
 		location.country = 'ES'
 		location.postal_code = '070XX'
+		location.note = 'The elevator is broken.'
 		location.should have(:no).errors_on(:address1)
 		location.should have(:no).errors_on(:address2)
 		location.should have(:no).errors_on(:city)
 		location.should have(:no).errors_on(:region)
 		location.should have(:no).errors_on(:country)
 		location.should have(:no).errors_on(:postal_code)
+		location.should have(:no).errors_on(:note)
+	end
+	
+	it "limits the number of input characters for attributes stored as string or text records" do
+		location = Location.new
+		[:address1, :address2, :city, :region, :postal_code, :country, :note].each do |attr|
+			s = 'a' * Location::MAX_LENGTHS[attr]
+			location.send "#{attr}=", s
+			location.should have(:no).errors_on(attr)
+			location.send "#{attr}=", (s + 'a')
+			location.should have(1).error_on(attr)
+		end
 	end
 	
 	it "has a search area tag used to limit the scope of full-text searches" do
