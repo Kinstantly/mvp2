@@ -10,7 +10,7 @@ namespace :kinstantly_photo do
 			source_url = 'nil'
 			error = 'nil'
 			source_url_saved = false
-			if profile.photo_source_url.present?
+			if profile.photo_source_url.present? && profile.profile_photo.url == Profile::DEFAULT_PHOTO_PATH
 				profile_with_source_url += 1
 				source_url = profile.photo_source_url
 				begin

@@ -39,9 +39,15 @@
 			%br
 			.value= profile.headline
 	%fieldset.photo
+		.profile_photo
+			= "#{Profile.human_attribute_name(:profile_photo)}:"
+			= profile.profile_photo.url(:original)
+			%br
+			= image_tag profile.profile_photo.url(:original), border: '1' if profile.profile_photo.url != Profile::DEFAULT_PHOTO_PATH
 		.photo_source_url
-			= "#{Profile.human_attribute_name(:photo_source_url)}:"
+			= "#{Profile.human_attribute_name(:photo_source_url)} (deprecated):"
 			= profile_linked_photo_source profile
+			%br
 			= image_tag profile.photo_source_url.strip, height: '168', border: '1' if profile.photo_source_url.present?
 	%fieldset.location_contact_profile
 		%legend= Profile.human_attribute_name :locations
