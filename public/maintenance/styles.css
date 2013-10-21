@@ -1,0 +1,28 @@
+.home {
+	background: white url("/maintenance/home-img.jpg") center top no-repeat;
+}
+
+#branding {
+	width: 100%;
+}
+
+#branding h1 {
+	display: block;
+	background: transparent url("/maintenance/kinstantly.png");
+	text-indent: -999em;
+	background-size: 100% auto;
+	float: left;
+	margin: 16px 16px 0 0;
+	width: 441px;
+	height: 159px;
+}
+
+#content {
+	padding: 18px 0 0 0;
+	font-family: Helvetica, Arial, sans-serif;
+	color: #808080;
+}
+
+#content p {
+	color: #000;
+}
