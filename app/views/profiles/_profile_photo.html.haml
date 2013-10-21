@@ -1,6 +1,8 @@
 - source_url_prompt = t 'views.profile.edit.profile_photo_source_url_prompt'
 - profile_photo_upload_generic_error = t 'controllers.profiles.profile_photo_generic_error'
 - profile_photo_source_url_example = t 'views.profile.edit.profile_photo_source_url_example'
+- content_for :head do
+	= javascript_include_tag "https://dme0ih8comzn4.cloudfront.net/js/feather.js"
 .edit.popover.profile-photo-update
 	.step_one
 		.errorExplanation.aria-hidden
@@ -17,7 +19,7 @@
 			= link_to "import an image from a URL", '#', id: 'import_from_url_link'
 			\.
 			.text_field.aria-hidden
-				%input{type: :text, name: 'source_url', placeholder: source_url_prompt, title: 'import an image from a URL'}
+				%input{type: :text, name: 'url', placeholder: source_url_prompt, title: 'import an image from a URL'}
 				%span#upload_from_url.upload-button.ui-corner-all
 				%p.note= profile_photo_source_url_example
 
@@ -35,7 +37,7 @@
 			= link_to "Click here to continue editing your profile", '#', id: 'like_profile_photo'
 		%p.no-like-profile-photo
 			Don't like it?
-			= link_to "Click here to crop, resize, or edit this photo...", '#', id: ''
+			= link_to "Click here to crop, resize, or edit this photo...", '#', id: 'edit_profile_photo'
 		%p
 			or
 			= link_to "upload a different photo", '#', id: 'show_step_one'
@@ -51,6 +53,16 @@
 	my_vars.profile_photo_upload_generic_error =  '#{profile_photo_upload_generic_error}';
 
 :coffeescript
+	aviary_inst =
+		new Aviary.Feather
+			apiKey: 'v9iu6cbcuf2crihe',
+			apiVersion: 3,
+			tools: 'all'
+			postUrl: my_vars.photo_update_profile_path,
+			onSave: (imageID, newURL) ->
+				img = document.getElementById(imageID)
+				img.src = newURL
+
 	toggle_popover = ->
 		popover = $('.edit.popover.profile-photo-update')
 		if popover.is(":visible")
@@ -63,7 +75,7 @@
 		$('.step_one .file-drop img').remove()
 		$('.step_one .file-drop').css borderColor: 'red'
 		$('.step_one input[name="standard_attachment"]').val('')
-		$('.step_one input[name="source_url"]').val('')
+		$('.step_one input[name="url"]').val('')
 		$('#import_from_url_link').parent().next('div.text_field').hide()
 
 	show_step_one = ->
@@ -170,7 +182,7 @@
 				type: 'POST',
 				dataType: 'json',
 				timeout: 30000,
-				data: $('.step_one input[name=source_url]').serialize(),
+				data: $('.step_one input[name=url]').serialize(),
 				beforeSend: ->
 					upload_request_start()
 				complete: ->
@@ -184,4 +196,12 @@
 					else
 						$("img#upload_result_img").attr('src', data.profile_photo_src)
 						show_step_two()
+
+		$('#edit_profile_photo').on 'click', (e) ->
+			e.preventDefault()
+			aviary_inst.launch
+				image: "upload_result_img",
+				url: $("img#upload_result_img").attr('src')
+			return false
+
 
