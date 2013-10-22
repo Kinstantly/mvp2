@@ -94,9 +94,9 @@ class ProfilesController < ApplicationController
 
 	def photo_update
 		begin
-			if params[:source_url]
+			if params[:url]
 				begin
-					@profile.profile_photo = URI.parse(params[:source_url])
+					@profile.profile_photo = URI.parse(params[:url])
 				rescue
 					render json: {:error => 'true',
 										:error_array => [get_error_message('profile_photo_source_url_error')]} and return
@@ -105,6 +105,7 @@ class ProfilesController < ApplicationController
 				@profile.profile_photo = params[:file]
 			else
 				head :bad_request
+				return
 			end
 
 			if @profile.save
