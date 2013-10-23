@@ -1,3 +1,35 @@
+= Kinstantly Application Server
+
+== User Roles
+
+A user account may have one or more roles assigned to it (see the role-related methods in the User model).  CanCan uses these roles to determine which actions can be performed and what content can be viewed by the user.  See *app/models/ability.rb* for our CanCan configuration.
+
+An administrator can view each registered user's roles on the user admin page: https://get-answers-5555.herokuapp.com/users/.
+
+=== Descriptions of user roles
+
+Note: the following role names are used internally by the code and are not exposed in the public view layer.
+
+* A site visitor that is not signed in has no role assigned.  They are allowed to view pages that do not require signing in.  They can view published profiles both in search results and on each profile page.  They cannot edit any profile.  They cannot view unpublished profiles.
+
+* *client*: Parent or any other user that does not need a provider profile.  They have all the abilities of a *no-role* site visitor.  They can also write provider reviews.  This type of user is normally created when a visitor signs up while creating their first provider review.  We will likely implement a member profile for these users.
+
+* *expert*: Provider.  They have all the abilities of a *client*.  They can also create or claim and edit their own profile.  They cannot edit other providers' profiles.
+
+* *profile_editor*: Profile editor.  They have all the abilities of an *expert*.  In addition, they can create unclaimed profiles and edit any existing profile, including ones that have been claimed.  They can publish any profile.  They can delete any profile except one that is claimed.  They can view any profile in both search results and on the profile pages, including profiles that are not published.  They have access to the profile admin interface.
+
+* *admin*: Administrator.  They can do anything except delete a profile that is already claimed.  They can view any profile anywhere.  They have access to any part of the admin interface.
+
+*client* and *expert* roles are mutually exclusive, but we'll probably want to eliminate that constraint in the future.
+
+=== Exploring and demonstrating with various user roles
+
+As a site designer or developer, you'll want to create a *client* account and *expert* account, in addition to your *profile_editor* or *admin* account.  This will allow you to experience each role as site visitors are.  The easiest way to create them is to use the following sign-up pages.
+
+* *client*: https://get-answers-5555.herokuapp.com/member/sign_up
+
+* *expert*: https://get-answers-5555.herokuapp.com/provider/sign_up
+
 == Welcome to Rails
 
 Rails is a web-application framework that includes everything needed to create
