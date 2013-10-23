@@ -1,3 +1,5 @@
+/* Mobile and default values */
+
 .home {
 	background: white url("/maintenance/home-img.jpg") center top no-repeat;
 }
@@ -11,18 +13,39 @@
 	background: transparent url("/maintenance/kinstantly.png");
 	text-indent: -999em;
 	background-size: 100% auto;
-	float: left;
-	margin: 16px 16px 0 0;
-	width: 441px;
-	height: 159px;
+	margin: 16px 40px 0 0;
+	width: 321px;
+	min-height: 116px;
 }
 
 #content {
 	padding: 18px 0 0 0;
 	font-family: Helvetica, Arial, sans-serif;
-	color: #808080;
+	color: #404040;
 }
 
 #content p {
+	background-color: rgba(255,255,255,0.15);
 	color: #000;
+}
+
+/* Bigger mobile */
+
+@media only screen and (min-width: 460px) {
+	#branding h1 {
+		width: 441px;
+		height: 159px;
+	}
+}
+
+/* Laptop and desktop */
+
+@media only screen and (min-width: 820px) {
+	#branding h1 {
+		float: left;
+	}
+	
+	#content {
+		color: #808080;
+	}
 }
