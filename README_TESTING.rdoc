@@ -37,7 +37,11 @@ If you create, drop, or modify any of the database tables, you'll need to rebuil
 
 == TextMate
 
-* https://github.com/rspec/rspec-tmbundle (TextMate bundle)
+Install the TextMate bundles for RSpec and Cucumber.
+
+* https://github.com/rspec/rspec-tmbundle (for RSpec)
+* https://github.com/cucumber/cucumber-tmbundle (for Cucumber; works with TextMate 1.5)
+* https://github.com/anandhak/cucumber-tmbundle (for Cucumber; works with TextMate 2)
 
 To run Rspec and Cucumber from inside TextMate, go to Preferences -> Advanced -> Shell Variables.  Set the following shell variables.
 
