@@ -1,11 +1,13 @@
 - source_url_prompt = t 'views.profile.edit.profile_photo_source_url_prompt'
 - profile_photo_upload_generic_error = t 'controllers.profiles.profile_photo_generic_error'
 - profile_photo_source_url_example = t 'views.profile.edit.profile_photo_source_url_example'
+- profile_photo_present = if @profile.errorfree.profile_photo.presence then true else false end
 - content_for :head do
 	= javascript_include_tag "https://dme0ih8comzn4.cloudfront.net/js/feather.js"
 .edit.popover.profile-photo-update
+	.close-popover-button
+	.errorExplanation.aria-hidden
 	.step_one
-		.errorExplanation.aria-hidden
 		%label Step 1 of 2
 		%p Please drop an image from your computer in the image area below
 		.file-drop
@@ -19,7 +21,7 @@
 			= link_to "import an image from a URL", '#', id: 'import_from_url_link'
 			\.
 			.text_field.aria-hidden
-				%input{type: :text, name: 'url', placeholder: source_url_prompt, title: 'import an image from a URL'}
+				%input{type: :text, name: 'source_url', placeholder: source_url_prompt, title: 'import an image from a URL'}
 				%span#upload_from_url.upload-button.ui-corner-all
 				%p.note= profile_photo_source_url_example
 
@@ -32,6 +34,7 @@
 		%p Photo successfully uploaded and saved
 		.upload-result
 			= image_tag @profile.profile_photo.url(:original), id: 'upload_result_img', alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+			.upload-waiter.aria-hidden
 		%p.like-profile-photo
 			Like it?
 			= link_to "Click here to continue editing your profile", '#', id: 'like_profile_photo'
@@ -45,28 +48,91 @@
 		%p
 			Get
 			= link_to "more detailed help", '#'
-%span.editable.attribute_display.inline_block_attr{itemprop: "profilePhoto"}
+%span.clickable.attribute_display.inline_block_attr{itemprop: "profilePhoto"}
 	%span.blank_attr= if @profile.errorfree.profile_photo.presence then 'Update a photo' else 'Add a photo' end
 
 :javascript
 	my_vars.photo_update_profile_path = '#{photo_update_profile_path @profile}';
 	my_vars.profile_photo_upload_generic_error =  '#{profile_photo_upload_generic_error}';
+	my_vars.profile_photo_present = (('#{profile_photo_present}' === 'true')? true : false);
 
 :coffeescript
+	save_image_from_url = (source_url) ->
+		$.ajax
+			url: my_vars.photo_update_profile_path,
+			type: 'POST',
+			dataType: 'json',
+			timeout: 30000,
+			data: source_url,
+			beforeSend: ->
+				upload_request_start()
+			complete: ->
+				upload_request_complete()
+			error: ->
+				show_errors [my_vars.profile_photo_upload_generic_error]
+			success: (data, textStatus, jqXHR) ->
+				save_error = if data.error == 'true' then true else false
+				if save_error
+					show_errors data.error_array
+				else
+					$("img#upload_result_img").attr('src', data.profile_photo_src)
+					update_main_view()
+					show_step_two()
+
+	img_result_callback = (source_url, result, poll_counter, image_exists) ->
+		if(result)
+			image_exists = result
+			save_image_from_url('source_url=' + source_url)
+			aviary_inst.close()
+		else
+			setTimeout(poll_image(img_result_callback, source_url, poll_counter, image_exists), 1000)
+
+	poll_image = (callback, source_url, poll_counter, image_exists) ->
+		if(poll_counter > 10)
+			if(poll_counter == 11)
+				aviary_inst.close()
+				$('step_two .upload-waiter').hide()
+				show_errors ["Photo processing took too long. Please retry."]
+			return
+		poll_counter++
+
+		if(image_exists)
+			return
+
+		img = new Image()
+		img.onerror = () -> img_result_callback(source_url, false, poll_counter, image_exists)
+		img.onload  = () -> img_result_callback(source_url, true, poll_counter, image_exists)
+		img.src = source_url
+		if(img.complete)
+			img.onload.call(img);
+
 	aviary_inst =
 		new Aviary.Feather
 			apiKey: 'v9iu6cbcuf2crihe',
 			apiVersion: 3,
-			tools: 'all'
-			postUrl: my_vars.photo_update_profile_path,
-			onSave: (imageID, newURL) ->
-				img = document.getElementById(imageID)
-				img.src = newURL
+			tools: ['resize', 'crop', 'orientation', 'brightness', 'contrast', 'saturation', 'warmth'],
+			onLoad: () ->
+				action_link = $('#edit_profile_photo')
+				if(action_link)
+					action_link.prop('disabled', true);
+			onSave: (image_id, source_url) ->
+				if(!source_url)
+					return
+				$('.step_two .upload-waiter').show()
+				poll_counter = 0
+				image_exists = false
+				poll_image(img_result_callback, source_url, poll_counter, image_exists)
+			onError: (error_obj) ->
+				aviary_inst.close()
+				show_errors ["Something went wrong. Please retry."]
 
 	toggle_popover = ->
 		popover = $('.edit.popover.profile-photo-update')
 		if popover.is(":visible")
 			reset_step_one()
+		if my_vars.profile_photo_present
+			$('.step_one').hide()
+			$('.step_two').show()
 		popover.toggle()
 
 	reset_step_one = ->
@@ -75,7 +141,7 @@
 		$('.step_one .file-drop img').remove()
 		$('.step_one .file-drop').css borderColor: 'red'
 		$('.step_one input[name="standard_attachment"]').val('')
-		$('.step_one input[name="url"]').val('')
+		$('.step_one input[name="source_url"]').val('')
 		$('#import_from_url_link').parent().next('div.text_field').hide()
 
 	show_step_one = ->
@@ -87,6 +153,7 @@
 		reset_step_one()
 		$('.step_one').hide()
 		$('.step_two').fadeIn(2000)
+		$('.step_two .upload-waiter').hide()
 
 	update_main_view = ->
 		updated_src = $("img#upload_result_img").attr('src')
@@ -94,7 +161,7 @@
 		$('#profile_photo .blank_attr').text('Update a photo')
 
 	show_errors = (error_array) ->
-		errorDiv = $(".step_one div.errorExplanation").empty()
+		errorDiv = $(".profile-photo-update div.errorExplanation").empty()
 		$('.file-drop').css borderColor: 'red'
 		errorUl = $("<ul>")
 		if error_array.length == 0
@@ -116,6 +183,11 @@
 		$('.step_one #upload_from_url').prop('disabled', false)
 
 	$ ->
+		if(my_vars.profile_photo_present)
+			show_step_two()
+		else
+			show_step_one()
+
 		$('.step_two #like_profile_photo').on 'click', (e) ->
 			e.preventDefault()
 			show_step_one()
@@ -137,7 +209,8 @@
 		$('.photo-wrapper-large img, span[itemprop="profilePhoto"]').on 'click', (e) ->
 			toggle_popover()
 
-		show_step_one()
+		$('.profile-photo-update .close-popover-button').on 'click', (e) ->
+			$('.edit.popover.profile-photo-update').hide()
 
 		# create a new processor with the endpoint to where the assets are uploaded
 		jackUp = new JackUp.Processor({path: my_vars.photo_update_profile_path, timeout: 2000})
@@ -167,6 +240,7 @@
 				show_errors response.error_array
 			else
 				$("img#upload_result_img").attr('src', response.profile_photo_src)
+				update_main_view()
 				show_step_two()
 
 		# when server returns a non-200 response
@@ -177,25 +251,8 @@
 		$('#upload_from_url').on 'click', (e) ->
 			if $('.step_one #upload_from_url').is(":disabled")
 				return false
-			$.ajax
-				url: my_vars.photo_update_profile_path,
-				type: 'POST',
-				dataType: 'json',
-				timeout: 30000,
-				data: $('.step_one input[name=url]').serialize(),
-				beforeSend: ->
-					upload_request_start()
-				complete: ->
-					upload_request_complete()
-				error: ->
-					show_errors [my_vars.profile_photo_upload_generic_error]
-				success: (data, textStatus, jqXHR) ->
-					save_error = if data.error == 'true' then true else false
-					if save_error
-						show_errors data.error_array
-					else
-						$("img#upload_result_img").attr('src', data.profile_photo_src)
-						show_step_two()
+			source_url = $('.step_one input[name=source_url]').serialize()
+			save_image_from_url(source_url)
 
 		$('#edit_profile_photo').on 'click', (e) ->
 			e.preventDefault()

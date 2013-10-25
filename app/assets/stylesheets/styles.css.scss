@@ -1444,7 +1444,7 @@ span.inline_block_attr{
   	color:#fff;
   	background-color: #afb434;
   	padding: 13px 9px;
-    cursor: pointer;
+  	@extend .clickable;
 }
 
 .upload-button:after{
@@ -1457,4 +1457,29 @@ span.inline_block_attr{
 
 .aria-hidden{
   	display: none;
+}
+
+.clickable{
+  cursor: pointer;
+}
+
+.close-popover-button{
+  	@extend .clickable;
+  	position: absolute;
+  	right: 7px;
+  	top: 7px;
+  	width: 20px;
+  	height: 20px;
+	color: #fff;
+	border: 1px solid #AEAEAE;
+	border-radius: 5px;
+	background: #BEBEBE;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 20px;
+  	text-align: center;
+}
+
+.close-popover-button:after{
+  	content: 'x';
 }
