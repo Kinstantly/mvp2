@@ -4,6 +4,7 @@
 -# For cancel click, return false to prevent click action and to
 -#   prevent reactivation by stopping propagation to the parent formlet element.
 :javascript
+	$('##{formlet} .edit.popover').prepend('<div class="cancel top"></div>');
 	$('##{formlet} .cancel').click(function(e) {
 		$('##{formlet}').removeClass('active');
 		return false;
