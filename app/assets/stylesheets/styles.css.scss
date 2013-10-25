@@ -864,17 +864,6 @@ div.popover {
 	}
 }
 .formlet {
-	.cancel.top {
-		float: right;
-		margin: -12px -14px auto auto;
-		cursor: pointer;
-	}
-	.cancel.top::before {
-		content: "X";
-		font-size: 16px;
-		font-weight: bold;
-		color: $text_light_color;
-	}
 	.blank_attr {
 		display: inline;
 		color: $text_light_color;
