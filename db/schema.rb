@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131008020925) do
+ActiveRecord::Schema.define(:version => 20131028212323) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -154,10 +154,6 @@ ActiveRecord::Schema.define(:version => 20131008020925) do
     t.string   "profile_photo_content_type"
     t.integer  "profile_photo_file_size"
     t.datetime "profile_photo_updated_at"
-    t.integer  "profile_photo_crop_top"
-    t.integer  "profile_photo_crop_right"
-    t.integer  "profile_photo_crop_bottom"
-    t.integer  "profile_photo_crop_left"
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"

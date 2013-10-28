@@ -9,12 +9,12 @@
 	.errorExplanation.aria-hidden
 	.step_one
 		%label Step 1 of 2
-		%p Please drop an image from your computer in the image area below
+		%p Drag and drop an image file from your computer into this box:
 		.file-drop
 			%span{ 'data-placeholder' => 'Drop files here' } Drop files here
 			.upload-waiter.aria-hidden
 		%p
-			Or you can browse for an image file
+			Or import an image file
 			%input.standard-attachment{ name: 'standard_attachment', accept: 'image/*', type: :file}
 		%p
 			Or
@@ -26,30 +26,30 @@
 				%p.note= profile_photo_source_url_example
 
 		%p
-			Or you can ask for
+			Or get
 			= link_to "more detailed help", '#'
 			\.
 	.step_two.aria-hidden
 		%label Step 2 of 2
-		%p Photo successfully uploaded and saved
+		%p You successfully uploaded and saved this photo:
 		.upload-result
 			= image_tag @profile.profile_photo.url(:original), id: 'upload_result_img', alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
 			.upload-waiter.aria-hidden
 		%p.like-profile-photo
 			Like it?
-			= link_to "Click here to continue editing your profile", '#', id: 'like_profile_photo'
+			= link_to "Close this window to continue editing your profile.", '#', id: 'like_profile_photo'
 		%p.no-like-profile-photo
 			Don't like it?
-			= link_to "Click here to crop, resize, or edit this photo...", '#', id: 'edit_profile_photo'
+			= link_to "Crop, resize, or edit this photo.", '#', id: 'edit_profile_photo'
 		%p
-			or
-			= link_to "upload a different photo", '#', id: 'show_step_one'
+			Or
+			= link_to "upload a different photo.", '#', id: 'show_step_one'
 			/.
 		%p
 			Get
 			= link_to "more detailed help", '#'
 %span.clickable.attribute_display.inline_block_attr{itemprop: "profilePhoto"}
-	%span.blank_attr= if @profile.errorfree.profile_photo.presence then 'Update a photo' else 'Add a photo' end
+	%span.blank_attr= if @profile.errorfree.profile_photo.presence then 'Add or change a photo' else 'Add or change a photo' end
 
 :javascript
 	my_vars.photo_update_profile_path = '#{photo_update_profile_path @profile}';
