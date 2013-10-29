@@ -105,8 +105,8 @@ ActiveRecord::Schema.define(:version => 20131028212323) do
     t.string   "url"
     t.string   "secondary_phone"
     t.string   "primary_phone"
-    t.datetime "created_at",                                            :null => false
-    t.datetime "updated_at",                                            :null => false
+    t.datetime "created_at",                                        :null => false
+    t.datetime "updated_at",                                        :null => false
     t.integer  "user_id"
     t.string   "credentials"
     t.string   "headline"
@@ -114,7 +114,7 @@ ActiveRecord::Schema.define(:version => 20131028212323) do
     t.text     "experience"
     t.string   "certifications"
     t.text     "awards"
-    t.string   "languages",                      :default => "English"
+    t.string   "languages",                  :default => "English"
     t.text     "summary"
     t.string   "email"
     t.boolean  "consult_by_email"
@@ -125,11 +125,11 @@ ActiveRecord::Schema.define(:version => 20131028212323) do
     t.text     "insurance_accepted"
     t.text     "pricing"
     t.text     "availability"
-    t.boolean  "is_published",                   :default => false
+    t.boolean  "is_published",               :default => false
     t.text     "hours"
     t.text     "phone_hours"
     t.text     "video_hours"
-    t.boolean  "accepting_new_clients",          :default => true
+    t.boolean  "accepting_new_clients",      :default => true
     t.boolean  "consult_in_person"
     t.string   "specialties_description"
     t.string   "invitation_email"
@@ -144,7 +144,7 @@ ActiveRecord::Schema.define(:version => 20131028212323) do
     t.boolean  "consult_at_camp"
     t.boolean  "consult_at_other"
     t.string   "photo_source_url"
-    t.boolean  "trash",                          :default => false
+    t.boolean  "trash",                      :default => false
     t.boolean  "adoption_stage"
     t.boolean  "preconception_stage"
     t.boolean  "pregnancy_stage"
