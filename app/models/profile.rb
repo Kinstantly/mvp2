@@ -15,8 +15,6 @@ class Profile < ActiveRecord::Base
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, :consult_at_other, 
 		:pricing, :service_area, :hours, :accepting_new_clients, 
 		:invitation_email, :photo_source_url, :profile_photo,
-		:profile_photo_clip_top, :profile_photo_clip_right,
-		:profile_photo_clip_bottom, :profile_photo_clip_left, 
 		:adoption_stage, :preconception_stage, :pregnancy_stage, :ages, 
 		:consult_remotely # provider offers most or all services remotely
 	
