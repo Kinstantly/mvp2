@@ -66,6 +66,8 @@ end
 
 def formlet_id(name)
 	case name
+	when 'availability/service area'
+		'availability_service_area'
 	when 'display name'
 		'display_name'
 	when 'ages'

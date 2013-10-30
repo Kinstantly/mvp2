@@ -280,32 +280,44 @@ Feature: Edit my expert profile
 			And my profile edit page should show "$120/hour" displayed in the "pricing" area
 	
 	@javascript
-	Scenario: Enter service area
+	Scenario: Add a comment for availability/service area
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I open the "service area" formlet
-			And I enter "East Bay\nSan Francisco\nDaly City" in the "Service area" field of the "service area" formlet
-			And I click on the "Save" button of the "service area" formlet
-		Then my profile edit page should show "East Bay" displayed in the "service area" area
-			And my profile edit page should show "San Francisco" displayed in the "service area" area
-			And my profile edit page should show "Daly City" displayed in the "service area" area
+		When I open the "availability/service area" formlet
+			And I enter "East Bay\nSan Francisco\nDaly City" in the "Add a comment" field of the "availability/service area" formlet
+			And I click on the "Save" button of the "availability/service area" formlet
+		Then my profile edit page should show "East Bay" displayed third in the "availability/service area" area
+			And my profile edit page should show "San Francisco" displayed third in the "availability/service area" area
+			And my profile edit page should show "Daly City" displayed third in the "availability/service area" area
 	
 	@javascript
 	Scenario: Specify consultation modes
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I open the "consultation methods" formlet
-			And I check "Email consultations" in the "consultation methods" formlet
-			And I check "Phone consultations" in the "consultation methods" formlet
-			And I check "Video consultations" in the "consultation methods" formlet
-			And I check "Office/clinic" in the "consultation methods" formlet
-			And I click on the "Save" button of the "consultation methods" formlet
-		Then my profile edit page should show "Email consultations" displayed in the "consultation methods" area
-			And my profile edit page should show "Phone consultations" displayed in the "consultation methods" area
-			And my profile edit page should show "Video consultations" displayed in the "consultation methods" area
-			And my profile edit page should show "Office/clinic" displayed in the "consultation methods" area
+		When I open the "availability/service area" formlet
+			And I check "Email consultations" in the "availability/service area" formlet
+			And I check "Phone consultations" in the "availability/service area" formlet
+			And I check "Video consultations" in the "availability/service area" formlet
+			And I check "Home visits" in the "availability/service area" formlet
+			And I check "School visits" in the "availability/service area" formlet
+			And I click on the "Save" button of the "availability/service area" formlet
+		Then my profile edit page should show "Email consultations" displayed in the "availability/service area" area
+			And my profile edit page should show "Phone consultations" displayed in the "availability/service area" area
+			And my profile edit page should show "Video consultations" displayed in the "availability/service area" area
+			And my profile edit page should show "Home visits" displayed in the "availability/service area" area
+			And my profile edit page should show "School visits" displayed in the "availability/service area" area
+	
+	@javascript
+	Scenario: Specify accepting new clients
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I open the "availability/service area" formlet
+			And I check "Accepting new clients" in the "availability/service area" formlet
+			And I click on the "Save" button of the "availability/service area" formlet
+		Then my profile edit page should show "Accepting new clients" displayed second in the "availability/service area" area
 	
 	@javascript
 	Scenario: Request extra location
