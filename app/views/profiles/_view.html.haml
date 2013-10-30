@@ -81,14 +81,18 @@
 			= profile.display_stages_ages
 	%fieldset.professional_profile
 		%legend= t 'views.profile.legend.professional_profile'
-		.accepting_new_clients
-			%span.label
-				= profile_display_accepting_new_clients profile
-		.consultations
-			%span.label= "#{t 'views.profile.view.consultation_modes'}:"
+		.availability_service_area
+			%span.label= "#{t 'views.profile.view.availability_service_area'}:"
+			%br
 			= profile_display_consultation_modes profile
-		.consult_remotely
+			%br
 			%span.label= profile_display_consult_remotely profile
+			%br
+			%span.label= profile_display_accepting_new_clients profile
+			%br
+			%span.label= "#{Profile.human_attribute_name(:availability_service_area_note)}:"
+			%br
+			.value.text_area= preserve_profile_text profile.availability_service_area_note
 		.year_started
 			%span.label= "#{Profile.human_attribute_name(:year_started)}:"
 			= profile.year_started
@@ -120,10 +124,6 @@
 			%span.label= "#{Profile.human_attribute_name(:hours)}:"
 			%br
 			.value.text_area= preserve_profile_text profile.hours
-		.service_area
-			%span.label= "#{Profile.human_attribute_name(:service_area)}:"
-			%br
-			.value.text_area= preserve_profile_text profile.service_area
 	%fieldset.rating_info
 		%legend= t 'views.profile.legend.rating_info'
 		-# If this partial is called from a users view, we need an explicit reference to profiles.

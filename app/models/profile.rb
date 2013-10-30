@@ -13,14 +13,14 @@ class Profile < ActiveRecord::Base
 		:custom_service_names, :custom_specialty_names, 
 		:consult_in_person, :consult_in_group, :consult_by_email, :consult_by_phone, :consult_by_video, 
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, :consult_at_other, 
-		:pricing, :service_area, :hours, :accepting_new_clients, 
+		:pricing, :service_area, :hours, :accepting_new_clients, :availability_service_area_note,
 		:invitation_email, :photo_source_url, :profile_photo,
 		:adoption_stage, :preconception_stage, :pregnancy_stage, :ages, 
 		:consult_remotely # provider offers most or all services remotely
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :first_name, :last_name, :middle_name, :credentials, :email, :company_name, :url,
-		:headline, :year_started, :invitation_email, :photo_source_url
+		:headline, :year_started, :invitation_email, :photo_source_url, :availability_service_area_note
 	
 	belongs_to :user
 	# has_and_belongs_to_many :age_ranges # superseded by *_stage and ages attributes
@@ -70,6 +70,7 @@ class Profile < ActiveRecord::Base
 		pricing: 750,
 		summary: 1250,
 		service_area: 750,
+		availability_service_area_note: 750,
 		hours: 750,
 		admin_notes: 2000,
 		custom_service_names: 150,
@@ -79,7 +80,8 @@ class Profile < ActiveRecord::Base
 	# Note: lengths of the email and invitation_email attributes are checked by the email validator.
 	[:first_name, :middle_name, :last_name, :credentials, :company_name, :url, :headline, :certifications,
 		:languages, :lead_generator, :photo_source_url, :ages, :year_started, :education,
-		:insurance_accepted, :pricing, :summary, :service_area, :hours, :admin_notes].each do |attribute|
+		:insurance_accepted, :pricing, :summary, :service_area, :hours, :admin_notes,
+		:availability_service_area_note].each do |attribute|
 			validates attribute, allow_blank: true, length: {maximum: MAX_LENGTHS[attribute]}
 		end
 	
@@ -335,6 +337,13 @@ class Profile < ActiveRecord::Base
 	
 	def rating_by(user)
 		ratings.find_by_rater_id user.id if user.try(:id)
+	end
+	
+	# Return the array of consultation mode names that are checked for this profile.
+	def consultation_modes
+		[:visit_home, :consult_by_video, :consult_by_phone, :consult_by_email, :visit_school].map do |attribute|
+			 send(attribute) ? self.class.human_attribute_name(attribute) : nil
+		end.compact
 	end
 	
 	private

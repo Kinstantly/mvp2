@@ -1,0 +1,58 @@
+%th
+	%span.editable= t 'views.profile.view.availability_service_area_html'
+%td
+	%p#consultation_modes.attribute_display
+		- consultation_modes = @profile.errorfree.consultation_modes
+		- if consultation_modes.present?
+			= display_wrapped_names consultation_modes
+		- else
+			%span.note=  t 'views.profile.edit.consultation_modes_blank'
+	%p.attribute_display
+		- if @profile.errorfree.accepting_new_clients
+			= Profile.human_attribute_name :accepting_new_clients
+		- else
+			%span.note= t 'views.profile.edit.accepting_new_clients_blank'
+	- if @profile.errorfree.availability_service_area_note.present?
+		%p.text_area.attribute_display= profile_display_text @profile.errorfree.availability_service_area_note, preserve: true, links: true
+	- else
+		%p.attribute_display
+			%span.note= Profile.human_attribute_name :availability_service_area_note
+	.edit.popover
+		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+			= f.error_messages
+			= hidden_field_tag 'formlet', formlet
+			#availability_service_area
+				= f.label :availability_service_area, t('views.profile.edit.availability_service_area')
+				%br
+				.check_box
+					= f.check_box :visit_home
+					= f.label :visit_home
+				.check_box
+					= f.check_box :consult_by_video
+					= f.label :consult_by_video
+				.check_box
+					= f.check_box :consult_by_phone
+					= f.label :consult_by_phone
+				.check_box
+					= f.check_box :consult_by_email
+					= f.label :consult_by_email
+				.check_box
+					= f.check_box :visit_school
+					= f.label :visit_school
+				.check_box
+					= f.check_box :consult_remotely
+					= f.label :consult_remotely, t('views.profile.edit.consult_remotely')
+				.check_box
+					= f.check_box :accepting_new_clients
+					= f.label :accepting_new_clients
+			.text_field#availability_service_area_note_field
+				%span.char_count
+				= f.label :availability_service_area_note
+				= f.text_area :availability_service_area_note, size: '50x5', class: 'attr'
+				%p.note= t 'views.profile.edit.availability_service_area_note_example'
+			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+			= link_to 'Cancel', '#', class: 'cancel button'
+
+:coffeescript
+	# Show character count while filling in field.
+	$('#availability_service_area_note_field textarea').simplyCountable({counter: '#availability_service_area_note_field .char_count', maxCount: my_vars.edit_profile.max_lengths.availability_service_area_note, valueLength: my_vars.edit_profile.text_area_value_length})

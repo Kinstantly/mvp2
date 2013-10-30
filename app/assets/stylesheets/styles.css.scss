@@ -573,6 +573,15 @@ $contact_toolbar_width: 270px;
 	}
 }
 
+#contact_options {
+	width: $contact_toolbar_width;
+	float: left;
+	.appointment {
+		@include appointment-style;
+		margin-left: 20px;
+	}
+}
+
 @mixin profile-info-style($bg) {
 	@include masthead-style;
 	background: $bg;
@@ -692,6 +701,22 @@ table.info {
 		.char_count {
 			float: right;
 			padding-top: 25px;
+		}
+	}
+	#availability_service_area {
+		td {
+			#consultation_modes {
+				@include bullet-separator-style;
+			}
+			> p + p {
+				margin-top: 0.5em;
+			}
+		}
+		.popover {
+			width: 468px;
+			textarea {
+				width: 438px;
+			}
 		}
 	}
 }

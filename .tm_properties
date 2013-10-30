@@ -1,0 +1,2 @@
+excludeDirectories = "{log}"
+excludeInFolderSearch = "{log,solr,tmp}"

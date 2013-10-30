@@ -59,19 +59,9 @@
 					= profile_linked_email @profile
 			.rate
 				.rate-this= profile_review_link @profile
-		%ul.contact-toolbar
-			%li.consult_by_email= profile_consult_by_email_element @profile
-			%li.consult_by_phone= profile_consult_by_phone_element @profile
-			%li.consult_by_video= profile_contact_icon_element :consult_by_video, @profile
-			%li.consult_in_person= profile_contact_icon_element :consult_in_person, @profile
-			%li.consult_in_group= profile_contact_icon_element :consult_in_group, @profile
-			%li.visit_home= profile_contact_icon_element :visit_home, @profile
-			%li.visit_school= profile_contact_icon_element :visit_school, @profile
-			%li.consult_at_hospital= profile_contact_icon_element :consult_at_hospital, @profile
-			%li.consult_at_camp= profile_contact_icon_element :consult_at_camp, @profile
-			%li.consult_at_other= profile_contact_icon_element :consult_at_other, @profile
-			%li.appointment
-				%a{href: "#"} Make an appointment
+		#contact_options
+			.appointment
+				%a{href: "#"}= t 'views.profile.view.make_an_appointment'
 	%section#details.clearfix
 		.interior
 			.summary-text
@@ -124,11 +114,17 @@
 						%th
 							%span= Profile.human_attribute_name :languages
 						%td= profile_display_text @profile.languages, serialize: true
-				- if @profile.service_area.present?
-					%tr
+				- consultation_modes = @profile.consultation_modes
+				- if consultation_modes.present? or @profile.accepting_new_clients or @profile.availability_service_area_note.present?
+					%tr#availability_service_area
 						%th
-							%span= Profile.human_attribute_name :service_area
-						%td.text_area= profile_display_text @profile.service_area, preserve: true, links: true
+							%span= t 'views.profile.view.availability_service_area_html'
+						%td
+							- if consultation_modes.present?
+								%p#consultation_modes= display_wrapped_names consultation_modes
+							- if @profile.accepting_new_clients
+								%p= Profile.human_attribute_name :accepting_new_clients
+							%p.text_area= profile_display_text @profile.availability_service_area_note, preserve: true, links: true
 	%section#reviews.clearfix
 		- (reviews = @profile.reviews.order_by_descending_updated_at).each_index do |i|
 			- review = reviews[i]

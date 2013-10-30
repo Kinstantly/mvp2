@@ -37,8 +37,9 @@
 				= render partial: 'formlet', locals: {formlet: 'locations'}
 			#internet.formlet
 				= render partial: 'formlet', locals: {formlet: 'internet'}
-		#contact_options.formlet
-			= render partial: 'formlet', locals: {formlet: 'contact_options'}
+		#contact_options
+			.appointment
+				%a{href: "#"}= t 'views.profile.view.make_an_appointment'
 	%section#details.clearfix
 		.interior
 			.summary-text
@@ -63,8 +64,8 @@
 					= render partial: 'formlet', locals: {formlet: 'insurance_accepted'}
 				%tr#languages.formlet
 					= render partial: 'formlet', locals: {formlet: 'languages'}
-				%tr#service_area.formlet
-					= render partial: 'formlet', locals: {formlet: 'service_area'}
+				%tr#availability_service_area.formlet
+					= render partial: 'formlet', locals: {formlet: 'availability_service_area'}
 :coffeescript
 	# Place the formlet the specified number of pixels below the top of the viewport (assume absolute positioning).
 	my_vars.f.place_formlet = (formlet) ->

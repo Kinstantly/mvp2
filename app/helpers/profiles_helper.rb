@@ -455,18 +455,9 @@ module ProfilesHelper
 
 	def profile_display_consultation_modes(profile)
 		return '' unless profile
-		modes = []
-		modes.push Profile.human_attribute_name :consult_by_email if profile.consult_by_email
-		modes.push Profile.human_attribute_name :consult_by_phone if profile.consult_by_phone
-		modes.push Profile.human_attribute_name :consult_by_video if profile.consult_by_video
-		modes.push Profile.human_attribute_name :consult_in_person if profile.consult_in_person
-		modes.push Profile.human_attribute_name :consult_in_group if profile.consult_in_group
-		modes.push Profile.human_attribute_name :visit_home if profile.visit_home
-		modes.push Profile.human_attribute_name :visit_school if profile.visit_school
-		modes.push Profile.human_attribute_name :consult_at_hospital if profile.consult_at_hospital
-		modes.push Profile.human_attribute_name :consult_at_camp if profile.consult_at_camp
-		modes.push Profile.human_attribute_name :consult_at_other if profile.consult_at_other
-		modes.join ' | '
+		[:visit_home, :consult_by_video, :consult_by_phone, :consult_by_email, :visit_school].map do |attribute|
+			Profile.human_attribute_name attribute if profile.send attribute
+		end.compact.join(' | ')
 	end
 
 	# Accepting new clients

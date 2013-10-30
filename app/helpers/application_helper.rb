@@ -176,4 +176,13 @@ module ApplicationHelper
 			autocomplete_field_tag attribute, value, path, options
 		end
 	end
+
+	# Wrap each name in the specified tag (span by default).
+	def display_wrapped_names(names, n=nil, tag=:span)
+		n ||= names.length # If n is missing or explicitly passed in as nil, use all names.
+		names.slice(0, n).map do |name|
+			content_tag tag, name.html_escape
+		end.join('').try(:html_safe)
+	end
+	
 end
