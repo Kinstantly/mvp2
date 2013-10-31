@@ -44,6 +44,16 @@ $text_field_placeholder_color: #aaa;
 	}
 }
 
+@mixin stack-check-box-style {
+	.check_box {
+		float: left;
+		clear: left;
+	}
+	+ div {
+		padding-top: 12px;
+	}
+}
+
 $button_corner_radius: 4px;
 
 @mixin button-style {

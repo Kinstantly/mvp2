@@ -13,9 +13,11 @@
 					= profile_categories_check_box_label category
 		.services
 			= f.label :services
-			%span= t 'views.profile.edit.services_tip'
+			%span= t 'views.profile.edit.services_tip_html'
 			%br
 			%span.predefined_services
+			%br
+			%span.note= t 'views.profile.edit.services_tip2'
 		.custom_services
 			= f.label :custom_service_names
 			= button_tag id: 'add_custom_services_text_field' do
@@ -30,9 +32,11 @@
 			- @profile_custom_services_text_field_template = profile_custom_services_autocomplete_field_tag(@profile, '', 'INDEX', f)
 		.specialties
 			= f.label :specialties
-			%span= t 'views.profile.edit.specialties_tip'
+			%span= t 'views.profile.edit.specialties_tip_html'
 			%br
 			%span.predefined_specialties
+			%br
+			%span.note= t 'views.profile.edit.specialties_tip2'
 		.custom_specialties
 			= f.label :custom_specialty_names
 			= button_tag id: 'add_custom_specialties_text_field' do

@@ -126,6 +126,12 @@ div.view_profile {
 					@include check-box-style;
 				}
 			}
+			.predefined_services, .predefined_specialties {
+				~ span.note {
+					clear: left;
+					float: left;
+				}
+			}
 			.name, .custom_categories, .custom_services, .custom_specialties {
 				.text_field {
 					@include check-box-style;
