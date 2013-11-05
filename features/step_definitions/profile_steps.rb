@@ -71,9 +71,9 @@ def formlet_id(name)
 	when 'display name'
 		'display_name'
 	when 'ages'
-		'stages_ages'
+		'ages_stages'
 	when 'stages'
-		'stages_ages'
+		'ages_stages'
 	when 'insurance'
 		'insurance_accepted'
 	when 'website'
@@ -343,6 +343,10 @@ end
 Given /^I have been invited to claim a profile$/ do
 	create_unattached_profile invitation_email: 'asleep@thewheel.wv.us'
 	@unattached_profile.invite
+end
+
+Given /^there is a "(.*?)" age range$/ do |age_range|
+	FactoryGirl.create :age_range, name: age_range
 end
 
 ### WHEN ###

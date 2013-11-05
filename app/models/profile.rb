@@ -15,15 +15,17 @@ class Profile < ActiveRecord::Base
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, :consult_at_other, 
 		:pricing, :service_area, :hours, :accepting_new_clients, :availability_service_area_note,
 		:invitation_email, :photo_source_url, :profile_photo,
-		:adoption_stage, :preconception_stage, :pregnancy_stage, :ages, 
+		:age_range_ids, :ages_stages_note,
 		:consult_remotely # provider offers most or all services remotely
+		# :adoption_stage, :preconception_stage, :pregnancy_stage, :ages, # superseded by age_ranges and ages_stages_note
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :first_name, :last_name, :middle_name, :credentials, :email, :company_name, :url,
-		:headline, :year_started, :invitation_email, :photo_source_url, :availability_service_area_note
+		:headline, :year_started, :invitation_email, :photo_source_url, :availability_service_area_note,
+		:ages_stages_note
 	
 	belongs_to :user
-	# has_and_belongs_to_many :age_ranges # superseded by *_stage and ages attributes
+	has_and_belongs_to_many :age_ranges
 	has_and_belongs_to_many :categories
 	has_and_belongs_to_many :services
 	has_and_belongs_to_many :specialties
@@ -63,7 +65,7 @@ class Profile < ActiveRecord::Base
 		invitation_email: EmailValidator::MAX_LENGTH,
 		lead_generator: 250,
 		photo_source_url: 250,
-		ages: 150,
+		ages_stages_note: 150,
 		year_started: 100,
 		education: 1000,
 		insurance_accepted: 750,
@@ -79,7 +81,7 @@ class Profile < ActiveRecord::Base
 
 	# Note: lengths of the email and invitation_email attributes are checked by the email validator.
 	[:first_name, :middle_name, :last_name, :credentials, :company_name, :url, :headline, :certifications,
-		:languages, :lead_generator, :photo_source_url, :ages, :year_started, :education,
+		:languages, :lead_generator, :photo_source_url, :ages_stages_note, :year_started, :education,
 		:insurance_accepted, :pricing, :summary, :service_area, :hours, :admin_notes,
 		:availability_service_area_note].each do |attribute|
 			validates attribute, allow_blank: true, length: {maximum: MAX_LENGTHS[attribute]}
@@ -154,6 +156,7 @@ class Profile < ActiveRecord::Base
 		integer :category_ids, multiple: true
 		integer :service_ids, multiple: true
 		integer :specialty_ids, multiple: true
+		integer :age_range_ids, multiple: true
 		
 		integer :search_area_tag_ids, multiple: true do
 			locations.map{|loc| loc.search_area_tag.try(:id)}.compact
@@ -281,11 +284,19 @@ class Profile < ActiveRecord::Base
 		end
 	end
 	
-	def display_stages_ages
-		[(self.class.human_attribute_name :adoption_stage if adoption_stage),
-			(self.class.human_attribute_name :preconception_stage if preconception_stage),
-			(self.class.human_attribute_name :pregnancy_stage if pregnancy_stage),
-			ages.presence].compact.join(', ')
+	# Use a post-query filter and sort so that we can cache age_ranges if needed.
+	def age_ranges_with_active_filter
+		age_ranges_without_active_filter.select(&:active).sort_by(&:sort_index)
+	end
+	
+	alias_method_chain :age_ranges, :active_filter
+	
+	def age_range_names
+		age_ranges.map(&:name)
+	end
+	
+	def display_age_ranges
+		age_range_names.join(', ')
 	end
 	
 	def invite

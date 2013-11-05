@@ -32,8 +32,7 @@
 									= location.try(:display_address)
 									- if (location_count = profile.locations.count) > 1
 										= t 'views.location.view.more.how_many', count: (location_count - 1)
-							- if (stages_ages = profile.display_stages_ages).present?
-								%span.location= "#{Profile.human_attribute_name(:stages_ages).downcase}: #{stages_ages}"
+							%span.location.age_ranges= display_wrapped_names profile.age_range_names
 						.specialties= search_result_specialties_truncated profile, length: 700
 						.summary
 							%span= profile_display_truncated profile.summary, length: 180

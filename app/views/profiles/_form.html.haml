@@ -122,24 +122,20 @@
 					= profile_custom_specialties_autocomplete_field_tag(profile, name, "#{i = i+1}", f)
 			- @profile_custom_specialties_i = i
 			- @profile_custom_specialties_text_field_template = profile_custom_specialties_autocomplete_field_tag(profile, '', 'INDEX', f)
-		.stages
-			= f.label :stages, t('views.profile.edit.stages')
+		.ages_stages
+			= f.label :age_stages
 			%br
-			.check_box
-				= f.check_box :adoption_stage
-				= f.label :adoption_stage
-			.check_box
-				= f.check_box :preconception_stage
-				= f.label :preconception_stage
-			.check_box
-				= f.check_box :pregnancy_stage
-				= f.label :pregnancy_stage
+			= profile_age_ranges_hidden_field_tag(f)
+			- AgeRange.active.sorted.each do |age_range|
+				.check_box
+					= profile_age_ranges_check_box_tag(@profile, age_range, f)
+					= profile_age_ranges_check_box_label age_range
 		.ages
 			.text_field
-				= f.label :ages
-				= f.text_field :ages, size: 50
+				= f.label :ages_stages_note
+				= f.text_field :ages_stages_note, size: 50
 				%br
-				%span.note= t('views.profile.edit.ages_example')
+				%span.note= t('views.profile.edit.ages_stages_note_example')
 	%fieldset.professional_profile
 		%legend= t 'views.profile.legend.professional_profile'
 		.availability_service_area

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131028212323) do
+ActiveRecord::Schema.define(:version => 20131102002340) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -22,11 +22,12 @@ ActiveRecord::Schema.define(:version => 20131028212323) do
 
   create_table "age_ranges", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.integer  "sort_index"
     t.string   "start"
     t.string   "end"
+    t.boolean  "active",     :default => false
   end
 
   create_table "age_ranges_profiles", :force => true do |t|
@@ -156,6 +157,7 @@ ActiveRecord::Schema.define(:version => 20131028212323) do
     t.integer  "profile_photo_file_size"
     t.datetime "profile_photo_updated_at"
     t.text     "availability_service_area_note"
+    t.text     "ages_stages_note"
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"

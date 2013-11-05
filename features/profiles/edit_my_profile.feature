@@ -215,30 +215,30 @@ Feature: Edit my expert profile
 		Then I should be offered no specialties
 	
 	@javascript
-	Scenario: Update ages
+	Scenario: Update Ages/Stages comment
 		Given I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
 		When I open the "ages" formlet
-			And I enter "0-8" in the "Age span" field of the "ages" formlet
+			And I enter "Beginners to advanced" in the "Add a comment" field of the "ages" formlet
 			And I click on the "Save" button of the "ages" formlet
-		Then my profile edit page should show "0-8" displayed in the "ages" area
+		Then my profile edit page should show "Beginners to advanced" displayed second in the "ages" area
 	
 	@javascript
-	Scenario: Update stages
-		Given I exist as a user
+	Scenario: Update Ages/Stages
+		Given there is a "Teens" age range
+			And there is a "Young adults" age range
+			And I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
 		When I open the "stages" formlet
-			And I check "adoption" in the "stages" formlet
-			And I check "preconception" in the "stages" formlet
-			And I check "pregnancy" in the "stages" formlet
+			And I check "Teens" in the "stages" formlet
+			And I check "Young adults" in the "stages" formlet
 			And I click on the "Save" button of the "stages" formlet
-		Then my profile edit page should show "adoption" displayed in the "stages" area
-			And my profile edit page should show "preconception" displayed in the "stages" area
-			And my profile edit page should show "pregnancy" displayed in the "stages" area
+		Then my profile edit page should show "Teens" displayed in the "stages" area
+			And my profile edit page should show "Young adults" displayed in the "stages" area
 	
 	@javascript
 	Scenario: Show display name as editing

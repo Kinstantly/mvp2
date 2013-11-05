@@ -733,6 +733,19 @@ table.info {
 			}
 		}
 	}
+	#ages_stages {
+		td {
+			#age_ranges {
+				@include bullet-separator-style;
+			}
+			> p + p {
+				margin-top: 0.5em;
+			}
+		}
+		.popover .check_boxes {
+			@include stack-check-box-style;
+		}
+	}
 }
 
 /*  Reviews -------------------------------------------------------------------------- */
@@ -1071,6 +1084,9 @@ div.popover {
 						font-weight: bold;
 					}
 				}
+				.age_ranges {
+					@include bullet-separator-style;
+				}
 				.specialties {
 					clear: left;
 					color: $text_light_color;
@@ -1122,7 +1138,7 @@ div.popover {
 			> span {
 				margin-top: 0.25em;
 			}
-			span.specialties, span.location {
+			span.specialties, span.location, span.location span {
 				color: #000000;
 			}
 			span.specialties {

@@ -14,7 +14,7 @@ class Location < ActiveRecord::Base
 	MAX_LENGTHS = {
 		address1: 250, address2: 250, city: 100, region: 100, postal_code: 20, country: 100,
 		phone: PhoneNumberValidator::MAX_LENGTH,
-		note: 250
+		note: 150
 	}
 
 	# Note: length of the phone attribute is checked by the phone number validator.

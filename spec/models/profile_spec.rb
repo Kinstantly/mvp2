@@ -442,7 +442,7 @@ describe Profile do
 	context "character limits on string and text attributes" do
 		it "limits the number of input characters for attributes stored as string or text records" do
 			[:first_name, :last_name, :middle_name, :credentials, :company_name, :url, :headline,
-				:certifications, :languages, :lead_generator, :photo_source_url, :ages, :year_started,
+				:certifications, :languages, :lead_generator, :photo_source_url, :ages_stages_note, :year_started,
 				:education, :insurance_accepted, :pricing, :summary, :service_area,
 				:hours, :admin_notes, :availability_service_area_note].each do |attr|
 				s = 'a' * Profile::MAX_LENGTHS[attr]
@@ -574,26 +574,44 @@ describe Profile do
 	end
 	
 	context "stages and ages" do
-		it "displays adoption" do
-			@profile.adoption_stage = true
-			@profile.display_stages_ages.include?(Profile.human_attribute_name(:adoption_stage)).should be_true
+		let(:profile) { FactoryGirl.build :profile }
+		let(:first_age_range) { FactoryGirl.create :age_range, name: 'Preconception', sort_index: 1 }
+		let(:second_age_range) { FactoryGirl.create :age_range, name: 'Pregnancy/Childbirth', sort_index: 2 }
+		let(:retired_age_range) { FactoryGirl.create :retired_age_range, name: '11-14' }
+		
+		it "accepts clients from first two age ranges" do
+			profile.age_ranges = [first_age_range, second_age_range]
+			profile.age_ranges.include?(first_age_range).should be_true
+			profile.age_ranges.include?(second_age_range).should be_true
 		end
 		
-		it "displays preconception and pregnancy" do
-			@profile.preconception_stage = true
-			@profile.pregnancy_stage = true
-			@profile.display_stages_ages.include?(Profile.human_attribute_name(:preconception_stage)).should be_true
-			@profile.display_stages_ages.include?(Profile.human_attribute_name(:pregnancy_stage)).should be_true
+		it "does not accept clients from first age range" do
+			profile.age_ranges = [second_age_range]
+			profile.age_ranges.include?(first_age_range).should be_false
 		end
 		
-		it "does not display pregnancy when not checked" do
-			@profile.pregnancy_stage = false
-			@profile.display_stages_ages.include?(Profile.human_attribute_name(:pregnancy_stage)).should be_false
+		it "exposes its sorted age range names" do
+			profile.age_ranges = [second_age_range, first_age_range]
+			profile.should have(2).age_range_names
+			(names = profile.age_range_names).first.should == first_age_range.name
+			names.second.should == second_age_range.name
 		end
 		
-		it "displays ages" do
-			@profile.ages = ages = '12-18'
-			@profile.display_stages_ages.include?(ages).should be_true
+		it "displays its age ranges" do
+			profile.age_ranges = [first_age_range, second_age_range]
+			profile.display_age_ranges.include?(first_age_range.name).should be_true
+			profile.display_age_ranges.include?(second_age_range.name).should be_true
+		end
+		
+		it "does not expose retired age ranges" do
+			profile.age_ranges = [first_age_range, retired_age_range]
+			profile.should have(1).age_range
+			profile.age_ranges.include?(retired_age_range).should be_false
+		end
+		
+		it "has a comment field" do
+			profile.ages_stages_note = note = 'Lorem ipsum'
+			profile.ages_stages_note.should == note
 		end
 	end
 	

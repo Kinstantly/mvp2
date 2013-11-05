@@ -76,9 +76,12 @@
 		.specialties
 			%span.label= "#{Profile.human_attribute_name(:specialties)}:"
 			= profile_display_specialties profile
-		.stages_ages
-			%span.label= "#{Profile.human_attribute_name(:stages_ages)}:"
-			= profile.display_stages_ages
+		.ages_stages
+			%span.label= "#{Profile.human_attribute_name(:ages_stages)}:"
+			= profile.display_age_ranges
+			%br
+			%span.label= "#{Profile.human_attribute_name(:ages_stages_note)}:"
+			= profile.ages_stages_note
 	%fieldset.professional_profile
 		%legend= t 'views.profile.legend.professional_profile'
 		.availability_service_area
