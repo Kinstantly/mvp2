@@ -30,7 +30,7 @@
 					%th.large= Profile.human_attribute_name(:services)
 					%th.large= Profile.human_attribute_name(:specialties)
 					%th.large= Profile.human_attribute_name(:specialties_description)
-					%th= Profile.human_attribute_name(:ages_stages)
+					%th.large= Profile.human_attribute_name(:ages_stages)
 					%th= t 'views.profile.view.consultation_modes'
 					%th.large= Profile.human_attribute_name(:education)
 					%th= Profile.human_attribute_name(:certifications)
@@ -39,7 +39,7 @@
 					%th.large= Profile.human_attribute_name(:summary)
 					%th= Profile.human_attribute_name(:pricing)
 					%th.large= Profile.human_attribute_name(:hours)
-					%th= Profile.human_attribute_name(:service_area)
+					%th.large= t 'views.profile.view.availability_service_area'
 			%tbody
 				- @profiles.each do |p|
 					%tr
@@ -73,7 +73,14 @@
 						%td.text_area= preserve_profile_text p.summary
 						%td.text_area= preserve_profile_text p.pricing
 						%td.text_area= preserve_profile_text p.hours
-						%td.text_area= preserve_profile_text p.service_area
+						%td
+							= profile_display_consultation_modes p
+							%br
+							= profile_display_consult_remotely p
+							%br
+							= profile_display_accepting_new_clients p
+							%br
+							.text_area= preserve_profile_text p.availability_service_area_note
 		.pagination_nav
 			= render partial: 'shared/per_page_form', locals: { record_type: Profile }
 			= paginate @profiles
