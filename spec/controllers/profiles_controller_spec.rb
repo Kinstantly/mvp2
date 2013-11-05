@@ -396,7 +396,7 @@ describe ProfilesController do
 		end
 	
 		describe "PUT 'update'" do
-			it "successfully updates the profile" do
+			it "successfully updates the profile", :photo_upload => true do
 				@profile_attrs = 
 					FactoryGirl.attributes_for(:profile,
 						category_ids: ["#{FactoryGirl.create(:category).id}"],
@@ -407,7 +407,31 @@ describe ProfilesController do
 				flash[:notice].should_not be_nil
 			end
 		end
-		
+
+		describe "POST 'photo_update'", :photo_upload => true do
+			it "successfully updates profile photo" do
+				@profile_attrs =
+						FactoryGirl.attributes_for(:profile,
+																			 category_ids: ["#{FactoryGirl.create(:category).id}"],
+																			 specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
+				@profile = FactoryGirl.create(:profile)
+				post :photo_update, id: @profile.id, profile: @profile_attrs
+				response.should redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
+				flash[:notice].should_not be_nil
+			end
+			it "should not upload empty file", :photo_upload => true  do
+				should validate_attachment_presence(:profile_photo)
+			end
+			it "should not upload non-image file", :photo_upload => true  do
+				should validate_attachment_content_type(:profile_photo).
+											allowing('image/jpeg', 'image/jpg', 'image/gif', 'image/png')
+			end
+			it "should not upload file over 5MB in size"  do
+				should validate_attachment_size(:profile_photo).
+											less_than(5.megabytes)
+			end
+		end
+
 		describe "DELETE 'destroy'" do
 			it "destroys unattached profile" do
 				destroys_unattached_profile
