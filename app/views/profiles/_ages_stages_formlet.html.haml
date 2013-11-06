@@ -1,8 +1,10 @@
 %th
 	%span.editable= Profile.human_attribute_name :ages_stages
 %td
-	%p#age_ranges.attribute_display= display_wrapped_names @profile.errorfree.age_range_names
-	%p.text_area.attribute_display= profile_display_text @profile.errorfree.ages_stages_note, preserve: true
+	- if @profile.errorfree.age_ranges.present?
+		%p#age_ranges.attribute_display= display_wrapped_names @profile.errorfree.age_range_names
+	- if @profile.errorfree.ages_stages_note.present?
+		%p.text_area.attribute_display= profile_display_text @profile.errorfree.ages_stages_note, preserve: true
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages

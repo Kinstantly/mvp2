@@ -223,7 +223,7 @@ Feature: Edit my expert profile
 		When I open the "ages" formlet
 			And I enter "Beginners to advanced" in the "Add a comment" field of the "ages" formlet
 			And I click on the "Save" button of the "ages" formlet
-		Then my profile edit page should show "Beginners to advanced" displayed second in the "ages" area
+		Then my profile edit page should show "Beginners to advanced" displayed in the "ages" area
 	
 	@javascript
 	Scenario: Update Ages/Stages
