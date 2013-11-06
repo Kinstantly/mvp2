@@ -920,6 +920,7 @@ div.popover {
 		display: inline;
 		color: $text_light_color;
 	}
+	cursor: auto;
 }
 
 /*  Footer -------------------------------------------------------------------------- */
@@ -1456,6 +1457,8 @@ span.inline_block_attr{
   	background-color: #efefef;
   	margin: 10px 0 5px 135px;
   	position: relative;
+  	padding: 0;
+  	overflow:hidden;
 }
 .file-drop span{
   	color: #aaa;
@@ -1526,4 +1529,16 @@ span.inline_block_attr{
 
 .close-popover-button:after{
   	content: 'x';
+}
+
+.step_three h3{
+    color: #3D3D3D;
+  	margin: 5px 0 0 0;
+  	font-weight: bold;
+}
+
+ul.links-list > li{
+  	margin-left:30px;
+   	font-size: 15px;
+  	color: #807f7f;
 }

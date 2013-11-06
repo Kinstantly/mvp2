@@ -45,8 +45,10 @@ en:
       profile_photo_filesize_error: 'Photo file size must be less than 5MB.'
       profile_photo_filetype_error: 'Invalid file type. Only .jpeg, .gif, .png files allowed.'
       profile_photo_source_url_error: 'There was a problem importing the photo. Verify URL and try again.'
-      profile_photo_generic_error: 'There was a problem with the photo upload. Please try again.'
+      profile_photo_upload_generic_error: 'There was a problem with the photo upload. Please try again.'
+      profile_photo_edit_generic_error: 'Something went wrong. Please try again.'
       profile_photo_processing_timeout: 'Photo processing took too long.  Please try a smaller photo file size.'
+      profile_photo_no_dnd_support: 'Drag and Drop is not supported by your browser. Please use one of upload options below.'
     services:
       created: "Service '%{name}' was created."
       create_error: 'The was a problem creating the service.'
@@ -297,6 +299,7 @@ en:
         url_example: 'Example: www.allkidstutoring.com or http://www.allkidstutoring.com'
         year_started_explanation: '(year you began business or practice)'
         year_started_example: 'Examples: 2001; Began practicing in 2000 and started my own company in 2006'
+        profile_photo_prompt: 'Add or change a photo'
         profile_photo_source_url_prompt: 'http:// or https://'
         profile_photo_source_url_example: 'Example: http://allkidstutoring.com/images/photo.jpg'
       claim:

@@ -23,9 +23,9 @@
 		-# = image_tag 'profile-photo.jpg', alt: "#{@profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
 		-#.profile-photo-placeholder
 		-#	= t 'views.profile.view.profile_photo_placeholder'
-		.photo-wrapper-large.clickable
+		#profile-photo.photo-wrapper-large.clickable
 			= image_tag @profile.profile_photo.url(:original), alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
-			#profile_photo.formlet
+			.formlet
 				= render partial: 'profile_photo'
 		.profile{itemscope: "", itemtype: "http://schema.org/Person"}
 			#display_name.formlet
