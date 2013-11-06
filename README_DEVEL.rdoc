@@ -1,33 +1,71 @@
 = Source Control
 
-Git is used for source control.  The repository is at Github: https://github.com/edsimpson/mvp2
+We use Git for source control.  Our canonical repository is at Github: https://github.com/Kinstantly/mvp2
 
-We are using git-flow-avh to manage feature development.  For more info on git-flow-avh, see https://github.com/petervanderdoes/gitflow#readme
+== Git Flow
+
+Git Flow can be used to aid in feature development, releases, and bug fixes.  We recommend using git-flow-avh.  For more info on git-flow-avh, see https://github.com/petervanderdoes/gitflow#readme
 
 To install git-flow-avh, see https://github.com/petervanderdoes/gitflow/wiki
 
-Once you have installed git flow, initialize your repository this way:
+Once you have installed Git Flow, initialize your repository this way:
 
  git checkout master
  git pull
  git flow init -d
 
-The workflow is:
+The following branches, types of branches, and tags are used.
 
 * 'master' branch
 * 'develop' branch
-* feature branches (optional)
+* feature branches
 * release branches
 * hot-fix branches
 * tags on master for deployment to production
 
-New development work is done right on the 'develop' branch or on a feature branch.  Use a feature branch for a coherent set of changes.  Feature branches are managed with git flow.
+New development work is done on a feature branch that is created off the 'develop' branch.  A feature branch allows you to make a coherent set of changes that can be merged as a unit into other branches, e.g., into the 'develop' branch.  Using a feature branch also allows you to get a code review and approval of your changes before they are merged into the 'develop' branch.  Feature branches can be managed with git flow.
+
+It's desirable to keep feature branches as short lived as possible.  A feature branch with fewer changes is easier to merge into other branches as a coherent unit with a minimum of conflicts.  If you have a long lived branch, it might have to be merged into 'develop' multiple times and as the branch gets older, more merge conflicts will have to be resolved (but this can be mitigated by using 'git rerere').  See the following blog postings for some opinions and tips on branching and merging, e.g., an argument for short-lived branches and a warning to only merge a feature branch into 'develop' (git checkout develop && git merge feature_branch) and *not* the other way around.
+
+* gitster's philosophy of branching and merging: http://gitster.livejournal.com/42247.html
+* Argument for keeping features small and branches short lived: http://dymitruk.com/blog/2012/02/05/branch-per-feature/
+* Advice on which direction to merge: http://tech.novapost.fr/merging-the-right-way-en.html
 
 When we are ready to deploy to staging for QA work, we will create a new release branch (off 'develop').  The release branch will be used to deploy to staging for testing by QA.  Bug fixes will be done on the release branch.  When QA signs off on the release, it will be merged into 'develop', merged into 'master', tagged, and deployed to production.  This is done using git flow.
 
 Urgent patches to the production system (that can not wait for the next release) are done as a hot fix.  A hot fix branch is created off the 'master' branch (using git flow).  The hot fix can be deployed temporarily to staging for QA.  When the hot fix is approved, it is merged back into 'master' and 'develop' using git flow.  A tag is created on 'master' and it is deployed to production.
 
-Below are the git flow commands we use most often.  All of these are completely compatible with regular git commands which we use as well as shown below.
+Below are the git flow commands we use most often.  All of these are completely compatible with regular git.
+
+== Use a feature branch to create new features and modify existing ones.
+
+=== Create a new feature branch, named FEATURE_NAME, off the 'develop' branch.
+
+* Creates FEATURE_NAME branch.
+* Switches to FEATURE_NAME branch.
+
+ git pull
+ git flow feature start FEATURE_NAME
+
+You can now use this feature branch locally on your repository to make your changes.
+
+=== Sharing your feature branch for code review and approval
+
+To share your feature branch, e.g., for a code review and approval before merging into 'develop', push it to the origin repository.
+
+ git push origin feature/FEATURE_NAME
+
+=== Done developing on branch FEATURE_NAME.
+
+Merge the new code into the 'develop' branch.
+
+* Merges FEATURE_NAME into 'develop'.
+* Removes FEATURE_NAME branch.
+* Switches you to the 'develop' branch.
+
+ git flow feature finish FEATURE_NAME
+ git pull
+ git push
 
 == Creating, using, and finishing a release branch.
 
@@ -115,28 +153,4 @@ Merge the bug fix back into the 'master' and 'develop' branches.
  git checkout develop
 
 To deploy to production follow the deploy instructions in README_DEPLOY.rdoc.
-
-== If you need to make a coherent set of changes to the 'develop' branch, you can use a feature branch.
-
-=== Create a new feature branch, named FEATURE_NAME, off the 'develop' branch.
-
-* Creates FEATURE_NAME branch.
-* Switches to FEATURE_NAME branch.
-
- git pull
- git flow feature start FEATURE_NAME
-
-You can now use this feature branch locally on your repository to make your changes.
-
-=== Done developing on branch FEATURE_NAME.
-
-Merge the new code into the 'develop' branch.
-
-* Merges FEATURE_NAME into 'develop'.
-* Removes FEATURE_NAME branch.
-* Switches you to the 'develop' branch.
-
- git flow feature finish FEATURE_NAME
- git pull
- git push
 

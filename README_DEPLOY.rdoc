@@ -23,12 +23,12 @@ To deploy to staging, you'll usually want the latest release branch if any. The 
 
 OR if you already have the release branch locally, just switch to it and update
 
- git checkout release/RELEASE NAME
+ git checkout release/RELEASE_NAME
  git pull
 
 OR if you know the release name but don't yet have it checked out and want to track it locally:
 
- git checkout -t release/RELEASE NAME
+ git checkout -t release/RELEASE_NAME
 
 OR if you are making a hotfix, use the hotfix branch you created using the instructions in README_DEVEL.rdoc.
 
@@ -46,17 +46,36 @@ Until we get a staging server, we are deploying the latest code on the develop b
 
 === Tagging
 
-Create a tag and push it to the remote server:
+Create a tag for what you are deploying from the 'master' branch.
 
+Use the following convention for naming a tag.
+
+ yyyymmdd_nn
+
+Use the date you created the tag for the 'yyyymmdd' part.  The suffix ('_nn') is a version number for tags that are created on the same day.  Use '_01' for the first tag you create on a day.  If you need to create more than one tag on the same day, increment the suffix.  This convention allows us to easily view tag names sorted by date by sorting them alphanumerically.
+
+Example of two tags created on November 5, 2013:
+
+ 20131105_01
+ 20131105_02
+
+You can view the latest tags with the following command:
+
+ git tag | tail
+
+Create a tag and push it to the remote server.  When prompted for a message, write a summary of changes made between this tag and the previous tag.
+
+ git checkout master
  git tag TAG_NAME
  git push origin TAG_NAME
 
 For example:
 
+ git checkout master
  git tag 20130703_01
  git push origin 20130703_01
 
-If you screw up and need to delete a tag:
+If you made a mistake and need to delete a tag:
 
  git tag   # to list all tags and find the tag you want to delete
  git tag -d TAG_NAME_TO_DELETE
@@ -66,6 +85,7 @@ If you screw up and need to delete a tag:
 
 Issue these deployment commands:
 
+ git checkout master
  heroku maintenance:on
  git push heroku master
  heroku run rake db:migrate
