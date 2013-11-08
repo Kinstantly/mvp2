@@ -51,8 +51,8 @@ Mvp2::Application.configure do
 
   # Paperclip config.
   config.paperclip_defaults = {
-    #:url => '/tmp/:class/:attachment/:id_partition/:style/:filename',
-		#:path => ':rails_root:url',
+    #:url => '/:class/:attachment/:id_partition/:filename',
+	  #:path => ':rails_root/public:url', #default paperclip path
     #S3 config. Comment out for local storage.
     :storage => :s3,
     :path => 'images/profiles/:hash.:extension',
@@ -61,7 +61,6 @@ Mvp2::Application.configure do
     #:s3_host_alias => 'assets.kinstantly-develop.com',
     #:url => ':s3_alias_url',
     :url => ":s3_domain_url",
-    :default_url => "profile-photo-placeholder.jpg",
     :hash_secret => 'DLJsk1RTbt2ybEsDx5ib71mRJPBRmeJ/+vxAun3zZS+3v8Dctd+jUP3IfgVNdmhXaIGguuM74ucCRiiXTg7jhg==',
     :hash_data => ":attachment/:id_partition/:style/:filename",
     :s3_protocol => 'https',
