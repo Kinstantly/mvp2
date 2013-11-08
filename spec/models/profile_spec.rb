@@ -219,26 +219,16 @@ describe Profile do
 	
 	context "consultations" do
 		it "stores contact options" do
-			@profile.consult_in_person = true
-			@profile.consult_in_group = false
 			@profile.consult_by_email = true
 			@profile.consult_by_phone = true
 			@profile.consult_by_video = false
 			@profile.visit_home = true
 			@profile.visit_school = false
-			@profile.consult_at_hospital = true
-			@profile.consult_at_camp = false
-			@profile.consult_at_other = true
-			@profile.should have(:no).errors_on(:consult_in_person)
-			@profile.should have(:no).errors_on(:consult_in_group)
 			@profile.should have(:no).errors_on(:consult_by_email)
 			@profile.should have(:no).errors_on(:consult_by_phone)
 			@profile.should have(:no).errors_on(:consult_by_video)
 			@profile.should have(:no).errors_on(:visit_home)
 			@profile.should have(:no).errors_on(:visit_school)
-			@profile.should have(:no).errors_on(:consult_at_hospital)
-			@profile.should have(:no).errors_on(:consult_at_camp)
-			@profile.should have(:no).errors_on(:consult_at_other)
 		end
 		
 		it "stores consultation option for providers that offer most or all of their services remotely" do
@@ -247,10 +237,31 @@ describe Profile do
 		end
 	end
 	
+	context "hours" do
+		it "stores a description of hours" do
+			@profile.hours = "9:00 AM to 5:00 PM, MWF\n11:00 AM to 3:00 PM, TuTh"
+			@profile.should have(:no).errors_on(:hours)
+		end
+		
+		it "has checkable options" do
+			@profile.evening_hours_available = true
+			@profile.weekend_hours_available = true
+			@profile.should have(:no).errors_on(:evening_hours_available)
+			@profile.should have(:no).errors_on(:weekend_hours_available)
+		end
+	end
+	
 	context "pricing" do
 		it "stores a description of pricing" do
 			@profile.pricing = "$1/minute\n$40/15 minutes\n$120/hour"
 			@profile.should have(:no).errors_on(:pricing)
+		end
+		
+		it "has checkable options" do
+			@profile.free_initial_consult = true
+			@profile.sliding_scale_available = true
+			@profile.should have(:no).errors_on(:free_initial_consult)
+			@profile.should have(:no).errors_on(:sliding_scale_available)
 		end
 	end
 	

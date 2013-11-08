@@ -21,7 +21,7 @@
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
 			= hidden_field_tag 'formlet', formlet
-			.check_boxes
+			.check_boxes.stacked
 				= f.label :availability_service_area, t('views.profile.edit.availability_service_area')
 				%br
 				.check_box

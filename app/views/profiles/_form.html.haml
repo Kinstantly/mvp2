@@ -211,12 +211,28 @@
 			%span.note= t 'views.profile.edit.pricing_example'
 			%br
 			%span.note= t 'views.profile.edit.pricing_tip'
+			%br
+			= f.label :pricing_check_boxes, t('views.profile.edit.check_box_prompt')
+			.check_box
+				= f.check_box :free_initial_consult
+				= f.label :free_initial_consult
+			.check_box
+				= f.check_box :sliding_scale_available
+				= f.label :sliding_scale_available
 		.hours
 			.label_area
 				= f.label :hours
 			= f.text_area :hours, size: '30x5'
 			%br
 			%span.note= t 'views.profile.edit.hours_example'
+			%br
+			= f.label :hours_check_boxes, t('views.profile.edit.check_box_prompt')
+			.check_box
+				= f.check_box :evening_hours_available
+				= f.label :evening_hours_available
+			.check_box
+				= f.check_box :weekend_hours_available
+				= f.label :weekend_hours_available
 	%fieldset.reviews
 		%legend= Profile.human_attribute_name :reviews
 		= f.fields_for :reviews do |review_form|

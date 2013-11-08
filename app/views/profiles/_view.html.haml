@@ -87,15 +87,16 @@
 		.availability_service_area
 			%span.label= "#{t 'views.profile.view.availability_service_area'}:"
 			%br
-			= profile_display_consultation_modes profile
-			%br
-			%span.label= profile_display_consult_remotely profile
-			%br
-			%span.label= profile_display_accepting_new_clients profile
-			%br
-			%span.label= "#{Profile.human_attribute_name(:availability_service_area_note)}:"
-			%br
-			.value.text_area= preserve_profile_text profile.availability_service_area_note
+			.value
+				= profile_display_consultation_modes profile
+				%br
+				%span.label= profile_display_consult_remotely profile
+				%br
+				%span.label= profile_display_accepting_new_clients profile
+				%br
+				%span.label= "#{Profile.human_attribute_name(:availability_service_area_note)}:"
+				%br
+				.value.text_area= preserve_profile_text profile.availability_service_area_note
 		.year_started
 			%span.label= "#{Profile.human_attribute_name(:year_started)}:"
 			= profile.year_started
@@ -122,11 +123,15 @@
 		.pricing
 			%span.label= "#{Profile.human_attribute_name(:pricing)}:"
 			%br
-			.value.text_area= preserve_profile_text profile.pricing
+			.value
+				.value.text_area= preserve_profile_text profile.pricing
+				= profile_display_checked_attributes profile, :free_initial_consult, :sliding_scale_available
 		.hours
 			%span.label= "#{Profile.human_attribute_name(:hours)}:"
 			%br
-			.value.text_area= preserve_profile_text profile.hours
+			.value
+				.value.text_area= preserve_profile_text profile.hours
+				= profile_display_checked_attributes profile, :evening_hours_available, :weekend_hours_available
 	%fieldset.rating_info
 		%legend= t 'views.profile.legend.rating_info'
 		-# If this partial is called from a users view, we need an explicit reference to profiles.

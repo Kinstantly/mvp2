@@ -16,6 +16,7 @@ class Profile < ActiveRecord::Base
 		:pricing, :service_area, :hours, :accepting_new_clients, :availability_service_area_note,
 		:invitation_email, :photo_source_url, :profile_photo,
 		:age_range_ids, :ages_stages_note,
+		:evening_hours_available, :weekend_hours_available, :free_initial_consult, :sliding_scale_available,
 		:consult_remotely # provider offers most or all services remotely
 		# :adoption_stage, :preconception_stage, :pregnancy_stage, :ages, # superseded by age_ranges and ages_stages_note
 	
