@@ -6,11 +6,7 @@
 
 require 'rubygems'
 require 'spork'
-#require 'paperclip/matchers'
 
-RSpec.configure do |config|
-	config.include Paperclip::Shoulda::Matchers
-end
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
 
@@ -30,6 +26,7 @@ Spork.prefork do
   require 'rspec/autorun'
   require 'capybara/rspec'
   require 'email_spec'
+  require 'paperclip/matchers'
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
@@ -62,6 +59,8 @@ Spork.prefork do
     # the seed, which is printed after each run.
     #     --seed 1234
     config.order = "random"
+    
+    config.include Paperclip::Shoulda::Matchers
 
     # To reset your application database to a pristine state during testing.
     config.before(:suite) do

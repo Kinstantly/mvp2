@@ -35,6 +35,7 @@
 
 # Ignore public uploads
 /public/system
+/public/profile_photos
 
 # Ignore user-specific and sensitive RubyMine project configuration files.
 /.idea/workspace.xml
