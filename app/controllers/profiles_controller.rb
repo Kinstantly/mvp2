@@ -99,7 +99,7 @@ class ProfilesController < ApplicationController
 					@profile.profile_photo = URI.parse(params[:source_url])
 				rescue
 					render json: {:error => 'true',
-										:error_array => [get_error_message('profile_photo_source_url_error')]} and return
+							:error_array => [get_error_message('profile_photo_source_url_error')]} and return
 				end
 			elsif params[:file]
 				@profile.profile_photo = params[:file]
@@ -109,7 +109,12 @@ class ProfilesController < ApplicationController
 			end
 
 			if @profile.save
-				render json: {:profile_photo_src =>  @profile.profile_photo.url(:original)}
+				if @profile.profile_photo.exists?
+					render json: {:profile_photo_src =>  @profile.profile_photo.url(:original)}
+				else
+					head :bad_request
+					return
+				end 
 			else
 				error_array = Array.new
 				if @profile.errors[:profile_photo_file_size].present?
@@ -124,8 +129,8 @@ class ProfilesController < ApplicationController
 			end
 		rescue Exception => exc
 			logger.error "Profile.save failed during photo upload: #{exc.message}"
-			render json: {:error => 'true', 
-				:error_array => [get_error_message(exc.is_a?(Timeout::Error) ? 'profile_photo_processing_timeout' : 'profile_photo_upload_generic_error')]}
+			render json: {:error => 'true', :profile_id =>  @profile.id,
+				:error_array => [(get_error_message(exc.is_a?(Timeout::Error) ? 'profile_photo_processing_timeout' : 'profile_photo_upload_generic_error'))]}
 		end
 	end
 

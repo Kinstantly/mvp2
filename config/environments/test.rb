@@ -37,6 +37,12 @@ Mvp2::Application.configure do
 
 	# Needed for testing email, e.g., from rspec.
 	config.action_mailer.default_url_options = { :host => 'localhost:5000' }
+
+  # Paperclip config
+  config.paperclip_defaults = {
+    :url => '/:attachment/:id/:filename'
+    #:path => ':rails_root/public:url' #default paperclip path
+  }
 end
 
 REINDEX_PROFILES_IN_BACKGROUND = false
