@@ -312,7 +312,7 @@ describe Profile do
 				results.second.should == @profile_2
 			end
 		
-			context "geographic" do
+			context "geographic", geocoding_api: true, internet: true do
 				before(:each) do
 					@location_1 = @profile_1.locations.build({address1: '1398 Haight St', city: 'San Francisco', region: 'CA', postal_code: '94117'})
 					@location_1.save

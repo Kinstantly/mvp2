@@ -525,9 +525,10 @@ describe ProfilesController do
 			end
 		end
 		
-		it "should add two locations" do
-			location_1_attrs = FactoryGirl.attributes_for(:location, address1: 'First house on the right')
-			location_2_attrs = FactoryGirl.attributes_for(:location, address1: 'Second house on the left')
+		it "should add two locations", geocoding_api: true, internet: true do
+			city_state = {city: 'San Francisco', region: 'CA'}
+			location_1_attrs = FactoryGirl.attributes_for(:location, {address1: '1398 Haight St.'}.merge(city_state))
+			location_2_attrs = FactoryGirl.attributes_for(:location, {address1: '1855 Haight St.'}.merge(city_state))
 			profile = FactoryGirl.create(:profile)
 			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, locations_attributes: {
 				'0' => location_1_attrs, '1' => location_2_attrs
@@ -661,7 +662,7 @@ describe ProfilesController do
 			end
 		end
 		
-		context "search restricted by search area tag" do
+		context "search restricted by search area tag", geocoding_api: true, internet: true do
 			before(:each) do
 				tag = FactoryGirl.create(:search_area_tag, name: 'San Francisco')
 				loc = FactoryGirl.create(:location, search_area_tag: tag)
@@ -682,7 +683,7 @@ describe ProfilesController do
 		end
 	end
 	
-	context "as a site visitor searching by distance" do
+	context "as a site visitor searching by distance", geocoding_api: true, internet: true do
 		let(:service) { FactoryGirl.create(:service, name: 'Brew Master') }
 		let(:bear_location) {
 			FactoryGirl.create(:location, address1: '345 Healdsburg Ave.', city: 'Healdsburg', region: 'CA', postal_code: '95448')
