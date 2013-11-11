@@ -24,21 +24,10 @@
 			.check_boxes.stacked
 				= f.label :availability_service_area, t('views.profile.edit.availability_service_area')
 				%br
-				.check_box
-					= f.check_box :visit_home
-					= f.label :visit_home
-				.check_box
-					= f.check_box :consult_by_video
-					= f.label :consult_by_video
-				.check_box
-					= f.check_box :consult_by_phone
-					= f.label :consult_by_phone
-				.check_box
-					= f.check_box :consult_by_email
-					= f.label :consult_by_email
-				.check_box
-					= f.check_box :visit_school
-					= f.label :visit_school
+				- Profile::CONSULTATION_MODES.each do |attribute|
+					.check_box
+						= f.check_box attribute
+						= f.label attribute
 				.check_box
 					= f.check_box :consult_remotely
 					= f.label :consult_remotely, t('views.profile.edit.consult_remotely')

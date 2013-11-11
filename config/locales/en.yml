@@ -239,6 +239,8 @@ en:
         headline: 'Professional headline'
         hide_locations: 'Hide locations below'
         id: 'Profile ID: %{id}'
+        insurance_accepted: 'Insurance (for health providers only)'
+        insurance_accepted_html: 'Insurance<br>(for health providers only)'
         invitation_to_claim_info: 'Invitation to claim has been sent to %{invitee} at %{time}'
         invitation_to_claim_link: 'Send invitation to claim'
         make_an_appointment: 'Make an appointment'

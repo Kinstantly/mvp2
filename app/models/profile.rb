@@ -1,6 +1,12 @@
 class Profile < ActiveRecord::Base
+	
+	# Placeholder for profiles with no photo.
 	DEFAULT_PHOTO_PATH = 'profile-photo-placeholder.jpg'
-
+	
+	# Possible modes by which the provider may communicate.  Boolean attributes.
+	# Will be displayed in this order.
+	CONSULTATION_MODES = [:visit_home, :consult_by_video, :consult_by_phone, :consult_by_email, :visit_school]
+	
 	has_paper_trail # Track changes to each profile.
 	
 	attr_writer :custom_service_names, :custom_specialty_names # readers defined below
@@ -118,7 +124,8 @@ class Profile < ActiveRecord::Base
 		text :first_name, :last_name, :middle_name, :credentials, 
 			:email, :company_name, :url, 
 			:headline, :education, :certifications, :hours, 
-			:languages, :insurance_accepted, :pricing, :service_area
+			:languages, :insurance_accepted, :pricing, 
+			:availability_service_area_note, :ages_stages_note
 		
 		# Stored for highlighting.
 		text :summary, stored: true
@@ -153,7 +160,16 @@ class Profile < ActiveRecord::Base
 		end
 		
 		boolean :is_published
+		boolean :evening_hours_available
+		boolean :weekend_hours_available
+		boolean :free_initial_consult
+		boolean :sliding_scale_available
+		boolean :consult_remotely
 		boolean :accepting_new_clients
+		CONSULTATION_MODES.each do |attribute|
+			boolean attribute
+		end
+		
 		integer :category_ids, multiple: true
 		integer :service_ids, multiple: true
 		integer :specialty_ids, multiple: true
@@ -353,7 +369,7 @@ class Profile < ActiveRecord::Base
 	
 	# Return the array of consultation mode names that are checked for this profile.
 	def consultation_modes
-		[:visit_home, :consult_by_video, :consult_by_phone, :consult_by_email, :visit_school].map do |attribute|
+		CONSULTATION_MODES.map do |attribute|
 			 send(attribute) ? self.class.human_attribute_name(attribute) : nil
 		end.compact
 	end
