@@ -10,7 +10,6 @@
 - @contact_address_line_1 = "#{t('company.location.street_address')}"
 - @contact_address_line_2 = "#{t('company.location.city')}, #{t('company.location.region')} #{t('company.location.postal_code')}"
 - @contact_phone = "#{t('company.location.phone')}"
-- @connect_invite = "Connect with #{company_name}"
 .contact
 	.content{align: 'center'}
 		.content-wrapper
@@ -54,7 +53,10 @@
 						%div
 							%p= @contact_phone
 					.ui-helper-clearfix
-					%h2.highlight= @connect_invite
+					%h2.highlight= t 'contact.recommend_a_provider'
+					= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
+					.ui-helper-clearfix
+					%h2.highlight= t 'contact.connect_with', name: company_name
 					%ul.social-contact-list
 						%li
 							%span= t('contact.social.twitter.display')

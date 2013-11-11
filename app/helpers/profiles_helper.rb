@@ -571,4 +571,12 @@ module ProfilesHelper
 		end
 		link_to t('views.profile.view.review_provider_link', name: provider_name), uri.html_safe, target: '_blank'
 	end
+
+	def suggest_provider_link
+		uri = 'https://docs.google.com/forms/d/1W690ALolhjBoN7WbWt3-87mc0d-DTFvlTQR6MrbxONw/viewform'
+		if user_signed_in?
+			uri += '?entry.927816333=' + CGI.escape(current_user.email.presence || '')
+		end
+		link_to t('views.search_results.suggest_provider_link'), uri.html_safe, target: '_blank'
+	end
 end

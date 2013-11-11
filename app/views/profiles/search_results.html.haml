@@ -4,6 +4,7 @@
 		.search_results_prompt= t 'views.search_results.search_query_prompt'
 	- if @search_address.blank? and @search.total > 1
 		.search_results_prompt= t 'views.search_results.sorted_by_proximity_prompt'
+	.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
 	.search_results_list#content
 		- @search.results.each_with_index do |profile, i|
 			- profile_id = "profile_#{i}"
@@ -70,6 +71,8 @@
 							%a{href: "#"} Make an appointment
 		- if @search.results.present?
 			.search_result= paginate @search.results
+	- if @search.total > 1
+		.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
 
 :coffeescript
 	event_is_over_element = (e, el) ->
