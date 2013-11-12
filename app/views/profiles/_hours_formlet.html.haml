@@ -2,6 +2,10 @@
 	%span.editable= Profile.human_attribute_name(:hours)
 %td
 	%span.text_area.attribute_display= profile_display_text @profile.errorfree.hours, preserve: true, links: true
+	- if @profile.errorfree.evening_hours_available
+		%p.attribute_display= Profile.human_attribute_name :evening_hours_available
+	- if @profile.errorfree.weekend_hours_available
+		%p.attribute_display= Profile.human_attribute_name :weekend_hours_available
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
@@ -11,8 +15,18 @@
 				= f.label :hours
 				= f.text_area :hours, size: '45x5', class: 'attr'
 				%p.note= t 'views.profile.edit.hours_example'
-			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-			= link_to 'Cancel', '#', class: 'cancel button'
+			.check_boxes.stacked
+				= f.label :hours_check_boxes, t('views.profile.edit.check_box_prompt')
+				%br
+				.check_box
+					= f.check_box :evening_hours_available
+					= f.label :evening_hours_available
+				.check_box
+					= f.check_box :weekend_hours_available
+					= f.label :weekend_hours_available
+			.buttons
+				= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+				= link_to 'Cancel', '#', class: 'cancel button'
 
 :coffeescript
 	# Show character count while filling in field.

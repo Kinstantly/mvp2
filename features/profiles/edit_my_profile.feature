@@ -268,6 +268,29 @@ Feature: Edit my expert profile
 		Then my profile edit page should show "Philo T. Farnsworth, MD, PhD" displayed in the "display name" area
 	
 	@javascript
+	Scenario: Enter hours
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I open the "hours" formlet
+			And I enter "10-5 M-F\n1-4 Sa" in the "Hours" field of the "hours" formlet
+			And I click on the "Save" button of the "hours" formlet
+		Then my profile edit page should show "10-5 M-F" displayed in the "hours" area
+			And my profile edit page should show "1-4 Sa" displayed in the "hours" area
+	
+	@javascript
+	Scenario: Check hours availability options
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I open the "hours" formlet
+			And I check "Evening hours available" in the "hours" formlet
+			And I check "Weekend hours available" in the "hours" formlet
+			And I click on the "Save" button of the "hours" formlet
+		Then my profile edit page should show "Evening hours available" displayed second in the "hours" area
+			And my profile edit page should show "Weekend hours available" displayed third in the "hours" area
+	
+	@javascript
 	Scenario: Enter pricing
 		Given I exist as a user
 			And I am logged in
@@ -278,6 +301,18 @@ Feature: Edit my expert profile
 		Then my profile edit page should show "$1/minute" displayed in the "pricing" area
 			And my profile edit page should show "$40/15 minutes" displayed in the "pricing" area
 			And my profile edit page should show "$120/hour" displayed in the "pricing" area
+	
+	@javascript
+	Scenario: Check pricing options
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I open the "pricing" formlet
+			And I check "Free initial consult" in the "pricing" formlet
+			And I check "Sliding scale available" in the "pricing" formlet
+			And I click on the "Save" button of the "pricing" formlet
+		Then my profile edit page should show "Free initial consult" displayed second in the "pricing" area
+			And my profile edit page should show "Sliding scale available" displayed third in the "pricing" area
 	
 	@javascript
 	Scenario: Add a comment for availability/service area

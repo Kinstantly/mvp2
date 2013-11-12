@@ -237,6 +237,13 @@ module ProfilesHelper
 		[profile_display_services(profile, n).presence,
 			profile_display_specialties(profile, n).presence].compact.join(' | ')
 	end
+	
+	def profile_display_checked_attributes(profile, *attributes)
+		names = attributes.map do |attribute|
+			Profile.human_attribute_name attribute if profile.send attribute
+		end.compact
+		display_wrapped_names names, nil, :span, '<br>'
+	end
 
 	# Categories helpers
 

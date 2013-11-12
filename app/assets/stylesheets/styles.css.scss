@@ -728,9 +728,6 @@ table.info {
 			textarea {
 				width: 438px;
 			}
-			.check_boxes {
-				@include stack-check-box-style;
-			}
 		}
 	}
 	#ages_stages {
@@ -741,9 +738,6 @@ table.info {
 			> p + p {
 				margin-top: 0.5em;
 			}
-		}
-		.popover .check_boxes {
-			@include stack-check-box-style;
 		}
 	}
 }
@@ -837,6 +831,9 @@ table.info {
 		+ .text_field {
 			margin-top: 16px;
 		}
+	}
+	.check_boxes.stacked {
+		@include stack-check-box-style;
 	}
 	.char_count {
 		float: right;

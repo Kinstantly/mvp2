@@ -1,5 +1,5 @@
 %th
-	%span.editable= Profile.human_attribute_name(:insurance_accepted)
+	%span.editable= t 'views.profile.view.insurance_accepted_html'
 %td
 	%span.attribute_display= profile_display_text @profile.errorfree.insurance_accepted, serialize: true, links: true
 	.edit.popover
@@ -8,7 +8,7 @@
 			= hidden_field_tag 'formlet', formlet
 			.text_field#insurance_accepted_field
 				%span.char_count
-				= f.label :insurance_accepted
+				= f.label :insurance_accepted, t('views.profile.view.insurance_accepted')
 				= f.text_area :insurance_accepted, size: '45x5', class: 'attr'
 				%p.note= t 'views.profile.edit.insurance_accepted_example'
 				%p.note= t 'views.profile.edit.insurance_accepted_tip'

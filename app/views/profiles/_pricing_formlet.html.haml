@@ -2,6 +2,10 @@
 	%span.editable= Profile.human_attribute_name(:pricing)
 %td
 	%span.text_area.attribute_display= profile_display_text @profile.errorfree.pricing, preserve: true, links: true
+	- if @profile.errorfree.free_initial_consult
+		%p.attribute_display= Profile.human_attribute_name :free_initial_consult
+	- if @profile.errorfree.sliding_scale_available
+		%p.attribute_display= Profile.human_attribute_name :sliding_scale_available
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
@@ -12,8 +16,18 @@
 				= f.text_area :pricing, size: '45x5', class: 'attr'
 				%p.note= t 'views.profile.edit.pricing_example'
 				%p.note= t 'views.profile.edit.pricing_tip'
-			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-			= link_to 'Cancel', '#', class: 'cancel button'
+			.check_boxes.stacked
+				= f.label :pricing_check_boxes, t('views.profile.edit.check_box_prompt')
+				%br
+				.check_box
+					= f.check_box :free_initial_consult
+					= f.label :free_initial_consult
+				.check_box
+					= f.check_box :sliding_scale_available
+					= f.label :sliding_scale_available
+			.buttons
+				= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+				= link_to 'Cancel', '#', class: 'cancel button'
 
 :coffeescript
 	# Show character count while filling in field.
