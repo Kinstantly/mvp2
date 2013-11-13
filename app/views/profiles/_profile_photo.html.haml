@@ -11,7 +11,7 @@
 	= javascript_include_tag "https://dme0ih8comzn4.cloudfront.net/js/feather.js"
 .edit.popover.profile-photo-update
 	.close-popover-button
-	.errorExplanation.aria-hidden
+	.errorExplanation.area-hidden
 	%ul.steps
 		%li.step_one
 			%label Step 1 of 2
@@ -19,15 +19,15 @@
 				%p Drag and drop an image file from your computer into this box:
 				.file-drop
 					%span{ 'data-placeholder' => 'Drop files here' } Drop files here
-					.upload-waiter.aria-hidden
+					.upload-waiter.area-hidden
 			%p.ajax_upload
 				Or import an image file
-				%input.standard-attachment{ name: 'standard_attachment', accept: 'image/*', type: :file}
+				%input.standard-attachment{ name: 'standard-attachment', accept: 'image/*', type: :file}
 			%p
 				Or
 				= link_to "import an image from a URL", '#', id: 'import_from_url_link'
 				\.
-				.text_field.aria-hidden
+				.text_field.area-hidden
 					%input{type: :text, name: 'source_url', placeholder: source_url_prompt, title: 'import an image from a URL'}
 					%span#import_from_url_button.upload-button.ui-corner-all
 					%p.note= profile_photo_source_url_example
@@ -126,7 +126,7 @@
 			error_div     = $(context.find('div.errorExplanation'))
 
 			support_ajax_upload = Modernizr.xhr2 && Modernizr.filereader
-			support_dnd = Modernizr.draganddrop
+			support_dnd = Modernizr.draganddrop && !!window.FileReader
 
 			steps = context.find('ul.steps > li').map -> $(@)
 
@@ -376,11 +376,11 @@
 				step_to_show = if prev_step == current_step then (default_step - 1) else (step_num - 1)
 				for step in steps
 					do (step) ->
-						step.hide()
+						step.hide().addClass('aria-hidden')
 				if next_flg
-					steps[step_to_show].fadeIn(1500)
+					steps[step_to_show].fadeIn(1500).removeClass('aria-hidden')
 				else
-					steps[step_to_show].show()
+					steps[step_to_show].show().removeClass('aria-hidden')
 
 			init = () ->
 				if !support_ajax_upload
