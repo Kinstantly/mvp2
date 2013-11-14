@@ -86,6 +86,8 @@ def formlet_id(name)
 		'service_area'
 	when 'year started'
 		'year_started'
+	when 'profile photo'
+		'profile_photo'
 	when 'admin'
 		pending 'implement admin formlet'
 	else
@@ -342,6 +344,18 @@ Given /^I have been invited to claim a profile$/ do
 	@unattached_profile.invite
 end
 
+Given /^I have "(a|no)" profile photo$/ do |photo_present|
+  	find_user_profile
+  	case photo_present
+	when 'a'
+		@profile.profile_photo = Rack::Test::UploadedFile.new(
+			Rails.root.join('spec/fixtures/assets/other_profile_photo.jpg'), 'image/png')
+	when 'no'
+		@profile.profile_photo = nil
+	end
+	@profile.save
+end
+
 ### WHEN ###
 
 When /^I view my profile$/ do
@@ -559,7 +573,7 @@ When /^I invite "(.*?)" to claim the profile$/ do |email|
 end
 
 When /^I click on the "(.*?)" (?:link|button)$/ do |link|
-	click_link_or_button link
+	click_link_or_button link	
 end
 
 When /^I enter "(.*?)" in the "(.*?)" field of the (first|second) location on my profile edit page$/ do |text, field, which|
@@ -618,6 +632,35 @@ When /^I give a rating of "(.*?)" on the first review on the admin profile edit 
 	within('.reviews .rating') do
 		choose "profile_reviews_attributes_0_rating_attributes_score_#{score}"
 	end
+end
+
+When /^I see step "(one|two|three)" of "(.*?)" formlet$/ do |step, formlet|
+	within("##{formlet_id formlet}") do
+		page.has_css?("li.step_#{step}:not(.aria-hidden)", :visible => true).should be_true
+		case step
+		when 'one'
+			page.has_no_css?('li.step_two', :visible => true).should be_true
+			page.has_no_css?('li.step_three', :visible => true).should be_true
+		when 'two'
+			page.has_no_css?('li.step_one', :visible => true).should be_true
+			page.has_no_css?('li.step_three', :visible => true).should be_true
+		when 'three'
+			page.has_no_css?('li.step_one.aria-hidden', :visible => true).should be_true
+			page.has_no_css?('li.step_two.aria-hidden', :visible => true).should be_true
+		end
+	end
+end
+
+When /^I upload a valid image file "(.*?)"$/ do |file_name|
+	within('li.step_one') do
+  		attach_file 'standard-attachment', Rails.root.join('spec/fixtures/assets', "#{file_name}").to_s
+  	end
+end
+
+When /^I import a valid image file from "(.*?)"$/ do |url|
+	step 'I click on the "import_from_url_link" link of the "profile photo" formlet'
+	step %{I enter "#{url}" in the "source_url" field of the "profile photo" formlet}
+	find("li.step_one #import_from_url_button").click
 end
 
 ### THEN ###
@@ -827,5 +870,14 @@ end
 Then /^the profile should show the review$/ do
 	within('#reviews') do
 	  page.should have_content @profile.reviews.first.body
+	end
+end
+
+Then /^edit my profile page should show "(.*?)" image as my profile photo$/ do |file_name|
+	using_wait_time 3 do
+		page.has_css?("img[src*='#{file_name}']", :count => 2).should be_true
+		file_path = Rails.root.join("public/profile_photos/#{@profile.id}", file_name)
+		File.exist?(file_path).should be_true
+		File.delete(file_path)
 	end
 end

@@ -364,3 +364,64 @@ Feature: Edit my expert profile
 			And I enter "2007" in the "Year started" field of the "year started" formlet
 			And I click on the "Save" button of the "year started" formlet
 		Then my profile edit page should show "2007" displayed in the "year started" area
+
+	@javascript
+	@photo_upload
+	Scenario: Add profile photo from my computer
+		Given I exist as a user
+			And I am logged in
+			And I have "no" profile photo
+			And I am on my profile edit page
+		When I open the "profile photo" formlet
+			And I see step "one" of "profile photo" formlet
+			And I upload a valid image file "profile_photo_test_under1MB.jpg"
+		Then edit my profile page should show "profile_photo_test_under1MB.jpg" image as my profile photo
+
+	@javascript
+	@photo_upload
+	Scenario: Import profile photo from URL
+		Given I exist as a user
+			And I am logged in
+			And I have "no" profile photo
+			And I am on my profile edit page
+		When I open the "profile photo" formlet
+			And I see step "one" of "profile photo" formlet
+			And I import a valid image file from "http://upload.wikimedia.org/wikipedia/commons/5/56/Tux.jpg"
+		Then edit my profile page should show "Tux.jpg" image as my profile photo
+
+	@javascript
+	@photo_upload
+	Scenario: Change profile photo
+		Given I exist as a user
+			And I am logged in
+			And I have "a" profile photo
+			And I am on my profile edit page
+		When I open the "profile photo" formlet
+			And I see step "two" of "profile photo" formlet
+			And I click on the "upload a different photo" link of the "profile photo" formlet
+			And I upload a valid image file "profile_photo_test_under1MB.jpg"
+		Then edit my profile page should show "profile_photo_test_under1MB.jpg" image as my profile photo
+
+	@javascript
+	@photo_upload
+	Scenario: Edit profile photo
+		Given I exist as a user
+			And I am logged in
+			And I have "a" profile photo
+			And I am on my profile edit page
+			And I open the "profile photo" formlet
+		When I see step "two" of "profile photo" formlet
+			And I click on the "edit_profile_photo" link of the "profile photo" formlet
+		Then my profile should show "Photo Editor"
+
+	@javascript
+	@photo_upload
+	Scenario: View photo upload help page
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I open the "profile_photo" formlet
+			And I click on the "more detailed help" link of the "profile photo" formlet
+		 	And I see step "three" of "profile photo" formlet
+		Then my profile should show "More detailed help for photos:" within "step_three"
+			
