@@ -7,7 +7,11 @@ class User < ActiveRecord::Base
 	
 	before_create :skip_confirmation!, if: :claiming_profile?
 	after_create :send_welcome_email, if: :claiming_profile?
-
+	
+	# Track changes to each user.
+	# But ignore common events like sign-in to minimize versions data.
+	has_paper_trail ignore: [:last_sign_in_at, :current_sign_in_at, :last_sign_in_ip, :current_sign_in_ip, :sign_in_count]
+	
 	# Setup accessible (or protected) attributes for your model
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
 		:profile_attributes, :phone, :is_provider, :username
