@@ -1,0 +1,4 @@
+%fieldset
+	%legend= t 'views.profile.edit.new_review'
+	= form_for @review, url: admin_create_reviews_path, remote: true do |f|
+		= render partial: 'reviews/admin_form_fields', locals: {review: @review, f: f}

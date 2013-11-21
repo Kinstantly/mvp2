@@ -1,3 +1,5 @@
+# Tip: to view the page, use: save_and_open_page
+
 ### UTILITY METHODS ###
 
 def create_visitor
@@ -25,14 +27,14 @@ end
 def create_user
   create_visitor
   delete_user
-  @user = FactoryGirl.create(:expert_user, email: @visitor[:email])
+  @user = FactoryGirl.create(:expert_user, @visitor)
 end
 
 def create_client_user
   create_visitor
   delete_user
   @visitor[:username] = 'username'
-  @user = FactoryGirl.create(:client_user, email: @visitor[:email], username: @visitor[:username])
+  @user = FactoryGirl.create(:client_user, @visitor)
 end
 
 def create_admin_user
@@ -51,7 +53,7 @@ def create_user_2
 	create_visitor
 	@user_2 ||= User.where(:email => @visitor_2[:email]).first
 	@user_2.destroy unless @user_2.nil?
-	@user_2 = FactoryGirl.create(:expert_user, email: @visitor_2[:email])
+	@user_2 = FactoryGirl.create(:expert_user, @visitor_2)
 end
 
 def delete_user

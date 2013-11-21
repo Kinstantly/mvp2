@@ -74,11 +74,11 @@ div.view_profile {
 	}
 	.location + .location, .review + .review {
 		border-top: {
-			width: thin;
+			width: medium;
 			color: gray;
 			style: solid;
 		}
-		padding-top: 0.5em;
+		padding-top: 1em;
 	}
 }
 
@@ -91,6 +91,14 @@ div.view_profile {
 		}
 		#destroy_profile {
 			float: right;
+		}
+	}
+	#review_area, #review_area fieldset {
+		@include profile-areas-div-style;
+		form > div {
+			padding-top: 0.5em;
+			padding-bottom: 0.5em;
+			clear: left;
 		}
 	}
 	form {

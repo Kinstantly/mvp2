@@ -12,12 +12,13 @@ module UsersHelper
 	end
 	
 	def user_display_name(user)
-		user.username.presence || user.profile.try(:display_name_or_company).presence || t('views.user.view.no_name')
+		user.username.presence || t('views.user.view.no_name')
 	end
 	
 	def user_profile_path(user)
-		profile = user.profile
-		profile && can?(:show, profile) ? profile_path(profile) : '#'
+		'#'
+		# profile = user.profile
+		# profile && can?(:show, profile) ? profile_path(profile) : '#'
 	end
 	
 	def user_profile_link(user)

@@ -3,7 +3,9 @@ class Rating < ActiveRecord::Base
 	
 	attr_accessible :score
 	
-	belongs_to :review
+	belongs_to :rater, class_name: 'User'
+	belongs_to :rateable, polymorphic: true
+	# belongs_to :review # when we had one rating per review.
 	
 	SCORES = 1..5
 	
@@ -15,6 +17,6 @@ class Rating < ActiveRecord::Base
 	private
 	
 	def update_profile_rating_score
-		review.try(:profile).try(:update_rating_score)
+		rateable.try(:update_rating_score)
 	end
 end

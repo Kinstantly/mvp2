@@ -3,6 +3,7 @@
 		= profile_link @profile
 		= edit_profile_link @profile
 		= full_profile_link @profile
+		= link_to Profile.human_attribute_name(:reviews), "#{request.path}#review_area"
 		- if can?(:destroy, @profile)
 			= render partial: 'destroy', locals: {profile: @profile}
 	= nested_form_for @profile do |f|
@@ -12,5 +13,17 @@
 		.buttons
 			= f.submit 'Save changes', disable_with: 'Saving...'
 			= link_to "Cancel", profile_path(@profile)
-			= full_profile_link @profile
+			= profile_link @profile
 			= edit_profile_link @profile
+			= full_profile_link @profile
+	%fieldset#review_area
+		%legend= Profile.human_attribute_name :reviews
+		.new_review_div#new_review_div
+			= render partial: 'reviews/admin_new'
+		- @profile.reviews.order_by_descending_updated_at.each do |review|
+			.edit_review_div{id: "edit_review_div_#{review.id}"}
+				= render partial: 'reviews/admin_edit', locals: {review: review}
+	.buttons
+		= profile_link @profile
+		= edit_profile_link @profile
+		= full_profile_link @profile

@@ -1,6 +1,6 @@
 - rating_score = rating.try(:score)
 - rating_title = rating_score || t('rating.no_score')
-- form_id = "single_rating_score_#{rating.id}"
+- form_id = "single_rating_score_#{@single_rating_score_id = (@single_rating_score_id ||= 0) + 1}"
 = form_tag '#', id: form_id do
 	- (Rating::SCORES).each do |i|
 		= radio_button_tag 'rating_score', i, (i == rating_score), class: 'single_rating_score', title: rating_title

@@ -1,0 +1,31 @@
+= f.error_messages
+= f.hidden_field :profile_id
+- rating_score_id = "rating_score_#{review.id.presence || 'new'}"
+- rating_score = review.rating.try(:score)
+.rating{id: rating_score_id}
+	.label_area= f.label :rating_score
+	- Rating::SCORES.each do |score|
+		= radio_button_tag :rating_score, score, rating_score == score, title: provider_rating_title(score)
+.title
+	.label_area= f.label :title
+	= f.text_field :title
+.body
+	= f.label :body
+	%br
+	= f.text_area :body, size: '80x10'
+.good_to_know
+	= f.label :good_to_know
+	%br
+	= f.text_area :good_to_know, size: '80x5'
+.reviewer_email
+	.label_area= f.label :reviewer_email
+	= f.text_field :reviewer_email
+.reviewer_username
+	.label_area= f.label :reviewer_username
+	= f.text_field :reviewer_username
+.buttons
+	= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+
+:javascript
+	// Prettify the star-rating inputs.
+	$('##{rating_score_id} input').rating();

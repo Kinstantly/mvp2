@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
 	accepts_nested_attributes_for :profile
 	
 	has_many :reviews_given, class_name: 'Review', foreign_key: :reviewer_id, dependent: :destroy
-	has_many :ratings_given, class_name: 'Rating', foreign_key: :rater_id # review has destroy dependency for rating
+	has_many :ratings_given, class_name: 'Rating', foreign_key: :rater_id, dependent: :destroy
 	
 	serialize :roles, Array
 	
