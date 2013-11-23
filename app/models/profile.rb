@@ -41,10 +41,11 @@ class Profile < ActiveRecord::Base
 	accepts_nested_attributes_for :locations, allow_destroy: true, limit: 100
 	
 	has_many :reviews, dependent: :destroy
-	accepts_nested_attributes_for :reviews, allow_destroy: true, limit: 1000
-	
-	has_many :ratings, through: :reviews
 	has_many :reviewers, through: :reviews
+	
+	has_many :ratings, as: :rateable, dependent: :destroy
+	has_many :raters, through: :ratings
+	# has_many :ratings, through: :reviews # when we had one rating per review.
 
 	has_attached_file :profile_photo,
 					:styles => {:medium => '110x110', :original => '300x300' },
@@ -360,7 +361,7 @@ class Profile < ActiveRecord::Base
 		else
 			rating_by(user).try(:destroy)
 		end
-		update_attribute :rating_average_score, ratings.average(:score)
+		# update_rating_score is called by rating when it is saved or destroyed.
 		true
 	end
 	

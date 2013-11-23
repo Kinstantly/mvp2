@@ -1,0 +1,4 @@
+- if @success
+	window.location.replace("#{profile_path @review.profile}#reviews");
+- else
+	$('#new_review_div').html('#{escape_javascript(render partial: 'admin_new')}');

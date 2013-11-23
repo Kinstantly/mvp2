@@ -151,7 +151,7 @@
 					%span.num-reviews= link_to (n_reviews == 0 ? t('review.none') : t('review.how_many', count: n_reviews)), '#'
 				%section.review-body
 					.reviews
-						= render partial: 'single_rating_score', locals: {rating: review.rating}
+						= render partial: 'single_rating_score', locals: {rating: @profile.rating_by(reviewer)}
 						.review-date= display_profile_date review.updated_at
 					%p= profile_display_text review.body, preserve: true
 -# For editors and administrators only.

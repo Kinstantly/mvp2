@@ -68,6 +68,7 @@ class ProfilesController < ApplicationController
 	end
 	
 	def edit_plain
+		@review = @profile.reviews.build # To create a review for this provider.
 		render layout: 'plain'
 	end
 	

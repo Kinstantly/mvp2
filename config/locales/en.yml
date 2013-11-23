@@ -49,6 +49,8 @@ en:
       profile_photo_edit_generic_error: 'Something went wrong. Please try again.'
       profile_photo_processing_timeout: 'Photo processing took too long.  Please try a smaller photo file size.'
       profile_photo_no_dnd_support: 'Drag and Drop is not supported by your browser. Please use one of upload options below.'
+    reviews:
+      destroyed: 'The review was destroyed!'
     services:
       created: "Service '%{name}' was created."
       create_error: 'The was a problem creating the service.'
@@ -148,6 +150,7 @@ en:
         display_phone: 'Phone'
       review:
         body: 'What makes this provider worth a shout-out--or a call-out?'
+        rating_score: 'Provider rating (not a review rating!)'
       service:
         is_predefined: 'Can be assigned to a category'
       specialty:
@@ -280,6 +283,7 @@ en:
         consultation_modes_title: 'Consultation methods and locations'
         display_name_blank: 'Your company name is shown if these fields are left blank.'
         display_name_or_company_blank: 'Your name'
+        edit_review: 'Edit review by %{name}'
         education_example_html: 'Example:<br>Fellowship: orthopedic surgery, Hospital of the U. of Pennsylvania, Philadelphia, 2008<br>Residency: orthopedic surgery, Hospital of the U. of Pennsylvania, Philadelphia, 2006<br>Medical degree: University of Rochester School of Medicine, 2004'
         education_tip: 'Tip: List your most recent or important degrees first.'
         email_example: 'Example: katie@allkidstutoring.com'
@@ -288,6 +292,7 @@ en:
         insurance_accepted_example: 'Examples: I accept most insurance plans; see details: www.website/insurance.com'
         insurance_accepted_tip: 'Tip: Keep it short and scan-able; link to more detailed information.'
         languages_example: 'Examples: English, Spanish; Vietnamese (staff only)'
+        new_review: 'Create a review'
         pricing_example: 'Examples: $100/hour; See details: www.allkidstutoring.com/fees...'
         pricing_tip: 'Tip: Keep it short and scan-able; link to more detailed information.'
         search_area_tag_other: 'Other'
@@ -313,6 +318,9 @@ en:
         message: 'if you want to replace your existing profile with the one you want claim.'
     review:
       edit:
+        delete: 'Delete review'
+        delete_confirm: 'This review will be destroyed.  Are you sure?'
+        deleting: 'Deleting...'
         remove: 'Mark the above review for removal upon saving'
         remove_confirm: 'This review will be removed when you click save.'
         remove_confirm_admin: 'This review will be removed when you save the profile.'

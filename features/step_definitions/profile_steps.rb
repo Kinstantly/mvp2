@@ -232,7 +232,7 @@ Given /^there is an unclaimed profile$/ do
 	create_unattached_profile
 end
 
-Given /^I visit the (view|edit|admin view|admin edit) page for an? (claimed|published|unclaimed|unpublished) profile( with no locations| with one location| with no reviews| with one review)?$/ do |page, type, items|
+Given /^I visit the (view|edit|admin view|admin edit) page for (?:a|an|the) (claimed|published|unclaimed|unpublished|current) profile( with no locations| with one location| with no reviews| with one review)?$/ do |page, type, items|
 	attrs = case items.try(:sub, /\A\s*with\s*/, '')
 	when 'no locations'
 		{ locations: [] }
@@ -241,7 +241,9 @@ Given /^I visit the (view|edit|admin view|admin edit) page for an? (claimed|publ
 	when 'no reviews'
 		{ reviews: [] }
 	when 'one review'
-		{ reviews: [FactoryGirl.create(:review)] }
+		# The review needs a reviewer associated for display purposes, but should not have the
+		# associated profile preset because we need to associate it with the profile created here.
+		{ reviews: [FactoryGirl.create(:review, reviewer: FactoryGirl.create(:parent))] }
 	else
 		{}
 	end
@@ -250,7 +252,7 @@ Given /^I visit the (view|edit|admin view|admin edit) page for an? (claimed|publ
 	when /unclaimed|unpublished/
 		create_unattached_profile attrs
 		find_unattached_profile
-	else
+	when /claimed|published/
 		create_published_profile attrs
 		find_published_profile
 	end
@@ -551,7 +553,7 @@ When /^I check the publish box in the "(.*?)" formlet$/ do |formlet|
 end
 
 When /^I save the profile$/ do
-	click_button 'Save'
+	click_button 'save_profile_button'
 end
 
 When /^I create the profile$/ do
@@ -611,34 +613,6 @@ end
 
 When /^I click on the link to see all locations$/ do
 	click_link 'more_locations'
-end
-
-When /^I enter "(.*?)"(?: as the )?(reviewer email|reviewer username)? (?:of|in) the (first|second) review on the admin profile edit page$/ do |text, field, which|
-	attribute = case field
-	when 'reviewer email'
-		:reviewer_email
-	when 'reviewer username'
-		:reviewer_username
-	else
-		:body
-	end
-	label = Review.human_attribute_name attribute
-	case which
-	when 'first'
-		within('.reviews .fields') do
-			fill_in label, with: text
-		end
-	when 'second'
-		within('.reviews .fields + .fields') do
-			fill_in label, with: text
-		end
-	end
-end
-
-When /^I give a rating of "(.*?)" on the first review on the admin profile edit page$/ do |score|
-	within('.reviews .rating') do
-		choose "profile_reviews_attributes_0_rating_attributes_score_#{score}"
-	end
 end
 
 When /^I see step "(one|two|three)" of "(.*?)" formlet$/ do |step, formlet|
@@ -871,12 +845,6 @@ end
 Then /^I should be asked to replace my existing profile$/ do
 	within('a[id="claim_profile_confirm_link"]') do
 		page.should have_content 'Click here'
-	end
-end
-
-Then /^the profile should show the review$/ do
-	within('#reviews') do
-	  page.should have_content @profile.reviews.first.body
 	end
 end
 

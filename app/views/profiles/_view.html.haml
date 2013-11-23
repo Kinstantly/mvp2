@@ -47,8 +47,8 @@
 		.photo_source_url
 			= "#{Profile.human_attribute_name(:photo_source_url)} (deprecated):"
 			= profile_linked_photo_source profile
-			%br
-			= image_tag profile.photo_source_url.strip, height: '168', border: '1' if profile.photo_source_url.present?
+			-# %br
+			-# = image_tag profile.photo_source_url.strip, height: '168', border: '1' if profile.photo_source_url.present?
 	%fieldset.location_contact_profile
 		%legend= Profile.human_attribute_name :locations
 		- profile.locations.each do |location|
@@ -140,14 +140,22 @@
 			%br
 			%span.label= "#{Rating.human_attribute_name(:score)}:"
 			= provider_rating_average_score profile
-	%fieldset.reviews
+			based on
+			= t 'rating.how_many', count: profile.ratings.size
+	%fieldset.reviews#review_area
 		%legend= Profile.human_attribute_name :reviews
 		- profile.reviews.each do |review|
 			.review
 				-# If this partial is called from a users view, we need an explicit reference to profiles.
 				= render partial: 'profiles/single_rating_score', locals: {rating: review.rating}
 				%br
+				%span.label= "#{Review.human_attribute_name(:title)}:"
+				.value= review.title
+				%br
+				%span.label= Review.human_attribute_name(:body)
 				.value.text_area= preserve_profile_text review.body
+				%span.label= Review.human_attribute_name(:good_to_know)
+				.value.text_area= preserve_profile_text review.good_to_know
 				- if can? :manage, Profile
 					%span.label= "#{Review.human_attribute_name(:reviewer_email)}:"
 					= review.reviewer_email

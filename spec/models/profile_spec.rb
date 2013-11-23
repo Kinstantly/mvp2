@@ -530,42 +530,29 @@ describe Profile do
 	end
 	
 	context "ratings" do
-		let(:profile) { FactoryGirl.create(:published_profile) }
-		let(:user) { FactoryGirl.create(:client_user) }
-		let(:profile_with_reviews) { 
-			review_attrs = { body: 'This review must have enough words to be substantial.', reviewer_email: user.email }
-			review = profile.reviews.build(review_attrs)
-			rating = review.build_rating(score: 3)
-			review.save
-			rating.save
-			review = profile.reviews.build(review_attrs)
-			rating = review.build_rating(score: 4)
-			review.save
-			rating.save
-			Profile.find(profile.id)
-		}
+		let(:profile_to_rate) { FactoryGirl.create :published_profile }
+		let(:zeus) { FactoryGirl.create :parent, email: 'zeus@example.com', username: 'zeus' }
+		let(:hera) { FactoryGirl.create :parent, email: 'hera@example.com', username: 'hera' }
+		
+		before(:each) do
+			profile = Profile.find(profile_to_rate.id)
+			profile.ratings.each &:destroy
+			profile.rate 2, zeus
+			profile.rate 3, hera
+		end
 		
 		it "maintains an average rating score" do
-			profile_with_reviews.should have(2).ratings
-			reviews = profile_with_reviews.reviews
-			expected_average_score = (reviews[0].rating.score + reviews[1].rating.score) / 2.0
-			profile_with_reviews.rating_average_score.should be_within(0.01).of(expected_average_score)
+			Profile.find(profile_to_rate.id).rating_average_score.should be_within(0.01).of(2.5)
 		end
 		
 		it "can rerate a review" do
-			reviews = profile_with_reviews.reviews
-			rating = reviews[0].rating
-			rating.score += 1
-			rating.save
-			expected_average_score = (reviews[0].rating.score + reviews[1].rating.score) / 2.0
-			updated_profile = Profile.find(profile_with_reviews.id)
-			updated_profile.rating_average_score.should be_within(0.01).of(expected_average_score)
+			Profile.find(profile_to_rate.id).rate 4, zeus
+			Profile.find(profile_to_rate.id).rating_average_score.should be_within(0.01).of(3.5)
 		end
 		
 		it "can remove a rating" do
-			profile_with_reviews.reviews.first.destroy
-			updated_profile = Profile.find(profile_with_reviews.id)
-			updated_profile.rating_average_score.should be_within(0.01).of(updated_profile.reviews.first.rating.score)
+			Profile.find(profile_to_rate.id).rate nil, zeus
+			Profile.find(profile_to_rate.id).rating_average_score.should be_within(0.01).of(3)
 		end
 	end
 	

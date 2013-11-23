@@ -79,6 +79,15 @@ Mvp2::Application.routes.draw do
 		end
 	end
 	
+	resources :reviews do
+		member do
+			put :admin_update
+		end
+		collection do
+			post :admin_create
+		end
+	end
+	
 	# Where to go after sign-up or sign-in.
 	#  Using this option causes the response path to be user_root; kind of weird.
 	#  Better to override in the ApplicationController.
