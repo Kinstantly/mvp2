@@ -239,7 +239,9 @@ Given /^I visit the (view|edit|admin view|admin edit) page for (?:a|an|the) (cla
 	when 'no reviews'
 		{ reviews: [] }
 	when 'one review'
-		{ reviews: [FactoryGirl.create(:review)] }
+		# The review needs a reviewer associated for display purposes, but should not have the
+		# associated profile preset because we need to associate it with the profile created here.
+		{ reviews: [FactoryGirl.create(:review, reviewer: FactoryGirl.create(:parent))] }
 	else
 		{}
 	end
@@ -537,7 +539,7 @@ When /^I check the publish box in the "(.*?)" formlet$/ do |formlet|
 end
 
 When /^I save the profile$/ do
-	click_button 'Save'
+	click_button 'save_profile_button'
 end
 
 When /^I create the profile$/ do
