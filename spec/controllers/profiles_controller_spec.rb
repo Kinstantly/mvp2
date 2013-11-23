@@ -79,7 +79,7 @@ describe ProfilesController do
 		describe "POST 'photo_update'", :photo_upload => true do
 			it "cannot update profile photo", :photo_upload => true do
 				id = FactoryGirl.create(:profile).id
-				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('tmp/test/profile_photo_test_under1MB.jpg'), 'image/png')
+				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 'image/png')
 				post :photo_update, id: id, file: @photo_file
 				response.status.should eq(302)
 				expect(Profile.find_by_id(id).profile_photo.original_filename).to_not eq("profile_photo_test_under1MB.jpg")
@@ -119,7 +119,7 @@ describe ProfilesController do
 		describe "POST 'photo_update'", :photo_upload => true do
 			it "cannot update profile photo", :photo_upload => true do
 				id = FactoryGirl.create(:profile).id
-				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('tmp/test/profile_photo_test_under1MB.jpg'), 'image/png')
+				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 'image/png')
 				post :photo_update, id: id, file: @photo_file
 				response.status.should eq(302)
 				expect(Profile.find_by_id(id).profile_photo.original_filename).to_not eq("profile_photo_test_under1MB.jpg")
@@ -258,9 +258,9 @@ describe ProfilesController do
 		describe "POST 'photo_update'", :photo_upload => true do
 			before(:all) do
 				@photo_file = Rack::Test::UploadedFile.new(
-					Rails.root.join('tmp/test/profile_photo_test_under1MB.jpg'), 'image/png')
+					Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 'image/png')
 			end
-			it "successfully updates profile photo", :photo_upload => true do
+			it "successfully uploads profile photo" do
 				id = my_profile_id
 				post :photo_update, id: id, file: @photo_file
 				@profile = Profile.find_by_id(id)
@@ -271,7 +271,19 @@ describe ProfilesController do
 				@profile.save
 			end
 
-			it "cannot update profile photo of a profile I don't own", :photo_upload => true do
+			it "successfully imports profile photo from url" do
+				id = my_profile_id
+				url = 'http://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png'
+				post :photo_update, id: id, source_url: url
+				@profile = Profile.find_by_id(id)
+				response.should be_success
+				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
+				expect(response.body).to include("Tux.png")
+				@profile.profile_photo.destroy
+				@profile.save
+			end
+
+			it "cannot update profile photo of a profile I don't own" do
 				id = other_profile_id
 				post :photo_update, id: id, file: @photo_file
 				response.status.should eq(302)
@@ -384,11 +396,13 @@ describe ProfilesController do
 		end
 
 		describe "POST 'photo_update'", :photo_upload => true do
-			it "successfully updates profile photo", :photo_upload => true do
+			before(:each) do
 				@profile = FactoryGirl.create(:profile)
+			end
+			it "successfully uploads profile photo", :photo_upload => true do
 				id = @profile.id
 				@photo_file = Rack::Test::UploadedFile.new(
-					Rails.root.join('tmp/test/profile_photo_test_under1MB.jpg'), 'image/png')
+					Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 'image/png')
 				post :photo_update, id: id, file: @photo_file
 				response.should be_success
 				expect(Profile.find_by_id(id).profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
@@ -397,8 +411,23 @@ describe ProfilesController do
 				@profile.profile_photo.destroy
 				@profile.save
 			end
+			it "successfully imports profile photo from url" do
+				id = @profile.id
+				url = 'http://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png'
+				post :photo_update, id: id, source_url: url
+				@profile = Profile.find_by_id(id)
+				response.should be_success
+				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
+				expect(response.body).to include("Tux.png")
+				@profile.profile_photo.destroy
+				@profile.save	
+			end
+			after(:each) do
+				#delete uploaded photo
+				@profile.profile_photo.destroy
+				@profile.save
+			end
 		end
-		
 		describe "DELETE 'destroy'" do
 			it "destroys unattached profile" do
 				destroys_unattached_profile
@@ -476,10 +505,10 @@ describe ProfilesController do
 			before(:each) do
 				@profile = FactoryGirl.create(:profile)
 			end
-			it "successfully updates profile photo" do
+			it "successfully uploads profile photo" do
 				id = @profile.id
 				@photo_file = Rack::Test::UploadedFile.new(
-					Rails.root.join('tmp/test/profile_photo_test_under1MB.jpg'), 
+					Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 
 					'image/png')
 				@profile.profile_photo = @photo_file
 				post :photo_update, id: id, file: @photo_file
@@ -487,12 +516,21 @@ describe ProfilesController do
 				expect(Profile.find_by_id(id).profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
 				expect(response.body).to include("profile_photo_test_under1MB.jpg")
 			end
+			it "successfully imports profile photo from url" do
+				id = @profile.id
+				url = 'http://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png'
+				post :photo_update, id: id, source_url: url
+				@profile = Profile.find_by_id(id)
+				response.should be_success
+				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
+				expect(response.body).to include("Tux.png")
+			end
 			it "should not upload empty file" do
 				post :photo_update, id: @profile.id, file: ''
 				response.status.should eq(400)
 			end
 			it "should not upload file over 5MB in size" do
-				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('tmp/test/6MB.jpg'))
+				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/6MB.jpg'))
 				@profile.profile_photo = @photo_file
 				post :photo_update, id: @profile.id, file: @photo_file
 				response.should be_success
@@ -500,7 +538,7 @@ describe ProfilesController do
 			end
 			it "should not upload non-image file" do
 				#no content type meta-data set -> assuming invalid file type
-				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('tmp/test/profile_photo_test_under1MB.jpg'))
+				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'))
 				@profile.profile_photo = @photo_file
 				post :photo_update, id: @profile.id, file: @photo_file
 				response.should be_success

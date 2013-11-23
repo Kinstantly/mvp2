@@ -50,7 +50,6 @@ class Profile < ActiveRecord::Base
 					:styles => {:medium => '110x110', :original => '300x300' },
 					:default_url => DEFAULT_PHOTO_PATH
     
-	
 	validate :publishing_requirements
 	# validates :categories, length: {maximum: 1}
 	validates :email, email: true, allow_blank: true

@@ -22,7 +22,7 @@
 					.upload-waiter.aria-hidden
 			%p.ajax_upload
 				Or import an image file
-				%input.standard-attachment{ name: 'standard_attachment', accept: 'image/*', type: :file}
+				%input.standard-attachment{ name: 'standard-attachment', accept: 'image/*', type: :file}
 			%p
 				Or
 				= link_to "import an image from a URL", '#', id: 'import_from_url_link'
@@ -126,7 +126,7 @@
 			error_div     = $(context.find('div.errorExplanation'))
 
 			support_ajax_upload = Modernizr.xhr2 && Modernizr.filereader
-			support_dnd = Modernizr.draganddrop
+			support_dnd = Modernizr.draganddrop && !!window.FileReader
 
 			steps = context.find('ul.steps > li').map -> $(@)
 
@@ -376,11 +376,11 @@
 				step_to_show = if prev_step == current_step then (default_step - 1) else (step_num - 1)
 				for step in steps
 					do (step) ->
-						step.hide()
+						step.hide().addClass('aria-hidden')
 				if next_flg
-					steps[step_to_show].fadeIn(1500)
+					steps[step_to_show].fadeIn(1500).removeClass('aria-hidden')
 				else
-					steps[step_to_show].show()
+					steps[step_to_show].show().removeClass('aria-hidden')
 
 			init = () ->
 				if !support_ajax_upload
