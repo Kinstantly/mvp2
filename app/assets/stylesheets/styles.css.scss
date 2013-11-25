@@ -336,7 +336,7 @@ $masthead_width: 920px;
 	font-family: $default_font_family;
 }
 #content-header {
-	width: 900px;
+	width: 920px;
 	margin: 0px auto 42px auto;
 }
 #details {
@@ -443,16 +443,27 @@ $masthead_width: 920px;
 .reviewed-1-star .star1 {
 	background: url('star.gif') 0px -17px;
 }
-.provider_rating form {
-	float: left;
+.provider_rating {
+	form, .rating-title {
+		float: left;
+		margin-top: 0.5em;
+	}
+	.rating-title {
+		width: 124px;
+	}
 }
-.reviews .review-num, .provider_rating .review-num {
+.rate_provider_form .rate-this {
+	width: 105px;
+}
+.reviews .review-num, .provider_rating .review-num, .provider_rating .rating-title, .rate_provider_form .rate-this {
 	font-size: 13px;
 	color: $text_light_color;
 	padding-top: 3px;
 	font-style: italic;
 	float: left;
-	margin-left: 4px;
+}
+.reviews .review-num, .provider_rating .review-num {
+	margin-left: 6px;
 }
 .rate, .rate_provider_form {
 	padding-top: 8px;
@@ -463,13 +474,14 @@ $masthead_width: 920px;
 }
 .rate_provider_form form {
 	float: left;
+	margin-top: 0.5em;
 }
-.rate .rate-this, .rate_provider_form .rate-this {
+.rate .rate-this, .review-this {
 	float: left;
 	font-size: 13px;
 	font-weight: bold;
 	margin-right: 6px;
-	padding-top: 3px;
+	padding-top: 8px;
 }
 
 @mixin appointment-style {
@@ -486,7 +498,7 @@ $masthead_width: 920px;
 	}
 }
 
-$contact_toolbar_width: 270px;
+$contact_toolbar_width: 300px;
 .contact-toolbar {
 	width: $contact_toolbar_width;
 	float: left;
@@ -573,12 +585,16 @@ $contact_toolbar_width: 270px;
 	}
 }
 
-#contact_options {
+#rate_review {
 	width: $contact_toolbar_width;
 	float: left;
+	padding-left: 8px;
+	> div {
+		clear: left;
+	}
 	.appointment {
 		@include appointment-style;
-		margin-left: 20px;
+		padding-top: 16px;
 	}
 }
 
@@ -1057,6 +1073,9 @@ div.popover {
 			background-size: contain;
 			background: url('profile-photo-placeholder-60.jpg') 0px 0px no-repeat;
 		}
+		.rating-title {
+			display: none;
+		}
 		.short-profile {
 			position: relative;
 			.popover {
@@ -1153,15 +1172,19 @@ div.popover {
 		}
 		.rating-contact {
 			float: left;
+			> div {
+				clear: left;
+			}
 			.provider_rating {
 				float: left;
+			}
+			.appointment {
+				@include appointment-style;
+				padding-top: 12px;
 			}
 			.contact-toolbar {
 				clear: left;
 				margin-top: 12px;
-				.appointment {
-					margin-top: 12px;
-				}
 			}
 		}
 	}

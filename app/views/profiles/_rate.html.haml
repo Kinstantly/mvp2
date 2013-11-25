@@ -1,14 +1,11 @@
 .rate_provider_form
 	- form_id = "rate_provider_#{profile.id}"
 	.rate-this
-		- if profile.ratings.size > 0
-			= t 'rating.prompt_for_score', name: profile.display_name_or_company
-		- else
-			= t 'rating.prompt_for_first_score', name: profile.display_name_or_company
+		= profile.rating_by(current_user) ? t('rating.prompt_for_score') : t('rating.prompt_for_first_score')
 	= form_tag rate_profile_path(profile), id: form_id do
 		- current_user_score = profile.rating_by(current_user).try(:score).try(:round).presence || -1
 		- Rating::SCORES.each do |i|
-			= radio_button_tag "#{form_id}", i, (i == current_user_score), class: "rate_provider", title: provider_rating_title(i)
+			= radio_button_tag "#{form_id}", i, (i == current_user_score), class: "rate_provider", title: provider_rating_title(i), id: "rate_provider_#{i}"
 :javascript
 	(function() {
 		var post_rating;

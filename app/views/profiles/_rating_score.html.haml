@@ -1,16 +1,15 @@
 .provider_rating
+	.rating-title= "#{Profile.human_attribute_name :rating_average_score}:"
 	- form_id = "provider_score_#{profile.id}"
 	= form_tag rate_profile_path(profile), id: form_id do
 		- provider_score_title = provider_rating_average_score profile
 		- provider_score_index = ((profile.rating_average_score.presence || -1) * 2).round
 		- (Rating::SCORES * 2).each do |i|
 			= radio_button_tag "#{form_id}", i, (i == provider_score_index), class: "provider_score {split:2}", title: provider_score_title
-	- n_reviews = profile.reviews.size
 	.review-num
-		- if n_reviews == 0
-			= t 'review.none'
-		- else
-			= t 'review.how_many', count: n_reviews
+		= display_count_for 'rating', profile.ratings.count
+		%br
+		= display_count_for 'review', profile.reviews.count
 :javascript
 	$('form##{form_id} input.provider_score').rating().rating('readOnly', true);
 	if (!my_vars.f.rating_score_reset) {
