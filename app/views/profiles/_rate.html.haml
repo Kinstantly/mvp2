@@ -1,21 +1,29 @@
+- embedded_in ||= :default
+- doing_review = [:review].include? embedded_in
+- submit_by_ajax ||= doing_review
 .rate_provider_form
 	- form_id = "rate_provider_#{profile.id}"
-	.rate-this
-		- if profile.ratings.size > 0
-			= t 'rating.prompt_for_score', name: profile.display_name_or_company
-		- else
-			= t 'rating.prompt_for_first_score', name: profile.display_name_or_company
-	= form_tag rate_profile_path(profile), id: form_id do
+	- unless doing_review
+		.rate-this
+			= profile.rating_by(current_user) ? t('rating.prompt_for_score') : t('rating.prompt_for_first_score')
+	= form_tag rate_profile_path(profile), id: form_id, method: :get do
 		- current_user_score = profile.rating_by(current_user).try(:score).try(:round).presence || -1
 		- Rating::SCORES.each do |i|
-			= radio_button_tag "#{form_id}", i, (i == current_user_score), class: "rate_provider", title: provider_rating_title(i)
+			= radio_button_tag 'score', i, (i == current_user_score), class: "rate_provider", title: provider_rating_title(i), id: "rate_provider_#{i}"
+	- if doing_review
+		.rate-this
+			= profile.rating_by(current_user) ? t('rating.change_review_score_html') : t('rating.add_review_score')
 :javascript
 	(function() {
 		var post_rating;
 		post_rating = function(value, link) {
-			return $.post('#{rate_profile_path profile}', { score: value }, function() {
-				return $('.provider_rating').load('#{rating_score_profile_path profile} .provider_rating > *', my_vars.f.rating_score_reset);
-			});
+			if (#{!!submit_by_ajax}) {
+				return $.post('#{rate_profile_path profile}', { score: value }, function(success) {
+					return $('.provider_rating').load('#{rating_score_profile_path profile} .provider_rating > *', my_vars.f.rating_score_reset);
+				}, 'json');
+			} else {
+				return $('##{form_id}').submit();
+			}
 		};
 		$('form##{form_id} input.rate_provider').rating({ callback: post_rating });
 		my_vars.f.rate_reset = function() {

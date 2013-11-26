@@ -186,4 +186,8 @@ module ApplicationHelper
 		end.join(separator).try(:html_safe)
 	end
 	
+	def display_count_for(scope, count)
+		count == 0 ? t('none', scope: scope) : t('how_many', scope: scope, count: count)
+	end
+	
 end

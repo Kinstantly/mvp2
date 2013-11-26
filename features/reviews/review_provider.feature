@@ -7,4 +7,4 @@ Feature: Review provider
 		Given a published profile exists
 			And I am not logged in
 		When I visit the published profile page
-		Then the profile should show "Review" within "rate-this"
+		Then the profile should show "Review" within "review-this"

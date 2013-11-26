@@ -1,0 +1,3 @@
+.new_review
+	- if can? :rate, @profile
+		= render partial: 'profiles/rate', locals: {profile: @profile, embedded_in: :review}

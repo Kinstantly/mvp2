@@ -30,7 +30,6 @@
 			= image_tag @profile.profile_photo.url(:original), alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(@profile)
 		.profile
 			%h1{itemprop: "name"}= @profile.display_name_or_company
-			= render partial: 'profiles/rating_score', locals: {profile: @profile}
 			%span.title{itemprop: "jobTitle"}= @profile.headline
 			- if @profile.company_name.present? && @profile.display_name.present?
 				%span.title{itemprop: "affiliation"}= @profile.company_name
@@ -57,9 +56,11 @@
 				%span.location{itemprop: "email"}
 					= t 'views.profile.view.email'
 					= profile_linked_email @profile
-			.rate
-				.rate-this= profile_review_link @profile
-		#contact_options
+		#rate_review
+			= render partial: 'profiles/rating_score', locals: {profile: @profile}
+			- unless @profile == current_user.try(:profile)
+				= render partial: 'profiles/rate', locals: {profile: @profile}
+				.review-this= profile_review_link @profile
 			.appointment
 				%a{href: "#"}= t 'views.profile.view.make_an_appointment'
 	%section#details.clearfix

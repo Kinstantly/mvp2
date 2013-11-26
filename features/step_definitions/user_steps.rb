@@ -313,6 +313,13 @@ Then /^I should not see user data that is not my own$/ do
 	page.should_not have_content @visitor_2[:email]
 end
 
-Then /^I should be on the provider (?:registration|sign[- ]up) page$/ do
-	page.current_path.should == provider_sign_up_path
+Then /^I should (?:be|land) on the (provider|member) (?:registration|sign[- ]up) page$/ do |role|
+	path = case role
+	when 'provider'
+		provider_sign_up_path
+	else
+		member_sign_up_path
+	end
+	page.current_path.should == path
 end
+

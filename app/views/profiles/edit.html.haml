@@ -30,14 +30,14 @@
 		.profile{itemscope: "", itemtype: "http://schema.org/Person"}
 			#display_name.formlet
 				= render partial: 'formlet', locals: {formlet: 'display_name'}
-			= render partial: 'profiles/rating_score', locals: {profile: @profile}
 			#job.formlet
 				= render partial: 'formlet', locals: {formlet: 'job'}
 			#locations.formlet
 				= render partial: 'formlet', locals: {formlet: 'locations'}
 			#internet.formlet
 				= render partial: 'formlet', locals: {formlet: 'internet'}
-		#contact_options
+		#rate_review
+			= render partial: 'profiles/rating_score', locals: {profile: @profile}
 			.appointment
 				%a{href: "#"}= t 'views.profile.view.make_an_appointment'
 	%section#details.clearfix
