@@ -414,6 +414,8 @@ en:
     score_3: 'Just okay'
     score_4: 'Really good'
     score_5: 'Super!'
+    add_review_score: 'Please click the stars to rate this provider'
+    change_review_score_html: 'Was this rating a mistake? Click the stars to change your rating &mdash; or click the "no" symbol to delete your rating entirely'
     prompt_for_score: 'Click the stars to change your rating'
     prompt_for_first_score: 'Click the stars to add your rating'
     none: 'No ratings'

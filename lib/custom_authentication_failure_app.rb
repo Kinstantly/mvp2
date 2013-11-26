@@ -2,6 +2,8 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 	def i18n_message(default = nil)
 		if default.nil? && claiming_profile?
 			super(:claiming_profile)
+		elsif default.nil? && reviewing_provider?
+			super(:reviewing_provider)
 		else
 			super
 		end
@@ -9,7 +11,9 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 	
 	def redirect_url
 		#return super unless [:worker, :employer, :user].include?(scope) #make it specific to a scope
-		if claiming_profile?
+		if reviewing_provider?
+			member_sign_up_url
+		elsif claiming_profile?
 			session[:claiming_profile] = params[:token]
 			provider_sign_up_url
 		else
@@ -34,5 +38,12 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 	# If attempting to claim a profile, we need to register as a provider first.
 	def claiming_profile?
 		attempted_path && attempted_path.start_with?(claim_user_profile_path('1').chop)
+	end
+	
+	# If attempting to rate a provider, we need to register or sign in first.
+	def reviewing_provider?
+		(canonical_path = attempted_path.try(:sub, /\d+/, '1')) &&
+			(canonical_path.start_with?(rate_profile_path('1')) ||
+			 canonical_path.start_with?(new_review_for_profile_path('1')))
 	end
 end

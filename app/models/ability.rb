@@ -15,6 +15,9 @@ class Ability
 		can :rate, Profile, is_published: true if user.confirmed_at
 		cannot :rate, Profile, user_id: user.id
 		
+		# Any confirmed user can create a review.
+		can :create, Review if user.confirmed_at
+		
 		# Experts should only be able to edit the profile attached to their user.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.
 		# But don't allow expert to view or edit their profile via the users_controller, because it is too permissive.

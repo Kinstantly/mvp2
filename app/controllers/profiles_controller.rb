@@ -208,7 +208,12 @@ class ProfilesController < ApplicationController
 	end
 	
 	def rate
-		render json: !!@profile.try(:rate, params[:score], current_user)
+		respond_to do |format|
+			success = !!@profile.try(:rate, params[:score], current_user)
+			set_flash_message :alert, :rate_error unless success
+			format.html { redirect_to new_review_for_profile_url @profile }
+			format.json { render json: {success: success} }
+		end
 	end
 	
 	private

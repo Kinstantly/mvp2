@@ -10,6 +10,10 @@ end
 
 ### THEN ###
 
-Then /^the published profile should have an average rating of ([\d.]+)$/ do |rating|
+Then /^the profile should have an average rating of ([\d.]+)$/ do |rating|
 	page.has_selector?(".provider_rating form input[title=\"#{rating}\"]").should be_true
+end
+
+Then /^my rating for this provider should be (\d+)$/ do |rating|
+	find('.rate_provider_form form input[checked="checked"]').value.should == rating
 end

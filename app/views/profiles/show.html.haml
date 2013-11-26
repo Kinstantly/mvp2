@@ -58,13 +58,9 @@
 					= profile_linked_email @profile
 		#rate_review
 			= render partial: 'profiles/rating_score', locals: {profile: @profile}
-			- if can? :rate, @profile
+			- unless @profile == current_user.try(:profile)
 				= render partial: 'profiles/rate', locals: {profile: @profile}
-			- elsif !user_signed_in?
-				.rate
-					.rate-this
-						= render partial: 'profiles/rate_prompt_signed_out', locals: {profile: @profile}
-			.review-this= profile_review_link @profile
+				.review-this= profile_review_link @profile
 			.appointment
 				%a{href: "#"}= t 'views.profile.view.make_an_appointment'
 	%section#details.clearfix
