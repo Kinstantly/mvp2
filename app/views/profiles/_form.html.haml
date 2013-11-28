@@ -133,13 +133,14 @@
 		.ages
 			.text_field
 				= f.label :ages_stages_note
+				%br
 				= f.text_field :ages_stages_note, size: 50
 				%br
-				%span.note= t('views.profile.edit.ages_stages_note_example')
+				%span.note= t('views.profile.edit.ages_stages_note_example_html')
 	%fieldset.professional_profile
 		%legend= t 'views.profile.legend.professional_profile'
 		.availability_service_area
-			= t 'views.profile.view.availability_service_area'
+			= Profile.human_attribute_name :availability_service_area_note
 			%br
 			- Profile::CONSULTATION_MODES.each do |attribute|
 				.check_box
@@ -155,7 +156,7 @@
 				= f.label :availability_service_area_note
 			= f.text_area :availability_service_area_note, size: '50x5'
 			%br
-			%span.note= t 'views.profile.edit.availability_service_area_note_example'
+			%span.note= t 'views.profile.edit.availability_service_area_note_example_html'
 		.year_started
 			.label_area
 				= f.label :year_started

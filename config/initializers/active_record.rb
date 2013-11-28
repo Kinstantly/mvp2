@@ -17,6 +17,18 @@ class ActiveRecord::Base
 		name.try :downcase
 	end
 	
+	# Return the human name for the attribute if its value is present.
+	def human_attribute_name_if_present(attribute)
+		send(attribute).present? ? self.class.human_attribute_name(attribute) : nil
+	end
+	
+	# Return an array of human names for any of the attributes whose values are present.
+	def human_attribute_names_if_present(*attributes)
+		attributes.map do |attribute|
+			human_attribute_name_if_present attribute
+		end.compact
+	end
+	
 	private
 	
 	def remove_blanks(strings)

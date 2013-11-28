@@ -85,7 +85,7 @@
 	%fieldset.professional_profile
 		%legend= t 'views.profile.legend.professional_profile'
 		.availability_service_area
-			%span.label= "#{t 'views.profile.view.availability_service_area'}:"
+			%span.label= "#{Profile.human_attribute_name :availability_service_area_note}:"
 			%br
 			.value
 				= profile_display_consultation_modes profile

@@ -371,9 +371,13 @@ class Profile < ActiveRecord::Base
 	
 	# Return the array of consultation mode names that are checked for this profile.
 	def consultation_modes
-		CONSULTATION_MODES.map do |attribute|
-			 send(attribute) ? self.class.human_attribute_name(attribute) : nil
-		end.compact
+		human_attribute_names_if_present *CONSULTATION_MODES
+	end
+	
+	# Return array of names for any of the consultation modes, consult_remotely, and accepting_new_clients
+	# which are true.
+	def availability_and_consultation_modes
+		human_attribute_names_if_present *(CONSULTATION_MODES + [:consult_remotely, :accepting_new_clients])
 	end
 	
 	private

@@ -215,13 +215,13 @@ Feature: Edit my expert profile
 		Then I should be offered no specialties
 	
 	@javascript
-	Scenario: Update Ages/Stages comment
+	Scenario: Update Ages/stages text
 		Given I exist as a user
 			And I want my profile
 			And I am logged in
 			And I am on my profile edit page
 		When I open the "ages" formlet
-			And I enter "Beginners to advanced" in the "Add a comment" field of the "ages" formlet
+			And I enter "Beginners to advanced" in the "Ages/stages" field of the "ages" formlet
 			And I click on the "Save" button of the "ages" formlet
 		Then my profile edit page should show "Beginners to advanced" displayed in the "ages" area
 	
@@ -315,16 +315,16 @@ Feature: Edit my expert profile
 			And my profile edit page should show "Sliding scale available" displayed third in the "pricing" area
 	
 	@javascript
-	Scenario: Add a comment for availability/service area
+	Scenario: Add text for Availability/service area
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
 		When I open the "availability/service area" formlet
-			And I enter "East Bay\nSan Francisco\nDaly City" in the "Add a comment" field of the "availability/service area" formlet
+			And I enter "East Bay\nSan Francisco\nDaly City" in the "Availability/service area" field of the "availability/service area" formlet
 			And I click on the "Save" button of the "availability/service area" formlet
-		Then my profile edit page should show "East Bay" displayed third in the "availability/service area" area
-			And my profile edit page should show "San Francisco" displayed third in the "availability/service area" area
-			And my profile edit page should show "Daly City" displayed third in the "availability/service area" area
+		Then my profile edit page should show "East Bay" displayed in the "availability/service area" area
+			And my profile edit page should show "San Francisco" displayed in the "availability/service area" area
+			And my profile edit page should show "Daly City" displayed in the "availability/service area" area
 	
 	@javascript
 	Scenario: Specify consultation modes
@@ -352,7 +352,7 @@ Feature: Edit my expert profile
 		When I open the "availability/service area" formlet
 			And I check "Accepting new clients" in the "availability/service area" formlet
 			And I click on the "Save" button of the "availability/service area" formlet
-		Then my profile edit page should show "Accepting new clients" displayed second in the "availability/service area" area
+		Then my profile edit page should show "Accepting new clients" displayed in the "availability/service area" area
 	
 	@javascript
 	Scenario: Request extra location
