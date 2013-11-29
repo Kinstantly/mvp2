@@ -16,9 +16,11 @@ class ProfilesController < ApplicationController
 	#   ensure it has at least one location
 	#   set publish state based on parameter
 	#   set SEO keywords for profile show page
+	#   ensure there is a new review for the admin profile edit page
 	before_filter :require_location_in_profile, only: [:new, :edit, :edit_my_profile, :edit_plain]
 	before_filter :process_profile_admin_params, only: [:create, :update]
 	before_filter :seo_keywords, only: :show
+	before_filter :require_new_review, only: :edit_plain
 	
 	# Autocomplete custom service and specialty names.
 	autocomplete :service, :name, full: true
@@ -68,7 +70,6 @@ class ProfilesController < ApplicationController
 	end
 	
 	def edit_plain
-		@review = @profile.reviews.build # To create a review for this provider.
 		render layout: 'plain'
 	end
 	
@@ -77,6 +78,7 @@ class ProfilesController < ApplicationController
 			set_flash_message :notice, :updated
 			redirect_to profile_url @profile
 		else
+			require_new_review # For rendering the new review form.
 			set_flash_message :alert, :update_error
 			render action: :edit_plain, layout: 'plain'
 		end
@@ -230,5 +232,10 @@ class ProfilesController < ApplicationController
 			@profile.categories.map(&:lower_case_name),
 			@profile.services.map(&:lower_case_name),
 			@profile.specialties.map(&:lower_case_name)].flatten.compact.uniq.join(', ')
+	end
+	
+	# Create a new review of this provider.  Used by the admin edit page.
+	def require_new_review
+		@review = @profile.reviews.build
 	end
 end
