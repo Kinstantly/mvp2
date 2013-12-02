@@ -260,8 +260,10 @@ describe Profile do
 		it "has checkable options" do
 			@profile.free_initial_consult = true
 			@profile.sliding_scale_available = true
+			@profile.financial_aid_available = true
 			@profile.should have(:no).errors_on(:free_initial_consult)
 			@profile.should have(:no).errors_on(:sliding_scale_available)
+			@profile.should have(:no).errors_on(:financial_aid_available)
 		end
 	end
 	

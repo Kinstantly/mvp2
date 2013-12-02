@@ -3,7 +3,7 @@
 %td
 	- if @profile.errorfree.availability_service_area_note.present?
 		%p.text_area.attribute_display= profile_display_text @profile.errorfree.availability_service_area_note, preserve: true, links: true
-	%p#consultation_modes.attribute_display
+	%p.list.attribute_display
 		- availability_and_consultation_modes = @profile.errorfree.availability_and_consultation_modes
 		- if availability_and_consultation_modes.present?
 			%span.note=  t 'views.profile.edit.for_search_only'

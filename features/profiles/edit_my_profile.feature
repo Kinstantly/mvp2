@@ -287,8 +287,8 @@ Feature: Edit my expert profile
 			And I check "Evening hours available" in the "hours" formlet
 			And I check "Weekend hours available" in the "hours" formlet
 			And I click on the "Save" button of the "hours" formlet
-		Then my profile edit page should show "Evening hours available" displayed second in the "hours" area
-			And my profile edit page should show "Weekend hours available" displayed third in the "hours" area
+		Then my profile edit page should show "Evening hours available" displayed in the "hours" area
+			And my profile edit page should show "Weekend hours available" displayed in the "hours" area
 	
 	@javascript
 	Scenario: Enter pricing
@@ -311,8 +311,8 @@ Feature: Edit my expert profile
 			And I check "Free initial consult" in the "pricing" formlet
 			And I check "Sliding scale available" in the "pricing" formlet
 			And I click on the "Save" button of the "pricing" formlet
-		Then my profile edit page should show "Free initial consult" displayed second in the "pricing" area
-			And my profile edit page should show "Sliding scale available" displayed third in the "pricing" area
+		Then my profile edit page should show "Free initial consult" displayed in the "pricing" area
+			And my profile edit page should show "Sliding scale available" displayed in the "pricing" area
 	
 	@javascript
 	Scenario: Add text for Availability/service area

@@ -125,7 +125,7 @@
 			%br
 			.value
 				.value.text_area= preserve_profile_text profile.pricing
-				= profile_display_checked_attributes profile, :free_initial_consult, :sliding_scale_available
+				= profile_display_checked_attributes profile, :free_initial_consult, :sliding_scale_available, :financial_aid_available
 		.hours
 			%span.label= "#{Profile.human_attribute_name(:hours)}:"
 			%br
