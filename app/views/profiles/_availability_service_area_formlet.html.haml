@@ -1,28 +1,27 @@
 %th
 	%span.editable= t 'views.profile.view.availability_service_area_html'
 %td
-	%p#consultation_modes.attribute_display
-		- consultation_modes = @profile.errorfree.consultation_modes
-		- if consultation_modes.present?
-			= display_wrapped_names consultation_modes
-		- else
-			%span.note=  t 'views.profile.edit.consultation_modes_blank'
-	%p.attribute_display
-		- if @profile.errorfree.accepting_new_clients
-			= Profile.human_attribute_name :accepting_new_clients
-		- else
-			%span.note= t 'views.profile.edit.accepting_new_clients_blank'
 	- if @profile.errorfree.availability_service_area_note.present?
 		%p.text_area.attribute_display= profile_display_text @profile.errorfree.availability_service_area_note, preserve: true, links: true
-	- else
-		%p.attribute_display
-			%span.note= Profile.human_attribute_name :availability_service_area_note
+	%p.list.attribute_display
+		- availability_and_consultation_modes = @profile.errorfree.availability_and_consultation_modes
+		- if availability_and_consultation_modes.present?
+			%span.note=  t 'views.profile.edit.for_search_only'
+			%br
+			= display_wrapped_names availability_and_consultation_modes
+		- elsif @profile.errorfree.availability_service_area_note.present?
+			%span.note=  t 'views.profile.edit.availability_and_consultation_modes_blank'
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
 			= hidden_field_tag 'formlet', formlet
+			.text_field#availability_service_area_note_field
+				%span.char_count
+				= f.label :availability_service_area_note
+				= f.text_area :availability_service_area_note, size: '50x5', class: 'attr'
+				%p.note= t 'views.profile.edit.availability_service_area_note_example_html'
 			.check_boxes.stacked
-				= f.label :availability_service_area, t('views.profile.edit.availability_service_area')
+				= f.label :availability_service_area, t('views.profile.edit.check_box_search_only_prompt_html')
 				%br
 				- Profile::CONSULTATION_MODES.each do |attribute|
 					.check_box
@@ -34,13 +33,9 @@
 				.check_box
 					= f.check_box :accepting_new_clients
 					= f.label :accepting_new_clients
-			.text_field#availability_service_area_note_field
-				%span.char_count
-				= f.label :availability_service_area_note
-				= f.text_area :availability_service_area_note, size: '50x5', class: 'attr'
-				%p.note= t 'views.profile.edit.availability_service_area_note_example'
-			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-			= link_to 'Cancel', '#', class: 'cancel button'
+			.buttons
+				= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+				= link_to 'Cancel', '#', class: 'cancel button'
 
 :coffeescript
 	# Show character count while filling in field.

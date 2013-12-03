@@ -692,6 +692,12 @@ table.info {
 		line-height: $profile_content_line_height;
 		padding-top: $profile_table_cell_top_padding;
 		vertical-align: top;
+		.list {
+			@include bullet-separator-style;
+		}
+		> p + p {
+			margin-top: 0.5em;
+		}
 	}
 	.text-area {
 		th {
@@ -731,14 +737,6 @@ table.info {
 		}
 	}
 	#availability_service_area {
-		td {
-			#consultation_modes {
-				@include bullet-separator-style;
-			}
-			> p + p {
-				margin-top: 0.5em;
-			}
-		}
 		.popover {
 			width: 468px;
 			textarea {
@@ -747,12 +745,10 @@ table.info {
 		}
 	}
 	#ages_stages {
-		td {
-			#age_ranges {
-				@include bullet-separator-style;
-			}
-			> p + p {
-				margin-top: 0.5em;
+		.popover {
+			width: 478px;
+			.text_field input {
+				width: 448px;
 			}
 		}
 	}
@@ -887,6 +883,9 @@ table.info {
 	a.cancel:hover {
 		background: url('cancel-button.gif') 0px -26px;
 	}
+	.label_highlight {
+		color: $default_link_color;
+	}
 }
 
 .editable {
@@ -910,7 +909,7 @@ div.popover {
 	z-index: 1000;
 	background: #FFF;
 	width: 418px;
-	padding: 22px 26px;
+	padding: 26px;
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 	border-radius: 7px;

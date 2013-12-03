@@ -39,7 +39,7 @@
 					%th.large= Profile.human_attribute_name(:summary)
 					%th= Profile.human_attribute_name(:pricing)
 					%th.large= Profile.human_attribute_name(:hours)
-					%th.large= t 'views.profile.view.availability_service_area'
+					%th.large= Profile.human_attribute_name :availability_service_area_note
 			%tbody
 				- @profiles.each do |p|
 					%tr

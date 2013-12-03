@@ -1,11 +1,16 @@
 %th
 	%span.editable= Profile.human_attribute_name(:hours)
 %td
-	%span.text_area.attribute_display= profile_display_text @profile.errorfree.hours, preserve: true, links: true
-	- if @profile.errorfree.evening_hours_available
-		%p.attribute_display= Profile.human_attribute_name :evening_hours_available
-	- if @profile.errorfree.weekend_hours_available
-		%p.attribute_display= Profile.human_attribute_name :weekend_hours_available
+	- if @profile.errorfree.hours.present?
+		%p.text_area.attribute_display= profile_display_text @profile.errorfree.hours, preserve: true, links: true
+	%p.list.attribute_display
+		- for_search_only = @profile.errorfree.human_attribute_names_if_present :evening_hours_available, :weekend_hours_available
+		- if for_search_only.present?
+			%span.note=  t 'views.profile.edit.for_search_only'
+			%br
+			= display_wrapped_names for_search_only
+		- elsif @profile.errorfree.hours.present?
+			%span.note=  t 'views.profile.edit.for_search_only_blank'
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
@@ -14,9 +19,9 @@
 				%span.char_count
 				= f.label :hours
 				= f.text_area :hours, size: '45x5', class: 'attr'
-				%p.note= t 'views.profile.edit.hours_example'
+				%p.note= t 'views.profile.edit.hours_example_html'
 			.check_boxes.stacked
-				= f.label :hours_check_boxes, t('views.profile.edit.check_box_prompt')
+				= f.label :hours_check_boxes, t('views.profile.edit.check_box_search_only_prompt_html')
 				%br
 				.check_box
 					= f.check_box :evening_hours_available

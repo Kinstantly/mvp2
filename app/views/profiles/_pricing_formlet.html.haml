@@ -1,11 +1,16 @@
 %th
 	%span.editable= Profile.human_attribute_name(:pricing)
 %td
-	%span.text_area.attribute_display= profile_display_text @profile.errorfree.pricing, preserve: true, links: true
-	- if @profile.errorfree.free_initial_consult
-		%p.attribute_display= Profile.human_attribute_name :free_initial_consult
-	- if @profile.errorfree.sliding_scale_available
-		%p.attribute_display= Profile.human_attribute_name :sliding_scale_available
+	- if @profile.errorfree.pricing.present?
+		%p.text_area.attribute_display= profile_display_text @profile.errorfree.pricing, preserve: true, links: true
+	%p.list.attribute_display
+		- for_search_only = @profile.errorfree.human_attribute_names_if_present :free_initial_consult, :sliding_scale_available, :financial_aid_available
+		- if for_search_only.present?
+			%span.note=  t 'views.profile.edit.for_search_only'
+			%br
+			= display_wrapped_names for_search_only
+		- elsif @profile.errorfree.pricing.present?
+			%span.note=  t 'views.profile.edit.for_search_only_blank'
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
@@ -14,10 +19,10 @@
 				%span.char_count
 				= f.label :pricing
 				= f.text_area :pricing, size: '45x5', class: 'attr'
-				%p.note= t 'views.profile.edit.pricing_example'
+				%p.note= t 'views.profile.edit.pricing_example_html'
 				%p.note= t 'views.profile.edit.pricing_tip'
 			.check_boxes.stacked
-				= f.label :pricing_check_boxes, t('views.profile.edit.check_box_prompt')
+				= f.label :pricing_check_boxes, t('views.profile.edit.check_box_search_only_prompt_html')
 				%br
 				.check_box
 					= f.check_box :free_initial_consult
@@ -25,6 +30,9 @@
 				.check_box
 					= f.check_box :sliding_scale_available
 					= f.label :sliding_scale_available
+				.check_box
+					= f.check_box :financial_aid_available
+					= f.label :financial_aid_available
 			.buttons
 				= f.submit 'Save', disable_with: 'Saving...', class: 'save'
 				= link_to 'Cancel', '#', class: 'cancel button'

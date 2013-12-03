@@ -1,29 +1,35 @@
 %th
 	%span.editable= Profile.human_attribute_name :ages_stages
 %td
-	- if @profile.errorfree.age_ranges.present?
-		%p#age_ranges.attribute_display= display_wrapped_names @profile.errorfree.age_range_names
 	- if @profile.errorfree.ages_stages_note.present?
 		%p.text_area.attribute_display= profile_display_text @profile.errorfree.ages_stages_note, preserve: true
+	%p.list.attribute_display
+		- if @profile.errorfree.age_ranges.present?
+			%span.note=  t 'views.profile.edit.for_search_only'
+			%br
+			= display_wrapped_names @profile.errorfree.age_range_names
+		- elsif @profile.errorfree.ages_stages_note.present?
+			%span.note=  t 'views.profile.edit.age_ranges_blank'
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages
 			= hidden_field_tag 'formlet', formlet
+			.text_field#ages_stages_note_field
+				%span.char_count
+				= f.label :ages_stages_note
+				= f.text_field :ages_stages_note, class: 'attr'
+				%p.note= t 'views.profile.edit.ages_stages_note_example_html'
 			.check_boxes.stacked
-				= f.label :ages_stages
+				= f.label :ages_stages, t('views.profile.edit.check_box_search_only_prompt_html')
 				%br
 				= profile_age_ranges_hidden_field_tag(f)
 				- AgeRange.active.sorted.each do |age_range|
 					.check_box
 						= profile_age_ranges_check_box_tag(@profile, age_range, f)
 						= profile_age_ranges_check_box_label age_range
-			.text_field#ages_stages_note_field
-				%span.char_count
-				= f.label :ages_stages_note
-				= f.text_field :ages_stages_note, class: 'attr'
-				%p.note= t 'views.profile.edit.ages_stages_note_example'
-			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-			= link_to 'Cancel', '#', class: 'cancel button'
+			.buttons
+				= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+				= link_to 'Cancel', '#', class: 'cancel button'
 
 :coffeescript
 	# Show character count while filling in field.

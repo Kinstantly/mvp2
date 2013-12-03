@@ -23,6 +23,7 @@ class Profile < ActiveRecord::Base
 		:invitation_email, :photo_source_url, :profile_photo,
 		:age_range_ids, :ages_stages_note,
 		:evening_hours_available, :weekend_hours_available, :free_initial_consult, :sliding_scale_available,
+		:financial_aid_available,
 		:consult_remotely # provider offers most or all services remotely
 		# :adoption_stage, :preconception_stage, :pregnancy_stage, :ages, # superseded by age_ranges and ages_stages_note
 	
@@ -166,6 +167,7 @@ class Profile < ActiveRecord::Base
 		boolean :weekend_hours_available
 		boolean :free_initial_consult
 		boolean :sliding_scale_available
+		boolean :financial_aid_available
 		boolean :consult_remotely
 		boolean :accepting_new_clients
 		CONSULTATION_MODES.each do |attribute|
@@ -371,9 +373,13 @@ class Profile < ActiveRecord::Base
 	
 	# Return the array of consultation mode names that are checked for this profile.
 	def consultation_modes
-		CONSULTATION_MODES.map do |attribute|
-			 send(attribute) ? self.class.human_attribute_name(attribute) : nil
-		end.compact
+		human_attribute_names_if_present *CONSULTATION_MODES
+	end
+	
+	# Return array of names for any of the consultation modes, consult_remotely, and accepting_new_clients
+	# which are true.
+	def availability_and_consultation_modes
+		human_attribute_names_if_present *(CONSULTATION_MODES + [:consult_remotely, :accepting_new_clients])
 	end
 	
 	private
