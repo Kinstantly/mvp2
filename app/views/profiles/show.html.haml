@@ -59,7 +59,7 @@
 		#rate_review
 			= render partial: 'profiles/rating_score', locals: {profile: @profile}
 			- unless @profile == current_user.try(:profile)
-				= render partial: 'profiles/rate', locals: {profile: @profile}
+				= render partial: 'profiles/rate', locals: {profile: @profile, submit_by_ajax: (ENV['RAILS_ENV'] == 'production' || ENV['NO_REVIEWS'].present?)}
 				.review-this= profile_review_link @profile
 			.appointment
 				%a{href: "#"}= t 'views.profile.view.make_an_appointment'
