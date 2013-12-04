@@ -233,6 +233,7 @@ en:
         rating_info: 'Average rating'
       view:
         accepting_new_clients: 'Accepting new clients/customers'
+        ages_stages: 'ages/stages:'
         availability_service_area_html: 'Availability/<br/>service area'
         claimed_by: 'Claimed by'
         consultation_modes: 'Consultation methods and locations'

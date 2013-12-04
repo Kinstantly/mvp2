@@ -27,13 +27,19 @@
 									%span.location{itemprop: "email"}
 										= t 'views.profile.view.email'
 										= profile_display_email profile
-								%span.location{itemprop: "url"}= profile_display_website profile
+								- if profile.url.present?
+									%span.location{itemprop: "url"}
+										= t 'views.profile.view.url'
+										= profile_display_website profile
 							%span
 								%span.location{itemprop: "street-address"}
 									= location.try(:display_address)
 									- if (location_count = profile.locations.count) > 1
 										= t 'views.location.view.more.how_many', count: (location_count - 1)
-							%span.location.age_ranges= display_wrapped_names profile.age_range_names
+							- if profile.ages_stages_note.present?
+								%span.location.age_ranges
+									= t 'views.profile.view.ages_stages'
+									= profile_display_truncated profile.ages_stages_note, length: 150
 						.specialties= search_result_specialties_truncated profile, length: 700
 						.summary
 							%span= profile_display_truncated profile.summary, length: 180
