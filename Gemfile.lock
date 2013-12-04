@@ -262,7 +262,7 @@ GEM
       multi_json (~> 1.0)
       rubyzip
     sexp_processor (4.2.1)
-    simple_form (2.1.0)
+    simple_form (2.1.1)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
     sitemap_generator (3.4)
