@@ -66,6 +66,8 @@ Mvp2::Application.routes.draw do
 	
 	# Profile search.
 	match 'search_providers' => 'profiles#search'
+	match 'search_providers/service/:service_id' => 'profiles#search', as: :search_providers_by_service
+	match 'search_providers/service/:service_id/page/:page' => 'profiles#search'
 	
 	resources :categories
 	

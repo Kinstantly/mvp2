@@ -42,7 +42,7 @@
 					%ul
 						- category.services_for_home_page.each do |svc|
 							%li
-								= link_to svc.name, search_providers_path(service_id: svc.id)
+								= link_to svc.name, search_providers_by_service_path(svc)
 						%li= link_to t('views.home.view.more_services'), show_all_categories_path
 				- if column == Category::HOME_PAGE_COLUMNS.last
 					#all-cats.see-all= link_to t('views.home.view.see_all_categories'), show_all_categories_path

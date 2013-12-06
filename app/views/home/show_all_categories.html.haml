@@ -9,4 +9,4 @@
 					%ul
 						- category.services_for_see_all_page.each do |svc|
 							%li
-								= link_to svc.name, search_providers_path(service_id: svc.id)
+								= link_to svc.name, search_providers_by_service_path(svc)
