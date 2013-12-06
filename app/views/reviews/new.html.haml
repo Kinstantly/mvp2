@@ -1,3 +1,33 @@
-.new_review
-	- if can? :rate, @profile
-		= render partial: 'profiles/rate', locals: {profile: @profile, embedded_in: :review}
+- current_user_score = @review.profile.rating_by(current_user).try(:score).try(:round).presence || -1
+- profile_name = @review.profile.display_name_or_company
+- body_placeholder = t('review.body_placeholder')
+- good_to_know_placeholder = t('review.good_to_know_placeholder')
+						
+.content
+	.new_review_div.wider_form
+		.column_1_of_2
+			%p= (current_user_score > 0)? t('rating.thanks_for_rating', name: profile_name, count: current_user_score): t('review.review_header', name: profile_name)
+			%p= @review.profile.rating_by(current_user) ? t('review.prompt_for_review') : ''
+		.column_1_of_2				
+			- if can? :rate, @review.profile
+				= render partial: 'profiles/rate', locals: {profile: @review.profile, embedded_in: :review}
+		- if can? :create, @review
+			= form_for @review, url: reviews_path do |f|
+				= f.error_messages
+				= f.hidden_field :profile_id
+
+				.text_field
+					= f.label :body
+					%label : (optional)
+					%br
+					= f.text_area :body, size: '80x5', placeholder: body_placeholder
+
+				.text_field
+					= f.label :good_to_know
+					%label : (optional)
+					%br
+					= f.text_area :good_to_know, size: '80x2', placeholder: good_to_know_placeholder
+
+				.buttons
+					= f.submit 'Submit', disable_with: 'Saving...', class: 'default'
+					= link_to "Cancel", profile_path(@review.profile),  class: 'cancel_link'

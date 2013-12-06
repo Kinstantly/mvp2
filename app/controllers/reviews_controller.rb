@@ -27,12 +27,24 @@ class ReviewsController < ApplicationController
 		set_flash_message :notice, :destroyed
 		redirect_to profile_path(@review.profile)
 	end
+
+	def create
+		@review.reviewer_email = @current_user.email
+		@review.reviewer_username = @current_user.username
+		success = @review.save_with_reviewer
+		if success
+			redirect_to profile_path @review.profile_id
+		else
+			respond_with @review, layout: false
+		end
+	end
 	
 	private
 	
 	def load_profile
 		if (id = params[:profile_id]).present?
 			@profile = Profile.accessible_by(current_ability, :show).find(id)
+			@review[:profile_id] = @profile[:id]
 		end
 	end
 end

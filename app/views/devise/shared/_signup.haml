@@ -1,0 +1,34 @@
+- is_provider = params[:is_provider].present? || resource.is_provider?
+- claiming_profile = session[:claiming_profile].present?
+- whoami = is_provider ? (claiming_profile ? 'claiming_profile' : 'provider') : 'member'
+- email_tip = t("views.sign_up.email_tip")
+- username_tip = t("views.sign_up.username_tip")
+
+%h1= t "views.sign_up.#{whoami}_title" unless embedded_in
+
+= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+	= devise_error_messages!
+
+	= f.hidden_field :is_provider, value: (is_provider ? '1' : '')
+
+	.email.text_field
+		= f.label :email
+		%p.tip.grey_text= email_tip
+		= f.email_field :email
+
+	.username.text_field
+		= f.label :username
+		%p.tip.grey_text= username_tip
+		= f.text_field :username
+
+	.password.text_field
+		= f.label :password
+		= f.password_field :password, autocomplete: 'off'
+
+	.password_confirmation.text_field
+		= f.label :password_confirmation
+		= f.password_field :password_confirmation, autocomplete: 'off'
+
+	.buttons
+		= f.submit t('views.sign_up.label'), disable_with: t('views.sign_up.label'), class: 'default', id: 'sign_up_button'
+	

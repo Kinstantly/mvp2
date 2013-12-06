@@ -44,4 +44,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 			signed_in_root_path resource
 		end
 	end
+
+	def after_inactive_sign_up_path_for(resource)
+	  	member_awaiting_confirmation_path
+	end
 end

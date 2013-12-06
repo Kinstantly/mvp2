@@ -18,6 +18,7 @@ Mvp2::Application.routes.draw do
 		get '/provider/sign_up', to: 'users/registrations#new', is_provider: true
 		get '/member/sign_up', to: 'users/registrations#new', is_provider: false
 		get '/member/sign_up_return', to: 'users/registrations#new', is_provider: false, store_referrer: true
+		get '/member/awaiting_confirmation', to: 'users/registrations#awaiting_confirmation'
 		get '/member/sign_in_return', to: 'devise/sessions#new', store_referrer: true
 	end
 	

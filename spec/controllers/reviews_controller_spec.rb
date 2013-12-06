@@ -125,4 +125,42 @@ describe ReviewsController do
 			end
 		end
 	end
+
+	context "as site visitor attempting to review a published profile" do
+		describe "POST create" do
+			it "cannot create a review without registration" do
+				count = published_profile.reviews.count
+				email, username = 'example@example.com', 'example'
+				post :create,
+					review: review_attributes.merge(reviewer_email: email, reviewer_username: username)
+				response.should_not redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				Profile.find(published_profile.id).reviews.count.should == count
+			end
+		end
+	end
+
+	context "as unconfirmed member attempting to review a published profile" do
+		describe "POST create" do
+			it "cannot create a review without registration" do
+				sign_in parent
+				parent.confirmed_at = false
+				count = published_profile.reviews.count
+				post :create, review: review_attributes
+				response.should_not redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				Profile.find(published_profile.id).reviews.count.should == count
+			end
+		end
+	end
+
+	context "as a non-provider member" do
+		describe "POST create" do
+			it "creates a review attached to a profile" do
+				sign_in parent
+				post :create, review: review_attributes
+				response.should redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				(profile = assigns[:review].profile).should_not be_nil
+				profile.should == published_profile
+			end
+		end
+	end
 end

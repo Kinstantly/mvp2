@@ -570,13 +570,14 @@ module ProfilesHelper
 
 	def profile_review_link(profile)
 		provider_name = profile.display_name_or_company
-		uri = 'https://docs.google.com/forms/d/1dD9rrSGzhrCRyozj1qJwUrrBbANinm4BLJfrz7QfIQw/viewform?entry.1072639882=' +
-			CGI.escape(provider_name.presence || '')
-		if user_signed_in?
-			uri += '&entry.288618633=' + CGI.escape(current_user.email.presence || '')
-			uri += '&entry.1551105972=' + CGI.escape(current_user.username.presence || '')
-		end
-		link_to t('views.profile.view.review_provider_link', name: provider_name), uri.html_safe, target: '_blank'
+		#uri = 'https://docs.google.com/forms/d/1dD9rrSGzhrCRyozj1qJwUrrBbANinm4BLJfrz7QfIQw/viewform?entry.1072639882=' +
+		#	CGI.escape(provider_name.presence || '')
+		#if user_signed_in?
+		#	uri += '&entry.288618633=' + CGI.escape(current_user.email.presence || '')
+		#	uri += '&entry.1551105972=' + CGI.escape(current_user.username.presence || '')
+		#end
+		#link_to t('views.profile.view.review_provider_link', name: provider_name), uri.html_safe, target: '_blank'
+		link_to t('views.profile.view.review_provider_link', name: provider_name), new_review_for_profile_url(profile)
 	end
 
 	def suggest_provider_link
