@@ -148,11 +148,12 @@ gem 'rack-raw-upload'
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 
-# Use unicorn as the app server
-# gem 'unicorn'
-
 # Deploy with Capistrano
 # gem 'capistrano'
 
 # To use debugger
 # gem 'debugger'
+
+# Makes running your Rails app easier. Based on the ideas behind 12factor.net
+# https://github.com/heroku/rails_12factor
+gem 'rails_12factor', group: :production
