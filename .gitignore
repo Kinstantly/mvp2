@@ -42,3 +42,6 @@
 /.idea/tasks.xml
 /.idea/dataSources.ids
 /.idea/dataSources.xml
+
+# Ignore rails_footnotes local configuration.
+/.rails_footnotes

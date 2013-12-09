@@ -157,3 +157,5 @@ gem 'rack-raw-upload'
 # Makes running your Rails app easier. Based on the ideas behind 12factor.net
 # https://github.com/heroku/rails_12factor
 gem 'rails_12factor', group: :production
+
+gem 'rails-footnotes', '>= 3.7.9', group: :development
