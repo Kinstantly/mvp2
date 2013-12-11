@@ -8,7 +8,7 @@ Please add missing information to this document.
 
 We are using Ruby 1.9.3 and Rails 3.2.13.  The Gemfile directs Heroku to use Ruby 1.9.3.  Before going live I want to upgrade to Ruby 2 and maybe Rails 4.
 
-For Ruby you should use at least patch level 448, i.e., ruby 1.9.3-p448.  That has a security update.  You can install or upgrade using RVM.
+For Ruby you should use at least patch level 484, i.e., ruby 1.9.3p484, to include the latest security updates.  You can install or upgrade using RVM.
 
  \curl -L https://get.rvm.io | bash -s stable --ruby=1.9.3
 
@@ -171,3 +171,60 @@ Here's an example using homebrew with the following conditions:
  ARCHFLAGS="-arch x86_64" gem install pg -v 0.14.1
 
 When done upgrading, run all the Cucumber and Rspec tests to make sure all is well.
+
+== Performance testing
+
+When doing performance tests, it's best to use an environment as close as possible to production.  The Rails benchmark and profiling facilities configure a production environment by default.  But you also need your data to reflect production.  The best way to do this is to create a 'performance' environment that uses its own database and Solr instance which are loaded with production data.  The configuration for the 'performance' environment is already set up.  Follow these steps to set up your performance database and Solr instance.
+
+First back up your development database, as protection, in case you accidentally touch that database.
+
+  pg_dump -f "mvp2_development_$(date '+%Y%m%d').sql" mvp2_development
+
+If you ran 'bundle exec rake db:create', then you should already have a mvp2_performance database.  But if you don't have one, run the following command.
+
+  RAILS_ENV=performance bundle exec rake db:create
+
+Get a copy of the production database with the following command (if you don't have permission, have someone who does supply you with a copy).
+
+  heroku pgbackups:url
+
+Load the production copy into your mvp2_performance databse.  In this example the file with the production copy is named 'a327.dump'.
+
+  pg_restore -d mvp2_performance a327.dump
+
+Start up a Solr instance for performance testing.
+
+  RAILS_ENV=performance bundle exec rake sunspot:solr:start
+
+To be safe, modify all of the user email addresses and passwords in the performance database using the Rails console.
+
+  RAILS_ENV=performance bundle exec rails console
+  User.all.each{ |u| u.update_column(:email, "example+perf#{u.id}@example.com"); u.update_column(:encrypted_password, '*'); u.password = u.password_confirmation = 'ffffff'; u.save }
+  exit
+
+Load the Solr instance with production data generated from the mvp2_performance database.
+
+  RAILS_ENV=performance bundle exec rake sunspot:solr:reindex
+
+To ensure that you are using the performance database and Solr instance, you'll need to require 'performance_test_helper' at the top of your performance test files (see below).
+
+If you use Rails templates to generate performance tests, you'll need to replace the following require statements in the file
+
+  require 'test_helper'
+  require 'rails/performance_test_help'
+
+with the following
+
+  require 'performance_test_helper'
+
+Finally, to do benchmarking and profiling, run the following commands.
+
+  bundle exec rake test:benchmark
+  bundle exec rake test:profile
+
+For more information:
+
+* http://guides.rubyonrails.org/v3.2.13/performance_testing.html
+* http://railscasts.com/episodes/411-performance-testing
+* http://m.onkey.org/running-rails-performance-tests-on-real-data
+* https://gist.github.com/hammady/4378820
