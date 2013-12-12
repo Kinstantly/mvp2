@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131202030052) do
+ActiveRecord::Schema.define(:version => 20131212045624) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -163,6 +163,9 @@ ActiveRecord::Schema.define(:version => 20131202030052) do
     t.boolean  "free_initial_consult",           :default => false
     t.boolean  "sliding_scale_available",        :default => false
     t.boolean  "financial_aid_available",        :default => false
+    t.integer  "locations_count",                :default => 0,         :null => false
+    t.integer  "ratings_count",                  :default => 0,         :null => false
+    t.integer  "reviews_count",                  :default => 0,         :null => false
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"

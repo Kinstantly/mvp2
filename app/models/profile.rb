@@ -143,7 +143,7 @@ class Profile < ActiveRecord::Base
 			locations.map &:search_phone
 		end
 		latlon :first_location do
-			locations.first.coordinates if locations.first
+			first_location.try :coordinates
 		end
 		latlon :locations, multiple: true do
 			locations.map &:coordinates
@@ -225,7 +225,9 @@ class Profile < ActiveRecord::Base
 			opts[:order_by_distance] = self.geocode_location opts[:location]
 		end
 		
-		self.search do
+		# Do the search.
+		# Note: eager load associations that are likely to be used on a search results page.
+		self.search(include: [:locations, :specialties]) do
 			if opts[:solr_params].present?
 				adjust_solr_params do |params|
 					params.merge! opts[:solr_params]
@@ -380,6 +382,13 @@ class Profile < ActiveRecord::Base
 	# which are true.
 	def availability_and_consultation_modes
 		human_attribute_names_if_present *(CONSULTATION_MODES + [:consult_remotely, :accepting_new_clients])
+	end
+	
+	# Returns the first location sorted by id.
+	# Use this method so that we are consistent on what is considered the first location.
+	# Uses sort_by rather than order_by_* to avoid an extraneous database query.
+	def first_location
+		@first_location ||= locations.sort_by(&:id).first
 	end
 	
 	private

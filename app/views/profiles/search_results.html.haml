@@ -20,7 +20,7 @@
 								= profile.display_name_or_company
 								- if profile.headline.present?
 									%span.headline= profile.headline
-							- location = profile.locations.order_by_id.first
+							- location = profile.first_location
 							%span
 								%span.location{itemprop: "telephone"}= location.try(:display_phone)
 								- if profile.email.present?
@@ -34,7 +34,7 @@
 							%span
 								%span.location{itemprop: "street-address"}
 									= location.try(:display_address)
-									- if (location_count = profile.locations.count) > 1
+									- if (location_count = profile.locations.size) > 1
 										= t 'views.location.view.more.how_many', count: (location_count - 1)
 							- if profile.ages_stages_note.present?
 								%span.location.age_ranges

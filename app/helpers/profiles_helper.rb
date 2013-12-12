@@ -534,9 +534,11 @@ module ProfilesHelper
 		sanitize profile_display_truncated search_result_specialties(profile), length: options[:length], separator: '</span><span>', omission: '...</span>'
 	end
 
+	# Show the first location associated with the profile.
+	# Show a count if there is more than one location.
 	def search_result_location(profile)
-		s = profile.locations.order_by_id.first.try(:display_city_region)
-		n = profile.locations.count
+		s = profile.first_location.try(:display_city_region)
+		n = profile.locations.size # call 'size' to take advantage of counter caching.
 		s += " #{t 'views.location.view.total.how_many', count: n}" if n > 1
 		s
 	end

@@ -4,7 +4,7 @@ class Rating < ActiveRecord::Base
 	attr_accessible :score
 	
 	belongs_to :rater, class_name: 'User'
-	belongs_to :rateable, polymorphic: true
+	belongs_to :rateable, polymorphic: true, counter_cache: true
 	# belongs_to :review # when we had one rating per review.
 	
 	SCORES = 1..5

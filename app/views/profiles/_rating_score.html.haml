@@ -7,9 +7,10 @@
 		- (Rating::SCORES * 2).each do |i|
 			= radio_button_tag "#{form_id}", i, (i == provider_score_index), class: "provider_score {split:2}", title: provider_score_title
 	.review-num
-		= display_count_for 'rating', profile.ratings.count
+		-# Call size instead of count to take advantage of counter caching.
+		= display_count_for 'rating', profile.ratings.size
 		%br
-		= display_count_for 'review', profile.reviews.count
+		= display_count_for 'review', profile.reviews.size
 :javascript
 	$('form##{form_id} input.provider_score').rating().rating('readOnly', true);
 	if (!my_vars.f.rating_score_reset) {

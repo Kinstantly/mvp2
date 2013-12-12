@@ -145,6 +145,11 @@ Finally, to do benchmarking and profiling, run the following commands.
   bundle exec rake test:benchmark
   bundle exec rake test:profile
 
+And remember to apply any new database migrations to the performance database as they come up.  Also update the Solr index.
+
+  RAILS_ENV=performance bundle exec rake db:migrate
+  RAILS_ENV=performance bundle exec rake sunspot:solr:reindex
+
 For more information:
 
 * http://guides.rubyonrails.org/v3.2.13/performance_testing.html
