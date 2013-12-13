@@ -1,0 +1,13 @@
+New review for #{@review.profile.display_name_or_company}:
+
+
+- if @review.title.present?
+	= @review.title
+	
+- if @review.body.present?
+	= @review.body
+	
+- if @review.good_to_know.present?
+	= @review.good_to_know
+
+= link_to 'Edit/Delete review', edit_plain_profile_url(@review.profile) + "#edit_review_div_#{@review.id}"
