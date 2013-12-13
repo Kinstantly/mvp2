@@ -12,10 +12,9 @@
 			- if can? :rate, @review.profile
 				= render partial: 'profiles/rate', locals: {profile: @review.profile, embedded_in: :review}
 		- if can? :create, @review
-			= form_for @review, url: save_review_for_profile_path do |f|
+			= form_for @review, url: save_review_for_profile_path(@review.profile) do |f|
 				= f.error_messages
-				= f.hidden_field :profile_id
-
+				
 				.text_field
 					= f.label :body
 					%label{:style => "padding-left: 0"}: (optional)
