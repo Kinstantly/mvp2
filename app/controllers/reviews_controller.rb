@@ -9,7 +9,7 @@ class ReviewsController < ApplicationController
 	# For actions specified by the :new option, a new review will be built rather than fetching one.
 	load_and_authorize_resource new: :admin_create
 	
-	before_filter :load_profile, only: :new
+	before_filter :load_profile, only: [:new, :create]
 	
 	def admin_create
 		# @review initialized with parameter values by load_and_authorize_resource.
@@ -32,6 +32,7 @@ class ReviewsController < ApplicationController
  		@review.reviewer = @current_user
 		success = @review.save_with_reviewer
 		if success
+			ReviewMailer.notify_moderator(@review).deliver
 			redirect_to profile_path @review.profile_id
 		else
 			respond_with @review, layout: false
@@ -43,7 +44,7 @@ class ReviewsController < ApplicationController
 	def load_profile
 		if (id = params[:profile_id]).present?
 			@profile = Profile.accessible_by(current_ability, :show).find(id)
-			@review[:profile_id] = @profile[:id]
+			@review.profile = @profile
 		end
 	end
 end
