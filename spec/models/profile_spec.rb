@@ -278,6 +278,15 @@ describe Profile do
 			@profile.locations.last.should have(:no).errors_on(:city)
 			@profile.locations.last.should have(:no).errors_on(:region)
 		end
+		
+		it "should update the locations count cache even when the location has been created first" do
+			profile = FactoryGirl.create :profile
+			profile.locations << FactoryGirl.create(:location)
+			profile.reload
+			# The count method on the association always does a database query,
+			# so it's a reliable count of the associated location records.
+			profile.locations_count.should == profile.locations.count
+		end
 	end
 	
 	context "reviews" do
@@ -288,6 +297,15 @@ describe Profile do
 			@profile.reviews.build(body: 'This provider is adequate.')
 			@profile.should have(:no).errors_on(:reviews)
 			@profile.reviews.last.should have(:no).errors_on(:body)
+		end
+		
+		it "should update the reviews count cache even when the review has been created first" do
+			profile = FactoryGirl.create :profile
+			profile.reviews << FactoryGirl.create(:review)
+			profile.reload
+			# The count method on the association always does a database query,
+			# so it's a reliable count of the associated review records.
+			profile.reviews_count.should == profile.reviews.count
 		end
 	end
 	
@@ -537,24 +555,31 @@ describe Profile do
 		let(:hera) { FactoryGirl.create :parent, email: 'hera@example.com', username: 'hera' }
 		
 		before(:each) do
-			profile = Profile.find(profile_to_rate.id)
+			profile = profile_to_rate.reload
 			profile.ratings.each &:destroy
 			profile.rate 2, zeus
 			profile.rate 3, hera
 		end
 		
 		it "maintains an average rating score" do
-			Profile.find(profile_to_rate.id).rating_average_score.should be_within(0.01).of(2.5)
+			profile_to_rate.reload.rating_average_score.should be_within(0.01).of(2.5)
 		end
 		
 		it "can rerate a review" do
-			Profile.find(profile_to_rate.id).rate 4, zeus
-			Profile.find(profile_to_rate.id).rating_average_score.should be_within(0.01).of(3.5)
+			profile_to_rate.reload.rate 4, zeus
+			profile_to_rate.reload.rating_average_score.should be_within(0.01).of(3.5)
 		end
 		
 		it "can remove a rating" do
-			Profile.find(profile_to_rate.id).rate nil, zeus
-			Profile.find(profile_to_rate.id).rating_average_score.should be_within(0.01).of(3)
+			profile_to_rate.reload.rate nil, zeus
+			profile_to_rate.reload.rating_average_score.should be_within(0.01).of(3)
+		end
+		
+		it "should update the ratings count cache" do
+			profile_to_rate.reload
+			# The count method on the association always does a database query,
+			# so it's a reliable count of the associated rating records.
+			profile_to_rate.ratings_count.should == profile_to_rate.ratings.count
 		end
 	end
 	

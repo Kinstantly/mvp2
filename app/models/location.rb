@@ -6,7 +6,7 @@ class Location < ActiveRecord::Base
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :address1, :address2, :city, :region, :postal_code, :country, :phone, :note
 	
-	belongs_to :profile
+	belongs_to :profile, counter_cache: true
 	belongs_to :search_area_tag
 
 	# Define maximum length of each string or text attribute in a publicly accessible way.

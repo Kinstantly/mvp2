@@ -29,6 +29,52 @@ class ActiveRecord::Base
 		end.compact
 	end
 	
+	# The default implementation of the counter_cache option only works for create and destroy.
+	# But it needs to also work for update, e.g., when associating a record that was previously created.
+	def self.belongs_to(name, options={})
+		counter_cache = options.delete :counter_cache
+		reflection = super
+		if counter_cache
+			belongs_to_name = reflection.name
+			update_proc = Proc.new { |record| 
+				record.send(belongs_to_name).try :update_counter_cache, record, counter_cache: counter_cache
+			}
+			after_create update_proc
+			after_destroy update_proc
+			after_update do |record|
+				update_proc.call(record) if record.changes["#{belongs_to_name}_id"]
+			end
+		end
+		reflection
+	end
+	
+	# This probably is not necessary.  I think the implementation above of the counter_cache option
+	# for belongs_to is good enough.
+	# def self.has_many(name, options={}, &extension)
+	# 	if (counter_cache = options.delete :counter_cache)
+	# 		update_proc = Proc.new { |parent, record|
+	# 			parent.update_counter_cache record, counter_cache: counter_cache, association: name
+	# 		}
+	# 		[:after_add, :after_remove].each do |callback_name|
+	# 			options.merge! callback_name => [options.delete(callback_name), update_proc].flatten.compact
+	# 		end
+	# 	end
+	# 	super
+	# end
+
+	# This implementation uses the actual count in the database rather than incrementing or decrementing
+	# (which can result in data skew).
+	def update_counter_cache(record, options={})
+		association = options.delete(:association).presence || record.class.table_name
+		counter_cache = options.delete :counter_cache
+		counter_cache_column = if !counter_cache || counter_cache == true
+			"#{record.class.table_name}_count"
+		else
+			counter_cache
+		end
+		update_column counter_cache_column, send(association).count
+	end
+	
 	private
 	
 	def remove_blanks(strings)

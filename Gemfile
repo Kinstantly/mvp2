@@ -152,7 +152,7 @@ gem 'rack-raw-upload'
 # gem 'capistrano'
 
 # To use debugger
-# gem 'debugger'
+gem 'debugger', group: :development
 
 # Makes running your Rails app easier. Based on the ideas behind 12factor.net
 # https://github.com/heroku/rails_12factor

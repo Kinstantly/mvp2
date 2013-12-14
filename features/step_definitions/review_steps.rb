@@ -51,7 +51,7 @@ end
 ### THEN ###
 
 Then /^the profile should have (no|\d+) reviews?$/ do |how_many|
-	@profile.should have(how_many).reviews
+	@profile.reload.should have(how_many).reviews
 end
 
 Then /^the profile should show the review$/ do
