@@ -1,0 +1,14 @@
+New review for #{@review.profile.display_name_or_company}:
+%br
+%br
+- if @review.title.present?
+	%p{:style => "padding: 5px;font-style: italic"}= @review.title
+	%br
+- if @review.body.present?
+	%p{:style => "padding: 5px;font-style: italic"}= @review.body
+	%br
+- if @review.good_to_know.present?
+	%p{:style => "padding: 5px;font-style: italic"}= @review.good_to_know
+%br 
+= link_to 'Edit/Delete review', edit_plain_profile_url(@review.profile) + "#edit_review_div_#{@review.id}"
+

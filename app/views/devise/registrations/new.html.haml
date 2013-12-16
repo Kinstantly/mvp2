@@ -1,33 +1,17 @@
-- is_provider = params[:is_provider].present? || resource.is_provider?
-- claiming_profile = session[:claiming_profile].present?
-- whoami = is_provider ? (claiming_profile ? 'claiming_profile' : 'provider') : 'member'
-#content
-	.sign_up.generic_form
-		%h1= t "views.sign_up.#{whoami}_title"
+#content.inner_content_wrapper
+	#tabs.ui-tabs.ui-widget.ui-widget-content.ui-corner-all
+		%ul.ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-corner-all
+			%li
+				=link_to 'Join Kinstantly', "#sign_up"
+			%li
+				=link_to 'Already a member? Sign in', "#sign_in"
+		#sign_up.sign_up.generic_form
+			= render partial: "devise/shared/signup", locals:{ embedded_in: true }
+		#sign_in.sign_in.generic_form
+			= render partial: "devise/shared/signin", locals:{ embedded_in: true }
+	%br
+	= render "devise/shared/links"
 
-		= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
-			= devise_error_messages!
+:javascript
+	$("#tabs").tabs();
 
-			= f.hidden_field :is_provider, value: (is_provider ? '1' : '')
-
-			- unless is_provider
-				.username.text_field
-					= f.label :username
-					= f.text_field :username
-
-			.email.text_field
-				= f.label :email
-				= f.email_field :email
-
-			.password.text_field
-				= f.label :password
-				= f.password_field :password, autocomplete: 'off'
-
-			.password_confirmation.text_field
-				= f.label :password_confirmation
-				= f.password_field :password_confirmation, autocomplete: 'off'
-
-			.buttons
-				= f.submit t('views.sign_up.label'), disable_with: t('views.sign_up.label'), class: 'default', id: 'sign_up_button'
-
-		= render "devise/shared/links"

@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
 	# What to do if access is denied or record not found.
 	# On production, prevent fishing for existing, but protected, records by making it look like the page was not found.
 	rescue_from CanCan::AccessDenied, ActiveRecord::RecordNotFound do |exception|
+		logger.error "#{exception.class}: #{exception.message}"
 		raise exception if exception.is_a?(ActiveRecord::RecordNotFound) && ENV["RAILS_ENV"] != 'production'
 		# render file: "#{Rails.root}/public/403", formats: [:html], status: 403, layout: false
 		if user_signed_in?

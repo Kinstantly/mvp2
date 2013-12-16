@@ -1,12 +1,15 @@
 require 'spec_helper'
 
 describe ReviewsController do
+	let(:unpublished_profile) { FactoryGirl.create :unpublished_profile }
 	let(:published_profile) { FactoryGirl.create :published_profile }
 	let(:review_attributes) {
 		FactoryGirl.attributes_for :review, profile_id: published_profile.id, body: 'Que bueno, que bueno, que bueno!'
 	}
 	let(:review_by_parent) { FactoryGirl.create :review_by_parent }
 	let(:parent) { review_by_parent.reviewer }
+	let(:provider) { FactoryGirl.create :provider }
+	let(:provider_with_published_profile) { FactoryGirl.create :provider, profile: published_profile }
 	
 	context "as a non-administrator attempting to access admin actions" do
 		before(:each) do
@@ -122,6 +125,73 @@ describe ReviewsController do
 				delete :destroy, id: review.id
 				response.should redirect_to(controller: 'profiles', action: 'show', id: review.profile.id)
 				Review.find_by_id(review.id).should be_nil
+			end
+		end
+	end
+
+	context "as site visitor attempting to review a published profile" do
+		describe "POST create" do
+			it "cannot create a review without registration" do
+				count = published_profile.reviews.count
+				email, username = 'example@example.com', 'example'
+				post :create,
+					review: review_attributes.merge(reviewer_email: email, reviewer_username: username)
+				response.should_not redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				Profile.find(published_profile.id).reviews.count.should == count
+			end
+		end
+	end
+
+	context "as unconfirmed member attempting to review a published profile" do
+		describe "POST create" do
+			it "cannot create a review without registration" do
+				sign_in parent
+				parent.confirmed_at = nil
+				parent.save
+				count = published_profile.reviews.count
+				post :create, review: review_attributes
+				response.should_not redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				Profile.find(published_profile.id).reviews.count.should == count
+			end
+		end
+	end
+
+	context "as a non-provider member" do
+		describe "POST create" do
+			it "creates a review attached to a profile" do
+				sign_in parent
+				post :create, review: review_attributes
+				response.should redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				(profile = assigns[:review].profile).should_not be_nil
+				profile.should == published_profile
+			end
+
+			it "cannot create a review attached to an unpublished profile" do
+				sign_in parent
+				count = unpublished_profile.reviews.count
+				post :create, review: review_attributes.merge(profile_id: unpublished_profile.id)
+				response.should_not redirect_to(controller: 'profiles', action: 'show', id: unpublished_profile.id)
+				Profile.find(unpublished_profile.id).reviews.count.should == count
+			end
+		end
+	end
+
+	context "as a provider" do
+		describe "POST create" do
+			it "allows review of another provider" do
+				sign_in provider
+				count = published_profile.reviews.count
+				post :create, review: review_attributes
+				response.should redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				Profile.find(published_profile.id).reviews.count.should == (count + 1)
+			end
+			
+			it "denies review of the selfsame provider" do
+				sign_in provider_with_published_profile
+				count = published_profile.reviews.count
+				post :create, review: review_attributes
+				response.should_not redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				Profile.find(published_profile.id).reviews.count.should == count
 			end
 		end
 	end

@@ -802,7 +802,7 @@ table.info {
 }
 
 /*  Editing -------------------------------------------------------------------------- */
-
+$form_element_width: 388px;
 @mixin form-style {
 	form {
 		> div, .form_section {
@@ -820,7 +820,7 @@ table.info {
 			-moz-box-shadow: inset 4px 4px 10px #E5E5E5;
 			-webkit-box-shadow: inset 4px 4px 10px #E5E5E5;
 			box-shadow: inset 4px 4px 10px #E5E5E5;
-			width: 388px;
+			width: $form_element_width;
 			font-size: 13px;
 			color: #333;
 			line-height: 18px;
@@ -1193,10 +1193,11 @@ div.popover {
 }
 
 /*  Sign up, sign in, confirmation, password, unlock, account settings ------------------------ */
+$generic_form_width: 418px;
 
 .generic_form {
 	@include form-style;
-	width: 418px;
+	width: $generic_form_width;
 	margin: 0 auto;
 	.text_field input {
 		font-size: 16px;
@@ -1224,6 +1225,78 @@ div.popover {
 		margin-top: 12px;
 		line-height: 1.5em;
 	}
+}
+
+.wider_form{
+	@extend .generic_form;
+	width: $generic_form_width * 1.5;
+	.text_field {
+		textarea, input, select {
+			width: $form_element_width * 1.5 + 15px;
+			max-width: $form_element_width * 1.5 + 15px;
+		}
+		label{
+			@extend .ui-corner-all;
+			padding: 4px;
+		}
+	}
+	.field_with_errors{
+		textarea, input, select {
+			border: 1px solid rgba(228, 61, 93, 0.4);
+		}
+	}
+	.grey_text{
+		color: #807F7F;
+	}
+	.column_1_of_2{
+		position:relative;
+		width: 47%;
+		margin: 0 0 30px 0;
+		display: inline-block;
+		vertical-align: top;
+		
+		p{
+			margin-top:8px;
+			font-size: 17px;
+		    padding-top: 8px;
+		}
+		.rate-this{
+			width: 170px;
+		}
+	}
+	.left{
+		float: left;
+		margin-left:0;
+
+	}
+
+	.right{
+		float: right;
+		margin-right:0;
+	}
+	.column_25{
+		@extend .column_1_of_2;
+		width: 25%;
+	}
+
+	.column_70{
+		@extend .column_1_of_2;
+		width: 70%;
+	}
+
+	.rate_provider_form{
+		padding-top: 0;
+		margin-top: -10px;
+	}
+}
+
+.tip{
+	font-size: 14.5px;
+}
+
+.inner_content_wrapper{
+	@extend .content-wrapper;
+	max-width: $generic_form_width * 1.5;
 }
 
 .cancel_account {

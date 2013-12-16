@@ -150,14 +150,15 @@ en:
         display_address: 'Address'
         display_phone: 'Phone'
       review:
-        body: 'What makes this provider worth a shout-out--or a call-out?'
+        body: 'Review'
         rating_score: 'Provider rating (not a review rating!)'
       service:
         is_predefined: 'Can be assigned to a category'
       specialty:
         is_predefined: 'Can be assigned to a service'
       user:
-        email: 'Your login email'
+        username: 'Public username'
+        email: 'Email address'
         password_confirmation: 'Retype password'
         phone: 'Phone number we use to contact you'
     errors:
@@ -386,6 +387,8 @@ en:
       provider_prompt: 'Provider?'
       provider_title: 'Create your profile'
       claiming_profile_title: 'Claim your profile'
+      email_tip: "(So we can contact you - we'll never give your email address out, and we won't display it publicly.)"
+      username_tip: "(This will display next to any reviews you write and must contain at least four characters - letters and numerals only, no spaces. Examples: Mama2000, DadEO)" 
     specialty:
       name: 'Specialty'
       edit:
@@ -426,11 +429,20 @@ en:
     how_many:
       one: '1 rating'
       other: '%{count} ratings'
+    thanks_for_rating: 
+      one: 'Thanks for giving %{name} 1 star!'
+      other: 'Thanks for giving %{name} %{count} stars!'
   review:
     none: 'No reviews'
     how_many:
       one: '1 review'
       other: '%{count} reviews'
+    prompt_for_review: 'Are you willing to help your fellow parents even more? Please write a review or provide a tip about this provider!'
+    body_tip: 'What makes this provider worth a shout-out--or a call-out?'
+    review_header: 'Currently reviewing %{name}'
+    body_placeholder: 'Share what was best about your experience with this provider - and what, if anything, could have been better.'
+    good_to_know_placeholder: 'Share the inside scoop that helped you with this provider. Example: "Open two Saturdays a month" or "Office is on 2nd floor - no elevators!"'
+
   pagination:
     per_page_button: 'per page'
   contact:
