@@ -48,6 +48,11 @@ FactoryGirl.define do
 			email 'FactoryEmailParent@example.com'
 			roles [:client]
 			username 'FactoryUsernameParent'
+			
+			factory :second_parent do
+				email 'FactoryEmailSecondParent@example.com'
+				username 'FactoryUsernameSecondParent'
+			end
 		end
 	end
 end

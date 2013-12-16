@@ -36,13 +36,22 @@ class ActiveRecord::Base
 		reflection = super
 		if counter_cache
 			belongs_to_name = reflection.name
+			belongs_to_foreign_key = reflection.foreign_key
 			update_proc = Proc.new { |record| 
 				record.send(belongs_to_name).try :update_counter_cache, record, counter_cache: counter_cache
 			}
 			after_create update_proc
 			after_destroy update_proc
 			after_update do |record|
-				update_proc.call(record) if record.changes["#{belongs_to_name}_id"]
+				if (belongs_to_change = record.changes[belongs_to_foreign_key])
+					# Update counter cache for the previous parent.
+					if (old_belongs_to_id = belongs_to_change[0])
+						class_of_belongs_to = record.send(belongs_to_name).try(:class).presence || belongs_to_name.to_s.camelcase.constantize
+						class_of_belongs_to.find_by_id(old_belongs_to_id).try :update_counter_cache, record, counter_cache: counter_cache
+					end
+					# Now update counter cache for the current parent.
+					update_proc.call(record) 
+				end
 			end
 		end
 		reflection
