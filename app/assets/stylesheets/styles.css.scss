@@ -761,21 +761,21 @@ table.info {
 	width: 122px;
 	margin-right: 24px;
 }
-.review-header span {
+.review-header span, .reviews-grouped-header span {
 	display: block;
 	width: 100%;
 }
-.review-header span.author {
+.review-header span.author, .reviews-grouped-header span.author{
 	font-weight: bold;
 	font-size: 14px;
 	line-height: 16px;
 }
-.review-header span.location, .review-header span.num-reviews {
+.review-header span.location, .review-header span.num-reviews, .reviews-grouped-header span.location,  .reviews-grouped-header span.num-reviews{
 	font-size: 12px;
 	line-height: 16px;
 	color: #8d8c8c;
 }
-.review-header span.num-reviews a {
+.review-header span.num-reviews a , .reviews-grouped-header span.num-reviews a{
 	color: #8d8c8c;
 }
 .review-body {
@@ -799,6 +799,54 @@ table.info {
 	color: #333;
 	margin: 3px 0px 0px 12px;
 	float: left;
+}
+
+.reviews-grouped .review{
+	width: 750px;
+	float: left;
+	margin-top: 6px;
+	margin-bottom: 6px;
+	vertical-align:top;
+}
+.reviews-grouped .reviewer-info{
+	display: inline-block;
+	width: 80px;
+}
+.reviews-grouped .reviewer-rating{
+	display: inline-block;
+}
+.reviews-grouped p {
+	white-space: pre-line;
+}
+.reviews-grouped .review-body {
+	display: inline-block;
+	margin-bottom: 6px;
+	margin-left: 90px;
+	width: 380px;
+}
+.reviews-grouped .review-good-to-know {
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 10px;
+	margin-top: -12px;
+	padding: 0.7em;
+	max-width:200px;
+}
+.reviews-grouped .review-good-to-know {
+	font-size: 13px;
+	line-height: 15px;
+	color: #8d8c8c;
+}
+.reviews-grouped .review-date {
+	font-size: 14px;
+	color: #333;
+	margin: 0px 0px 3px 0px;
+	float: none;
+}
+
+.reviews-grouped h4 {
+	color: #333;
+	font-weight: bold;
 }
 
 /*  Editing -------------------------------------------------------------------------- */

@@ -125,20 +125,28 @@
 						%td
 							%p.text_area= profile_display_text @profile.availability_service_area_note, preserve: true, links: true
 	%section#reviews.clearfix
-		- (reviews = @profile.reviews.order_by_descending_updated_at).each_index do |i|
-			- review = reviews[i]
-			- reviewer = review.reviewer
-			%article.review{class: (i % 2 == 0 ? 'even' : 'odd')}
-				%header.review-header
-					%span.author= user_profile_link reviewer
-					-# %span.location San Francisco, CA
-					- n_reviews = reviewer.reviews_given.length
-					%span.num-reviews= link_to (n_reviews == 0 ? t('review.none') : t('review.how_many', count: n_reviews)), '#'
-				%section.review-body
-					.reviews
+		- @profile.reviews.order_by_descending_created_at.group_by(&:reviewer_email).each do |reviewer_email, reviews|
+			- reviewer = reviews.first.reviewer
+			%article.reviews-grouped.ui-helper-clearfix
+				%header.reviews-grouped-header.ui-helper-clearfix
+					.reviewer-info
+						%span.author= user_profile_link reviewer
+						-# %span.location San Francisco, CA
+						- n_reviews = reviewer.reviews_given.length
+						%span.num-reviews= link_to (n_reviews == 0 ? t('review.none') : t('review.how_many', count: n_reviews)), '#'
+					.reviewer-rating
 						= render partial: 'single_rating_score', locals: {rating: @profile.rating_by(reviewer)}
-						.review-date= display_profile_date review.updated_at
-					%p= profile_display_text review.body, preserve: true
+				- reviews.each_with_index do |review, i|
+					%section.review.ui-helper-clearfix{class: (i % 2 == 0 ? 'ui-even' : 'ui-odd')}
+						.review-body
+							%p.review-date= display_profile_date review.created_at
+							%h4= review.title
+							%p= profile_display_text review.body, preserve: true
+						-if review.good_to_know.present?
+							.review-good-to-know.ui-state-highlight.ui-corner-all
+								%p= review.good_to_know
+						
+
 -# For editors and administrators only.
 - if can? :manage, Profile
 	.editor_info

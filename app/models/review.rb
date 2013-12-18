@@ -32,6 +32,7 @@ class Review < ActiveRecord::Base
 	end
 	
 	scope :order_by_descending_updated_at, order('updated_at DESC')
+	scope :order_by_descending_created_at, order('created_at DESC')
 	
 	# auto_strip_attributes doesn't like pseudo-attributes, so do the stripping here.
 	def reviewer_email=(new_value)
