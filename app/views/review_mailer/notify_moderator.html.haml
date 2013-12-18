@@ -1,6 +1,6 @@
 %html
 	%body
-		New review for #{@review.profile.display_name_or_company}:
+		New review for #{@review.profile.display_name_or_company} by #{@review.reviewer_username}:
 		%br
 		%br
 		- if @review.title.present?
@@ -16,4 +16,3 @@
 			%p{:style => "padding: 5px;font-style: italic"}= @review.good_to_know
 		%br 
 		= link_to 'Edit/Delete review', edit_plain_profile_url(@review.profile) + "#edit_review_div_#{@review.id}"
-		

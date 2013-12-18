@@ -5,6 +5,6 @@ class ReviewMailer < ActionMailer::Base
 	
 	def notify_moderator(review)
 		@review = review
-		mail(subject: "New Review for #{@review.profile.display_name_or_company}")
+		mail(subject: "New Review for #{@review.profile.display_name_or_company} by #{@review.reviewer_username}")
 	end
 end
