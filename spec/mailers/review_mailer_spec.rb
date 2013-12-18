@@ -16,6 +16,12 @@ describe ProfileMailer do
 			@email.should deliver_to(REVIEW_MODERATOR_EMAIL)
 		end
 
+		it "should contain profile name and reviewer username" do
+			@email.should have_subject(/#{@review.profile.display_name_or_company} by #{@review.reviewer_username}/)
+			@email.should have_body_text(/#{@review.profile.display_name_or_company} by #{@review.reviewer_username}/)
+
+		end
+
 		it "should contain review title" do
 			@email.should have_body_text(/#{@review.title}/)
 		end
