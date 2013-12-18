@@ -1,15 +1,15 @@
 New review for #{@review.profile.display_name_or_company} by #{@review.reviewer_username}:
 
 - if @review.title.present?
-	= label :review, :title
+	= "#{Review.human_attribute_name(:title)}:"
 	= @review.title
 	
 - if @review.body.present?
-	= label :review, :body
+	= "#{Review.human_attribute_name(:body)}:"
 	= @review.body
 	
 - if @review.good_to_know.present?
-	= label :review, :good_to_know
+	= "#{Review.human_attribute_name(:good_to_know)}:"
 	= @review.good_to_know
 
 Edit/Delete review:
