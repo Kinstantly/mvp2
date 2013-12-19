@@ -151,6 +151,7 @@ en:
         display_phone: 'Phone'
       review:
         body: 'Review'
+        good_to_know: 'Tip'
         rating_score: 'Provider rating (not a review rating!)'
       service:
         is_predefined: 'Can be assigned to a category'
