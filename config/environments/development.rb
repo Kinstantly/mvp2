@@ -9,10 +9,20 @@ Mvp2::Application.configure do
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 
-  # Show full error reports and disable caching
+  # Show full error reports.
   config.consider_all_requests_local       = true
-  config.action_controller.perform_caching = false
 
+  if ENV['PERFORM_CACHING'] == 'true'
+    # Enable caching.
+    config.action_controller.perform_caching = true
+    
+    # Better interface to memcached.
+    config.cache_store = :dalli_store
+  else
+    # Disable caching.
+    config.action_controller.perform_caching = false
+  end
+  
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
 
