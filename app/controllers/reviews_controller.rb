@@ -29,8 +29,7 @@ class ReviewsController < ApplicationController
 	end
 
 	def create
-		@review.reviewer_email = @current_user.email
-		@review.reviewer_username = @current_user.username
+ 		@review.reviewer = @current_user
 		success = @review.save_with_reviewer
 		if success
 			redirect_to profile_path @review.profile_id
