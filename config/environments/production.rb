@@ -44,7 +44,9 @@ Mvp2::Application.configure do
   #
   # Dalli is a better inferface to memcached.
   # Configure to use the Memcached Cloud add-on on Heroku.
-  config.cache_store = :dalli_store, ENV['MEMCACHEDCLOUD_SERVERS'].split(','), { username: ENV['MEMCACHEDCLOUD_USERNAME'], password: ENV['MEMCACHEDCLOUD_PASSWORD'] }
+  # Note: config variables not available during slug compilation on Heroku, so handle nil gracefully.
+  #       https://devcenter.heroku.com/articles/rails-asset-pipeline#compiling-assets-during-slug-compilation
+  config.cache_store = :dalli_store, ENV['MEMCACHEDCLOUD_SERVERS'].try(:split, ','), { username: ENV['MEMCACHEDCLOUD_USERNAME'], password: ENV['MEMCACHEDCLOUD_PASSWORD'] }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
