@@ -151,6 +151,10 @@ gem 'rack-raw-upload'
 # Deploy with Capistrano
 # gem 'capistrano'
 
+# Dalli is a better inferface to memcached.
+# https://github.com/mperham/dalli
+gem 'dalli'
+
 # To use debugger
 gem 'debugger', group: :development
 
