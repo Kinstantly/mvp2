@@ -11,6 +11,7 @@ class Rating < ActiveRecord::Base
 	
 	validates :score, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: SCORES.first, less_than_or_equal_to: SCORES.last }
 	
+	# Nice side effect: modifies the rateable which changes the cache_key for its fragment caches.
 	after_save :update_profile_rating_score
 	after_destroy :update_profile_rating_score
 	
