@@ -1233,25 +1233,61 @@ $generic_form_width: 418px;
 	width: $generic_form_width * 1.5;
 	.text_field {
 		textarea, input, select {
-			width: $form_element_width * 1.5;
+			width: $form_element_width * 1.5 + 15px;
+			max-width: $form_element_width * 1.5 + 15px;
+		}
+		label{
+			@extend .ui-corner-all;
+			padding: 4px;
+		}
+	}
+	.field_with_errors{
+		textarea, input, select {
+			border: 1px solid #e43d5d;
 		}
 	}
 	.grey_text{
 		color: #807F7F;
 	}
 	.column_1_of_2{
-		width: 48%;
+		position:relative;
+		width: 47%;
+		margin: 0 0 30px 0;
 		display: inline-block;
 		vertical-align: top;
 		
 		p{
 			margin-top:8px;
-			font-size: 13.5px;
+			font-size: 17px;
 		    padding-top: 8px;
 		}
 		.rate-this{
-			width: 198px;
+			width: 170px;
 		}
+	}
+	.left{
+		float: left;
+		margin-left:0;
+
+	}
+
+	.right{
+		float: right;
+		margin-right:0;
+	}
+	.column_25{
+		@extend .column_1_of_2;
+		width: 25%;
+	}
+
+	.column_70{
+		@extend .column_1_of_2;
+		width: 70%;
+	}
+
+	.rate_provider_form{
+		padding-top: 0;
+		margin-top: -10px;
 	}
 }
 
