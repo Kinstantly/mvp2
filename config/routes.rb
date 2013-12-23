@@ -90,6 +90,7 @@ Mvp2::Application.routes.draw do
 		end
 	end
 	get 'review/:profile_id' => 'reviews#new', as: :new_review_for_profile
+	post 'review/:profile_id'     => 'reviews#create', as: :save_review_for_profile
 	
 	# Where to go after sign-up or sign-in.
 	#  Using this option causes the response path to be user_root; kind of weird.
