@@ -24,6 +24,8 @@ class Service < ActiveRecord::Base
 	validates :name, length: {maximum: MAX_STRING_LENGTH}
 	validates :display_order, numericality: {only_integer: true}, allow_nil: true
 	
+	after_save :touch_category_lists
+	
 	include CachingForModel
 	predefined_info_parent :category
 	
@@ -37,5 +39,12 @@ class Service < ActiveRecord::Base
 	# Includes specialties that are already assigned even if they are not predefined.
 	def assignable_specialties
 		(Specialty.predefined + specialties).sort_by(&:lower_case_name).uniq
+	end
+	
+	private
+	
+	# Touch all category lists that this service belongs to.
+	def touch_category_lists
+		(categories.map &:category_lists).flatten.uniq.map &:touch
 	end
 end

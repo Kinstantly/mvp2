@@ -6,8 +6,6 @@ class ServicesController < ApplicationController
 	# @service and @services initialized by load_and_authorize_resource with cancan ability conditions.
 	load_and_authorize_resource
 	
-	cache_sweeper :service_sweeper
-	
 	def index
 		@services = @services.order_by_name.page(params[:page]).per(params[:per_page])
 	end

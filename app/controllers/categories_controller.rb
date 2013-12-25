@@ -6,8 +6,6 @@ class CategoriesController < ApplicationController
 	# @category and @categories initialized by load_and_authorize_resource with cancan ability conditions.
 	load_and_authorize_resource
 	
-	cache_sweeper :category_sweeper
-	
 	def index
 		@categories = @categories.order_by_name.page(params[:page]).per(20)
 	end

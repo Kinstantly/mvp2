@@ -43,6 +43,38 @@ describe Category do
 		@category.should have(1).error_on(:see_all_column)
 	end
 	
+	context "category lists" do
+		before(:each) do
+			@category.is_predefined = true
+		end
+		
+		it "belongs to home-category list if flagged to display on the home page" do
+			@category.home_page_column = 1
+			@category.save.should be_true
+			@category.reload.category_lists.include?(CategoryList.home_list).should be_true
+		end
+		
+		it "does not belong to home-category list if removed from the home page" do
+			@category.home_page_column = 1
+			@category.save.should be_true
+			@category.home_page_column = nil
+			@category.save.should be_true
+			@category.reload.category_lists.include?(CategoryList.home_list).should_not be_true
+		end
+		
+		it "belongs to the all-category list if predefined" do
+			@category.save.should be_true
+			@category.reload.category_lists.include?(CategoryList.all_list).should be_true
+		end
+		
+		it "does not belong to the all-category list if no longer predefined" do
+			@category.save.should be_true
+			@category.is_predefined = false
+			@category.save.should be_true
+			@category.reload.category_lists.include?(CategoryList.all_list).should_not be_true
+		end
+	end
+	
 	context "services" do
 		before(:each) do
 			@services = [FactoryGirl.create(:service, name: 'couples/family therapists'),
