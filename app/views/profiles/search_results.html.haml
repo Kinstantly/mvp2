@@ -6,10 +6,10 @@
 		.search_results_prompt= t 'views.search_results.sorted_by_proximity_prompt'
 	.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
 	.search_results_list#content
-		- @search.results.each_with_index do |profile, i|
+		- @search.results.each do |profile|
 			- cache ['search_result', profile] do
-				- profile_id = "profile_#{i}"
-				%article.search_result.clearfix{itemscope: "", itemtype: "http://schema.org/Person", id: "search_result_#{i}"}
+				- profile_id = "profile_#{profile.id}"
+				%article.search_result.clearfix{itemscope: "", itemtype: "http://schema.org/Person", id: "search_result_#{profile.id}"}
 					.short-profile{id: profile_id}
 						.popover
 							-#.profile-photo-placeholder
