@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131212045624) do
+ActiveRecord::Schema.define(:version => 20131225002857) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -48,6 +48,14 @@ ActiveRecord::Schema.define(:version => 20131212045624) do
     t.integer  "see_all_column",   :default => 1
   end
 
+  create_table "categories_category_lists", :id => false, :force => true do |t|
+    t.integer "category_id"
+    t.integer "category_list_id"
+  end
+
+  add_index "categories_category_lists", ["category_id"], :name => "index_categories_category_lists_on_category_id"
+  add_index "categories_category_lists", ["category_list_id"], :name => "index_categories_category_lists_on_category_list_id"
+
   create_table "categories_profiles", :force => true do |t|
     t.integer "category_id"
     t.integer "profile_id"
@@ -62,6 +70,12 @@ ActiveRecord::Schema.define(:version => 20131212045624) do
 
   add_index "categories_services", ["category_id"], :name => "index_categories_services_on_category_id"
   add_index "categories_services", ["service_id"], :name => "index_categories_services_on_service_id"
+
+  create_table "category_lists", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0

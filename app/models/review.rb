@@ -7,7 +7,9 @@ class Review < ActiveRecord::Base
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :title, :body, :good_to_know
 	
-	belongs_to :profile, counter_cache: true
+	# Touch the associated profile to change the cache_key for its fragment caches.
+	belongs_to :profile, counter_cache: true, touch: true
+	
 	belongs_to :reviewer, class_name: 'User'
 	# has_one :rating, dependent: :destroy # when we had one rating per review.
 	# accepts_nested_attributes_for :rating, allow_destroy: true

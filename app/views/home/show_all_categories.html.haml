@@ -1,12 +1,13 @@
 - @page_title_prefix = t 'views.show_all_categories.view.page_title'
-#show_all_categories
-	#content.content
-		%h1= t 'views.show_all_categories.view.header'
-		- Category::SEE_ALL_COLUMNS.each do |column|
-			.col{id: "col#{column}"}
-				- show_all_column_categories(column).each do |category|
-					%h3= category.name
-					%ul
-						- category.services_for_see_all_page.each do |svc|
-							%li
-								= link_to svc.name, search_providers_by_service_path(svc)
+- cache CategoryList.all_list do
+	#show_all_categories
+		#content.content
+			%h1= t 'views.show_all_categories.view.header'
+			- Category::SEE_ALL_COLUMNS.each do |column|
+				.col{id: "col#{column}"}
+					- show_all_column_categories(column).each do |category|
+						%h3= category.name
+						%ul
+							- category.services_for_see_all_page.each do |svc|
+								%li
+									= link_to svc.name, search_providers_by_service_path(svc)

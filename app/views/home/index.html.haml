@@ -32,27 +32,28 @@
 				%p.small
 					= t 'views.sign_up.provider_prompt'
 					= provider_sign_up_link t('views.sign_up.provider_link')
-	#content.category-list.clearfix
-		%h2= t 'views.home.view.browse_title'
-		-# %span.help= t 'views.home.view.tutorial_link_html'
-		- Category::HOME_PAGE_COLUMNS.each do |column|
-			.col{id: "col#{column}"}
-				- home_column_categories(column).each do |category|
-					%h3= category.name
-					%ul
-						- category.services_for_home_page.each do |svc|
-							%li
-								= link_to svc.name, search_providers_by_service_path(svc)
-						%li= link_to t('views.home.view.more_services'), show_all_categories_path
-				- if column == Category::HOME_PAGE_COLUMNS.last
-					#all-cats.see-all= link_to t('views.home.view.see_all_categories'), show_all_categories_path
-		-#
-			#all-cats.see-all.select-wrapper
-				%span.select-text
-				%select
-					%option{:selected => "selected"} See all
-					%option This is a dropdown
-					%option of all categories?
-	#social
-		= link_to t('contact.social.twitter.display'), t('contact.social.twitter.value'), target: '_blank', id: 'twitter'
-		= link_to t('contact.social.facebook.display'), t('contact.social.facebook.value'), target: '_blank', id: 'facebook'
+	- cache CategoryList.home_list do
+		#content.category-list.clearfix
+			%h2= t 'views.home.view.browse_title'
+			-# %span.help= t 'views.home.view.tutorial_link_html'
+			- Category::HOME_PAGE_COLUMNS.each do |column|
+				.col{id: "col#{column}"}
+					- home_column_categories(column).each do |category|
+						%h3= category.name
+						%ul
+							- category.services_for_home_page.each do |svc|
+								%li
+									= link_to svc.name, search_providers_by_service_path(svc)
+							%li= link_to t('views.home.view.more_services'), show_all_categories_path
+					- if column == Category::HOME_PAGE_COLUMNS.last
+						#all-cats.see-all= link_to t('views.home.view.see_all_categories'), show_all_categories_path
+			-#
+				#all-cats.see-all.select-wrapper
+					%span.select-text
+					%select
+						%option{:selected => "selected"} See all
+						%option This is a dropdown
+						%option of all categories?
+		#social
+			= link_to t('contact.social.twitter.display'), t('contact.social.twitter.value'), target: '_blank', id: 'twitter'
+			= link_to t('contact.social.facebook.display'), t('contact.social.facebook.value'), target: '_blank', id: 'facebook'

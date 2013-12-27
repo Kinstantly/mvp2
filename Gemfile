@@ -155,6 +155,11 @@ gem 'rack-raw-upload'
 # https://github.com/mperham/dalli
 gem 'dalli'
 
+# Detects changes to templates when caching is being used.
+# Note: available by default in Rails 4.
+# https://github.com/rails/cache_digests
+gem 'cache_digests'
+
 # To use debugger
 gem 'debugger', group: :development
 
