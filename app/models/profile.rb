@@ -41,7 +41,7 @@ class Profile < ActiveRecord::Base
 	has_many :locations, dependent: :destroy
 	accepts_nested_attributes_for :locations, allow_destroy: true, limit: 100
 	
-	has_many :reviews, dependent: :destroy
+	has_many :reviews, dependent: :destroy, include: :reviewer
 	has_many :reviewers, through: :reviews
 	
 	has_many :ratings, as: :rateable, dependent: :destroy

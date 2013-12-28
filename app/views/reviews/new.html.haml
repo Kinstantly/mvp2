@@ -1,4 +1,5 @@
-- current_user_score = @review.profile.rating_by(current_user).try(:score).try(:round).presence || -1
+- current_rating = @review.profile.rating_by(current_user)
+- current_user_score = current_rating.try(:score).try(:round).presence || -1
 - profile_name = @review.profile.display_name_or_company
 - body_placeholder = t('review.body_placeholder')
 - good_to_know_placeholder = t('review.good_to_know_placeholder')
@@ -7,10 +8,10 @@
 	.new_review_div.wider_form
 		.left.column_70
 			%p= (current_user_score > 0)? t('rating.thanks_for_rating', name: profile_name, count: current_user_score): t('review.review_header', name: profile_name)
-			%p= @review.profile.rating_by(current_user) ? t('review.prompt_for_review') : ''
+			%p= current_rating ? t('review.prompt_for_review') : ''
 		.right.column_25				
 			- if can? :rate, @review.profile
-				= render partial: 'profiles/rate', locals: {profile: @review.profile, embedded_in: :review}
+				= render partial: 'profiles/rate', locals: {profile: @review.profile, current_rating: current_rating, embedded_in: :review}
 		- if can? :create, @review
 			= form_for @review, url: save_review_for_profile_path(@review.profile) do |f|
 				= f.error_messages

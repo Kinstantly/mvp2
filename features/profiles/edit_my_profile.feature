@@ -426,6 +426,7 @@ Feature: Edit my expert profile
 		When I open the "profile photo" formlet
 			And I see step "one" of "profile photo" formlet
 			And I upload a valid image file "profile_photo_test_under1MB.jpg"
+			And I wait a bit
 		Then edit my profile page should show "profile_photo_test_under1MB.jpg" image as my profile photo
 
 	@javascript
