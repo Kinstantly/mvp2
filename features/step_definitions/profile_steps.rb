@@ -112,8 +112,8 @@ def attribute_display_selector(formlet, which)
 end
 
 def location_address_selector(which)
-	selector = '.location'
-	selector += ' ~ .location ~ .location ~ .location' if which.strip == 'second'
+	selector = '.location_block .location'
+	selector = '.location_block ~ .location_block .location' if which.strip == 'second'
 	selector
 end
 
@@ -855,4 +855,17 @@ Then /^edit my profile page should show "(.*?)" image as my profile photo$/ do |
 		File.exist?(file_path).should be_true
 		File.delete(file_path)
 	end
+end
+
+Then /^I should see a Google Map$/ do
+	within 'head' do
+  		page.should have_xpath "//script[starts-with(@src, 'https://maps.googleapis.com/maps/api')]"
+  	end
+  	within('#map_canvas') do
+		page.should_not be_blank
+	end
+end
+
+Then /^I should see "(.*?)" message$/ do |locale_path|
+ 	page.should have_content I18n.t locale_path
 end

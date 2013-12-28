@@ -34,20 +34,21 @@
 			- if @profile.company_name.present? && @profile.display_name.present?
 				%span.title{itemprop: "affiliation"}= @profile.company_name
 			- (locations = @profile.locations.order_by_id).each_index do |i|
-				- if i == 0
-					%span.location.location_address{itemprop: "street-address"}= locations[i].display_address
-					- if locations.size > 1
-						%span
-							= link_to t('views.profile.view.more_locations'), '#', id: 'more_locations'
-							= link_to t('views.profile.view.hide_locations'), '#', id: 'hide_locations'
-						%span.location{itemprop: "telephone"}= locations[i].display_phone.presence or raw('&nbsp;')
+				.location_block{:"data-i" => "#{i}"}
+					- if i == 0
+						%span.location.location_address{itemprop: "street-address"}= locations[i].display_address
+						- if locations.size > 1
+							%span
+								= link_to t('views.profile.view.more_locations'), '#', id: 'more_locations'
+								= link_to t('views.profile.view.hide_locations'), '#', id: 'hide_locations'
+							%span.location{itemprop: "telephone"}= locations[i].display_phone.presence or raw('&nbsp;')
+						- else
+							%span.location{itemprop: "telephone"}= locations[i].display_phone
+						%span.location.location_note= locations[i].note
 					- else
-						%span.location{itemprop: "telephone"}= locations[i].display_phone
-					%span.location.location_note= locations[i].note
-				- else
-					%span.location.location_address.more{itemprop: "street-address"}= locations[i].display_address
-					%span.location.more{itemprop: "telephone"}= locations[i].display_phone
-					%span.location.location_note.more= locations[i].note
+						%span.location.location_address.more{itemprop: "street-address"}= locations[i].display_address
+						%span.location.more{itemprop: "telephone"}= locations[i].display_phone
+						%span.location.location_note.more= locations[i].note
 			- if @profile.url.present?
 				%span.location{itemprop: "url"}
 					= t 'views.profile.view.url'
@@ -56,13 +57,15 @@
 				%span.location{itemprop: "email"}
 					= t 'views.profile.view.email'
 					= profile_linked_email @profile
-		#rate_review
-			= render partial: 'profiles/rating_score', locals: {profile: @profile}
-			- unless @profile == current_user.try(:profile)
-				= render partial: 'profiles/rate', locals: {profile: @profile}
-				.review-this= profile_review_link @profile
-			.appointment
-				%a{href: "#"}= t 'views.profile.view.make_an_appointment'
+			#rate_review
+				= render partial: 'profiles/rating_score', locals: {profile: @profile}
+				- unless @profile == current_user.try(:profile)
+					= render partial: 'profiles/rate', locals: {profile: @profile}
+					.review-this= profile_review_link @profile
+		.locations_map
+			= render partial: 'profiles/locations_map', locals: {profile: @profile}
+			/.appointment
+			/	%a{href: "#"}= t 'views.profile.view.make_an_appointment'
 	%section#details.clearfix
 		.interior
 			.summary-text

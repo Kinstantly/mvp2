@@ -38,3 +38,14 @@ Feature: View a provider's profile
 		Given I am not logged in
 		When I visit the view page for a published profile with one review
 		Then the profile should show the review
+
+	Scenario: Provider's location displayed on map
+		Given I am not logged in 
+			And I visit the view page for a published profile with one location
+		When I visit the published profile page
+		Then I should see a Google Map
+
+	Scenario: Info for Provider with remote services and no locations displayed instead of map
+		Given I am not logged in 
+			And I visit the view page for a published profile with no locations
+		Then I should see "controllers.profiles.location_remote_only" message

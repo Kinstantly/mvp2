@@ -1682,3 +1682,23 @@ ul.links-list > li{
    	font-size: 15px;
   	color: #807f7f;
 }
+
+/*Google Map*/
+.locations_map{
+	float: right;
+}
+
+.locations_map #map_canvas{
+	width: $large_photo_y + 140px;
+	height: $large_photo_y + 100px;
+}
+
+.locations_map #map_canvas p:not(.map_popup_text){
+	margin-top: 15px;
+	padding:10px 15px;
+	font-size: 15px;
+}
+
+.locations_map #map_canvas p.map_popup_text{
+	text-transform:capitalize;
+}

@@ -49,6 +49,7 @@ en:
       profile_photo_edit_generic_error: 'Something went wrong. Please try again.'
       profile_photo_processing_timeout: 'Photo processing took too long.  Please try a smaller photo file size.'
       profile_photo_no_dnd_support: 'Drag and Drop is not supported by your browser. Please use one of upload options below.'
+      location_remote_only: 'This provider operates 100% remotely. <br/>That means you can talk to this provider at home, at your office, at a park... the sky&#39;s the limit!'
     reviews:
       destroyed: 'The review was destroyed!'
     services:
