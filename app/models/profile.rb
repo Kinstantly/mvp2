@@ -369,8 +369,11 @@ class Profile < ActiveRecord::Base
 		true
 	end
 	
+	# Return the rating of this profile that was given by the specified user.
+	# Returns nil if no such rating exists.
+	# Avoids using methods that will invoke a database query, e.g., find_*.
 	def rating_by(user)
-		ratings.find_by_rater_id user.id if user.try(:id)
+		ratings.select{ |rating| rating.rater_id == user.id }.first if user.try(:id)
 	end
 	
 	# Return the array of consultation mode names that are checked for this profile.
