@@ -36,7 +36,7 @@ class Profile < ActiveRecord::Base
 	has_and_belongs_to_many :age_ranges
 	has_and_belongs_to_many :categories
 	has_and_belongs_to_many :services
-	has_and_belongs_to_many :specialties
+	has_and_belongs_to_many :specialties, after_add: :specialties_changed, after_remove: :specialties_changed
 	
 	has_many :locations, dependent: :destroy
 	accepts_nested_attributes_for :locations, allow_destroy: true, limit: 100
@@ -392,6 +392,11 @@ class Profile < ActiveRecord::Base
 	end
 	
 	private
+	
+	# Changes to this provider's specialties list should trigger the creation of new fragment caches for this profile.
+	def specialties_changed(specialty)
+		touch
+	end
 	
 	def publishing_requirements
 		if is_published
