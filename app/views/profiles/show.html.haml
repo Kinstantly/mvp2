@@ -124,29 +124,31 @@
 							%span= t 'views.profile.view.availability_service_area_html'
 						%td
 							%p.text_area= profile_display_text @profile.availability_service_area_note, preserve: true, links: true
+	-# Cache the entire reviews section so we do not have to read nested reviewer caches unless necessary.
 	- ordered_reviews = @profile.reviews.order_by_descending_created_at
 	- cache ['profile_reviews', @profile]+ordered_reviews.map(&:reviewer).uniq do
 		%section#reviews.clearfix
 			- ordered_reviews.group_by(&:reviewer_email).each do |reviewer_email, reviews|
 				- reviewer = reviews.first.reviewer
-				%article.reviews-grouped.ui-helper-clearfix
-					%header.reviews-grouped-header.ui-helper-clearfix
-						- cache ['profile_reviewers', reviewer] do
+				- rating = @profile.rating_by(reviewer)
+				- cache ['profile_reviewer', reviewer, rating]+reviews do
+					%article.reviews-grouped.ui-helper-clearfix
+						%header.reviews-grouped-header.ui-helper-clearfix
 							.reviewer-info
 								%span.author= user_profile_link reviewer
 								- n_reviews = reviewer.reviews_given.size
 								%span.num-reviews= link_to (n_reviews == 0 ? t('review.none') : t('review.how_many', count: n_reviews)), '#'
-						.reviewer-rating
-							= render partial: 'single_rating_score', locals: {rating: @profile.rating_by(reviewer)}
-					- reviews.each_with_index do |review, i|
-						%section.review.ui-helper-clearfix{class: (i % 2 == 0 ? 'ui-even' : 'ui-odd')}
-							.review-body
-								%p.review-date= display_profile_date review.created_at
-								%h4= review.title
-								%p= profile_display_text review.body, preserve: true
-							-if review.good_to_know.present?
-								.review-good-to-know.ui-state-highlight.ui-corner-all
-									%p= review.good_to_know
+							.reviewer-rating
+								= render partial: 'single_rating_score', locals: {rating: rating}
+						- reviews.each_with_index do |review, i|
+							%section.review.ui-helper-clearfix{class: (i % 2 == 0 ? 'ui-even' : 'ui-odd')}
+								.review-body
+									%p.review-date= display_profile_date review.created_at
+									%h4= review.title
+									%p= profile_display_text review.body, preserve: true
+								-if review.good_to_know.present?
+									.review-good-to-know.ui-state-highlight.ui-corner-all
+										%p= review.good_to_know
 
 -# For editors and administrators only.
 - if can? :manage, Profile
