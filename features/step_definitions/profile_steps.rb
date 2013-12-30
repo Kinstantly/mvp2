@@ -112,8 +112,8 @@ def attribute_display_selector(formlet, which)
 end
 
 def location_address_selector(which)
-	selector = '.location_block .location'
-	selector = '.location_block ~ .location_block .location' if which.strip == 'second'
+	selector = 'div.location_block:first-of-type'
+	selector = 'div.location_block:first-of-type ~ .location_block' if which.strip == 'second'
 	selector
 end
 
@@ -702,8 +702,11 @@ end
 
 Then /^(?:my|the) profile should not show "([^\"]+)" within the (first|second) location address$/ do |value, which|
 	within(location_address_selector which) do
-		page.should_not have_content value
+		page.all('.location', :visible => true).each do |el|
+			el.should_not have_content(value)
+		end
 	end
+
 end
 
 Then /^my profile should have no locations$/ do
