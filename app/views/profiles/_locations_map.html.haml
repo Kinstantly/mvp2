@@ -3,8 +3,8 @@
 #map_canvas
 
 :javascript
-	my_vars.locations_json		= '#{raw @profile.locations.order_by_id.to_json}';
-	my_vars.locations_total		=  parseInt('#{@profile.locations.count}');
+	my_vars.locations_json	= '#{escape_javascript @profile.locations.order_by_id.to_json}';
+	my_vars.locations_total	=  parseInt('#{@profile.locations.count}');
 	my_vars.location_remote_only = ('#{@profile.consult_remotely}' == 'true')? true: false;
 	my_vars.location_remote_only_msg = '#{location_remote_only_msg}';
 	my_vars.basic_marker_icon = 'http://maps.google.com/mapfiles/kml/paddle/blu-stars-lv.png';
@@ -77,7 +77,6 @@
 							index = markers.indexOf(@)
 							@.setIcon(my_vars.basic_marker_icon)
 			
-			
 			init_map = (map_center_lat, map_center_lng) ->
 				if map_canvas && map_center_lat && map_center_lng
 					center_coords = new google.maps.LatLng map_center_lat, map_center_lng
@@ -95,15 +94,17 @@
 					popup = null
 					if marker
 						popup = new google.maps.InfoWindow
+						address1 = escape_html (location.address1 ? "")
+						address2 = escape_html (location.address2 ? "")
+						city = escape_html (location.city ? "")
+						region = escape_html (location.region ? "")
+						postal_code = escape_html (location.postal_code ? "")
+						phone = escape_html (location.phone ? "")
 						address = "<p class='map_popup_text'>" + 
-								(location.address1 ? "") + 
-								" " + (location.address2 ? "") + "</p>"
-						address += "<p class='map_popup_text'>" + 
-								(location.city ? "") +
-								" " + (location.region ? "")+ 
-								" " + (location.postal_code ? "")+ "</p>"
-						address += "<p class='map_popup_text'>" + 
-								(location.phone ? "") + "</p>"
+									address1 + " " + address2 + "</p>"
+						address += "<p class='map_popup_text'>" + city + " " + region + 
+								" " + postal_code + "</p>"
+						address += "<p class='map_popup_text'>" + phone + "</p>"
 						popup.setContent(address);
 				
 					popups[i] = popup
@@ -146,14 +147,18 @@
 						
 					else
 						marker.setAnimation(null)
-						marker.setIcon(my_vars.basic_marker_icon)
-						
+						marker.setIcon(my_vars.basic_marker_icon)			
 
 			valid_marker_index = (index) ->
 				markers.length > index >= 0
 
 			marker_exists = (index) ->
 				markers[index]?
+			
+			escape_html = (str) ->
+				div = document.createElement('div');
+				div.appendChild(document.createTextNode(str));
+				div.innerHTML;
 			
 			init = () ->
 				init_markers()
