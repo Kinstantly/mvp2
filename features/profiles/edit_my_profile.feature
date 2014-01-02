@@ -421,7 +421,7 @@ Feature: Edit my expert profile
 	Scenario: Add profile photo from my computer
 		Given I exist as a user
 			And I am logged in
-			And I have "no" profile photo
+			And I have no profile photo
 			And I am on my profile edit page
 		When I open the "profile photo" formlet
 			And I see step "one" of "profile photo" formlet
@@ -434,7 +434,7 @@ Feature: Edit my expert profile
 	Scenario: Import profile photo from URL
 		Given I exist as a user
 			And I am logged in
-			And I have "no" profile photo
+			And I have no profile photo
 			And I am on my profile edit page
 		When I open the "profile photo" formlet
 			And I see step "one" of "profile photo" formlet
@@ -446,7 +446,7 @@ Feature: Edit my expert profile
 	Scenario: Change profile photo
 		Given I exist as a user
 			And I am logged in
-			And I have "a" profile photo
+			And I have a profile photo
 			And I am on my profile edit page
 		When I open the "profile photo" formlet
 			And I see step "two" of "profile photo" formlet
@@ -459,7 +459,7 @@ Feature: Edit my expert profile
 	Scenario: Edit profile photo
 		Given I exist as a user
 			And I am logged in
-			And I have "a" profile photo
+			And I have a profile photo
 			And I am on my profile edit page
 			And I open the "profile photo" formlet
 		When I see step "two" of "profile photo" formlet
@@ -476,4 +476,23 @@ Feature: Edit my expert profile
 			And I click on the "more detailed help" link of the "profile photo" formlet
 		 	And I see step "three" of "profile photo" formlet
 		Then my profile should show "More detailed help for photos:" within "step_three"
-			
+
+	@javascript
+	@photo_upload
+	Scenario: Click on profile photo placeholder to upload a photo
+		Given I exist as a user
+			And I am logged in
+			And I have no profile photo
+			And I am on my profile edit page
+		When I click on the profile photo
+		Then I should see step "one" of "profile photo" formlet
+
+	@javascript
+	@photo_upload
+	Scenario: Click on profile photo to edit it
+		Given I exist as a user
+			And I am logged in
+			And I have a profile photo
+			And I am on my profile edit page
+		When I click on the profile photo
+		Then I should see step "two" of "profile photo" formlet

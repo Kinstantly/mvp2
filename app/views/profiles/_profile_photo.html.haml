@@ -1,3 +1,4 @@
+-# Any view using this partial should set @using_photo_editor = true. Fragment caching precludes using "content_for :head" in this partial. :(
 - source_url_prompt = t 'views.profile.edit.profile_photo_source_url_prompt'
 - profile_photo_source_url_example = t 'views.profile.edit.profile_photo_source_url_example'
 - support_email = "#{t('contact.emails.support.value')}@#{t('email_domain')}"
@@ -7,8 +8,6 @@
 - profile_photo_processing_timeout = t 'controllers.profiles.profile_photo_processing_timeout'
 - profile_photo_no_dnd_support_msg = t 'controllers.profiles.profile_photo_no_dnd_support'
 - profile_photo_present = if @profile.errorfree.profile_photo.presence then true else false end
-- content_for :head do
-	= javascript_include_tag "https://dme0ih8comzn4.cloudfront.net/js/feather.js"
 .edit.popover.profile-photo-update
 	.close-popover-button
 	.errorExplanation.aria-hidden

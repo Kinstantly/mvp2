@@ -353,7 +353,7 @@ Given /^there is a "(.*?)" age range$/ do |age_range|
 	FactoryGirl.create :age_range, name: age_range
 end
 
-Given /^I have "(a|no)" profile photo$/ do |photo_present|
+Given /^I have (a|no) profile photo$/ do |photo_present|
 	find_user_profile
 	case photo_present
 	when 'a'
@@ -615,7 +615,7 @@ When /^I click on the link to see all locations$/ do
 	click_link 'more_locations'
 end
 
-When /^I see step "(one|two|three)" of "(.*?)" formlet$/ do |step, formlet|
+When /^I (?:should )?see step "(one|two|three)" of "(.*?)" formlet$/ do |step, formlet|
 	within("##{formlet_id formlet}") do
 		page.has_css?("li.step_#{step}:not(.aria-hidden)", :visible => true).should be_true
 		case step
@@ -642,6 +642,10 @@ When /^I import a valid image file from "(.*?)"$/ do |url|
 	step 'I click on the "import_from_url_link" link of the "profile photo" formlet'
 	step %{I enter "#{url}" in the "source_url" field of the "profile photo" formlet}
 	find("li.step_one #import_from_url_button").click
+end
+
+When /^I click on the profile photo$/ do
+	find('#profile-photo img').click
 end
 
 ### THEN ###
