@@ -1,5 +1,4 @@
-- dummy_loc_id = 100 # If there was an error on creation, location ID will be nil.
-- locations = @profile.locations.sort_by{|loc| loc.id.presence || (dummy_loc_id += 1)}
+- locations = @profile.sorted_locations
 - @country ||= (locations.first.try(:country).presence || default_profile_country)
 .edit.popover
 	= nested_form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
@@ -42,7 +41,7 @@
 			= link_to 'Cancel', '#', class: 'cancel button'
 -# Display the locations of the STORED profile.
 -# However, if there are none, display a dummy entry to provide a way to activate this formlet.
-- (locations = @profile.errorfree.locations.order_by_id.presence || [Location.new]).each_index do |i|
+- (locations = @profile.errorfree.sorted_locations.presence || [Location.new]).each_index do |i|
 	%span{class: "location location_address editable attribute_display#{i > 0 ? ' more' : ''}", itemprop: "street-address"}
 		= locations[i].display_address.presence || profile_blank_attribute_message(Location.human_attribute_name :display_address)
 	- if i == 0 && locations.size > 1

@@ -33,7 +33,7 @@
 			%span.title{itemprop: "jobTitle"}= @profile.headline
 			- if @profile.company_name.present? && @profile.display_name.present?
 				%span.title{itemprop: "affiliation"}= @profile.company_name
-			- (locations = @profile.locations.order_by_id).each_index do |i|
+			- (locations = @profile.sorted_locations).each_index do |i|
 				.location_block{:"data-i" => "#{i}"}
 					- if i == 0
 						%span.location.location_address{itemprop: "street-address"}= locations[i].display_address

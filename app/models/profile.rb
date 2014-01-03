@@ -387,11 +387,25 @@ class Profile < ActiveRecord::Base
 		human_attribute_names_if_present *(CONSULTATION_MODES + [:consult_remotely, :accepting_new_clients])
 	end
 	
+	# Returns an array of locations sorted by ID, for consistent ordering of locations.
+	# Uses sort rather than order_by_* to avoid an extraneous database query.
+	# Allows for locations with a nil ID, e.g., when there is an error while creating a location, the location ID will be nil.
+	def sorted_locations
+		locations.sort do |a, b|
+			if a.id.nil?
+				b.id.nil? ? 0 : 1
+			elsif b.id.nil?
+				-1
+			else
+				a.id <=> b.id
+			end
+		end
+	end
+	
 	# Returns the first location sorted by id.
 	# Use this method so that we are consistent on what is considered the first location.
-	# Uses sort_by rather than order_by_* to avoid an extraneous database query.
 	def first_location
-		@first_location ||= locations.sort_by(&:id).first
+		@first_location ||= sorted_locations.first
 	end
 	
 	private

@@ -3,8 +3,8 @@
 #map_canvas
 
 :javascript
-	my_vars.locations_json	= '#{escape_javascript @profile.locations.order_by_id.to_json}';
-	my_vars.locations_total	=  parseInt('#{@profile.locations.count}');
+	my_vars.locations_json	= '#{escape_javascript @profile.sorted_locations.to_json}';
+	my_vars.locations_total	=  parseInt('#{@profile.locations.size}');
 	my_vars.location_remote_only = ('#{@profile.consult_remotely}' == 'true')? true: false;
 	my_vars.location_remote_only_msg = '#{location_remote_only_msg}';
 	my_vars.basic_marker_icon = 'http://maps.google.com/mapfiles/kml/paddle/blu-stars-lv.png';
