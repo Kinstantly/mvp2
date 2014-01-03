@@ -410,6 +410,7 @@ $masthead_width: 920px;
 	}
 	a#more_locations, a#hide_locations {
 		float: right;
+		padding-right: 8px;
 	}
 	span.location.more, a#hide_locations {
 		display: none;
@@ -588,7 +589,6 @@ $contact_toolbar_width: 300px;
 #rate_review {
 	width: $contact_toolbar_width;
 	float: left;
-	padding-left: 8px;
 	> div {
 		clear: left;
 	}
