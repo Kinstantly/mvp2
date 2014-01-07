@@ -12,7 +12,7 @@ Mvp2::Application.configure do
   # Show full error reports.
   config.consider_all_requests_local       = true
 
-  if ENV['PERFORM_CACHING'] == 'true'
+  if ENV['PERFORM_CACHING'].present?
     # Enable caching.
     config.action_controller.perform_caching = true
     
