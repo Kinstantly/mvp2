@@ -16,4 +16,4 @@
 			= profile_wrap_item_names @profile.errorfree.specialties
 		- else
 			%span.note=  t 'views.profile.edit.specialties_blank'
-	= render partial: "#{formlet}_popover", locals: {formlet: formlet}
+	= render partial: 'services_popover'

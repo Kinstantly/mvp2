@@ -12,6 +12,7 @@ Mvp2::Application.configure do
   # config.serve_static_assets = false
 
   # Serve static assets with Rack::Cache.
+	# (serve_static_assets = true is also needed to run Rails 4 on Heroku and is set by the rails_12factor gem.)
   config.serve_static_assets = true
   config.static_cache_control = 'public, max-age=2592000'
 

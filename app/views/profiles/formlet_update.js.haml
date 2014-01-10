@@ -6,10 +6,12 @@
 		$('##{@formlet}').removeClass('active');
 	- if @refresh_formlets
 		- @refresh_formlets.split.each do |f|
-			formlet = $('##{f}').html('#{escape_javascript(render partial: 'formlet', locals: {formlet: f})}');
+			formlet = $('##{f}').html('#{escape_javascript(render partial: f+'_formlet')}');
 			my_vars.f.place_formlet(formlet);
+			my_vars.f.configure_formlet(formlet);
 	- else
-		formlet = $('##{@formlet}').html('#{escape_javascript(render partial: 'formlet')}');
+		formlet = $('##{@formlet}').html('#{escape_javascript(render partial: @formlet+'_formlet')}');
 		my_vars.f.place_formlet(formlet);
+		my_vars.f.configure_formlet(formlet);
 	-# Fix text field placeholders for IE if any.
 	my_vars.f.text_field_placeholders($('##{@formlet}'));

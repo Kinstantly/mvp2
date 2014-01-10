@@ -9,7 +9,6 @@
 - profile_photo_no_dnd_support_msg = t 'controllers.profiles.profile_photo_no_dnd_support'
 - profile_photo_present = if @profile.errorfree.profile_photo.presence then true else false end
 .edit.popover.profile-photo-update
-	.close-popover-button
 	.errorExplanation.aria-hidden
 	%ul.steps
 		%li.step_one

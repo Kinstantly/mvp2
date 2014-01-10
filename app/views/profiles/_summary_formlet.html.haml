@@ -1,3 +1,4 @@
+- formlet = 'summary'
 %h3= Profile.human_attribute_name(:summary)
 .edit.popover
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
