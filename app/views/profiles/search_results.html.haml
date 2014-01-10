@@ -1,3 +1,5 @@
+- location_remote_only_msg = t "controllers.profiles.location_remote_only"
+- locations_array = {}
 .search_results
 	%h1= search_results_title @search, address: @search_address, service: @search_service
 	- if default_search_query(@search_query, @search_service).blank?
@@ -5,70 +7,85 @@
 	- if @search_address.blank? and @search.total > 1
 		.search_results_prompt= t 'views.search_results.sorted_by_proximity_prompt'
 	.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
-	.search_results_list#content
-		- @search.results.each do |profile|
-			- cache ['search_result', profile] do
-				- profile_id = "profile_#{profile.id}"
-				%article.search_result.clearfix{itemscope: "", itemtype: "http://schema.org/Person", id: "search_result_#{profile.id}"}
-					.short-profile{id: profile_id}
-						.popover
+	#content
+		.search_results_list.ui-helper-clearfix
+			.column-right
+				.locations_map
+					.map_positioner
+						#map_canvas
+			.column-left
+				- @search.results.each do |profile|
+					- cache ['search_result', profile] do
+						- profile_id = "profile_#{profile.id}"
+						- locations_array[profile_id] = {}
+						- locations_array[profile_id]['name'] = profile.display_name_or_company
+						- locations_array[profile_id]['locations'] = profile.sorted_locations
+						%article.search_result.clearfix{itemscope: "", itemtype: "http://schema.org/Person", id: "search_result_#{profile.id}"}
+							.short-profile{id: profile_id}
+								.popover
+									-#.profile-photo-placeholder
+									.photo-wrapper-medium
+										-#= image_tag profile.photo_path, alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+										= image_tag profile.profile_photo.url(:medium), alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(profile)
+									.profile
+										%h1{itemprop: "name"}
+											= profile.display_name_or_company
+											- if profile.headline.present?
+												%span.headline= profile.headline
+										- location = profile.first_location
+										%span
+											%span.location{itemprop: "telephone"}= location.try(:display_phone)
+											- if profile.email.present?
+												%span.location{itemprop: "email"}
+													= t 'views.profile.view.email'
+													= profile_display_email profile
+											- if profile.url.present?
+												%span.location{itemprop: "url"}
+													= t 'views.profile.view.url'
+													= profile_display_website profile
+										%span
+											%span.location{itemprop: "street-address"}
+												= location.try(:display_address)
+												- if (location_count = profile.locations.size) > 1
+													= t 'views.location.view.more.how_many', count: (location_count - 1)
+										- if profile.ages_stages_note.present?
+											%span.location.age_ranges
+												= t 'views.profile.view.ages_stages'
+												= profile_display_truncated profile.ages_stages_note, length: 150
+									.specialties= search_result_specialties_truncated profile, length: 700
+									.summary
+										%span= profile_display_truncated profile.summary, length: 180
+
+							-# = image_tag 'profile-photo-placeholder.jpg', alt: "#{profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
 							-#.profile-photo-placeholder
-							.photo-wrapper-medium
-								-#= image_tag profile.photo_path, alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
-								= image_tag profile.profile_photo.url(:medium), alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(profile)
+							.photo-wrapper-small
+								= link_to profile do
+									-#= image_tag profile.photo_path, alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+									= image_tag profile.profile_photo.url(:medium), alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(profile)
 							.profile
-								%h1{itemprop: "name"}
-									= profile.display_name_or_company
+								%h1.show_profile{itemprop: "name", 'data-profile-id' => profile_id}
+									= profile_list_name_or_company_link profile, class: 'open'
 									- if profile.headline.present?
 										%span.headline= profile.headline
-								- location = profile.first_location
-								%span
-									%span.location{itemprop: "telephone"}= location.try(:display_phone)
-									- if profile.email.present?
-										%span.location{itemprop: "email"}
-											= t 'views.profile.view.email'
-											= profile_display_email profile
-									- if profile.url.present?
-										%span.location{itemprop: "url"}
-											= t 'views.profile.view.url'
-											= profile_display_website profile
-								%span
-									%span.location{itemprop: "street-address"}
-										= location.try(:display_address)
-										- if (location_count = profile.locations.size) > 1
-											= t 'views.location.view.more.how_many', count: (location_count - 1)
-								- if profile.ages_stages_note.present?
-									%span.location.age_ranges
-										= t 'views.profile.view.ages_stages'
-										= profile_display_truncated profile.ages_stages_note, length: 150
-							.specialties= search_result_specialties_truncated profile, length: 700
-							.summary
-								%span= profile_display_truncated profile.summary, length: 180
+								%span.specialties= search_result_specialties_truncated profile, length: 200
+								%span.location.location-link{itemprop: "street-address"}= search_result_location profile
+								%span.summary
+									= profile_display_truncated profile.summary, length: 200, links: true
+									= link_to t('views.search_results.more'), profile_path(profile), class: 'open'
+								.rating-contact
+									= render partial: 'profiles/rating_score', locals: {profile: profile}
+								-#.appointment
+									%a{href: "#"} Make an appointment
+			.ui-helper-clearfix	
+			- if @search.results.present?
+				.search_result= paginate @search.results
+		- if @search.total > 1
+			.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
 
-					-# = image_tag 'profile-photo-placeholder.jpg', alt: "#{profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
-					-#.profile-photo-placeholder
-					.photo-wrapper-small
-						= link_to profile do
-							-#= image_tag profile.photo_path, alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
-							= image_tag profile.profile_photo.url(:medium), alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(profile)
-					.profile
-						%h1.show_profile{itemprop: "name", 'data-profile-id' => profile_id}
-							= profile_list_name_or_company_link profile, class: 'open'
-							- if profile.headline.present?
-								%span.headline= profile.headline
-						%span.specialties= search_result_specialties_truncated profile, length: 200
-						%span.location{itemprop: "street-address"}= search_result_location profile
-						%span.summary
-							= profile_display_truncated profile.summary, length: 200, links: true
-							= link_to t('views.search_results.more'), profile_path(profile), class: 'open'
-					.rating-contact
-						= render partial: 'profiles/rating_score', locals: {profile: profile}
-						.appointment
-							%a{href: "#"} Make an appointment
-		- if @search.results.present?
-			.search_result= paginate @search.results
-	- if @search.total > 1
-		.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
+:javascript
+	my_vars.locations_json	= '#{escape_javascript locations_array.to_json}';
+	my_vars.basic_marker_icon = 'http://maps.google.com/mapfiles/kml/paddle/blu-stars-lv.png';
+	my_vars.highlight_marker_icon = 'http://maps.google.com/mapfiles/kml/paddle/red-stars-lv.png';
 
 :coffeescript
 	event_is_over_element = (e, el) ->
@@ -100,3 +117,206 @@
 			$(this).removeClass 'active'
 			false
 	my_vars.f.setup_popup_profiles()
+
+	#when DOM ready
+	$ ->
+		#google map module
+		#reads JSON string of locations from my_vars.locations_json and
+		#adds markers and popups on map for each valid location  
+		search_results_google_map_module = do ->
+			#private
+			map_options = 
+				zoom: 9
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+				panControl: false,
+				zoomControl: true,
+				mapTypeControl: false,
+				scaleControl: false,
+				streetViewControl: false,
+				overviewMapControl: false
+			
+			info_win_options = 
+				maxWidth: 200
+				disableAutoPan: true
+
+			map_canvas 	  = document.getElementById "map_canvas"	
+			map_obj = null
+			map_bounds = new google.maps.LatLngBounds()
+			locations_json = $.parseJSON my_vars.locations_json
+			locations_links = $('.profile span.location-link[itemprop="street-address"]')
+			markers = {}
+			popups  = {}
+		
+			#binds ui elements to user events
+			bind_actions = ()  ->
+				locations_links.on 'mouseover', (e) ->
+					profile_id = $(@).parent('div.profile').find('h1.show_profile').attr('data-profile-id')
+					this.style.cursor = 'pointer'
+					#$(@).css color: '#000'
+					markers_for_profile = markers[profile_id]
+					if markers_for_profile? && markers_for_profile.length > 0
+						first_marker = markers_for_profile[0]
+						if first_marker?
+							marker_coords = first_marker.getPosition()
+							if map_obj.getBounds().contains(marker_coords) is false
+								map_obj.setCenter(marker_coords)
+					toggle_markers_for_profile(profile_id)
+
+				locations_links.on 'mouseout', (e) ->
+					profile_id = $(@).parent('div.profile').find('h1.show_profile').attr('data-profile-id')
+					this.style.cursor = 'default'
+					#$(@).css color: '#807f7f'
+					toggle_markers_for_profile(profile_id)
+
+				for profile_id, markers_for_profile of markers
+					for i, marker of markers_for_profile
+						if marker?
+							google.maps.event.addListener marker, 'mouseover', ->
+								profile_id = @.name
+								close_all_popups()
+								markers_for_profile = markers[profile_id]
+								index = markers_for_profile.indexOf(@)
+								show_marker profile_id, index
+								popups[profile_id][index].open(map_obj, @)
+								@.setIcon(my_vars.highlight_marker_icon)
+							
+							google.maps.event.addListener marker, 'mouseout', ->
+								@.setIcon(my_vars.basic_marker_icon)
+			
+			init_map = (map_center_lat, map_center_lng) ->
+				if map_canvas? && map_center_lat? && map_center_lng?
+					center_coords = new google.maps.LatLng map_center_lat, map_center_lng
+					map_options['center'] = center_coords
+					map_obj = new google.maps.Map(map_canvas, map_options)
+
+			init_markers = () ->
+				for link, i in locations_links
+					id = $(link).parent('div.profile').find('h1.show_profile').attr('data-profile-id')
+					if not locations_json[id]?
+						continue
+					name = locations_json[id]['name']
+					for location, i in locations_json[id]['locations']
+						lat = location.latitude
+						lng = location.longitude
+						marker = add_marker id, lat, lng
+						if markers[id]?
+							markers[id][i] = marker
+						else
+							markers[id] = []
+							markers[id][i] = marker
+
+						popup = create_popup name, location
+						if marker?
+							marker.setVisible(true)
+						if popups[id]?
+							popups[id][i] = popup
+						else
+							popups[id] = []
+							popups[id][i] = popup
+
+			create_popup = (name, location) ->
+				name = escape_html name
+				address1 = escape_html location.address1
+				address2 = escape_html location.address2
+				city = escape_html location.city
+				region = escape_html location.region
+				postal_code = escape_html location.postal_code
+				phone = escape_html location.phone
+
+				line1 = name.trim()
+				line2 = (address1 + " " + address2).trim()
+				line3 = (city + " " + region + " " + postal_code).trim()
+				line4 = phone.trim()
+
+				address = ""
+				address += "<p class='map_popup_text map_popup_title'>" + name + "</p>" if line1?
+				address += "<p class='map_popup_text'>" + line2 + "</p>" if line2?
+				address += "<p class='map_popup_text'>" + line3 + "</p>" if line3?
+				address += "<p class='map_popup_text'>" + line4 + "</p>" if line4?
+				address = address.replace(/\s+/g, ' ')
+
+				if address?
+					popup = new google.maps.InfoWindow(info_win_options)
+					popup.setContent(address)
+				popup ?= null
+			
+			add_marker = (profile_id, lat, lng) ->
+				if not lat? || not lng? 
+					return null
+				if not map_obj?
+					init_map lat, lng
+				geo_coords = new google.maps.LatLng lat, lng
+				marker = new google.maps.Marker
+					name: profile_id
+					map: map_obj
+					visible: false
+					animation: null
+					position: geo_coords
+					icon: my_vars.basic_marker_icon
+				map_bounds.extend(geo_coords)
+				map_obj.fitBounds(map_bounds)
+				marker
+			
+			show_marker = (profile_id, index) ->
+				if marker_exists(profile_id, index)
+					markers[profile_id][index].setVisible(true)
+
+			hide_marker = (profile_id, index) ->
+				if marker_exists(profile_id, index)
+					markers[profile_id][index].setVisible(false)
+
+			toggle_markers_for_profile = (profile_id) ->
+				close_all_popups()
+				for marker in markers[profile_id]
+					if not marker? 
+						continue
+					if marker.getIcon() == my_vars.basic_marker_icon
+						marker.setAnimation(google.maps.Animation.BOUNCE)
+						do (marker) ->  
+							setTimeout (-> marker.setAnimation(null)), 2000
+						marker.setIcon(my_vars.highlight_marker_icon)
+					else
+						marker.setAnimation(null)
+						marker.setIcon(my_vars.basic_marker_icon)			
+
+			close_all_popups = () ->
+				for i, popups_for_profile of popups
+					for popup_el in popups_for_profile
+						popup_el.close() if popup_el?
+
+			marker_exists = (profile_id, index) ->
+				markers[profile_id]? && markers[profile_id][index]?
+			
+			escape_html = (str) ->
+				str ?= ""
+				str = str.trim()
+				div = document.createElement('div')
+				div.appendChild(document.createTextNode(str))
+				div.innerHTML
+			
+			init = () ->
+				init_markers()
+				bind_actions() if map_obj?
+
+			# public
+			init: init
+
+		search_results_google_map_module.init()
+
+		base_line = $('.column-left').offset().top
+		max_bottom = $('.column-left').outerHeight()
+		map_height = $('.map_positioner').outerHeight()
+		max_top = max_bottom - map_height
+		
+		$(window).scroll (e) ->
+		    scroll = window.pageYOffset
+		    new_top_offset = scroll - base_line
+		    if(scroll > base_line && (new_top_offset + map_height) < max_bottom)	
+		    	$('.map_positioner').css({ 'top': new_top_offset + 'px' })
+		    else
+		    	if((new_top_offset + map_height) > max_bottom && max_top > 0)
+		    		$('.map_positioner').css({ 'top': max_top + 'px' })
+		    	else
+		    		$('.map_positioner').css({ 'top': '0px' })
+
+		    

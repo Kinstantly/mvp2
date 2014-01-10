@@ -1052,6 +1052,11 @@ div.popover {
 			line-height: 22px;
 		}
 	}
+	.search_results_list{
+		width: 900px;
+		margin: 0px auto 20px auto;
+	}
+	
 	.search_results_prompt {
 		@include search-results-header-style;
 		color: $text_light_color;
@@ -1103,9 +1108,9 @@ div.popover {
 		}
 	}
 	.search_result {
-		width: 900px;
-		margin: 0px auto 20px auto;
+		max-width: 540px;
 		padding-top: 22px;
+		padding-bottom: 22px;
 		border: {
 			top-style: solid;
 			top-width: thin;
@@ -1178,7 +1183,6 @@ div.popover {
 			}
 		}
 		.profile {
-			width: 534px;
 			margin-right: 16px;
 			h1 {
 				width: 100%;
@@ -1684,8 +1688,23 @@ ul.links-list > li{
 }
 
 /*Google Map*/
+.column-left{
+	float: left;
+	width: 66.6%;
+}
+.column-right{
+	float: right;
+	width: 33.3%;
+}
 .locations_map{
 	float: right;
+	position: relative;
+
+	.map_positioner{
+		position: relative;
+		right: 0;
+		top: 0;
+	}
 }
 
 .locations_map #map_canvas{
@@ -1693,12 +1712,23 @@ ul.links-list > li{
 	height: $large_photo_y + 100px;
 }
 
+.search_results .locations_map #map_canvas{
+	height: $large_photo_y + 200px;
+	border: thin solid #d9d8d8;
+}
+
 .locations_map #map_canvas p:not(.map_popup_text){
 	margin-top: 15px;
-	padding:10px 15px;
+	padding: 10px 15px;
 	font-size: 15px;
 }
 
-.locations_map #map_canvas p.map_popup_text{
-	text-transform:capitalize;
+.locations_map #map_canvas {
+	p.map_popup_text{
+		text-transform: capitalize;
+		overflow: hidden !important;
+	}
+	p.map_popup_title{
+		font-weight: bold;
+	}
 }
