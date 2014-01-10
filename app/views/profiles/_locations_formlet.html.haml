@@ -55,7 +55,7 @@
 		= locations[i].note.presence || profile_blank_attribute_message(Location.human_attribute_name :note)
 
 :coffeescript
-	# In case we are re-rendering on an error, make sure locations marked for destruction are not visible.
+	# If we had a validation error, we are redisplaying the formlet and must hide locations that are marked for destruction.
 	$('.fields.marked_for_destruction').css('display', 'none')
 	
 	$('#more_locations').click () ->
