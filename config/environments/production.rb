@@ -94,7 +94,8 @@ Mvp2::Application.configure do
   config.paperclip_defaults = {
     :storage => :s3,
     :path => 'images/profiles/:hash.:extension',
-    :url => ":s3_domain_url",
+    :s3_host_alias => 'd27zr285hfv284.cloudfront.net',
+    :url => ':s3_alias_url',
     :default_url => "profile-photo-placeholder.jpg",
     :hash_secret => ENV['PAPERCLIP_HASH_SECRET'],
     :hash_data => ":attachment/:id_partition/:style/:filename",
