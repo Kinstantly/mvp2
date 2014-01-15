@@ -15,11 +15,11 @@
 						#map_canvas
 			.column-left
 				- @search.results.each do |profile|
+					- profile_id = "profile_#{profile.id}"
+					- locations_array[profile_id] = {}
+					- locations_array[profile_id]['name'] = profile.display_name_or_company
+					- locations_array[profile_id]['locations'] = profile.sorted_locations
 					- cache ['search_result', profile] do
-						- profile_id = "profile_#{profile.id}"
-						- locations_array[profile_id] = {}
-						- locations_array[profile_id]['name'] = profile.display_name_or_company
-						- locations_array[profile_id]['locations'] = profile.sorted_locations
 						%article.search_result.clearfix{itemscope: "", itemtype: "http://schema.org/Person", id: "search_result_#{profile.id}"}
 							.short-profile{id: profile_id}
 								.popover
@@ -175,7 +175,7 @@
 								profile_id = @.name
 								close_all_popups()
 								markers_for_profile = markers[profile_id]
-								index = markers_for_profile.indexOf(@)
+								index = index_in_array markers_for_profile, @
 								show_marker profile_id, index
 								popups[profile_id][index].open(map_obj, @)
 								@.setIcon(my_vars.highlight_marker_icon)
@@ -223,10 +223,10 @@
 				postal_code = escape_html location.postal_code
 				phone = escape_html location.phone
 
-				line1 = name.trim()
-				line2 = (address1 + " " + address2).trim()
-				line3 = (city + " " + region + " " + postal_code).trim()
-				line4 = phone.trim()
+				line1 = trim_string name
+				line2 = trim_string (address1 + " " + address2)
+				line3 = trim_string (city + " " + region + " " + postal_code)
+				line4 = trim_string phone
 
 				address = ""
 				address += "<p class='map_popup_text map_popup_title'>" + name + "</p>" if line1?
@@ -289,7 +289,7 @@
 			
 			escape_html = (str) ->
 				str ?= ""
-				str = str.trim()
+				str = trim_string str
 				div = document.createElement('div')
 				div.appendChild(document.createTextNode(str))
 				div.innerHTML
@@ -303,20 +303,37 @@
 
 		search_results_google_map_module.init()
 
-		base_line = $('.column-left').offset().top
+		map_top_padding = 16
+		base_line = $('.column-left').offset().top - map_top_padding
 		max_bottom = $('.column-left').outerHeight()
 		map_height = $('.map_positioner').outerHeight()
 		max_top = max_bottom - map_height
+		map_width = $('.map_positioner').outerWidth()
+		map_is_fixed = false
+		win = $(window)
+		viewport_left = win.scrollLeft()
+		viewport_width = win.width()
 		
-		$(window).scroll (e) ->
-		    scroll = window.pageYOffset
-		    new_top_offset = scroll - base_line
-		    if(scroll > base_line && (new_top_offset + map_height) < max_bottom)	
-		    	$('.map_positioner').css({ 'top': new_top_offset + 'px' })
-		    else
-		    	if((new_top_offset + map_height) > max_bottom && max_top > 0)
-		    		$('.map_positioner').css({ 'top': max_top + 'px' })
-		    	else
-		    		$('.map_positioner').css({ 'top': '0px' })
-
-		    
+		position_map = (e) ->
+			viewport_top = win.scrollTop()
+			new_top_offset = viewport_top - base_line
+			if(viewport_top > base_line && (new_top_offset + map_height) < max_bottom)	
+				unless map_is_fixed && viewport_left == win.scrollLeft() && viewport_width == win.width()
+					map_is_fixed = true
+					viewport_left = win.scrollLeft()
+					viewport_width = win.width()
+					container = $('.locations_map')
+					# In fixed mode, we need to position with respect to the left side of the viewport.
+					# But the container is floated right, so we measure starting at the right side of the container, i.e., left+width of the container.
+					map_left = Math.ceil(container.offset().left + container.outerWidth() - map_width - viewport_left)
+					$('.map_positioner').css({ 'position': 'fixed', 'top': map_top_padding+'px', 'left': map_left+'px' })
+			else if map_is_fixed
+				map_is_fixed = false
+				# In fixed mode we are positioning with 'left', so it's easier to override using 'left' while in relative mode.  Also, use 'left' in the style sheet.
+				if((new_top_offset + map_height) >= max_bottom && max_top > 0)
+					$('.map_positioner').css({ 'position': 'relative', 'top': max_top+'px', 'left': '0px' })
+				else
+					$('.map_positioner').css({ 'position': 'relative', 'top': '0px', 'left': '0px' })
+		
+		win.scroll position_map
+		win.resize position_map

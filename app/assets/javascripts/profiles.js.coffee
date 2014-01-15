@@ -9,3 +9,15 @@ window.profile_display_name = (first_name, middle_name, last_name, credentials) 
 	s = names.join(' ')
 	s = s + ', ' + credentials if string_present credentials
 	s
+
+# Replacements for ECMAScript 5 methods that IE 8 does not implement.  :(
+
+# string.trim(s) replacement.
+window.trim_string = (s) ->
+	s.replace /^\s+|\s+$/g, ''
+
+# array.indexOf(value, start) replacement.
+window.index_in_array = (array, value, start) ->
+	start ?= 0
+	return i for candidate, i in array when candidate is value and i >= start
+	-1
