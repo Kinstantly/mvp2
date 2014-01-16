@@ -53,3 +53,8 @@ Feature: search the provider directory
 		When I enter "San Francisco CA" in the search box
 			And I enter "Menlo Park, CA" in the search location box
 		Then I should see "San Mateo" first in the search results list
+
+	Scenario: search results displayed on map
+		Given I am not logged in 
+		When I enter "" in the search box
+		Then I should see a Google Map

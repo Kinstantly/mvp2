@@ -67,14 +67,14 @@
 						google.maps.event.addListener marker, 'mouseover', ->
 							for popup_el in popups
 								popup_el.close() if popup_el
-							index = markers.indexOf(@)
+							index = index_in_array markers, @
 							show_marker index
 							popups[index].open(map_obj, @)
 							@.setIcon(my_vars.highlight_marker_icon)
 						
 						google.maps.event.addListener marker, 'mouseout', ->
 							#popup.close();
-							index = markers.indexOf(@)
+							index = index_in_array markers, @
 							@.setIcon(my_vars.basic_marker_icon)
 			
 			init_map = (map_center_lat, map_center_lng) ->
