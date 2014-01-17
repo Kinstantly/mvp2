@@ -126,7 +126,7 @@
 		search_results_google_map_module = do ->
 			#private
 			map_options = 
-				zoom: 9
+				zoom: 11
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 				panControl: false,
 				zoomControl: true,
@@ -245,6 +245,7 @@
 					return null
 				if not map_obj?
 					init_map lat, lng
+					adding_first_marker = true
 				geo_coords = new google.maps.LatLng lat, lng
 				marker = new google.maps.Marker
 					name: profile_id
@@ -254,7 +255,7 @@
 					position: geo_coords
 					icon: my_vars.basic_marker_icon
 				map_bounds.extend(geo_coords)
-				map_obj.fitBounds(map_bounds)
+				map_obj.fitBounds(map_bounds) unless adding_first_marker? # Zooms too much if there is only one marker.
 				marker
 			
 			show_marker = (profile_id, index) ->
