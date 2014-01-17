@@ -87,254 +87,255 @@
 	my_vars.basic_marker_icon = 'http://maps.google.com/mapfiles/kml/paddle/blu-stars-lv.png';
 	my_vars.highlight_marker_icon = 'http://maps.google.com/mapfiles/kml/paddle/red-stars-lv.png';
 
-:coffeescript
-	event_is_over_element = (e, el) ->
-		el_coords = el.offset()
-		e.pageY > el_coords.top && e.pageY < el_coords.top + el.outerHeight() &&
-			e.pageX > el_coords.left && e.pageX < el_coords.left + el.outerWidth()
-	# Pop-up short profiles
-	my_vars.f.setup_popup_profiles = ->
-		$('.show_profile').mouseenter (e) ->
-			short_profile = $('#' + $(this).attr('data-profile-id'))
-			short_profile.css('top', $(this).height() + 8) # first try placing below the mouse-over area
-			# next see if the short profile is entirely within the viewport
-			win = $(window)
-			viewport_top = win.scrollTop()
-			viewport_bottom = viewport_top + win.height()
-			popover_height = $('.popover', short_profile).outerHeight() # only the popover DIV has the proper height
-			if short_profile.offset().top + popover_height > viewport_bottom # off the bottom of the viewport?
-				short_profile.css('top', -(popover_height + 12)) # place above the mouse-over area
-				if short_profile.offset().top < viewport_top # are we now off the top of the viewport?
-					short_profile.offset({top: viewport_top + 4, left: short_profile.offset().left}) # place below top of viewport
-					my_vars.on_popover = event_is_over_element e, $('.popover', short_profile) # pointer might be on the popover!
-			short_profile.addClass 'active' # make it appear
-			false
-		$('.show_profile').mouseleave ->
-			$('#' + $(this).attr('data-profile-id')).removeClass 'active' unless my_vars.on_popover
-			false
-		$('.short-profile').mouseleave ->
-			my_vars.on_popover = false
-			$(this).removeClass 'active'
-			false
-	my_vars.f.setup_popup_profiles()
-
-	#when DOM ready
-	$ ->
-		#google map module
-		#reads JSON string of locations from my_vars.locations_json and
-		#adds markers and popups on map for each valid location  
-		search_results_google_map_module = do ->
-			#private
-			map_options = 
-				zoom: 11
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-				panControl: false,
-				zoomControl: true,
-				mapTypeControl: false,
-				scaleControl: false,
-				streetViewControl: false,
-				overviewMapControl: false
-			
-			info_win_options = 
-				maxWidth: 200
-				disableAutoPan: true
-
-			map_canvas 	  = document.getElementById "map_canvas"	
-			map_obj = null
-			map_bounds = new google.maps.LatLngBounds()
-			locations_json = $.parseJSON my_vars.locations_json
-			locations_links = $('.profile span.location-link[itemprop="street-address"]')
-			markers = {}
-			popups  = {}
+- cache 'search_results_coffeescript' do
+	:coffeescript
+		event_is_over_element = (e, el) ->
+			el_coords = el.offset()
+			e.pageY > el_coords.top && e.pageY < el_coords.top + el.outerHeight() &&
+				e.pageX > el_coords.left && e.pageX < el_coords.left + el.outerWidth()
+		# Pop-up short profiles
+		my_vars.f.setup_popup_profiles = ->
+			$('.show_profile').mouseenter (e) ->
+				short_profile = $('#' + $(this).attr('data-profile-id'))
+				short_profile.css('top', $(this).height() + 8) # first try placing below the mouse-over area
+				# next see if the short profile is entirely within the viewport
+				win = $(window)
+				viewport_top = win.scrollTop()
+				viewport_bottom = viewport_top + win.height()
+				popover_height = $('.popover', short_profile).outerHeight() # only the popover DIV has the proper height
+				if short_profile.offset().top + popover_height > viewport_bottom # off the bottom of the viewport?
+					short_profile.css('top', -(popover_height + 12)) # place above the mouse-over area
+					if short_profile.offset().top < viewport_top # are we now off the top of the viewport?
+						short_profile.offset({top: viewport_top + 4, left: short_profile.offset().left}) # place below top of viewport
+						my_vars.on_popover = event_is_over_element e, $('.popover', short_profile) # pointer might be on the popover!
+				short_profile.addClass 'active' # make it appear
+				false
+			$('.show_profile').mouseleave ->
+				$('#' + $(this).attr('data-profile-id')).removeClass 'active' unless my_vars.on_popover
+				false
+			$('.short-profile').mouseleave ->
+				my_vars.on_popover = false
+				$(this).removeClass 'active'
+				false
+		my_vars.f.setup_popup_profiles()
 		
-			#binds ui elements to user events
-			bind_actions = ()  ->
-				locations_links.on 'mouseover', (e) ->
-					profile_id = $(@).parent('div.profile').find('h1.show_profile').attr('data-profile-id')
-					this.style.cursor = 'pointer'
-					#$(@).css color: '#000'
-					markers_for_profile = markers[profile_id]
-					if markers_for_profile? && markers_for_profile.length > 0
-						first_marker = markers_for_profile[0]
-						if first_marker?
-							marker_coords = first_marker.getPosition()
-							if map_obj.getBounds().contains(marker_coords) is false
-								map_obj.setCenter(marker_coords)
-					toggle_markers_for_profile(profile_id)
-
-				locations_links.on 'mouseout', (e) ->
-					profile_id = $(@).parent('div.profile').find('h1.show_profile').attr('data-profile-id')
-					this.style.cursor = 'default'
-					#$(@).css color: '#807f7f'
-					toggle_markers_for_profile(profile_id)
-
-				for profile_id, markers_for_profile of markers
-					for i, marker of markers_for_profile
-						if marker?
-							google.maps.event.addListener marker, 'mouseover', ->
-								profile_id = @.name
-								close_all_popups()
-								markers_for_profile = markers[profile_id]
-								index = index_in_array markers_for_profile, @
-								show_marker profile_id, index
-								popups[profile_id][index].open(map_obj, @)
-								@.setIcon(my_vars.highlight_marker_icon)
+		#when DOM ready
+		$ ->
+			#google map module
+			#reads JSON string of locations from my_vars.locations_json and
+			#adds markers and popups on map for each valid location  
+			search_results_google_map_module = do ->
+				#private
+				map_options = 
+					zoom: 11
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+					panControl: false,
+					zoomControl: true,
+					mapTypeControl: false,
+					scaleControl: false,
+					streetViewControl: false,
+					overviewMapControl: false
+					
+				info_win_options = 
+					maxWidth: 200
+					disableAutoPan: true
+					
+				map_canvas 	  = document.getElementById "map_canvas"	
+				map_obj = null
+				map_bounds = new google.maps.LatLngBounds()
+				locations_json = $.parseJSON my_vars.locations_json
+				locations_links = $('.profile span.location-link[itemprop="street-address"]')
+				markers = {}
+				popups  = {}
+				
+				#binds ui elements to user events
+				bind_actions = ()  ->
+					locations_links.on 'mouseover', (e) ->
+						profile_id = $(@).parent('div.profile').find('h1.show_profile').attr('data-profile-id')
+						this.style.cursor = 'pointer'
+						#$(@).css color: '#000'
+						markers_for_profile = markers[profile_id]
+						if markers_for_profile? && markers_for_profile.length > 0
+							first_marker = markers_for_profile[0]
+							if first_marker?
+								marker_coords = first_marker.getPosition()
+								if map_obj.getBounds().contains(marker_coords) is false
+									map_obj.setCenter(marker_coords)
+						toggle_markers_for_profile(profile_id)
+						
+					locations_links.on 'mouseout', (e) ->
+						profile_id = $(@).parent('div.profile').find('h1.show_profile').attr('data-profile-id')
+						this.style.cursor = 'default'
+						#$(@).css color: '#807f7f'
+						toggle_markers_for_profile(profile_id)
+						
+					for profile_id, markers_for_profile of markers
+						for i, marker of markers_for_profile
+							if marker?
+								google.maps.event.addListener marker, 'mouseover', ->
+									profile_id = @.name
+									close_all_popups()
+									markers_for_profile = markers[profile_id]
+									index = index_in_array markers_for_profile, @
+									show_marker profile_id, index
+									popups[profile_id][index].open(map_obj, @)
+									@.setIcon(my_vars.highlight_marker_icon)
 							
-							google.maps.event.addListener marker, 'mouseout', ->
-								@.setIcon(my_vars.basic_marker_icon)
-			
-			init_map = (map_center_lat, map_center_lng) ->
-				if map_canvas? && map_center_lat? && map_center_lng?
-					center_coords = new google.maps.LatLng map_center_lat, map_center_lng
-					map_options['center'] = center_coords
-					map_obj = new google.maps.Map(map_canvas, map_options)
-
-			init_markers = () ->
-				for link, i in locations_links
-					id = $(link).parent('div.profile').find('h1.show_profile').attr('data-profile-id')
-					if not locations_json[id]?
-						continue
-					name = locations_json[id]['name']
-					for location, i in locations_json[id]['locations']
-						lat = location.latitude
-						lng = location.longitude
-						marker = add_marker id, lat, lng
-						if markers[id]?
-							markers[id][i] = marker
+								google.maps.event.addListener marker, 'mouseout', ->
+									@.setIcon(my_vars.basic_marker_icon)
+									
+				init_map = (map_center_lat, map_center_lng) ->
+					if map_canvas? && map_center_lat? && map_center_lng?
+						center_coords = new google.maps.LatLng map_center_lat, map_center_lng
+						map_options['center'] = center_coords
+						map_obj = new google.maps.Map(map_canvas, map_options)
+						
+				init_markers = () ->
+					for link, i in locations_links
+						id = $(link).parent('div.profile').find('h1.show_profile').attr('data-profile-id')
+						if not locations_json[id]?
+							continue
+						name = locations_json[id]['name']
+						for location, i in locations_json[id]['locations']
+							lat = location.latitude
+							lng = location.longitude
+							marker = add_marker id, lat, lng
+							if markers[id]?
+								markers[id][i] = marker
+							else
+								markers[id] = []
+								markers[id][i] = marker
+								
+							popup = create_popup name, location
+							if marker?
+								marker.setVisible(true)
+							if popups[id]?
+								popups[id][i] = popup
+							else
+								popups[id] = []
+								popups[id][i] = popup
+								
+				create_popup = (name, location) ->
+					name = escape_html name
+					address1 = escape_html location.address1
+					address2 = escape_html location.address2
+					city = escape_html location.city
+					region = escape_html location.region
+					postal_code = escape_html location.postal_code
+					phone = escape_html location.phone
+					
+					line1 = trim_string name
+					line2 = trim_string (address1 + " " + address2)
+					line3 = trim_string (city + " " + region + " " + postal_code)
+					line4 = trim_string phone
+					
+					address = ""
+					address += "<p class='map_popup_text map_popup_title'>" + name + "</p>" if line1?
+					address += "<p class='map_popup_text'>" + line2 + "</p>" if line2?
+					address += "<p class='map_popup_text'>" + line3 + "</p>" if line3?
+					address += "<p class='map_popup_text'>" + line4 + "</p>" if line4?
+					address = address.replace(/\s+/g, ' ')
+					
+					if address?
+						popup = new google.maps.InfoWindow(info_win_options)
+						popup.setContent(address)
+					popup ?= null
+					
+				add_marker = (profile_id, lat, lng) ->
+					if not lat? || not lng? 
+						return null
+					if not map_obj?
+						init_map lat, lng
+						adding_first_marker = true
+					geo_coords = new google.maps.LatLng lat, lng
+					marker = new google.maps.Marker
+						name: profile_id
+						map: map_obj
+						visible: false
+						animation: null
+						position: geo_coords
+						icon: my_vars.basic_marker_icon
+					map_bounds.extend(geo_coords)
+					map_obj.fitBounds(map_bounds) unless adding_first_marker? # Zooms too much if there is only one marker.
+					marker
+					
+				show_marker = (profile_id, index) ->
+					if marker_exists(profile_id, index)
+						markers[profile_id][index].setVisible(true)
+						
+				hide_marker = (profile_id, index) ->
+					if marker_exists(profile_id, index)
+						markers[profile_id][index].setVisible(false)
+						
+				toggle_markers_for_profile = (profile_id) ->
+					close_all_popups()
+					for marker in markers[profile_id]
+						if not marker? 
+							continue
+						if marker.getIcon() == my_vars.basic_marker_icon
+							marker.setAnimation(google.maps.Animation.BOUNCE)
+							do (marker) ->  
+								setTimeout (-> marker.setAnimation(null)), 2000
+							marker.setIcon(my_vars.highlight_marker_icon)
 						else
-							markers[id] = []
-							markers[id][i] = marker
-
-						popup = create_popup name, location
-						if marker?
-							marker.setVisible(true)
-						if popups[id]?
-							popups[id][i] = popup
-						else
-							popups[id] = []
-							popups[id][i] = popup
-
-			create_popup = (name, location) ->
-				name = escape_html name
-				address1 = escape_html location.address1
-				address2 = escape_html location.address2
-				city = escape_html location.city
-				region = escape_html location.region
-				postal_code = escape_html location.postal_code
-				phone = escape_html location.phone
-
-				line1 = trim_string name
-				line2 = trim_string (address1 + " " + address2)
-				line3 = trim_string (city + " " + region + " " + postal_code)
-				line4 = trim_string phone
-
-				address = ""
-				address += "<p class='map_popup_text map_popup_title'>" + name + "</p>" if line1?
-				address += "<p class='map_popup_text'>" + line2 + "</p>" if line2?
-				address += "<p class='map_popup_text'>" + line3 + "</p>" if line3?
-				address += "<p class='map_popup_text'>" + line4 + "</p>" if line4?
-				address = address.replace(/\s+/g, ' ')
-
-				if address?
-					popup = new google.maps.InfoWindow(info_win_options)
-					popup.setContent(address)
-				popup ?= null
+							marker.setAnimation(null)
+							marker.setIcon(my_vars.basic_marker_icon)			
+							
+				close_all_popups = () ->
+					for i, popups_for_profile of popups
+						for popup_el in popups_for_profile
+							popup_el.close() if popup_el?
+							
+				marker_exists = (profile_id, index) ->
+					markers[profile_id]? && markers[profile_id][index]?
+					
+				escape_html = (str) ->
+					str ?= ""
+					str = trim_string str
+					div = document.createElement('div')
+					div.appendChild(document.createTextNode(str))
+					div.innerHTML
+					
+				init = () ->
+					init_markers()
+					bind_actions() if map_obj?
+					
+				# public
+				init: init
+				
+			search_results_google_map_module.init()
 			
-			add_marker = (profile_id, lat, lng) ->
-				if not lat? || not lng? 
-					return null
-				if not map_obj?
-					init_map lat, lng
-					adding_first_marker = true
-				geo_coords = new google.maps.LatLng lat, lng
-				marker = new google.maps.Marker
-					name: profile_id
-					map: map_obj
-					visible: false
-					animation: null
-					position: geo_coords
-					icon: my_vars.basic_marker_icon
-				map_bounds.extend(geo_coords)
-				map_obj.fitBounds(map_bounds) unless adding_first_marker? # Zooms too much if there is only one marker.
-				marker
+			map_top_padding = 16
+			base_line = $('.column-left').offset().top - map_top_padding
+			max_bottom = $('.column-left').outerHeight()
+			map_height = $('.map_positioner').outerHeight()
+			max_top = max_bottom - map_height
+			map_width = $('.map_positioner').outerWidth()
+			map_is_fixed = false
+			win = $(window)
+			viewport_left = win.scrollLeft()
+			viewport_width = win.width()
 			
-			show_marker = (profile_id, index) ->
-				if marker_exists(profile_id, index)
-					markers[profile_id][index].setVisible(true)
-
-			hide_marker = (profile_id, index) ->
-				if marker_exists(profile_id, index)
-					markers[profile_id][index].setVisible(false)
-
-			toggle_markers_for_profile = (profile_id) ->
-				close_all_popups()
-				for marker in markers[profile_id]
-					if not marker? 
-						continue
-					if marker.getIcon() == my_vars.basic_marker_icon
-						marker.setAnimation(google.maps.Animation.BOUNCE)
-						do (marker) ->  
-							setTimeout (-> marker.setAnimation(null)), 2000
-						marker.setIcon(my_vars.highlight_marker_icon)
+			position_map = (e) ->
+				viewport_top = win.scrollTop()
+				new_top_offset = viewport_top - base_line
+				if(viewport_top > base_line && (new_top_offset + map_height) < max_bottom)	
+					unless map_is_fixed && viewport_left == win.scrollLeft() && viewport_width == win.width()
+						map_is_fixed = true
+						viewport_left = win.scrollLeft()
+						viewport_width = win.width()
+						container = $('.locations_map')
+						# In fixed mode, we need to position with respect to the left side of the viewport.
+						# But the container is floated right, so we measure starting at the right side of the container, i.e., left+width of the container.
+						map_left = Math.ceil(container.offset().left + container.outerWidth() - map_width - viewport_left)
+						$('.map_positioner').css({ 'position': 'fixed', 'top': map_top_padding+'px', 'left': map_left+'px' })
+				else if map_is_fixed
+					map_is_fixed = false
+					# In fixed mode we are positioning with 'left', so it's easier to override using 'left' while in relative mode.  Also, use 'left' in the style sheet.
+					if((new_top_offset + map_height) >= max_bottom && max_top > 0)
+						$('.map_positioner').css({ 'position': 'relative', 'top': max_top+'px', 'left': '0px' })
 					else
-						marker.setAnimation(null)
-						marker.setIcon(my_vars.basic_marker_icon)			
-
-			close_all_popups = () ->
-				for i, popups_for_profile of popups
-					for popup_el in popups_for_profile
-						popup_el.close() if popup_el?
-
-			marker_exists = (profile_id, index) ->
-				markers[profile_id]? && markers[profile_id][index]?
-			
-			escape_html = (str) ->
-				str ?= ""
-				str = trim_string str
-				div = document.createElement('div')
-				div.appendChild(document.createTextNode(str))
-				div.innerHTML
-			
-			init = () ->
-				init_markers()
-				bind_actions() if map_obj?
-
-			# public
-			init: init
-
-		search_results_google_map_module.init()
-
-		map_top_padding = 16
-		base_line = $('.column-left').offset().top - map_top_padding
-		max_bottom = $('.column-left').outerHeight()
-		map_height = $('.map_positioner').outerHeight()
-		max_top = max_bottom - map_height
-		map_width = $('.map_positioner').outerWidth()
-		map_is_fixed = false
-		win = $(window)
-		viewport_left = win.scrollLeft()
-		viewport_width = win.width()
-		
-		position_map = (e) ->
-			viewport_top = win.scrollTop()
-			new_top_offset = viewport_top - base_line
-			if(viewport_top > base_line && (new_top_offset + map_height) < max_bottom)	
-				unless map_is_fixed && viewport_left == win.scrollLeft() && viewport_width == win.width()
-					map_is_fixed = true
-					viewport_left = win.scrollLeft()
-					viewport_width = win.width()
-					container = $('.locations_map')
-					# In fixed mode, we need to position with respect to the left side of the viewport.
-					# But the container is floated right, so we measure starting at the right side of the container, i.e., left+width of the container.
-					map_left = Math.ceil(container.offset().left + container.outerWidth() - map_width - viewport_left)
-					$('.map_positioner').css({ 'position': 'fixed', 'top': map_top_padding+'px', 'left': map_left+'px' })
-			else if map_is_fixed
-				map_is_fixed = false
-				# In fixed mode we are positioning with 'left', so it's easier to override using 'left' while in relative mode.  Also, use 'left' in the style sheet.
-				if((new_top_offset + map_height) >= max_bottom && max_top > 0)
-					$('.map_positioner').css({ 'position': 'relative', 'top': max_top+'px', 'left': '0px' })
-				else
-					$('.map_positioner').css({ 'position': 'relative', 'top': '0px', 'left': '0px' })
-		
-		win.scroll position_map
-		win.resize position_map
+						$('.map_positioner').css({ 'position': 'relative', 'top': '0px', 'left': '0px' })
+						
+			win.scroll position_map
+			win.resize position_map
