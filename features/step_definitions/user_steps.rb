@@ -97,6 +97,11 @@ Given /^I exist as a user$/ do
   create_user
 end
 
+Given /^I am logged in as a provider$/ do
+  create_user
+  sign_in
+end
+
 Given /^I am logged in as a client user$/ do
   create_client_user
   sign_in
