@@ -33,10 +33,11 @@ class Profile < ActiveRecord::Base
 		:ages_stages_note
 	
 	belongs_to :user
-	has_and_belongs_to_many :age_ranges
-	has_and_belongs_to_many :categories
-	has_and_belongs_to_many :services
-	has_and_belongs_to_many :specialties, after_add: :specialties_changed, after_remove: :specialties_changed
+	
+	has_and_belongs_to_many :age_ranges, after_add: :association_changed, after_remove: :association_changed
+	has_and_belongs_to_many :categories, after_add: :association_changed, after_remove: :association_changed
+	has_and_belongs_to_many :services, after_add: :association_changed, after_remove: :association_changed
+	has_and_belongs_to_many :specialties, after_add: :association_changed, after_remove: :association_changed
 	
 	has_many :locations, dependent: :destroy
 	accepts_nested_attributes_for :locations, allow_destroy: true, limit: 100
@@ -410,8 +411,8 @@ class Profile < ActiveRecord::Base
 	
 	private
 	
-	# Changes to this provider's specialties list should trigger the creation of new fragment caches for this profile.
-	def specialties_changed(specialty)
+	# Addition or removal of elements from this association should trigger the creation of new fragment caches for this profile.  Touch will result in a new cache key.
+	def association_changed(record)
 		touch
 	end
 	
