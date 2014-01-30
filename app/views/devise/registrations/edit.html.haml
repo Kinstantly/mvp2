@@ -14,10 +14,9 @@
 			.password_confirmation.text_field
 				= f.label :password_confirmation
 				= f.password_field :password_confirmation, autocomplete: 'off'
-			- if resource.client?
-				.username.text_field
-					= f.label :username, class: 'required'
-					= f.text_field :username
+			.username.text_field
+				= f.label :username, class: 'required'
+				= f.text_field :username
 			- if resource.is_provider?
 				.phone.text_field
 					= f.label :phone

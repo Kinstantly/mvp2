@@ -183,6 +183,18 @@ Feature: Edit my expert profile
 		Then my profile edit page should show "story-books" and "dreams" displayed in the "specialties" area
 	
 	@javascript
+	Scenario: Added custom specialties appear in check list on next profile edit
+		Given I exist as a user
+			And I am logged in
+			And I have a category of "THERAPISTS & PARENTING COACHES" in my profile
+			And I am on my profile edit page
+		When I open the "specialties" formlet
+			And I add the "story-books" and "dreams" custom specialties
+			And I click on the "Save" button of the "specialties" formlet
+			And I open the "specialties" formlet
+		Then the "story-books" and "dreams" specialties should appear in the profile edit check list
+	
+	@javascript
 	Scenario: Add custom specialties using enter
 		Given I exist as a user
 			And I am logged in

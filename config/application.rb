@@ -15,9 +15,6 @@ module Mvp2
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    # Compression of responses.
-    config.middleware.use Rack::Deflater
-    
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/lib)
 
@@ -81,6 +78,10 @@ module Mvp2
     end
 
 		config.middleware.use 'Rack::RawUpload'
+
+    # Compress responses.
+    # Ensure etag is calculated and conditional-get is assessed *before* compression is done.
+    config.middleware.insert_before Rack::ConditionalGet, Rack::Deflater
   end
 end
 

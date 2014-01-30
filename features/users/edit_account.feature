@@ -21,6 +21,13 @@ Feature: Edit account
 		 	And I follow "confirm" in the email
 		Then I see a confirmed account message
 
+	Scenario: Change username as a provider
+		Given I am logged in as a provider
+			And I am on my account edit page
+		When I enter a new username
+			And I save the account settings
+		Then I should see an account edited message
+
 	Scenario: Change username as a client
 		Given I am logged in as a client user
 			And I am on my account edit page

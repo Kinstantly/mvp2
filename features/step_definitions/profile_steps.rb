@@ -723,10 +723,10 @@ Then /^the unclaimed profile should have no locations$/ do
 	@profile.locations.should have(:no).things
 end
 
-Then /^the "(.*?)" and "(.*?)" services should appear in the profile edit check list$/ do |svc1, svc2|
-	within('#services .services') do
-		page.should have_content svc1
-		page.should have_content svc2
+Then /^the "(.*?)" and "(.*?)" (services|specialties) should appear in the profile edit check list$/ do |name1, name2, type|
+	within("#services .#{type}") do
+		page.should have_content name1
+		page.should have_content name2
 	end
 end
 
