@@ -54,8 +54,7 @@
 					#year_started.formlet.editable
 						= render partial: 'year_started_formlet'
 				%table.info{border: "0", cellpadding: "0", cellspacing: "0"}
-					%tr#services.formlet
-						= render partial: 'services_formlet'
+					%tr#services_placeholder.formlet
 					%tr#ages_stages.formlet
 						= render partial: 'ages_stages_formlet'
 					%tr#hours.formlet
@@ -69,21 +68,33 @@
 					%tr#availability_service_area.formlet
 						= render partial: 'availability_service_area_formlet'
 	:coffeescript
-		# Place the formlet the specified number of pixels below the top of the viewport (assume absolute positioning).
-		my_vars.f.place_formlet = (formlet) ->
-			$('.popover', formlet).css('top', $(window).scrollTop() + 20)
-		# Clicking within a formlet element will activate it unless we clicked on a 'dont_popover' element.
-		$('.formlet').click (e) ->
-			unless $(this).hasClass('active') or $(e.target).hasClass('dont_popover')
-				$('.formlet.active').removeClass 'active' # Close any active formlet.
-				my_vars.f.place_formlet this
-				$(this).addClass 'active'
-		# Final touches to a newly created or updated formlet element.
-		my_vars.f.configure_formlet = (formlet) ->
-			# Add cancel icon to top of formlet.
-			$('.edit.popover', formlet).prepend '<div class="cancel close-popover-button"></div>'
-			# Cancel buttons should deactivate the formlet.
-			$('.cancel', formlet).click (e) ->
-				$('.formlet.active').removeClass 'active'
-				false
-		$('.formlet').each -> my_vars.f.configure_formlet this
+		# Run after the document is loaded and everything is in place.
+		$ ->
+			# Place the formlet the specified number of pixels below the top of the viewport (assume absolute positioning).
+			my_vars.f.place_formlet = (formlet) ->
+				$('.popover', formlet).css('top', $(window).scrollTop() + 20)
+			
+			# Final touches to a newly created or updated formlet element.
+			my_vars.f.configure_formlet = (formlet) ->
+				# Add cancel icon to top of formlet.
+				$('.edit.popover', formlet).prepend '<div class="cancel close-popover-button"></div>'
+				# Cancel buttons should deactivate the formlet.
+				$('.cancel', formlet).click (e) ->
+					$('.formlet.active').removeClass 'active'
+					false
+			
+			# Clicking within a formlet element will activate it unless we clicked on a 'dont_popover' element.
+			$('.formlet').click (e) ->
+				unless $(this).hasClass('active') or $(e.target).hasClass('dont_popover')
+					$('.formlet.active').removeClass 'active' # Close any active formlet.
+					my_vars.f.place_formlet this
+					$(this).addClass 'active'
+					
+			$('.formlet').each -> my_vars.f.configure_formlet this
+			
+-# Do not cache this.  It must process for each request to catch changes to categories, etc.
+%table.hidden.render
+	%tr#services.formlet
+		= render partial: 'services_formlet'
+:coffeescript
+	$('.hidden.render #services').replaceAll '#services_placeholder'

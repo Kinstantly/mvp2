@@ -160,29 +160,6 @@ module ProfilesHelper
 		profile_list_view_link profile, profile.display_name_or_company, html_options
 	end
 
-	def profile_parent_child_info(parents, child_association, map={}, names={})
-		parents.each { |parent|
-			children = parent.send child_association
-			map[parent.id] ||= children.map &:id
-			children.each { |child| names[child.id] ||= child.name.html_escape }
-		}
-		[map, names]
-	end
-
-	def profile_categories_services_info(profile)
-		predefined_info = Category.predefined_parent_child_info do
-			profile_parent_child_info Category.predefined, :services
-		end
-		profile_parent_child_info profile.categories, :services, *predefined_info
-	end
-
-	def profile_services_specialties_info(profile)
-		predefined_info = Service.predefined_parent_child_info do
-			profile_parent_child_info Category.predefined.map(&:services).flatten, :specialties
-		end
-		profile_parent_child_info profile.services, :specialties, *predefined_info
-	end
-
 	def profile_page_title(profile=nil)
 		[company_name.presence, profile.try(:display_name_or_company).presence].compact.join(' - ')
 	end

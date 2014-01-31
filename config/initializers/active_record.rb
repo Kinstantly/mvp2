@@ -101,4 +101,14 @@ class ActiveRecord::Base
 		phone = Phonie::Phone.parse value.try(:strip)
 		phone.try :format, "#{'%c ' if show_country_code}(%a) %f-%l#{', x%x' if phone.try(:extension).present?}"
 	end
+	
+	# Create ID map of associations between the given list of parent records and the records of the specified child association.  Also creates a hash of child ID to child name.  Returns an array with the associations followed by the names.  HTML escapes the names.
+	def parent_child_association_info(parents, child_association, map={}, names={})
+		parents.each { |parent|
+			children = parent.send child_association
+			map[parent.id] ||= children.map &:id
+			children.each { |child| names[child.id] ||= child.name.html_escape }
+		}
+		[map, names]
+	end
 end

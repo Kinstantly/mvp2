@@ -257,7 +257,7 @@
 		#{profile_services_check_box_cache(profile, 'check_box', f).to_json};
 	edit_profile.check_box_templates['services'] = 
 		"#{escape_javascript profile_services_check_box(profile, '_ID_', '_NAME_', false, 'check_box', f)}";
-	var info = #{profile_categories_services_info(profile).to_json};
+	var info = #{profile.categories_services_info.to_json};
 	edit_profile.maps['services'] = info[0];
 	edit_profile.names['services'] = info[1];
 	edit_profile.ids_names['services'] = #{profile.service_ids_names.to_json};
@@ -271,7 +271,7 @@
 		#{profile_specialties_check_box_cache(profile, 'check_box', f).to_json};
 	edit_profile.check_box_templates['specialties'] = 
 		"#{escape_javascript profile_specialties_check_box(profile, '_ID_', '_NAME_', false, 'check_box', f)}";
-	var info = #{profile_services_specialties_info(profile).to_json};
+	var info = #{profile.services_specialties_info.to_json};
 	edit_profile.maps['specialties'] = info[0];
 	edit_profile.names['specialties'] = info[1];
 	edit_profile.ids_names['specialties'] = #{profile.specialty_ids_names.to_json};

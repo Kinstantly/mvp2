@@ -408,6 +408,22 @@ class Profile < ActiveRecord::Base
 	def first_location
 		@first_location ||= sorted_locations.first
 	end
+
+	# Returns an array with the map of all predefined categories and this profiles categories to their associated services, followed by a hash of ID to name of the same services.
+	def categories_services_info
+		predefined_info = Category.predefined_parent_child_info do
+			parent_child_association_info Category.predefined, :services
+		end
+		parent_child_association_info categories, :services, *predefined_info
+	end
+
+	# Returns an array with the map of all predefined services and this profiles services to their associated specialties, followed by a hash of ID to name of the same specialties.
+	def services_specialties_info
+		predefined_info = Service.predefined_parent_child_info do
+			parent_child_association_info Category.predefined.map(&:services).flatten, :specialties
+		end
+		parent_child_association_info services, :specialties, *predefined_info
+	end
 	
 	private
 	

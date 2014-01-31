@@ -1,6 +1,6 @@
 class ProfilesController < ApplicationController
 	
-	respond_to :html, :js
+	respond_to :html, :js, :json
 	
 	before_filter :authenticate_user!, except: [:index, :show, :show_claiming, :link_index, :search]
 	
@@ -216,6 +216,15 @@ class ProfilesController < ApplicationController
 			format.html { redirect_to new_review_for_profile_url @profile }
 			format.json { render json: {success: success} }
 		end
+	end
+	
+	def services_info
+		info = { maps: {}, names: {}, ids_names: {} }
+		info[:maps]['services'], info[:names]['services'] = @profile.categories_services_info
+		info[:maps]['specialties'], info[:names]['specialties'] = @profile.services_specialties_info
+		info[:ids_names]['services'] = @profile.service_ids_names
+		info[:ids_names]['specialties'] = @profile.specialty_ids_names
+		respond_with info
 	end
 	
 	private

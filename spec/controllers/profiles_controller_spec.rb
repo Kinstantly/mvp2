@@ -293,6 +293,19 @@ describe ProfilesController do
 				@photo_file.close
 			end
 		end
+		
+		describe "GET 'services_info'" do
+			it "returns JSON" do
+				get :services_info, id: my_profile_id, format: :json
+				response.headers['Content-Type'].should include('application/json')
+			end
+
+			it "returns association information about the categories, services, and specialties attached to this profile" do
+				get :services_info, id: my_profile_id, format: :json
+				response.body.should include(me.profile.services.first.name)
+				response.body.should include(me.profile.specialties.first.name)
+			end
+		end
 	end
 	
 	context "as admin user" do
