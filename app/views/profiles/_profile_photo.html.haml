@@ -320,6 +320,7 @@
 				$(step_one.file_drop.find('img')).remove()
 				step_one.file_drop.css borderColor: '#afb434'
 				step_one.select_img_input.val('')
+				step_one.select_img_input.prop('disabled', false);
 				step_one.imp_from_url.source_url.val('')
 				step_one.imp_from_url.upload_link.parent().next('div.text_field').hide()
 				step_two.waiter.hide()

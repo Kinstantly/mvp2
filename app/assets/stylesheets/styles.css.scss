@@ -1551,7 +1551,7 @@ $small_photo_y: 60px;
 
 div.photo-wrapper-large{
 	@include photo-wrapper-style;
-	height: $large_photo_y;
+	height: $large_photo_y + 30px;
 	width: $large_photo_y;
 	margin-right: 34px;
 	img{
