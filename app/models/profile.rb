@@ -51,11 +51,11 @@ class Profile < ActiveRecord::Base
 
 	has_attached_file :profile_photo,
 					:styles => {
-						:medium => ['110x110', :jpg, :quality => 90],
-						:original => '300x300' 
+						:medium		=> ['110x110', :jpg, :quality => 90],
+						:original 	=> ['300x300', :jpg, :quality => 90]
 					},
 					:convert_options => {
-						:medium => '-set colorspace sRGB -type optimize -strip'
+						:all => '-strip -interlace Plane'
 					},
 					:default_url => DEFAULT_PHOTO_PATH
     
