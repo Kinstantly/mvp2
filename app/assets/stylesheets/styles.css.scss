@@ -1551,17 +1551,19 @@ $small_photo_y: 60px;
 
 div.photo-wrapper-large{
 	@include photo-wrapper-style;
-	max-width: $large_photo_y;
+	height: $large_photo_y + 30px;
+	width: $large_photo_y;
 	margin-right: 34px;
 	img{
 		max-height: $large_photo_y;
-	  	max-width: $large_photo_y;
+		max-width: $large_photo_y;
 	}
 }
 
 div.photo-wrapper-medium{
 	@include photo-wrapper-style;
-	max-width: $medium_photo_y;
+	height: $medium_photo_y;
+	width: $medium_photo_y;
 	margin-right: 16px;
 	img{
 		max-height: $medium_photo_y;
@@ -1571,11 +1573,13 @@ div.photo-wrapper-medium{
 
 div.photo-wrapper-small{
 	@include photo-wrapper-style;
-	max-width: $small_photo_y;
+	height: $small_photo_y;
+	width: $small_photo_y;
 	margin-right: 16px;
 	img{
 		max-height: $small_photo_y;
 		max-width: $small_photo_y;
+		cursor: pointer;
 	}
 }
 

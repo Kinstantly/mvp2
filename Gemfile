@@ -168,3 +168,6 @@ gem 'debugger', group: :development
 gem 'rails_12factor', group: :production
 
 gem 'rails-footnotes', '>= 3.7.9', group: :development
+
+#Support for ReCAPTCHA's Mailhide API
+gem 'recaptcha-mailhide'

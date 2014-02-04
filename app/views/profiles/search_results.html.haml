@@ -23,9 +23,7 @@
 						%article.search_result.clearfix{itemscope: "", itemtype: "http://schema.org/Person", id: "search_result_#{profile.id}"}
 							.short-profile{id: profile_id}
 								.popover
-									-#.profile-photo-placeholder
 									.photo-wrapper-medium
-										-#= image_tag profile.photo_path, alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
 										= image_tag profile.profile_photo.url(:medium), alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(profile)
 									.profile
 										%h1{itemprop: "name"}
@@ -38,7 +36,7 @@
 											- if profile.email.present?
 												%span.location{itemprop: "email"}
 													= t 'views.profile.view.email'
-													= profile_display_email profile
+													= profile_linked_email profile
 											- if profile.url.present?
 												%span.location{itemprop: "url"}
 													= t 'views.profile.view.url'
@@ -56,12 +54,8 @@
 									.summary
 										%span= profile_display_truncated profile.summary, length: 180
 
-							-# = image_tag 'profile-photo-placeholder.jpg', alt: "#{profile.display_name_or_company}", width: '168', height: '168', border: '0', class: 'profile-photo', itemprop: 'image'
-							-#.profile-photo-placeholder
 							.photo-wrapper-small
-								= link_to profile do
-									-#= image_tag profile.photo_path, alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
-									= image_tag profile.profile_photo.url(:medium), alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(profile)
+								= image_tag profile.profile_photo.url(:medium), onclick: "document.location='#{profile_path(profile)}'", alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(profile)
 							.profile
 								%h1.show_profile{itemprop: "name", 'data-profile-id' => profile_id}
 									= profile_list_name_or_company_link profile, class: 'open'

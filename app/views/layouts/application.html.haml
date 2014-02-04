@@ -25,11 +25,11 @@
 		= javascript_include_tag 'application'
 		= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{GOOGLE_BROWSER_API_KEY}&libraries=places&sensor=false".html_safe
 		= javascript_include_tag 'https://dme0ih8comzn4.cloudfront.net/js/feather.js' if @using_photo_editor
+		= yield :head
+		= csrf_meta_tags
 		= render partial: 'layouts/tracking'
 		-# Name-space my global variables, e.g., my_vars.a_val, my_vars.t.some_text, my_vars.f.a_function
 		%script var my_vars={t:{},f:{}};
-		= yield :head
-		= csrf_meta_tags
 	%body{class: @body_class}
 		%a{name: 'top'}
 		= yield :body_header

@@ -50,7 +50,13 @@ class Profile < ActiveRecord::Base
 	# has_many :ratings, through: :reviews # when we had one rating per review.
 
 	has_attached_file :profile_photo,
-					:styles => {:medium => '110x110', :original => '300x300' },
+					:styles => {
+						:medium		=> ['110x110', :jpg, :quality => 90],
+						:original 	=> ['300x300', :jpg, :quality => 90]
+					},
+					:convert_options => {
+						:all => '-strip -interlace Plane'
+					},
 					:default_url => DEFAULT_PHOTO_PATH
     
 	validate :publishing_requirements
