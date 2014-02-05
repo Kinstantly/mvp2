@@ -36,7 +36,7 @@
 											- if profile.email.present?
 												%span.location{itemprop: "email"}
 													= t 'views.profile.view.email'
-													= profile_linked_email profile
+													= profile_obscured_email profile
 											- if profile.url.present?
 												%span.location{itemprop: "url"}
 													= t 'views.profile.view.url'

@@ -74,14 +74,28 @@ module ProfilesHelper
 			profile_blank_attribute_message msg_when_blank
 		end
 	end
-
+	
 	def profile_linked_email(profile=current_user.try(:profile), title=nil)
+		if (email = profile.try(:email)).present?
+			auto_link email.strip, link: :email_addresses, html: { title: title }
+		end
+	end
+	
+	def profile_obscured_email(profile=current_user.try(:profile))
 		if (email = profile.try(:email)).present?
 			email = email.strip
 			domain = email.split('@').last
 			email_first_char = email[0]
 			email_first_char ||= ""
-			hidden_email = "#{email_first_char}..@#{domain}"
+			"#{email_first_char}..@#{domain}"
+		else
+			''
+		end
+	end
+
+	def profile_captcha_email(profile=current_user.try(:profile), title=nil)
+		if (email = profile.try(:email)).present?
+			hidden_email = profile_obscured_email profile
 			mailhide_link = RecaptchaMailhide::URL.url_for(email)
 			js_click_event = "window.open(this.href, '#{title}', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300,left=200,top=200'); return false;"
 			link_to hidden_email, mailhide_link, { title: title, onclick: js_click_event }

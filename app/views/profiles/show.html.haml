@@ -54,7 +54,7 @@
 				- if @profile.email.present?
 					%span.location{itemprop: "email"}
 						= t 'views.profile.view.email'
-						= profile_linked_email @profile
+						= profile_captcha_email @profile
 			-# Do not try to cache the user's rating because it is unique to each user.
 			#rate_review
 				= render partial: 'profiles/rating_score', locals: {profile: @profile}

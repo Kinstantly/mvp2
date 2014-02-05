@@ -90,8 +90,3 @@ REINDEX_PROFILES_IN_BACKGROUND = true
 Kaminari.configure do |config|
 	config.default_per_page = 10
 end
-
-RecaptchaMailhide.configure do |c|
-  c.private_key = 'c5e309c2cf3073efa67445e0d1151519'
-  c.public_key  = '01fK6Ztpuesudadb10f1IppQ=='
-end
