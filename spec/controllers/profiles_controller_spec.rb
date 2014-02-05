@@ -278,7 +278,7 @@ describe ProfilesController do
 				@profile = Profile.find_by_id(id)
 				response.should be_success
 				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
-				expect(response.body).to include("Tux.png")
+				expect(response.body).to include(@profile.profile_photo.url(:original))
 				@profile.profile_photo.destroy
 				@profile.save
 			end
@@ -431,7 +431,7 @@ describe ProfilesController do
 				@profile = Profile.find_by_id(id)
 				response.should be_success
 				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
-				expect(response.body).to include("Tux.png")
+				expect(response.body).to include(@profile.profile_photo.url(:original))
 				@profile.profile_photo.destroy
 				@profile.save	
 			end
@@ -536,7 +536,7 @@ describe ProfilesController do
 				@profile = Profile.find_by_id(id)
 				response.should be_success
 				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
-				expect(response.body).to include("Tux.png")
+				expect(response.body).to include(@profile.profile_photo.url(:original))
 			end
 			it "should not upload empty file" do
 				post :photo_update, id: @profile.id, file: ''
