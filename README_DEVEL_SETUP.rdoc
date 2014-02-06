@@ -84,10 +84,10 @@ I'm also running a background worker that runs delayed_job_active_record.  Usual
 
 === Caching
 
-We have configured the application to use caching in production mode, e.g., for fragment caching.  You'll want to make sure that changes to view templates using fragment caching and models that are used in key-based caching will work OK with caching in production.  You can check this by turning on caching in development mode.  We are using memchached for caching, so you'll need to install it in your development environment if you don't already have it.
+We have configured the application to use caching in production mode, e.g., for fragment caching.  You'll want to make sure that changes to view templates using fragment caching and models that are used in key-based caching will work OK with caching in production.  You can check this by turning on caching in development mode.  We are using memcached for caching, so you'll need to install it in your development environment if you don't already have it.
 
  # On MacOS.
- brew install memchached
+ brew install memcached
  # Useful aliases.
  alias memcachestart='(cd ~ && /usr/local/bin/memcached -d)'
  alias memcacheconnect='telnet localhost 11211'
@@ -95,6 +95,16 @@ We have configured the application to use caching in production mode, e.g., for 
 To use caching in development mode, set the PERFORM_CACHING environment variable, e.g.,
 
  PERFORM_CACHING=true bundle exec unicorn -p 5000 -c ./config/unicorn.rb
+
+==== Caching and asset precompilation tests
+
+If you're playing around with asset precompilation, you might want to test it from your development environment before deploying to production.  You can do that with the following rake task.
+
+  RAILS_ENV=production bundle exec rake assets:precompile
+
+The task puts the compiled assets in the public/assets directory.  If you are also running in caching mode (by setting the PERFORM_CACHING environment variable), the compiled assets will be loaded into the cache (i.e., memcached) and will be confounded with future changes you make to the assets in the development environment.
+
+To solve this, after you are done testing, you should remove all the compiled assets from the public/assets directory (be careful to preserve assets that are in source control, e.g., fonts) and then clear out the cache (e.g., restart memcached).
 
 == Database contents
 
