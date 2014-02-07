@@ -87,7 +87,7 @@ module ProfilesHelper
 			domain = email.split('@').last
 			email_first_char = email[0]
 			email_first_char ||= ""
-			"#{email_first_char}..@#{domain}"
+			"#{email_first_char}...@#{domain}"
 		else
 			''
 		end
