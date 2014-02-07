@@ -59,6 +59,9 @@ Mvp2::Application.configure do
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w( home_page.css interior.css home_page_ie8.css )
 
+  # Precompile additional js manifests
+  config.assets.precompile += %w( profile_edit.js profile_search.js profile_show.js review_new.js)
+
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 

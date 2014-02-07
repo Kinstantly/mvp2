@@ -1,5 +1,6 @@
 - location_remote_only_msg = t "controllers.profiles.location_remote_only"
 - locations_array = {}
+= javascript_include_tag 'profile_search'
 .search_results
 	%h1= search_results_title @search, address: @search_address, service: @search_service
 	- if default_search_query(@search_query, @search_service).blank?
