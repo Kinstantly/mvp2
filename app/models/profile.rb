@@ -51,8 +51,9 @@ class Profile < ActiveRecord::Base
 
 	has_attached_file :profile_photo,
 					:styles => {
-						:medium		=> ['110x110', :jpg, :quality => 90],
-						:original 	=> ['300x300', :jpg, :quality => 90]
+						:original => '300x300',
+						:medium   => ['110x110', :jpg, :quality => 90],
+						:large    => ['168x168', :jpg, :quality => 90]
 					},
 					:convert_options => {
 						:all => '-strip -interlace Plane'

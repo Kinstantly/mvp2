@@ -38,7 +38,7 @@
 			%label Step 2 of 2
 			%p You successfully uploaded and saved this photo:
 			.upload-result
-				= image_tag @profile.profile_photo.url(:original), id: 'upload_result_img', alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+				= image_tag @profile.profile_photo.url(:large), id: 'upload_result_img', alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
 				.upload-waiter.aria-hidden
 			%p.like-profile-photo
 				Like it?

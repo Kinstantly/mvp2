@@ -24,7 +24,7 @@
 %article#content
 	%header#content-header.clearfix{itemscope: "", itemtype: "http://schema.org/Person"}
 		.photo-wrapper-large
-			= image_tag @profile.profile_photo.url(:original), alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(@profile)
+			= image_tag @profile.profile_photo.url(:large), alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(@profile)
 		.profile
 			- cache ['profile_header', @profile] do
 				%h1{itemprop: "name"}= @profile.display_name_or_company

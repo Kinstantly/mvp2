@@ -113,7 +113,7 @@ class ProfilesController < ApplicationController
 
 			if @profile.save
 				if @profile.profile_photo.exists?
-					render json: {:profile_photo_src =>  @profile.profile_photo.url(:original)}
+					render json: {:profile_photo_src =>  @profile.profile_photo.url(:large)}
 				else
 					head :bad_request
 					return
