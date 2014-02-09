@@ -76,8 +76,9 @@
 			
 			# Final touches to a newly created or updated formlet element.
 			my_vars.f.configure_formlet = (formlet) ->
-				# Add cancel icon to top of formlet.
-				$('.edit.popover', formlet).prepend '<div class="cancel close-popover-button"></div>'
+				# Add close button to top of pop-over if not already added.
+				if $('.close-popover-button', formlet).length == 0
+					$('.edit.popover', formlet).prepend '<div class="cancel close-popover-button"></div>'
 				# Cancel buttons should deactivate the formlet.
 				$('.cancel', formlet).click (e) ->
 					$('.formlet.active').removeClass 'active'
