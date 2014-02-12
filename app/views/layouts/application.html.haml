@@ -54,11 +54,11 @@
 		:coffeescript
 			# Autocomplete location field in search form.
 			my_vars.f.bind_autocomplete = () ->
-				new google.maps.places.Autocomplete(document.getElementById('search_providersider_search_location'), {types: ['geocode']})
+				new google.maps.places.Autocomplete(document.getElementById('provider_search_location'), {types: ['geocode']})
 			
 			# Init google autocomplete, google map on profile and search pages if avalable
 			window.init_google_api = () ->
-				my_vars.f.bind_autocomplete;
+				my_vars.f.bind_autocomplete()
 				if (typeof(my_vars.profile_map) != "undefined")
 					my_vars.profile_map.init()
 				if (typeof(my_vars.search_results_map) != "undefined")
@@ -70,26 +70,26 @@
 				script.type = 'text/javascript';
 				script.src = "https://maps.googleapis.com/maps/api/js?key=" + my_vars.google_api_key + "&libraries=places&sensor=false&callback=init_google_api";
 				document.body.appendChild(script);
-
+				
 			window.onload = ->
 				# Load maps.googleapis script
 				load_google_api()
-
+				
 				# Cache all jQuery ajax calls
 				$.ajaxSetup({
 					cache: true
 				})
-
+				
 				# Load Aviary script
 				$.getScript( "https://dme0ih8comzn4.cloudfront.net/js/feather.js", () =>
 					if (typeof(my_vars.profile_photo_module) != "undefined")
 						my_vars.profile_photo_module.init()
 				)
-
+				
 				# Ensure rating stars render properly after everything is loaded.
 				my_vars.f.rating_score_reset() if my_vars.f.rating_score_reset
 				my_vars.f.rate_reset() if my_vars.f.rate_reset
-			
+				
 			#
 			# # Add change event to selects, and trigger it on load, so the span is up to date
 			# selects = $('.select-wrapper > select').on('change', ->
