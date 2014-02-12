@@ -45,15 +45,51 @@
 			%p#copyright
 				\&copy; Copyright 2013 Kinstantly, Inc. All Rights Reserved.
 		-# #line
-		= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{GOOGLE_BROWSER_API_KEY}&libraries=places&sensor=false".html_safe
-		= javascript_include_tag 'https://dme0ih8comzn4.cloudfront.net/js/feather.js' if @using_photo_editor
+		-#= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{GOOGLE_BROWSER_API_KEY}&libraries=places&sensor=false".html_safe
+		-#= javascript_include_tag 'https://dme0ih8comzn4.cloudfront.net/js/feather.js' if @using_photo_editor
 		= render partial: 'layouts/tracking'
 		
+		:javascript
+			my_vars.google_api_key = "#{GOOGLE_BROWSER_API_KEY}"
 		:coffeescript
-			# Ensure rating stars render properly after everything is loaded.
+			# Autocomplete location field in search form.
+			my_vars.f.bind_autocomplete = () ->
+				new google.maps.places.Autocomplete(document.getElementById('search_providersider_search_location'), {types: ['geocode']})
+			
+			# Init google autocomplete, google map on profile and search pages if avalable
+			window.init_google_api = () ->
+				my_vars.f.bind_autocomplete;
+				if (typeof(my_vars.profile_map) != "undefined")
+					my_vars.profile_map.init()
+				if (typeof(my_vars.search_results_map) != "undefined")
+					my_vars.search_results_map.init()
+			
+			# Appends maps.googleapis script
+			load_google_api = () ->
+				script = document.createElement('script');
+				script.type = 'text/javascript';
+				script.src = "https://maps.googleapis.com/maps/api/js?key=" + my_vars.google_api_key + "&libraries=places&sensor=false&callback=init_google_api";
+				document.body.appendChild(script);
+
 			window.onload = ->
+				# Load maps.googleapis script
+				load_google_api()
+
+				# Cache all jQuery ajax calls
+				$.ajaxSetup({
+					cache: true
+				})
+
+				# Load Aviary script
+				$.getScript( "https://dme0ih8comzn4.cloudfront.net/js/feather.js", () =>
+					if (typeof(my_vars.profile_photo_module) != "undefined")
+						my_vars.profile_photo_module.init()
+				)
+
+				# Ensure rating stars render properly after everything is loaded.
 				my_vars.f.rating_score_reset() if my_vars.f.rating_score_reset
 				my_vars.f.rate_reset() if my_vars.f.rate_reset
+			
 			#
 			# # Add change event to selects, and trigger it on load, so the span is up to date
 			# selects = $('.select-wrapper > select').on('change', ->
@@ -68,8 +104,7 @@
 			# # if the user is using the keyboard to navigate through the options
 			# selects.on('keypress', -> selects.trigger('change'))
 			#
-			# Autocomplete location field in search form.
-			new google.maps.places.Autocomplete(document.getElementById('provider_search_location'), {types: ['geocode']})
+			
 			# Google autocomplete is mucking with the placeholder in a way that breaks on IE,
 			# specifically when you focus on the input and then immediately unfocus.  This is the fix.
 			$('#search_providers').submit ->

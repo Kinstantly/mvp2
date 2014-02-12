@@ -39,6 +39,7 @@ Feature: View a provider's profile
 		When I visit the view page for a published profile with one review
 		Then the profile should show the review
 
+	@javascript
 	Scenario: Provider's location displayed on map
 		Given I am not logged in 
 			And I visit the view page for a published profile with one location
