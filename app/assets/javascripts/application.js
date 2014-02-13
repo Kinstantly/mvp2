@@ -13,8 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require global.js.coffee
+//= require jquery.MetaData
+//= require jquery.placeholder
+//= require modernizr.custom.71412
 //= require autocomplete-rails
-//= require jquery_nested_form
-//= require underscore
-//= require jack_up
-//= require_tree .

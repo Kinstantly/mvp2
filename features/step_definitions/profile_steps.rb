@@ -865,8 +865,8 @@ Then /^edit my profile page should show "(.*?)" image as my profile photo$/ do |
 end
 
 Then /^I should see a Google Map$/ do
-	within 'head' do
-  		page.should have_xpath "//script[starts-with(@src, 'https://maps.googleapis.com/maps/api')]"
+	within 'body' do
+		page.should have_xpath "//script[starts-with(@src, 'https://maps.googleapis.com/maps/api')]"
   	end
   	within('#map_canvas') do
 		page.should_not be_blank

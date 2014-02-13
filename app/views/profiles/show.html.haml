@@ -1,4 +1,5 @@
 - @page_title_prefix = @profile.display_name_or_company
+= javascript_include_tag 'profile_show'
 - if @claim_token
 	.provider_buttons
 		= link_to t('views.profile.claim_confirm.link_body'), force_claim_user_profile_path(token: @claim_token), id: 'claim_profile_confirm_link'

@@ -54,6 +54,7 @@ Feature: search the provider directory
 			And I enter "Menlo Park, CA" in the search location box
 		Then I should see "San Mateo" first in the search results list
 
+	@javascript
 	Scenario: search results displayed on map
 		Given I am not logged in 
 		When I enter "" in the search box

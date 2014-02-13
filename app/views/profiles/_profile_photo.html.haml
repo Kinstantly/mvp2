@@ -110,50 +110,257 @@
 	my_vars.profile_photo_no_dnd_support_msg	= '#{profile_photo_no_dnd_support_msg}';
 
 :coffeescript
-	$ ->
-		# prevent the browser to redirect to the file when droped anywhere else on the page
-		$(document).bind 'drop dragover', (e) ->
-			e.preventDefault()
-		#module to manage photo upload ui
-		profile_photo_module = do ->
-			#private
-			wrapper 	  = $('div#profile-photo')
-			context 	  = $(wrapper.find('div.profile-photo-update'))
-			main_view_img = $(wrapper.children('img'))
-			toggleLink    = $(wrapper.find('span[itemprop="profilePhoto"]'))
-			closeLink     = $(context.find('.close-popover-button'))
-			error_div     = $(context.find('div.errorExplanation'))
+	#module to manage photo upload ui
+	my_vars.profile_photo_module = do ->
+		#private
+		wrapper 	  = $('div#profile-photo')
+		context 	  = $(wrapper.find('div.profile-photo-update'))
+		main_view_img = $(wrapper.children('img'))
+		toggleLink    = $(wrapper.find('span[itemprop="profilePhoto"]'))
+		closeLink     = $(context.find('.close-popover-button'))
+		error_div     = $(context.find('div.errorExplanation'))
 
-			support_ajax_upload = Modernizr.xhr2 && Modernizr.filereader
-			support_dnd = Modernizr.draganddrop && !!window.FileReader
+		support_ajax_upload = Modernizr.xhr2 && Modernizr.filereader
+		support_dnd = Modernizr.draganddrop && !!window.FileReader
 
-			steps = context.find('ul.steps > li').map -> $(@)
+		steps = context.find('ul.steps > li').map -> $(@)
 
-			step_one =
-				select_img_input: $(steps[0].find('.standard-attachment'))
-				file_drop: $(steps[0].find('.file-drop'))
-				imp_from_url:
-					source_url: $(steps[0].find('input[name=source_url]'))
-					upload_link: $(steps[0].find('#import_from_url_link'))
-					upload_button: $(steps[0].find('#import_from_url_button'))
-				waiter: $(steps[0].find('.upload-waiter'))
+		step_one =
+			select_img_input: $(steps[0].find('.standard-attachment'))
+			file_drop: $(steps[0].find('.file-drop'))
+			imp_from_url:
+				source_url: $(steps[0].find('input[name=source_url]'))
+				upload_link: $(steps[0].find('#import_from_url_link'))
+				upload_button: $(steps[0].find('#import_from_url_button'))
+			waiter: $(steps[0].find('.upload-waiter'))
 
-			step_two =
-				like_profile_photo_link: $(steps[1].find('#like_profile_photo'))
-				show_step_one_link: $(steps[1].find('#show_step_one'))
-				edit_profile_photo_link: $(steps[1].find('#edit_profile_photo'))
-				upload_result_img:  $(steps[1].find('img#upload_result_img'))
-				waiter: $(steps[1].find('.upload-waiter'))
+		step_two =
+			like_profile_photo_link: $(steps[1].find('#like_profile_photo'))
+			show_step_one_link: $(steps[1].find('#show_step_one'))
+			edit_profile_photo_link: $(steps[1].find('#edit_profile_photo'))
+			upload_result_img:  $(steps[1].find('img#upload_result_img'))
+			waiter: $(steps[1].find('.upload-waiter'))
 
-			help_links = $(context.find('a.more-help'))
-			step_three_back_to_edit_link = $('.step_three a#back_to_edit_link')
+		help_links = $(context.find('a.more-help'))
+		step_three_back_to_edit_link = $('.step_three a#back_to_edit_link')
 
-			default_step = 1
-			current_step = default_step
-			prev_step = 0
-			total_steps  = 3
+		default_step = 1
+		current_step = default_step
+		prev_step = 0
+		total_steps  = 3
 
-			jackUp = new JackUp.Processor({path: my_vars.photo_update_profile_path})
+		jackUp = new JackUp.Processor({path: my_vars.photo_update_profile_path})
+		aviary_inst = null
+
+		#binds ui elements to user events
+		bind_actions = ()  ->
+			main_view_img.on 'click', (e) ->
+				context.toggle()
+				reset_steps() if !context.is(":visible")
+				show_step(default_step, 0) if !context.is(":visible")
+
+			toggleLink.on 'click', (e) ->
+				context.toggle()
+				reset_steps() if !context.is(":visible")
+				show_step(default_step, 0) if !context.is(":visible")
+
+			closeLink.on 'click', (e) ->
+				context.hide()
+				reset_steps()
+				show_step(default_step, 0)
+				
+			step_three_back_to_edit_link.on 'click', (e) ->
+				 e.preventDefault()
+				 show_step(prev_step, 1)
+
+			help_links.on 'click', (e) ->
+				e.preventDefault()
+				show_step(3, 1)
+
+			#step one bindings
+			step_one.imp_from_url.upload_link.on 'click', (e) ->
+				e.preventDefault()
+				source_url_area = $(@).parent().next('div.text_field')
+				if source_url_area.is(":visible")
+					source_url_area.slideUp()
+				else
+					source_url_area.slideDown()
+
+			step_one.imp_from_url.upload_button.on 'click', (e) ->
+				if $(@).is(":disabled")
+					return false
+				source_url = step_one.imp_from_url.source_url.serialize()
+				save_image_from_url(source_url, 1)
+
+			#step two bindings
+			step_two.like_profile_photo_link.on 'click', (e) ->
+				e.preventDefault()
+				context.hide()
+				reset_steps()
+
+			step_two.show_step_one_link.on 'click', (e) ->
+				e.preventDefault()
+				reset_steps()
+				show_step(1, 1)
+
+			step_two.edit_profile_photo_link.on 'click', (e) ->
+				e.preventDefault()
+				if $(@).is(":disabled")
+					return false
+				aviary_inst.launch
+					image: "upload_result_img",
+					url: step_two.upload_result_img.attr('src')
+				return false
+
+			if support_dnd
+				#jack_up for drag and drop
+				step_one.file_drop.jackUpDragAndDrop(jackUp)
+
+			if support_ajax_upload
+				#jack_up for standard input type file
+				step_one.select_img_input.jackUpAjax(jackUp)
+
+			if support_dnd || support_ajax_upload
+				# called if upload is an image; returns an image jQuery object with src attribute assigned
+				jackUp.on 'upload:imageRenderReady', (e, options) ->
+					if step_one.select_img_input.is(":disabled")
+						return false
+					upload_request_start(1)
+					options.image.attr("data-id", options.file.__guid__)
+					step_one.file_drop.append(options.image).css(border: "1px solid green")
+
+				# when server responds successfully
+				jackUp.on "upload:success", (e, options) ->
+					upload_request_complete()
+					response = JSON.parse(options.responseText)
+					save_error = if response.error == 'true' then true else false
+					if save_error
+						show_errors response.error_array
+					else
+						step_two.upload_result_img.attr('src', response.profile_photo_src)
+						update_main_view()
+						show_step(2, 1)
+
+				# when server returns a non-200 response
+				jackUp.on "upload:failure", (e, options) ->
+					upload_request_complete()
+					show_errors [my_vars.profile_photo_upload_generic_error]
+
+		save_image_from_url = (source_url, step) ->
+			$.ajax
+				url: my_vars.photo_update_profile_path,
+				type: 'POST',
+				dataType: 'json',
+				timeout: 30000,
+				data: source_url,
+				beforeSend: ->
+					upload_request_start(step)
+				complete: ->
+					upload_request_complete()
+				error: ->
+					show_errors [my_vars.profile_photo_upload_generic_error]
+				success: (data, textStatus, jqXHR) ->
+					save_error = if data.error == 'true' then true else false
+					if save_error
+						show_errors data.error_array
+					else
+						step_two.upload_result_img.attr('src', data.profile_photo_src)
+						update_main_view()
+						show_step(2, 1) if step == 1
+
+		img_result_callback = (source_url, result, poll_counter, image_exists) ->
+			if(result)
+				image_exists = result
+				save_image_from_url('source_url=' + source_url, 2)
+				aviary_inst.close()
+			else
+				setTimeout(poll_image(img_result_callback, source_url, poll_counter, image_exists), 1000)
+
+		poll_image = (callback, source_url, poll_counter, image_exists) ->
+			if(poll_counter > 10)
+				if(poll_counter == 11)
+					aviary_inst.close()
+					upload_request_complete()
+					show_errors [my_vars.profile_photo_processing_timeout]
+				return
+			poll_counter++
+			if(image_exists)
+				return
+			img = new Image()
+			img.onerror = () -> img_result_callback(source_url, false, poll_counter, image_exists)
+			img.onload  = () -> img_result_callback(source_url, true, poll_counter, image_exists)
+			img.src = source_url
+			if(img.complete)
+				img.onload.call(img);
+
+		reset_steps = ->
+			error_div.empty()
+			step_one.waiter.hide()
+			$(step_one.file_drop.find('img')).remove()
+			step_one.file_drop.css borderColor: '#afb434'
+			step_one.select_img_input.val('')
+			step_one.select_img_input.prop('disabled', false);
+			step_one.imp_from_url.source_url.val('')
+			step_one.imp_from_url.upload_link.parent().next('div.text_field').hide()
+			step_two.waiter.hide()
+			step_two.upload_result_img.src =  main_view_img.attr('src')
+			if !support_dnd
+				no_dnd_support()
+		
+		no_dnd_support = ->
+			step_one.file_drop.css border: '2px solid red'
+			step_one.file_drop.find('span').css color: 'red', top: '46px'
+			step_one.file_drop.find('span').text my_vars.profile_photo_no_dnd_support_msg
+
+		update_main_view = ->
+			updated_src = step_two.upload_result_img.attr('src')
+			main_view_img.attr('src', updated_src)
+			default_step = 2
+
+		show_errors = (error_array) ->
+			error_div.empty()
+			step_one.file_drop.css borderColor: 'red'
+			error_ul = $("<ul>")
+			if error_array.length == 0
+				error_ul.append("<li>" + my_vars.profile_photo_upload_generic_error + "</li>")
+			for key, value of error_array
+				error_ul.append("<li>").html(value)
+			error_div.append(error_ul).slideDown()
+
+		upload_request_start = (step) ->
+			error_div.fadeOut(500)
+			if step == 2
+				step_two.edit_profile_photo_link.prop('disabled', true);
+				step_two.waiter.show()
+			if step == 1
+				step_one.imp_from_url.upload_button.prop('disabled', true)
+				step_one.waiter.show()
+				$(step_one.file_drop.find('img')).remove()
+				step_one.select_img_input.prop('disabled', true)
+
+		upload_request_complete = ->
+			step_two.waiter.hide()
+			step_two.edit_profile_photo_link.prop('disabled', false);
+
+			step_one.waiter.hide()
+			step_one.select_img_input.prop('disabled', false)
+			step_one.imp_from_url.upload_button.prop('disabled', false)
+
+		show_step = (step_num, next_flg) ->
+			if step_num > total_steps || step_num <= 0
+				step_num = default_step
+			prev_step = current_step
+			current_step = step_num
+			step_to_show = if prev_step == current_step then (default_step - 1) else (step_num - 1)
+			for step in steps
+				do (step) ->
+					step.hide().addClass('aria-hidden')
+			if next_flg
+				steps[step_to_show].fadeIn(1500).removeClass('aria-hidden')
+			else
+				steps[step_to_show].show().removeClass('aria-hidden')
+
+		init = () ->
 			aviary_inst =
 				new Aviary.Feather
 					apiKey: 'v9iu6cbcuf2crihe',
@@ -173,233 +380,29 @@
 						aviary_inst.close()
 						upload_request_complete()
 						show_errors [my_vars.profile_photo_edit_generic_error]
+			if !support_ajax_upload
+				$('p.ajax_upload').remove()
+			if !support_dnd
+				no_dnd_support()
+			bind_actions()
 
-			#binds ui elements to user events
-			bind_actions = ()  ->
-				main_view_img.on 'click', (e) ->
-					context.toggle()
-					reset_steps() if !context.is(":visible")
-					show_step(default_step, 0) if !context.is(":visible")
+		# public
+		show_default_step : () ->
+			show_step(default_step, 0)
+		set_default_step : (step_num) ->
+			default_step = step_num if step_num <= total_steps && step_num > 0
+		init: init
 
-				toggleLink.on 'click', (e) ->
-					context.toggle()
-					reset_steps() if !context.is(":visible")
-					show_step(default_step, 0) if !context.is(":visible")
+	#profile_photo_module.init()
 
-				closeLink.on 'click', (e) ->
-					context.hide()
-					reset_steps()
-					show_step(default_step, 0)
-					
-				step_three_back_to_edit_link.on 'click', (e) ->
-					 e.preventDefault()
-					 show_step(prev_step, 1)
+	if(my_vars.profile_photo_present)
+		my_vars.profile_photo_module.set_default_step(2)
+	else
+		my_vars.profile_photo_module.set_default_step(1)
+	my_vars.profile_photo_module.show_default_step()
 
-				help_links.on 'click', (e) ->
-					e.preventDefault()
-					show_step(3, 1)
+	$ ->
+		# prevent the browser to redirect to the file when droped anywhere else on the page
+		$(document).bind 'drop dragover', (e) ->
+			e.preventDefault()
 
-				#step one bindings
-				step_one.imp_from_url.upload_link.on 'click', (e) ->
-					e.preventDefault()
-					source_url_area = $(@).parent().next('div.text_field')
-					if source_url_area.is(":visible")
-						source_url_area.slideUp()
-					else
-						source_url_area.slideDown()
-
-				step_one.imp_from_url.upload_button.on 'click', (e) ->
-					if $(@).is(":disabled")
-						return false
-					source_url = step_one.imp_from_url.source_url.serialize()
-					save_image_from_url(source_url, 1)
-
-				#step two bindings
-				step_two.like_profile_photo_link.on 'click', (e) ->
-					e.preventDefault()
-					context.hide()
-					reset_steps()
-
-				step_two.show_step_one_link.on 'click', (e) ->
-					e.preventDefault()
-					reset_steps()
-					show_step(1, 1)
-
-				step_two.edit_profile_photo_link.on 'click', (e) ->
-					e.preventDefault()
-					if $(@).is(":disabled")
-						return false
-					aviary_inst.launch
-						image: "upload_result_img",
-						url: step_two.upload_result_img.attr('src')
-					return false
-
-				if support_dnd
-					#jack_up for drag and drop
-					step_one.file_drop.jackUpDragAndDrop(jackUp)
-
-				if support_ajax_upload
-					#jack_up for standard input type file
-					step_one.select_img_input.jackUpAjax(jackUp)
-
-				if support_dnd || support_ajax_upload
-					# called if upload is an image; returns an image jQuery object with src attribute assigned
-					jackUp.on 'upload:imageRenderReady', (e, options) ->
-						if step_one.select_img_input.is(":disabled")
-							return false
-						upload_request_start(1)
-						options.image.attr("data-id", options.file.__guid__)
-						step_one.file_drop.append(options.image).css(border: "1px solid green")
-
-					# when server responds successfully
-					jackUp.on "upload:success", (e, options) ->
-						upload_request_complete()
-						response = JSON.parse(options.responseText)
-						save_error = if response.error == 'true' then true else false
-						if save_error
-							show_errors response.error_array
-						else
-							step_two.upload_result_img.attr('src', response.profile_photo_src)
-							update_main_view()
-							show_step(2, 1)
-
-					# when server returns a non-200 response
-					jackUp.on "upload:failure", (e, options) ->
-						upload_request_complete()
-						show_errors [my_vars.profile_photo_upload_generic_error]
-
-			save_image_from_url = (source_url, step) ->
-				$.ajax
-					url: my_vars.photo_update_profile_path,
-					type: 'POST',
-					dataType: 'json',
-					timeout: 30000,
-					data: source_url,
-					beforeSend: ->
-						upload_request_start(step)
-					complete: ->
-						upload_request_complete()
-					error: ->
-						show_errors [my_vars.profile_photo_upload_generic_error]
-					success: (data, textStatus, jqXHR) ->
-						save_error = if data.error == 'true' then true else false
-						if save_error
-							show_errors data.error_array
-						else
-							step_two.upload_result_img.attr('src', data.profile_photo_src)
-							update_main_view()
-							show_step(2, 1) if step == 1
-
-			img_result_callback = (source_url, result, poll_counter, image_exists) ->
-				if(result)
-					image_exists = result
-					save_image_from_url('source_url=' + source_url, 2)
-					aviary_inst.close()
-				else
-					setTimeout(poll_image(img_result_callback, source_url, poll_counter, image_exists), 1000)
-
-			poll_image = (callback, source_url, poll_counter, image_exists) ->
-				if(poll_counter > 10)
-					if(poll_counter == 11)
-						aviary_inst.close()
-						upload_request_complete()
-						show_errors [my_vars.profile_photo_processing_timeout]
-					return
-				poll_counter++
-				if(image_exists)
-					return
-				img = new Image()
-				img.onerror = () -> img_result_callback(source_url, false, poll_counter, image_exists)
-				img.onload  = () -> img_result_callback(source_url, true, poll_counter, image_exists)
-				img.src = source_url
-				if(img.complete)
-					img.onload.call(img);
-
-			reset_steps = ->
-				error_div.empty()
-				step_one.waiter.hide()
-				$(step_one.file_drop.find('img')).remove()
-				step_one.file_drop.css borderColor: '#afb434'
-				step_one.select_img_input.val('')
-				step_one.select_img_input.prop('disabled', false);
-				step_one.imp_from_url.source_url.val('')
-				step_one.imp_from_url.upload_link.parent().next('div.text_field').hide()
-				step_two.waiter.hide()
-				step_two.upload_result_img.src =  main_view_img.attr('src')
-				if !support_dnd
-					no_dnd_support()
-			
-			no_dnd_support = ->
-				step_one.file_drop.css border: '2px solid red'
-				step_one.file_drop.find('span').css color: 'red', top: '46px'
-				step_one.file_drop.find('span').text my_vars.profile_photo_no_dnd_support_msg
-
-			update_main_view = ->
-				updated_src = step_two.upload_result_img.attr('src')
-				main_view_img.attr('src', updated_src)
-				default_step = 2
-
-			show_errors = (error_array) ->
-				error_div.empty()
-				step_one.file_drop.css borderColor: 'red'
-				error_ul = $("<ul>")
-				if error_array.length == 0
-					error_ul.append("<li>" + my_vars.profile_photo_upload_generic_error + "</li>")
-				for key, value of error_array
-					error_ul.append("<li>").html(value)
-				error_div.append(error_ul).slideDown()
-
-			upload_request_start = (step) ->
-				error_div.fadeOut(500)
-				if step == 2
-					step_two.edit_profile_photo_link.prop('disabled', true);
-					step_two.waiter.show()
-				if step == 1
-					step_one.imp_from_url.upload_button.prop('disabled', true)
-					step_one.waiter.show()
-					$(step_one.file_drop.find('img')).remove()
-					step_one.select_img_input.prop('disabled', true)
-
-			upload_request_complete = ->
-				step_two.waiter.hide()
-				step_two.edit_profile_photo_link.prop('disabled', false);
-
-				step_one.waiter.hide()
-				step_one.select_img_input.prop('disabled', false)
-				step_one.imp_from_url.upload_button.prop('disabled', false)
-
-			show_step = (step_num, next_flg) ->
-				if step_num > total_steps || step_num <= 0
-					step_num = default_step
-				prev_step = current_step
-				current_step = step_num
-				step_to_show = if prev_step == current_step then (default_step - 1) else (step_num - 1)
-				for step in steps
-					do (step) ->
-						step.hide().addClass('aria-hidden')
-				if next_flg
-					steps[step_to_show].fadeIn(1500).removeClass('aria-hidden')
-				else
-					steps[step_to_show].show().removeClass('aria-hidden')
-
-			init = () ->
-				if !support_ajax_upload
-					$('p.ajax_upload').remove()
-				if !support_dnd
-					no_dnd_support()
-				bind_actions()
-
-			# public
-			show_default_step : () ->
-				show_step(default_step, 0)
-			set_default_step : (step_num) ->
-				default_step = step_num if step_num <= total_steps && step_num > 0
-			init: init
-
-		profile_photo_module.init()
-
-		if(my_vars.profile_photo_present)
-			profile_photo_module.set_default_step(2)
-		else
-			profile_photo_module.set_default_step(1)
-		profile_photo_module.show_default_step()
