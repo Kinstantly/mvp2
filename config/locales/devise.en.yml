@@ -73,6 +73,8 @@ en:
         subject: 'Confirmation instructions'
       on_create_confirmation_instructions:
         subject: 'Confirmation instructions'
+      on_create_provider_confirmation_instructions:
+        subject: 'Confirmation instructions'
       on_create_welcome:
         subject: 'Get started with Kinstantly -- and discover its key benefits'
       reset_password_instructions:

@@ -140,7 +140,11 @@ class User < ActiveRecord::Base
 	# A callback method used to deliver confirmation instructions on creation.
 	# This overrides the Devise method to allow us to define our own email.
 	def send_on_create_confirmation_instructions
-		send_devise_notification :on_create_confirmation_instructions
+		if is_provider?
+			send_devise_notification :on_create_provider_confirmation_instructions
+		else
+			send_devise_notification :on_create_confirmation_instructions
+		end
 	end
 	
 	# A Devise callback that runs after the user confirms their email address.

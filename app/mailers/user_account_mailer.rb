@@ -3,9 +3,14 @@
 class UserAccountMailer < Devise::Mailer
 	helper :mailer # Access to MailerHelper methods in this mailer's views.
 	
-	# Send on user creation, i.e., welcome email which also performs email address confirmation.
+	# Send on non-provider account creation, i.e., welcome email which also performs email address confirmation.
 	def on_create_confirmation_instructions(record, opts={})
 		devise_mail(record, :on_create_confirmation_instructions, opts)
+	end
+	
+	# Send on provider account creation, i.e., welcome email which also performs email address confirmation.
+	def on_create_provider_confirmation_instructions(record, opts={})
+		devise_mail(record, :on_create_provider_confirmation_instructions, opts)
 	end
 	
 	# Send on user creation when claiming a profile, i.e., simple welcome email.
