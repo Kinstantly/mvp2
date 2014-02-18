@@ -47,8 +47,8 @@
 		= locations[i].display_address.presence || profile_blank_attribute_message(Location.human_attribute_name :display_address)
 	- if i == 0 && locations.size > 1
 		%span
-			= link_to t('views.profile.view.more_locations'), '#', id: 'more_locations'
-			= link_to t('views.profile.view.hide_locations'), '#', id: 'hide_locations'
+			= link_to t('views.profile.view.more_locations'), '#', class: 'more_locations'
+			= link_to t('views.profile.view.hide_locations'), '#', class: 'hide_locations'
 	%span{class: "location editable attribute_display#{i > 0 ? ' more' : ''}", itemprop: "telephone"}
 		= locations[i].display_phone.presence || profile_blank_attribute_message(Location.human_attribute_name :display_phone)
 	%span{class: "location location_note editable attribute_display#{i > 0 ? ' more' : ''}"}
@@ -58,15 +58,15 @@
 	# If we had a validation error, we are redisplaying the formlet and must hide locations that are marked for destruction.
 	$('.fields.marked_for_destruction').css('display', 'none')
 	
-	$('#more_locations').click () ->
+	$('.more_locations').click () ->
 		$(this).css 'display', 'none'
-		$('#hide_locations').css 'display', 'inline'
+		$('.hide_locations').css 'display', 'inline'
 		$('span.location.more').css 'display', 'block'
 		false
 	
-	$('#hide_locations').click () ->
+	$('.hide_locations').click () ->
 		$(this).css 'display', 'none'
-		$('#more_locations').css 'display', 'inline'
+		$('.more_locations').css 'display', 'inline'
 		$('span.location.more').css 'display', 'none'
 		false
 	

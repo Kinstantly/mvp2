@@ -53,17 +53,17 @@
 			my_vars.google_api_key = "#{GOOGLE_BROWSER_API_KEY}"
 		:coffeescript
 			# Autocomplete location field in search form.
-			my_vars.f.bind_autocomplete = () ->
-				new google.maps.places.Autocomplete(document.getElementById('provider_search_location'), {types: ['geocode']})
+			bind_provider_search_location_autocomplete = () ->
+				if google?.maps?.places?.Autocomplete
+					my_vars.provider_search_location_autocomplete ||= new google.maps.places.Autocomplete(document.getElementById('provider_search_location'), {types: ['geocode']})
 			
 			# Init google autocomplete, google map on profile and search pages if avalable
 			window.init_google_api = () ->
-				my_vars.f.bind_autocomplete()
-				if (typeof(my_vars.profile_map) != "undefined")
-					my_vars.profile_map.init()
-				if (typeof(my_vars.search_results_map) != "undefined")
-					my_vars.search_results_map.init()
-			
+				if google?.maps
+					bind_provider_search_location_autocomplete()
+					my_vars.profile_map?.init()
+					my_vars.search_results_map?.init()
+				
 			# Appends maps.googleapis script
 			load_google_api = () ->
 				script = document.createElement('script');
@@ -79,12 +79,6 @@
 				$.ajaxSetup({
 					cache: true
 				})
-				
-				# Load Aviary script
-				$.getScript( "https://dme0ih8comzn4.cloudfront.net/js/feather.js", () =>
-					if (typeof(my_vars.profile_photo_module) != "undefined")
-						my_vars.profile_photo_module.init()
-				)
 				
 				# Ensure rating stars render properly after everything is loaded.
 				my_vars.f.rating_score_reset() if my_vars.f.rating_score_reset

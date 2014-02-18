@@ -28,6 +28,7 @@ Feature: View existing users
 		When I visit the user index page
 		Then I should not see user data
 
+	@javascript
 	Scenario: View a user's profile
 		Given I am logged in as an administrator
 			And a user with a profile exists

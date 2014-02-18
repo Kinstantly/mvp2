@@ -17,7 +17,7 @@ class ProfilesController < ApplicationController
 	#   set publish state based on parameter
 	#   set SEO keywords for profile show page
 	#   ensure there is a new review for the admin profile edit page
-	before_filter :require_location_in_profile, only: [:new, :edit, :edit_my_profile, :edit_plain]
+	before_filter :require_location_in_profile, only: [:new, :edit, :edit_tab, :edit_my_profile, :edit_plain]
 	before_filter :process_profile_admin_params, only: [:create, :update]
 	before_filter :seo_keywords, only: :show
 	before_filter :require_new_review, only: :edit_plain
@@ -225,6 +225,14 @@ class ProfilesController < ApplicationController
 		info[:ids_names]['services'] = @profile.service_ids_names
 		info[:ids_names]['specialties'] = @profile.specialty_ids_names
 		respond_with info
+	end
+	
+	def show_tab
+		render layout: false
+	end
+	
+	def edit_tab
+		render layout: false
 	end
 	
 	private

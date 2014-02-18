@@ -1,0 +1,23 @@
+- active_tab ||= :show
+#tabs.ui-tabs.ui-widget.ui-widget-content.ui-corner-all
+	%ul.ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-corner-all
+		%li
+			= link_to t('views.profile.edit.show_tab'), show_tab_profile_path(@profile), class: 'show_tab'
+		%li
+			= link_to t('views.profile.edit.edit_tab'), edit_tab_profile_path(@profile), class: 'edit_tab'
+:javascript
+	my_vars.profile_active_tab = #{active_tab == :show ? 0 : 1};
+:coffeescript
+	$ ->
+		panel_was_loaded = {}
+		$('#tabs').tabs
+			active: my_vars.profile_active_tab
+			beforeLoad: (event, ui) ->
+				panel_id = ui.panel.attr('id')
+				unless panel_was_loaded[panel_id]
+					ui.panel.html '<div class="panel_loading"></div>'
+					panel_was_loaded[panel_id] = true
+				ui.jqXHR.error ->
+					ui.panel.html "Couldn't load this tab. We'll try to fix this as soon as possible."
+			load: (event, ui) ->
+				window.init_google_api() if $(ui.tab).hasClass('show_tab')

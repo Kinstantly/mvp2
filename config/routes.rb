@@ -46,6 +46,8 @@ Mvp2::Application.routes.draw do
 			get 'edit_plain'
 			get 'claim/:token', action: :show_claiming, as: :show_claiming
 			get 'services_info'
+			get 'show_tab'
+			get 'edit_tab'
 		end
 		collection do
 			get :admin

@@ -1,3 +1,4 @@
+@javascript
 Feature: Create a new expert profile
 	As a site administrator or profile editor
 	I want to create a new profile on behalf of an expert
@@ -9,16 +10,14 @@ Feature: Create a new expert profile
 			And I create the profile
 		Then I should see an edit profile form
 	
-	@javascript
 	Scenario: Create new profile as an administrator
 		Given I am logged in as an administrator
 		When I visit the profile admin page
 			And I create the profile
 			And I enter profile information
-			And I click on the "View profile" link
+			And I click on the "View Public Profile" link
 		Then I should see the new profile data
 	
-	@javascript
 	Scenario: Create and publish new profile as an administrator
 		Given I am logged in as an administrator
 		When I visit the profile admin page

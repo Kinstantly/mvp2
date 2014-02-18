@@ -405,4 +405,10 @@
 		# prevent the browser to redirect to the file when droped anywhere else on the page
 		$(document).bind 'drop dragover', (e) ->
 			e.preventDefault()
-
+			
+		# Load Aviary script if needed, then initialize.
+		if Aviary?.Feather
+			my_vars.profile_photo_module.init()
+		else
+			$.getScript "https://dme0ih8comzn4.cloudfront.net/js/feather.js", () =>
+				my_vars.profile_photo_module.init()

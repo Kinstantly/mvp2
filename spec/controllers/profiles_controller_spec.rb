@@ -295,15 +295,45 @@ describe ProfilesController do
 		end
 		
 		describe "GET 'services_info'" do
-			it "returns JSON" do
+			before(:each) do
 				get :services_info, id: my_profile_id, format: :json
+			end
+			
+			it "returns JSON" do
 				response.headers['Content-Type'].should include('application/json')
 			end
-
+			
 			it "returns association information about the categories, services, and specialties attached to this profile" do
-				get :services_info, id: my_profile_id, format: :json
 				response.body.should include(me.profile.services.first.name)
 				response.body.should include(me.profile.specialties.first.name)
+			end
+		end
+		
+		describe "GET 'show_tab'" do
+			before(:each) do
+				get :show_tab, id: my_profile_id
+			end
+			
+			it "returns HTML" do
+				response.headers['Content-Type'].should include('text/html')
+			end
+			
+			it "returns the provider profile" do
+				assigns[:profile].should == me.profile
+			end
+		end
+		
+		describe "GET 'edit_tab'" do
+			before(:each) do
+				get :edit_tab, id: my_profile_id
+			end
+			
+			it "returns HTML" do
+				response.headers['Content-Type'].should include('text/html')
+			end
+			
+			it "returns the provider profile" do
+				assigns[:profile].should == me.profile
 			end
 		end
 	end

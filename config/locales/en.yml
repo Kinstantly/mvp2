@@ -290,6 +290,8 @@ en:
         display_name_blank: 'Your company name is shown if these fields are left blank.'
         display_name_or_company_blank: 'Your name'
         edit_review: 'Edit review by %{name}'
+        edit_tab: 'Edit Profile'
+        editing_tip: 'Click the pencils to add or edit information'
         education_example_html: 'Example:<br>Fellowship: orthopedic surgery, Hospital of the U. of Pennsylvania, Philadelphia, 2008<br>Residency: orthopedic surgery, Hospital of the U. of Pennsylvania, Philadelphia, 2006<br>Medical degree: University of Rochester School of Medicine, 2004'
         education_tip: 'Tip: List your most recent or important degrees first.'
         email_example: 'Example: katie@allkidstutoring.com'
@@ -308,6 +310,8 @@ en:
         services_blank: 'No services'
         services_tip_html: '(Check the services you most want to highlight&mdash;or enter others below)'
         services_tip2: 'Tip: 3-5 is best'
+        show_tab: 'View Public Profile'
+        show_tab_note: 'Note: We save each part of your profile as you edit it. Done editing for now? Click this tab to view your public profile'
         specialties_blank: 'No specialties'
         specialties_tip_html: '(Check all that apply&mdash;or enter others below)'
         specialties_tip2: "Tip: It's best to limit these to 15, at most, so they're easily scannable"

@@ -612,7 +612,7 @@ When /^I enter "(.*?)" in the "(.*?)" field of the (first|second) location on th
 end
 
 When /^I click on the link to see all locations$/ do
-	click_link 'more_locations'
+	click_link I18n.t 'views.profile.view.more_locations'
 end
 
 When /^I (?:should )?see step "(one|two|three)" of "(.*?)" formlet$/ do |step, formlet|
@@ -648,6 +648,10 @@ When /^I click on the profile photo$/ do
 	find('#profile-photo img').click
 end
 
+When /^I click on the profile edit tab$/ do
+	click_link I18n.t('views.profile.edit.edit_tab')
+end
+
 ### THEN ###
 
 Then /^I should see my profile information$/ do
@@ -657,8 +661,8 @@ Then /^I should see my profile information$/ do
 	end
 end
 
-Then /^meta\-data should contain one of my services$/ do
-	pending 'on profile view page, list categories and services in meta-data'
+Then /^meta\-data should contain "(.*?)"$/ do |text|
+	page.should have_selector "meta[content~=\"#{text.downcase}\"]"
 end
 
 Then /^I should see one of my specialties$/ do
@@ -875,4 +879,12 @@ end
 
 Then /^I should see "(.*?)" message$/ do |locale_path|
  	page.should have_content I18n.t locale_path
+end
+
+Then /^I should see the "(.*?)" formlet$/ do |formlet|
+	page.should have_css("##{formlet_id formlet}.formlet", visible: true)
+end
+
+Then /^I should see an edit tab$/ do
+	page.should have_content I18n.t('views.profile.edit.edit_tab')
 end

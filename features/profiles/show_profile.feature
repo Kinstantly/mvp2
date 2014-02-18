@@ -1,3 +1,4 @@
+@javascript
 Feature: View a provider's profile
 	In order to determine if I want to contact and how to contact a provider
 	As a parent
@@ -8,6 +9,12 @@ Feature: View a provider's profile
 			And I am not logged in
 		When I visit the published profile page
 		Then I should see "Cabell" in the page title
+
+	Scenario: Provider's specialty is in the meta-data
+		Given a published profile with last name "Cabell" and specialty "soprano"
+			And I am not logged in
+		When I visit the published profile page
+		Then meta-data should contain "soprano"
 
 	Scenario: Administrator can see admin notes
 		Given a published profile with admin notes "Nessun dorma"
@@ -39,7 +46,6 @@ Feature: View a provider's profile
 		When I visit the view page for a published profile with one review
 		Then the profile should show the review
 
-	@javascript
 	Scenario: Provider's location displayed on map
 		Given I am not logged in 
 			And I visit the view page for a published profile with one location
