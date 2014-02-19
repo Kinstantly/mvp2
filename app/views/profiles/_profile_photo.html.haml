@@ -158,11 +158,13 @@
 				context.toggle()
 				reset_steps() if !context.is(":visible")
 				show_step(default_step, 0) if !context.is(":visible")
+				my_vars.f.place_formlet(wrapper) if context.is(":visible")
 
 			toggleLink.on 'click', (e) ->
 				context.toggle()
 				reset_steps() if !context.is(":visible")
 				show_step(default_step, 0) if !context.is(":visible")
+				my_vars.f.place_formlet(wrapper) if context.is(":visible")
 
 			closeLink.on 'click', (e) ->
 				context.hide()

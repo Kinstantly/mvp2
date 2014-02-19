@@ -58,9 +58,12 @@
 	:coffeescript
 		# Run after the document is loaded and everything is in place.
 		$ ->
-			# Place the formlet the specified number of pixels below the top of the viewport (assume absolute positioning).
+			# Place the formlet the specified number of pixels below the top of the viewport.
 			my_vars.f.place_formlet = (formlet) ->
-				$('.popover', formlet).css('top', $(window).scrollTop() + 20)
+				popover = $('.popover', formlet)
+				popover.offset
+					top: $(window).scrollTop() + 20
+					left: ($(window).width() - popover.outerWidth()) / 2
 		
 			# Final touches to a newly created or updated formlet element.
 			my_vars.f.configure_formlet = (formlet) ->
@@ -76,8 +79,8 @@
 			$('.formlet').click (e) ->
 				unless $(this).hasClass('active') or $(e.target).hasClass('dont_popover')
 					$('.formlet.active').removeClass 'active' # Close any active formlet.
-					my_vars.f.place_formlet this
 					$(this).addClass 'active'
+					my_vars.f.place_formlet this
 				
 			$('.formlet').each -> my_vars.f.configure_formlet this
 		
