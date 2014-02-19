@@ -91,6 +91,9 @@ class ProfilesController < ApplicationController
 		else
 			@refresh_formlets = params[:refresh_formlets]
 			@update_succeeded = @profile.update_attributes(params[:profile])
+			if @update_succeeded && !current_user.profile_editor?
+				ProfileMailer.on_update_alert(@profile).deliver
+			end
 		end
 		respond_with @profile, layout: false
 	end
