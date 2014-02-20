@@ -272,6 +272,7 @@ en:
         ages_stages_note_example_html: 'Examples: Ages 4-18 <span class="label_highlight">or</span> Students K-12, beginner to advanced <span class="label_highlight">or</span> Teens and parents'
         availability_and_consultation_modes_blank: 'For search, specify consultation methods and availability'
         availability_service_area_note_example_html: 'Examples: Home visits within Alameda County <span class="label_highlight">or</span> Can meet with clients locally or by video anywhere in the world <span class="label_highlight">or</span> All lessons in my home studio'
+        cancel: 'Cancel'
         categories_blank: 'No categories'
         categories_tip: '(Check one or more)'
         certifications_example: 'Examples: Board Certified Doula; CA license #55555555...'
@@ -316,6 +317,8 @@ en:
         specialties_tip_html: '(Check all that apply&mdash;or enter others below)'
         specialties_tip2: "Tip: It's best to limit these to 15, at most, so they're easily scannable"
         stages: 'Stages'
+        submit: 'Save'
+        submit_disable: 'Saving...'
         summary_tip: 'Tip: A first-person description ("I advise parents on...") is warmer and more approachable.'
         url_example: 'Example: www.allkidstutoring.com or http://www.allkidstutoring.com'
         year_started_explanation: '(year you began business or practice)'
@@ -330,13 +333,16 @@ en:
         message: 'if you want to replace your existing profile with the one you want claim.'
     review:
       edit:
+        add: 'Fill in a new review'
+        cancel: 'Cancel'
         delete: 'Delete review'
         delete_confirm: 'This review will be destroyed.  Are you sure?'
         deleting: 'Deleting...'
         remove: 'Mark the above review for removal upon saving'
         remove_confirm: 'This review will be removed when you click save.'
         remove_confirm_admin: 'This review will be removed when you save the profile.'
-        add: 'Fill in a new review'
+        submit: 'Submit'
+        submit_disable: 'Submitting...'
     search:
       address_placeholder: 'ZIP code or city, state'
       query_placeholder: 'name, specialty, or parenting need...'
@@ -386,12 +392,14 @@ en:
     sign_in:
       label: 'Sign in'
       prompt: 'Already a member?'
+      submit_disable: 'Signing in...'
     sign_up:
       label: 'Join us!'
       member_title: 'Become a member'
       provider_link: 'Join us'
       provider_prompt: 'Provider?'
       provider_title: 'Create your profile'
+      submit_disable: 'Signing up...'
       claiming_profile_title: 'Claim your profile'
       email_tip: "(So we can contact you - we'll never give your email address out, and we won't display it publicly.)"
       username_tip: "(This will display next to any reviews you write and must contain at least four characters - letters and numerals only, no spaces. Examples: Mama2000, DadEO)" 
@@ -413,7 +421,7 @@ en:
         password_note: "Leave password blank if you don't want to change it."
         current_password_note: 'We need your current password to confirm your changes.'
         submit: 'Save changes'
-        submit_disable: 'Save changes'
+        submit_disable: 'Saving...'
         cancel: 'Cancel'
         cancel_account: 'Cancel my account'
         cancel_account_confirmation: 'We will completely remove your account. Are you sure?'

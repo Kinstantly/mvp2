@@ -62,9 +62,14 @@ $button_corner_radius: 4px;
 		size: 15px;
 		weight: bold;
 	}
+	display: inline-block; // <A> tags are inline by default.  Need this to set their width.
+	width: 7em;
+	text-align: center;
 	text-transform: lowercase;
+	text-decoration: none;
 	color: #ffffff;
 	padding: 4px;
+	margin-right: 1em;
 	-webkit-border-radius: $button_corner_radius;
 	-moz-border-radius: $button_corner_radius;
 	border-radius: $button_corner_radius;
@@ -78,6 +83,10 @@ $button_corner_radius: 4px;
 	@include button-style;
 	background-color: $kinstantly_chartreuse;
 }
+@mixin default-button-disabled-style {
+	@include button-style;
+	background-color: $kinstantly_light_gray;
+}
 
 @mixin cancel-button-style {
 	@include button-style;
@@ -86,6 +95,10 @@ $button_corner_radius: 4px;
 @mixin cancel-button-hover-style {
 	@include button-style;
 	background-color: $kinstantly_gray;
+}
+
+.auto_width {
+	width: auto !important;
 }
 
 .note, .blank_attr {

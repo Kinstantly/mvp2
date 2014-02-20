@@ -10,8 +10,8 @@
 			= f.text_area :education, size: '45x5', class: 'attr'
 			%p.note= t 'views.profile.edit.education_example_html'
 			%p.note= t 'views.profile.edit.education_tip'
-		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-		= link_to 'Cancel', '#', class: 'cancel button'
+		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 %p.text_area.attribute_display= profile_display_text @profile.errorfree.education, preserve: true, links: true
 
 :coffeescript

@@ -9,8 +9,8 @@
 			= f.label :certifications
 			= f.text_field :certifications, class: 'attr'
 			%p.note= t 'views.profile.edit.certifications_example'
-		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-		= link_to 'Cancel', '#', class: 'cancel button'
+		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 %p.attribute_display= profile_display_text @profile.errorfree.certifications, serialize: true, links: true
 
 :coffeescript

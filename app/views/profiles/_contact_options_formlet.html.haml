@@ -39,8 +39,8 @@
 		.check_box
 			= f.check_box :consult_remotely
 			= f.label :consult_remotely, t('views.profile.edit.consult_remotely')
-		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-		= link_to 'Cancel', '#', class: 'cancel button'
+		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 %ul.contact-toolbar.editable.attribute_display
 	- unless profile_has_consultation_mode @profile.errorfree
 		%li= profile_blank_attribute_message t('views.profile.edit.consultation_modes_title')

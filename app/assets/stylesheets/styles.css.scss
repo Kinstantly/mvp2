@@ -960,27 +960,19 @@ $form_element_width: 388px;
 		line-height: normal;
 	}
 	.save {
-		background: url('save-button.gif') 0px 0px;
-		width: 53px;
-		height: 26px;
-		text-indent: -999em;
-		float: left;
-		margin-right: 3px;
+		@include default-button-style;
 	}
 	.save:hover {
-		background: url('save-button.gif') 0px -26px;
-		cursor: pointer;
+		@include default-button-hover-style;
+	}
+	.save:disabled {
+		@include default-button-disabled-style;
 	}
 	a.cancel {
-		background: url('cancel-button.gif') 0px 0px;
-		width: 61px;
-		height: 26px;
-		text-indent: -999em;
-		display: block;
-		float: left;
+		@include cancel-button-style;
 	}
 	a.cancel:hover {
-		background: url('cancel-button.gif') 0px -26px;
+		@include cancel-button-hover-style;
 	}
 	.label_highlight {
 		color: $default_link_color;
@@ -1314,6 +1306,9 @@ $generic_form_width: 418px;
 		}
 		.default:hover {
 			@include default-button-hover-style;
+		}
+		.default:disabled {
+			@include default-button-disabled-style;
 		}
 		.cancel_link {
 			@include cancel-button-style;

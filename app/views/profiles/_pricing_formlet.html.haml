@@ -35,8 +35,8 @@
 					= f.check_box :financial_aid_available
 					= f.label :financial_aid_available
 			.buttons
-				= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-				= link_to 'Cancel', '#', class: 'cancel button'
+				= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+				= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 
 :coffeescript
 	# Show character count while filling in field.

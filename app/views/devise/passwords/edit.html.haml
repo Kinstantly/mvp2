@@ -10,5 +10,5 @@
 			.password_confirmation.text_field
 				= f.label :password_confirmation
 				= f.password_field :password_confirmation, autocomplete: 'off'
-			.buttons= f.submit t('devise.passwords.edit_password_submit'), disable_with: t('devise.passwords.edit_password_submit_disable'), class: 'default'
+			.buttons= f.submit t('devise.passwords.edit_password_submit'), disable_with: t('devise.passwords.edit_password_submit_disable'), class: 'default auto_width'
 		= render "devise/shared/links"

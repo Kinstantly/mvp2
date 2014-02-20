@@ -30,5 +30,5 @@
 					= f.text_area :good_to_know, size: '80x2', placeholder: good_to_know_placeholder
 
 				.buttons
-					= f.submit 'Submit', disable_with: 'Saving...', class: 'default'
-					= link_to "Cancel", profile_path(@review.profile),  class: 'cancel_link'
+					= f.submit t('views.review.edit.submit'), disable_with: t('views.review.edit.submit_disable'), class: 'default'
+					= link_to t('views.review.edit.cancel'), profile_path(@review.profile),  class: 'cancel_link'

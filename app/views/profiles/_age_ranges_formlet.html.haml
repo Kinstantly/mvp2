@@ -15,5 +15,5 @@
 					.check_box
 						= profile_age_ranges_check_box_tag(@profile, age_range, f)
 						= profile_age_ranges_check_box_label age_range
-			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-			= link_to 'Cancel', '#', class: 'cancel button'
+			= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+			= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'

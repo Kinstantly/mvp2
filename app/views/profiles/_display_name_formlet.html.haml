@@ -26,8 +26,8 @@
 			= f.label :display_name
 			%span.display_name
 				= profile_display_name @profile
-		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-		= link_to 'Cancel', '#', class: 'cancel button'
+		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 %h1.editable.attribute_display{itemprop: "name"}
 	= @profile.errorfree.display_name_or_company.presence || profile_blank_attribute_message(t 'views.profile.edit.display_name_or_company_blank')
 :coffeescript

@@ -50,8 +50,8 @@
 					%span.char_count
 			- @profile_custom_specialties_i = i
 			- @profile_custom_specialties_text_field_template = profile_custom_specialties_autocomplete_field_tag(@profile, '', 'INDEX', f)
-		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-		= link_to 'Cancel', '#', class: 'cancel button'
+		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 		
 		-# Use plain Javascript when using JSON.
 		-# Coffeescript will reformat JSON which takes much too long and creates too much whitespace.

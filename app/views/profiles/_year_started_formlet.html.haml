@@ -9,8 +9,8 @@
 			= f.label :year_started
 			= f.text_field :year_started, class: 'attr'
 			%p.note= t 'views.profile.edit.year_started_example'
-		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-		= link_to 'Cancel', '#', class: 'cancel button'
+		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 %p.attribute_display= @profile.errorfree.year_started
 
 :coffeescript

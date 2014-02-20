@@ -38,8 +38,8 @@
 			= lf.link_to_remove t('views.location.edit.remove'), confirm: t('views.location.edit.remove_confirm')
 		= f.link_to_add t('views.location.edit.add'), :locations, class: 'form_section'
 		#locations_buttons
-			= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-			= link_to 'Cancel', '#', class: 'cancel button'
+			= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+			= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 -# Display the locations of the STORED profile.
 -# However, if there are none, display a dummy entry to provide a way to activate this formlet.
 - (locations = @profile.errorfree.sorted_locations.presence || [Location.new]).each_index do |i|
