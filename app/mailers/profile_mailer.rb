@@ -7,11 +7,4 @@ class ProfileMailer < ActionMailer::Base
 		@profile = profile
 		mail to: profile.invitation_email, from: 'Jim Scott <jscott@kinstantly.com>'
 	end
-
-	# Notify site admin, when profile is updated.
-	def on_update_alert(profile)
-		@profile = profile
-		mail to: 'Jim Scott <jscott@kinstantly.com>', from: 'Jim Scott <jscott@kinstantly.com>',
-			subject: 'Provider Profile updated on Kinstantly'
-	end
 end
