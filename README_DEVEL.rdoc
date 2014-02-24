@@ -154,3 +154,41 @@ Merge the bug fix back into the 'master' and 'develop' branches.
 
 To deploy to production follow the deploy instructions in README_DEPLOY.rdoc.
 
+=Web Performance: Minimizing payload size 
+
+==Tools to evaluate web performance: 
+
+* YSlow: http://yslow.org
+* PageSpeed: https://developers.google.com/speed/pagespeed
+* Audits Panel of Chrome Developer Tools
+* GTMetrix http://gtmetrix.com (for publicly accessible pages) 
+
+==Basic guidelines:
+
+===IMAGES:
+
+Specify a width and height for all images to allow faster rendering by eliminating the need for unnecessary reflows 
+and repaints. Be sure to set the dimensions on the <img> element itself, or a block-level parent. 
+If the parent is not block-level, the dimensions will be ignored. Do not set dimensions on an ancestor 
+that is not an immediate parent.
+
+For all profile photos, we convert all the photos to .jpg and compress by 10\%. 
+In addition we  strip off all the meta data and interlace photo to speed up photo appearance on the client side. 
+You can change these post processing settings in  app/models/profile.rb.
+
+In case post processing settings has changed and you want to re-process all existing images, use: 
+ rake paperclip:refresh CLASS=Profile 
+
+===DOM:
+
+Reduce the number of DOM Elements and keep it under max 700 even for complex pages. 
+
+===JS:
+
+All site-wide JS is placed in application.js manifest and page specific JS grouped into page specific manifests
+(naming convention: controller_view.js, e.g. profile_search.js, review_new.js etc).
+
+For external JS resources that cannot be served via asset pipeline, put these scripts at the bottom of the page 
+and consider lazy loading if possible
+(refer to load_google_api example in app/views/layouts/application.html.haml).
+
