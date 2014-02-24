@@ -1,4 +1,6 @@
-#{@profile.display_name_or_company} Profile has been updated
-%br
-%br 
-= link_to 'View/Edit Profile', edit_plain_profile_url(@profile)
+%html
+	%body
+		#{@profile.display_name_or_company} Profile has been updated
+		%br
+		%br 
+		= link_to 'View/Edit Profile', edit_plain_profile_url(@profile)
