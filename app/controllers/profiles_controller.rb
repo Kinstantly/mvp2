@@ -12,6 +12,9 @@ class ProfilesController < ApplicationController
 	skip_load_resource only: [:view_my_profile, :edit_my_profile]
 	skip_load_and_authorize_resource only: [:search, :autocomplete_service_name, :autocomplete_specialty_name, :autocomplete_location_city]
 	
+	# Notify profile moderator when profile has been update by profile owner
+	after_filter :notify_profile_moderator, only: :formlet_update
+	
 	# *After* profile is loaded:
 	#   ensure it has at least one location
 	#   set publish state based on parameter
@@ -259,5 +262,12 @@ class ProfilesController < ApplicationController
 	# Create a new review of this provider.  Used by the admin edit page.
 	def require_new_review
 		@review = @profile.reviews.build
+	end
+
+	# Send email notification to profile moderator
+	def notify_profile_moderator
+		if @profile.errors.empty? && !current_user.profile_editor?
+			AdminMailer.on_update_alert(@profile).deliver
+		end
 	end
 end
