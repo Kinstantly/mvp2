@@ -12,6 +12,8 @@ en:
       phone: '(415) 250-2512'
     name: 'Kinstantly'
     tagline: "When parenting challenges can't wait."
+    short_tagline: "A better parents's network."
+    alpha_note: "We're launching soon! But if you'd like a sneak peek, sign up below."
   email_domain: 'kinstantly.com'
   meta:
     keywords: 'parenting children health expert'
