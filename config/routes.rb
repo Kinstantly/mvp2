@@ -20,6 +20,7 @@ Mvp2::Application.routes.draw do
 		get '/member/sign_up_return', to: 'users/registrations#new', is_provider: false, store_referrer: true
 		get '/member/awaiting_confirmation', to: 'users/registrations#awaiting_confirmation'
 		get '/member/sign_in_return', to: 'devise/sessions#new', store_referrer: true
+		get '/alpha/sign_up', to: 'users/registrations#new', is_private_alpha: true
 	end
 	
 	# When profile is accessed via user.

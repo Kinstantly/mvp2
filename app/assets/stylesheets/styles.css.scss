@@ -472,6 +472,37 @@ $profile_tab_padding: 4px;
 	.location_note {
 		margin-bottom: 4px;
 	}
+	.help_icon {
+		position: relative;
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		margin-left: -20px;
+		margin-bottom: -4px;
+		background: url('help_16.png') 0px 0px no-repeat;
+		+ .location {
+			display: inline;
+		}
+		.help_popover {
+			display: none;
+			position: absolute;
+			right: 16px;
+			bottom: 16px;
+			width: 188px;
+			font-size: 13px;
+			padding: 4px;
+			color: #222;
+			background-color: rgba(255, 255, 255, 0.75);
+			border: 1px solid black;
+			@include button-corner-style;
+		}
+	}
+	.help_icon:hover {
+		cursor: pointer;
+		.help_popover {
+			display: block;
+		}
+	}
 }
 .reviews .star {
 	background: url('star.gif') 0px 0px no-repeat;
@@ -958,6 +989,9 @@ $form_element_width: 388px;
 	.note {
 		margin-bottom: 14px;
 		line-height: normal;
+		+ .note {
+			margin-top: -4px;
+		}
 	}
 	.save {
 		background: url('save-button.gif') 0px 0px;
@@ -1361,7 +1395,7 @@ $generic_form_width: 418px;
 		p{
 			margin-top:8px;
 			font-size: 17px;
-		    padding-top: 8px;
+			padding-top: 8px;
 		}
 		.rate-this{
 			width: 170px;
@@ -1635,13 +1669,13 @@ div.photo-wrapper-small{
 }
 
 span.inline_block_attr{
-  	display: inline-block;
-    width: 100%;
-  	text-align: center;
+		display: inline-block;
+		width: 100%;
+		text-align: center;
 }
 
 .profile-photo-update{
-  	width:508px !important;
+		width:508px !important;
 }
 .profile-photo-update p{
 	color: #807f7f;
@@ -1650,26 +1684,26 @@ span.inline_block_attr{
 }
 
 .file-drop{
-  	height: $large_photo_y;
-  	width: $large_photo_y;
-  	border: 1px solid red;
-  	background-color: #efefef;
-  	margin: 10px 0 5px 135px;
-  	position: relative;
-  	padding: 0;
-  	overflow:hidden;
+		height: $large_photo_y;
+		width: $large_photo_y;
+		border: 1px solid red;
+		background-color: #efefef;
+		margin: 10px 0 5px 135px;
+		position: relative;
+		padding: 0;
+		overflow:hidden;
 }
 .file-drop span{
-  	color: #aaa;
-  	font-size:14px;
-  	top: 70px;
+	color: #aaa;
+	font-size:14px;
+	top: 70px;
 	position: relative;
 	width: 100%;
 	text-align: center;
 	display: inline-block;
 }
 .upload-result{
-  	@extend .file-drop;
+	@extend .file-drop;
 	border:0;
 }
 
@@ -1680,42 +1714,42 @@ span.inline_block_attr{
 	top: 0px;
 	right: 0;
 	height: $large_photo_y;
-  	width: $large_photo_y;
+	width: $large_photo_y;
 }
 
 .upload-button{
-  	font-family: "Goudy Old Style", Garamond, "Big Caslon", "Times New Roman", serif;
- 	font-weight: bold;
-  	font-size: 17px;
-  	color:#fff;
-  	background-color: #afb434;
-  	padding: 13px 9px;
-  	@extend .clickable;
+	font-family: "Goudy Old Style", Garamond, "Big Caslon", "Times New Roman", serif;
+	font-weight: bold;
+	font-size: 17px;
+	color:#fff;
+	background-color: #afb434;
+	padding: 13px 9px;
+	@extend .clickable;
 }
 
 .upload-button:after{
-  	content: "upload";
+	content: "upload";
 }
 
 .upload-button:hover{
-  background-color: #9fa42f;
+	background-color: #9fa42f;
 }
 
 .aria-hidden{
-  	display: none;
+	display: none;
 }
 
 .clickable{
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .close-popover-button{
-  	@extend .clickable;
-  	position: absolute;
-  	right: 7px;
-  	top: 7px;
-  	width: 20px;
-  	height: 20px;
+	@extend .clickable;
+	position: absolute;
+	right: 7px;
+	top: 7px;
+	width: 20px;
+	height: 20px;
 	color: #fff;
 	border: 1px solid #AEAEAE;
 	border-radius: 5px;
@@ -1723,23 +1757,23 @@ span.inline_block_attr{
 	font-size: 18px;
 	font-weight: bold;
 	line-height: 20px;
-  	text-align: center;
+	text-align: center;
 }
 
 .close-popover-button:after{
-  	content: 'x';
+	content: 'x';
 }
 
 .step_three h3{
-    color: #3D3D3D;
-  	margin: 5px 0 0 0;
-  	font-weight: bold;
+	color: #3D3D3D;
+	margin: 5px 0 0 0;
+	font-weight: bold;
 }
 
 ul.links-list > li{
-  	margin-left:30px;
-   	font-size: 15px;
-  	color: #807f7f;
+	margin-left:30px;
+	font-size: 15px;
+	color: #807f7f;
 }
 
 /*Google Map*/
@@ -1787,3 +1821,30 @@ ul.links-list > li{
 		font-weight: bold;
 	}
 }
+.two-column{
+	.left-rail{
+		width: 3.5 * $railwidth;
+	}
+	.right-rail{
+		width: 0;
+	}
+	.main-column{
+		width: $masterwidth - 3.5 * $railwidth;
+	}
+}
+h2.highlight{
+	color: #d05365;
+	font-size: 25px;
+	font-weight: bold;
+	text-shadow: 1px 1px #aaa;
+}
+.logo-wallpaper{
+	background: #FFF url('home-img.jpg') -504px -78px no-repeat;
+	min-height: 524px;
+}
+.smaller_form{
+	.text_field input {
+		width: 320px;
+	}
+}
+

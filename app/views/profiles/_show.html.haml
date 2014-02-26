@@ -30,6 +30,8 @@
 					= t 'views.profile.view.url'
 					= profile_linked_website @profile
 			- if @profile.email.present?
+				%span.help_icon
+					.help_popover= t 'views.profile.view.email_help'
 				%span.location{itemprop: "email"}
 					= t 'views.profile.view.email'
 					= profile_captcha_email @profile
