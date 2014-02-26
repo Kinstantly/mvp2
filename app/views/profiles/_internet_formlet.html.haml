@@ -13,14 +13,9 @@
 			= f.label :email
 			= f.text_field :email
 			%p.note= t 'views.profile.edit.email_example'
-<<<<<<< HEAD
-		= f.submit 'Save', disable_with: 'Saving...', class: 'save'
-		= link_to 'Cancel', '#', class: 'cancel button'
-=======
 			%p.note= t 'views.profile.edit.email_hide_note'
 		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
 		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
->>>>>>> 04bf7c2... Added help tips re hidden email addresses.
 %span.location.editable.attribute_display{itemprop: "url"}
 	= t 'views.profile.view.url'
 	= profile_display_website @profile.errorfree, Profile.human_attribute_name(:url)
