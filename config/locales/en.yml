@@ -243,6 +243,7 @@ en:
         does_not_consult_remotely: 'Does not offer most or all services remotely (phone/video/email)'
         edit_my_profile_link: 'Make your profile better.  Click here.'
         email: 'email:'
+        email_help: 'We use CAPTCHA to hide the full email address from spam robots. Click to reveal it.'
         headline: 'Professional headline'
         hide_locations: 'Hide locations below'
         id: 'Profile ID: %{id}'
@@ -296,6 +297,7 @@ en:
         education_example_html: 'Example:<br>Fellowship: orthopedic surgery, Hospital of the U. of Pennsylvania, Philadelphia, 2008<br>Residency: orthopedic surgery, Hospital of the U. of Pennsylvania, Philadelphia, 2006<br>Medical degree: University of Rochester School of Medicine, 2004'
         education_tip: 'Tip: List your most recent or important degrees first.'
         email_example: 'Example: katie@allkidstutoring.com'
+        email_hide_note: "Don't worry. We use CAPTCHA to hide email addresses from spam robots."
         for_search_only: 'For search only:'
         for_search_only_blank: 'For search only, check all that apply'
         headline_example: 'Examples: Pediatric Dentistry, Math Tutoring'

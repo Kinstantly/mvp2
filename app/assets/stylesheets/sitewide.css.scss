@@ -56,6 +56,12 @@ $text_field_placeholder_color: #aaa;
 
 $button_corner_radius: 4px;
 
+@mixin button-corner-style {
+	-webkit-border-radius: $button_corner_radius;
+	-moz-border-radius: $button_corner_radius;
+	border-radius: $button_corner_radius;
+}
+
 @mixin button-style {
 	background-color: $kinstantly_light_chartreuse;
 	font: {
@@ -70,9 +76,7 @@ $button_corner_radius: 4px;
 	color: #ffffff;
 	padding: 4px;
 	margin-right: 1em;
-	-webkit-border-radius: $button_corner_radius;
-	-moz-border-radius: $button_corner_radius;
-	border-radius: $button_corner_radius;
+	@include button-corner-style;
 }
 
 @mixin default-button-style {
