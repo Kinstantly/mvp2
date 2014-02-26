@@ -239,6 +239,24 @@ $masthead_width: 920px;
 	-webkit-box-shadow: inset 1px 1px #d0c4c6;
 	box-shadow: inset 1px 1px #d0c4c6;
 }
+@mixin help_icon {
+	position: relative;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background: url('help_16.png') 0px 0px no-repeat;
+	
+	.help_popover {
+		display: none;
+		position: absolute;
+	}
+	&:hover {
+		cursor: pointer;
+		.help_popover {
+			display: block;
+		}
+	}
+}
 #search_providers {
 	float: left;
 	margin-left: 14px;
@@ -473,19 +491,13 @@ $profile_tab_padding: 4px;
 		margin-bottom: 4px;
 	}
 	.help_icon {
-		position: relative;
-		display: inline-block;
-		width: 16px;
-		height: 16px;
+		@include help_icon;
 		margin-left: -20px;
 		margin-bottom: -4px;
-		background: url('help_16.png') 0px 0px no-repeat;
 		+ .location {
 			display: inline;
 		}
 		.help_popover {
-			display: none;
-			position: absolute;
 			right: 16px;
 			bottom: 16px;
 			width: 188px;
@@ -495,12 +507,6 @@ $profile_tab_padding: 4px;
 			background-color: rgba(255, 255, 255, 0.75);
 			border: 1px solid black;
 			@include button-corner-style;
-		}
-	}
-	.help_icon:hover {
-		cursor: pointer;
-		.help_popover {
-			display: block;
 		}
 	}
 }
@@ -1442,7 +1448,7 @@ $generic_form_width: 418px;
 
 /* Contact */
 $railwidth: 160px;
-$masterwidth: 960px;
+$masterwidth: $railwidth * 6; /*960px*/
 
 .contact *{
 	font-family: $default_font_family;
@@ -1822,29 +1828,92 @@ ul.links-list > li{
 	}
 }
 .two-column{
+	$maincontent-padding: 20px;
 	.left-rail{
-		width: 3.5 * $railwidth;
+		width: 3.5 * $railwidth - 2 * $maincontent-padding;
 	}
 	.right-rail{
 		width: 0;
 	}
 	.main-column{
 		width: $masterwidth - 3.5 * $railwidth;
+		padding: ($maincontent-padding / 2) $maincontent-padding;
+	}
+	.main-column *{
+		max-width: $masterwidth - 3.5 * $railwidth;
 	}
 }
-h2.highlight{
+.highlight{
 	color: #d05365;
-	font-size: 25px;
 	font-weight: bold;
 	text-shadow: 1px 1px #aaa;
 }
 .logo-wallpaper{
-	background: #FFF url('home-img.jpg') -504px -78px no-repeat;
-	min-height: 524px;
+	background: #FFF url('home-img.jpg') -486px -50px no-repeat;
+	min-height: 780px;
+	@include button-corner-style;
+
+	h2.highlight{
+		font-size:34px;
+		line-height:32px;
+	}
 }
 .smaller_form{
 	.text_field input {
-		width: 320px;
+		width: 300px;
+	}
+	.help_icon {
+		@include help_icon;
+		margin-bottom: -4px;
+		background-image: url('help_24.png');
+		width:24px;
+		height:24px;
+		
+		.help_popover {
+			right: -116px;
+			top: 35px;
+			width: 240px;
+			font-size: 13px;
+			padding: 7px;
+			color: #222;
+			background-color: rgba(255, 255, 255, 0.75);
+			border: #7F7F7F solid 1px;
+			@include button-corner-style;
+		}
+		.help_popover:after {
+			content: '';
+			position: absolute;
+			border-style: solid;
+			border-width: 0 15px 15px;
+			border-color: #FFFFFF transparent;
+			display: block;
+			width: 0;
+			z-index: 1;
+			top: -14px;
+			left: 112px;
+		}
+		.help_popover:before {
+			content: '';
+			position: absolute;
+			border-style: solid;
+			border-width: 0 15px 15px;
+			border-color: #7F7F7F transparent;
+			display: block;
+			width: 0;
+			z-index: 0;
+			top: -15px;
+			left: 112px;
+		}
 	}
 }
-
+.mid-aligned{
+	text-align: center;
+}
+.tagline{
+	font-size: 14px;
+	font-weight: bold;
+}
+.alpha_note{
+	font-size: 18px;
+	padding: 10px;
+}
