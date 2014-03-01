@@ -7,6 +7,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	# User settings page should not be cached because it might display sensitive information.
 	after_filter :set_no_cache_response_headers, only: [:edit, :update]
 
+	layout 'interior_no_top_nav', only: [:new, :create]
+
 	protected
 
 	# Override build_resource method in superclass.
