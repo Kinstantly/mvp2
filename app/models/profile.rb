@@ -60,7 +60,7 @@ class Profile < ActiveRecord::Base
 					},
 					:default_url => 'profile-photo-placeholder-:style.jpg'
     
-	validate :publishing_requirements
+	# validate :publishing_requirements # No requirements because a new provider's profile is published upon creation.
 	# validates :categories, length: {maximum: 1}
 	validates :email, email: true, allow_blank: true
 	validates :invitation_email, email: true, allow_blank: true
@@ -439,6 +439,7 @@ class Profile < ActiveRecord::Base
 		touch
 	end
 	
+	# Deprecated because a newly-registered provider's profile is published upon creation.
 	def publishing_requirements
 		if is_published
 			errors.add :first_name, I18n.t('models.profile.name_and_company.missing') if (first_name.blank? || last_name.blank?) && company_name.blank?

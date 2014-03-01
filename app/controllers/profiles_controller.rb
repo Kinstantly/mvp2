@@ -240,11 +240,19 @@ class ProfilesController < ApplicationController
 	
 	private
 	
+	# Set up the user and profile instance variables.
+	# If the current user is a provider, ensure that they have a published profile.
+	# If needed, create or build the profile as specified by the method argument.
 	def set_up_profile(method=:build_profile)
 		@user = current_user
 		if @user.is_provider?
-			@user.send method unless @user.profile
 			@profile = @user.profile
+			unless @profile
+				profile = @user.send method
+				profile.is_published = true # is_published cannot be mass assigned, so assign it this way.
+				profile.save unless profile.new_record?
+				@profile = profile
+			end
 		end
 	end
 	
