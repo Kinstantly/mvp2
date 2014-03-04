@@ -102,6 +102,16 @@ describe User do
 				@kelly.create_profile
 				@kelly.has_persisted_profile?.should be_true
 			end
+			
+			it "should load a profile" do
+				@kelly.load_profile
+				@kelly.profile.should_not be_nil
+			end
+			
+			it "should have a published profile" do
+				@kelly.load_profile
+				@kelly.profile.is_published.should be_true
+			end
 		
 			context "claiming" do
 				before(:each) do

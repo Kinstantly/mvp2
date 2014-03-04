@@ -32,6 +32,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 				resource.add_role :client
 				resource.save!
 			end
+			# Create profile if needed.
+			resource.load_profile
+			# If we have a new provider, notify admin.
+			AdminMailer.provider_registration_alert(resource).deliver if resource.is_provider?
 		end
 	end
 

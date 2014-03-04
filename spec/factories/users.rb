@@ -31,6 +31,14 @@ FactoryGirl.define do
 			factory :provider_with_username do
 				username 'FactoryUsernameProvider'
 			end
+			
+			factory :provider_with_published_profile do
+				association :profile, factory: :published_profile
+			end
+			
+			factory :provider_with_unpublished_profile do
+				association :profile, factory: :unpublished_profile
+			end
 		end
 		
 		factory :admin_user do

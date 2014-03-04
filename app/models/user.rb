@@ -102,6 +102,17 @@ class User < ActiveRecord::Base
 	
 	alias :is_provider? :expert?
 	
+	# If this user is a provider, ensure that they have a published profile.
+	# Do nothing if this user is in the process of claiming a profile.
+	def load_profile
+		if is_provider? and !profile and !claiming_profile?
+			build_profile
+			profile.is_published = true # is_published cannot be mass assigned, so assign it this way.
+			profile.save
+		end
+		profile
+	end
+	
 	def has_persisted_profile?
 		!!profile.try(:persisted?)
 	end
