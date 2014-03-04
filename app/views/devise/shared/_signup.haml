@@ -42,13 +42,16 @@
 			= f.password_field :password_confirmation, autocomplete: 'off'
 
 		%div
-			= radio_button_tag :is_provider, '' , !is_provider
+			= f.radio_button :is_provider, ''
 			%label= parent_tag
 			%br
-			= radio_button_tag :is_provider, '1', is_provider
+			- if params[:is_provider].present?
+				= f.radio_button :is_provider, '1', checked: true
+			- else
+				= f.radio_button :is_provider, '1'
 			%label= provider_tag
 			%br
-			= radio_button_tag :is_provider, '1'
+			= f.radio_button :is_provider, '2'
 			%label= parent_provider_tag
 
 		.buttons

@@ -1,3 +1,9 @@
 class Users::SessionsController < Devise::SessionsController
-	layout 'interior_no_top_nav', only: [:new, :create]
+	layout :sessions_layout
+	
+	private
+	
+	def sessions_layout
+		['new', 'create'].include?(action_name) ? 'interior_no_top_nav' : 'interior'
+	end
 end

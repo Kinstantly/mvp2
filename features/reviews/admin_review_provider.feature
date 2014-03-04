@@ -1,3 +1,4 @@
+@javascript
 Feature: Administrator maintains parent reviews of providers
 	In order to maintain provider reviews done by parents
 	As an administrator

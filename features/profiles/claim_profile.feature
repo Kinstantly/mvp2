@@ -1,3 +1,4 @@
+@javascript
 Feature: Claim profile
 	In order to manage the profile created on my behalf
 	As a provider

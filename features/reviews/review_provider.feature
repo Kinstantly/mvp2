@@ -1,3 +1,4 @@
+@javascript
 Feature: Review provider
 	In order to help parents choose a good provider
 	As a parent

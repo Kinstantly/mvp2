@@ -7,7 +7,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	# User settings page should not be cached because it might display sensitive information.
 	after_filter :set_no_cache_response_headers, only: [:edit, :update]
 
-	layout 'interior_no_top_nav', only: [:new, :create]
+	layout :registrations_layout
 
 	protected
 
@@ -49,5 +49,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 	def after_inactive_sign_up_path_for(resource)
 	  	member_awaiting_confirmation_path
+	end
+	
+	def registrations_layout
+		['new', 'create'].include?(action_name) ? 'interior_no_top_nav' : 'interior'
 	end
 end
