@@ -241,11 +241,11 @@ end
 ### THEN ###
 Then /^I should be signed in$/ do
   page.should have_content "Sign out"
-  page.should_not have_content "Join us"
+  page.should_not have_content "Sign in"
 end
 
 Then /^I should be signed out$/ do
-  page.should have_content "Join us"
+  page.should have_content "Sign in"
   page.should_not have_content "Sign out"
 end
 
