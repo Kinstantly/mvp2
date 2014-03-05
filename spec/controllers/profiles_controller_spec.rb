@@ -157,32 +157,50 @@ describe ProfilesController do
 		end
 		
 		describe "GET 'view_my_profile'" do
-			before(:each) do
-				get :view_my_profile
-			end
-			
 			it "renders show" do
+				get :view_my_profile
 				response.should render_template('show')
 			end
 			
-			it "creates my profile if needed" do
-				assigns[:profile].should_not be_nil
-				assigns[:profile].user.should == me
+			context "ensures the provider has a profile" do
+				before(:each) do
+					me.profile.destroy
+					get :view_my_profile
+				end
+			
+				it "creates a profile if needed" do
+					assigns[:profile].should_not be_nil
+					assigns[:profile].user.should == me
+				end
+			
+				it "creates a published profile" do
+					assigns[:profile].should_not be_nil
+					assigns[:profile].is_published.should be_true
+				end
 			end
 		end
 		
 		describe "GET 'edit_my_profile'" do
-			before(:each) do
-				get :edit_my_profile
-			end
-			
 			it "renders edit" do
+				get :edit_my_profile
 				response.should render_template('edit')
 			end
 			
-			it "creates my profile if needed" do
-				assigns[:profile].should_not be_nil
-				assigns[:profile].user.should == me
+			context "ensures the provider has a profile" do
+				before(:each) do
+					me.profile.destroy
+					get :edit_my_profile
+				end
+			
+				it "creates a profile if needed" do
+					assigns[:profile].should_not be_nil
+					assigns[:profile].user.should == me
+				end
+			
+				it "creates a published profile" do
+					assigns[:profile].should_not be_nil
+					assigns[:profile].is_published.should be_true
+				end
 			end
 		end
 		

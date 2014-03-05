@@ -59,3 +59,8 @@ Feature: Sign up
 			And I open the email with subject "Confirmation instructions"
 			 	And I follow "confirm" in the email
 			Then I should receive no welcome email
+
+		Scenario: Admin receives notification when an expert registers
+			When I sign up with valid user data
+				And "profile_monitor@kinstantly.com" opens the email with subject /Provider.*has registered/
+			Then they should see /provider.*registered/ in the email body

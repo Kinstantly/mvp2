@@ -4,7 +4,7 @@ class ProfilesController < ApplicationController
 	
 	before_filter :authenticate_user!, except: [:index, :show, :show_claiming, :link_index, :search]
 	
-	before_filter :create_profile_if_needed, only: [:view_my_profile, :edit_my_profile]
+	before_filter :load_user_and_profile, only: [:view_my_profile, :edit_my_profile]
 	
 	# Side effect: loads @profiles or @profile as appropriate.
 	# e.g., for index action, @profiles is set to Profile.accessible_by(current_ability)
@@ -240,16 +240,11 @@ class ProfilesController < ApplicationController
 	
 	private
 	
-	def set_up_profile(method=:build_profile)
+	# Load the user and profile instance variables.
+	def load_user_and_profile
 		@user = current_user
-		if @user.is_provider?
-			@user.send method unless @user.profile
-			@profile = @user.profile
-		end
-	end
-	
-	def create_profile_if_needed
-		set_up_profile :create_profile
+		@user.load_profile
+		@profile = @user.profile
 	end
 	
 	def seo_keywords

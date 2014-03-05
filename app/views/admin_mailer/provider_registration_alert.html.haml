@@ -1,0 +1,20 @@
+%html
+	%body
+		- if @user
+			%p
+				This provider registered at
+				= @user.created_at.time.localtime('-08:00').strftime('%l:%M %p Pacific Time on %B %-d, %Y')
+			%p
+				email address:
+				= @user.email
+			%p
+				username:
+				= @user.username
+			- if @user.claiming_profile?
+				%p The provider is in the process of claiming a profile.
+				- if (profile = @user.profile_claiming)
+					%p= link_to 'Edit profile they are claiming', edit_plain_profile_url(profile)
+			- else
+				%p= link_to 'Edit provider profile', edit_plain_profile_url(@profile)
+		- else
+			%p Oops, can't find the provider's record.
