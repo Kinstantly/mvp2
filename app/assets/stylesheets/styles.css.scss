@@ -1858,6 +1858,13 @@ ul.links-list > li{
 		width: 400px;
 		height: 96px;
 		position: relative;
+
+		a{
+			display: block;
+			width:100%;
+			height:100%;
+			text-indent: -999em;
+		}
 	}
 
 	.ui-tabs{
@@ -1868,6 +1875,19 @@ ul.links-list > li{
 		box-shadow: 1px 6px 8px rgba(151,135,140,0.7)
 	}
 }
+.tagline{
+	font-size: 17px;
+	font-weight: bold;
+	position: absolute;
+	bottom: 2px;
+	right: 60px;
+	color: #333;
+}
+.alpha_note{
+	font-size: 18px;
+	padding: 20px 10px 0 10px;
+}
+
 .smaller_form{
 	.text_field input {
 		width: 300px;
@@ -1919,14 +1939,4 @@ ul.links-list > li{
 .mid-aligned{
 	text-align: center;
 }
-.tagline{
-	font-size: 17px;
-	font-weight: bold;
-	position: absolute;
-	bottom: 2px;
-	right: 60px;
-}
-.alpha_note{
-	font-size: 18px;
-	padding: 20px 10px 0 10px;
-}
+
