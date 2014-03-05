@@ -8,11 +8,10 @@
 	.column.left-rail
 	.column.main-column
 		.mid-aligned
-			%h2.highlight= company_name
-			%p.tagline= tagline
+			.logo-company-name
+				%p.tagline= tagline
 			-if is_private_alpha
 				%p.alpha_note= alpha_note
-			%br
 		#tabs.ui-tabs.ui-widget.ui-widget-content.ui-corner-all
 			%ul.ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-corner-all
 				%li

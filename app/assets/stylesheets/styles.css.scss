@@ -1849,13 +1849,23 @@ ul.links-list > li{
 	text-shadow: 1px 1px #aaa;
 }
 .logo-wallpaper{
-	background: #FFF url('home-img.jpg') -486px -50px no-repeat;
+	/*background: #FFF url('home-img.jpg') -486px -50px no-repeat;*/
 	min-height: 780px;
 	@include button-corner-style;
 
-	h2.highlight{
-		font-size:34px;
-		line-height:32px;
+	.logo-company-name{
+		background: url('logo-web-red-type-400x96.png') 50% 50% no-repeat;
+		width: 400px;
+		height: 96px;
+		position: relative;
+	}
+
+	.ui-tabs{
+		margin-top: 14px;
+		background: rgba(255,255,255,0.3);
+		-moz-box-shadow: 1px 6px 8px rgba(151,135,140,0.7);
+		-webkit-box-shadow: 1px 4px 8px rgba(151,135,140,0.7);
+		box-shadow: 1px 6px 8px rgba(151,135,140,0.7)
 	}
 }
 .smaller_form{
@@ -1910,10 +1920,13 @@ ul.links-list > li{
 	text-align: center;
 }
 .tagline{
-	font-size: 14px;
+	font-size: 17px;
 	font-weight: bold;
+	position: absolute;
+	bottom: 2px;
+	right: 60px;
 }
 .alpha_note{
 	font-size: 18px;
-	padding: 10px 10px 0 10px;
+	padding: 20px 10px 0 10px;
 }

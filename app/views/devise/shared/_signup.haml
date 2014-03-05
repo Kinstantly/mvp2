@@ -45,10 +45,7 @@
 			= f.radio_button :is_provider, ''
 			%label= parent_tag
 			%br
-			- if params[:is_provider].present?
-				= f.radio_button :is_provider, '1', checked: true
-			- else
-				= f.radio_button :is_provider, '1'
+			= f.radio_button :is_provider, '1', checked: is_provider
 			%label= provider_tag
 			%br
 			= f.radio_button :is_provider, '2'
