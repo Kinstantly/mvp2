@@ -1,17 +1,7 @@
-#content.inner_content_wrapper
-	#tabs.ui-tabs.ui-widget.ui-widget-content.ui-corner-all
-		%ul.ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-corner-all
-			%li
-				=link_to 'Join Kinstantly', "#sign_up"
-			%li
-				=link_to 'Already a member? Sign in', "#sign_in"
-		#sign_up.sign_up.generic_form
-			= render partial: "devise/shared/signup", locals:{ embedded_in: true }
-		#sign_in.sign_in.generic_form
-			= render partial: "devise/shared/signin", locals:{ embedded_in: true }
-	%br
-	= render "devise/shared/links"
-
-:javascript
-	$("#tabs").tabs();
-
+- @body_class = 'home'
+- content_for :head_before_js do
+	= stylesheet_link_tag 'home_page', media: 'screen, handheld, print'
+	/[if lt IE 9]
+		= stylesheet_link_tag 'home_page_ie8', media: 'screen, handheld, print'
+#content
+	= render "devise/shared/tabs"

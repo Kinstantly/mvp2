@@ -1,34 +1,59 @@
 - is_provider = params[:is_provider].present? || resource.is_provider?
 - claiming_profile = session[:claiming_profile].present?
 - whoami = is_provider ? (claiming_profile ? 'claiming_profile' : 'provider') : 'member'
-- email_tip = t("views.sign_up.email_tip")
-- username_tip = t("views.sign_up.username_tip")
+- email_tip = t "views.sign_up.email_tip"
+- username_tip = t "views.sign_up.username_tip"
+- parent_tag = t "views.sign_up.parent_tag"
+- provider_tag = t "views.sign_up.provider_tag"
+- parent_provider_tag = t "views.sign_up.parent_provider_tag"
 
 %h1= t "views.sign_up.#{whoami}_title" unless embedded_in
+.smaller_form
+	= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+		= devise_error_messages!
+		= hidden_field_tag :is_private_alpha, params[:is_private_alpha]
+		
+		.email.text_field
+			= f.label :email
+			%br
+			-#%p.tip.grey_text= email_tip
+			= f.email_field :email
+			%span.help_icon
+				.help_popover
+					%p.tip.grey_text= email_tip
 
-= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
-	= devise_error_messages!
+		.username.text_field
+			= f.label :username
+			%br
+			-#%p.tip.grey_text= username_tip
+			= f.text_field :username
+			%span.help_icon
+				.help_popover
+					%p.tip.grey_text= username_tip
 
-	= f.hidden_field :is_provider, value: (is_provider ? '1' : '')
+		.password.text_field
+			= f.label :password
+			%br
+			= f.password_field :password, autocomplete: 'off'
 
-	.email.text_field
-		= f.label :email
-		%p.tip.grey_text= email_tip
-		= f.email_field :email
+		.password_confirmation.text_field
+			= f.label :password_confirmation
+			%br
+			= f.password_field :password_confirmation, autocomplete: 'off'
 
-	.username.text_field
-		= f.label :username
-		%p.tip.grey_text= username_tip
-		= f.text_field :username
+		%div
+			= f.radio_button :is_provider, ''
+			%label= parent_tag
+			%br
+			- if params[:is_provider].present?
+				= f.radio_button :is_provider, '1', checked: true
+			- else
+				= f.radio_button :is_provider, '1'
+			%label= provider_tag
+			%br
+			= f.radio_button :is_provider, '2'
+			%label= parent_provider_tag
 
-	.password.text_field
-		= f.label :password
-		= f.password_field :password, autocomplete: 'off'
-
-	.password_confirmation.text_field
-		= f.label :password_confirmation
-		= f.password_field :password_confirmation, autocomplete: 'off'
-
-	.buttons
-		= f.submit t('views.sign_up.label'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'
+		.buttons
+			= f.submit t('views.sign_up.label'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'
 	

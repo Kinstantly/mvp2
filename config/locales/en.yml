@@ -12,6 +12,8 @@ en:
       phone: '(415) 250-2512'
     name: 'Kinstantly'
     tagline: "When parenting challenges can't wait."
+    short_tagline: "A better parents' network."
+    alpha_note: "We're launching soon! But if you'd like a sneak peek, sign up below."
   email_domain: 'kinstantly.com'
   meta:
     keywords: 'parenting children health expert'
@@ -403,8 +405,11 @@ en:
       provider_title: 'Create your profile'
       submit_disable: 'Signing up...'
       claiming_profile_title: 'Claim your profile'
-      email_tip: "(So we can contact you - we'll never give your email address out, and we won't display it publicly.)"
-      username_tip: "(This will display next to any reviews you write and must contain at least four characters - letters and numerals only, no spaces. Examples: Mama2000, DadEO)" 
+      email_tip: "So we can contact you - we'll never give your email address out, and we won't display it publicly."
+      username_tip: "This will display next to any reviews you write and must contain at least four characters - letters and numerals only, no spaces. Examples: Mama2000, DadEO" 
+      parent_tag: "I'm a parent (or planning a family)"
+      provider_tag: "I provide services to families"
+      parent_provider_tag: "I'm both a parent and a provider"
     specialty:
       name: 'Specialty'
       edit:

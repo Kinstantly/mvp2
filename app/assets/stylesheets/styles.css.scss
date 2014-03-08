@@ -239,6 +239,24 @@ $masthead_width: 920px;
 	-webkit-box-shadow: inset 1px 1px #d0c4c6;
 	box-shadow: inset 1px 1px #d0c4c6;
 }
+@mixin help_icon {
+	position: relative;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background: url('help_16.png') 0px 0px no-repeat;
+	
+	.help_popover {
+		display: none;
+		position: absolute;
+	}
+	&:hover {
+		cursor: pointer;
+		.help_popover {
+			display: block;
+		}
+	}
+}
 #search_providers {
 	float: left;
 	margin-left: 14px;
@@ -472,19 +490,13 @@ $profile_tab_padding: 4px;
 		margin-bottom: 4px;
 	}
 	.help_icon {
-		position: relative;
-		display: inline-block;
-		width: 16px;
-		height: 16px;
+		@include help_icon;
 		margin-left: -20px;
 		margin-bottom: -4px;
-		background: url('help_16.png') 0px 0px no-repeat;
 		+ .location {
 			display: inline;
 		}
 		.help_popover {
-			display: none;
-			position: absolute;
 			right: 16px;
 			bottom: 16px;
 			width: 188px;
@@ -494,12 +506,6 @@ $profile_tab_padding: 4px;
 			background-color: rgba(255, 255, 255, 0.75);
 			border: 1px solid black;
 			@include button-corner-style;
-		}
-	}
-	.help_icon:hover {
-		cursor: pointer;
-		.help_popover {
-			display: block;
 		}
 	}
 }
@@ -1436,7 +1442,7 @@ $generic_form_width: 418px;
 
 /* Contact */
 $railwidth: 160px;
-$masterwidth: 960px;
+$masterwidth: $railwidth * 6; /*960px*/
 
 .contact *{
 	font-family: $default_font_family;
@@ -1815,3 +1821,116 @@ ul.links-list > li{
 		font-weight: bold;
 	}
 }
+.two-column{
+	$maincontent-padding: 20px;
+	.left-rail{
+		width: 3.5 * $railwidth - 2 * $maincontent-padding;
+	}
+	.right-rail{
+		width: 0;
+	}
+	.main-column{
+		width: $masterwidth - 3.5 * $railwidth;
+		padding: ($maincontent-padding / 2) $maincontent-padding;
+	}
+	.main-column *{
+		max-width: $masterwidth - 3.5 * $railwidth;
+	}
+}
+.highlight{
+	color: #d05365;
+	font-weight: bold;
+	text-shadow: 1px 1px #aaa;
+}
+.logo-wallpaper{
+	/*background: #FFF url('home-img.jpg') -486px -50px no-repeat;*/
+	min-height: 780px;
+	@include button-corner-style;
+
+	.logo-company-name{
+		background: url('logo-web-red-type-400x96.png') 50% 50% no-repeat;
+		width: 400px;
+		height: 96px;
+		position: relative;
+
+		a{
+			display: block;
+			width:100%;
+			height:100%;
+			text-indent: -999em;
+		}
+	}
+
+	.ui-tabs{
+		margin-top: 14px;
+		background: rgba(255,255,255,0.3);
+		-moz-box-shadow: 1px 6px 8px rgba(151,135,140,0.7);
+		-webkit-box-shadow: 1px 4px 8px rgba(151,135,140,0.7);
+		box-shadow: 1px 6px 8px rgba(151,135,140,0.7)
+	}
+}
+.tagline{
+	font-size: 17px;
+	font-weight: bold;
+	position: absolute;
+	bottom: 2px;
+	right: 60px;
+	color: #333;
+}
+.alpha_note{
+	font-size: 18px;
+	padding: 20px 10px 0 10px;
+}
+
+.smaller_form{
+	.text_field input {
+		width: 300px;
+	}
+	.help_icon {
+		@include help_icon;
+		margin-bottom: -4px;
+		background-image: url('help_24.png');
+		width:24px;
+		height:24px;
+		
+		.help_popover {
+			right: -116px;
+			top: 35px;
+			width: 240px;
+			font-size: 13px;
+			padding: 7px;
+			color: #222;
+			background-color: rgba(255, 255, 255, 0.75);
+			border: #7F7F7F solid 1px;
+			@include button-corner-style;
+		}
+		.help_popover:after {
+			content: '';
+			position: absolute;
+			border-style: solid;
+			border-width: 0 15px 15px;
+			border-color: #FFFFFF transparent;
+			display: block;
+			width: 0;
+			z-index: 1;
+			top: -14px;
+			left: 112px;
+		}
+		.help_popover:before {
+			content: '';
+			position: absolute;
+			border-style: solid;
+			border-width: 0 15px 15px;
+			border-color: #7F7F7F transparent;
+			display: block;
+			width: 0;
+			z-index: 0;
+			top: -15px;
+			left: 112px;
+		}
+	}
+}
+.mid-aligned{
+	text-align: center;
+}
+

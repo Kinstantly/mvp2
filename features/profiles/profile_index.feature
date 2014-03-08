@@ -1,3 +1,4 @@
+@javascript
 Feature: View all profiles
 	In order to view all expert profiles
 	As a site administrator or profile editor

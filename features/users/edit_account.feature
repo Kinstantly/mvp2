@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit account
 	In order to maintain my account
 	As a provider or client

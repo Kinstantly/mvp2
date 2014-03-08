@@ -98,6 +98,11 @@ class User < ActiveRecord::Base
 		elsif value.blank? && !expert?
 			add_role :client
 		end
+		@is_provider = value
+	end
+	
+	def is_provider
+		@is_provider
 	end
 	
 	alias :is_provider? :expert?

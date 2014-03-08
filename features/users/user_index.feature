@@ -1,3 +1,4 @@
+@javascript
 Feature: View existing users
 	In order to view all users
 	As an administrator

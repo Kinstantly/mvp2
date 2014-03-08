@@ -33,7 +33,7 @@
 		.flash_messages
 			- if notice.present?
 				.notice= notice
-			- if alert.present?
+			- if alert.present? and !@suppress_header_alert
 				.alert= alert
 		= yield
 		%footer#footer
@@ -54,8 +54,9 @@
 		:coffeescript
 			# Autocomplete location field in search form.
 			bind_provider_search_location_autocomplete = () ->
-				if google?.maps?.places?.Autocomplete
-					my_vars.provider_search_location_autocomplete ||= new google.maps.places.Autocomplete(document.getElementById('provider_search_location'), {types: ['geocode']})
+				location_input = document.getElementById('provider_search_location')
+				if location_input and google?.maps?.places?.Autocomplete
+					my_vars.provider_search_location_autocomplete ||= new google.maps.places.Autocomplete(location_input, {types: ['geocode']})
 			
 			# Init google autocomplete, google map on profile and search pages if avalable
 			window.init_google_api = () ->

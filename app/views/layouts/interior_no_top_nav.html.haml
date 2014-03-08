@@ -1,0 +1,4 @@
+- @body_class ||= 'interior'
+- content_for :head_before_js do
+	= stylesheet_link_tag "interior", media: "screen, handheld, print"
+= render template: 'layouts/application'
