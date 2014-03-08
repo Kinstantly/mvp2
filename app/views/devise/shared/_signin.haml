@@ -2,6 +2,13 @@
 .sign_in.generic_form.smaller_form
 	%h1= t 'views.sign_in.label' unless embedded_in
 	= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+		- if alert.present? and params[:was_submitted].present?
+			- @suppress_header_alert = true
+			.errorExplanation
+				%ul
+					%li= alert
+		= hidden_field_tag :was_submitted, 't'
+		
 		= hidden_field_tag :is_private_alpha, params[:is_private_alpha]
 		
 		.email.text_field
