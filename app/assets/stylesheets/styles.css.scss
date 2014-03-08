@@ -1825,6 +1825,18 @@ ul.links-list > li{
 	$maincontent-padding: 20px;
 	.left-rail{
 		width: 3.5 * $railwidth - 2 * $maincontent-padding;
+		
+		@media only screen {
+			@media (max-width: 980px) {
+				width: 2.75 * $railwidth - 2 * $maincontent-padding;
+			}
+			@media (max-width: 854px) {
+				width: 2 * $railwidth - 2 * $maincontent-padding;
+			}
+			@media (max-width: 728px) {
+				width: $maincontent-padding;
+			}
+		}
 	}
 	.right-rail{
 		width: 0;
