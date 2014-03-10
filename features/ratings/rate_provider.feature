@@ -35,7 +35,6 @@ Feature: Rate provider
 		When I visit the published profile page
 			And I click on the 5 star
 			And I sign up as a non-expert with valid user data
-			And I wait a bit
 			And I open the email with subject "Confirmation instructions"
 			And I follow "confirm" in the email
 		Then my rating for this provider should be 5

@@ -10,14 +10,6 @@ Feature: Claim profile
 			And I invite "asleep@thewheel.wv.us" to claim the profile
 		Then "asleep@thewheel.wv.us" should have an email
 	
-	Scenario: Attach profile to my existing account
-		Given I exist as a user
-			And I am logged in
-			And I have no profile
-			And I have been invited to claim a profile
-		When I click on the profile claim link
-		Then the profile should be attached to my account
-	
 	Scenario: Unregistered provider must register to claim profile
 	  Given I am not logged in
 			And I have been invited to claim a profile

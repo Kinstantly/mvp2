@@ -35,6 +35,53 @@ end
 
 World(EmailHelpers)
 
+module EmailSpec::Helpers
+  # Sleep a bit before attempting to access an email.
+  # Sometimes there is a delay before the email is available.
+  def email_helper_delay
+    sleep 2
+  end
+
+  [:mailbox_for, :unread_emails_for, :open_email, :current_email, :current_email_attachments, :visit_in_email, :click_first_link_in_email].each do |method|
+    alias_method "#{method}_without_delay".to_sym, method
+  end
+  
+  def mailbox_for(address)
+    email_helper_delay
+    mailbox_for_without_delay address
+  end
+  
+  def unread_emails_for(address)
+    email_helper_delay
+    unread_emails_for_without_delay address
+  end
+  
+  def open_email(address, options={})
+    email_helper_delay
+    open_email_without_delay address, options
+  end
+  
+  def current_email(address=nil)
+    email_helper_delay
+    current_email_without_delay address
+  end
+  
+  def current_email_attachments(address=nil)
+    email_helper_delay
+    current_email_attachments_without_delay address
+  end
+  
+  def visit_in_email(link_text, address='')
+    email_helper_delay
+    visit_in_email_without_delay link_text, address
+  end
+  
+  def click_first_link_in_email(email=current_email)
+    email_helper_delay
+    click_first_link_in_email_without_delay email
+  end
+end
+
 #
 # Reset the e-mail queue within a scenario.
 # This is done automatically before each scenario.

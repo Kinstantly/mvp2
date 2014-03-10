@@ -571,7 +571,7 @@ When /^I click on the profile claim (confirm )?link$/ do |force|
 			click_link 'claim_profile_confirm_link'
 		end
 	else
-		visit claim_user_profile_url(token: token)
+		visit claim_user_profile_path(token: token)
 	end
 end
 
