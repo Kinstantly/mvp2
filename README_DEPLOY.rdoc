@@ -83,6 +83,8 @@ If you made a mistake and need to delete a tag:
 
 === To push to Heroku production
 
+Make sure you have the Heroku command line interface (CLI) installed.  See README_DEVEL_SETUP.rdoc.
+
 Issue these deployment commands:
 
  git checkout master
@@ -92,4 +94,13 @@ Issue these deployment commands:
  heroku ps:restart
  heroku maintenance:off
 
-Check the site and papertrail (https://papertrailapp.com/systems/get-answers-5555/events).
+Check the site.
+
+Also check the logs via papertrail:
+
+  heroku addons:open papertrail
+
+Or install the papertrail plugin and check the logs via the Heroku CLI.  See https://github.com/papertrail/papertrail-heroku-plugin
+
+  heroku pt:logs -t
+

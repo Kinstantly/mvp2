@@ -198,4 +198,32 @@ When done upgrading, run all the Cucumber and Rspec tests to make sure all is we
 
 == Performance testing
 
-See the {README_TESTING.rdoc}[rdoc-ref:README_TESTING] file.
+See the README_TESTING.rdoc file.
+
+== Heroku
+
+If you need to interact with Heroku, install the Heroku command line interface (CLI).  For more information, go to https://toolbelt.herokuapp.com
+
+=== Heroku CLI needs ruby 1.9+
+
+If you are upgrading the Heroku CLI on a Mac OS X version before 10.9, you may run into the following problem if you are using a default Ruby version less than 1.9.
+
+  > heroku
+  /Users/wtls/.heroku/client/lib/heroku/command/ps.rb:2:in `require': no such file to load -- json (LoadError)
+    from /Users/wtls/.heroku/client/lib/heroku/command/ps.rb:2
+    from /Users/wtls/.heroku/client/lib/heroku/command.rb:14:in `require'
+    from /Users/wtls/.heroku/client/lib/heroku/command.rb:14:in `load'
+    from /Users/wtls/.heroku/client/lib/heroku/command.rb:13:in `each'
+    from /Users/wtls/.heroku/client/lib/heroku/command.rb:13:in `load'
+    from /Users/wtls/.heroku/client/lib/heroku/cli.rb:27:in `start'
+    from /usr/local/heroku/bin/heroku~:25
+
+To fix this, make sure you're using at least Ruby 1.9.3.  If you've installed Ruby via RVM, then the following edit should fix the problem.
+
+  sed -e 's,/usr/bin/ruby,/usr/bin/env ruby,' -i '~' /usr/local/heroku/bin/heroku
+
+For more information see https://github.com/heroku/toolbelt/issues/83
+
+=== Production logs via Heroku CLI
+
+You can examine the production logs with a Heroku CLI plugin.  See https://github.com/papertrail/papertrail-heroku-plugin
