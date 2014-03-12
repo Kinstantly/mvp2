@@ -52,7 +52,7 @@ en:
       signed_up: 'Welcome! You have signed up successfully.'
       signed_up_but_inactive: 'You have signed up successfully. However, we could not sign you in because your account is not yet activated.'
       signed_up_but_locked: 'You have signed up successfully. However, we could not sign you in because your account is locked.'
-      signed_up_but_unconfirmed: "You're now signed up! To access your account, simply single-click on the confirmation link in the email we just sent to the address you gave us."
+      signed_up_but_unconfirmed: ''
       updated: 'You updated your account successfully.'
       update_needs_confirmation: 'We noticed that you changed your email address. To verify the change, please single-click on the confirmation link in the email we just sent to the address you gave us.'
     unlocks:

@@ -1898,6 +1898,9 @@ ul.links-list > li{
 	.text_field input {
 		width: 300px;
 	}
+	#error_explanation, .errorExplanation {
+		width: 328px;
+	}
 	.help_icon {
 		@include help_icon;
 		margin-bottom: -4px;

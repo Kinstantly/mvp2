@@ -2,8 +2,8 @@
 	%body
 		- if @user
 			%p
-				This provider registered at
-				= @user.created_at.time.localtime('-08:00').strftime('%l:%M %p Pacific Time on %B %-d, %Y')
+				This provider registered on
+				= mailer_display_time @user.created_at
 			%p
 				email address:
 				= @user.email

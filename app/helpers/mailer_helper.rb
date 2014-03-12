@@ -14,4 +14,8 @@ module MailerHelper
 			claim_user_profile_url(token: profile.invitation_token)
 		end
 	end
+
+	def mailer_display_time(time_with_zone)
+		time_with_zone.localtime.strftime('%a, %b %d, %Y %l:%M %p %Z')
+	end
 end

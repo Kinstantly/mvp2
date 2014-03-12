@@ -1,4 +1,6 @@
 class AdminMailer < ActionMailer::Base
+	helper :mailer # Access to MailerHelper methods in this mailer's views.
+	
 	default from: MAILER_DEFAULT_FROM,
 		to: PROFILE_MODERATOR_EMAIL,
 		subject: 'Provider Profile updated on Kinstantly'
