@@ -12,7 +12,12 @@ Mvp2::Application.routes.draw do
 	match 'show_all_categories' => 'home#show_all_categories'
 	
 	# User model on which Devise authentication is based.
-	devise_for :users, controllers: { registrations: 'users/registrations', sessions: 'users/sessions' }
+	devise_for :users, controllers: { 
+		registrations: 'users/registrations', 
+		sessions: 'users/sessions', 
+		confirmations: 'users/confirmations' 
+	}
+	
 	# Alternate Devise routes for special uses.
 	devise_scope :user do
 		get '/provider/sign_up', to: 'users/registrations#new', is_provider: true
@@ -31,8 +36,11 @@ Mvp2::Application.routes.draw do
 	match 'claim_profile/:token' => 'users#claim_profile', as: :claim_user_profile
 	match 'claim_profile/:token/confirm' => 'users#force_claim_profile', as: :force_claim_user_profile
 	# Except admin can see all profiles.
-	match 'users' => 'users#index'
+	#match 'users' => 'users#index'
 	
+	# Admin can list all and edit/update individual profiles.
+	resources :users, only: [:index, :edit, :update]
+
 	resources :profiles do
 		member do
 			get 'new_invitation'

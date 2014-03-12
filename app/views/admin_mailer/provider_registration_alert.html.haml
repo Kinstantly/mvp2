@@ -16,5 +16,6 @@
 					%p= link_to 'Edit profile they are claiming', edit_plain_profile_url(profile)
 			- else
 				%p= link_to 'Edit provider profile', edit_plain_profile_url(@profile)
+			%p= link_to 'Edit user profile', edit_user_path(@user)
 		- else
 			%p Oops, can't find the provider's record.

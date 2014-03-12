@@ -1,0 +1,16 @@
+- user_displayed = User.find(params[:id])
+- display_name = user_displayed.is_provider? ? profile_display_name(user_displayed.profile) : user_displayed.username
+.edit_profile
+	%h3#headline= display_name
+	%div
+		Confirmation instructions sent: 
+		= user_displayed.confirmation_sent_at
+	%div
+		Confirmed: 
+		- if user_displayed.confirmed?
+			= user_displayed.confirmed_at
+		- else
+			not confirmed yet
+			= form_for user_displayed, url: confirmation_path(user_displayed), html: { method: :post, style: 'display:inline-block' } do |f|
+				= f.hidden_field :email
+				.buttons= f.submit t('devise.confirmations.new_confirmation_submit'), disable_with: t('devise.confirmations.new_confirmation_submit_disable'), class: 'default auto_width'
