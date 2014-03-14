@@ -1,16 +1,23 @@
-- user_displayed = User.find(params[:id])
-- display_name = user_displayed.is_provider? ? profile_display_name(user_displayed.profile) : user_displayed.username
-.edit_profile
-	%h3#headline= display_name
-	%div
-		Confirmation instructions sent: 
-		= user_displayed.confirmation_sent_at
-	%div
+- display_name = @user.is_provider? ? profile_display_name(@user.profile) : @user.username
+.edit
+	%h1.headline
+		Edit account
+	%lable.strong.cell
+		Name:
+	%span.cell= display_name
+	%br
+	%lable.strong.cell
+		Confirmation instructions sent:
+	%span.cell
+		= @user.confirmation_sent_at
+	%br
+	%lable.strong.cell
 		Confirmed: 
-		- if user_displayed.confirmed?
-			= user_displayed.confirmed_at
+	%span.col-2
+		- if @user.confirmed?
+			= @user.confirmed_at
 		- else
 			not confirmed yet
-			= form_for user_displayed, url: confirmation_path(user_displayed), html: { method: :post, style: 'display:inline-block' } do |f|
+			= form_for @user, url: confirmation_path(@user), html: { method: :post, style: 'display:inline-block' } do |f|
 				= f.hidden_field :email
-				.buttons= f.submit t('devise.confirmations.new_confirmation_submit'), disable_with: t('devise.confirmations.new_confirmation_submit_disable'), class: 'default auto_width'
+				= f.submit t('devise.confirmations.create_confirmation_submit'), disable_with: t('devise.confirmations.create_confirmation_submit_disable'), class: 'default auto_width'

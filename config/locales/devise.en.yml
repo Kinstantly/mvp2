@@ -17,6 +17,8 @@ en:
       new_confirmation_submit: 'Resend confirmation instructions'
       new_confirmation_submit_disable: 'Resending instructions...'
       new_confirmation_title: 'Resend confirmation instructions'
+      create_confirmation_submit: 'Send confirmation instructions'
+      create_confirmation_submit_disable: 'Sending instructions...'
       send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
       admin_sent_instructions: 'An email with instructions has been successfully sent.'
       send_paranoid_instructions: 'If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes.'
