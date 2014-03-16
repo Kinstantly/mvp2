@@ -27,6 +27,8 @@ class User < ActiveRecord::Base
 	
 	serialize :roles, Array
 	
+	belongs_to :admin_confirmation_sent_by, class_name: 'User'
+	
 	# Define minimum and/or maximum lengths of string and text attributes in a publicly accessible way.
 	# This allows them to be used at the view layer for character counts in input and textarea tags.
 	MIN_LENGTHS = {
@@ -133,8 +135,8 @@ class User < ActiveRecord::Base
 	end
 	
 	# If we are in the process of claiming a profile, returns that profile.
-	def profile_claiming
-		@profile_claiming ||= claiming_profile? && Profile.find_by_invitation_token(@claim_token.to_s) || nil
+	def profile_to_claim
+		@profile_to_claim ||= claiming_profile? && Profile.find_claimable(@claim_token.to_s) || nil
 	end
 	
 	# Attempt to attach the profile specified by the token.  The profile must not already be claimed.
@@ -142,13 +144,30 @@ class User < ActiveRecord::Base
 	# If we are forcing, then any existing profile will be replaced.
 	def claim_profile(token, force=false)
 		is_provider? && (profile.nil? || profile.new_record? || force) && token.present? &&
-			(profile_to_claim = Profile.find_by_invitation_token(token.to_s)) && !profile_to_claim.claimed? &&
+			(profile_to_claim = Profile.find_claimable(token.to_s)) &&
 			(self.profile = profile_to_claim) && save
+	end
+	
+	# The Devise message to be shown if this account is inactive.
+	# If in private alpha, not confirmed yet, and we haven't sent the confirmation email yet, then their approval is pending.
+	def inactive_message
+		Rails.configuration.running_as_private_site &&
+			!confirmed? && admin_confirmation_sent_at.nil? ? :confirmation_not_sent : super
 	end
 	
 	# Generate a password that is not too long.
 	def self.generate_password
 		generate_token('encrypted_password').slice(0, MAX_LENGTHS[:password])
+	end
+	
+	def self.send_confirmation_instructions(attributes={})
+		user = super
+		if attributes[:admin_confirmation_sent_by_id] && user.try(:persisted?)
+			user.admin_confirmation_sent_by_id = attributes[:admin_confirmation_sent_by_id]
+			user.admin_confirmation_sent_at = Time.now.utc
+			user.save!
+		end
+		user
 	end
 	
 	protected

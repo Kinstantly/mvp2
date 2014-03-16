@@ -151,8 +151,26 @@ describe User do
 				it "should declare that this user is in the process of claiming their profile" do
 					@ralph.claiming_profile! @token
 					@ralph.should be_claiming_profile
-					@ralph.profile_claiming.should == @profile_to_claim
+					@ralph.profile_to_claim.should == @profile_to_claim
 				end
+			end
+		end
+	end
+	
+	context "unconfirmed provider" do
+		let(:provider) { FactoryGirl.create :provider, require_confirmation: true }
+		
+		context "administrator sending the registration confirmation email" do
+			let(:admin) { FactoryGirl.create :admin_user }
+			
+			it "should track who triggered the email" do
+				User.send_confirmation_instructions email: provider.email, admin_confirmation_sent_by_id: admin.id
+				provider.reload.admin_confirmation_sent_by.should == admin
+			end
+			
+			it "should track when admin sent the email" do
+				User.send_confirmation_instructions email: provider.email, admin_confirmation_sent_by_id: admin.id
+				provider.reload.admin_confirmation_sent_at.to_f.should be_within(10).of(Time.now.utc.to_f)
 			end
 		end
 	end

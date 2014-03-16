@@ -3,6 +3,8 @@
 		%h1= t 'devise.confirmations.new_confirmation_title'
 		= form_for resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post } do |f|
 			= devise_error_messages!
+			- if current_user.try :admin?
+				= f.hidden_field :admin_confirmation_sent_by_id, value: current_user.id
 			.email.text_field
 				= f.label :email
 				= f.email_field :email

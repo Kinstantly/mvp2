@@ -25,6 +25,7 @@ en:
       already_authenticated: 'You are already signed in.'
       unauthenticated: 'Sorry, that page was not found. You might need to sign in.'
       unconfirmed: 'You have to confirm your account before continuing.'
+      confirmation_not_sent: "We are reviewing your request to participate. If everything looks fine, we'll send you an email with login information."
       locked: 'Your account is locked.'
       invalid: 'Invalid email or password.'
       invalid_token: 'Invalid authentication token.'
@@ -53,6 +54,7 @@ en:
       signed_up_but_inactive: 'You have signed up successfully. However, we could not sign you in because your account is not yet activated.'
       signed_up_but_locked: 'You have signed up successfully. However, we could not sign you in because your account is locked.'
       signed_up_but_unconfirmed: ''
+      signed_up_but_confirmation_not_sent: ''
       updated: 'You updated your account successfully.'
       update_needs_confirmation: 'We noticed that you changed your email address. To verify the change, please single-click on the confirmation link in the email we just sent to the address you gave us.'
     unlocks:

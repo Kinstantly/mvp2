@@ -13,8 +13,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 	# Override build_resource method in superclass.
 	# This override allows us to pre-build the resource before the create action is executed.
+	# It also allows us to configure the resource before it is used.
 	def build_resource(hash=nil)
 		super unless resource
+		
+		# During private alpha, registrants are screened. Don't send them the confirmation link until they've pass screening.
+		# The exception is someone we've invited to claim their profile.
+		resource.skip_confirmation_notification! if Rails.configuration.running_as_private_site && !resource.profile_to_claim
 	end
 
 	private

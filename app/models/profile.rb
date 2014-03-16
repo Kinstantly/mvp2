@@ -277,6 +277,12 @@ class Profile < ActiveRecord::Base
 		{latitude: latlon[0], longitude: latlon[1]}
 	end
 	
+	# Return the profile that can be claimed using the given token.
+	# Returns nil if the profile cannot be found or has been claimed already.
+	def self.find_claimable(token)
+		token.present? && (profile = find_by_invitation_token token) && !profile.claimed? ? profile : nil
+	end
+	
 	def custom_service_names
 		remove_blanks_and_strip @custom_service_names
 	end

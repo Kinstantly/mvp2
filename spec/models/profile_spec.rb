@@ -622,4 +622,21 @@ describe Profile do
 		@profile.should have(:no).errors_on(:email)
 		@profile.email.should == email
 	end
+	
+	context "claimable profile" do
+		it "finds a claimable profile by its claim token" do
+			profile = FactoryGirl.create :claimable_profile
+			Profile.find_claimable(profile.invitation_token).should == profile
+		end
+		
+		it "does not return a profile with no claim token" do
+			profile = FactoryGirl.create :unclaimable_profile
+			Profile.find_claimable(profile.invitation_token).should be_nil
+		end
+		
+		it "does not return a profile that has been claimed" do
+			profile = FactoryGirl.create :claimed_profile
+			Profile.find_claimable(profile.invitation_token).should be_nil
+		end
+	end
 end
