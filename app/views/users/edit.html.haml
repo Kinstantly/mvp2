@@ -1,15 +1,22 @@
-- display_name = @user.is_provider? ? profile_display_name(@user.profile) : @user.username
 .edit
 	%h1.headline
 		Edit account
 	%lable.strong.cell
-		Name:
-	%span.cell= display_name
+		Username:
+	%span.cell= @user.username
+	%br
+	-if @user.is_provider?
+		%lable.strong.cell
+			Name:
+		%span.cell= profile_display_name(@user.profile)
+		%br
+	%lable.strong.cell
+		Email:
+	%span.cell= @user.email
 	%br
 	%lable.strong.cell
 		Confirmation instructions sent:
-	%span.cell
-		= @user.confirmation_sent_at
+	%span.cell= @user.confirmation_sent_at
 	%br
 	%lable.strong.cell
 		Confirmed: 
