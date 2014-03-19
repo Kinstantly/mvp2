@@ -616,9 +616,9 @@ When /^I click on the link to see all locations$/ do
 end
 
 When /^I (?:should )?see step "(one|two|three)" of "(.*?)" formlet$/ do |step, formlet|
-	sleep 8 # Wait for possible fade-out to finish before checking state of CSS values.
 	within("##{formlet_id formlet}") do
-		page.has_css?("li.step_#{step}:not(.aria-hidden)", :visible => true).should be_true
+		# page.has_css?("li.step_#{step}:not(.aria-hidden)", :visible => true).should be_true
+		page.has_css?("li.step_#{step}", :visible => true).should be_true
 		case step
 		when 'one'
 			page.has_no_css?('li.step_two', :visible => true).should be_true

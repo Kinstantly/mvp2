@@ -36,6 +36,13 @@ Spork.prefork do
   # It is significantly faster than drivers like Selenium since it does not load an entire browser.
   Capybara.javascript_driver = :webkit
 
+  # http://rubydoc.info/github/jnicklas/capybara/#Asynchronous_JavaScript__Ajax_and_friends_
+  # When working with asynchronous JavaScript, you might come across situations where
+  # you are attempting to interact with an element which is not yet present on the page.
+  # Capybara automatically deals with this by waiting for elements to appear on the page.
+  # You can adjust how long this period is (the default is 2 seconds):
+  Capybara.default_wait_time = 5
+
   # By default, any exception happening in your Rails application will bubble up
   # to Cucumber so that your scenario will fail. This is a different from how 
   # your application behaves in the production environment, where an error page will 
