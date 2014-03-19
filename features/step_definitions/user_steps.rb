@@ -238,6 +238,19 @@ When /^I save the account settings$/ do
 	click_button 'Save'
 end
 
+When /^I visit the edit account page for (?:a|an) (confirmed|unconfirmed) user$/ do |user_type|
+  create_user_2
+  if user_type == 'unconfirmed'
+    @user_2.confirmed_at = nil
+    @user_2.save
+  end
+  visit edit_user_path @user_2
+end
+
+When /^I click on an edit account link$/ do
+  click_link @user_2.email
+end
+
 ### THEN ###
 Then /^I should be signed in$/ do
   page.should have_content "Sign out"
@@ -328,3 +341,20 @@ Then /^I should (?:be|land) on the (provider|member) (?:registration|sign[- ]up)
 	page.current_path.should == path
 end
 
+Then /^I should (not )?see confirmation instructions form$/ do |no|
+  if no.present?
+    page.has_button?('Send confirmation instructions').should_not be_true    
+    page.has_css?("input[value='#{@user_2[:email]}']").should_not be_true
+  else
+    page.has_button?('Send confirmation instructions').should be_true
+    page.has_css?("input[value='#{@user_2[:email]}']").should be_true
+  end
+end
+
+Then /^I should (not )?land on edit account page$/ do |no|
+  if no.present?
+    current_path.should_not eq edit_user_path @user_2
+  else
+    current_path.should eq edit_user_path @user_2
+  end
+end

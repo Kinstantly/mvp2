@@ -110,4 +110,35 @@ describe UsersController do
 			end
 		end
 	end
+
+	describe "GET users edit" do
+		context "as expert_user attempting to access an edit user view" do
+			before(:each) do
+				@user = FactoryGirl.create(:client_user)
+				get :edit, id: @user.id
+			end
+			it "does not render the view" do
+				response.should_not render_template('edit')
+			end
+		end
+		
+		context "as admin user" do
+			before(:each) do
+				sign_out @kelly
+				@bossy = FactoryGirl.create(:admin_user, email: 'bossy@example.com')
+				@user = FactoryGirl.create(:client_user)
+				sign_in @bossy
+				get :edit, id: @user.id
+			end
+		
+			it "renders the view" do
+				response.should render_template('edit')
+			end
+		
+			it "assigns @user" do
+				assigns[:user].should == User.find(@user.id)
+			end
+		end
+	end
+
 end

@@ -2,7 +2,7 @@ class UsersController < ApplicationController
 	layout 'plain'
 	
 	before_filter :authenticate_user!
-	before_filter :set_up_user, except: [:index, :claim_profile, :force_claim_profile]
+	before_filter :set_up_user, only: [:view_profile, :update_profile, :edit_profile]
 	load_and_authorize_resource
 	before_filter :process_profile_admin_params, only: [:update_profile]
 	

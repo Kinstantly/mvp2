@@ -12,10 +12,12 @@
 					%th Sign-in count
 					%th Created
 					%th Updated
+					%th Confirmation sent
+					%th Confirmed
 			%tbody
 				- @users.sort_by{|u| u.email.downcase}.each do |u|
 					%tr
-						%td= u.email
+						%td= link_to u.email, edit_user_path(u)
 						%td= u.is_provider? ? profile_display_name(u.profile) : u.username
 						%td= user_list_profile_link u.profile if u.is_provider?
 						%td= u.roles.join(', ')
@@ -24,3 +26,5 @@
 						%td= u.sign_in_count
 						%td= u.created_at
 						%td= u.updated_at
+						%td= u.confirmation_sent_at
+						%td= u.confirmed_at
