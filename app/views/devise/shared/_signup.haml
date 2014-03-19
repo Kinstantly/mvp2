@@ -40,19 +40,22 @@
 			= f.label :password_confirmation
 			%br
 			= f.password_field :password_confirmation, autocomplete: 'off'
+		- if claiming_profile
+			= f.hidden_field :is_provider, :value => '1'
+		- else
 
-		%div
-			= f.radio_button :is_provider, ''
-			%label= parent_tag
-			%br
-			- if params[:is_provider].present?
-				= f.radio_button :is_provider, '1', checked: true
-			- else
-				= f.radio_button :is_provider, '1'
-			%label= provider_tag
-			%br
-			= f.radio_button :is_provider, '2'
-			%label= parent_provider_tag
+			%div
+				= f.radio_button :is_provider, ''
+				%label= parent_tag
+				%br
+				- if params[:is_provider].present?
+					= f.radio_button :is_provider, '1', checked: true
+				- else
+					= f.radio_button :is_provider, '1'
+				%label= provider_tag
+				%br
+				= f.radio_button :is_provider, '2'
+				%label= parent_provider_tag
 
 		.buttons
 			= f.submit t('views.sign_up.label'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'
