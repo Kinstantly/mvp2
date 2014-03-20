@@ -1,5 +1,8 @@
 .profile_index
 	.profile_list{align: 'center'}
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: User }
+			= paginate @users
 		%table
 			%thead
 				%tr
@@ -15,7 +18,7 @@
 					%th Confirmation sent
 					%th Confirmed
 			%tbody
-				- @users.sort_by{|u| u.email.downcase}.each do |u|
+				- @users.each do |u|
 					%tr
 						%td= link_to u.email, edit_user_path(u)
 						%td= u.is_provider? ? profile_display_name(u.profile) : u.username
@@ -26,5 +29,8 @@
 						%td= u.sign_in_count
 						%td= u.created_at
 						%td= u.updated_at
-						%td= u.confirmation_sent_at
+						%td= user_confirmation_sent_at u
 						%td= u.confirmed_at
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: User }
+			= paginate @users

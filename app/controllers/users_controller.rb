@@ -10,7 +10,15 @@ class UsersController < ApplicationController
 	before_filter :require_location_in_profile, only: [:edit_profile]
 	
 	def index
-		@users = User.all
+		case params[:order_by]
+		when 'recent'
+			@users = @users.order_by_descending_id
+		when 'email'
+			@users = @users.order_by_email
+		else
+			@users = @users.order_by_id
+		end
+		@users = @users.page(params[:page]).per(params[:per_page])
 	end
 	
 	def update_profile

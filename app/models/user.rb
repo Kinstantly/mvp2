@@ -49,6 +49,14 @@ class User < ActiveRecord::Base
 	validates :username, uniqueness: { case_sensitive: false }, if: 'username.present?'
 	validates :phone, phone_number: true, allow_blank: true
 	
+	scope :order_by_id, order('id')
+	scope :order_by_descending_id, order('id DESC')
+	scope :order_by_email, order('lower(email)')
+	
+	def self.order_by_options
+		{ recent: 'recent', email: 'email' }
+	end
+	
 	# Solr search configuration.
 	# searchable do
 	# 	text :email, :display_phone

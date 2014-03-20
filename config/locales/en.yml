@@ -466,6 +466,7 @@ en:
     good_to_know_placeholder: 'Share the inside scoop that helped you with this provider. Example: "Open two Saturdays a month" or "Office is on 2nd floor - no elevators!"'
 
   pagination:
+    order_by: 'order by'
     per_page_button: 'per page'
   contact:
     connect_with: 'Connect with %{name}'

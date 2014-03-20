@@ -1,6 +1,9 @@
 - button_text ||= t 'pagination.per_page_button'
 = form_tag request.path.sub(/\/page\/\d+/, ''), method: :get, class: 'per_page' do
 	- request.query_parameters.each_key do |name|
-		= hidden_field_tag name, request.query_parameters[name] unless [:utf8, :commit, :page, :per_page].include? name.to_sym
+		= hidden_field_tag name, request.query_parameters[name] unless [:utf8, :commit, :page, :per_page, :order_by].include? name.to_sym
+	- if (order_by_options = record_type.order_by_options).present?
+		= select_tag :order_by, select_option_tags(order_by_options, params[:order_by]), prompt: t('pagination.order_by'), class: 'select_index_order_by'
+		&nbsp; | &nbsp;
 	= text_field_tag :per_page, (params[:per_page].presence || record_type.default_per_page), size: 4
 	= submit_tag button_text

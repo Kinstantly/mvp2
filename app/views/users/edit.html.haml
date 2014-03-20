@@ -1,24 +1,24 @@
 .edit
 	%h1.headline
 		Edit account
-	%lable.strong.cell
+	%label.strong.cell
 		Username:
 	%span.cell= @user.username
 	%br
 	-if @user.is_provider?
-		%lable.strong.cell
+		%label.strong.cell
 			Name:
 		%span.cell= profile_display_name(@user.profile)
 		%br
-	%lable.strong.cell
+	%label.strong.cell
 		Email:
 	%span.cell= @user.email
 	%br
-	%lable.strong.cell
+	%label.strong.cell
 		Confirmation instructions sent:
-	%span.cell= @user.confirmation_sent_at
+	%span.cell= user_confirmation_sent_at @user
 	%br
-	%lable.strong.cell
+	%label.strong.cell
 		Confirmed: 
 	%span.col-2
 		- if @user.confirmed?
@@ -26,5 +26,6 @@
 		- else
 			not confirmed yet
 			= form_for @user, url: confirmation_path(@user), html: { method: :post, style: 'display:inline-block' } do |f|
+				= f.hidden_field :admin_confirmation_sent_by_id, value: current_user.try(:id)
 				= f.hidden_field :email
 				= f.submit t('devise.confirmations.create_confirmation_submit'), disable_with: t('devise.confirmations.create_confirmation_submit_disable'), class: 'default auto_width'

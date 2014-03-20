@@ -190,4 +190,10 @@ module ApplicationHelper
 		count == 0 ? t('none', scope: scope) : t('how_many', scope: scope, count: count)
 	end
 	
+	def select_option_tags(options, selected=nil)
+		options.inject('') do |option_string, option|
+			"#{option_string}<option value=\"#{option[0]}\"#{' selected=\"selected\"' if option[0].try(:to_s) == selected.try(:to_s)}>#{option[1]}</option>"
+		end.html_safe
+	end
+	
 end

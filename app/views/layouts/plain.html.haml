@@ -38,3 +38,8 @@
 	# Ensure rating stars render properly after everything is loaded.
 	window.onload = ->
 		my_vars.f.rating_score_reset() if my_vars.f.rating_score_reset
+	
+	# Ordering on index pages.
+	$('.select_index_order_by').change (e) ->
+		$(this).parents('form.per_page').submit()
+		false
