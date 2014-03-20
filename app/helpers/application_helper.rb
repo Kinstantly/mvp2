@@ -191,8 +191,10 @@ module ApplicationHelper
 	end
 	
 	def select_option_tags(options, selected=nil)
+		selected = selected.try(:to_s).try(:html_escape)
 		options.inject('') do |option_string, option|
-			"#{option_string}<option value=\"#{option[0]}\"#{' selected=\"selected\"' if option[0].try(:to_s) == selected.try(:to_s)}>#{option[1]}</option>"
+			value, name = option[0].try(:to_s).try(:html_escape), option[1].try(:to_s).try(:html_escape)
+			"#{option_string}<option value=\"#{value}\"#{' selected="selected"' if value == selected}>#{name}</option>"
 		end.html_safe
 	end
 	
