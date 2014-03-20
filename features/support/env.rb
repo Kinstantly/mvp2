@@ -93,6 +93,14 @@ Spork.prefork do
     Sunspot.remove_all!
   end
 
+  # Scenarios for describing behavior while running as a private site.
+  Around('@private_site') do |scenario, block|
+    previous_state = Rails.configuration.running_as_private_site
+    Rails.configuration.running_as_private_site = true
+    block.call
+    Rails.configuration.running_as_private_site = previous_state
+  end
+
   # End of Spork.prefork
 end
 

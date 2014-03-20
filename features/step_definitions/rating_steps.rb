@@ -1,5 +1,11 @@
 # Tip: to view the page, use: save_and_open_page
 
+### GIVEN ###
+
+Given /^a published profile with no ratings exists$/ do
+	create_published_profile ratings: []
+end
+
 ### WHEN ###
 
 When /^I click on the (\d+) star$/ do |number|
@@ -16,4 +22,8 @@ end
 
 Then /^my rating for this provider should be (\d+)$/ do |rating|
 	find('.rate_provider_form form input[checked="checked"]').value.should == rating
+end
+
+Then /^the published profile should have no ratings$/ do
+	find_published_profile.should have(:no).ratings
 end
