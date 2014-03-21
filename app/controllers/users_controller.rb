@@ -10,6 +10,7 @@ class UsersController < ApplicationController
 	before_filter :require_location_in_profile, only: [:edit_profile]
 	
 	def index
+		@order_by_options = { recent: 'recent', email: 'email' }
 		case params[:order_by]
 		when 'recent'
 			@users = @users.order_by_descending_id

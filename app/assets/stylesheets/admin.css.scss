@@ -124,6 +124,11 @@
 	.per_page {
 		float: left;
 	}
+	.select_index_order_by {
+		option[value=""] {
+			font-style: italic;
+		}
+	}
 }
 .pagination_nav + * {
 	clear: left;

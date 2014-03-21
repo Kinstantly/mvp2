@@ -85,10 +85,6 @@ class ActiveRecord::Base
 		update_column counter_cache_column, send(association).count
 	end
 	
-	def self.order_by_options
-		nil
-	end
-	
 	private
 	
 	def remove_blanks(strings)

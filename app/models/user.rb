@@ -53,10 +53,6 @@ class User < ActiveRecord::Base
 	scope :order_by_descending_id, order('id DESC')
 	scope :order_by_email, order('lower(email)')
 	
-	def self.order_by_options
-		{ recent: 'recent', email: 'email' }
-	end
-	
 	# Solr search configuration.
 	# searchable do
 	# 	text :email, :display_phone
