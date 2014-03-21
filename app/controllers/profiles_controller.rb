@@ -39,8 +39,17 @@ class ProfilesController < ApplicationController
 	autocomplete :profile, :lead_generator, scopes: [:unique_by_lead_generator], full_model: true
 	
 	def index
+		@order_by_options = { recent: 'recent', last_name: 'last name' }
 		@profiles = @profiles.with_admin_notes if can?(:manage, Profile) && params[:with_admin_notes].present?
-		@profiles = @profiles.order_by_last_name.page(params[:page]).per(params[:per_page])
+		case params[:order_by]
+		when 'recent'
+			@profiles = @profiles.order_by_descending_id
+		when 'last_name'
+			@profiles = @profiles.order_by_last_name
+		else
+			@profiles = @profiles.order_by_id
+		end
+		@profiles = @profiles.page(params[:page]).per(params[:per_page])
 		render layout: 'plain'
 	end
 	
