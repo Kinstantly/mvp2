@@ -1,30 +1,30 @@
 = "Hi #{@profile.first_name.presence || 'there'},"
 %br
 %br
-Have you ever thought there has to be a better way for parents and providers like you to find one another?
+I'm Jim Scott, the founder and CEO of Kinstantly &ndash; a new free parenting site that makes it easier for families to find experts like you, learn about your services, and connect with you in ways that are more convenient for them <i>and</i> you.
 %br
 %br
-After talking to hundreds of parents and providers across the country, we heard that wish expressed over and over&mdash;and we've spent the last 10 months building a solution that we hope you'll love.
-%br
-%br
-We call it Kinstantly. It offers a better, more convenient way for potential clients to find you, learn about you and your services, and&mdash;soon (if you want)&mdash;self-schedule time with you.
-%br
-%br
-To make things as simple as possible, we've already created a profile for you. Take a look:
-= link_to 'My profile', mailer_show_profile_to_claim_url(@profile)
-%br
-%br
-And, of course, when you're ready, it's easy to make any changes you'd like. To get started, <i>single-click</i> here:
+As a simple first step, we created a temporary profile for you that highlights the information parents tell us they want. Take a look and make any changes you'd like by clicking here: 
 = link_to 'Claim my profile', claim_user_profile_url(token: @profile.invitation_token)
-(Note: You'll first be taken to a sign-in page; it will just take a few seconds to enter your name and email address&mdash;and yes, it's free.)
+(Note: To protect your security, you'll first be taken to a sign-in page.)
 %br
 %br
-Please don't hesitate to email me directly (see link below) if you have any questions, concerns, or just want to talk.
+In the meantime, here's a bit about me: I'm the former Global VP of Editorial of BabyCenter, the largest parenting site in the world, with more than 20 million visitors a month &ndash; and a co-founder of Caring.com, the leading eldercare site in the country. You can learn more about the Kinstantly team and mission by visiting 
+= link_to 'About Us', about_url
+\.
+%br
+%br
+We want to make Kinstantly as perfect for you as we can, so please let me know If you have any questions or suggestions. Just hit reply or shoot me an email to the address below.
+%br
+%br
+Thanks so much,
 %br
 %br
 Jim Scott
 %br
 Founder and CEO
+%br
+= link_to t('company.name'), root_url
 %br
 = mail_to 'jscott@kinstantly.com'
 -#	See Our Story

@@ -2,23 +2,29 @@
 = "Hi#{' '+name if name.present?},"
 %br
 %br
-Welcome to Kinstantly: a fast, simple way to list your services, so the clients you want can find you.
+Thanks for joining Kinstantly. You're all set to update your 
+= link_to 'free profile', edit_my_profile_url
+whenever you want, as often as you want. By the way, parents tell us these are the things they look for most:
 %br
 %br
-%strong Key benefits:
 %ul
-	%li It takes just minutes to create your listing &mdash; get discovered right away
-	%li You can highlight your most important information on just one page &mdash; spend less time answering clients' initial questions
-	%li You can change or update your information easily, whenever you want &mdash; keep clients up to date if you change your hours or location
-	%li It's free &mdash;&nbsp; :)
-%strong To get started
-(or to update your listing),
-= link_to 'click here.', edit_my_profile_url
+	%li your specialties
+	%li a short but warm "About" bio that gives them a sense of who you are
+	%li a photo of you (a smile helps)
+	%li the best ways to contact you
 %br
 %br
-And if you have any questions or need help, just reply to this email.
+Also, if you haven't already, be sure to include your street address &ndash; or at least your zip code &ndash; so that anyone searching for you can see your location on the map.
 %br
 %br
-Thanks,
+Please don't hesitate to shoot me an email if you need help or have questions. Just reply to this email.
 %br
-&ndash; The Kinstantly Team
+%br
+Thanks so much,
+%br
+%br
+Jim Scott
+%br
+Founder and CEO
+%br
+= link_to t('company.name'), root_url
