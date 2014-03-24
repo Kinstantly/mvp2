@@ -33,7 +33,7 @@ describe Users::ConfirmationsController do
 				sign_in @bossy
 				
 				post :create, user: {email: @mimi.email}
-				response.should redirect_to '/users'
+				response.should redirect_to edit_user_path @mimi
 			end
 		end
 	end
