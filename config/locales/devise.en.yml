@@ -10,6 +10,7 @@ en:
       not_saved:
         one: "1 error prohibited this %{resource} from being saved:"
         other: "%{count} errors prohibited this %{resource} from being saved:"
+      confirmation_not_sent: "We are reviewing your request to participate. If everything looks fine, we'll send you an email with login information."
   devise:
     confirmations:
       confirmed: 'Your email address has been confirmed. You are signed in.'
