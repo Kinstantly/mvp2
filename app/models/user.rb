@@ -164,6 +164,13 @@ class User < ActiveRecord::Base
 	end
 	
 	# Public class methods.
+	#
+	# For methods whose behavior is identical in the superclass when not running as a private site,
+	# I initially tried only defining the methods here when running_as_private_site is true.
+	# But then the methods were not defined in Rspec for private_site specs (the test environment caches classes).
+	# You can fix this by reloading the User class in the private_site around hook, but that seemed risky.
+	# So I think the more robust solution is to always define the methods here and check running_as_private_site
+	# within the method.  Bleh.
 	class << self
 		
 		# Generate a password that is not too long.
@@ -196,23 +203,33 @@ class User < ActiveRecord::Base
 			user
 		end
 	
-		if Rails.configuration.running_as_private_site
-			def confirm_by_token(confirmation_token)
+		def confirm_by_token(confirmation_token)
+			if Rails.configuration.running_as_private_site
 				admin_approval_required(find_or_initialize_with_error_by(:confirmation_token, confirmation_token)) do
 					super
 				end
+			else
+				super
 			end
+		end
 	
-			def send_reset_password_instructions(attributes={})
+		def send_reset_password_instructions(attributes={})
+			if Rails.configuration.running_as_private_site
 				admin_approval_required(find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)) do
 					super
 				end
+			else
+				super
 			end
+		end
 	
-			def reset_password_by_token(attributes={})
+		def reset_password_by_token(attributes={})
+			if Rails.configuration.running_as_private_site
 				admin_approval_required(find_or_initialize_with_error_by(:reset_password_token, attributes[:reset_password_token])) do
 					super
 				end
+			else
+				super
 			end
 		end
 		
