@@ -72,6 +72,22 @@ Spork.prefork do
     config.after(:each) do
       DatabaseCleaner.clean
     end
+
+    # Specs for describing behavior while running as a private site.
+    config.around(:each) do |example|
+      if example.metadata[:private_site]
+        previous_state = Rails.configuration.running_as_private_site
+        Rails.configuration.running_as_private_site = true
+        # Object.send(:remove_const, 'User')
+        # load 'user.rb'
+        example.run
+        Rails.configuration.running_as_private_site = previous_state
+        # Object.send(:remove_const, 'User')
+        # load 'user.rb'
+      else
+        example.run
+      end
+    end
   end
 
   # End of Spork.prefork

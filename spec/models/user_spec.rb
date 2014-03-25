@@ -158,10 +158,21 @@ describe User do
 	end
 	
 	context "unconfirmed provider" do
-		let(:provider) { FactoryGirl.create :provider, require_confirmation: true }
+		let(:provider) { FactoryGirl.create :provider, require_confirmation: true, admin_confirmation_sent_at: nil }
 		
 		context "administrator sending the registration confirmation email" do
 			let(:admin) { FactoryGirl.create :admin_user }
+			
+			it "should have no errors for a valid email address" do
+				result = User.send_confirmation_instructions email: provider.email, admin_confirmation_sent_by_id: admin.id
+				result.errors[:email].should_not be_present
+				result.errors[:admin_confirmation_sent_at].should_not be_present
+			end
+			
+			it "should have an error for an invalid email address" do
+				result = User.send_confirmation_instructions email: 'no_one@example.org', admin_confirmation_sent_by_id: admin.id
+				result.errors[:email].should be_present
+			end
 			
 			it "should track who triggered the email" do
 				User.send_confirmation_instructions email: provider.email, admin_confirmation_sent_by_id: admin.id
@@ -171,6 +182,81 @@ describe User do
 			it "should track when admin sent the email" do
 				User.send_confirmation_instructions email: provider.email, admin_confirmation_sent_by_id: admin.id
 				provider.reload.admin_confirmation_sent_at.to_f.should be_within(10).of(Time.now.utc.to_f)
+			end
+			
+			context "when running as a private site", private_site: true do
+				it "admin should be able to send confirmation instructions" do
+					result = User.send_confirmation_instructions email: provider.email, admin_mode: true
+					result.errors[:email].should_not be_present
+					result.errors[:admin_confirmation_sent_at].should_not be_present
+				end
+			end
+		end
+		
+		context "non-admin when running as a private site", private_site: true do
+			context "BEFORE admin approval" do
+				it "should NOT send confirmation instructions" do
+					result = User.send_confirmation_instructions email: provider.email
+					result.errors[:admin_confirmation_sent_at].should be_present
+				end
+				
+				it "should NOT confirm" do
+					result = User.confirm_by_token provider.confirmation_token
+					result.should_not be_confirmed
+					result.errors[:admin_confirmation_sent_at].should be_present
+				end
+
+				it "should NOT send password reset instructions" do
+					result = User.send_reset_password_instructions email: provider.email
+					result.errors[:admin_confirmation_sent_at].should be_present
+				end
+				
+				it "should NOT reset password" do
+					token = User.reset_password_token
+					provider.reset_password_token = token
+					provider.reset_password_sent_at = Time.now.utc
+					provider.save
+					old_encrypted_password = provider.encrypted_password
+					new_password = User.generate_password
+					result = User.reset_password_by_token reset_password_token: token, password: new_password, password_confirmation: new_password
+					result.encrypted_password.should == old_encrypted_password
+					result.errors[:admin_confirmation_sent_at].should be_present
+				end
+			end
+
+			context "AFTER admin approval" do
+				before(:each) do
+					provider.admin_confirmation_sent_at = Time.now.utc
+					provider.save
+				end
+				
+				it "should send confirmation instructions" do
+					result = User.send_confirmation_instructions email: provider.email
+					result.errors[:admin_confirmation_sent_at].should_not be_present
+				end
+				
+				it "should confirm" do
+					result = User.confirm_by_token provider.confirmation_token
+					result.should be_confirmed
+					result.errors[:admin_confirmation_sent_at].should_not be_present
+				end
+
+				it "should send password reset instructions" do
+					result = User.send_reset_password_instructions email: provider.email
+					result.errors[:admin_confirmation_sent_at].should_not be_present
+				end
+				
+				it "should reset password" do
+					token = User.reset_password_token
+					provider.reset_password_token = token
+					provider.reset_password_sent_at = Time.now.utc
+					provider.save
+					old_encrypted_password = provider.encrypted_password
+					new_password = User.generate_password
+					result = User.reset_password_by_token reset_password_token: token, password: new_password, password_confirmation: new_password
+					result.encrypted_password.should_not == old_encrypted_password
+					result.errors[:admin_confirmation_sent_at].should_not be_present
+				end
 			end
 		end
 	end

@@ -152,6 +152,10 @@ class User < ActiveRecord::Base
 			(self.profile = profile_to_claim) && save
 	end
 	
+	def admin_confirmation_sent?
+		!!admin_confirmation_sent_at
+	end
+	
 	# The Devise message to be shown if this account is inactive.
 	# If in private alpha, not confirmed yet, and we haven't sent the confirmation email yet, then their approval is pending.
 	def inactive_message
@@ -159,20 +163,78 @@ class User < ActiveRecord::Base
 			!confirmed? && admin_confirmation_sent_at.nil? ? :confirmation_not_sent : super
 	end
 	
-	# Generate a password that is not too long.
-	def self.generate_password
-		generate_token('encrypted_password').slice(0, MAX_LENGTHS[:password])
-	end
-	
-	def self.send_confirmation_instructions(attributes={})
-		user = super
-		if attributes[:admin_confirmation_sent_by_id] && user.try(:persisted?)
-			user.admin_confirmation_sent_by_id = attributes[:admin_confirmation_sent_by_id]
-			user.admin_confirmation_sent_at = Time.now.utc
-			user.save!
+	# Public class methods.
+	#
+	# For methods whose behavior is identical in the superclass when not running as a private site,
+	# I initially tried only defining the methods here when running_as_private_site is true.
+	# But then the methods were not defined in Rspec for private_site specs (the test environment caches classes).
+	# You can fix this by reloading the User class in the private_site around hook, but that seemed risky.
+	# So I think the more robust solution is to always define the methods here and check running_as_private_site
+	# within the method.  Bleh.
+	class << self
+		
+		# Generate a password that is not too long.
+		def generate_password
+			generate_token('encrypted_password').slice(0, MAX_LENGTHS[:password])
 		end
-		user
+	
+		def admin_approval_required(user)
+			unless user.nil? || user.confirmed? || user.admin_confirmation_sent?
+				user.errors.add(:admin_confirmation_sent_at, :confirmation_not_sent) if user.errors.blank?
+				user
+			else
+				yield
+			end
+		end
+		
+		def send_confirmation_instructions(attributes={})
+			user = if Rails.configuration.running_as_private_site && !attributes[:admin_mode]
+				admin_approval_required(find_or_initialize_with_errors(confirmation_keys, attributes, :not_found)) do
+					super
+				end
+			else
+				super
+			end
+			if attributes[:admin_confirmation_sent_by_id] && user.errors.blank? && user.try(:persisted?)
+				user.admin_confirmation_sent_by_id = attributes[:admin_confirmation_sent_by_id]
+				user.admin_confirmation_sent_at = Time.now.utc
+				user.save!
+			end
+			user
+		end
+	
+		def confirm_by_token(confirmation_token)
+			if Rails.configuration.running_as_private_site
+				admin_approval_required(find_or_initialize_with_error_by(:confirmation_token, confirmation_token)) do
+					super
+				end
+			else
+				super
+			end
+		end
+	
+		def send_reset_password_instructions(attributes={})
+			if Rails.configuration.running_as_private_site
+				admin_approval_required(find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)) do
+					super
+				end
+			else
+				super
+			end
+		end
+	
+		def reset_password_by_token(attributes={})
+			if Rails.configuration.running_as_private_site
+				admin_approval_required(find_or_initialize_with_error_by(:reset_password_token, attributes[:reset_password_token])) do
+					super
+				end
+			else
+				super
+			end
+		end
+		
 	end
+	# End of public class methods.
 	
 	protected
 	

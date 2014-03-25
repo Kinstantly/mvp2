@@ -166,6 +166,7 @@ en:
         email: 'Email address'
         password_confirmation: 'Retype password'
         phone: 'Phone number we use to contact you'
+        admin_confirmation_sent_at: ''
     errors:
       messages:
         invalid_phone_number: '^Phone number must be valid and properly formatted, e.g., "800-555-0199 x47"'
