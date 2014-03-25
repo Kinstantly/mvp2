@@ -46,6 +46,14 @@ Feature: Sign up
 		Scenario: Newly registered user receives no confirmation email when running as private site
 			When I sign up with email "asleep@thewheel.wv.us"
 			Then "asleep@thewheel.wv.us" should receive no email with subject "Confirmation instructions"
+	
+		@private_site
+		Scenario: Newly registered user receives confirmation email after admin approves when running as private site
+			Given I sign up with email "asleep@thewheel.wv.us"
+			When I am logged in as an administrator
+				And I visit the edit account page for "asleep@thewheel.wv.us"
+				And I click on "Send confirmation instructions"
+			Then "asleep@thewheel.wv.us" should receive an email with subject "Confirmation instructions"
 		
 		Scenario: Newly registered user must confirm
 			When I sign up with valid user data

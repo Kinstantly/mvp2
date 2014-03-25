@@ -10,3 +10,7 @@ end
 Then /^I should see "(.*?)" on the page$/ do |content|
 	page.should have_content content
 end
+
+When /^I click on "(.*?)"$/ do |link_or_button|
+	click_on link_or_button
+end

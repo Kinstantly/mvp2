@@ -7,6 +7,8 @@ def create_visitor
     :password => "please", :password_confirmation => "please" }
   @visitor_2 ||= { :email => "second_example@example.com",
     :password => "pleaseplease", :password_confirmation => "pleaseplease" }
+  @admin_user ||= { :email => "admin_example@example.com",
+    :password => "please", :password_confirmation => "please" }
 end
 
 def find_user
@@ -38,9 +40,8 @@ def create_client_user
 end
 
 def create_admin_user
-  create_user
-  @user.add_role :admin
-  @user.save
+  create_visitor
+  @user = User.find_by_email(@admin_user[:email]) || FactoryGirl.create(:admin_user, @admin_user)
 end
 
 def create_profile_editor
@@ -64,11 +65,13 @@ end
 def sign_up(sign_up_path='/provider/sign_up')
   delete_user
   visit sign_up_path
-  fill_in User.human_attribute_name(:email), :with => @visitor[:email]
-  fill_in User.human_attribute_name(:password), :with => @visitor[:password]
-  fill_in User.human_attribute_name(:password_confirmation), :with => @visitor[:password_confirmation]
-  fill_in User.human_attribute_name(:username), :with => @visitor[:username] if @visitor[:username]
-  click_button 'sign_up_button'
+  within('#sign_up') do
+    fill_in User.human_attribute_name(:email), :with => @visitor[:email]
+    fill_in User.human_attribute_name(:password), :with => @visitor[:password]
+    fill_in User.human_attribute_name(:password_confirmation), :with => @visitor[:password_confirmation]
+    fill_in User.human_attribute_name(:username), :with => @visitor[:username] if @visitor[:username]
+    click_button 'sign_up_button'
+  end
   find_user
 end
 
@@ -76,11 +79,17 @@ def sign_up_member
   sign_up '/member/sign_up'
 end
 
-def sign_in
+def sign_in(credentials=@visitor)
   visit '/users/sign_in'
-  fill_in User.human_attribute_name(:email), :with => @visitor[:email]
-  fill_in User.human_attribute_name(:password), :with => @visitor[:password]
-  click_button 'sign_in_button'
+  within('#sign_in') do
+    fill_in User.human_attribute_name(:email), :with => credentials[:email]
+    fill_in User.human_attribute_name(:password), :with => credentials[:password]
+    click_button 'sign_in_button'
+  end
+end
+
+def sign_in_admin
+  sign_in @admin_user
 end
 
 ### GIVEN ###
@@ -120,10 +129,11 @@ Given /^I am logged in as (an administrator|a profile editor)$/ do |role|
 	case role
 	when 'an administrator'
 		create_admin_user
+		sign_in_admin
 	when 'a profile editor'
 		create_profile_editor
+		sign_in
 	end
-	sign_in
 end
 
 Given /^I am on my account edit page$/ do
@@ -245,6 +255,10 @@ When /^I visit the edit account page for (?:a|an) (confirmed|unconfirmed) user$/
     @user_2.save
   end
   visit edit_user_path @user_2
+end
+
+When /^I visit the edit account page for "([^"]+)"$/ do |email|
+  visit edit_user_path User.find_by_email email
 end
 
 When /^I click on an edit account link$/ do
