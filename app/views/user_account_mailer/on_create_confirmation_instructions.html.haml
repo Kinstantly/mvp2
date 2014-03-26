@@ -1,14 +1,14 @@
 = "Hi #{@resource.username.presence || 'there'},"
 %br
 %br
-Please confirm the Kinstantly account you recently created by <i>single-clicking</i> this link:
+Please confirm the Kinstantly account you recently created by clicking this link:
 %br
 %br
 Confirm
 = link_to 'my account', confirmation_url(@resource, confirmation_token: @resource.confirmation_token)
 %br
 %br
-Once confirmed, you'll be able to rate and review providers, post questions and answers, and have full access to upcoming features.
+Once confirmed, you'll have full access to all of Kinstantly's features.
 %br
 %br
 Welcome to Kinstantly!

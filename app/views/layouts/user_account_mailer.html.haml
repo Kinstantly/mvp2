@@ -3,7 +3,11 @@
 		%table{border: '0', cellspacing: '0', cellpadding: '0', style: 'font-family:Helvetica,Arial,sans-serif;border-style:none;'}
 			%tr
 				%td{align: 'center'}
-					= image_tag mailer_image_url('logo-web-red-type-tagline-240-76.png'), alt: mailer_logo_alt
+					= image_tag mailer_image_url('logo-web-red-type-400x96.png'), alt: mailer_logo_alt
+			%tr
+				%td{align: 'center'}
+					%span{style: 'font-size: 11px;font-weight: bold;color: #333333;'}
+						= t('company.short_tagline')
 			%tr
 				%td
 					= yield

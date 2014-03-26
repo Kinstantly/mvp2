@@ -13,7 +13,7 @@ en:
     name: 'Kinstantly'
     tagline: "When parenting challenges can't wait."
     short_company_description_html: 'Find the best family services &mdash; from child care to college admissions advisors &mdash; where and when you need them.'
-    short_tagline: "A better parents' network."
+    short_tagline: "A better parents' network"
     alpha_note: "We're launching soon! But if you'd like a sneak peek, sign up below."
   email_domain: 'kinstantly.com'
   meta:
@@ -73,7 +73,7 @@ en:
       update_error: 'The was a problem updating the specialty.'
   profile_mailer:
     invite:
-      subject: 'Introducing Kinstantly: A smart, simple way to connect with clients'
+      subject: 'Introducing Kinstantly (and a bonus for you)'
   models:
     profile:
       invitation_sent_at:
