@@ -1,0 +1,71 @@
+- @page_title = "#{company_name} - Our Privacy Policy"
+- legal_name = "#{t('company.legal_name')}"
+- privacy_email = "#{t('contact.emails.privacy.value')}@#{t('email_domain')}"
+- support_email = "#{t('contact.emails.support.value')}@#{t('email_domain')}"
+.content
+	%section.content-section.privacy
+		%header.section-header
+			%h1 Our Privacy Policy
+			%h2 The short version: We&rsquo;ll treat your privacy the way we want ours to be treated.
+		%aside.illustration.left.rounded
+			= image_tag "privacy_policy_ photo.png", alt: "Privacy Policy", itemprop: 'image', border: "0", width: "100%"
+		.right.col4
+			%h3 LAST UPDATED: MARCH 28, 2014
+			%p Welcome to Kinstantly! We created this Privacy Policy to let you know what information we collect from you, why we collect it, what we do with it, and the choices you can make about your information. Please take the time to review this Policy and contact us, using the Contact Information below, if you have any questions or concerns.
+			%h3 COLLECTION OF INFORMATION
+			%p We collect information from you when you register on our Site, subscribe to our newsletters, respond to a survey, or fill out a form, such as when you schedule services with one of the service providers listed in our directory.
+			%p The personal information that you submit may include your name, email address, postal address, and telephone number. In some cases, you may also submit demographic information, such as your age, gender, or zip code. If we combine demographic information with your personal information, we will treat it as personal information as set forth in this Privacy Policy.
+			%p We also collect other information in aggregate (such as the pages you visit, the time of day that you visit our Site, the domain name of your internet service provider, and the URL of the website you previously visited) that we do not use to specifically identify you. If we combine this information with your personal information, we will treat it as personal information as set forth in this Privacy Policy.
+			%h3 HOW WE USE YOUR INFORMATION
+			%p We use the personal information you submit to improve and personalize your use of our Site. This information allows us to improve our Site and customer service, provide you with relevant content and other information, and send you newsletters or emails. We may also use this information to connect you to a specific service or provider and process transactions, such as when you schedule an appointment and pay for services with a parenting coach or tutor.
+			%p We use anonymous and aggregated data about Site traffic and Site usage for both internal and external business purposes. This data helps us to offer you potentially desirable content and services, improve the technical functions and quality of our Site and Services, prevent fraud and abuse of our Site, and protect our visitors and business.
+			%h3 HOW WE PROTECT YOUR INFORMATION
+			%p We use a variety of security technologies and other measures to protect your personal information from unauthorized access, use, or disclosure. Please keep your account password secure to help ensure the safety of your personal information.
+			%p We use a secure server and all information exchanged with our Site is transmitted via the Secure Sockets Layer (SSL) network protocol. 
+			%h3 HOW WE USE COOKIES
+			%p We use cookies (small files that we exchange with your Web browser, if you allow us), which help us keep track of the pages you visit and the actions you take within our Site, so we can offer you a better experience.
+			%p You can set your browser to notify you when a cookie is sent, or you can refuse or delete cookies. However, if you do so, many features of our Site will not function as intended.
+			%h3 DISCLOSURE OF INFORMATION TO OUTSIDE PARTIES
+			%p We will not disclose your personally identifiable information to third parties except under the following circumstances:
+			%p - Some of our employees and independent contractors will have access to your information in the process of helping us run our business. However, they have confidentiality and security obligations to keep your information safe.
+			%p - We may disclose your information to third parties who provide services to our business, such as email delivery services, payment processing, and customer service. However, they will be required to maintain that information in accordance with this Privacy Policy.
+			%p - We may release your information when we believe to do so is necessary and appropriate to comply with law enforcement requests, court orders, or other legal processes (subpoenas, for example), as well as to enforce our Site policies, or protect our or others' rights, property, or safety.
+			%p - We may transfer your information in connection with a merger, acquisition, sale of assets, bankruptcy, reorganization, dissolution, or other transaction, or if the ownership of all or substantially all of our business otherwise changes.
+			%p Before we disclose your personally identifiable information for other reasons, we will first obtain your consent via email, an online form, or some other manner.
+			%p We also will not sell, rent, or otherwise disclose our email list or address list except as explicitly set forth in this Privacy Policy.
+			%h3 CHILDREN'S ONLINE PRIVACY PROTECTION ACT COMPLIANCE (COPPA)
+			%p 
+				Our website and services are directed to people who are at least 13 years of age or older, and we do not knowingly collect any information from anyone under 13 years of age. If you have reason to believe that we have accidentally received such personal information, please contact us immediately by emailing us at
+				= mail_to privacy_email
+				\.
+			%h3 YOUR CHOICES ABOUT YOUR INFORMATION
+			%p You can choose whether to provide personally identifiable information at the time of collection, such as during registration or when presented with a form or survey.
+			%p You can also stop the delivery of future email communications by unsubscribing at any time. Each email you receive, other than service emails, includes instructions explaining how to stop receiving such emails.
+			%p 
+				If your personally identifiable information (such as your email or postal address, phone number, or zip code) changes, or if you decide you no longer want to use our Site services, you can correct, update, or delete your information. This can be done by logging into your account and editing your information. If you want, you can also deactivate your account by emailing us at
+				= mail_to support_email
+				\.
+			%h3 YOUR CONSENT
+			%p By using our site, you consent to our Privacy Policy.
+			%h3 TERMS OF USE
+			%p 
+				Note also that your use of our Site is subject to our Terms of Use. Please visit our 
+				= terms_link wrapper: {tag: :span, class: "capitalized"}
+				, which state the terms, disclaimers, and limitations of liability governing your use of the Site. Last updated on March 28, 2014.
+			%h3 CHANGES TO OUR PRIVACY POLICY
+			%p We encourage you to periodically review our Privacy Policy to stay informed of how we are protecting your information. If we decide to change our Privacy Policy, we will revise the "last updated" date at the top of this page.
+			%p This policy was last modified on March 28, 2014.
+			%h3 CONTACT INFORMATION
+			%p 
+				If you have any questions regarding our Privacy Policy, please contact us at the physical address below, or e-mail us at
+				= mail_to privacy_email
+				\.
+			%p
+				Chief Privacy Officer,
+				%br
+				= legal_name
+				%br
+				350 Townsend St., #683
+				%br
+				San Francisco, CA 94107
+	= render partial: 'social'

@@ -132,6 +132,11 @@ module ApplicationHelper
 		path = terms_path
 		link_wrapper link_to("Terms of use", path), options if show_link?(path)
 	end
+
+	def privacy_link(options={})
+		path = privacy_path
+		link_wrapper link_to("Privacy policy", path), options if show_link?(path)
+	end
 	
 	def become_expert_link
 		path = become_expert_path
