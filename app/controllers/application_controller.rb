@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+	
+	include SiteConfigurationHelpers
+	
 	protect_from_forgery
 	layout 'interior'
 	
@@ -38,6 +41,12 @@ class ApplicationController < ActionController::Base
 			else
 				super
 			end
+	end
+	
+	# If running as a private site, go to the sign-in page after we sign out (because the home page is blocked).
+	# Otherwise, go to the home page.
+	def after_sign_out_path_for(resource_or_scope)
+		running_as_private_site? ? new_user_session_path : super
 	end
 
 	# borrowed from devise
@@ -96,5 +105,13 @@ class ApplicationController < ActionController::Base
 	# Be frugal with using this because it can result in a slow experience for the user.
 	def set_no_cache_response_headers
 		expires_now
+	end
+	
+	def authenticate_user_on_public_site
+		authenticate_user! unless running_as_private_site?
+	end
+	
+	def authenticate_user_on_private_site
+		authenticate_user! if running_as_private_site?
 	end
 end

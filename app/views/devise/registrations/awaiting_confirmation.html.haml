@@ -1,6 +1,6 @@
 #content
 	.wider_form
-		- unless Rails.configuration.running_as_private_site
+		- unless running_as_private_site?
 			%p
 				We want to make sure reviews are written by real people &mdash; and profiles are filled out by real service providers &mdash; not by RoboDad or Dr. Bot.
 			%br

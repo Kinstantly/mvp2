@@ -12,12 +12,12 @@ class Ability
 		can :view, Profile, is_published: true
 		
 		# Any confirmed user can rate a published profile that is not their own.
-		can :rate, Profile, is_published: true if user.confirmed_at
+		can :rate, Profile, is_published: true if user.confirmed?
 		cannot :rate, Profile, user_id: user.id
 		
 		# Any confirmed user can create a review of a published profile.
 		# However, a provider cannot review themself.
-		can :create, Review if user.confirmed_at
+		can :create, Review if user.confirmed?
 		cannot :create, Review, profile: { is_published: [false, nil] }
 		cannot :create, Review, profile: { user_id: user.id }
 

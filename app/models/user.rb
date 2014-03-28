@@ -159,17 +159,17 @@ class User < ActiveRecord::Base
 	# The Devise message to be shown if this account is inactive.
 	# If in private alpha, not confirmed yet, and we haven't sent the confirmation email yet, then their approval is pending.
 	def inactive_message
-		Rails.configuration.running_as_private_site &&
+		running_as_private_site? &&
 			!confirmed? && admin_confirmation_sent_at.nil? ? :confirmation_not_sent : super
 	end
 	
 	# Public class methods.
 	#
 	# For methods whose behavior is identical in the superclass when not running as a private site,
-	# I initially tried only defining the methods here when running_as_private_site is true.
+	# I initially tried only defining the methods here when running_as_private_site? is true.
 	# But then the methods were not defined in Rspec for private_site specs (the test environment caches classes).
 	# You can fix this by reloading the User class in the private_site around hook, but that seemed risky.
-	# So I think the more robust solution is to always define the methods here and check running_as_private_site
+	# So I think the more robust solution is to always define the methods here and check running_as_private_site?
 	# within the method.  Bleh.
 	class << self
 		
@@ -188,7 +188,7 @@ class User < ActiveRecord::Base
 		end
 		
 		def send_confirmation_instructions(attributes={})
-			user = if Rails.configuration.running_as_private_site && !attributes[:admin_mode]
+			user = if running_as_private_site? && !attributes[:admin_mode]
 				admin_approval_required(find_or_initialize_with_errors(confirmation_keys, attributes, :not_found)) do
 					super
 				end
@@ -204,7 +204,7 @@ class User < ActiveRecord::Base
 		end
 	
 		def confirm_by_token(confirmation_token)
-			if Rails.configuration.running_as_private_site
+			if running_as_private_site?
 				admin_approval_required(find_or_initialize_with_error_by(:confirmation_token, confirmation_token)) do
 					super
 				end
@@ -214,7 +214,7 @@ class User < ActiveRecord::Base
 		end
 	
 		def send_reset_password_instructions(attributes={})
-			if Rails.configuration.running_as_private_site
+			if running_as_private_site?
 				admin_approval_required(find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)) do
 					super
 				end
@@ -224,7 +224,7 @@ class User < ActiveRecord::Base
 		end
 	
 		def reset_password_by_token(attributes={})
-			if Rails.configuration.running_as_private_site
+			if running_as_private_site?
 				admin_approval_required(find_or_initialize_with_error_by(:reset_password_token, attributes[:reset_password_token])) do
 					super
 				end

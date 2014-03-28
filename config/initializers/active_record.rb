@@ -1,4 +1,7 @@
 class ActiveRecord::Base
+	
+	include SiteConfigurationHelpers
+	
 	def join_present_attrs(separator=' ', *attrs)
 		attrs.map { |attr|
 				self.try(attr).presence

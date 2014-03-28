@@ -1,5 +1,7 @@
 module ApplicationHelper
 	
+	include SiteConfigurationHelpers
+	
 	def company_name
 		t 'company.name'
 	end

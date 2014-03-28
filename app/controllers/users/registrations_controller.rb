@@ -19,7 +19,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		
 		# During private alpha, registrants are screened. Don't send them the confirmation link until they've pass screening.
 		# The exception is someone we've invited to claim their profile.
-		resource.skip_confirmation_notification! if Rails.configuration.running_as_private_site && !resource.profile_to_claim
+		resource.skip_confirmation_notification! if running_as_private_site? && !resource.profile_to_claim
 	end
 
 	private

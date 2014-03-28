@@ -1,9 +1,16 @@
 class CustomAuthenticationFailureApp < Devise::FailureApp
+	
+	include SiteConfigurationHelpers
+	
 	def i18n_message(default = nil)
-		if default.nil? && claiming_profile?
+		if default
+			super
+		elsif claiming_profile?
 			super(:claiming_profile)
-		elsif default.nil? && reviewing_provider?
+		elsif reviewing_provider?
 			super(:reviewing_provider)
+		elsif running_as_private_site?
+			super(:running_as_private_site)
 		else
 			super
 		end
@@ -16,6 +23,8 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 		elsif claiming_profile?
 			session[:claiming_profile] = params[:token]
 			provider_sign_up_url
+		elsif running_as_private_site?
+			alpha_sign_up_url
 		else
 			super
 		end

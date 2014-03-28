@@ -1,6 +1,6 @@
 class Users::ConfirmationsController < Devise::ConfirmationsController
 	
-	before_filter :set_admin_mode, if: proc { |controller| Rails.configuration.running_as_private_site }
+	before_filter :set_admin_mode
 	
 	# The path used after resending confirmation instructions.
 	def after_resending_confirmation_instructions_path_for(resource_name)
@@ -15,7 +15,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
 	private
 	
 	def set_admin_mode
-		resource_params[:admin_mode] = current_user.try :admin?
+		resource_params[:admin_mode] = current_user.try :admin? if running_as_private_site?
 	end
 	
 end

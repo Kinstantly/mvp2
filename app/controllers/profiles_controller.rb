@@ -2,7 +2,8 @@ class ProfilesController < ApplicationController
 	
 	respond_to :html, :js, :json
 	
-	before_filter :authenticate_user!, except: [:index, :show, :show_claiming, :link_index, :search]
+	before_filter :authenticate_user_on_public_site, except: [:show, :show_claiming, :link_index, :search]
+	before_filter :authenticate_user_on_private_site
 	
 	before_filter :load_user_and_profile, only: [:view_my_profile, :edit_my_profile]
 	
