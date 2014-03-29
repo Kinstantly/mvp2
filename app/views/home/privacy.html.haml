@@ -36,30 +36,31 @@
 			%h3 CHILDREN'S ONLINE PRIVACY PROTECTION ACT COMPLIANCE (COPPA)
 			%p 
 				Our website and services are directed to people who are at least 13 years of age or older, and we do not knowingly collect any information from anyone under 13 years of age. If you have reason to believe that we have accidentally received such personal information, please contact us immediately by emailing us at
-				= mail_to privacy_email
-				\.
+				= succeed '.' do
+					= mail_to privacy_email
 			%h3 YOUR CHOICES ABOUT YOUR INFORMATION
 			%p You can choose whether to provide personally identifiable information at the time of collection, such as during registration or when presented with a form or survey.
 			%p You can also stop the delivery of future email communications by unsubscribing at any time. Each email you receive, other than service emails, includes instructions explaining how to stop receiving such emails.
 			%p 
 				If your personally identifiable information (such as your email or postal address, phone number, or zip code) changes, or if you decide you no longer want to use our Site services, you can correct, update, or delete your information. This can be done by logging into your account and editing your information. If you want, you can also deactivate your account by emailing us at
-				= mail_to support_email
-				\.
+				= succeed '.' do
+					= mail_to support_email
 			%h3 YOUR CONSENT
 			%p By using our site, you consent to our Privacy Policy.
 			%h3 TERMS OF USE
 			%p 
 				Note also that your use of our Site is subject to our Terms of Use. Please visit our 
-				= terms_link wrapper: {tag: :span, class: "capitalized"}
-				, which state the terms, disclaimers, and limitations of liability governing your use of the Site. Last updated on March 28, 2014.
+				= succeed ',' do
+					= terms_link wrapper: {tag: :span, class: "capitalized"}
+				which state the terms, disclaimers, and limitations of liability governing your use of the Site. Last updated on March 28, 2014.
 			%h3 CHANGES TO OUR PRIVACY POLICY
 			%p We encourage you to periodically review our Privacy Policy to stay informed of how we are protecting your information. If we decide to change our Privacy Policy, we will revise the "last updated" date at the top of this page.
 			%p This policy was last modified on March 28, 2014.
 			%h3 CONTACT INFORMATION
 			%p 
 				If you have any questions regarding our Privacy Policy, please contact us at the physical address below, or e-mail us at
-				= mail_to privacy_email
-				\.
+				= succeed '.' do
+					= mail_to privacy_email
 			%p
 				Chief Privacy Officer,
 				%br
