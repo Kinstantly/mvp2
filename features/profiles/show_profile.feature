@@ -56,3 +56,10 @@ Feature: View a provider's profile
 		Given I am not logged in 
 			And I visit the view page for a published profile with no locations
 		Then I should see "controllers.profiles.location_remote_only" message
+
+	@private_site
+	Scenario: New site visitor cannot view profiles when running as a private site
+		Given a published profile with last name "Sharpe" and category "Zeros"
+			And I am not logged in
+		When I visit the published profile page
+		Then I should land on the alpha sign-up page

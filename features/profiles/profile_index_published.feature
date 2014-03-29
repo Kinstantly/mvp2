@@ -21,3 +21,10 @@ Feature: View only published profiles
 			And I want a published profile
 		When I visit the profile link index page
 		Then I should see published profile data
+
+	@private_site
+	Scenario: New visitor cannot view published profiles when running as a private site
+		Given I am not logged in
+			And I want a published profile
+		When I visit the profile link index page
+		Then I should land on the alpha sign-up page

@@ -101,6 +101,11 @@ Spork.prefork do
     Rails.configuration.running_as_private_site = previous_state
   end
 
+  # Desperate work-around webkit hanging.
+  After do
+    sleep 0.2
+  end
+
   # End of Spork.prefork
 end
 

@@ -14,3 +14,7 @@ end
 When /^I click on "(.*?)"$/ do |link_or_button|
 	click_on link_or_button
 end
+
+Then /^I should land on the home page$/ do
+  current_path.should eq root_path
+end

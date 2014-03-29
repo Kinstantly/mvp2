@@ -355,6 +355,14 @@ Then /^I should (?:be|land) on the (provider|member) (?:registration|sign[- ]up)
 	page.current_path.should == path
 end
 
+Then /^I should land on the sign-in page$/ do
+  current_path.should eq new_user_session_path
+end
+
+Then /^I should land on the alpha sign-up page$/ do
+  current_path.should eq alpha_sign_up_path
+end
+
 Then /^I should (not )?see confirmation instructions form$/ do |no|
   if no.present?
     page.has_button?('Send confirmation instructions').should_not be_true    

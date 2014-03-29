@@ -59,3 +59,18 @@ Feature: search the provider directory
 		Given I am not logged in 
 		When I enter "" in the search box
 		Then I should see a Google Map
+
+	Scenario: can search the provider directory from the about page
+		Given a published profile exists
+			And I am not logged in
+			And I visit the "/about" page
+		When I enter published profile data in the search box
+		Then I should see profile data in the search results list
+
+	@private_site
+	Scenario: cannot search the provider directory as a new site visitor when running as a private site
+		Given a published profile exists
+			And I am not logged in
+			And I visit the "/about" page
+		When I enter published profile data in the search box
+		Then I should land on the alpha sign-up page
