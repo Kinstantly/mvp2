@@ -7,7 +7,8 @@
 			%h1 Meet the Founders
 		.left.col2
 			.bio-photo.left
-				= image_tag "jim_416X500.jpg", alt: "Jim Scott", itemprop: 'image', border: "0", height: "100%", width: "100%"
+				%a{href: "https://www.linkedin.com/in/hookooejim", target: '_blank'}
+					= image_tag "jim_416X500.jpg", alt: "Jim Scott", itemprop: 'image', border: "0", height: "100%", width: "100%"
 			.bio.right
 				%h3 Jim Scott, Founder and CEO
 				%p
@@ -15,10 +16,18 @@
 				%h4 Why I&rsquo;m doing this
 				%p My wife and I have six kids &ndash; three boys and three girls &ndash; and we&rsquo;ve experienced all the whack-a-mole days and sleepless nights that go with that.
 				%h4 Before Kinstantly
-				%p I co-founded Caring.com, the leading eldercare site in the country, and for ten years before that was Global VP of Editorial for BabyCenter, the leading parenting site in the world.
+				%p 
+					I co-founded
+					= succeed ',' do
+						%a{href: "http://caring.com", target: '_blank'} Caring.com
+					the leading eldercare site in the country, and for ten years before that was Global VP of Editorial for
+					= succeed ',' do
+						%a{href: "http://babycenter.com", target: '_blank'} BabyCenter
+					the leading parenting site in the world.
 		.right.col2
 			.bio-photo.right
-				= image_tag "edward_416X500.jpg", alt: "Edward Simpson", itemprop: 'image', border: "0", height: "100%", width: "100%"
+				%a{href: "https://www.linkedin.com/in/edwardvsimpson", target: '_blank'}
+					= image_tag "edward_416X500.jpg", alt: "Edward Simpson", itemprop: 'image', border: "0", height: "100%", width: "100%"
 			.bio.left
 				%h3 Edward Simpson, Founder and CTO
 				%p
@@ -41,3 +50,4 @@
 			= image_tag "testimonial_ photo.png", alt: "", itemprop: 'image', border: "0"
 			%blockquote I wanted a doula to help me during labor and after &ndash; and Kinstantly showed me the options and helped me get a real feel for each one and how she worked. It was fast and cut the stress. And I love my doula!
 			%small.author &ndash; Sierra R. mother of a 4-month-old daughter
+	= render partial: 'social'
