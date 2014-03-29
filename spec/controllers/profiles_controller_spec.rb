@@ -933,4 +933,50 @@ describe ProfilesController do
 			response.should render_template('admin')
 		end
 	end
+	
+	context "when running as a private site", private_site: true do
+		let(:published_profile) { FactoryGirl.create(:published_profile) }
+		
+		describe "GET 'show'" do
+			it "redirects to the sign-up page" do
+				get :show, id: published_profile.id
+				response.should redirect_to alpha_sign_up_path
+			end
+		end
+		
+		describe "GET 'search'" do
+			it "redirects to the sign-up page" do
+				get :search, query: published_profile.last_name
+				response.should redirect_to alpha_sign_up_path
+			end
+		end
+		
+		describe "POST 'rate'" do
+			it "redirects to the sign-up page" do
+				post :rate, id: published_profile.id, score: '2'
+				response.should redirect_to alpha_sign_up_path
+			end
+		end
+		
+		describe "GET 'admin'" do
+			it "redirects to the sign-up page" do
+				get :admin
+				response.should redirect_to alpha_sign_up_path
+			end
+		end
+		
+		describe "GET 'index'" do
+			it "redirects to the sign-up page" do
+				get :index
+				response.should redirect_to alpha_sign_up_path
+			end
+		end
+		
+		describe "GET 'link_index'" do
+			it "redirects to the sign-up page" do
+				get :link_index
+				response.should redirect_to alpha_sign_up_path
+			end
+		end
+	end
 end
