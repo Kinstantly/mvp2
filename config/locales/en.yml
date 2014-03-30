@@ -475,27 +475,15 @@ en:
     recommend_a_provider: 'Recommend a provider'
     tagline: "Let’s talk..."
     emails:
-      feedback:
+      info:
           display: 'Feedback or General Questions'
-          value: 'feedback'
-      technical:
-          display: 'Technical Questions'
-          value: 'technical'
+          value: 'info'
       support:
           display: 'Support Questions'
           value: 'support'
-      copyright:
-          display: 'Copyright Questions'
-          value: 'copyright'
       privacy:
           display: 'Privacy Questions'
           value: 'privacy'
-      press:
-          display: 'Press Inquiries'
-          value: 'press'
-      jobs:
-          display: 'Jobs'
-          value: 'jobs'
     social:
       twitter:
           display: 'Follow us on Twitter'

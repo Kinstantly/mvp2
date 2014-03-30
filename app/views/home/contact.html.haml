@@ -1,78 +1,14 @@
-- @company_name = "#{t('company.legal_name')}"
-- @contact_intro = "#{t('contact.intro')}"
-- @feedback_email = "#{t('contact.emails.feedback.value')}@#{t('email_domain')}"
-- @technical_email = "#{t('contact.emails.technical.value')}@#{t('email_domain')}"
-- @support_email = "#{t('contact.emails.support.value')}@#{t('email_domain')}"
-- @copyright_email = "#{t('contact.emails.copyright.value')}@#{t('email_domain')}"
-- @privacy_email = "#{t('contact.emails.privacy.value')}@#{t('email_domain')}"
-- @press_email = "#{t('contact.emails.press.value')}@#{t('email_domain')}"
-- @jobs_email = "#{t('contact.emails.jobs.value')}@#{t('email_domain')}"
-- @contact_address_line_1 = "#{t('company.location.street_address')}"
-- @contact_address_line_2 = "#{t('company.location.city')}, #{t('company.location.region')} #{t('company.location.postal_code')}"
-- @contact_phone = "#{t('company.location.phone')}"
-.contact
-	.content{align: 'center'}
-		.content-wrapper
-			.column.left-rail
-			.column.main-column
-				.column-inner-content
-					%div(hidden) Marketing message by editor (optional for the first phase)
-					%h1.highlight= t('contact.tagline')
-					.contact-content-block
-						%p= @contact_intro
-						%ul.email-contact-list
-							%li
-								%span= t('contact.emails.feedback.display') + ':'
-								%span= mail_to @feedback_email
-							%li
-								%span= t('contact.emails.technical.display') + ':'
-								%span= mail_to @technical_email
-							%li
-								%span= t('contact.emails.support.display') + ':'
-								%span= mail_to @support_email
-							%li
-								%span= t('contact.emails.copyright.display') + ':'
-								%span= mail_to @copyright_email
-							%li
-								%span= t('contact.emails.privacy.display') + ':'
-								%span= mail_to @privacy_email
-							%li
-								%span= t('contact.emails.press.display') + ':'
-								%span= mail_to @press_email
-							%li
-								%span= t('contact.emails.jobs.display') + ':'
-								%span= mail_to @jobs_email
-					.address-block.contact-content-block.left
-						.contact-mail
-						%div
-							%p.bold= @company_name
-							%p= @contact_address_line_1
-							%p= @contact_address_line_2
-					.address-block.contact-content-block.right
-						.contact-phone
-						%div
-							%p= @contact_phone
-					.ui-helper-clearfix
-					%h2.highlight= t 'contact.recommend_a_provider'
-					= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
-					.ui-helper-clearfix
-					%h2.highlight= t 'contact.connect_with', name: company_name
-					%ul.social-contact-list
-						%li
-							%span= t('contact.social.twitter.display')
-							= link_to('', t('contact.social.twitter.value'), :class => 'twitter_link ui-corner-all')
-						%li
-							%span= t('contact.social.facebook.display')
-							= link_to('', t('contact.social.facebook.value'), :class => 'facebook_link ui-corner-all')
-						%li
-							%span= t('contact.social.google.display')
-							= link_to('', t('contact.social.google.value'), :class => 'google_link ui-corner-all')
-						%li
-							%span= t('contact.social.newsletter.display_html')
-						%li
-							%span= t('contact.social.blog.display_html')
-						%li
-							%span= link_to 'Our Story', 'about'
-						%li
-							%span= link_to 'Home', user_home_page
-			.column.right-rail
+- @page_title = "#{company_name} - Contact us"
+- info_email = "#{t('contact.emails.info.value')}@#{t('email_domain')}"
+#contact-page.content
+	%section.contact-section
+		%header
+			%h1 Ask us anything
+			%h2
+				Email us at
+				= mail_to info_email
+		.contact-photo
+			= image_tag "contactImg.jpg", alt: "Contact us", itemprop: 'image', border: "0"
+		%p Or send a note (or cookies) to: Kinstantly, Inc., 350 Townsend St. #683, San Francisco, CA 94107
+	.container
+		= render partial: 'social'

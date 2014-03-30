@@ -8,6 +8,7 @@ Mvp2::Application.routes.draw do
 	match 'contact' => 'home#contact'
 	match 'faq' => 'home#faq'
 	match 'terms' => 'home#terms'
+	match 'privacy' => 'home#privacy'
 	match 'admin' => 'home#admin'
 	match 'show_all_categories' => 'home#show_all_categories'
 	

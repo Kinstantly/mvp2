@@ -1,7 +1,11 @@
 // Styles for interior pages, i.e., not the home page.
 
-$default_color: black;
+$default_color: #333;
 $default_background: white;
+$font-stack: Helvetica, Arial, sans-serif;
+$header-font-stack: 'Raleway', Helvetica, Arial, sans-serif;
+$default_link_color: #346599;
+$blue: #437FBF;
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -87,17 +91,6 @@ audio:not([controls]) {
 
 /* End CSS reset */
 
-@font-face {
-	font-family: 'museo_slab500';
-	src: url('fonts/museo_slab_500-webfont.eot');
-	src: url('fonts/museo_slab_500-webfont.eot?#iefix') format('embedded-opentype'),
-			 url('fonts/museo_slab_500-webfont.woff') format('woff'),
-			 url('fonts/museo_slab_500-webfont.ttf') format('truetype'),
-			 url('fonts/museo_slab_500-webfont.svg#museo_slab500') format('svg');
-	font-weight: normal;
-	font-style: normal;
-}
-
 @mixin pipe-separator-style {
 	content: '|';
 	font-size: 0.9375em;
@@ -151,7 +144,7 @@ a:hover {
 
 #branding {
 	width: 100%;
-	font-family: $default_font_family;
+	font-family: $font-stack;
 }
 #tagline {
 	float: left;
@@ -165,7 +158,7 @@ a:hover {
 	display: block;
 	float: right;
 	margin: 28px 26px 8px 0;
-	font-family: $default_font_family;
+	font-family: $font-stack;
 }
 #branding h1 a {
 	display: block;
@@ -201,7 +194,7 @@ a:hover {
 }
 
 #access ul li a {
-	color: #0b99a2;
+	color: $default_link_color;
 	font-weight: bold;
 	text-decoration: none;
 }
@@ -362,7 +355,7 @@ $masthead_width: 920px;
 #content {
 	width: 100%;
 	margin-top: 38px;
-	font-family: $default_font_family;
+	font-family: $font-stack;
 }
 .editor_buttons + #content {
 	margin-top: 8px; // If preceded by editor buttons, we don't need the large margin.
@@ -690,7 +683,7 @@ $contact_toolbar_width: 300px;
 	background: $bg;
 	padding-top: 8px;
 	padding-bottom: 8px;
-	font-family: $default_font_family;
+	font-family: $font-stack;
 }
 
 .editor_buttons, .editor_info, .admin_info {
@@ -735,7 +728,7 @@ $profile_table_cell_top_padding: 14px;
 	p {
 		font-size: 13px;
 		line-height: $profile_content_line_height;
-		color: #333;
+		color: $default_color;
 		margin-bottom: 21px;
 	}
 	h3 {
@@ -760,7 +753,7 @@ table.info {
 	box-shadow: 2px 2px 8px #ebebeb;
 	float: right;
 	font-size: 13px;
-	color: #333;
+	color: $default_color;
 	line-height: 36px;
 	th {
 		text-align: right;
@@ -883,7 +876,7 @@ table.info {
 }
 .review-date {
 	font-size: 12px;
-	color: #333;
+	color: $default_color;
 	margin: 3px 0px 0px 12px;
 	float: left;
 }
@@ -926,13 +919,13 @@ table.info {
 }
 .reviews-grouped .review-date {
 	font-size: 14px;
-	color: #333;
+	color: $default_color;
 	margin: 0px 0px 3px 0px;
 	float: none;
 }
 
 .reviews-grouped h4 {
-	color: #333;
+	color: $default_color;
 	font-weight: bold;
 }
 
@@ -957,7 +950,7 @@ $form_element_width: 388px;
 			box-shadow: inset 4px 4px 10px #E5E5E5;
 			width: $form_element_width;
 			font-size: 13px;
-			color: #333;
+			color: $default_color;
 			line-height: 18px;
 			margin: 12px 0px 13px 0px;
 			+ .note {
@@ -1070,9 +1063,10 @@ div.popover {
 #footer {
 	clear: both;
 	width: 100%;
-	background: #b0acae;
-	margin-top: 37px;
-	padding: 14px 0;
+	background: #EFEFEF;
+	border-top: 1px solid #DDD;
+	margin-top: 1.25em;
+	padding: 1.5em 0;
 }
 #bottom, #copyright {
 	width: 100%;
@@ -1080,12 +1074,12 @@ div.popover {
 	text-align: center;
 	font-size: 0.875em;
 	line-height: 1.42857em;
-	color: #FFF;
-	font-family: $default_font_family;
+	color: $default_color;
+	font-family: $font-stack;
 	-webkit-font-smoothing: antialiased;
 }
 #bottom a, #copyright a {
-	color: #FFF;
+	color: $default_link_color;
 }
 
 /* Form input / label styling  -------------------------------------------------------------------------- */
@@ -1099,7 +1093,7 @@ div.popover {
 	padding: 10px 13px;
 	z-index: 1;
 	cursor: text;
-	font-family: $default_font_family;;
+	font-family: $font-stack;;
 	font-size: 1.125em;
 	color: rgba(153,153,153,0.92);
 }
@@ -1121,7 +1115,7 @@ div.popover {
 }
 
 .search_results {
-	font-family: $default_font_family;
+	font-family: $font-stack;
 	h1 {
 		@include search-results-header-style;
 		font-weight: bold;
@@ -1445,7 +1439,7 @@ $railwidth: 160px;
 $masterwidth: $railwidth * 6; /*960px*/
 
 .contact *{
-	font-family: $default_font_family;
+	font-family: $font-stack;
 	text-shadow: 0 1px #ccc;
 }
 
@@ -1577,7 +1571,7 @@ ul.email-contact-list li:before{
 /*  Show all categories --------------------------------------------- */
 
 #show_all_categories {
-	font-family: $default_font_family;
+	font-family: $font-stack;
 	.content {
 		width: 880px;
 		padding-left: 20px;
@@ -1585,7 +1579,7 @@ ul.email-contact-list li:before{
 		margin: 0px auto 0px auto;
 		font-size: 1.05em;
 		h1 {
-			font-family: 'museo_slab500', Helvetica, Arial, sans-serif;
+			font-family: $header-font-stack;
 			text-align: center;
 			font-size: 24px;
 			line-height: 24px;
@@ -1887,7 +1881,7 @@ ul.links-list > li{
 	position: absolute;
 	bottom: 2px;
 	right: 60px;
-	color: #333;
+	color: $default_color;
 }
 .alpha_note, .short-company-description{
 	font-size: 18px;
@@ -1949,3 +1943,293 @@ ul.links-list > li{
 	text-align: center;
 }
 
+/*  GENUINELY NEW STYLES -------------------------------------------------------------------------- */
+
+.content {
+	max-width: 960px;
+	margin: 0 auto 0 auto;
+	font-family: $font-stack;
+	color: $default_color;
+	@media screen and (max-width: 960px) {
+			padding: 0 1em;
+			}
+	
+	 h1 {
+		font-family: $header-font-stack;
+		font-weight: 500;
+		font-size: 2em;
+		color: $blue;
+		line-height: 1.5em;
+	}
+	  h2 {
+		font-family: $header-font-stack;
+		font-weight: 500;
+		font-size: 1.25em;
+		line-height: 1.125em;
+		margin-bottom: 0.5em;
+			@media screen and (max-width: 768px) {
+				line-height: 1.5em;
+			}
+	}
+	h3 {
+		font-family: $header-font-stack;
+		font-weight: 500;
+		font-size: 1.125em;
+	}
+	  h4 {
+		font-weight: bold;
+		font-size: 0.875em;
+		line-height: 1.5em;
+	}
+	 .left {
+		float: left;
+		@media screen and (max-width: 832px) {
+			float: none;
+			}
+	}
+	  .right {
+		float: right;
+		@media screen and (max-width: 832px) {
+			float: none;
+			}
+	}
+	  .col2 {
+		width: 48.4375%;
+		@media screen and (max-width: 832px) {
+			width: 100%;
+			}
+	}
+	 .col3 {
+			width: 65.8333%;
+			@media screen and (max-width: 832px) {
+			width: 100%;
+			}
+		}
+	.col4 {
+		width: 74.5%;
+		@media screen and (max-width: 832px) {
+			width: 100%;
+			}
+	}
+	.testimonial {
+		width: 31.875%;
+		@media screen and (max-width: 768px) {
+			width: 100%;
+			margin: 1em 0;
+			}
+		
+		img {
+			max-width: 100%;
+		}
+		
+		blockquote {
+			font-family: $header-font-stack;
+			font-weight: 500;
+			color: $blue;
+			font-size: 1.125em;
+			line-height: 1.5em;
+			margin: 0.875em 0 0.25em 0.1875em;
+		}
+		small.author {
+			font-size: 0.875em;
+			display: block;
+			margin: 0 0 0 0.1875em;
+		}
+	}
+	.illustration {
+		width: 22.5%;
+		@media screen and (max-width: 768px) {
+			width: 100%;
+			margin: 1em 0;
+			}
+	}
+	.bio-photo {
+		width: 32.258%;
+		margin-bottom: 1em;
+		@media screen and (max-width: 728px) {
+			width: 100%;
+			}
+	}
+	.bio-photo img {
+		width: 100%;
+		height: auto;
+	}
+	.bio {
+		width: 65.1613%;
+		@media screen and (max-width: 876px) {
+			width: 100%;
+			}
+	}
+	
+	  .left .bio-photo {
+		float: left;
+		margin-right: 0.75em;
+		@media screen and (max-width: 876px) {
+			float: none;
+			margin-right: 0;
+			}
+	}
+	 .right .bio-photo {
+		float: right;
+		margin-left: 0.75em;
+		@media screen and (max-width: 876px) {
+			float: none;
+			margin-left: 0;
+			}
+	}
+	  p {
+		line-height: 1.5em;
+		margin: 0 0 1.5em 0;
+		font-size: 0.875em;
+	}
+	.content-section {
+	overflow: auto;
+	}
+	.section-header {
+		margin: 1.75em 0;
+		overflow: hidden;
+	}
+	.follow {
+		font-size: 0.875em;
+		display: table;
+		margin: 3.0714em 0 0 0;
+		
+		span {
+			display: table-cell;
+			padding-right: 0.3125em;
+			vertical-align: bottom;
+		}
+		
+		a {
+			width: 24px;
+			height: 24px;
+			background: url(social-icon-sprites.gif) no-repeat;
+			display: table-cell;
+			text-indent: -999em;
+			padding-right: 0.3125em;	
+		}
+		a.fb {
+			background-position: 0 0;
+		}
+		a.tw {
+			background-position: -29px 0;
+		}
+		a.gp {
+			background-position: -58px 0;
+		}
+	}
+	@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+    }
+
+.rounded img { 
+	@include border-radius(12px);
+	-webkit-box-shadow: 2px 4px 8px 0px rgba(0,0,0,0.15);
+	-moz-box-shadow: 2px 4px 8px 0px rgba(0,0,0,0.15);
+	box-shadow: 2px 4px 8px 0px rgba(0,0,0,0.15);
+	}
+}
+.privacy {
+	h3 {
+		margin-bottom: 0.875em;
+	}
+}
+
+/*  Contact page -------------------------------------------------------------------------- */
+
+#contact-page {
+	max-width: 1140px;
+	margin-top: 2em;
+	
+	.contact-photo {
+		display: none;
+		@media screen and (max-width: 960px) {
+			display: block;
+			margin-bottom: 1em;
+	}
+		img {
+			max-width: 100%;
+		}
+	}
+	
+	.contact-section {
+		width: 100%;
+		background: url(contactImg.jpg) no-repeat;
+		background-size: 100% auto;
+		height: 490px;
+		text-shadow: 1px 0px 4px rgba(0, 0, 0, 0.75);
+		@media screen and (max-width: 960px) {
+			background: transparent;
+			text-shadow: none;
+			}
+		
+			header {
+				max-width: 960px;
+				margin: 0 auto;
+				padding-top: 2em;
+				@media screen and (max-width: 960px) {
+					padding-top: 0;
+					}
+		
+			h1 {
+				font-size: 2.5625em;
+				font-family: $header-font-stack;
+				font-weight: 500;
+				color: #FFF;
+				line-height: 1.2em;
+				@media screen and (max-width: 960px) {
+					color: #333;
+					}
+			}
+			h2 {
+				font-size: 1.625em;
+				font-family: $header-font-stack;
+				font-weight: 500;
+				color: #FFF;
+				line-height: 1.2em;
+				@media screen and (max-width: 960px) {
+					color: #333;
+					}
+			}
+			a {
+				color: #FFF;
+				text-decoration: none;
+				@media screen and (max-width: 960px) {
+					color: $blue;
+					}
+			}
+			a:hover {
+				color: #EFEFEF;
+			}
+		}
+		p {
+			font-size: 1.25em;
+			color: #FFF;
+			max-width: 960px;
+			margin: 0 auto 2em auto;
+			padding-top: 25%;
+				@media screen and (max-width: 960px) {
+					padding-top: 0;
+					color: #333;
+					text-shadow: none;
+					}
+		}
+	}
+}
+
+hr {
+	clear: both;
+	width: 100%;
+	height: 1px;
+    color: #DDD;
+    background: #DDD;
+    border: 0;
+    margin: 0.875em 0 0 0;
+}
+
+.capitalized{
+	text-transform: capitalize;
+}
