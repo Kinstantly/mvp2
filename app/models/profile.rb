@@ -1,7 +1,7 @@
 class Profile < ActiveRecord::Base
 	
 	# Placeholder for profiles with no photo.
-	DEFAULT_PHOTO_PATH = 'profile-photo-placeholder-original.jpg'
+	DEFAULT_PHOTO_PATH = 'profile-photo-placeholder-original.png'
 	
 	# Possible modes by which the provider may communicate.  Boolean attributes.
 	# Will be displayed in this order.
@@ -58,8 +58,8 @@ class Profile < ActiveRecord::Base
 					:convert_options => {
 						:all => '-strip -interlace Plane'
 					},
-					:default_url => 'profile-photo-placeholder-:style.jpg'
-    
+					:default_url => 'profile-photo-placeholder-:style.png'
+
 	# validate :publishing_requirements # No requirements because a new provider's profile is published upon creation.
 	# validates :categories, length: {maximum: 1}
 	validates :email, email: true, allow_blank: true
