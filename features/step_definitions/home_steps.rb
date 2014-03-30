@@ -52,11 +52,11 @@ Then /^I should see a Google form$/ do
 end
 
 Then /^I should see contact information$/ do
-	page.should have_content I18n.t('contact.intro')
+	page.should have_content 'Ask us anything'
 end
 
 Then /^I should see a statement about us$/ do
-	page.should have_content('About us')
+	page.should have_content('Meet the Founders')
 end
 
 Then /^I should see a list of frequently asked questions and answers$/ do
@@ -64,7 +64,15 @@ Then /^I should see a list of frequently asked questions and answers$/ do
 end
 
 Then /^I should see explanations of our terms of use$/ do
-	page.should have_content('Terms of Use')
+	within('.privacy .section-header') do
+		page.should have_content('Terms of Use')
+	end
+end
+
+Then /^I should see explanations of our privacy policy$/ do
+	within('.privacy .section-header') do
+		page.should have_content('Our Privacy Policy')
+	end
 end
 
 Then /^I should see that authored category$/ do

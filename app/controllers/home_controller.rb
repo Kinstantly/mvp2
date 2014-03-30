@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-	before_filter :authenticate_user_on_private_site, except: [:about, :contact, :terms]
+	before_filter :authenticate_user_on_private_site, except: [:about, :contact, :privacy, :terms]
 	before_filter :authenticate_user_on_public_site, only: [:admin]
 	before_filter :authorize_admin, only: [:admin]
 	# before_filter :authenticate_user!

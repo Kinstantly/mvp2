@@ -5,5 +5,11 @@ Feature: Terms of Use
 
 	Scenario: show terms of use
 		Given I am not logged in
-		When I visit the "terms" page
+		When I visit the "/terms" page
+		Then I should see explanations of our terms of use
+
+	@private_site
+	Scenario: show terms of use when running as a private site
+		Given I am not logged in
+		When I visit the "/terms" page
 		Then I should see explanations of our terms of use

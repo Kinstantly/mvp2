@@ -5,5 +5,11 @@ Feature: Contact
 
 	Scenario: show contact-us and/or feedback form
 		Given I am not logged in
-		When I visit the "contact" page
+		When I visit the "/contact" page
+		Then I should see contact information
+
+	@private_site
+	Scenario: show contact-us and/or feedback form when running as a private site
+		Given I am not logged in
+		When I visit the "/contact" page
 		Then I should see contact information
