@@ -1,14 +1,15 @@
 - @page_title = "#{company_name} - Contact us"
 - info_email = "#{t('contact.emails.info.value')}@#{t('email_domain')}"
-#contact-page.content
-	%section.contact-section
-		%header
-			%h1 Ask us anything
-			%h2
-				Email us at
-				= mail_to info_email
-		.contact-photo
-			= image_tag "contactImg.jpg", alt: "Contact us", itemprop: 'image', border: "0"
-		%p Or send a note (or cookies) to: Kinstantly, Inc., 350 Townsend St. #683, San Francisco, CA 94107
-	.container
-		= render partial: 'social'
+- cache 'contact_page' do
+	#contact-page.content
+		%section.contact-section
+			%header
+				%h1 Ask us anything
+				%h2
+					Email us at
+					= mail_to info_email
+			.contact-photo
+				= image_tag "contactImg.jpg", alt: "Contact us", itemprop: 'image', border: "0"
+			%p Or send a note (or cookies) to: Kinstantly, Inc., 350 Townsend St. #683, San Francisco, CA 94107
+		.container
+			= render partial: 'social'

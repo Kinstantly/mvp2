@@ -2023,6 +2023,13 @@ ul.links-list > li{
 			line-height: 1.5em;
 			margin: 0.875em 0 0.25em 0.1875em;
 		}
+		blockquote:before {
+			content:"\201C";
+		}
+
+		blockquote:after {
+			content:"\201D";
+		}
 		small.author {
 			font-size: 0.875em;
 			display: block;

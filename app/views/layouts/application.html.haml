@@ -1,3 +1,4 @@
+- copyright_note = "\&copy; Copyright 2013 - #{Date.today.year} Kinstantly, Inc. All Rights Reserved."
 !!! XML
 !!!
 /[if lt IE 7] <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en">
@@ -45,7 +46,8 @@
 					= terms_link wrapper: {tag: :span}
 					= privacy_link wrapper: {tag: :span}
 			%p#copyright
-				\&copy; Copyright 2013 Kinstantly, Inc. All Rights Reserved.
+				- copyright_note = raw "\&copy; Copyright 2013 - #{Date.today.year} Kinstantly, Inc. All Rights Reserved."
+				= copyright_note
 		-# #line
 		-#= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{GOOGLE_BROWSER_API_KEY}&libraries=places&sensor=false".html_safe
 		-#= javascript_include_tag 'https://dme0ih8comzn4.cloudfront.net/js/feather.js' if @using_photo_editor
