@@ -1,3 +1,5 @@
+// Styles for the home page.
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -116,7 +118,7 @@ html, body {
 	padding: 0px 10px;
 }
 a {
-	color: #0b99a2;
+	color: $default_link_color;
 	text-decoration: none;
 }
 a:hover {
@@ -162,7 +164,7 @@ a:hover {
 }
 
 #access ul li a {
-	color: #0b99a2;	
+	color: $default_link_color;	
 	font-weight: bold;
 	text-decoration: none;
 }
@@ -308,9 +310,10 @@ span.help {
 #footer {
 	clear: both;
 	width: 100%;
-	background: #b0acae;
-	margin-top: 37px;
-	padding: 14px 0;
+	background: #EFEFEF;
+	border-top: 1px solid #DDD;
+	margin-top: 1.25em;
+	padding: 1.5em 0;
 }
 #bottom, #copyright {
 	width: 100%;
@@ -318,12 +321,12 @@ span.help {
 	text-align: center;
 	font-size: 0.875em;
 	line-height: 1.42857em;
-	color: #FFF;
-	font-family: Helvetica, Arial, sans-serif;
+	color: $default_color;
+	font-family: $font-stack;
 	-webkit-font-smoothing: antialiased;
 }
 #bottom a, #copyright a {
-	color: #FFF;
+	color: $default_link_color;
 }
 
 /* Form input / label styling  -------------------------------------------------------------------------- */
@@ -399,7 +402,7 @@ span.help {
 	width: auto;
 	height: 17px;
 	font-size: 0.9375em;
-	color: #0b99a2;
+	color: $default_link_color;
 	line-height: 1.133333em;
 	position: relative;
 }   
@@ -407,7 +410,7 @@ span.help {
 #all-cats .select-text {
 	display: inline-block;
 	font-size: 1em;
-	color: #0b99a2;
+	color: $default_link_color;
 	font-weight: bold;
 }
 #all-cats .select-text:after {

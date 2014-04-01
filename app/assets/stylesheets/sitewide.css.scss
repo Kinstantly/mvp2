@@ -1,7 +1,12 @@
 // Styles and values used across the entire site, i.e., the home page and all interior pages.
 
-$default_font_family: Helvetica, Arial, sans-serif;
-$default_link_color: #0b99a2;
+$default_color: #333;
+$default_background: white;
+$font-stack: Helvetica, Arial, sans-serif;
+$header-font-stack: 'Raleway', Helvetica, Arial, sans-serif;
+$default_link_color: #346599;
+$blue: #437FBF;
+
 $text_light_color: #807f7f;
 $text_lighter_color: #d9d8d8;
 $kinstantly_light_gray: #bebebe;
@@ -128,7 +133,7 @@ $message_area_width: 962px;
 $message_corner_radius: 8px;
 
 .flash_messages {
-	font-family: $default_font_family;
+	font-family: $font-stack;
 	line-height: 20px;
 	text-align: center;
 	width: $message_area_width;
