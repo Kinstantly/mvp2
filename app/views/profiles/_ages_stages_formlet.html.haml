@@ -20,14 +20,6 @@
 				= f.label :ages_stages_note
 				= f.text_field :ages_stages_note, class: 'attr'
 				%p.note= t 'views.profile.edit.ages_stages_note_example_html'
-			.check_boxes.stacked
-				= f.label :ages_stages, t('views.profile.edit.check_box_search_only_prompt_html')
-				%br
-				= profile_age_ranges_hidden_field_tag(f)
-				- AgeRange.active.sorted.each do |age_range|
-					.check_box
-						= profile_age_ranges_check_box_tag(@profile, age_range, f)
-						= profile_age_ranges_check_box_label age_range
 			.buttons
 				= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
 				= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'

@@ -21,19 +21,6 @@
 				= f.label :availability_service_area_note
 				= f.text_area :availability_service_area_note, size: '50x5', class: 'attr'
 				%p.note= t 'views.profile.edit.availability_service_area_note_example_html'
-			.check_boxes.stacked
-				= f.label :availability_service_area, t('views.profile.edit.check_box_search_only_prompt_html')
-				%br
-				- Profile::CONSULTATION_MODES.each do |attribute|
-					.check_box
-						= f.check_box attribute
-						= f.label attribute
-				.check_box
-					= f.check_box :consult_remotely
-					= f.label :consult_remotely, t('views.profile.edit.consult_remotely')
-				.check_box
-					= f.check_box :accepting_new_clients
-					= f.label :accepting_new_clients
 			.buttons
 				= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
 				= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'

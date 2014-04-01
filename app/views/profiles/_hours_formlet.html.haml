@@ -21,15 +21,6 @@
 				= f.label :hours
 				= f.text_area :hours, size: '45x5', class: 'attr'
 				%p.note= t 'views.profile.edit.hours_example_html'
-			.check_boxes.stacked
-				= f.label :hours_check_boxes, t('views.profile.edit.check_box_search_only_prompt_html')
-				%br
-				.check_box
-					= f.check_box :evening_hours_available
-					= f.label :evening_hours_available
-				.check_box
-					= f.check_box :weekend_hours_available
-					= f.label :weekend_hours_available
 			.buttons
 				= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
 				= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
