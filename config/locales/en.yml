@@ -426,6 +426,7 @@ en:
     user:
       edit:
         email_note: 'We also use this email to contact you.'
+        header: 'Account settings'
         link: 'Settings'
         password_note: "Leave password blank if you don't want to change it."
         current_password_note: 'We need your current password to confirm your changes.'

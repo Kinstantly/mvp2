@@ -1936,6 +1936,16 @@ ul.links-list > li{
 	text-align: center;
 }
 
+.edit_account {
+	h1 {
+		font-family: $header-font-stack;
+		font-weight: 500;
+		font-size: 2em;
+		color: $blue;
+		line-height: 1.5em;
+	}
+}
+
 /*  GENUINELY NEW STYLES -------------------------------------------------------------------------- */
 
 .content {
