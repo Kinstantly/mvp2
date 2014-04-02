@@ -4,14 +4,6 @@
 %td
 	- if @profile.errorfree.pricing.present?
 		%p.text_area.attribute_display= profile_display_text @profile.errorfree.pricing, preserve: true, links: true
-	%p.list.attribute_display
-		- for_search_only = @profile.errorfree.human_attribute_names_if_present :free_initial_consult, :sliding_scale_available, :financial_aid_available
-		- if for_search_only.present?
-			%span.note=  t 'views.profile.edit.for_search_only'
-			%br
-			= display_wrapped_names for_search_only
-		- elsif @profile.errorfree.pricing.present?
-			%span.note=  t 'views.profile.edit.for_search_only_blank'
 	.edit.popover
 		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 			= f.error_messages

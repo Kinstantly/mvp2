@@ -217,20 +217,6 @@ Feature: Edit my expert profile
 			And I click on the "Save" button of the "ages" formlet
 		Then my profile edit page should show "Beginners to advanced" displayed in the "ages" area
 	
-	Scenario: Update Ages/Stages
-		Given there is a "Teens" age range
-			And there is a "Young adults" age range
-			And I exist as a user
-			And I want my profile
-			And I am logged in
-			And I am on my profile edit page
-		When I open the "stages" formlet
-			And I check "Teens" in the "stages" formlet
-			And I check "Young adults" in the "stages" formlet
-			And I click on the "Save" button of the "stages" formlet
-		Then my profile edit page should show "Teens" displayed in the "stages" area
-			And my profile edit page should show "Young adults" displayed in the "stages" area
-	
 	Scenario: Show display name as editing
 		Given I exist as a user
 			And I want my profile
@@ -266,17 +252,6 @@ Feature: Edit my expert profile
 		Then my profile edit page should show "10-5 M-F" displayed in the "hours" area
 			And my profile edit page should show "1-4 Sa" displayed in the "hours" area
 	
-	Scenario: Check hours availability options
-		Given I exist as a user
-			And I am logged in
-			And I am on my profile edit page
-		When I open the "hours" formlet
-			And I check "Evening hours available" in the "hours" formlet
-			And I check "Weekend hours available" in the "hours" formlet
-			And I click on the "Save" button of the "hours" formlet
-		Then my profile edit page should show "Evening hours available" displayed in the "hours" area
-			And my profile edit page should show "Weekend hours available" displayed in the "hours" area
-	
 	Scenario: Enter pricing
 		Given I exist as a user
 			And I am logged in
@@ -288,17 +263,6 @@ Feature: Edit my expert profile
 			And my profile edit page should show "$40/15 minutes" displayed in the "pricing" area
 			And my profile edit page should show "$120/hour" displayed in the "pricing" area
 	
-	Scenario: Check pricing options
-		Given I exist as a user
-			And I am logged in
-			And I am on my profile edit page
-		When I open the "pricing" formlet
-			And I check "Free initial consult" in the "pricing" formlet
-			And I check "Sliding scale available" in the "pricing" formlet
-			And I click on the "Save" button of the "pricing" formlet
-		Then my profile edit page should show "Free initial consult" displayed in the "pricing" area
-			And my profile edit page should show "Sliding scale available" displayed in the "pricing" area
-	
 	Scenario: Add text for Availability/service area
 		Given I exist as a user
 			And I am logged in
@@ -309,32 +273,6 @@ Feature: Edit my expert profile
 		Then my profile edit page should show "East Bay" displayed in the "availability/service area" area
 			And my profile edit page should show "San Francisco" displayed in the "availability/service area" area
 			And my profile edit page should show "Daly City" displayed in the "availability/service area" area
-	
-	Scenario: Specify consultation modes
-		Given I exist as a user
-			And I am logged in
-			And I am on my profile edit page
-		When I open the "availability/service area" formlet
-			And I check "Email consultations" in the "availability/service area" formlet
-			And I check "Phone consultations" in the "availability/service area" formlet
-			And I check "Video consultations" in the "availability/service area" formlet
-			And I check "Home visits" in the "availability/service area" formlet
-			And I check "School visits" in the "availability/service area" formlet
-			And I click on the "Save" button of the "availability/service area" formlet
-		Then my profile edit page should show "Email consultations" displayed in the "availability/service area" area
-			And my profile edit page should show "Phone consultations" displayed in the "availability/service area" area
-			And my profile edit page should show "Video consultations" displayed in the "availability/service area" area
-			And my profile edit page should show "Home visits" displayed in the "availability/service area" area
-			And my profile edit page should show "School visits" displayed in the "availability/service area" area
-	
-	Scenario: Specify accepting new clients
-		Given I exist as a user
-			And I am logged in
-			And I am on my profile edit page
-		When I open the "availability/service area" formlet
-			And I check "Accepting new clients" in the "availability/service area" formlet
-			And I click on the "Save" button of the "availability/service area" formlet
-		Then my profile edit page should show "Accepting new clients" displayed in the "availability/service area" area
 	
 	Scenario: Request extra location
 		Given I exist as a user

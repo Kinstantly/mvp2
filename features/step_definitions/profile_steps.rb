@@ -232,7 +232,7 @@ Given /^there is an unclaimed profile$/ do
 	create_unattached_profile
 end
 
-Given /^I visit the (view|edit|admin view|admin edit) page for (?:a|an|the) (claimed|published|unclaimed|unpublished|current) profile( with no locations| with one location| with no reviews| with one review)?$/ do |page, type, items|
+Given /^I visit the (view|edit|admin view|admin edit) page for (?:a|an|the)( existing)? (claimed|published|unclaimed|unpublished|current) profile( with no locations| with one location| with no reviews| with one review)?$/ do |page, existing, type, items|
 	attrs = case items.try(:sub, /\A\s*with\s*/, '')
 	when 'no locations'
 		{ locations: [] }
@@ -250,10 +250,10 @@ Given /^I visit the (view|edit|admin view|admin edit) page for (?:a|an|the) (cla
 	
 	case type
 	when /unclaimed|unpublished/
-		create_unattached_profile attrs
+		create_unattached_profile attrs unless existing
 		find_unattached_profile
 	when /claimed|published/
-		create_published_profile attrs
+		create_published_profile attrs unless existing
 		find_published_profile
 	end
 	
