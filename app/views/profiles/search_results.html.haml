@@ -76,6 +76,7 @@
 				.search_result= paginate @search.results
 		- if @search.total > 1
 			.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
+= render partial: 'layouts/g_analytics', locals: {search_result_num: @search.total}
 
 :javascript
 	my_vars.locations_json	= '#{escape_javascript locations_array.to_json}';
