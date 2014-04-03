@@ -1,4 +1,7 @@
 module MailerHelper
+	
+	include SiteConfigurationHelpers
+	
 	def mailer_image_url(image)
 		"#{root_url.chomp('/')}#{path_to_image image}"
 	end
@@ -17,5 +20,9 @@ module MailerHelper
 
 	def mailer_display_time(time_with_zone)
 		time_with_zone.localtime.strftime('%a, %b %d, %Y %l:%M %p %Z')
+	end
+	
+	def mailer_edit_user_link(user)
+		link_to (running_as_private_site? ? 'Confirm new account' : 'Edit account'), edit_user_url(user)
 	end
 end

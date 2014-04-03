@@ -10,6 +10,6 @@
 			%p
 				username:
 				= @user.username
-			%p= link_to 'Edit account', edit_user_url(@user)
+			%p= mailer_edit_user_link @user
 		- else
 			%p Oops, can't find the parent's record.

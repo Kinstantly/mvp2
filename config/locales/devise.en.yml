@@ -29,7 +29,7 @@ en:
       running_as_private_site: ''
       already_authenticated: 'You are already signed in.'
       unauthenticated: 'Sorry, that page was not found. You might need to sign in.'
-      unconfirmed: 'You have to confirm your account before continuing.'
+      unconfirmed: 'Please check your email for confirmation instructions from Kinstantly. After you have confirmed, you will be allowed to use the site.'
       confirmation_not_sent: "We are reviewing your request to participate. If everything looks fine, we'll send you an email with login information."
       locked: 'Your account is locked.'
       invalid: 'Invalid email or password.'
