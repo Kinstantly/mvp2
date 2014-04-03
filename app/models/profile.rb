@@ -1,7 +1,8 @@
 class Profile < ActiveRecord::Base
 	
 	# Placeholder for profiles with no photo.
-	DEFAULT_PHOTO_PATH = 'profile-photo-placeholder-original.png'
+	DEFAULT_PHOTO_PATH = 'profile-photo-placeholder-large.png'
+	DEFAULT_EDIT_PHOTO_PATH = 'profile-edit-photo-placeholder-large.png'
 	
 	# Possible modes by which the provider may communicate.  Boolean attributes.
 	# Will be displayed in this order.

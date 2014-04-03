@@ -48,7 +48,10 @@
 				%p Providers, in turn, want someone else to handle the marketing and scheduling and payments, so they can concentrate on doing the work they love: helping families. They&rsquo;re tired of losing money when they have no-shows or unfilled holes in their schedule. And they want an easier way to create a great web and mobile presence to attract new customers without spending a fortune to hire someone or taking forever to do it themselves.
 				%p That&rsquo;s why we&rsquo;re building Kinstantly. After talking to hundreds of parents and providers over the past year, we&rsquo;ve zeroed in on some great solutions. We&rsquo;re just getting started. But in the weeks and months ahead, we&rsquo;ll be working to connect you all, dot by dot, in ways we think you&rsquo;ll love.
 			%aside.testimonial.left
-				= image_tag "testimonial_photo.png", alt: "", itemprop: 'image', border: "0"
+				.photo-container
+					= image_tag "testimonial_photo.png", alt: "", itemprop: 'image', border: "0"
+					%span.photo-credit
+						= link_to '&copy; Slava Basovich'.html_safe, profile_path(1509)
 				%blockquote I wanted a doula to help me during labor and after &ndash; and Kinstantly showed me the options and helped me get a real feel for each one and how she worked. It was fast and cut the stress. And I love my doula!
 				%small.author &ndash; Sierra R. mother of a 4-month-old daughter
 		= render partial: 'social'

@@ -2019,8 +2019,18 @@ ul.links-list > li{
 		@media screen and (max-width: 768px) {
 			width: 100%;
 			margin: 1em 0;
+
+			.photo-credit{
+				font-size: 0.75em;
 			}
-		
+		}
+		.photo-credit{
+			font-size: 0.65em;
+			right: auto;
+			left: 1em;
+			bottom: 1em;
+			padding-top: 0;
+		}
 		img {
 			max-width: 100%;
 		}
@@ -2147,6 +2157,26 @@ ul.links-list > li{
 		margin-bottom: 0.875em;
 	}
 }
+.photo-container{
+	position: relative;
+}
+.photo-credit{
+	position: absolute;
+	display: inline-block;
+	right: 1em;
+	padding-top: 28%;
+	a{
+		color: #efefef;
+		font-weight: bold;
+		text-shadow: none;
+		text-decoration: none;
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+		-moz-opacity: 0.7;
+		-khtml-opacity: 0.7;
+		-webkit-opacity: 0.7;
+		opacity: 0.7;
+	}
+}
 
 /*  Contact page -------------------------------------------------------------------------- */
 
@@ -2156,13 +2186,24 @@ ul.links-list > li{
 	
 	.contact-photo {
 		display: none;
+		position: relative;
+		.photo-credit{
+			display: none;
+			bottom: 1em;
+			padding-top: 0;
+			font-size: 0.85em;
+		}
 		@media screen and (max-width: 960px) {
 			display: block;
 			margin-bottom: 1em;
-	}
+			.photo-credit{
+				display: inline-block;
+			}
+		}
 		img {
 			max-width: 100%;
 		}
+
 	}
 	
 	.contact-section {
@@ -2171,10 +2212,14 @@ ul.links-list > li{
 		background-size: 100% auto;
 		height: 490px;
 		text-shadow: 1px 0px 4px rgba(0, 0, 0, 0.75);
+		position: relative;
 		@media screen and (max-width: 960px) {
 			background: transparent;
 			text-shadow: none;
+			.photo-credit.section-bg{
+				display: none;
 			}
+		}
 		
 			header {
 				max-width: 960px;
