@@ -1,7 +1,7 @@
 - embedded_in ||= false
 .sign_in.generic_form.smaller_form
 	%h1= t 'views.sign_in.label' unless embedded_in
-	= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+	= form_for(resource, as: resource_name, url: session_path(resource_name), html: {id: 'sign_in_form'}) do |f|
 		- if alert.present? and params[:sign_in_attempt].present?
 			- @suppress_header_alert = true
 			.errorExplanation
@@ -14,12 +14,12 @@
 		.email.text_field
 			= f.label :email
 			%br
-			= f.email_field :email
+			= f.email_field :email, id: 'sign_in_email'
 
 		.password.text_field
 			= f.label :password
 			%br
-			= f.password_field :password, autocomplete: 'off'
+			= f.password_field :password, autocomplete: 'off', id: 'sign_in_password'
 
 		- if devise_mapping.rememberable?
 			.remember_me
