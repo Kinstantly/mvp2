@@ -81,7 +81,7 @@ end
 
 def sign_in(credentials=@visitor)
   visit '/users/sign_in'
-  within('#sign_in') do
+  within('#sign_in_form') do
     fill_in User.human_attribute_name(:email), :with => credentials[:email]
     fill_in User.human_attribute_name(:password), :with => credentials[:password]
     click_button 'sign_in_button'
@@ -155,13 +155,13 @@ When /^I sign up with valid user data$/ do
   sign_up
 end
 
-When /^I sign up as a non\-expert with valid user data$/ do
+When /^I sign up as a (?:non\-expert|parent) with valid user data$/ do
   create_visitor
   @visitor = @visitor.merge(:username => "hoffman")
   sign_up_member
 end
 
-When /^I sign up as a non\-expert without a username$/ do
+When /^I sign up as a (?:non\-expert|parent) without a username$/ do
   create_visitor
   @visitor = @visitor.merge(:username => "")
   sign_up_member

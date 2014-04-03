@@ -1,0 +1,15 @@
+%html
+	%body
+		- if @user
+			%p
+				This parent registered on
+				= mailer_display_time @user.created_at
+			%p
+				email address:
+				= @user.email
+			%p
+				username:
+				= @user.username
+			%p= link_to 'Edit account', edit_user_url(@user)
+		- else
+			%p Oops, can't find the parent's record.

@@ -94,6 +94,7 @@ MAILER_DEFAULT_FROM = 'Kinstantly <support@kinstantly.com>'
 MAILER_DEFAULT_REPLY_TO = 'Kinstantly <support@kinstantly.com>'
 MAILER_DEFAULT_BCC = 'monitor@kinstantly.com'
 Phonie::Phone.default_country_code = '1'
+ADMIN_EMAIL = 'admin@kinstantly.com'
 REVIEW_MODERATOR_EMAIL = 'admin@kinstantly.com'
 PROFILE_MODERATOR_EMAIL = 'profile_monitor@kinstantly.com'
 SEARCH_DEFAULT_PER_PAGE = ENV['SEARCH_DEFAULT_PER_PAGE'].presence || 20
