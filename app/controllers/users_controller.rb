@@ -39,7 +39,7 @@ class UsersController < ApplicationController
 			set_flash_message :alert, :already_has_profile
 			redirect_to confirm_claim_profile_url(claim_token: params[:token])
 		elsif current_user.claim_profile(params[:token], @force_claim_profile)
-			set_flash_message :notice, :profile_claimed
+			# set_flash_message :notice, :profile_claimed
 			redirect_to my_profile_url
 		else
 			set_flash_message :alert, :profile_claim_error

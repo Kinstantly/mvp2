@@ -5,7 +5,7 @@ describe UserAccountMailer do
 	include EmailSpec::Matchers
 	include Rails.application.routes.url_helpers
 	
-	context "welcome email to a parent" do
+	context "confirmation email to a parent" do
 		let(:user) { FactoryGirl.create :parent, require_confirmation: true }
 		let(:email) { UserAccountMailer.on_create_confirmation_instructions user }
 		
@@ -13,7 +13,7 @@ describe UserAccountMailer do
 			email.should deliver_to(user.email)
 		end
 		
-		it "should have the welcome email subject" do
+		it "should have the confirmation email subject" do
 			email.should have_subject(I18n.t 'devise.mailer.on_create_confirmation_instructions.subject')
 		end
 		
@@ -22,7 +22,7 @@ describe UserAccountMailer do
 		end
 	end
 	
-	context "welcome email to a parent" do
+	context "confirmation email to a provider" do
 		let(:user) { FactoryGirl.create :provider, require_confirmation: true }
 		let(:email) { UserAccountMailer.on_create_provider_confirmation_instructions user }
 		
@@ -30,12 +30,29 @@ describe UserAccountMailer do
 			email.should deliver_to(user.email)
 		end
 		
-		it "should have the welcome email subject" do
+		it "should have the confirmation email subject" do
 			email.should have_subject(I18n.t 'devise.mailer.on_create_provider_confirmation_instructions.subject')
 		end
 		
 		it "should contain a confirmation link" do
 			email.should have_body_text(user_confirmation_url)
+		end
+	end
+	
+	context "welcome email to a provider" do
+		let(:user) { FactoryGirl.create :provider_with_published_profile }
+		let(:email) { UserAccountMailer.on_create_welcome user }
+		
+		it "should deliver to the user" do
+			email.should deliver_to(user.email)
+		end
+		
+		it "should have the welcome email subject" do
+			email.should have_subject(I18n.t 'devise.mailer.on_create_welcome.subject')
+		end
+		
+		it "should contain a link to the provider's profile edit page" do
+			email.should have_body_text(edit_my_profile_url)
 		end
 	end
 end
