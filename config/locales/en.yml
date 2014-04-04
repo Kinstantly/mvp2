@@ -336,7 +336,7 @@ en:
         message: 'Click here to claim your profile'
       claim_confirm:
         link_body: 'Click here'
-        message: 'if you want to replace your existing profile with the one you want claim.'
+        message: 'if you want to replace your existing profile with the one you want to claim.'
     review:
       edit:
         add: 'Fill in a new review'
