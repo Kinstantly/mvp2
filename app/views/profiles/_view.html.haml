@@ -5,6 +5,8 @@
 			%legend= t 'views.profile.legend.admin_info'
 			.profile_id
 				= t 'views.profile.view.id', id: profile.id
+			.public_on_private_site_state
+				= profile.public_on_private_site ? t('views.profile.view.profile_is_public_on_private_site') : t('views.profile.view.profile_is_not_public_on_private_site')
 			.publish_state
 				= profile.is_published ? t('views.profile.view.profile_is_published') : t('views.profile.view.profile_is_not_published')
 			.user_state

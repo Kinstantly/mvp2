@@ -32,6 +32,10 @@ FactoryGirl.define do
 				invitation_token '83214c76-a991-11e3-9de8-00264afffe0a'
 				user
 			end
+			
+			factory :public_profile_on_private_site do
+				public_on_private_site true
+			end
 		end
 		
 		factory :unpublished_profile do

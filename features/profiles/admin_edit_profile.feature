@@ -83,3 +83,12 @@ Feature: Site administrator edits a profile
 			And I save the profile
 			And I visit the admin view page for the existing unclaimed profile
 		Then I should see "Accepting new clients" on the page
+
+	@private_site
+	Scenario: Specify public profile on a private site
+		Given I am logged in as a profile editor
+		When I visit the admin edit page for an unclaimed profile
+			And I check "Public on private site"
+			And I save the profile
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should see "Profile is public on private site" on the page

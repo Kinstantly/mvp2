@@ -936,10 +936,24 @@ describe ProfilesController do
 	
 	context "when running as a private site", private_site: true do
 		let(:published_profile) { FactoryGirl.create(:published_profile) }
+		let(:public_profile_on_private_site) { FactoryGirl.create(:public_profile_on_private_site) }
 		
 		describe "GET 'show'" do
 			it "redirects to the sign-up page" do
 				get :show, id: published_profile.id
+				response.should redirect_to alpha_sign_up_path
+			end
+			
+			it "shows a profile marked as 'public on private site'" do
+				get :show, id: public_profile_on_private_site.id
+				response.should render_template('show')
+				assigns[:profile].should == public_profile_on_private_site
+			end
+			
+			it "does not show an unpublished profile marked as 'public on private site'" do
+				public_profile_on_private_site.is_published = false
+				public_profile_on_private_site.save
+				get :show, id: public_profile_on_private_site.id
 				response.should redirect_to alpha_sign_up_path
 			end
 		end

@@ -159,9 +159,9 @@ module ProfilesHelper
 		end
 	end
 
-	def profile_publish_check_box(tag_name, profile)
-		hidden_field_tag(tag_name, '', id: 'is_published_not') +
-			check_box_tag(tag_name, '1', profile.is_published, id: 'is_published')
+	def profile_admin_check_box(attribute, profile)
+		hidden_field_tag(attribute, '', id: "#{attribute}_not") +
+			check_box_tag(attribute, '1', profile.send(attribute), id: attribute)
 	end
 
 	def profile_list_view_link(profile, name, html_options={})

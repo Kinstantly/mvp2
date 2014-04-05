@@ -1,6 +1,8 @@
 class Ability
 	include CanCan::Ability
-
+	
+	include SiteConfigurationHelpers
+	
 	def initialize(user)
 		user ||= User.new # guest user (not logged in)
 		
@@ -10,6 +12,12 @@ class Ability
 		# The public and crawlers can view published profiles (but not the index because it shows full profiles).
 		alias_action :show, :show_claiming, :link_index, :rating_score, to: :view
 		can :view, Profile, is_published: true
+		
+		# When running as a private site and not signed in, can only show publicly published profiles.
+		if running_as_private_site? and !user.confirmed?
+			cannot :view, Profile
+			can :show, Profile, is_published: true, public_on_private_site: true
+		end
 		
 		# Any confirmed user can rate a published profile that is not their own.
 		can :rate, Profile, is_published: true if user.confirmed?
