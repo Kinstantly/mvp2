@@ -13,6 +13,8 @@ $kinstantly_light_gray: #bebebe;
 $kinstantly_gray: #aeaeae;
 $kinstantly_light_chartreuse: #afb434;
 $kinstantly_chartreuse: #9fa42f;
+$kinstantly_light_blue: #437fc0;
+$kinstantly_blue: #366599;
 $kinstantly_pink: #e43d5d;
 $search_input_color: #000;
 $search_input_background: #ffffff;
@@ -68,7 +70,7 @@ $button_corner_radius: 4px;
 }
 
 @mixin button-style {
-	background-color: $kinstantly_light_chartreuse;
+	background-color: $kinstantly_light_blue;
 	font: {
 		size: 15px;
 		weight: bold;
@@ -86,11 +88,11 @@ $button_corner_radius: 4px;
 
 @mixin default-button-style {
 	@include button-style;
-	background-color: $kinstantly_light_chartreuse;
+	background-color: $kinstantly_light_blue;
 }
 @mixin default-button-hover-style {
 	@include button-style;
-	background-color: $kinstantly_chartreuse;
+	background-color: $kinstantly_blue;
 }
 @mixin default-button-disabled-style {
 	@include button-style;

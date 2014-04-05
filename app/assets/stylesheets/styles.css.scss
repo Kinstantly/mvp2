@@ -230,7 +230,7 @@ $masthead_width: 920px;
 	width: 16px;
 	height: 16px;
 	display: inline-block;
-	background: url('help_16.png') 0px 0px no-repeat;
+	background: url('help_16_blue.png') 0px 0px no-repeat;
 	
 	.help_popover {
 		display: none;
@@ -259,7 +259,7 @@ $masthead_width: 920px;
 		margin-right: 8px;
 	}
 	#provider_search_button {
-		background: url('search-sprite-rec-grn.png') no-repeat center 0px;
+		background: url('search-sprite-blue.png') no-repeat center 0px;
 		text-indent: -999em;
 		width: 64px;
 		height: 38px;
@@ -269,7 +269,7 @@ $masthead_width: 920px;
 		box-shadow: none;
 	}
 	#provider_search_button:hover {
-		background: url('search-sprite-rec-grn.png') no-repeat center -38px;
+		background: url('search-sprite-blue.png') no-repeat center -38px;
 		cursor: pointer;
 	}
 	.select-wrapper {
@@ -1320,6 +1320,13 @@ $generic_form_width: 418px;
 	@include form-style;
 	width: $generic_form_width;
 	margin: 0 auto;
+	h1 {
+		font-family: $header-font-stack;
+		font-weight: 500;
+		font-size: 1.5em;
+		color: $blue;
+		line-height: 1.5em;
+	}
 	.text_field input {
 		font-size: 16px;
 	}
@@ -1891,7 +1898,7 @@ ul.links-list > li{
 	.help_icon {
 		@include help_icon;
 		margin-bottom: -4px;
-		background-image: url('help_24.png');
+		background-image: url('help_24_blue.png');
 		width:24px;
 		height:24px;
 		
@@ -1934,16 +1941,6 @@ ul.links-list > li{
 }
 .mid-aligned{
 	text-align: center;
-}
-
-.edit_account {
-	h1 {
-		font-family: $header-font-stack;
-		font-weight: 500;
-		font-size: 2em;
-		color: $blue;
-		line-height: 1.5em;
-	}
 }
 
 /*  GENUINELY NEW STYLES -------------------------------------------------------------------------- */
