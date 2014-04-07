@@ -397,23 +397,28 @@ describe Profile do
 				Sunspot.commit
 			end
 		
-			it "profiles with the service assigned to them should be listed first" do
+			it "should list first the profiles with the service assigned to them" do
 				search = Profile.search_by_service service
 				search.should have(2).results
 				search.results.first.should == profile_with_service
 				search.results.second.should == profile_with_name
 			end
 		
-			it "should find profiles with the service assigned to them" do
-				search = Profile.fuzzy_search nil, service_id: service.id
-				search.should have(1).result
-				search.results.first.should == profile_with_service
-			end
-		
 			it "should ONLY find profiles with the service assigned to them" do
 				search = Profile.fuzzy_search service.name, service_id: service.id
 				search.should have(1).result
 				search.results.first.should == profile_with_service
+			end
+		end
+		
+		context "null search results" do
+			before(:each) do
+				FactoryGirl.create :published_profile, first_name: 'Maria', last_name: 'Callas'
+				FactoryGirl.create :published_profile, first_name: 'Cesare', last_name: 'Valletti'
+			end
+			
+			it "should return no results if no query is supplied to a fuzzy search" do
+				Profile.fuzzy_search('').should have(:no).results
 			end
 		end
 	end

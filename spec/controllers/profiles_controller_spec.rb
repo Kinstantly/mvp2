@@ -757,7 +757,7 @@ describe ProfilesController do
 		end
 		
 		it "should show the nearest provider at the top when searching by service and postal code" do
-			get :search, servide_id: service.id, postal_code: rr_location.postal_code
+			get :search, service_id: service.id, postal_code: rr_location.postal_code
 			assigns[:search].should have(2).results
 			assigns[:search].results.first.should == rr_profile
 			assigns[:search].results.second.should == bear_profile
@@ -786,7 +786,7 @@ describe ProfilesController do
 			end
 		
 			it "should show the nearest provider at the top when searching by service and postal code" do
-				get :search, servide_id: service.id, address: rr_location.postal_code
+				get :search, service_id: service.id, address: rr_location.postal_code
 				assigns[:search].should have(2).results
 				assigns[:search].results.first.should == rr_profile
 				assigns[:search].results.second.should == bear_profile
@@ -828,6 +828,18 @@ describe ProfilesController do
 			assigns[:search].should have(2).results
 			assigns[:search].results.first.should == profile_with_service
 			assigns[:search].results.second.should == profile_with_name
+		end
+	end
+	
+	context "null search results" do
+		before(:each) do
+			FactoryGirl.create :published_profile, first_name: 'Maria', last_name: 'Callas'
+			FactoryGirl.create :published_profile, first_name: 'Cesare', last_name: 'Valletti'
+		end
+		
+		it "should return no results if no search query is supplied" do
+			get :search, query: ''
+			assigns[:search].should have(:no).results
 		end
 	end
 	
