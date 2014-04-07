@@ -1712,11 +1712,12 @@ span.inline_block_attr{
 }
 
 .upload-button{
-	font-family: "Goudy Old Style", Garamond, "Big Caslon", "Times New Roman", serif;
+//	font-family: "Goudy Old Style", Garamond, "Big Caslon", "Times New Roman", serif;
+	font-family: $font-stack;
 	font-weight: bold;
 	font-size: 17px;
 	color:#fff;
-	background-color: #afb434;
+	background-color: $kinstantly_light_blue;
 	padding: 13px 9px;
 	@extend .clickable;
 }
@@ -1726,7 +1727,7 @@ span.inline_block_attr{
 }
 
 .upload-button:hover{
-	background-color: #9fa42f;
+	background-color: $kinstantly_blue;
 }
 
 .aria-hidden{
