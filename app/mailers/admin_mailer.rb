@@ -11,10 +11,10 @@ class AdminMailer < ActionMailer::Base
 		mail
 	end
 	
-	# Notify profile moderator, when a provider registers.
+	# Notify site admin, when a provider registers.
 	def provider_registration_alert(user)
 		@user, @profile = user, user.profile
-		mail subject: "Provider \"#{user.email}\" has registered"
+		mail subject: "Provider \"#{user.email}\" has registered", to: ADMIN_EMAIL
 	end
 	
 	# Notify site admin, when a parent registers.

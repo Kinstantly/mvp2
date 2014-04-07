@@ -75,7 +75,7 @@ Feature: Sign up
 
 		Scenario: Admin receives notification when an expert registers
 			When I sign up with valid user data
-				And "profile_monitor@kinstantly.com" opens the email with subject /Provider.*has registered/
+				And "admin@kinstantly.com" opens the email with subject /Provider.*has registered/
 			Then they should see /provider.*registered/ in the email body
 
 		@private_site
