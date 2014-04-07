@@ -36,7 +36,13 @@
 					%h4 Why I&rsquo;m doing this
 					%p My wife is a childcare provider, and we&rsquo;re both involved in the backyard neighborhoods movement &ndash; helping families create shared spaces where kids can play together spontaneously and neighbors can meet and hang out.
 					%h4 Before Kinstantly
-					%p I was a freelance full-stack developer, a senior developer for BabyCenter, and Technical Director for the Institute for Global Communications.
+					%p
+						I was a freelance full-stack developer, a senior developer for
+						= succeed ',' do
+							%a{href: 'http://babycenter.com', target: '_blank'} BabyCenter
+						and Technical Director for the
+						= succeed '.' do
+							%a{href: 'http://www.igc.org/html/aboutigc.html', target: '_blank'} Institute for Global Communications
 		%hr/
 		%section.content-section
 			%header.section-header
@@ -53,5 +59,5 @@
 					%span.photo-credit
 						= link_to '&copy; Slava Basovich'.html_safe, profile_path(1509)
 				%blockquote I wanted a doula to help me during labor and after &ndash; and Kinstantly showed me the options and helped me get a real feel for each one and how she worked. It was fast and cut the stress. And I love my doula!
-				%small.author &ndash; Sierra R. mother of a 4-month-old daughter
+				%small.author &ndash; Sierra R., mother of a 4-month-old daughter
 		= render partial: 'social'
