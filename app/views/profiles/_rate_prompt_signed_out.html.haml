@@ -1,5 +1,5 @@
 -# Default is english.  Create localized partials for other languages.
-= link_to 'Sign in', member_sign_in_return_path
+= link_to t('views.sign_in.label'), member_sign_in_return_path
 or
-= link_to 'sign up', member_sign_up_return_path
-= "to rate and review #{profile.display_name_or_company}"
+= link_to t('views.sign_up.label'), member_sign_up_return_path
+= t 'views.review.prompt_with_provider_name', name: profile.display_name_or_company

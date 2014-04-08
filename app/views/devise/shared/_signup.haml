@@ -58,5 +58,5 @@
 				%label= parent_provider_tag
 
 		.buttons
-			= f.submit t('views.sign_up.label'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'
+			= f.submit t((is_provider ? :provider_label : :label), scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'
 	

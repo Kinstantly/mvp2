@@ -5,7 +5,7 @@ en:
     messages:
       expired: "has expired, please request a new one"
       not_found: "not found"
-      already_confirmed: "was already confirmed, please try signing in"
+      already_confirmed: "was already confirmed, please try logging in"
       not_locked: "was not locked"
       not_saved:
         one: "1 error prohibited this %{resource} from being saved:"
@@ -13,7 +13,7 @@ en:
       confirmation_not_sent: "We are reviewing your request to participate. If everything looks fine, we'll send you an email with login information."
   devise:
     confirmations:
-      confirmed: "Your email address has been confirmed. You're signed in."
+      confirmed: "Your email address has been confirmed. You're logged in."
       new_confirmation_link: "Didn't receive confirmation instructions?"
       new_confirmation_submit: 'Resend confirmation instructions'
       new_confirmation_submit_disable: 'Resending instructions...'
@@ -25,20 +25,20 @@ en:
       send_paranoid_instructions: 'If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes.'
     failure:
       claiming_profile: 'To claim your profile, please sign up below. If you already have an account, please log in.'
-      reviewing_provider: 'To finish rating, please register or sign in.'
+      reviewing_provider: 'To finish rating, please sign up or log in.'
       running_as_private_site: ''
-      already_authenticated: 'You are already signed in.'
-      unauthenticated: 'Sorry, that page was not found. You might need to sign in.'
+      already_authenticated: 'You are already logged in.'
+      unauthenticated: 'Sorry, that page was not found. You might need to log in.'
       unconfirmed: 'Please check your email for confirmation instructions from Kinstantly. After you have confirmed, you will be allowed to use the site.'
       confirmation_not_sent: "We are reviewing your request to participate. If everything looks fine, we'll send you an email with login information."
       locked: 'Your account is locked.'
       invalid: 'Invalid email or password.'
       invalid_token: 'Invalid authentication token.'
-      timeout: 'Your session expired, please sign in again to continue.'
+      timeout: 'Your session expired, please log in again to continue.'
       inactive: 'Your account was not activated yet.'
     sessions:
-      signed_in: 'Signed in successfully.'
-      signed_out: 'Signed out successfully.'
+      signed_in: 'Logged in successfully.'
+      signed_out: 'Logged out successfully.'
     passwords:
       edit_password_label: 'New password'
       edit_password_title: 'Change your password'
@@ -49,15 +49,15 @@ en:
       new_password_submit_disable: 'Sending...'
       new_password_title: 'Forgot your password?'
       send_instructions: "You'll receive an email in a few minutes with instructions for resetting your password."
-      updated: "Your password was changed successfully. You're now signed in."
+      updated: "Your password was changed successfully. You're now logged in."
       updated_not_active: 'Your password was changed successfully.'
       send_paranoid_instructions: "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
       no_token: "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."
     registrations:
       destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
       signed_up: 'Welcome! You have signed up successfully.'
-      signed_up_but_inactive: 'You have signed up successfully. However, we could not sign you in because your account is not yet activated.'
-      signed_up_but_locked: 'You have signed up successfully. However, we could not sign you in because your account is locked.'
+      signed_up_but_inactive: 'You have signed up successfully. However, we could not log you in because your account is not yet activated.'
+      signed_up_but_locked: 'You have signed up successfully. However, we could not log you in because your account is locked.'
       signed_up_but_unconfirmed: ''
       signed_up_but_confirmation_not_sent: ''
       updated: 'You updated your account successfully.'
@@ -68,10 +68,10 @@ en:
       new_unlock_submit_disable: 'Resending instructions...'
       new_unlock_title: 'Resend unlock instructions'
       send_instructions: "You'll receive an email with instructions on how to unlock your account within a few minutes."
-      unlocked: 'Your account has been unlocked successfully. Please sign in to continue.'
+      unlocked: 'Your account has been unlocked successfully. Please log in to continue.'
       send_paranoid_instructions: 'If your account exists, you will receive an email with instructions about how to unlock it in a few minutes.'
     omniauth:
-      authorize_link: 'Sign in with %{provider_name}'
+      authorize_link: 'Log in with %{provider_name}'
     omniauth_callbacks:
       success: 'Successfully authenticated from %{kind} account.'
       failure: 'Could not authenticate you from %{kind} because "%{reason}".'

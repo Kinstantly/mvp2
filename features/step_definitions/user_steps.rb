@@ -267,13 +267,13 @@ end
 
 ### THEN ###
 Then /^I should be signed in$/ do
-  page.should have_content "Sign out"
-  page.should_not have_content "Sign in"
+  page.should have_content I18n.t('views.sign_out.label')
+  page.should_not have_content I18n.t('views.sign_in.label')
 end
 
 Then /^I should be signed out$/ do
-  page.should have_content "Sign in"
-  page.should_not have_content "Sign out"
+  page.should have_content I18n.t('views.sign_in.label')
+  page.should_not have_content I18n.t('views.sign_out.label')
 end
 
 Then /^I see an unconfirmed account message$/ do
@@ -285,11 +285,11 @@ Then /^I see a confirmed account message$/ do
 end
 
 Then /^I see a successful sign in message$/ do
-  page.should have_content "Signed in successfully."
+  page.should have_content I18n.t('devise.sessions.signed_in')
 end
 
 Then /^I should see a successful sign up message$/ do
-  page.should have_content "Welcome! You have signed up successfully."
+  page.should have_content I18n.t('devise.registrations.signed_up')
 end
 
 Then /^I should see an invalid email message$/ do
@@ -313,15 +313,15 @@ Then /^I should see a missing username message$/ do
 end
 
 Then /^I should see a signed out message$/ do
-  page.should have_content "Signed out successfully."
+  page.should have_content I18n.t('devise.sessions.signed_out')
 end
 
 Then /^I see an invalid login message$/ do
-  page.should have_content "Invalid email or password."
+  page.should have_content I18n.t('devise.failure.invalid')
 end
 
 Then /^I should see an account edited message$/ do
-  page.should have_content "You updated your account successfully."
+  page.should have_content I18n.t('devise.registrations.updated')
 end
 
 Then /^I should be an expert$/ do

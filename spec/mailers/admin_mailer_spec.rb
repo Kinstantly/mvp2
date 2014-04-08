@@ -27,8 +27,8 @@ describe AdminMailer do
 		let(:profile) { provider.profile }
 		let(:email) { AdminMailer.provider_registration_alert provider }
 		
-		it "should be set to be delivered to profile admin" do
-			email.should deliver_to(PROFILE_MODERATOR_EMAIL)
+		it "should be set to be delivered to admin" do
+			email.should deliver_to(ADMIN_EMAIL)
 		end
 
 		it "should show the provider's email address in the subject" do
@@ -44,7 +44,7 @@ describe AdminMailer do
 		let(:parent) { FactoryGirl.create :parent }
 		let(:email) { AdminMailer.parent_registration_alert parent }
 		
-		it "should be set to be delivered to profile admin" do
+		it "should be set to be delivered to admin" do
 			email.should deliver_to(ADMIN_EMAIL)
 		end
 

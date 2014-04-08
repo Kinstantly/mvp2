@@ -22,7 +22,7 @@ en:
   controllers:
     access_denied: 'Sorry, you do not have access to that area.'
     page_not_found: 'Sorry, that page was not found.'
-    page_not_found_sign_in: 'Sorry, that page was not found. You might need to sign in.'
+    page_not_found_sign_in: 'Sorry, that page was not found. You might need to log in.'
     categories:
       created: "Category '%{name}' was created."
       create_error: 'The was a problem creating the category.'
@@ -398,12 +398,15 @@ en:
         find_by_name: 'Service name'
         show_on_home_page: 'show'
     sign_in:
-      label: 'Sign in'
+      label: 'Log in'
       prompt: 'Already a member?'
-      submit_disable: 'Signing in...'
+      submit_disable: 'Logging in...'
+    sign_out:
+      label: 'Log out'
     sign_up:
-      label: 'Join us!'
+      label: 'Sign up'
       member_title: 'Become a member'
+      provider_label: 'Join us!'
       provider_link: 'Join us'
       provider_prompt: 'Provider?'
       provider_title: 'Create your profile'
@@ -464,6 +467,7 @@ en:
       one: '1 review'
       other: '%{count} reviews'
     prompt_for_review: 'Are you willing to help your fellow parents even more? Please write a review or provide a tip about this provider!'
+    prompt_with_provider_name: 'to rate and review %{name}'
     body_tip: 'What makes this provider worth a shout-out--or a call-out?'
     review_header: 'Currently reviewing %{name}'
     body_placeholder: 'Share what was best about your experience with this provider - and what, if anything, could have been better.'

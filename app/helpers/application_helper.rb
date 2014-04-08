@@ -30,9 +30,9 @@ module ApplicationHelper
 	
 	def sign_in_out_link(options={})
 		if user_signed_in?
-			link_wrapper link_to('Sign out', destroy_user_session_path, method: :delete), options
+			link_wrapper link_to(t('views.sign_out.label'), destroy_user_session_path, method: :delete), options
 		elsif show_sign_in_link?
-			link_wrapper link_to('Sign in', new_user_session_path), options
+			link_wrapper link_to(t('views.sign_in.label'), new_user_session_path), options
 		end
 	end
 	
