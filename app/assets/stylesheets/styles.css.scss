@@ -1873,7 +1873,19 @@ ul.links-list > li{
 		background: rgba(255,255,255,0.3);
 		-moz-box-shadow: 1px 6px 8px rgba(151,135,140,0.7);
 		-webkit-box-shadow: 1px 4px 8px rgba(151,135,140,0.7);
-		box-shadow: 1px 6px 8px rgba(151,135,140,0.7)
+		box-shadow: 1px 6px 8px rgba(151,135,140,0.7);
+	}
+}
+.ui-tabs-nav {
+	.ui-state-default {
+		a, a:link, a:visited {
+			color: #999999;
+		}
+	}
+	.ui-state-active {
+		a, a:link, a:visited {
+			color: $kinstantly_pink;
+		}
 	}
 }
 .tagline{
