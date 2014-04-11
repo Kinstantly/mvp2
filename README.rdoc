@@ -4,7 +4,7 @@
 
 A user account may have one or more roles assigned to it (see the role-related methods in the User model).  CanCan uses these roles to determine which actions can be performed and what content can be viewed by the user.  See *app/models/ability.rb* for our CanCan configuration.
 
-An administrator can view each registered user's roles on the user admin page: https://get-answers-5555.herokuapp.com/users
+An administrator can view each registered user's roles on the user admin page: https://www.kinstantly.com/users
 
 === Descriptions of user roles
 
@@ -26,9 +26,9 @@ Note: the following role names are used internally by the code and are not expos
 
 As a site designer or developer, you'll want to create a *client* account and *expert* account, in addition to your *profile_editor* or *admin* account.  This will allow you to experience each role as site visitors are.  The easiest way to create them is to use the following sign-up pages (be sure to sign out first).
 
-* *client*: https://get-answers-5555.herokuapp.com/member/sign_up
+* *client*: https://www.kinstantly.com/member/sign_up
 
-* *expert*: https://get-answers-5555.herokuapp.com/provider/sign_up
+* *expert*: https://www.kinstantly.com/provider/sign_up
 
 == Welcome to Rails
 

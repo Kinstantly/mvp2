@@ -91,7 +91,7 @@ Mvp2::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
 	# Devise needs this for its email.
-	config.action_mailer.default_url_options = { :host => 'get-answers-5555.herokuapp.com' }
+	config.action_mailer.default_url_options = { :host => 'www.kinstantly.com' }
 
   # Paperclip config for S3.
   config.paperclip_defaults = {
@@ -113,7 +113,7 @@ Mvp2::Application.configure do
 
 end
 
-SITEMAP_DEFAULT_HOST = 'http://get-answers-5555.herokuapp.com/'
+SITEMAP_DEFAULT_HOST = 'http://www.kinstantly.com/'
 SITEMAP_SITEMAPS_PATH = 'sitemaps/'
 REINDEX_PROFILES_IN_BACKGROUND = true
 
