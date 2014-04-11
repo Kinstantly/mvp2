@@ -30,6 +30,9 @@
 			= render partial: 'profiles/rating_score', locals: {profile: @profile}
 			-# .appointment
 			-# 	%a{href: "#"}= t 'views.profile.view.make_an_appointment'
+		- if @profile.widget_code.present?
+			.ui-helper-clearfix
+			.panel= raw @profile.widget_code
 	%section.details.clearfix
 		.interior
 			.summary-text
