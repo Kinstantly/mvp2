@@ -78,13 +78,14 @@ class ApplicationController < ActionController::Base
 	# If current user is a profile editor, can save this profile, and
 	#   * the is_published param was used, use it to set the publish state of @profile,
 	#   * the public_on_private_site param was used, use it to make @profile public when running as a private site,
-	#   * if any of the admin_notes and lead_generator params are used, set the corresponding profile attribute.
+	#   * if any of the [admin_notes, lead_generator, widget_code] params are used, set the corresponding profile attribute.
 	def process_profile_admin_params
 		if current_user.profile_editor? && can?(:save, @profile)
 			@profile.assign_boolean_param_if_used :is_published, params[:is_published]
 			@profile.assign_boolean_param_if_used :public_on_private_site, params[:public_on_private_site]
 			@profile.assign_text_param_if_used :admin_notes, params[:admin_notes]
 			@profile.assign_text_param_if_used :lead_generator, params[:lead_generator]
+			@profile.assign_text_param_if_used :widget_code, params[:widget_code]
 		end
 	end
 	

@@ -232,6 +232,12 @@ describe ProfilesController do
 					put :formlet_update, id: my_profile_id, formlet: 'summary', profile: {admin_notes: 'Sneaky notes'}
 				}.to raise_error(/protected attributes/i)
 			end
+
+			it "fails to update widget code" do
+				expect {
+					put :formlet_update, id: my_profile_id, formlet: 'summary', profile: {widget_code: '<a>some code</a>'}
+				}.to raise_error(/protected attributes/i)
+			end
 		end
 		
 		describe "DELETE 'destroy'" do

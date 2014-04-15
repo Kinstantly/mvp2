@@ -92,3 +92,11 @@ Feature: Site administrator edits a profile
 			And I save the profile
 			And I visit the admin view page for the existing unclaimed profile
 		Then I should see "Profile is public on private site" on the page
+
+	@javascript
+	Scenario: Save widget code
+		Given I am logged in as a profile editor
+		When I visit the admin edit page for an unclaimed profile
+			And I enter "<div>some widget code</div>" in the "Widget code" field
+			And I save the profile
+		Then I should see "some widget code" on the page
