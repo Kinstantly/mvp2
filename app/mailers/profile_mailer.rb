@@ -5,6 +5,6 @@ class ProfileMailer < ActionMailer::Base
 	
 	def invite(profile)
 		@profile = profile
-		mail to: profile.invitation_email, from: 'Jim Scott <jscott@kinstantly.com>'
+		mail to: profile.invitation_email, from: 'Jim Scott <jscott@kinstantly.com>', category: 'profile_invite'
 	end
 end
