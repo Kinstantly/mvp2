@@ -10,8 +10,6 @@ class Profile < ActiveRecord::Base
 	
 	has_paper_trail # Track changes to each profile.
 	
-	attr_accessor :widget_code # temporary for zero-downtime deployment
-	
 	attr_writer :custom_service_names, :custom_specialty_names # readers defined below
 	
 	attr_accessible :first_name, :last_name, :middle_name, :credentials, :email, 
