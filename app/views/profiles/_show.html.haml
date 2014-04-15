@@ -44,12 +44,9 @@
 	- cache ['profile_locations_map', @profile] do
 		.locations_map
 			= render partial: 'profiles/locations_map', locals: {profile: @profile}
-			-#
-				.appointment
-					%a{href: "#"}= t 'views.profile.view.make_an_appointment'
 	- if @profile.widget_code.present?
 		.ui-helper-clearfix
-		%div= raw @profile.widget_code
+		.promo_container= raw @profile.widget_code
 - cache ['profile_details', @profile] do
 	%section.details.clearfix
 		.interior

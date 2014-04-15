@@ -277,6 +277,7 @@ en:
         age_ranges_blank: 'For search, specify ages/stages'
         ages_example: 'Examples: 0-12, 13-18+, teens and young adults'
         ages_stages_note_example_html: 'Examples: Ages 4-18 <span class="label_highlight">or</span> Students K-12, beginner to advanced <span class="label_highlight">or</span> Teens and parents'
+        admin_attributes: 'Admin fields'
         availability_and_consultation_modes_blank: 'For search, specify consultation methods and availability'
         availability_service_area_note_example_html: 'Examples: Home visits within Alameda County <span class="label_highlight">or</span> Can meet with clients locally or by video anywhere in the world <span class="label_highlight">or</span> All lessons in my home studio'
         cancel: 'Cancel'

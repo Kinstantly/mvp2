@@ -4,6 +4,7 @@
 		= profile_link @profile
 		= edit_profile_link @profile
 		= full_profile_link @profile
+		= link_to t('views.profile.edit.admin_attributes'), "#{request.path}#admin_attributes"
 		= link_to Profile.human_attribute_name(:reviews), "#{request.path}#review_area"
 		- if can?(:destroy, @profile)
 			= render partial: 'destroy', locals: {profile: @profile}

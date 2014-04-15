@@ -228,7 +228,7 @@
 				= f.label :weekend_hours_available
 	-# Mass assignment is not allowed on admin attributes, so use simple params and tags.
 	- if can? :manage, Profile
-		%fieldset.admin_options
+		%fieldset#admin_attributes
 			%legend= t 'views.profile.legend.admin_info'
 			#lead_generator
 				.label_area

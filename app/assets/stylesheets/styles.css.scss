@@ -407,6 +407,10 @@ $profile_tab_padding: 4px;
 	}
 }
 
+.promo_container {
+	position: relative;
+}
+
 /*  Profile header -------------------------------------------------------------------------- */
 
 @mixin profile-photo-style {
@@ -1791,9 +1795,11 @@ ul.links-list > li{
 	}
 }
 
-.locations_map #map_canvas{
-	width: $large_photo_y + 140px;
-	height: $large_photo_y + 100px;
+.locations_map {
+	#map_canvas, #map_canvas_placeholder {
+		width: $large_photo_y + 140px;
+		height: $large_photo_y + 100px;
+	}
 }
 
 .search_results .locations_map #map_canvas{
