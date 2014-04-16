@@ -46,7 +46,7 @@ Until we get a staging server, we are deploying the latest code on the develop b
 
 === Tagging
 
-Create a tag for what you are deploying from the 'master' branch.
+Create a tag for what you are deploying from the 'master' branch. (See below for a bash function that performs all of the following tagging steps.)
 
 Use the following convention for naming a tag.
 
@@ -80,6 +80,35 @@ If you made a mistake and need to delete a tag:
  git tag   # to list all tags and find the tag you want to delete
  git tag -d TAG_NAME_TO_DELETE
  git push origin :refs/tags/TAG_NAME_TO_DELETE
+
+==== Tagging tool
+
+Put the following bash function definition in your ~/.bashrc file.  It will perform the steps needed to create, message, and push the appropriate tag.
+
+  # Create and push a git tag using today's date with an incremental suffix.
+  #
+  function git_tag() {
+      local prefix=$(date '+%Y%m%d')
+      local i=1
+      local tag
+      local last_tag
+      # Show activity since the last tag.
+      last_tag=$(git tag | egrep '^[0-9_]+$' | tail -1)
+      [[ -n "$last_tag" ]] && {
+          echo "Changes since ${last_tag}:"; echo
+          git log "${last_tag}..HEAD" | cat
+          echo
+      }
+      # Calculate the tag.
+      while tag="${prefix}_$(printf '%02d' $i)"; git tag | fgrep -q $tag; do
+          let ++i;
+      done
+      read -p "Create tag ${tag}? (y/n) " ans
+      [[ "$ans" == 'y' ]] && git tag -a $tag && {
+          read -p "Push tag ${tag}? (y/n) " ans
+          [[ "$ans" == 'y' ]] && git push origin $tag
+      }
+  }
 
 === To push to Heroku production
 
