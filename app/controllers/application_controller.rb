@@ -97,6 +97,12 @@ class ApplicationController < ActionController::Base
 		session.delete(:stored_referrer)
 	end
 	
+	# Note that the following headers are set by default in production (probably by the force_ssl configuration) and do not need to be set in the set_default_response_headers method.
+	#   Strict-Transport-Security:"max-age=31536000"
+	#   In the session cookie:
+	#     secure:true
+	#     httpOnly:true
+	
 	# Set security-related HTTP headers in the response.
 	# See https://www.owasp.org/index.php/List_of_useful_HTTP_headers
 	def set_default_response_headers
