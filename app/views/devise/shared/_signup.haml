@@ -44,18 +44,21 @@
 			= f.hidden_field :is_provider, :value => '1'
 		- else
 
-			%div
-				= f.radio_button :is_provider, ''
-				%label= parent_tag
+			.radio_buttons
+				%label
+					= f.radio_button :is_provider, ''
+					= parent_tag
 				%br
-				- if params[:is_provider].present?
-					= f.radio_button :is_provider, '1', checked: true
-				- else
-					= f.radio_button :is_provider, '1'
-				%label= provider_tag
+				%label
+					- if params[:is_provider].present?
+						= f.radio_button :is_provider, '1', checked: true
+					- else
+						= f.radio_button :is_provider, '1'
+					= provider_tag
 				%br
-				= f.radio_button :is_provider, '2'
-				%label= parent_provider_tag
+				%label
+					= f.radio_button :is_provider, '2'
+					= parent_provider_tag
 
 		.buttons
 			= f.submit t((is_provider ? :provider_label : :label), scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'

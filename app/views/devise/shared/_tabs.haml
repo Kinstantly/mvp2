@@ -20,7 +20,7 @@
 				%li
 					=link_to t('views.sign_up.label'), '#sign_up'
 				%li
-					=link_to "#{t 'views.sign_in.prompt'} #{t 'views.sign_in.label'}", '#sign_in'
+					=link_to "<span>#{t 'views.sign_in.prompt'} </span>#{t 'views.sign_in.label'}".html_safe, '#sign_in'
 			#sign_up.sign_up.generic_form
 				= render partial: "devise/shared/signup", locals:{ embedded_in: true, is_private_alpha: is_private_alpha }
 			#sign_in.sign_in.generic_form

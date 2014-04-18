@@ -1824,6 +1824,7 @@ ul.links-list > li{
 }
 .two-column{
 	$maincontent-padding: 20px;
+	$min-screen-width: 478px;
 	.left-rail{
 		width: 3.5 * $railwidth - 2 * $maincontent-padding;
 		
@@ -1837,6 +1838,9 @@ ul.links-list > li{
 			@media (max-width: 728px) {
 				width: $maincontent-padding;
 			}
+			@media (max-width: $min-screen-width) {
+				width: 0px;
+			}
 		}
 	}
 	.right-rail{
@@ -1845,6 +1849,70 @@ ul.links-list > li{
 	.main-column{
 		width: $masterwidth - 3.5 * $railwidth;
 		padding: ($maincontent-padding / 2) $maincontent-padding;
+		@media only screen {
+			@media (max-width: 560px) {
+				.smaller_form {
+					.help_icon {
+						.help_popover {
+							right: -14px;
+							background-color: #ffffff;
+						}
+						.help_popover:before {
+							left: auto;
+							right: 10px;
+						}
+						.help_popover:after {
+							left: auto;
+							right: 10px;
+						}
+					}
+				}
+			}
+			@media (max-width: $min-screen-width) {
+				$content-width: 300px;
+				width: $content-width;
+				padding: ($maincontent-padding / 2) 6px;
+				.logo-company-name {
+					width: $content-width;
+					background-size: contain;
+				}
+				.ui-tabs {
+					.ui-tabs-nav { 
+						li {
+							width: 130px;
+							a span {
+								display: none;
+							}
+						}
+					}
+					.ui-tabs-panel {
+						padding-left: 2px;
+					}
+				}
+				.generic_form {
+					width: $content-width;
+				}
+				.smaller_form {
+					.text_field {
+						input {
+							width: 230px;
+						}
+					}
+					input[type="radio"], input[type="checkbox"] {
+						margin-bottom: 1em;
+					}
+					.radio_buttons label {
+						background-color: #eaeaea;
+						border: $text_light_color solid 1px;
+						@include button-corner-style;
+						display: inline-block;
+						max-width: 270px;
+						min-width: 260px;
+						padding-left: 0.25em;
+					}
+				}
+			}
+		}
 	}
 	.main-column *{
 		max-width: $masterwidth - 3.5 * $railwidth;
@@ -1910,6 +1978,9 @@ ul.links-list > li{
 .smaller_form{
 	.text_field input {
 		width: 300px;
+	}
+	input[type="radio"], input[type="checkbox"] {
+		margin: 0.5em 0.2em;
 	}
 	#error_explanation, .errorExplanation {
 		width: 328px;
