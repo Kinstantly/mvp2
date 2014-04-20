@@ -22,7 +22,7 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 			member_sign_up_url
 		elsif claiming_profile?
 			session[:claiming_profile] = params[:token]
-			provider_sign_up_url
+			provider_sign_up_url claim_profile_tracking_parameter
 		elsif running_as_private_site?
 			alpha_sign_up_url
 		else

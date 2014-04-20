@@ -37,13 +37,13 @@ class UsersController < ApplicationController
 	def claim_profile
 		if current_user.has_persisted_profile? && !@force_claim_profile
 			set_flash_message :alert, :already_has_profile
-			redirect_to confirm_claim_profile_url(claim_token: params[:token])
+			redirect_to confirm_claim_profile_url(claim_profile_tracking_parameter.merge claim_token: params[:token])
 		elsif current_user.claim_profile(params[:token], @force_claim_profile)
 			# set_flash_message :notice, :profile_claimed
-			redirect_to my_profile_url
+			redirect_to my_profile_url claim_profile_tracking_parameter
 		else
 			set_flash_message :alert, :profile_claim_error
-			redirect_to root_url
+			redirect_to root_url claim_profile_tracking_parameter
 		end
 	end
 	

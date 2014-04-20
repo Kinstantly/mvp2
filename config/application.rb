@@ -17,6 +17,9 @@ module Mvp2
     
     # If true, we are running a private site.
     config.running_as_private_site = ENV['RUNNING_AS_PRIVATE_SITE'].present?
+    
+    # Query-string parameter placed in URLs to aid in tracking the profile-claiming funnel.
+    config.claim_profile_tracking_parameter = {claim_profile: 't'}
 
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/lib)

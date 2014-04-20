@@ -78,12 +78,12 @@ describe UsersController do
 		
 			it "redirects to profile view page upon successful claim" do
 				get :claim_profile, token: @token
-				response.should redirect_to(controller: 'profiles', action: 'view_my_profile')
+				response.should redirect_to(claim_profile_tracking_parameter.merge controller: 'profiles', action: 'view_my_profile')
 			end
 		
 			it "redirects to home page when claim fails" do
 				get :claim_profile, token: 'bad-token'
-				response.should redirect_to root_url
+				response.should redirect_to root_url claim_profile_tracking_parameter
 				flash[:alert].should_not be_nil
 			end
 			
@@ -92,7 +92,7 @@ describe UsersController do
 				profile.user = FactoryGirl.create(:expert_user, email: 'email@hasnotbeentaken.com')
 				profile.save
 				get :claim_profile, token: profile.invitation_token
-				response.should redirect_to root_url
+				response.should redirect_to root_url claim_profile_tracking_parameter
 				flash[:alert].should_not be_nil
 			end
 		end
@@ -100,12 +100,12 @@ describe UsersController do
 		context "as provider that already has a profile" do
 			it "should ask for confirmation when claiming the profile in the invitation" do
 				get :claim_profile, token: @token
-				response.should redirect_to confirm_claim_profile_url(claim_token: @token)
+				response.should redirect_to confirm_claim_profile_url(claim_profile_tracking_parameter.merge claim_token: @token)
 			end
 			
 			it "should succeed when forcing the claim to replace existing profile" do
 				get :force_claim_profile, token: @token
-				response.should redirect_to(controller: 'profiles', action: 'view_my_profile')
+				response.should redirect_to(claim_profile_tracking_parameter.merge controller: 'profiles', action: 'view_my_profile')
 				User.find(@kelly.id).profile.should == @claimable_profile
 			end
 		end
