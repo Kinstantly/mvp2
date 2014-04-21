@@ -2033,6 +2033,14 @@ ul.links-list > li{
 	text-align: center;
 }
 
+#awaiting_confirmation {
+	@media screen {
+		@media (max-width: 650px) {
+			width: 90%;
+		}
+	}
+}
+
 /*  GENUINELY NEW STYLES -------------------------------------------------------------------------- */
 
 .content {
