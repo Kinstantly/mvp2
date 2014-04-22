@@ -55,7 +55,7 @@ describe User do
 	
 		it "should succeed if saved with both an email address and a password" do
 			@kelly.email = 'kelly@example.com'
-			@kelly.password = '123456'
+			@kelly.password = '1Two&Tres'
 			@kelly.save.should be_true
 		end
 		

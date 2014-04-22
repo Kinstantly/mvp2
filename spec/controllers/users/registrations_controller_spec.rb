@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Users::RegistrationsController do
 	let(:email) { 'mimi@la.boheme.it' }
-	let(:new_password) { 'Puccini' }
+	let(:new_password) { 'Pucc1n1!' }
 	let(:username) { 'Giacomo' }
 	
 	before(:each) do

@@ -4,11 +4,11 @@
 
 def create_visitor
   @visitor ||= { :email => "example@example.com",
-    :password => "please", :password_confirmation => "please" }
+    :password => "P1eas@nt", :password_confirmation => "P1eas@nt" }
   @visitor_2 ||= { :email => "second_example@example.com",
-    :password => "pleaseplease", :password_confirmation => "pleaseplease" }
+    :password => "P1eas@ntly", :password_confirmation => "P1eas@ntly" }
   @admin_user ||= { :email => "admin_example@example.com",
-    :password => "please", :password_confirmation => "please" }
+    :password => "P1eas@nt", :password_confirmation => "P1eas@nt" }
 end
 
 def find_user

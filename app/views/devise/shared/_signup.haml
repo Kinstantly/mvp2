@@ -3,6 +3,7 @@
 - whoami = is_provider ? (claiming_profile ? 'claiming_profile' : 'provider') : 'member'
 - email_tip = t "views.sign_up.email_tip"
 - username_tip = t "views.sign_up.username_tip"
+- password_tip = t "views.sign_up.password_tip", minimum: User::MIN_LENGTHS[:password]
 - parent_tag = t "views.sign_up.parent_tag"
 - provider_tag = t "views.sign_up.provider_tag"
 - parent_provider_tag = t "views.sign_up.parent_provider_tag"
@@ -16,7 +17,6 @@
 		.email.text_field
 			= f.label :email
 			%br
-			-#%p.tip.grey_text= email_tip
 			= f.email_field :email
 			%span.help_icon
 				.help_popover
@@ -25,7 +25,6 @@
 		.username.text_field
 			= f.label :username
 			%br
-			-#%p.tip.grey_text= username_tip
 			= f.text_field :username
 			%span.help_icon
 				.help_popover
@@ -35,6 +34,9 @@
 			= f.label :password
 			%br
 			= f.password_field :password, autocomplete: 'off'
+			%span.help_icon
+				.help_popover
+					%p.tip.grey_text= password_tip
 
 		.password_confirmation.text_field
 			= f.label :password_confirmation

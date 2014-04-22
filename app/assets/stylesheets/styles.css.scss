@@ -235,6 +235,7 @@ $masthead_width: 920px;
 	.help_popover {
 		display: none;
 		position: absolute;
+		z-index: 10;
 	}
 	&:hover {
 		cursor: pointer;
@@ -1993,13 +1994,13 @@ ul.links-list > li{
 		height:24px;
 		
 		.help_popover {
-			right: -116px;
+			right: -48px;
 			top: 35px;
 			width: 240px;
 			font-size: 13px;
 			padding: 7px;
 			color: #222;
-			background-color: rgba(255, 255, 255, 0.75);
+			background-color: rgba(255, 255, 255, 0.85);
 			border: #7F7F7F solid 1px;
 			@include button-corner-style;
 		}
@@ -2013,7 +2014,7 @@ ul.links-list > li{
 			width: 0;
 			z-index: 1;
 			top: -14px;
-			left: 112px;
+			right: 44px;
 		}
 		.help_popover:before {
 			content: '';
@@ -2025,7 +2026,7 @@ ul.links-list > li{
 			width: 0;
 			z-index: 0;
 			top: -15px;
-			left: 112px;
+			right: 44px;
 		}
 	}
 }

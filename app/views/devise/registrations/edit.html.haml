@@ -10,7 +10,7 @@
 			.password.text_field
 				= f.label :password, t('devise.passwords.edit_password_label')
 				= f.password_field :password, autocomplete: 'off'
-				%span.note= t 'views.user.edit.password_note'
+				%span.note= t 'views.user.edit.password_note', minimum: User::MIN_LENGTHS[:password]
 			.password_confirmation.text_field
 				= f.label :password_confirmation
 				= f.password_field :password_confirmation, autocomplete: 'off'

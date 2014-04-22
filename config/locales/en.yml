@@ -415,6 +415,7 @@ en:
       claiming_profile_title: 'Claim your profile'
       email_tip: "So we can contact you - we'll never give your email address out, and we won't display it publicly."
       username_tip: "This will display next to any reviews you write and must contain at least four characters - letters and numerals only, no spaces. Examples: Mama2000, DadEO" 
+      password_tip: 'Your password must contain at least %{minimum} characters'
       parent_tag: "I'm a parent (or planning a family)"
       provider_tag: "I provide services to families"
       parent_provider_tag: "I'm both a parent and a provider"
@@ -434,7 +435,7 @@ en:
         email_note: 'We also use this email to contact you.'
         header: 'Account settings'
         link: 'Settings'
-        password_note: "Leave password blank if you don't want to change it."
+        password_note: "Leave the password blank if you don't want to change it. If you do change it, your password must contain at least %{minimum} characters."
         current_password_note: 'We need your current password to confirm your changes.'
         submit: 'Save changes'
         submit_disable: 'Saving...'
