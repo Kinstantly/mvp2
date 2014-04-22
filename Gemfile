@@ -171,3 +171,6 @@ gem 'rails-footnotes', '>= 3.7.9', group: :development
 
 #Support for ReCAPTCHA's Mailhide API
 gem 'recaptcha-mailhide'
+
+# Custom categories and filters for Sendgrid
+gem 'sendgrid'

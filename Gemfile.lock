@@ -279,6 +279,8 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0.4)
+    sendgrid (1.2.0)
+      json
     sexp_processor (4.2.1)
     simple_form (2.1.1)
       actionpack (~> 3.0)
@@ -365,6 +367,7 @@ DEPENDENCIES
   rspec-rails (~> 2.0)
   ruby-prof
   sass-rails (~> 3.2.3)
+  sendgrid
   simple_form
   sitemap_generator
   spork-rails
