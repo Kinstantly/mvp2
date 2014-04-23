@@ -18,17 +18,15 @@
 				= f.error_messages
 				
 				.text_field
-					= f.label :body
-					%label{:style => "padding-left: 0"}: (optional)
+					= f.label :body, t('views.field_label', name: Review.human_attribute_name(:body))
 					%br
 					= f.text_area :body, size: '80x5', placeholder: body_placeholder
 
 				.text_field
-					= f.label :good_to_know
-					%label{:style => "padding-left: 0"}: (optional)
+					= f.label :good_to_know, t('views.optional_field_label', name: Review.human_attribute_name(:good_to_know))
 					%br
 					= f.text_area :good_to_know, size: '80x2', placeholder: good_to_know_placeholder
 
 				.buttons
 					= f.submit t('views.review.edit.submit'), disable_with: t('views.review.edit.submit_disable'), class: 'default'
-					= link_to t('views.review.edit.cancel'), profile_path(@review.profile),  class: 'cancel_link'
+					= link_to t('views.review.edit.skip'), profile_path(@review.profile),  class: 'cancel_link'

@@ -860,8 +860,6 @@ table.info {
 	font-size: 14px;
 	line-height: 18px;
 	color: #8d8c8c;
-	width: 750px;
-	float: left;
 	margin-bottom: 12px;
 }
 .review-body p {
@@ -880,8 +878,6 @@ table.info {
 }
 
 .reviews-grouped .review{
-	width: 750px;
-	float: left;
 	margin-top: 6px;
 	margin-bottom: 6px;
 	vertical-align:top;
@@ -897,18 +893,15 @@ table.info {
 	white-space: pre-line;
 }
 .reviews-grouped .review-body {
-	display: inline-block;
 	margin-bottom: 6px;
 	margin-left: 90px;
-	width: 380px;
 }
 .reviews-grouped .review-good-to-know {
-	display: inline-block;
+	float: right;
 	vertical-align: top;
-	margin-left: 10px;
-	margin-top: -6px;
-	padding: 0.7em;
-	max-width:200px;
+	margin: 0.5em 0 0.75em 1.5em;
+	padding: 1em;
+	width: 300px;
 }
 .reviews-grouped .review-good-to-know {
 	font-size: 13px;

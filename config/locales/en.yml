@@ -192,6 +192,8 @@ en:
   views:
     or: 'or'
     accessibility: 'Skip to content'
+    field_label: '%{name}:'
+    optional_field_label: '%{name} (optional):'
     find_button: 'Find'
     not_browsable: '(grayed-out not browsable)'
     form_is_modified: 'You have changes that have not been saved.'
@@ -350,6 +352,7 @@ en:
         remove: 'Mark the above review for removal upon saving'
         remove_confirm: 'This review will be removed when you click save.'
         remove_confirm_admin: 'This review will be removed when you save the profile.'
+        skip: 'Skip'
         submit: 'Submit'
         submit_disable: 'Submitting...'
     search:
