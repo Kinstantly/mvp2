@@ -20,12 +20,11 @@
 					%span{ 'data-placeholder' => 'Drop files here' } Drop files here
 					.upload-waiter.aria-hidden
 			%p.ajax_upload
-				Or import an image file
+				Or import an image file:
 				%input.standard-attachment{ name: 'standard-attachment', accept: 'image/*', type: :file}
 			%p
 				Or
-				= link_to "import an image from a URL", '#', id: 'import_from_url_link'
-				\.
+				= link_to "import an image from a URL.", '#', id: 'import_from_url_link'
 				.text_field.aria-hidden
 					%input{type: :text, name: 'source_url', placeholder: source_url_prompt, title: 'import an image from a URL'}
 					%span#import_from_url_button.upload-button.ui-corner-all
@@ -33,8 +32,7 @@
 
 			%p
 				Or get
-				= link_to "more detailed help", '#', class: 'more-help'
-				\.
+				= link_to "more detailed help.", '#', class: 'more-help'
 		%li.step_two.aria-hidden
 			%label Step 2 of 2
 			%p You successfully uploaded and saved this photo:
@@ -50,12 +48,11 @@
 			%p
 				Or
 				= link_to "upload a different photo.", '#', id: 'show_step_one'
-				/.
 			%p
 				Get
-				= link_to "more detailed help", '#', class: 'more-help'
+				= link_to "more detailed help.", '#', class: 'more-help'
 		%li.step_three.aria-hidden
-			%label More detailed help for photos:
+			%h2 More detailed help for photos:
 
 			%h3
 				I keep trying to upload my photo, and it keeps failing. What's going on?
@@ -79,8 +76,7 @@
 						= link_to "Image Resizer for Windows XP", "http://windows.microsoft.com/en-us/windows-xp/help/digitalphotography/resize-digital-pictures", target: '_blank'
 					%li
 						Or try using an online image resizer, like
-						= link_to "resizr.com", "resizr.com", target: '_blank'
-						/.
+						= link_to "resizr.com.", "http://resizr.com", target: '_blank'
 			%h3
 				I don't have a photo of me. Can I use a stock photo?
 			%p
@@ -94,9 +90,10 @@
 			%p
 				Please email us directly at
 				= mail_to support_email
-				\- we'll get back to you as soon as possible!
+				&mdash; we'll get back to you as soon as possible!
+			%br
 			%p
-				= link_to "Back to editing my profile", '#', id:"back_to_edit_link"
+				= link_to "Done? [Go back to editing your profile.]", '#', id:"back_to_edit_link"
 
 %span.clickable.attribute_display.inline_block_attr{itemprop: "profilePhoto"}
 	%span.blank_attr= profile_photo_prompt
