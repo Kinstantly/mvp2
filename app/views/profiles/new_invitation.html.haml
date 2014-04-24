@@ -1,8 +1,10 @@
+- subject = invite_provider_email_subject
+- body 	  = raw invite_provider_email_body
 .edit_profile
 	= form_for @profile, url: send_invitation_profile_path(@profile) do |f|
 		= f.error_messages
 		.profile_areas
-			.email
+			.provider_invite
 				%p
 					Send an invitation to the following email address requesting to claim the profile for
 					%strong= @profile.display_name_or_company
@@ -11,11 +13,18 @@
 						This profile is not published.  The provider will not be able to preview the profile before claiming it.
 				= f.label :invitation_email, "Invitation Email"
 				= f.text_field :invitation_email, id: 'invitation_email'
-				%p
-					%span.hint
-						Hint: to send a custom invitation, fill in your own email address above and send it to yourself.
-						Use the email you receive to copy and paste the bits you like into your own email composer.
-						Be sure to carefully copy any of the links you use so that they will work properly.
-		.buttons
-			= f.submit 'Send invitation', disable_with: 'Sending invitation...', id: 'send_invitation_profile'
-			= link_to "Cancel", profile_path(@profile)
+				%br
+				= label_tag 'subject', "Subject"
+				= text_field_tag 'subject', subject
+				%br
+				= label_tag "Message body"
+				= text_area_tag 'body', body, rows: 35
+				- #%p
+				- #	%span.hint
+				- #		Hint: to send a custom invitation, fill in your own email address above and send it to yourself.
+				- #		Use the email you receive to copy and paste the bits you like into your own email composer.
+				- #		Be sure to carefully copy any of the links you use so that they will work properly.
+				.buttons
+					= f.submit 'Send to myself', disable_with: 'Sending invitation...', id: 'test_invitation_profile', name: 'commit'
+					= f.submit 'Send to provider', disable_with: 'Sending invitation...', id: 'send_invitation_profile', name: 'commit'
+					= link_to "Cancel", profile_path(@profile)

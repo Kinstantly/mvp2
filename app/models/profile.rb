@@ -340,15 +340,24 @@ class Profile < ActiveRecord::Base
 		age_range_names.join(', ')
 	end
 	
-	def invite
-		if validate_invitable && generate_and_save_invitation_token
-			ProfileMailer.invite(self).deliver
-			self.invitation_sent_at = Time.zone.now
+	def invite(email, subject, body, test_invitation = false)
+		if test_invitation.blank? && !validate_invitable
+			errors.add :invitation_sent_at, I18n.t('models.profile.invitation_sent_at.save_error')
+		elsif generate_and_save_invitation_token
+			claim_url = Rails.application.routes.url_helpers.claim_user_profile_url(token: self.invitation_token)
+			body = body.sub("<<claim_url>>", claim_url)
+			ProfileMailer.invite(email, subject, body).deliver
+			self.invitation_sent_at = Time.zone.now unless test_invitation.present?
 			errors.add :invitation_sent_at, I18n.t('models.profile.invitation_sent_at.save_error') unless save
 		end
 		errors.empty?
 	end
 	
+	def get_new_invitation_token
+		generate_and_save_invitation_token
+		self.invitation_token
+	end
+
 	def claimed?
 		!user.nil?
 	end

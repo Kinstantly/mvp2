@@ -142,3 +142,15 @@
 	display: inline-block;
 	padding: 5px 3px;
 }
+.provider_invite input[type=text], .provider_invite textarea{
+	padding: 5px 6px 4px 6px;
+	width: 900px;
+	margin-bottom: 5px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 13px;
+}
+.provider_invite label {
+	display: inline-block;
+	min-width: 110px;
+	vertical-align: top;
+}

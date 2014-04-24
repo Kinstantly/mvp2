@@ -209,7 +209,9 @@ class ProfilesController < ApplicationController
 	end
 	
 	def send_invitation
-		if @profile.update_attributes(params[:profile]) && @profile.invite
+		subject, body = params[:subject], params[:body]
+		test_invitation = (params[:commit] == 'Send to myself')
+		if @profile.update_attributes(params[:profile]) && @profile.invite((test_invitation.present? ? current_user.email : @profile.invitation_email), subject, body, test_invitation)
 			set_flash_message :notice, :invitation_sent
 			redirect_to profile_url @profile
 		else
@@ -217,7 +219,7 @@ class ProfilesController < ApplicationController
 			render action: :new_invitation, layout: 'plain'
 		end
 	end
-	
+
 	def rating_score
 		render layout: false
 	end
