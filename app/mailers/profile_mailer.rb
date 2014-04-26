@@ -11,8 +11,8 @@ class ProfileMailer < ActionMailer::Base
 		mail to: profile.invitation_email, from: 'Jim Scott <jscott@kinstantly.com>', subject: subject
 	end
 
-	def invite(email, subject, body)
-		@body = body
+	def invite(email, subject, body, profile)
+		@body = body.sub("<<claim_url>>", claim_user_profile_url(token: profile.invitation_token))
 		mail to: email, from: 'Jim Scott <jscott@kinstantly.com>', subject: subject
 	end
 end

@@ -47,8 +47,6 @@ Mvp2::Application.configure do
 
 	# Devise needs this for its email.
 	config.action_mailer.default_url_options = { :host => 'localhost:5000' }
-  # Required to enable access to routes in models and controllers via Rails.application.routes.url_helpers.
-  Rails.application.routes.default_url_options[:host] = 'localhost:5000'
 
   # Configure ActionMailer for smtp.
   # config.action_mailer.smtp_settings = {

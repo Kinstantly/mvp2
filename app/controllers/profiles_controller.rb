@@ -209,11 +209,15 @@ class ProfilesController < ApplicationController
 	end
 	
 	def send_invitation
-		subject, body = params[:subject], params[:body]
+		@subject, @body = params[:subject], params[:body]
 		test_invitation = (params[:commit] == 'Send to myself')
-		if @profile.update_attributes(params[:profile]) && @profile.invite((test_invitation.present? ? current_user.email : @profile.invitation_email), subject, body, test_invitation)
-			set_flash_message :notice, :invitation_sent
-			redirect_to profile_url @profile
+		if @profile.update_attributes(params[:profile]) && @profile.invite((email = test_invitation.present? ? current_user.email : @profile.invitation_email), @subject, @body, test_invitation)
+			set_flash_message :notice, :invitation_sent, recipient: email
+			if test_invitation.present?
+				render action: :new_invitation, layout: 'plain'
+			else
+				redirect_to profile_url @profile
+			end
 		else
 			set_flash_message :alert, :invitation_error
 			render action: :new_invitation, layout: 'plain'

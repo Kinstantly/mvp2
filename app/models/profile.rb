@@ -344,9 +344,7 @@ class Profile < ActiveRecord::Base
 		if test_invitation.blank? && !validate_invitable
 			errors.add :invitation_sent_at, I18n.t('models.profile.invitation_sent_at.save_error')
 		elsif generate_and_save_invitation_token
-			claim_url = Rails.application.routes.url_helpers.claim_user_profile_url(token: self.invitation_token)
-			body = body.sub("<<claim_url>>", claim_url)
-			ProfileMailer.invite(email, subject, body).deliver
+			ProfileMailer.invite(email, subject, body, self).deliver
 			self.invitation_sent_at = Time.zone.now unless test_invitation.present?
 			errors.add :invitation_sent_at, I18n.t('models.profile.invitation_sent_at.save_error') unless save
 		end

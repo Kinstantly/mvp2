@@ -43,7 +43,7 @@ en:
       update_error: 'There was a problem saving the profile.'
       destroyed: 'The profile was destroyed!'
       destroy_error: 'The profile was not removed.  Perhaps it is owned by a user.'
-      invitation_sent: 'The invitation was sent.'
+      invitation_sent: 'The invitation was sent to %{recipient}.'
       invitation_error: 'There was a problem sending the invitation.'
       profile_photo_filesize_error: 'Photo file size must be less than 5MB.'
       profile_photo_filetype_error: 'Invalid file type. Only .jpeg, .gif, .png files allowed.'
