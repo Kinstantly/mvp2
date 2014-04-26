@@ -215,6 +215,7 @@ class ProfilesController < ApplicationController
 			set_flash_message :notice, :invitation_sent, recipient: email
 			if test_invitation.present?
 				render action: :new_invitation, layout: 'plain'
+				flash[:notice] = nil
 			else
 				redirect_to profile_url @profile
 			end
