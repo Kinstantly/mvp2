@@ -81,7 +81,7 @@
 				I don't have a photo of me. Can I use a stock photo?
 			%p
 				It's fine to use a stock photo if you'd like, but parents really like the warmth of seeing an actual photo of you.
-				It doesn't have to be a glamour shot. It just needs to look like you - bonus points if you're smiling.
+				It doesn't have to be a glamour shot. It just needs to look like you &mdash; bonus points if you're smiling.
 				If you're super shy, how about a photo of your building or office?
 
 
@@ -93,7 +93,8 @@
 				&mdash; we'll get back to you as soon as possible!
 			%br
 			%p
-				= link_to "Done? [Go back to editing your profile.]", '#', id:"back_to_edit_link"
+				Done?
+				= link_to 'Go back to editing your profile.', '#', id: 'back_to_edit_link'
 
 %span.clickable.attribute_display.inline_block_attr{itemprop: "profilePhoto"}
 	%span.blank_attr= profile_photo_prompt
