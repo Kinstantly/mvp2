@@ -49,15 +49,20 @@ Mvp2::Application.configure do
 	config.action_mailer.default_url_options = { :host => 'localhost:5000' }
 
   # Configure ActionMailer for smtp.
-  # config.action_mailer.smtp_settings = {
-  #   :address        => 'smtp.gmail.com',
-  #   :port           => '587',
-  #   :authentication => :plain,
-  #   :user_name      => 'edvsimpson',
-  #   :password       => 'xxxx'
-  # }
-  # config.action_mailer.delivery_method = :smtp
-  # config.action_mailer.raise_delivery_errors = true
+  # By default, puts the email in the log file.
+  # Will attempt delivery via gmail if you set SMTP_USER_NAME and SMTP_PASSWORD in your environment.
+  # If you want to send through another gateway, set the appropriate environment variables (see below).
+  if ENV['SMTP_USER_NAME'].present? and ENV['SMTP_PASSWORD'].present?
+    config.action_mailer.smtp_settings = {
+      :address        => (ENV['SMTP_ADDRESS'].presence || 'smtp.gmail.com'),
+      :port           => (ENV['SMTP_PORT'].presence || '587'),
+      :authentication => (ENV['SMTP_AUTHENTICATION'].try(:to_sym) || :plain),
+      :user_name      => ENV['SMTP_USER_NAME'],
+      :password       => ENV['SMTP_PASSWORD']
+    }
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.raise_delivery_errors = true
+  end
 
   # Paperclip config.
   config.paperclip_defaults = {

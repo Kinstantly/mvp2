@@ -5,9 +5,14 @@ class ProfileMailer < ActionMailer::Base
 	default from: MAILER_DEFAULT_FROM
 	sendgrid_category :use_subject_lines # Set sendgrid category to email subject
 	
-	def invite(profile)
+	def default_invite(profile)
 		@profile = profile
 		sendgrid_unique_args :profile_id => @profile.id
-		mail to: profile.invitation_email, from: 'Jim Scott <jscott@kinstantly.com>'
+		mail to: profile.invitation_email, from: 'Jim Scott <jscott@kinstantly.com>', subject: subject
+	end
+
+	def invite(email, subject, body, profile)
+		@body = body.sub("<<claim_url>>", claim_user_profile_url(token: profile.invitation_token))
+		mail to: email, from: 'Jim Scott <jscott@kinstantly.com>', subject: subject
 	end
 end
