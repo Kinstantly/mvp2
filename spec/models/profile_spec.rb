@@ -439,17 +439,21 @@ describe Profile do
 	end
 	
 	context "invite provider to claim their profile" do
+		let(:recipient) { 'nicola@filacuridi.it' }
+		let(:subject) { 'Claim your profile' }
+		let(:body) { 'We are inviting you to claim your profile.' }
+		
 		before(:each) do
-			@profile.invitation_email = 'nicola@filacuridi.it'
+			@profile.invitation_email = recipient
 		end
 		
 		context "when profile is NOT saved before invitation is attempted" do
 			it "does not send invitation email" do
 				message = mock('message')
 				ProfileMailer.stub(:invite).and_return(message)
-				ProfileMailer.should_not_receive(:invite).with(@profile)
+				ProfileMailer.should_not_receive(:invite).with(recipient, subject, body, @profile)
 				message.should_not_receive(:deliver)
-				@profile.invite
+				@profile.invite recipient, subject, body
 			end
 		end
 		
@@ -460,14 +464,14 @@ describe Profile do
 		
 			it "sends invitation email" do
 				message = mock('message')
-				ProfileMailer.should_receive(:invite).with(@profile).and_return(message)
+				ProfileMailer.should_receive(:invite).with(recipient, subject, body, @profile).and_return(message)
 				message.should_receive(:deliver)
-				@profile.invite
+				@profile.invite recipient, subject, body
 			end
 			
 			context "invitation attributes are properly set" do
 				before(:each) do
-					@profile.invite
+					@profile.invite recipient, subject, body
 					@profile.should have(:no).errors
 				end
 				
@@ -488,9 +492,9 @@ describe Profile do
 				@profile.save
 				message = mock('message')
 				ProfileMailer.stub(:invite).and_return(message)
-				ProfileMailer.should_not_receive(:invite).with(@profile)
+				ProfileMailer.should_not_receive(:invite).with(recipient, subject, body, @profile)
 				message.should_not_receive(:deliver)
-				@profile.invite
+				@profile.invite recipient, subject, body
 			end
 		end
 	end

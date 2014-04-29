@@ -346,7 +346,7 @@ end
 
 Given /^I have been invited to claim a profile$/ do
 	create_unattached_profile invitation_email: 'asleep@thewheel.wv.us'
-	@unattached_profile.invite
+	@unattached_profile.invite @unattached_profile.invitation_email, 'Claim your profile', 'We are inviting you to claim your profile.'
 end
 
 Given /^there is a "(.*?)" age range$/ do |age_range|
@@ -579,6 +579,12 @@ When /^I invite "(.*?)" to claim the profile$/ do |email|
 	click_link 'new_invitation_profile'
 	fill_in 'invitation_email', with: email
 	click_button 'send_invitation_profile'
+end
+
+When /^I preview the invitation to "(.*?)" to claim the profile$/ do |email|
+	click_link 'new_invitation_profile'
+	fill_in 'invitation_email', with: email
+	click_button 'test_invitation_profile'
 end
 
 When /^I click on the "(.*?)" (?:link|button)$/ do |link|
@@ -892,4 +898,8 @@ end
 
 Then /^I should see an edit tab$/ do
 	page.should have_content I18n.t('views.profile.edit.edit_tab')
+end
+
+Then /^the administrator should receive (an|no|\d+) emails?$/ do |amount|
+  unread_emails_for(@user.email).size.should == parse_email_count(amount)
 end

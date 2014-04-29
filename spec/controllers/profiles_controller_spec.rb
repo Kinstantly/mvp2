@@ -850,12 +850,17 @@ describe ProfilesController do
 	end
 	
 	context "sending invitation to claim a profile" do
+		let(:editor) { FactoryGirl.create(:admin_user, email: 'editor@example.com') }
+		let(:profile) { FactoryGirl.create(:profile) }
+		let(:recipient) { 'la@stupenda.com' }
+		let(:subject) { 'Claim your profile' }
+		let(:body) { 'We are inviting you to claim your profile.' }
+		let(:parameters) { {id: profile.id, profile: {invitation_email: recipient}, subject: subject, body: body} }
+		
 		context "as an admin user" do
 			before (:each) do
-				@editor = FactoryGirl.create(:admin_user, email: 'editor@example.com')
-				sign_in @editor
-				@profile = FactoryGirl.create(:profile)
-				get :new_invitation, id: @profile.id
+				sign_in editor
+				get :new_invitation, id: profile.id
 			end
 		
 			it "renders the invitation page" do
@@ -864,12 +869,12 @@ describe ProfilesController do
 			
 			context "submit the form to send the invitation" do
 				it "should redirect to profile view page if succesful" do
-					put :send_invitation, id: @profile.id, profile: {invitation_email: 'la@stupenda.com'}
-					response.should redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
+					put :send_invitation, parameters
+					response.should redirect_to(controller: 'profiles', action: 'show', id: profile.id)
 				end
 				
 				it "should render the invitation page if failed" do
-					put :send_invitation, id: @profile.id, profile: {invitation_email: 'nonsense'}
+					put :send_invitation, parameters.merge(profile: {invitation_email: 'nonsense'})
 					response.should render_template('new_invitation')
 				end
 			end
@@ -877,9 +882,8 @@ describe ProfilesController do
 		
 		it "should fail if the profile was already claimed" do
 			expert_with_profile = FactoryGirl.create(:expert_user)
-			editor = FactoryGirl.create(:admin_user, email: 'editor@example.com')
 			sign_in editor
-			put :send_invitation, id: expert_with_profile.profile.id, profile: {invitation_email: 'la@stupenda.com'}
+			put :send_invitation, parameters.merge(id: expert_with_profile.profile.id)
 			response.should render_template('new_invitation')
 			flash[:alert].should_not be_nil
 		end

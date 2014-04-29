@@ -4,6 +4,12 @@ Feature: Claim profile
 	As a provider
 	I want to claim the profile
 	
+	Scenario: I preview the invitation to claim a profile
+		Given I am logged in as an administrator
+		When I visit the view page for an unclaimed profile
+			And I preview the invitation to "asleep@thewheel.wv.us" to claim the profile
+		Then the administrator should receive an email
+	
 	Scenario: Invite provider to claim their profile
 		Given I am logged in as an administrator
 		When I visit the view page for an unclaimed profile
