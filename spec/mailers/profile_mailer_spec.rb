@@ -18,8 +18,8 @@ describe ProfileMailer do
 		context "with plain message body" do
 			let(:email) { ProfileMailer.invite recipient, subject, body, profile }
 		
-			it "should be set to be delivered to the invitation email" do
-				email.should deliver_to(profile.invitation_email)
+			it "should be set to be delivered to the specified recipient" do
+				email.should deliver_to(recipient)
 			end
 
 			it "should use the specified the subject" do

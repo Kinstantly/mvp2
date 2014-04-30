@@ -11,20 +11,18 @@
 				- if !@profile.is_published
 					%p.warning
 						This profile is not published.  The provider will not be able to preview the profile before claiming it.
-				= f.label :invitation_email, "Invitation Email"
-				= f.text_field :invitation_email, id: 'invitation_email'
+				= label_tag :invitation_email, 'Email'
+				= text_field_tag :invitation_email, @profile.invitation_email, id: 'invitation_email'
 				%br
 				= label_tag 'subject', "Subject"
 				= text_field_tag 'subject', @subject
 				%br
 				= label_tag "Message body"
 				= text_area_tag 'body', @body, rows: 35
-				- #%p
-				- #	%span.hint
-				- #		Hint: to send a custom invitation, fill in your own email address above and send it to yourself.
-				- #		Use the email you receive to copy and paste the bits you like into your own email composer.
-				- #		Be sure to carefully copy any of the links you use so that they will work properly.
+				%br
+				= label_tag :invitation_tracking_category, 'Tracking category'
+				= text_field_tag :invitation_tracking_category, @profile.invitation_tracking_category, id: 'invitation_tracking_category'
 				.buttons
-					= f.submit 'Send to myself', disable_with: 'Sending invitation...', id: 'test_invitation_profile', name: 'commit'
-					= f.submit 'Send to provider', disable_with: 'Sending invitation...', id: 'send_invitation_profile', name: 'commit'
+					= f.submit t('views.profile.edit.invitation_preview_button'), disable_with: t('views.profile.edit.invitation_disable_send_button'), id: 'test_invitation_profile', name: 'commit'
+					= f.submit t('views.profile.edit.invitation_send_button'), disable_with: t('views.profile.edit.invitation_disable_send_button'), id: 'send_invitation_profile', name: 'commit'
 					= link_to "Cancel", profile_path(@profile)

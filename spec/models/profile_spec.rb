@@ -451,9 +451,9 @@ describe Profile do
 			it "does not send invitation email" do
 				message = mock('message')
 				ProfileMailer.stub(:invite).and_return(message)
-				ProfileMailer.should_not_receive(:invite).with(recipient, subject, body, @profile)
+				ProfileMailer.should_not_receive(:invite)
 				message.should_not_receive(:deliver)
-				@profile.invite recipient, subject, body
+				@profile.invite subject, body
 			end
 		end
 		
@@ -464,14 +464,14 @@ describe Profile do
 		
 			it "sends invitation email" do
 				message = mock('message')
-				ProfileMailer.should_receive(:invite).with(recipient, subject, body, @profile).and_return(message)
+				ProfileMailer.should_receive(:invite).with(recipient, subject, body, @profile, false).and_return(message)
 				message.should_receive(:deliver)
-				@profile.invite recipient, subject, body
+				@profile.invite subject, body
 			end
 			
 			context "invitation attributes are properly set" do
 				before(:each) do
-					@profile.invite recipient, subject, body
+					@profile.invite subject, body
 					@profile.should have(:no).errors
 				end
 				
@@ -492,9 +492,9 @@ describe Profile do
 				@profile.save
 				message = mock('message')
 				ProfileMailer.stub(:invite).and_return(message)
-				ProfileMailer.should_not_receive(:invite).with(recipient, subject, body, @profile)
+				ProfileMailer.should_not_receive(:invite)
 				message.should_not_receive(:deliver)
-				@profile.invite recipient, subject, body
+				@profile.invite subject, body
 			end
 		end
 	end

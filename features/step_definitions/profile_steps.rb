@@ -346,7 +346,7 @@ end
 
 Given /^I have been invited to claim a profile$/ do
 	create_unattached_profile invitation_email: 'asleep@thewheel.wv.us'
-	@unattached_profile.invite @unattached_profile.invitation_email, 'Claim your profile', 'We are inviting you to claim your profile.'
+	@unattached_profile.invite 'Claim your profile', 'We are inviting you to claim your profile.'
 end
 
 Given /^there is a "(.*?)" age range$/ do |age_range|

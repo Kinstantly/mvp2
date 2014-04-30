@@ -21,7 +21,7 @@ class Profile < ActiveRecord::Base
 		:consult_in_person, :consult_in_group, :consult_by_email, :consult_by_phone, :consult_by_video, 
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, :consult_at_other, 
 		:pricing, :service_area, :hours, :accepting_new_clients, :availability_service_area_note,
-		:invitation_email, :photo_source_url, :profile_photo,
+		:photo_source_url, :profile_photo,
 		:age_range_ids, :ages_stages_note,
 		:evening_hours_available, :weekend_hours_available, :free_initial_consult, :sliding_scale_available,
 		:financial_aid_available,
@@ -340,12 +340,14 @@ class Profile < ActiveRecord::Base
 		age_range_names.join(', ')
 	end
 	
-	def invite(email, subject, body, test_invitation = false)
-		if test_invitation.blank? && !validate_invitable
+	# If email is not supplied, assume we're doing a preview and thus, need no tracking.
+	def invite(subject, body, email=nil)
+		test_invitation = email.present?
+		if !test_invitation && !validate_invitable
 			errors.add :invitation_sent_at, I18n.t('models.profile.invitation_sent_at.save_error')
 		elsif generate_and_save_invitation_token
-			ProfileMailer.invite(email, subject, body, self).deliver
-			self.invitation_sent_at = Time.zone.now unless test_invitation.present?
+			ProfileMailer.invite((email.presence || invitation_email), subject, body, self, test_invitation).deliver
+			self.invitation_sent_at = Time.zone.now unless test_invitation
 			errors.add :invitation_sent_at, I18n.t('models.profile.invitation_sent_at.save_error') unless save
 		end
 		errors.empty?

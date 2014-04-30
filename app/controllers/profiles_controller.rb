@@ -22,7 +22,7 @@ class ProfilesController < ApplicationController
 	#   set SEO keywords for profile show page
 	#   ensure there is a new review for the admin profile edit page
 	before_filter :require_location_in_profile, only: [:new, :edit, :edit_tab, :edit_my_profile, :edit_plain]
-	before_filter :process_profile_admin_params, only: [:create, :update]
+	before_filter :process_profile_admin_params, only: [:create, :update, :send_invitation]
 	before_filter :seo_keywords, only: :show
 	before_filter :require_new_review, only: :edit_plain
 	
@@ -210,9 +210,10 @@ class ProfilesController < ApplicationController
 	
 	def send_invitation
 		@subject, @body = params[:subject], params[:body]
-		test_invitation = (params[:commit] == 'Send to myself')
-		if @profile.update_attributes(params[:profile]) && @profile.invite((email = test_invitation.present? ? current_user.email : @profile.invitation_email), @subject, @body, test_invitation)
-			set_flash_message :notice, :invitation_sent, recipient: email
+		test_invitation = (params[:commit] == t('views.profile.edit.invitation_preview_button'))
+		email = test_invitation.present? ? current_user.email : nil
+		if @profile.update_attributes(params[:profile]) && @profile.invite(@subject, @body, email)
+			set_flash_message :notice, :invitation_sent, recipient: (email.presence || @profile.invitation_email)
 			if test_invitation.present?
 				render action: :new_invitation, layout: 'plain'
 				flash[:notice] = nil

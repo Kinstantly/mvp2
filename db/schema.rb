@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140408234427) do
+ActiveRecord::Schema.define(:version => 20140429234405) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -182,6 +182,7 @@ ActiveRecord::Schema.define(:version => 20140408234427) do
     t.integer  "reviews_count",                  :default => 0,         :null => false
     t.boolean  "public_on_private_site",         :default => false
     t.text     "widget_code"
+    t.string   "invitation_tracking_category"
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"
