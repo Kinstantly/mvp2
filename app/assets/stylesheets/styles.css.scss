@@ -856,13 +856,14 @@ table.info {
 .review-header span.num-reviews a , .reviews-grouped-header span.num-reviews a{
 	color: #8d8c8c;
 }
-.review-body {
+.review-body, .review-good-to-know {
 	font-size: 14px;
 	line-height: 18px;
 	color: #8d8c8c;
 	margin-bottom: 12px;
+//	width: 470px;
 }
-.review-body p {
+.review-body p, .review-good-to-know p {
 	margin-bottom: 18px;
 	white-space: pre-line;
 }
@@ -897,17 +898,21 @@ table.info {
 	margin-left: 90px;
 }
 .reviews-grouped .review-good-to-know {
-	float: right;
-	vertical-align: top;
-	margin: 0.5em 0 0.75em 1.5em;
-	padding: 1em;
-	width: 300px;
+	margin-bottom: 6px;
+	margin-left: 90px;
 }
-.reviews-grouped .review-good-to-know {
-	font-size: 13px;
-	line-height: 15px;
-	color: #8d8c8c;
-}
+//.reviews-grouped .review-good-to-know {
+//	float: right;
+//	vertical-align: top;
+//	margin: 0.5em 0 0.75em 0;
+//	padding: 1em;
+//	width: 300px;
+//}
+//.reviews-grouped .review-good-to-know {
+//	font-size: 13px;
+//	line-height: 15px;
+//	color: #8d8c8c;
+//}
 .reviews-grouped .review-date {
 	font-size: 14px;
 	color: $default_color;

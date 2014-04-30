@@ -346,6 +346,8 @@ en:
         link_body: 'Click here'
         message: 'if you want to replace your existing profile with the one you want to claim.'
     review:
+      view:
+        good_to_know_heading: 'TIP:'
       edit:
         add: 'Fill in a new review'
         cancel: 'Cancel'

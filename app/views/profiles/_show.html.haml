@@ -127,13 +127,14 @@
 							= render partial: 'single_rating_score', locals: {rating: rating}
 					- reviews.each_with_index do |review, i|
 						%section.review.ui-helper-clearfix{class: (i % 2 == 0 ? 'ui-even' : 'ui-odd')}
-							-if review.good_to_know.present?
-								.review-good-to-know.ui-state-highlight.ui-corner-all
-									%p= review.good_to_know
 							.review-body
 								%p.review-date= display_profile_date review.created_at
 								%h4= review.title
 								%p= profile_display_text review.body, preserve: true
+							-if review.good_to_know.present?
+								.review-good-to-know
+									%h4= t 'views.review.view.good_to_know_heading'
+									%p= review.good_to_know
 
 -# For editors and administrators only.
 - if can? :manage, Profile
