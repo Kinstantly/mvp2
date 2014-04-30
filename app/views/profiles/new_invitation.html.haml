@@ -22,6 +22,8 @@
 				%br
 				= label_tag :invitation_tracking_category, 'Tracking category'
 				= text_field_tag :invitation_tracking_category, @profile.invitation_tracking_category, id: 'invitation_tracking_category'
+				%br
+				%span.hint If the above field is left blank, the tracking category will be set to the subject line.
 				.buttons
 					= f.submit t('views.profile.edit.invitation_preview_button'), disable_with: t('views.profile.edit.invitation_disable_send_button'), id: 'test_invitation_profile', name: 'commit'
 					= f.submit t('views.profile.edit.invitation_send_button'), disable_with: t('views.profile.edit.invitation_disable_send_button'), id: 'send_invitation_profile', name: 'commit'

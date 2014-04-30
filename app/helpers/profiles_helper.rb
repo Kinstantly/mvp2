@@ -152,7 +152,9 @@ module ProfilesHelper
 	def profile_invitation_info(profile)
 		if can?(:manage, profile) && !profile.claimed?
 			if profile.invitation_sent_at
-				t 'views.profile.view.invitation_to_claim_info', invitee: profile.invitation_email, time: display_profile_time(profile.invitation_sent_at)
+				tracking_category = profile.invitation_tracking_category.presence
+				tracking = tracking_category ? "'#{tracking_category}'" : 'subject line'
+				t 'views.profile.view.invitation_to_claim_info', invitee: profile.invitation_email, time: display_profile_time(profile.invitation_sent_at), tracking: tracking
 			else
 				new_invitation_profile_link profile
 			end
