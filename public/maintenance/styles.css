@@ -13,7 +13,7 @@
 	background: transparent url("/maintenance/kinstantly.png");
 	text-indent: -999em;
 	background-size: 100% auto;
-	margin: 16px 40px 0 0;
+	margin: 16px 100px 0 0;
 	width: 321px;
 	min-height: 116px;
 }
@@ -40,7 +40,7 @@
 
 /* Laptop and desktop */
 
-@media only screen and (min-width: 820px) {
+@media only screen and (min-width: 900px) {
 	#branding h1 {
 		float: left;
 	}
