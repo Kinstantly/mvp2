@@ -120,9 +120,10 @@
 				%article.reviews-grouped.ui-helper-clearfix
 					%header.reviews-grouped-header.ui-helper-clearfix
 						.reviewer-info
-							%span.author= user_profile_link reviewer
-							- n_reviews = reviewer.reviews_given.size
-							%span.num-reviews= link_to (n_reviews == 0 ? t('review.none') : t('review.how_many', count: n_reviews)), '#'
+							-# %span.author= user_profile_link reviewer
+							%span.author= user_display_name reviewer
+							-# %span.num-reviews= link_to (user_review_count reviewer), '#'
+							%span.num-reviews= user_review_count reviewer
 						.reviewer-rating
 							= render partial: 'single_rating_score', locals: {rating: rating}
 					- reviews.each_with_index do |review, i|

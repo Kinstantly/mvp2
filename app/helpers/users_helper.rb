@@ -25,6 +25,13 @@ module UsersHelper
 		link_to user_display_name(user), user_profile_path(user)
 	end
 	
+	def user_review_count(user)
+		if user
+			n_reviews = user.reviews_given.size
+			n_reviews == 0 ? t('review.none') : t('review.how_many', count: n_reviews)
+		end
+	end
+	
 	# Return a string or time suitable for displaying when the user's confirmation email was sent.
 	# If nothing useful to show, returns nil.
 	def user_confirmation_sent_at(user)
