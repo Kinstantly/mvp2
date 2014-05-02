@@ -35,7 +35,7 @@
 				%span.location{itemprop: "email"}
 					= t 'views.profile.view.email'
 					= profile_captcha_email @profile
-		-# Do not try to cache the user's rating because it is unique to each user.
+		-# Do not try to cache the user's rating and review info because it is unique to each user.
 		.rate_review
 			= render partial: 'profiles/rating_score', locals: {profile: @profile}
 			- unless @profile == current_user.try(:profile)

@@ -250,6 +250,7 @@ en:
         edit_my_profile_link: 'Make your profile better.  Click here.'
         email: 'email:'
         email_help: 'We use CAPTCHA to hide the full email address from spam robots. Click to reveal it.'
+        followup_review_provider_link: 'Add a follow-up review of %{name}'
         headline: 'Professional headline'
         hide_locations: 'Hide locations below'
         id: 'Profile ID: %{id}'

@@ -403,6 +403,10 @@ class Profile < ActiveRecord::Base
 		ratings.select{ |rating| rating.rater_id == user.id }.first if user.try(:id)
 	end
 	
+	def has_reviews_by(user)
+		reviewers.include? user
+	end
+	
 	# Return the array of consultation mode names that are checked for this profile.
 	def consultation_modes
 		human_attribute_names_if_present *CONSULTATION_MODES
