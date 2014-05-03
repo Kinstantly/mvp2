@@ -3,9 +3,9 @@
 - profile_photo_source_url_example = t 'views.profile.edit.profile_photo_source_url_example'
 - support_email = "#{t('contact.emails.support.value')}@#{t('email_domain')}"
 - profile_photo_prompt = t 'views.profile.edit.profile_photo_prompt'
-- profile_photo_upload_generic_error = t 'controllers.profiles.profile_photo_upload_generic_error'
+- profile_photo_upload_generic_error = t 'controllers.profiles.profile_photo_upload_generic_error_html'
 - profile_photo_edit_generic_error = t 'controllers.profiles.profile_photo_edit_generic_error'
-- profile_photo_processing_timeout = t 'controllers.profiles.profile_photo_processing_timeout'
+- profile_photo_processing_timeout = t 'controllers.profiles.profile_photo_processing_timeout_html'
 - profile_photo_no_dnd_support_msg = t 'controllers.profiles.profile_photo_no_dnd_support'
 - profile_photo_present = if @profile.errorfree.profile_photo.presence then true else false end
 .edit.popover.profile-photo-update
@@ -172,10 +172,12 @@
 			step_three_back_to_edit_link.on 'click', (e) ->
 				 e.preventDefault()
 				 show_step(prev_step, 1)
+				 show_error_help_link_if_any()
 
 			help_links.on 'click', (e) ->
 				e.preventDefault()
 				show_step(3, 1)
+				hide_error_help_link_if_any()
 
 			#step one bindings
 			step_one.imp_from_url.upload_link.on 'click', (e) ->
@@ -326,6 +328,18 @@
 			for key, value of error_array
 				error_ul.append("<li>").html(value)
 			error_div.append(error_ul).slideDown()
+			activate_error_help_link_if_any()
+
+		# Error help-links are created dynamically, so we must locate them dynamically.
+		activate_error_help_link_if_any = ->
+			$('a.more-help', error_div).click (e) ->
+				show_step(3, 1)
+				$(this).hide()
+				false
+		show_error_help_link_if_any = ->
+			$('a.more-help', error_div).show()
+		hide_error_help_link_if_any = ->
+			$('a.more-help', error_div).hide()
 
 		upload_request_start = (step) ->
 			error_div.fadeOut(500)

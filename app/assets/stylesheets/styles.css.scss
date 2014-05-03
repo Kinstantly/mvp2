@@ -1672,12 +1672,15 @@ span.inline_block_attr{
 }
 
 .profile-photo-update{
-		width:508px !important;
-}
-.profile-photo-update p{
-	color: #807f7f;
-	font-size: 14px;
-	padding: 5px 0 0 0;
+	width:508px !important;
+	p{
+		color: #807f7f;
+		font-size: 14px;
+		padding: 5px 0 0 0;
+	}
+	.errorExplanation {
+		margin-bottom: 1em;
+	}
 }
 
 .file-drop{

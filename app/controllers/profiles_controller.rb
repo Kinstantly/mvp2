@@ -134,7 +134,7 @@ class ProfilesController < ApplicationController
 			else
 				error_array = Array.new
 				if @profile.errors[:profile_photo_file_size].present?
-					error_message = get_error_message :profile_photo_filesize_error
+					error_message = get_error_message :profile_photo_filesize_error_html
 					error_array.push(error_message) if error_message
 				end
 				if @profile.errors[:profile_photo_content_type].present?
@@ -146,7 +146,7 @@ class ProfilesController < ApplicationController
 		rescue Exception => exc
 			logger.error "Profile.save failed during photo upload: #{exc.message}"
 			render json: {:error => 'true', :profile_id =>  @profile.id,
-				:error_array => [(get_error_message(exc.is_a?(Timeout::Error) ? 'profile_photo_processing_timeout' : 'profile_photo_upload_generic_error'))]}
+				:error_array => [(get_error_message(exc.is_a?(Timeout::Error) ? 'profile_photo_processing_timeout_html' : 'profile_photo_upload_generic_error_html'))]}
 		end
 	end
 
