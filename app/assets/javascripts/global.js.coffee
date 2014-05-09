@@ -21,3 +21,9 @@ window.index_in_array = (array, value, start) ->
 	start ?= 0
 	return i for candidate, i in array when candidate is value and i >= start
 	-1
+
+# Place the pop-over the specified number of pixels below the top of the viewport.
+window.place_popover = (popover, pixels) ->
+	popover.offset
+		top: $(window).scrollTop() + pixels
+		left: ($(window).width() - popover.outerWidth()) / 2

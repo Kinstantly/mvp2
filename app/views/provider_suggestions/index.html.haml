@@ -1,0 +1,25 @@
+%h1 Listing provider_suggestions
+%table
+  %tr
+    %th Suggester
+    %th Suggester name
+    %th Suggester email
+    %th Provider name
+    %th Provider url
+    %th Description
+    %th
+    %th
+    %th
+  - @provider_suggestions.each do |provider_suggestion|
+    %tr
+      %td= provider_suggestion.suggester_id
+      %td= provider_suggestion.suggester_name
+      %td= provider_suggestion.suggester_email
+      %td= provider_suggestion.provider_name
+      %td= provider_suggestion.provider_url
+      %td= provider_suggestion.description
+      %td= link_to 'Show', provider_suggestion
+      %td= link_to 'Edit', edit_provider_suggestion_path(provider_suggestion)
+      %td= link_to 'Destroy', provider_suggestion, method: :delete, data: { confirm: 'Are you sure?' }
+%br/
+= link_to 'New Provider suggestion', new_provider_suggestion_path

@@ -56,6 +56,9 @@ en:
       profile_photo_processing_timeout_html: 'Photo processing took too long. Please try a smaller photo file size. <a href="#" class="more-help">Click here for help.</a>'
       profile_photo_no_dnd_support: 'Drag and Drop is not supported by your browser. Please use one of upload options below.'
       location_remote_only: 'This provider operates 100% remotely. <br/>That means you can talk to this provider at home, at your office, at a park... the sky&#39;s the limit!'
+    provider_suggestions:
+      updated: 'The provider suggestion was saved.'
+      update_error: 'There was a problem saving the provider suggestion.'
     reviews:
       destroyed: 'The review was destroyed!'
     services:
@@ -349,6 +352,17 @@ en:
       claim_confirm:
         link_body: 'Click here'
         message: 'if you want to replace your existing profile with the one you want to claim.'
+    provider_suggestion:
+      edit:
+        cancel: 'Cancel'
+        confirmation: "Thank you for suggesting '%{name}'"
+        description_tip: 'Just a line or two about the provider to help us find the right one'
+        new_header: 'Suggest a Provider'
+        new_intro: "Thanks for helping us find another great provider. (Your personal information won't be shared or made public.)"
+        submit: 'Submit'
+        submit_disable: 'Submitting...'
+        suggester_email_tip: 'In case we have a quick follow-up question'
+        suggester_name_tip: 'First and last'
     review:
       view:
         good_to_know_heading: 'TIP:'

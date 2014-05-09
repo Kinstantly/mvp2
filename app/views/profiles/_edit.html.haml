@@ -63,10 +63,7 @@
 		$ ->
 			# Place the formlet the specified number of pixels below the top of the viewport.
 			my_vars.f.place_formlet = (formlet) ->
-				popover = $('.popover', formlet)
-				popover.offset
-					top: $(window).scrollTop() + 20
-					left: ($(window).width() - popover.outerWidth()) / 2
+				place_popover $('.popover', formlet), 20
 		
 			# Final touches to a newly created or updated formlet element.
 			my_vars.f.configure_formlet = (formlet) ->

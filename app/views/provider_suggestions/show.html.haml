@@ -1,0 +1,22 @@
+%p#notice= notice
+%p
+  %b Suggester:
+  = @provider_suggestion.suggester_id
+%p
+  %b Suggester name:
+  = @provider_suggestion.suggester_name
+%p
+  %b Suggester email:
+  = @provider_suggestion.suggester_email
+%p
+  %b Provider name:
+  = @provider_suggestion.provider_name
+%p
+  %b Provider url:
+  = @provider_suggestion.provider_url
+%p
+  %b Description:
+  = @provider_suggestion.description
+= link_to 'Edit', edit_provider_suggestion_path(@provider_suggestion)
+|
+= link_to 'Back', provider_suggestions_path

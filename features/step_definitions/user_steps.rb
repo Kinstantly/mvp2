@@ -111,7 +111,7 @@ Given /^I am logged in as a provider$/ do
   sign_in
 end
 
-Given /^I am logged in as a client user$/ do
+Given /^I am logged in as a (?:parent|client user)$/ do
   create_client_user
   sign_in
 end

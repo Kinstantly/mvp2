@@ -1,0 +1,2 @@
+- partial = @provider_suggestion.persisted? ? 'created' : 'form'
+$('#provider_suggestion_form').html('#{escape_javascript(render partial: partial)}');

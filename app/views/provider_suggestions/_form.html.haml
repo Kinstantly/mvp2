@@ -1,0 +1,40 @@
+= form_for @provider_suggestion, url: provider_suggestions_path, method: :post, remote: true do |f|
+	= f.error_messages
+	- unless user_signed_in?
+		.text_field#suggester_name_field
+			%span.char_count
+			= f.label :suggester_name
+			.note= t 'views.provider_suggestion.edit.suggester_name_tip'
+			= f.text_field :suggester_name, class: 'attr'
+		.text_field#suggester_email_field
+			%span.char_count
+			= f.label :suggester_email
+			.note= t 'views.provider_suggestion.edit.suggester_email_tip'
+			= f.text_field :suggester_email, class: 'attr'
+	.text_field#provider_name_field
+		%span.char_count
+		= f.label :provider_name
+		= f.text_field :provider_name, class: 'attr'
+	.text_field#provider_url_field
+		%span.char_count
+		= f.label :provider_url
+		= f.text_field :provider_url, class: 'attr'
+	.text_field#description_field
+		%span.char_count
+		= f.label :description
+		.note= t 'views.provider_suggestion.edit.description_tip'
+		= f.text_area :description, size: '45x4', class: 'attr'
+	= f.submit t('views.provider_suggestion.edit.submit'), disable_with: t('views.provider_suggestion.edit.submit_disable'), class: 'save'
+	= link_to t('views.provider_suggestion.edit.cancel'), '#', class: 'cancel button'
+:javascript
+	my_vars.edit_provider_suggestion = my_vars.edit_provider_suggestion || {};
+	my_vars.edit_provider_suggestion.max_lengths = #{ProviderSuggestion::MAX_LENGTHS.to_json};
+:coffeescript
+	# Show character count while filling in fields.
+	for attribute in ['suggester_name', 'suggester_email', 'provider_name', 'provider_url', 'description']
+		$('#'+attribute+'_field .attr').simplyCountable({counter: '#'+attribute+'_field .char_count', maxCount: my_vars.edit_provider_suggestion.max_lengths[attribute]})
+	# Cancel buttons should close and clear the pop-over.
+	$('#suggest_provider .cancel').click (e) ->
+		$('#suggest_provider').removeClass 'loaded'
+		$('#provider_suggestion_form').empty()
+		false

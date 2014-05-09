@@ -2,3 +2,4 @@
 
 //= require jquery_nested_form
 //= require jquery.rating.pack
+//= require jquery.simplyCountable

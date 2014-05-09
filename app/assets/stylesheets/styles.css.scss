@@ -1316,6 +1316,34 @@ div.popover {
 	}
 }
 
+/* Suggest a provider */
+
+#suggest_provider {
+	position: relative;
+	.popover {
+		display: none;
+		min-height: 500px;
+		h1, #confirmation {
+			width: 100%;
+			padding: 0;
+			text-align: center;
+		}
+		#confirmation {
+			margin-top: 5em;
+		}
+	}
+}
+
+#suggest_provider.loading .popover {
+	display: block;
+	background: #FFF url('loading_large.gif') no-repeat center center;
+}
+
+#suggest_provider.loaded .popover {
+	display: block;
+	background: #FFF;
+}
+
 /*  Sign up, sign in, confirmation, password, unlock, account settings ------------------------ */
 $generic_form_width: 418px;
 
