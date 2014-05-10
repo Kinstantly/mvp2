@@ -34,7 +34,4 @@
 	for attribute in ['suggester_name', 'suggester_email', 'provider_name', 'provider_url', 'description']
 		$('#'+attribute+'_field .attr').simplyCountable({counter: '#'+attribute+'_field .char_count', maxCount: my_vars.edit_provider_suggestion.max_lengths[attribute]})
 	# Cancel buttons should close and clear the pop-over.
-	$('#suggest_provider .cancel').click (e) ->
-		$('#suggest_provider').removeClass 'loaded'
-		$('#provider_suggestion_form').empty()
-		false
+	$('#suggest_provider .cancel').click my_vars.f.close_provider_suggestion_form

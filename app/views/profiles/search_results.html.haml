@@ -89,6 +89,17 @@
 - cache 'search_results_coffeescript' do
 	:coffeescript
 		# Provider suggestion pop-over
+		# Close
+		my_vars.f.close_provider_suggestion_form = (e) ->
+			$('#suggest_provider').removeClass('loaded').removeClass('loading')
+			$('#provider_suggestion_form').empty()
+			$(document).unbind 'click', my_vars.f.outside_close_provider_suggestion_form
+			false # No bubbling up.
+		# Close if clicked outside the pop-over
+		my_vars.f.outside_close_provider_suggestion_form = (e) ->
+			if $(e.target).closest('#suggest_provider').length == 0
+				my_vars.f.close_provider_suggestion_form(e)
+		# Load and show
 		$('.suggest_provider_link').click (e) ->
 			container = $('#suggest_provider').addClass 'loading'
 			popover = $('.popover', container)
@@ -96,6 +107,7 @@
 			popover.load my_vars.provider_suggestion_form_url, ->
 				container.removeClass 'loading'
 				container.addClass 'loaded'
+			$(document).click my_vars.f.outside_close_provider_suggestion_form
 			false
 		
 		event_is_over_element = (e, el) ->

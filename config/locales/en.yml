@@ -357,6 +357,7 @@ en:
         cancel: 'Cancel'
         confirmation: "Thank you for suggesting '%{name}'"
         description_tip: 'Just a line or two about the provider to help us find the right one'
+        done: 'Done'
         new_header: 'Suggest a Provider'
         new_intro: "Thanks for helping us find another great provider. (Your personal information won't be shared or made public.)"
         submit: 'Submit'
