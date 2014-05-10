@@ -3,7 +3,8 @@
 - else
 	var formlet;
 	- if @update_succeeded
-		$('##{@formlet}').removeClass('active');
+		my_vars.f.close_formlets();
+		-# $('##{@formlet}').removeClass('active');
 	- if @refresh_formlets
 		- @refresh_formlets.split.each do |f|
 			formlet = $('##{f}').html('#{escape_javascript(render partial: f+'_formlet')}');

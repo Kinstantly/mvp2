@@ -114,7 +114,7 @@
 		wrapper 	  = $('div#profile-photo')
 		context 	  = $(wrapper.find('div.profile-photo-update'))
 		main_view_img = $(wrapper.children('img'))
-		toggleLink    = $(wrapper.find('span[itemprop="profilePhoto"]'))
+		openLink    = $(wrapper.find('span[itemprop="profilePhoto"]'))
 		closeLink     = $(context.find('.close-popover-button'))
 		error_div     = $(context.find('div.errorExplanation'))
 
@@ -152,32 +152,23 @@
 
 		#binds ui elements to user events
 		bind_actions = ()  ->
-			main_view_img.on 'click', (e) ->
-				context.toggle()
-				reset_steps() if !context.is(":visible")
-				show_step(default_step, 0) if !context.is(":visible")
-				my_vars.f.place_formlet(wrapper) if context.is(":visible")
+			main_view_img.addClass('open-photo-popover').on 'click', open_popover
 
-			toggleLink.on 'click', (e) ->
-				context.toggle()
-				reset_steps() if !context.is(":visible")
-				show_step(default_step, 0) if !context.is(":visible")
-				my_vars.f.place_formlet(wrapper) if context.is(":visible")
+			openLink.addClass('open-photo-popover').on 'click', open_popover
 
-			closeLink.on 'click', (e) ->
-				context.hide()
-				reset_steps()
-				show_step(default_step, 0)
-				
+			closeLink.on 'click', close_popover
+
 			step_three_back_to_edit_link.on 'click', (e) ->
 				 e.preventDefault()
 				 show_step(prev_step, 1)
 				 show_error_help_link_if_any()
+				 false
 
 			help_links.on 'click', (e) ->
 				e.preventDefault()
 				show_step(3, 1)
 				hide_error_help_link_if_any()
+				false
 
 			#step one bindings
 			step_one.imp_from_url.upload_link.on 'click', (e) ->
@@ -187,23 +178,23 @@
 					source_url_area.slideUp()
 				else
 					source_url_area.slideDown()
+				false
 
 			step_one.imp_from_url.upload_button.on 'click', (e) ->
 				if $(@).is(":disabled")
 					return false
 				source_url = step_one.imp_from_url.source_url.serialize()
 				save_image_from_url(source_url, 1)
+				false
 
 			#step two bindings
-			step_two.like_profile_photo_link.on 'click', (e) ->
-				e.preventDefault()
-				context.hide()
-				reset_steps()
+			step_two.like_profile_photo_link.on 'click', close_popover
 
 			step_two.show_step_one_link.on 'click', (e) ->
 				e.preventDefault()
 				reset_steps()
 				show_step(1, 1)
+				false
 
 			step_two.edit_profile_photo_link.on 'click', (e) ->
 				e.preventDefault()
@@ -247,6 +238,27 @@
 				jackUp.on "upload:failure", (e, options) ->
 					upload_request_complete()
 					show_errors [my_vars.profile_photo_upload_generic_error]
+
+		open_popover = (e) ->
+			context.show()
+			my_vars.f.place_formlet(wrapper)
+			$('.open-photo-popover').unbind 'click', open_popover
+			$('.open-popover').unbind 'click', my_vars.f.open_formlet
+			$(document).on 'click', outer_close_popover
+			false
+
+		close_popover = (e) ->
+			context.hide()
+			reset_steps()
+			show_step(default_step, 0)
+			$(document).unbind 'click', outer_close_popover
+			$('.open-photo-popover').on 'click', open_popover
+			$('.open-popover').on 'click', my_vars.f.open_formlet
+			false
+
+		outer_close_popover = (e) ->
+			if $(e.target).closest(context).length == 0
+				close_popover e
 
 		save_image_from_url = (source_url, step) ->
 			$.ajax
@@ -332,7 +344,7 @@
 
 		# Error help-links are created dynamically, so we must locate them dynamically.
 		activate_error_help_link_if_any = ->
-			$('a.more-help', error_div).click (e) ->
+			$('a.more-help', error_div).on 'click', (e) ->
 				show_step(3, 1)
 				$(this).hide()
 				false
@@ -405,6 +417,8 @@
 			show_step(default_step, 0)
 		set_default_step : (step_num) ->
 			default_step = step_num if step_num <= total_steps && step_num > 0
+		open_popover: open_popover
+		close_popover: close_popover
 		init: init
 
 	#profile_photo_module.init()
