@@ -348,7 +348,7 @@
 			edit_profile.custom_services_template.replace('INDEX', String(++edit_profile.custom_services_i)) + '</div>'
 		$('.custom_services input:last').focus().keydown (e) ->
 			add_custom_services_text_field e if e.which == 13 # carriage return
-	$('#add_custom_services_text_field').click add_custom_services_text_field
+	$('#add_custom_services_text_field').on 'click', add_custom_services_text_field
 	
 	# Add extra text input tags for custom specialties.
 	add_custom_specialties_text_field = (e) ->
@@ -359,4 +359,4 @@
 			edit_profile.custom_specialties_template.replace('INDEX', String(++edit_profile.custom_specialties_i)) + '</div>'
 		$('.custom_specialties input:last').focus().keydown (e) ->
 			add_custom_specialties_text_field e if e.which == 13 # carriage return
-	$('#add_custom_specialties_text_field').click add_custom_specialties_text_field
+	$('#add_custom_specialties_text_field').on 'click', add_custom_specialties_text_field

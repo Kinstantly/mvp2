@@ -242,8 +242,8 @@
 		open_popover = (e) ->
 			context.show()
 			my_vars.f.place_formlet(wrapper)
-			$('.open-photo-popover').unbind 'click', open_popover
-			$('.open-popover').unbind 'click', my_vars.f.open_formlet
+			$('.open-photo-popover').off 'click', open_popover
+			$('.open-formlet-popover').off 'click', my_vars.f.open_formlet
 			$(document).on 'click', outer_close_popover
 			false
 
@@ -251,13 +251,13 @@
 			context.hide()
 			reset_steps()
 			show_step(default_step, 0)
-			$(document).unbind 'click', outer_close_popover
+			$(document).off 'click', outer_close_popover
 			$('.open-photo-popover').on 'click', open_popover
-			$('.open-popover').on 'click', my_vars.f.open_formlet
+			$('.open-formlet-popover').on 'click', my_vars.f.open_formlet
 			false
 
 		outer_close_popover = (e) ->
-			if $(e.target).closest(context).length == 0
+			if $(e.target).closest(context).length == 0 && $('.avpw').is(':hidden')
 				close_popover e
 
 		save_image_from_url = (source_url, step) ->

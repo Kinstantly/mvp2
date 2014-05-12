@@ -68,14 +68,15 @@
 			# Close any open formlets.
 			my_vars.f.close_formlets = (e) ->
 				$('.formlet.active').removeClass 'active'
-				$(document).unbind 'click', my_vars.f.outer_close_formlets
-				$('.open-popover').on 'click', my_vars.f.open_formlet
+				$(document).off 'click', my_vars.f.outer_close_formlets
+				$('.open-formlet-popover').on 'click', my_vars.f.open_formlet
 				$('.open-photo-popover').on 'click', my_vars.profile_photo_module.open_popover
 				false # No bubble up.
 			
 			# Close open formlets if clicked outside open formlet.
 			my_vars.f.outer_close_formlets = (e) ->
-				if $(e.target).closest('.popover', '.formlet.active').length == 0
+				clicked = $(e.target)
+				if clicked.closest('.popover', '.formlet.active').length == 0 && clicked.closest('.ui-autocomplete').length == 0
 					my_vars.f.close_formlets e
 			
 			# Open the formlet unless already activated or we clicked on a 'dont_popover' element.
@@ -84,8 +85,8 @@
 					$('.formlet.active').removeClass 'active' # Close any active formlet.
 					$(this).addClass 'active'
 					my_vars.f.place_formlet this
-					$('.open-popover').unbind 'click', my_vars.f.open_formlet
-					$('.open-photo-popover').unbind 'click', my_vars.profile_photo_module.open_popover
+					$('.open-formlet-popover').off 'click', my_vars.f.open_formlet
+					$('.open-photo-popover').off 'click', my_vars.profile_photo_module.open_popover
 					$(document).on 'click', my_vars.f.outer_close_formlets
 					false
 		
@@ -97,7 +98,7 @@
 				# Cancel buttons should close the formlet.
 				$('.cancel', formlet).on 'click', my_vars.f.close_formlets
 		
-			$('.formlet').addClass('open-popover').on 'click', my_vars.f.open_formlet
+			$('.formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
 				
 			$('.formlet').each -> my_vars.f.configure_formlet this
 		
