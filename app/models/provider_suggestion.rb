@@ -2,7 +2,7 @@ class ProviderSuggestion < ActiveRecord::Base
 	has_paper_trail # Track changes to each provider suggestion.
 	
 	attr_accessible :description, :provider_name, :provider_url, :suggester_email, :suggester_name
-	attr_accessible :description, :provider_name, :provider_url, :suggester_email, :suggester_name, :suggester, :admin_notes, as: :admin
+	attr_accessible :description, :provider_name, :provider_url, :suggester_email, :suggester_name, :admin_notes, as: :admin
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :description, :provider_name, :provider_url, :suggester_email, :suggester_name
