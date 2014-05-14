@@ -1,25 +1,38 @@
-%h1 Listing provider_suggestions
-%table
-  %tr
-    %th Suggester
-    %th Suggester name
-    %th Suggester email
-    %th Provider name
-    %th Provider url
-    %th Description
-    %th
-    %th
-    %th
-  - @provider_suggestions.each do |provider_suggestion|
-    %tr
-      %td= provider_suggestion.suggester_id
-      %td= provider_suggestion.suggester_name
-      %td= provider_suggestion.suggester_email
-      %td= provider_suggestion.provider_name
-      %td= provider_suggestion.provider_url
-      %td= provider_suggestion.description
-      %td= link_to 'Show', provider_suggestion
-      %td= link_to 'Edit', edit_provider_suggestion_path(provider_suggestion)
-      %td= link_to 'Destroy', provider_suggestion, method: :delete, data: { confirm: 'Are you sure?' }
-%br/
-= link_to 'New Provider suggestion', new_provider_suggestion_path
+- @page_title = "#{company_name} - Provider suggestions"
+.index
+	%h1 Provider suggestions
+	#top_bar
+		= render partial: 'home/admin_nav'
+	.list{align: 'center'}
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: ProviderSuggestion }
+			= paginate @provider_suggestions
+		%table
+			%thead
+				%tr
+					%th= ProviderSuggestion.human_attribute_name :suggester
+					%th= t 'views.provider_suggestion.admin.suggester_name'
+					%th= t 'views.provider_suggestion.admin.suggester_email'
+					%th= ProviderSuggestion.human_attribute_name :provider_name
+					%th= ProviderSuggestion.human_attribute_name :provider_url
+					%th.large= ProviderSuggestion.human_attribute_name :description
+					%th.large= ProviderSuggestion.human_attribute_name :admin_notes
+					%th.small
+					%th.small
+					%th.small
+			%tbody
+				- @provider_suggestions.each do |provider_suggestion|
+					%tr
+						%td= provider_suggestion.suggester.try :username_or_email
+						%td= provider_suggestion.suggester_name
+						%td= provider_suggestion.suggester_email
+						%td= provider_suggestion.provider_name
+						%td= provider_suggestion.provider_url
+						%td= provider_suggestion.description
+						%td= provider_suggestion.admin_notes
+						%td.small= link_to 'Show', provider_suggestion
+						%td.small= link_to 'Edit', edit_provider_suggestion_path(provider_suggestion)
+						%td.small= link_to 'Remove', provider_suggestion, method: :delete, data: { confirm: t('views.provider_suggestion.edit.confirm_destroy', name: provider_suggestion.provider_name) }
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: ProviderSuggestion }
+			= paginate @provider_suggestions

@@ -103,7 +103,7 @@
 		$('.suggest_provider_link').on 'click', (e) ->
 			container = $('#suggest_provider').addClass 'loading'
 			popover = $('.popover', container)
-			place_popover popover, 40
+			place_popover popover, 10
 			popover.load my_vars.provider_suggestion_form_url, ->
 				container.removeClass 'loading'
 				container.addClass 'loaded'

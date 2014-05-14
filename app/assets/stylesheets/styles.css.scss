@@ -1005,6 +1005,20 @@ $form_element_width: 388px;
 	.label_highlight {
 		color: $default_link_color;
 	}
+	.required_tip {
+		color: $kinstantly_pink;
+	}
+	.required_tip:before, label.required:after {
+		content: '*';
+		color: $kinstantly_pink;
+		font-size: 1.5em;
+	}
+	.required_tip:before {
+		margin-right: 0.15em;
+	}
+	label.required:after {
+		margin-left: 0.15em;
+	}
 }
 
 .editable {

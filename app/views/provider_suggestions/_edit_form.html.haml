@@ -1,0 +1,12 @@
+%p
+	= "#{ProviderSuggestion.human_attribute_name :suggester}:"
+	= @provider_suggestion.suggester.try :username_or_email
+= simple_form_for @provider_suggestion do |f|
+	= f.input :suggester_name, label: t('views.provider_suggestion.admin.suggester_name')
+	= f.input :suggester_email, label: t('views.provider_suggestion.admin.suggester_email')
+	= f.input :provider_name
+	= f.input :provider_url
+	= f.input :description, input_html: {size: '50x5'}
+	= f.input :admin_notes, input_html: {size: '50x5'}
+	= f.button :submit
+	= link_to 'Cancel', provider_suggestion_path(@provider_suggestion)

@@ -1,5 +1,6 @@
 = form_for @provider_suggestion, url: provider_suggestions_path, method: :post, remote: true do |f|
 	= f.error_messages
+	.required_tip= t 'views.required'
 	- unless user_signed_in?
 		.text_field#suggester_name_field
 			%span.char_count
@@ -8,20 +9,20 @@
 			= f.text_field :suggester_name, class: 'attr'
 		.text_field#suggester_email_field
 			%span.char_count
-			= f.label :suggester_email
+			= f.label :suggester_email, class: 'required'
 			.note= t 'views.provider_suggestion.edit.suggester_email_tip'
 			= f.text_field :suggester_email, class: 'attr'
 	.text_field#provider_name_field
 		%span.char_count
-		= f.label :provider_name
+		= f.label :provider_name, t('views.provider_suggestion.edit.provider_name_label', attribute_name: ProviderSuggestion.human_attribute_name(:provider_name)), class: 'required'
 		= f.text_field :provider_name, class: 'attr'
 	.text_field#provider_url_field
 		%span.char_count
-		= f.label :provider_url
+		= f.label :provider_url, t('views.provider_suggestion.edit.provider_url_label', attribute_name: ProviderSuggestion.human_attribute_name(:provider_url))
 		= f.text_field :provider_url, class: 'attr'
 	.text_field#description_field
 		%span.char_count
-		= f.label :description
+		= f.label :description, t('views.provider_suggestion.edit.description_label'), class: 'required'
 		.note= t 'views.provider_suggestion.edit.description_tip'
 		= f.text_area :description, size: '45x4', class: 'attr'
 	= f.submit t('views.provider_suggestion.edit.submit'), disable_with: t('views.provider_suggestion.edit.submit_disable'), class: 'save'

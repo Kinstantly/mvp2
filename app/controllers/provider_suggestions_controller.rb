@@ -23,6 +23,7 @@ class ProviderSuggestionsController < ApplicationController
 	end
 	
 	def index
+		@provider_suggestions = @provider_suggestions.order_by_descending_id.page(params[:page]).per(params[:per_page])
 		render layout: 'plain'
 	end
 	
@@ -36,7 +37,8 @@ class ProviderSuggestionsController < ApplicationController
 	
 	# PUT /provider_suggestions/1
 	def update
-		if @provider_suggestion.update_attributes params[:provider_suggestion]
+		role = current_user.try(:admin?) ? :admin : :default
+		if @provider_suggestion.update_attributes params[:provider_suggestion], as: role
 			set_flash_message :notice, :updated
 			respond_with @provider_suggestion
 		else
@@ -48,6 +50,11 @@ class ProviderSuggestionsController < ApplicationController
 	# DELETE /provider_suggestions/1
 	def destroy
 		@provider_suggestion.destroy
+		if @provider_suggestion.destroyed?
+			set_flash_message :notice, :destroyed, name: @provider_suggestion.provider_name
+		else
+			set_flash_message :alert, :destroy_error, name: @provider_suggestion.provider_name
+		end
 		respond_with @provider_suggestion
 	end
 end

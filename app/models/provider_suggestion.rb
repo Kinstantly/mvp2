@@ -2,6 +2,7 @@ class ProviderSuggestion < ActiveRecord::Base
 	has_paper_trail # Track changes to each provider suggestion.
 	
 	attr_accessible :description, :provider_name, :provider_url, :suggester_email, :suggester_name
+	attr_accessible :description, :provider_name, :provider_url, :suggester_email, :suggester_name, :suggester, :admin_notes, as: :admin
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :description, :provider_name, :provider_url, :suggester_email, :suggester_name
@@ -22,14 +23,18 @@ class ProviderSuggestion < ActiveRecord::Base
 		suggester_email: User::MAX_LENGTHS[:email]
 	}
 	
-	[:description, :provider_name].each do |attribute|
-		validates attribute, length: {minimum: MIN_LENGTHS[attribute], maximum: MAX_LENGTHS[attribute]}
-	end
-	[:provider_url, :suggester_name].each do |attribute|
+	# Require a suggester email address if there is no suggester record.
+	validates :suggester_email, email: true, if: Proc.new { |provider_suggestion| provider_suggestion.suggester.nil? }
+	
+	[:suggester_name, :provider_url].each do |attribute|
 		validates attribute, allow_blank: true, length: {maximum: MAX_LENGTHS[attribute]}
 	end
 	
-	# Require either a suggester record or a suggester email address.
-	validates :suggester_email, email: true, if: Proc.new { |provider_suggestion| provider_suggestion.suggester.nil? }
-	validates :suggester, presence: true, if: Proc.new { |provider_suggestion| provider_suggestion.suggester_email.blank? }
+	# If nothing entered, show a "required" error rather than a minimum character count error.
+	[:provider_name, :description].each do |attribute|
+		validates attribute, presence: true
+		validates attribute, allow_blank: true, length: {minimum: MIN_LENGTHS[attribute], maximum: MAX_LENGTHS[attribute]}
+	end
+	
+	scope :order_by_descending_id, order('id DESC')
 end

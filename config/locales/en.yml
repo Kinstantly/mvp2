@@ -57,6 +57,8 @@ en:
       profile_photo_no_dnd_support: 'Drag and Drop is not supported by your browser. Please use one of upload options below.'
       location_remote_only: 'This provider operates 100% remotely. <br/>That means you can talk to this provider at home, at your office, at a park... the sky&#39;s the limit!'
     provider_suggestions:
+      destroyed: "The provider suggestion for '%{name}' was removed!"
+      destroy_error: "Sorry.  The provider suggestion for '%{name}' was NOT removed."
       updated: 'The provider suggestion was saved.'
       update_error: 'There was a problem saving the provider suggestion.'
     reviews:
@@ -159,6 +161,13 @@ en:
         search_area_tag_id: 'Region for search'
         display_address: 'Address'
         display_phone: 'Phone'
+      provider_suggestion:
+        description: 'Description of services'
+        provider_name: 'Name of person or company'
+        provider_url: "URL of provider's website"
+        suggester: 'Logged-in suggester'
+        suggester_email: 'Your email address'
+        suggester_name: 'Your name'
       review:
         body: 'Review'
         good_to_know: 'Tip'
@@ -203,6 +212,7 @@ en:
     find_button: 'Find'
     not_browsable: '(grayed-out not browsable)'
     form_is_modified: 'You have changes that have not been saved.'
+    required: 'Required'
     category:
       name: 'Category'
       edit:
@@ -353,13 +363,20 @@ en:
         link_body: 'Click here'
         message: 'if you want to replace your existing profile with the one you want to claim.'
     provider_suggestion:
+      admin:
+        suggester_email: "Suggester's email address"
+        suggester_name: "Suggester's name"
       edit:
         cancel: 'Cancel'
         confirmation: "Thank you for suggesting '%{name}'"
+        confirm_destroy: "Are you sure you want to remove the provider suggestion for '%{name}'?"
+        description_label: 'What services does this provider offer?'
         description_tip: 'Just a line or two about the provider to help us find the right one'
         done: 'Done'
         new_header: 'Suggest a Provider'
         new_intro: "Thanks for helping us find another great provider. (Your personal information won't be shared or made public.)"
+        provider_name_label: "%{attribute_name} you're recommending"
+        provider_url_label: "%{attribute_name}, if you know it"
         submit: 'Submit'
         submit_disable: 'Submitting...'
         suggester_email_tip: 'In case we have a quick follow-up question'
