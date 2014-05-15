@@ -1,0 +1,41 @@
+%html
+	%body
+		- if @provider_suggestion
+			%p
+				Suggestion created on
+				= mailer_display_time @provider_suggestion.created_at
+			- if (suggester = @provider_suggestion.suggester)
+				%p
+					The suggestion was made by this registered user:
+					%br
+					username:
+					= suggester.username
+					%br
+					email:
+					= suggester.email
+			- else
+				%p
+					The suggestion was made by this site visitor:
+					- if (name = @provider_suggestion.suggester_name)
+						%br
+						name:
+						= name
+					%br
+					email:
+					= @provider_suggestion.suggester_email
+			%p
+				Suggested provider:
+				%br
+				name:
+				= @provider_suggestion.provider_name
+				- if (url = @provider_suggestion.provider_url)
+					%br
+					URL:
+					= url
+			%p
+				Description of services:
+				%br
+				= @provider_suggestion.description
+			%p= link_to 'View provider suggestion.', provider_suggestion_url(@provider_suggestion)
+		- else
+			%p Oops, can't find the provider suggestion record.

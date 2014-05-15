@@ -11,7 +11,7 @@ Then /^I should see "(.*?)" on the page$/ do |content|
 	page.should have_content content
 end
 
-When /^I click on "(.*?)"$/ do |link_or_button|
+When /^I click (?:on|the) "(.*?)"(?: link| button)?$/ do |link_or_button|
 	click_on link_or_button
 end
 

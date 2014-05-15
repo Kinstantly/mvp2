@@ -56,4 +56,21 @@ describe AdminMailer do
 			email.should have_body_text(edit_user_url parent)
 		end
 	end
+	
+	context "provider suggestion notice" do
+		let(:provider_suggestion) { FactoryGirl.create :provider_suggestion }
+		let(:email) { AdminMailer.provider_suggestion_notice provider_suggestion }
+		
+		it "should be delivered to profile admin" do
+			email.should deliver_to(PROFILE_MODERATOR_EMAIL)
+		end
+
+		it "should mention 'provider suggestion' in the subject" do
+			email.should have_subject(/provider suggestion/i)
+		end
+	
+		it "should contain a link to view the provider suggestion" do
+			email.should have_body_text(/#{provider_suggestion_url(provider_suggestion)}/)
+		end
+	end
 end

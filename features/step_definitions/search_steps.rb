@@ -1,5 +1,9 @@
 # Tip: to view the page, use: save_and_open_page
 
+Given /^I am on the search results page$/ do
+	visit search_providers_path query: 'Music Teachers'
+end
+
 When /^I enter published profile data in the search box$/ do
 	within('#search_providers') do
 		fill_in 'provider_search_query', with: @published_profile_data[:last_name]

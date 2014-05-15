@@ -28,7 +28,7 @@ Feature: Suggest a provider
 			And I enter "en.wikipedia.org/wiki/The_Tales_of_Hoffmann" in the "URL of provider" field
 			And I click the "Submit" button
 		Then I should see "Your email address is required" on the page
-			And I should see "What services the provider offers is required"
+			And I should see "Description of services is required" on the page
 
 	Scenario: Bring up provider suggestion form while logged in
 		Given I am logged in as a parent
@@ -37,7 +37,8 @@ Feature: Suggest a provider
 		Then I should see "Thanks for helping us find another great provider" on the page
 
 	Scenario: Submit provider suggestion form while logged in
-		Given I am on the search results page
+		Given I am logged in as a parent
+			And I am on the search results page
 			And I click on "Tell us"
 			And I enter "Jacques Offenbach" in the "Name of person" field
 			And I enter "en.wikipedia.org/wiki/The_Tales_of_Hoffmann" in the "URL of provider" field

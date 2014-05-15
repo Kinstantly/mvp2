@@ -27,4 +27,13 @@ class AdminMailer < ActionMailer::Base
 		sendgrid_category 'Parent Registration Alert'
 		mail subject: "Parent \"#{user.email}\" has registered", to: ADMIN_EMAIL
 	end
+	
+	# Notify the profile moderator, when a provider is suggested.
+	def provider_suggestion_notice(provider_suggestion)
+		@provider_suggestion = provider_suggestion
+		subject = 'New provider suggestion'
+		sendgrid_category subject
+		sendgrid_unique_args provider_suggestion_id: provider_suggestion.to_param
+		mail subject: subject
+	end
 end

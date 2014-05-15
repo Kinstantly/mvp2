@@ -37,4 +37,12 @@ class ProviderSuggestion < ActiveRecord::Base
 	end
 	
 	scope :order_by_descending_id, order('id DESC')
+	
+	after_create :send_provider_suggestion_notice
+	
+	private
+	
+	def send_provider_suggestion_notice
+		AdminMailer.provider_suggestion_notice(self).deliver
+	end
 end
