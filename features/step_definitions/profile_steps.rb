@@ -381,16 +381,11 @@ When /^I enter( | new | my )profile information$/ do |which|
 		fill_in 'profile_last_name', with: profile_data[:last_name]
 		click_button 'Save'
 	end
-	find('#internet').click
-	within('#internet') do
-		fill_in 'Website', with: profile_data[:url]
-		click_button 'Save'
-	end
-	find('#services').click
-	within('#services') do
-		check MyHelpers.profile_categories_id(@predefined_category.id)
-		click_button 'Save'
-	end
+	# find('#internet').click
+	# within('#internet') do
+	# 	fill_in 'Website', with: profile_data[:url]
+	# 	click_button 'Save'
+	# end
 end
 
 When /^I set my first name to "(.*?)"$/ do |first_name|
@@ -585,10 +580,6 @@ When /^I preview the invitation to "(.*?)" to claim the profile$/ do |email|
 	click_link 'new_invitation_profile'
 	fill_in 'invitation_email', with: email
 	click_button 'test_invitation_profile'
-end
-
-When /^I click on the "(.*?)" (?:link|button)$/ do |link|
-	click_link_or_button link	
 end
 
 When /^I enter "(.*?)" in the "(.*?)" field of the (first|second) location on my profile edit page$/ do |text, field, which|
@@ -800,7 +791,7 @@ Then /^I should see the new profile data$/ do
 	page.should have_content @unattached_profile_data[:first_name]
 	page.should have_content @unattached_profile_data[:middle_name]
 	page.should have_content @unattached_profile_data[:last_name]
-	page.should have_content MyHelpers.strip_url(@unattached_profile_data[:url])
+	# page.should have_content MyHelpers.strip_url(@unattached_profile_data[:url])
 end
 
 Then /^I should land on the view page for the unclaimed profile$/ do

@@ -17,7 +17,7 @@ Feature: Suggest a provider
 			And I enter "Jacques Offenbach" in the "Name of person" field
 			And I enter "en.wikipedia.org/wiki/The_Tales_of_Hoffmann" in the "URL of provider" field
 			And I enter "A German-born French composer, cellist and impresario." in the "What services" field
-			And I click the "Submit" button
+			And I click on the "Submit" button
 		Then I should see "Thank you for suggesting 'Jacques Offenbach'" on the page
 
 	Scenario: Neglect to enter required fields on the provider suggestion form
@@ -26,7 +26,7 @@ Feature: Suggest a provider
 		When I enter "ETA Hoffmann" in the "Your name" field
 			And I enter "Jacques Offenbach" in the "Name of person" field
 			And I enter "en.wikipedia.org/wiki/The_Tales_of_Hoffmann" in the "URL of provider" field
-			And I click the "Submit" button
+			And I click on the "Submit" button
 		Then I should see "Your email address is required" on the page
 			And I should see "Description of services is required" on the page
 
@@ -43,5 +43,5 @@ Feature: Suggest a provider
 			And I enter "Jacques Offenbach" in the "Name of person" field
 			And I enter "en.wikipedia.org/wiki/The_Tales_of_Hoffmann" in the "URL of provider" field
 			And I enter "A German-born French composer, cellist and impresario." in the "What services" field
-			And I click the "Submit" button
+			And I click on the "Submit" button
 		Then I should see "Thank you for suggesting 'Jacques Offenbach'" on the page
