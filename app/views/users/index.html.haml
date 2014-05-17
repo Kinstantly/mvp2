@@ -1,4 +1,6 @@
 .profile_index
+	#top_bar
+		= render partial: 'home/admin_nav'
 	.profile_list{align: 'center'}
 		.pagination_nav
 			= render partial: 'shared/per_page_form', locals: { record_type: User }

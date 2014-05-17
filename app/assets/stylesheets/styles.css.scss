@@ -104,6 +104,35 @@ audio:not([controls]) {
 	}
 }
 
+@mixin mobile-popover {
+	@media screen and (max-width: 480px) {
+		width: 80%;
+		form, h1, .generic_form {
+			width: 100%;
+		}
+		.text_field {
+			width: 100%;
+			input, textarea, select {
+				width: 90%;
+			}
+		}
+	}
+}
+
+@mixin mobile-formlet-popover {
+	@media screen {
+		@media (max-width: 480px) {
+			width: 320px;
+			input[type="submit"] {
+				margin-bottom: 8px;
+			}
+		}
+		@media (max-width: 380px) {
+			width: 220px;
+		}
+	}
+}
+
 /*
 Base styles
 */
@@ -813,6 +842,8 @@ table.info {
 		.text_field input {
 			width: 430px;
 		}
+		@include mobile-popover;
+		@include mobile-formlet-popover;
 	}
 	#availability_service_area {
 		.popover {
@@ -820,6 +851,8 @@ table.info {
 			textarea {
 				width: 438px;
 			}
+			@include mobile-popover;
+			@include mobile-formlet-popover;
 		}
 	}
 	#ages_stages {
@@ -828,6 +861,8 @@ table.info {
 			.text_field input {
 				width: 448px;
 			}
+			@include mobile-popover;
+			@include mobile-formlet-popover;
 		}
 	}
 }
@@ -1053,6 +1088,7 @@ div.popover {
 	border: 1px solid #DDD;
 	margin-left: -25px;
 	@include form-style;
+	@include mobile-popover;
 }
 .active {
 	background: none !important;
@@ -1066,6 +1102,9 @@ div.popover {
 		color: $text_light_color;
 	}
 	cursor: auto;
+	.popover {
+		@include mobile-formlet-popover;
+	}
 }
 
 /*  Footer -------------------------------------------------------------------------- */
