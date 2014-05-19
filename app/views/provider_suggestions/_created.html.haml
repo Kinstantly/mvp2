@@ -1,0 +1,6 @@
+#confirmation
+	%p= t 'views.provider_suggestion.edit.confirmation', name: @provider_suggestion.provider_name
+	%p= link_to t('views.provider_suggestion.edit.done'), '#', class: 'cancel button'
+:coffeescript
+	# Cancel buttons should close and clear the pop-over.
+	$('#suggest_provider .cancel').on 'click', my_vars.f.close_provider_suggestion_form

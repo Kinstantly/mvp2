@@ -62,6 +62,10 @@ class User < ActiveRecord::Base
 		client? or username.present?
 	end
 	
+	def username_or_email
+		username.presence or email
+	end
+	
 	def display_phone
 		display_phone_number phone
 	end

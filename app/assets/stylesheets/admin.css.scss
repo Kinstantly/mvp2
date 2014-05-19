@@ -34,14 +34,27 @@
 	}
 }
 
+.show {
+	margin: 20px;
+	table {
+		border-collapse: collapse;
+		td {
+			@include cell-style;
+		}
+		td:first-of-type {
+			font-weight: bold;
+		}
+	}
+}
+
 .edit {
 	h1 {
 		@include header-style;
 	}
 	#forms {
-		.input {
+		.input, p {
 			margin: 1em 0.25em;
-			input, select, .hint {
+			input, select, textarea, .hint {
 				margin-left: 1em;
 				margin-right: 1em;
 			}

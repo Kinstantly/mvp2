@@ -104,6 +104,35 @@ audio:not([controls]) {
 	}
 }
 
+@mixin mobile-popover {
+	@media screen and (max-width: 480px) {
+		width: 80%;
+		form, h1, .generic_form {
+			width: 100%;
+		}
+		.text_field {
+			width: 100%;
+			input, textarea, select {
+				width: 90%;
+			}
+		}
+	}
+}
+
+@mixin mobile-formlet-popover {
+	@media screen {
+		@media (max-width: 480px) {
+			width: 320px;
+			input[type="submit"] {
+				margin-bottom: 8px;
+			}
+		}
+		@media (max-width: 380px) {
+			width: 220px;
+		}
+	}
+}
+
 /*
 Base styles
 */
@@ -813,6 +842,8 @@ table.info {
 		.text_field input {
 			width: 430px;
 		}
+		@include mobile-popover;
+		@include mobile-formlet-popover;
 	}
 	#availability_service_area {
 		.popover {
@@ -820,6 +851,8 @@ table.info {
 			textarea {
 				width: 438px;
 			}
+			@include mobile-popover;
+			@include mobile-formlet-popover;
 		}
 	}
 	#ages_stages {
@@ -828,6 +861,8 @@ table.info {
 			.text_field input {
 				width: 448px;
 			}
+			@include mobile-popover;
+			@include mobile-formlet-popover;
 		}
 	}
 }
@@ -1005,6 +1040,20 @@ $form_element_width: 388px;
 	.label_highlight {
 		color: $default_link_color;
 	}
+	.required_tip {
+		color: $kinstantly_pink;
+	}
+	.required_tip:before, label.required:after {
+		content: '*';
+		color: $kinstantly_pink;
+		font-size: 1.5em;
+	}
+	.required_tip:before {
+		margin-right: 0.15em;
+	}
+	label.required:after {
+		margin-left: 0.15em;
+	}
 }
 
 .editable {
@@ -1039,6 +1088,7 @@ div.popover {
 	border: 1px solid #DDD;
 	margin-left: -25px;
 	@include form-style;
+	@include mobile-popover;
 }
 .active {
 	background: none !important;
@@ -1052,6 +1102,9 @@ div.popover {
 		color: $text_light_color;
 	}
 	cursor: auto;
+	.popover {
+		@include mobile-formlet-popover;
+	}
 }
 
 /*  Footer -------------------------------------------------------------------------- */
@@ -1314,6 +1367,37 @@ div.popover {
 	nav.pagination span {
 		margin-right: 1em;
 	}
+}
+
+/* Suggest a provider */
+
+#suggest_provider {
+	position: relative;
+	.popover {
+		display: none;
+		min-height: 500px;
+		.note {
+			margin: 8px 0 0 0;
+		}
+		h1, #confirmation {
+			width: 100%;
+			padding: 0;
+			text-align: center;
+		}
+		#confirmation p {
+			margin: 5em 0 0 0;
+		}
+	}
+}
+
+#suggest_provider.loading .popover {
+	display: block;
+	background: #FFF url('loading_large.gif') no-repeat center center;
+}
+
+#suggest_provider.loaded .popover {
+	display: block;
+	background: #FFF;
 }
 
 /*  Sign up, sign in, confirmation, password, unlock, account settings ------------------------ */

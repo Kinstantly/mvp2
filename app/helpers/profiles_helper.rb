@@ -574,11 +574,7 @@ module ProfilesHelper
 	end
 
 	def suggest_provider_link
-		uri = 'https://docs.google.com/forms/d/1W690ALolhjBoN7WbWt3-87mc0d-DTFvlTQR6MrbxONw/viewform'
-		if user_signed_in?
-			uri += '?entry.927816333=' + CGI.escape(current_user.email.presence || '')
-		end
-		link_to t('views.search_results.suggest_provider_link'), uri.html_safe, target: '_blank'
+		link_to t('views.search_results.suggest_provider_link'), '#', class: 'suggest_provider_link'
 	end
 
 	def invite_provider_email_subject

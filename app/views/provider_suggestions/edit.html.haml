@@ -1,0 +1,12 @@
+- @page_title = "#{company_name} - Edit suggestion of provider '#{@provider_suggestion.provider_name}'"
+.edit
+	%h1= "Edit suggestion of provider '#{@provider_suggestion.provider_name}'"
+	#top_bar
+		= render partial: 'home/admin_nav'
+	#forms
+		= render partial: 'edit_form'
+		%br
+		= link_to 'Show', @provider_suggestion
+		|
+		= link_to 'List', provider_suggestions_path
+= render partial: 'shared/save_changes_prompt'

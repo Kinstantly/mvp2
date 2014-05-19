@@ -1,0 +1,27 @@
+.show
+	%p#notice= notice
+	%table
+		%tr
+			%td= ProviderSuggestion.human_attribute_name :suggester
+			%td= @provider_suggestion.suggester.try :username_or_email
+		%tr
+			%td= t 'views.provider_suggestion.admin.suggester_name'
+			%td= @provider_suggestion.suggester_name
+		%tr
+			%td= t 'views.provider_suggestion.admin.suggester_email'
+			%td= @provider_suggestion.suggester_email
+		%tr
+			%td= ProviderSuggestion.human_attribute_name :provider_name
+			%td= @provider_suggestion.provider_name
+		%tr
+			%td= ProviderSuggestion.human_attribute_name :provider_url
+			%td= @provider_suggestion.provider_url
+		%tr
+			%td= ProviderSuggestion.human_attribute_name :description
+			%td= @provider_suggestion.description
+		%tr
+			%td= ProviderSuggestion.human_attribute_name :admin_notes
+			%td= @provider_suggestion.admin_notes
+	= link_to 'Edit', edit_provider_suggestion_path(@provider_suggestion)
+	|
+	= link_to 'List', provider_suggestions_path

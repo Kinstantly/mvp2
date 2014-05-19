@@ -28,6 +28,9 @@ class Ability
 		can :create, Review if user.confirmed?
 		cannot :create, Review, profile: { is_published: [false, nil] }
 		cannot :create, Review, profile: { user_id: user.id }
+		
+		# The public can suggest providers.
+		can :create, ProviderSuggestion
 
 		# Experts should only be able to edit the profile attached to their user.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.

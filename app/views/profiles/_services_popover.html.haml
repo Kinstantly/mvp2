@@ -173,7 +173,7 @@
 		# Run after the document is loaded.
 		$ ->
 			# Button for adding a custom services text field.
-			$('#add_custom_services_text_field').click add_custom_services_text_field
+			$('#add_custom_services_text_field').on 'click', add_custom_services_text_field
 			
 			# Configure custom services text fields that have already been displayed, e.g., on a validation error.
 			configure_text_field '.custom_services .text_field input', edit_profile.max_lengths.custom_service_names, add_custom_services_text_field
@@ -191,7 +191,7 @@
 		# Run after the document is loaded.
 		$ ->
 			# Button for adding a custom specialties text field.
-			$('#add_custom_specialties_text_field').click add_custom_specialties_text_field
+			$('#add_custom_specialties_text_field').on 'click', add_custom_specialties_text_field
 			
 			# Configure custom specialties text fields that have already been displayed, e.g., on a validation error.
 			configure_text_field '.custom_specialties .text_field input', edit_profile.max_lengths.custom_specialty_names, add_custom_specialties_text_field

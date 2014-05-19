@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140429234405) do
+ActiveRecord::Schema.define(:version => 20140507005018) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -200,6 +200,18 @@ ActiveRecord::Schema.define(:version => 20140429234405) do
   end
 
   add_index "profiles_specialties", ["profile_id"], :name => "index_profiles_specialties_on_profile_id"
+
+  create_table "provider_suggestions", :force => true do |t|
+    t.integer  "suggester_id"
+    t.string   "suggester_name"
+    t.string   "suggester_email"
+    t.string   "provider_name"
+    t.string   "provider_url"
+    t.text     "description"
+    t.text     "admin_notes"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "ratings", :force => true do |t|
     t.integer  "rater_id"

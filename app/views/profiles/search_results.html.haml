@@ -8,6 +8,8 @@
 	- if @search_address.blank? and @search.total > 1
 		.search_results_prompt= t 'views.search_results.sorted_by_proximity_prompt'
 	.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
+	#suggest_provider
+		.popover
 	#content
 		.search_results_list.ui-helper-clearfix
 			.column-right
@@ -82,9 +84,32 @@
 	my_vars.locations_json	= '#{escape_javascript locations_array.to_json}';
 	my_vars.basic_marker_icon = 'https://maps.google.com/mapfiles/kml/paddle/blu-stars-lv.png';
 	my_vars.highlight_marker_icon = 'https://maps.google.com/mapfiles/kml/paddle/red-stars-lv.png';
+	my_vars.provider_suggestion_form_url = '#{new_provider_suggestion_path}';
 
 - cache 'search_results_coffeescript' do
 	:coffeescript
+		# Provider suggestion pop-over
+		# Close
+		my_vars.f.close_provider_suggestion_form = (e) ->
+			$('#suggest_provider').removeClass('loaded').removeClass('loading')
+			$('#provider_suggestion_form').empty()
+			$(document).off 'click', my_vars.f.outer_close_provider_suggestion_form
+			false # No bubbling up.
+		# Close if clicked outside the pop-over
+		my_vars.f.outer_close_provider_suggestion_form = (e) ->
+			if $(e.target).closest('#suggest_provider').length == 0
+				my_vars.f.close_provider_suggestion_form(e)
+		# Load and show
+		$('.suggest_provider_link').on 'click', (e) ->
+			container = $('#suggest_provider').addClass 'loading'
+			popover = $('.popover', container)
+			place_popover popover, 10
+			popover.load my_vars.provider_suggestion_form_url, ->
+				container.removeClass 'loading'
+				container.addClass 'loaded'
+			$(document).on 'click', my_vars.f.outer_close_provider_suggestion_form
+			false
+		
 		event_is_over_element = (e, el) ->
 			el_coords = el.offset()
 			e.pageY > el_coords.top && e.pageY < el_coords.top + el.outerHeight() &&

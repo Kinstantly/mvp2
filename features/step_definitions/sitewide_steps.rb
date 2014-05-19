@@ -11,10 +11,14 @@ Then /^I should see "(.*?)" on the page$/ do |content|
 	page.should have_content content
 end
 
+When /^I click on the "(.*?)" (?:link|button)$/ do |link_or_button|
+	click_link_or_button link_or_button
+end
+
 When /^I click on "(.*?)"$/ do |link_or_button|
 	click_on link_or_button
 end
 
 Then /^I should land on the home page$/ do
-  current_path.should eq root_path
+	current_path.should eq root_path
 end

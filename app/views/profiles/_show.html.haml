@@ -161,13 +161,13 @@
 
 :coffeescript
 	$ ->
-		$('.more_locations').click () ->
+		$('.more_locations').on 'click', () ->
 			$(this).css 'display', 'none'
 			$('.hide_locations').css 'display', 'inline'
 			$('span.location.more').css 'display', 'block'
 			false
 			
-		$('.hide_locations').click () ->
+		$('.hide_locations').on 'click', () ->
 			$(this).css 'display', 'none'
 			$('.more_locations').css 'display', 'inline'
 			$('span.location.more').css 'display', 'none'

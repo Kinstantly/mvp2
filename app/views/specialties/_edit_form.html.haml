@@ -30,6 +30,6 @@
 -# No ruby interpolation in the coffeescript filter.  It breaks caching of the coffeescript filter result.
 :coffeescript
 	# Add a search_term_name field.
-	$('#add_search_term_name_field').click (e) ->
+	$('#add_search_term_name_field').on 'click', (e) ->
 		$('#search_terms_to_add input:first').clone().attr('id', (i, current) -> current.replace(/\d+$/, String((new Date()).getTime()))).val('').appendTo('#search_terms_to_add').focus()
 		false
