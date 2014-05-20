@@ -7,6 +7,11 @@ gem 'rails', '3.2.18'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+# Put nokogiri before other gems that use libxml (like pg).
+# http://stackoverflow.com/a/15492096/1203206
+# http://stackoverflow.com/a/16943050/1203206
+gem 'nokogiri'
+
 # Abort requests that are taking too long; a subclass of Timeout::Error is raised.
 gem 'rack-timeout'
 
