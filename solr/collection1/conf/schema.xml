@@ -67,8 +67,8 @@
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
-        <filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/>
         <filter class="solr.PorterStemFilterFactory"/>
+        <filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/>
       </analyzer>
       <analyzer type="index">
         <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false"/>
@@ -77,19 +77,24 @@
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true" />
         <filter class="solr.PorterStemFilterFactory"/>
+        <filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/>
       </analyzer>
     </fieldType>
     <!-- *** This non-stemmed text. Used to boost exact matches *** -->
     <fieldType name="text_nostem" class="solr.TextField" omitNorms="false"> 
       <analyzer type="index">
-          <tokenizer class="solr.StandardTokenizerFactory"/> 
-          <filter class="solr.StandardFilterFactory"/> 
-          <filter class="solr.LowerCaseFilterFactory"/> 
+        <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false"/>
+        <tokenizer class="solr.StandardTokenizerFactory"/> 
+        <filter class="solr.StandardFilterFactory"/> 
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/>
       </analyzer> 
       <analyzer type="query">
-          <tokenizer class="solr.StandardTokenizerFactory"/>
-          <filter class="solr.StandardFilterFactory"/>
-          <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false"/>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StandardFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/>
         </analyzer>
     </fieldType>
     <!-- *** This fieldType is used by Sunspot! *** -->
@@ -268,7 +273,7 @@
     <dynamicField name="*_lls" stored="true" type="location" multiValued="false" indexed="true"/>
     <dynamicField name="*_llms" stored="true" type="location" multiValued="true" indexed="true"/>
     <!-- This dynamicField used to index "text" fields without stemming-->
-    <dynamicField name="*_nostem" type="text_nostem" indexed="true" multiValued="true" stored="true"/>
+    <dynamicField name="*_nostem" type="text_nostem" indexed="true"/>
 
   </fields>
   <!-- Field to use to determine and enforce document uniqueness.

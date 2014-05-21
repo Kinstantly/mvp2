@@ -136,19 +136,18 @@ class Profile < ActiveRecord::Base
 	
 	# Sunspot Solr search configuration.
 	searchable do
-		text :first_name, :as => :first_name_nostem
-		text :last_name, :as => :last_name_nostem
-		text :middle_name, :as => :middle_name_nostem
-		text :display_name_or_company, :as => :display_name_or_company_nostem, :boost => 45
-		text :search_terms, :as => :search_terms_nostem, :boost => 100
-		text :headline, :boost => 25
+		text :first_name, as: :first_name_nostem
+		text :last_name, as: :last_name_nostem
+		text :middle_name, as: :middle_name_nostem
+		text :display_name_or_company, as: :display_name_or_company_nostem, boost: 30
+		text :headline, boost: 1
 		text :credentials, :email, :url, 
 			:education, :certifications, :hours, 
 			:languages, :insurance_accepted, :pricing, 
 			:availability_service_area_note, :ages_stages_note
 		
-		text :company_name, :as => :company_name_nostem, :boost => 10 do
-			first_name.present? || last_name.present? ? '' : (company_name.presence || '')
+		text :company_name, :as => :company_name_nostem, boost: 30 do
+			first_name.present? || last_name.present? ? (company_name.presence || '') : ''
 		end
 		# Stored for highlighting.
 		text :summary, stored: true
@@ -169,14 +168,38 @@ class Profile < ActiveRecord::Base
 			locations.map &:coordinates
 		end
 		
-		text :categories, :boost => 1 do
+		text :categories, boost: 1 do
 			categories.map &:name
 		end
-		text :services, :boost => 1 do
+		text :services, boost: 1 do
 			services.map &:name
 		end
-		text :specialties, :boost => 1 do
+		text :specialties, boost: 1 do
 			specialties.map &:name
+		end
+		text :specialty_search_terms, boost: 1 do
+		    specialties.map{|spec| spec.search_terms.map &:name}.flatten.uniq
+		end
+
+		text :search_terms, boost: 1 do
+		    search_terms.present? ? search_terms.strip.split(/\s*\n\s*/) : ''
+		end
+
+		string :categories, multiple: true do
+			categories.map(&:name).map(&:downcase)
+		end
+		string :services, multiple: true do
+			services.map(&:name).map(&:downcase)
+		end
+		string :specialties, multiple: true do
+			specialties.map(&:name).map(&:downcase)
+		end
+		string :specialty_search_terms, multiple: true do
+		    specialties.map{|spec| spec.search_terms.map(&:name).map(&:downcase)}.flatten.uniq
+		end
+
+		string :search_terms, multiple: true, stored: true do
+		    search_terms.present? ? search_terms.strip.split(/\s*\n\s*/).map(&:downcase) : []
 		end
 		
 		boolean :is_published
@@ -209,7 +232,7 @@ class Profile < ActiveRecord::Base
 	# Profiles that exactly match the service name in a full-text search should follow.
 	def self.search_by_service(service, new_opts={})
 		opts = {
-			phrase_fields: {services: 10.0}
+			phrase_fields: {services: 100.0}
 		}.merge(new_opts)
 		self.configurable_search("\"#{service.name}\"", opts) # Specify service name as a phrase.
 	end
@@ -221,9 +244,10 @@ class Profile < ActiveRecord::Base
 	def self.fuzzy_search(query, new_opts={})
 		opts = {
 			solr_params: {mm: '1<1 2<-2 6<75%', defType: 'edismax', 
-						pf2: 'display_name_or_company_nostem^70 company_name_nostem^70 headline^30 services^10'},
+						pf2: 'display_name_or_company_nostem^70 company_name_nostem^70 headline^20 categories^20 services^20 specialties^20 specialty_search_terms^20 search_terms^20'},
 			query_phrase_slop: 1,
-			phrase_fields: {display_name_or_company: 80, company_name: 80, headline: 50, services: 20},
+			phrase_fields: {display_name_or_company: 80, company_name: 80, headline: 30, 
+							categories: 30, services: 30, specialties: 30, specialty_search_terms: 30, search_terms: 30},
 			phrase_slop: 2
 		}.merge(new_opts)
 		self.configurable_search(query, opts)
@@ -260,6 +284,11 @@ class Profile < ActiveRecord::Base
 				query_phrase_slop opts[:query_phrase_slop] if opts[:query_phrase_slop].present?
 				boost_fields opts[:boost_fields] if opts[:boost_fields].present?
 				phrase_fields opts[:phrase_fields] if opts[:phrase_fields].present?
+				boost(80.0) { with(:categories, [query.downcase]) }
+				boost(80.0) { with(:services, [query.downcase]) }
+				boost(80.0) { with(:specialties, [query.downcase]) }
+				boost(80.0) { with(:specialty_search_terms, [query.downcase]) }
+				boost(80.0) { with(:search_terms, [query.downcase]) }
 			end
 			
 			with :service_ids, opts[:service_id] if opts[:service_id].present?
