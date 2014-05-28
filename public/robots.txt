@@ -3,4 +3,4 @@
 # To ban all spiders from the entire site uncomment the next two lines:
 # User-Agent: *
 # Disallow: /
-# Sitemap: http://s3.amazonaws.com/kinstantly/sitemaps/sitemap_index.xml.gz
+# Sitemap: http://s3.amazonaws.com/kinstantly/sitemaps/sitemap.xml.gz

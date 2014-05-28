@@ -11,7 +11,7 @@ SitemapGenerator::Sitemap.create do
 	add contact_path, changefreq: 'monthly'
 	add terms_path, changefreq: 'monthly'
 	
-	Profile.where(is_published: true).find_each do |profile|
+	Profile.where(public_on_private_site: true).where(is_published: true).find_each do |profile|
 		add profile_path(profile), priority: 1.0, changefreq: 'daily', lastmod: profile.updated_at
 	end
 	

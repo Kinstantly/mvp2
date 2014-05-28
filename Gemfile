@@ -60,7 +60,7 @@ gem 'cancan'
 
 # Sitemap generation and search engine pinging.
 # Can upload sitemaps to AWS S3 (see below).
-gem 'sitemap_generator'
+gem 'sitemap_generator', '~> 5.0.0'
 
 # AWS S3 access.
 gem 'fog'
@@ -179,3 +179,6 @@ gem 'recaptcha-mailhide'
 
 # Custom categories and filters for Sendgrid
 gem 'sendgrid'
+
+# Cron jobs
+gem 'whenever', :require => false
