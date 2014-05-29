@@ -1,6 +1,6 @@
 # Set the host name for URL creation
 SitemapGenerator::Sitemap.default_host = SITEMAP_DEFAULT_HOST
-SitemapGenerator::Sitemap.sitemaps_host = 'http://s3.amazonaws.com/kinstantly/'
+SitemapGenerator::Sitemap.sitemaps_host = 'https://kinstantly.s3.amazonaws.com/'
 SitemapGenerator::Sitemap.public_path = 'tmp/'
 SitemapGenerator::Sitemap.sitemaps_path = SITEMAP_SITEMAPS_PATH
 SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new

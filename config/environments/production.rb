@@ -113,7 +113,7 @@ Mvp2::Application.configure do
 
 end
 
-SITEMAP_DEFAULT_HOST = 'http://www.kinstantly.com/'
-SITEMAP_SITEMAPS_PATH = 'sitemaps/'
+SITEMAP_DEFAULT_HOST = 'https://www.kinstantly.com/'
+SITEMAP_SITEMAPS_PATH = ''
 REINDEX_PROFILES_IN_BACKGROUND = true
 
