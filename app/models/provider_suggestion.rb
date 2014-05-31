@@ -13,7 +13,7 @@ class ProviderSuggestion < ActiveRecord::Base
 	# Define minimum and/or maximum length of string and text attributes in a publicly accessible way.
 	# This allows them to be used at the view layer for character counts in input and textarea tags.
 	MIN_LENGTHS = {
-		description: 20,
+		description: 4,
 		provider_name: 4
 	}
 	MAX_LENGTHS = {

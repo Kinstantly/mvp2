@@ -27,12 +27,6 @@
 		= f.text_area :description, size: '45x4', class: 'attr'
 	= f.submit t('views.provider_suggestion.edit.submit'), disable_with: t('views.provider_suggestion.edit.submit_disable'), class: 'save'
 	= link_to t('views.provider_suggestion.edit.cancel'), '#', class: 'cancel button'
-:javascript
-	my_vars.edit_provider_suggestion = my_vars.edit_provider_suggestion || {};
-	my_vars.edit_provider_suggestion.max_lengths = #{ProviderSuggestion::MAX_LENGTHS.to_json};
 :coffeescript
-	# Show character count while filling in fields.
-	for attribute in ['suggester_name', 'suggester_email', 'provider_name', 'provider_url', 'description']
-		$('#'+attribute+'_field .attr').simplyCountable({counter: '#'+attribute+'_field .char_count', maxCount: my_vars.edit_provider_suggestion.max_lengths[attribute]})
 	# Cancel buttons should close and clear the pop-over.
 	$('#suggest_provider .cancel').on 'click', my_vars.f.close_provider_suggestion_form
