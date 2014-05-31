@@ -274,6 +274,7 @@ en:
         profile_is_not_published: 'Profile is NOT published'
         profile_photo_placeholder: 'Photo upload coming soon'
         published: 'Published'
+        specialty_search_terms: 'Specialty search terms:'
         rating: 'Rating'
         review_provider_link: 'Review %{name}'
         url: 'website:'

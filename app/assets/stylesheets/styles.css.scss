@@ -684,7 +684,7 @@ $contact_toolbar_width: 300px;
 	font-family: $font-stack;
 }
 
-.editor_buttons, .editor_info, .admin_info {
+.editor_buttons, .editor_info, .admin_info, .search_info {
 	@include profile-info-style(#F5F5F5);
 	padding-left: 8px;
 	padding-right: 8px;
@@ -706,8 +706,11 @@ $contact_toolbar_width: 300px;
 		margin-right: 40px;
 	}
 }
-.editor_info, .admin_info {
+.editor_info, .admin_info, .search_info {
 	@include profile-admin-style;
+	.attribute_display {
+		@include bullet-separator-style;
+	}
 }
 .provider_buttons {
 	@include profile-info-style(#F5F5F5);

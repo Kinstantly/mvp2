@@ -141,26 +141,27 @@ class Profile < ActiveRecord::Base
 		text :middle_name, as: :middle_name_nostem
 		text :display_name_or_company, as: :display_name_or_company_nostem, boost: 30
 		text :headline, boost: 1
-		text :credentials, :email, :url, 
-			:education, :certifications, :hours, 
-			:languages, :insurance_accepted, :pricing, 
-			:availability_service_area_note, :ages_stages_note
+		# text :credentials, :email, :url, 
+		# 	:education, :certifications, :hours, 
+		# 	:languages, :insurance_accepted, :pricing, 
+		# 	:availability_service_area_note, :ages_stages_note
+		text :languages
 		
 		text :company_name, :as => :company_name_nostem, boost: 30 do
 			first_name.present? || last_name.present? ? (company_name.presence || '') : ''
 		end
 		# Stored for highlighting.
-		text :summary, stored: true
+		# text :summary, stored: true
 		
 		text :addresses do
 			locations.map &:search_address
 		end
-		text :cities do
-			locations.map &:city
-		end
-		text :phones do
-			locations.map &:search_phone
-		end
+		# text :cities do
+		# 	locations.map &:city
+		# end
+		# text :phones do
+		# 	locations.map &:search_phone
+		# end
 		latlon :first_location do
 			first_location.try :coordinates
 		end
@@ -243,7 +244,7 @@ class Profile < ActiveRecord::Base
 	#  http://lucene.apache.org/solr/4_0_0/solr-core/org/apache/solr/util/doc-files/min-should-match.html
 	def self.fuzzy_search(query, new_opts={})
 		opts = {
-			solr_params: {mm: '1<1 2<-2 6<75%', defType: 'edismax', 
+			solr_params: {mm: '2<-1 4<-2 8<75%', defType: 'edismax', 
 						pf2: 'display_name_or_company_nostem^70 company_name_nostem^70 headline^20 categories^20 services^20 specialties^20 specialty_search_terms^20 search_terms^20'},
 			query_phrase_slop: 1,
 			phrase_fields: {display_name_or_company: 80, company_name: 80, headline: 30, 
@@ -492,6 +493,13 @@ class Profile < ActiveRecord::Base
 			parent_child_association_info Category.predefined.map(&:services).flatten, :specialties
 		end
 		parent_child_association_info services, :specialties, *predefined_info
+	end
+	
+	def specialty_search_terms_map
+		specialties.sort_by(&:lower_case_name).inject({}) do |map, specialty|
+			map[specialty.name] = specialty.search_terms.map(&:name).sort_by(&:downcase)
+			map
+		end
 	end
 	
 	private
