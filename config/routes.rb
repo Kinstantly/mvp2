@@ -2,8 +2,6 @@ Mvp2::Application.routes.draw do
 	# Home page.
 	root :to => 'home#index'
 	
-	match 'request_expert' => 'home#request_expert'
-	match 'become_expert' => 'home#become_expert'
 	match 'about' => 'home#about'
 	match 'contact' => 'home#contact'
 	match 'faq' => 'home#faq'
