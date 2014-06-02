@@ -183,7 +183,7 @@ ActiveRecord::Schema.define(:version => 20140515054954) do
     t.boolean  "public_on_private_site",         :default => false
     t.text     "widget_code"
     t.string   "invitation_tracking_category"
-    t.string   "search_terms"
+    t.text     "search_terms"
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"
