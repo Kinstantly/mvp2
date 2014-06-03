@@ -107,6 +107,11 @@ Mvp2::Application.routes.draw do
 	
 	resources :provider_suggestions
 	
+	# Catch all other routing requests and do something benign.
+	# The main purpose of this route is to provide as little information as possible to site probers.
+	# For Rails 4, add "via: :all".
+	match '*undefined_path' => 'application#not_found'
+	
 	# Where to go after sign-up or sign-in.
 	#  Using this option causes the response path to be user_root; kind of weird.
 	#  Better to override in the ApplicationController.

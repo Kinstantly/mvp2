@@ -15,11 +15,21 @@ class ApplicationController < ActionController::Base
 	after_filter :set_default_response_headers
 	
 	# What to do if access is denied or record not found.
-	# On production, prevent fishing for existing, but protected, records by making it look like the page was not found.
-	rescue_from CanCan::AccessDenied, ActiveRecord::RecordNotFound do |exception|
-		logger.error "#{exception.class}: #{exception.message}"
-		raise exception if exception.is_a?(ActiveRecord::RecordNotFound) && ENV["RAILS_ENV"] != 'production'
-		# render file: "#{Rails.root}/public/403", formats: [:html], status: 403, layout: false
+	# Prevent fishing for existing, but protected, records by making it look like the page was not found.
+	rescue_from CanCan::AccessDenied, with: :not_found
+	rescue_from ActiveRecord::RecordNotFound, with: :not_found
+	
+	# Redirect to an appropriate location with a message.
+	# To be used when a resource or page is not found or we have denied access to some part of the site.
+	def not_found(exception=nil)
+		message = if exception
+			"#{exception.class}: #{exception.message}"
+		elsif params[:undefined_path]
+			"path: /#{params[:undefined_path]}"
+		else
+			''
+		end
+		logger.error "Not_found_error: #{message}"
 		if user_signed_in?
 			set_flash_message :alert, :page_not_found
 			redirect_to root_path
