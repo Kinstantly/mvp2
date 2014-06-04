@@ -150,7 +150,9 @@ class Profile < ActiveRecord::Base
 		text :company_name, :as => :company_name_nostem, boost: 30 do
 			first_name.present? || last_name.present? ? (company_name.presence || '') : ''
 		end
-		# Stored for highlighting.
+		
+		# To do full-text search and highlighting on the summary field, uncomment the line below.
+		# If you're not doing highlighting, comment out the "stored" parameter to keep searches fast.
 		# text :summary, stored: true
 		
 		text :addresses do
