@@ -158,6 +158,23 @@
 			.lead_generator
 				= "#{Profile.human_attribute_name(:lead_generator)}:"
 				= @profile.lead_generator
+	.search_info
+		#categories_info
+			= "#{Profile.human_attribute_name :categories}:"
+			.value
+				%span.attribute_display= profile_wrap_item_names @profile.categories
+		#services_info
+			= "#{Profile.human_attribute_name :services}:"
+			.value
+				%span.attribute_display= profile_wrap_item_names @profile.services
+		#specialty_search_terms_info
+			%span.label= t 'views.profile.view.specialty_search_terms'
+			%br
+			.value
+				- @profile.specialty_search_terms_map.each_pair do |specialty_name, search_terms|
+					%b= "#{specialty_name}:"
+					= search_terms.presence
+					%br
 
 :coffeescript
 	$ ->
