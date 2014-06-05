@@ -185,7 +185,7 @@ class Profile < ActiveRecord::Base
 		end
 
 		text :search_terms, boost: 1 do
-		    search_terms.present? ? search_terms.strip.split(/\s*\n\s*/) : ''
+			search_terms_array
 		end
 
 		string :categories, multiple: true do
@@ -502,6 +502,10 @@ class Profile < ActiveRecord::Base
 			map[specialty.name] = specialty.search_terms.map(&:name).sort_by(&:downcase)
 			map
 		end
+	end
+	
+	def search_terms_array
+		search_terms.present? ? search_terms.strip.split(/\s*[\n\r]\s*/) : []
 	end
 	
 	private

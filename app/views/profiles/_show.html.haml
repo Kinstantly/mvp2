@@ -173,8 +173,13 @@
 			.value
 				- @profile.specialty_search_terms_map.each_pair do |specialty_name, search_terms|
 					%b= "#{specialty_name}:"
-					= search_terms.presence
+					%span.attribute_display= display_wrapped_names search_terms
 					%br
+		#search_terms_info
+			%span.label= t 'views.profile.view.search_terms'
+			%br
+			.value
+				%span.attribute_display= display_wrapped_names @profile.search_terms_array
 
 :coffeescript
 	$ ->
