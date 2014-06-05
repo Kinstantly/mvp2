@@ -258,9 +258,9 @@ describe Profile do
 	end
 	
 	context "search" do
-		context "matching crieria" do
+		context "matching criteria" do
 			before(:each) do
-				@profile = FactoryGirl.create(:published_profile, summary: 'Swedish dramatic soprano')
+				@profile = FactoryGirl.create(:published_profile, headline: 'Swedish dramatic soprano')
 				Profile.reindex
 				Sunspot.commit
 			end
@@ -278,8 +278,8 @@ describe Profile do
 			before(:each) do
 				@summary_1 = 'Swedish dramatic soprano'
 				@summary_2 = 'Italian dramatic soprano'
-				@profile_1 = FactoryGirl.create(:published_profile, summary: @summary_1)
-				@profile_2 = FactoryGirl.create(:published_profile, summary: @summary_2)
+				@profile_1 = FactoryGirl.create(:published_profile, headline: @summary_1)
+				@profile_2 = FactoryGirl.create(:published_profile, headline: @summary_2)
 			end
 			
 			it "orders by relevance" do

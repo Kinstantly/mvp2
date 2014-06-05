@@ -46,6 +46,10 @@
 		.photo_source_url
 			= f.label :photo_source_url
 			= f.text_field :photo_source_url, size: 70
+		.search_terms
+			= f.label :search_terms
+			= f.text_area :search_terms, size: '30x5'
+			%span.note= t 'views.profile.edit.search_terms_tip'
 	%fieldset.location_contact_profile
 		%legend= Profile.human_attribute_name :locations
 		= f.fields_for :locations do |lf|

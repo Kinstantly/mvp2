@@ -25,7 +25,8 @@ class Profile < ActiveRecord::Base
 		:age_range_ids, :ages_stages_note,
 		:evening_hours_available, :weekend_hours_available, :free_initial_consult, :sliding_scale_available,
 		:financial_aid_available,
-		:consult_remotely # provider offers most or all services remotely
+		:consult_remotely, # provider offers most or all services remotely
+		:search_terms
 		# :adoption_stage, :preconception_stage, :pregnancy_stage, :ages, # superseded by age_ranges and ages_stages_note
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
@@ -95,7 +96,8 @@ class Profile < ActiveRecord::Base
 		hours: 750,
 		admin_notes: 2000,
 		custom_service_names: 150,
-		custom_specialty_names: 150
+		custom_specialty_names: 150,
+		search_terms: 255
 	}
 
 	# Note: lengths of the email and invitation_email attributes are checked by the email validator.
@@ -134,24 +136,34 @@ class Profile < ActiveRecord::Base
 	
 	# Sunspot Solr search configuration.
 	searchable do
-		text :first_name, :last_name, :middle_name, :credentials, 
-			:email, :company_name, :url, 
-			:headline, :education, :certifications, :hours, 
-			:languages, :insurance_accepted, :pricing, 
-			:availability_service_area_note, :ages_stages_note
+		text :first_name, as: :first_name_nostem
+		text :last_name, as: :last_name_nostem
+		text :middle_name, as: :middle_name_nostem
+		text :display_name_or_company, as: :display_name_or_company_nostem, boost: 30
+		text :headline, boost: 1
+		# text :credentials, :email, :url, 
+		# 	:education, :certifications, :hours, 
+		# 	:languages, :insurance_accepted, :pricing, 
+		# 	:availability_service_area_note, :ages_stages_note
+		text :languages
 		
-		# Stored for highlighting.
-		text :summary, stored: true
+		text :company_name, :as => :company_name_nostem, boost: 30 do
+			first_name.present? || last_name.present? ? (company_name.presence || '') : ''
+		end
+		
+		# To do full-text search and highlighting on the summary field, uncomment the line below.
+		# If you're not doing highlighting, comment out the "stored" parameter to keep searches fast.
+		# text :summary, stored: true
 		
 		text :addresses do
 			locations.map &:search_address
 		end
-		text :cities, boost: 2.0 do
-			locations.map &:city
-		end
-		text :phones do
-			locations.map &:search_phone
-		end
+		# text :cities do
+		# 	locations.map &:city
+		# end
+		# text :phones do
+		# 	locations.map &:search_phone
+		# end
 		latlon :first_location do
 			first_location.try :coordinates
 		end
@@ -159,17 +171,38 @@ class Profile < ActiveRecord::Base
 			locations.map &:coordinates
 		end
 		
-		text :categories do
+		text :categories, boost: 1 do
 			categories.map &:name
 		end
-		text :services do
+		text :services, boost: 1 do
 			services.map &:name
 		end
-		text :specialties do
+		text :specialties, boost: 1 do
 			specialties.map &:name
 		end
-		text :search_terms do
-			specialties.map{|spec| spec.search_terms.map &:name}.flatten.uniq
+		text :specialty_search_terms, boost: 1 do
+		    specialties.map{|spec| spec.search_terms.map &:name}.flatten.uniq
+		end
+
+		text :search_terms, boost: 1 do
+			search_terms_array
+		end
+
+		string :categories, multiple: true do
+			categories.map(&:name).map(&:downcase)
+		end
+		string :services, multiple: true do
+			services.map(&:name).map(&:downcase)
+		end
+		string :specialties, multiple: true do
+			specialties.map(&:name).map(&:downcase)
+		end
+		string :specialty_search_terms, multiple: true do
+		    specialties.map{|spec| spec.search_terms.map(&:name).map(&:downcase)}.flatten.uniq
+		end
+
+		string :search_terms, multiple: true, stored: true do
+		    search_terms.present? ? search_terms.strip.split(/\s*\n\s*/).map(&:downcase) : []
 		end
 		
 		boolean :is_published
@@ -202,7 +235,7 @@ class Profile < ActiveRecord::Base
 	# Profiles that exactly match the service name in a full-text search should follow.
 	def self.search_by_service(service, new_opts={})
 		opts = {
-			phrase_fields: {services: 10.0}
+			phrase_fields: {services: 100.0}
 		}.merge(new_opts)
 		self.configurable_search("\"#{service.name}\"", opts) # Specify service name as a phrase.
 	end
@@ -213,8 +246,12 @@ class Profile < ActiveRecord::Base
 	#  http://lucene.apache.org/solr/4_0_0/solr-core/org/apache/solr/util/doc-files/min-should-match.html
 	def self.fuzzy_search(query, new_opts={})
 		opts = {
-			solr_params: {mm: '2<-1 4<-2 6<50%'},
-			query_phrase_slop: 1
+			solr_params: {mm: '2<-1 4<-2 8<75%', defType: 'edismax', 
+						pf2: 'display_name_or_company_nostem^70 company_name_nostem^70 headline^20 categories^20 services^20 specialties^20 specialty_search_terms^20 search_terms^20'},
+			query_phrase_slop: 1,
+			phrase_fields: {display_name_or_company: 80, company_name: 80, headline: 30, 
+							categories: 30, services: 30, specialties: 30, specialty_search_terms: 30, search_terms: 30},
+			phrase_slop: 2
 		}.merge(new_opts)
 		self.configurable_search(query, opts)
 	end
@@ -250,6 +287,11 @@ class Profile < ActiveRecord::Base
 				query_phrase_slop opts[:query_phrase_slop] if opts[:query_phrase_slop].present?
 				boost_fields opts[:boost_fields] if opts[:boost_fields].present?
 				phrase_fields opts[:phrase_fields] if opts[:phrase_fields].present?
+				boost(80.0) { with(:categories, [query.downcase]) }
+				boost(80.0) { with(:services, [query.downcase]) }
+				boost(80.0) { with(:specialties, [query.downcase]) }
+				boost(80.0) { with(:specialty_search_terms, [query.downcase]) }
+				boost(80.0) { with(:search_terms, [query.downcase]) }
 			end
 			
 			with :service_ids, opts[:service_id] if opts[:service_id].present?
@@ -453,6 +495,17 @@ class Profile < ActiveRecord::Base
 			parent_child_association_info Category.predefined.map(&:services).flatten, :specialties
 		end
 		parent_child_association_info services, :specialties, *predefined_info
+	end
+	
+	def specialty_search_terms_map
+		specialties.sort_by(&:lower_case_name).inject({}) do |map, specialty|
+			map[specialty.name] = specialty.search_terms.map(&:name).sort_by(&:downcase)
+			map
+		end
+	end
+	
+	def search_terms_array
+		search_terms.present? ? search_terms.strip.split(/\s*[\n\r]\s*/) : []
 	end
 	
 	private

@@ -287,6 +287,8 @@ en:
         profile_is_not_published: 'Profile is NOT published'
         profile_photo_placeholder: 'Photo upload coming soon'
         published: 'Published'
+        search_terms: 'Search terms associated with this profile:'
+        specialty_search_terms: 'Specialty search terms:'
         rating: 'Rating'
         review_provider_link: 'Review %{name}'
         url: 'website:'
@@ -357,6 +359,7 @@ en:
         profile_photo_prompt: 'Add or change a photo'
         profile_photo_source_url_prompt: 'http:// or https://'
         profile_photo_source_url_example: 'Example: http://allkidstutoring.com/images/photo.jpg'
+        search_terms_tip: 'Put each search term on a new line (Hit ENTER to separate search terms)'
       claim:
         message: 'Click here to claim your profile'
       claim_confirm:

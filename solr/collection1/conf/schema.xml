@@ -63,18 +63,39 @@
     <!-- *** This fieldType is used by Sunspot! *** -->
     <fieldType name="text" class="solr.TextField" omitNorms="false">
       <analyzer type="query">
+        <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.PorterStemFilterFactory"/>
+        <!-- <filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/> -->
       </analyzer>
       <analyzer type="index">
+        <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true" />
         <filter class="solr.PorterStemFilterFactory"/>
+        <!-- <filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/> -->
       </analyzer>
+    </fieldType>
+    <!-- *** This non-stemmed text. Used to boost exact matches *** -->
+    <fieldType name="text_nostem" class="solr.TextField" omitNorms="false"> 
+      <analyzer type="index">
+        <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false"/>
+        <tokenizer class="solr.StandardTokenizerFactory"/> 
+        <filter class="solr.StandardFilterFactory"/> 
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <!-- <filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/> -->
+      </analyzer> 
+      <analyzer type="query">
+        <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false"/>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StandardFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <!-- <filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/> -->
+        </analyzer>
     </fieldType>
     <!-- *** This fieldType is used by Sunspot! *** -->
     <fieldType name="boolean" class="solr.BoolField" omitNorms="true"/>
@@ -138,6 +159,10 @@
     <field name="lat" stored="true" type="tdouble" multiValued="false" indexed="true"/>
     <!-- *** This field is used by Sunspot! *** -->
     <field name="lng" stored="true" type="tdouble" multiValued="false" indexed="true"/>
+    <!-- *** This field is used as dest of a copy field below*** -->
+    <field name="text_exact" type="text_nostem" indexed="true" />
+    <!-- *** Non-stemmed copy of fulltext *** -->
+    <copyField source="text" dest="text_exact" stored="true"/>
     <!-- *** This dynamicField is used by Sunspot! *** -->
     <dynamicField name="random_*" stored="false" type="rand" multiValued="false" indexed="true"/>
     <!-- *** This dynamicField is used by Sunspot! *** -->
@@ -247,13 +272,16 @@
     <dynamicField name="*_llm" stored="false" type="location" multiValued="true" indexed="true"/>
     <dynamicField name="*_lls" stored="true" type="location" multiValued="false" indexed="true"/>
     <dynamicField name="*_llms" stored="true" type="location" multiValued="true" indexed="true"/>
+    <!-- This dynamicField used to index "text" fields without stemming-->
+    <dynamicField name="*_nostem" type="text_nostem" indexed="true"/>
+
   </fields>
   <!-- Field to use to determine and enforce document uniqueness.
       Unless this field is marked with required="false", it will be a required field
    -->
   <uniqueKey>id</uniqueKey>
   <!-- field for the QueryParser to use when an explicit fieldname is absent -->
-  <defaultSearchField>text</defaultSearchField>
+  <defaultSearchField>text_exact</defaultSearchField>
   <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
   <solrQueryParser defaultOperator="AND"/>
   <!-- copyField commands copy one field to another at the time a document
