@@ -132,6 +132,44 @@ describe Profile do
 			end
 		end
 		
+		context "specialty names" do
+			it "sets specialties by name" do
+				names = ['wonderful children', 'parenting support']
+				@profile.specialty_names = names
+				@profile.save.should == true
+				@profile.reload
+				@profile.should have_exactly(names.size).specialties
+				specialty_names = @profile.specialties.collect(&:name)
+				names.each do |name|
+					specialty_names.include?(name).should be_true
+				end
+			end
+			
+			it "does not affect existing specialties if we don't set specialty_names" do
+				specialty_count = @profile.specialties.size
+				@profile.first_name = 'Norma'
+				@profile.save.should == true
+				@profile.reload
+				@profile.should have_exactly(specialty_count).specialties
+			end
+			
+			it "limits length of name" do
+				name = 'a' * Profile::MAX_LENGTHS[:specialty_names]
+				@profile.specialty_names = [name]
+				@profile.should have(:no).error_on(:specialty_names)
+				@profile.specialty_names = [name + 'a']
+				@profile.should have(1).error_on(:specialty_names)
+			end
+			
+			it "filters out blanks and strips" do
+				name = 'theremin instruction'
+				@profile.specialty_names = [nil, '', ' ', " #{name} "]
+				@profile.should have(:no).errors_on(:specialty_names)
+				@profile.should have(1).specialty_name
+				@profile.specialty_names.first.should == name
+			end
+		end
+		
 		context "custom specialties" do
 			it "merges custom specialties" do
 				custom = [@profile_data[:specialties].first.name, 'parenting support']

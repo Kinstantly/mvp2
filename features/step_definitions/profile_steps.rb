@@ -81,7 +81,7 @@ def formlet_id(name)
 	when 'categories'
 		'services'
 	when 'specialties'
-		'services'
+		'specialties'
 	when 'consultation methods'
 		'contact_options'
 	when 'service area'
@@ -101,8 +101,6 @@ def attribute_display_selector(formlet, which)
 	selector = "##{formlet_id formlet}" + case formlet
 	when 'services'
 		' .attribute_display + .attribute_display'
-	when 'specialties'
-		' .attribute_display + .attribute_display + .attribute_display'
 	else
 		' .attribute_display'
 	end
@@ -484,6 +482,24 @@ When /^I add the "(.*?)" and "(.*?)" custom specialties using enter$/ do |spec1,
 	end
 end
 
+# This step requires javascript.
+When /^I fill in the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
+	within('#specialties .specialty_names') do
+		fill_in MyHelpers.profile_specialty_names_id('1'), with: spec1
+		fill_in MyHelpers.profile_specialty_names_id('2'), with: spec2
+	end
+end
+
+# This step requires javascript.
+When /^I fill in the "(.*?)" and "(.*?)" specialties using enter$/ do |spec1, spec2|
+	within('#specialties .specialty_names .text_field:last-of-type') do
+		find('input').set "#{spec1}\r"
+	end
+	within('#specialties .specialty_names .text_field:last-of-type') do
+		find('input').set spec2
+	end
+end
+
 When /^I select "(.*?)" as the search area tag in the "(.*?)" formlet$/ do |tag, formlet|
 	within("##{formlet_id formlet} .fields") do
 		select tag, from: 'Region for search'
@@ -668,9 +684,7 @@ Then /^meta\-data should contain "(.*?)"$/ do |text|
 end
 
 Then /^I should see one of my specialties$/ do
-	within('#specialties') do
-		page.should have_content @profile.specialties.first.name
-	end
+	page.should have_content @profile.specialties.first.name
 end
 
 Then /^I should land on the profile view page$/ do
@@ -729,10 +743,10 @@ Then /^the unclaimed profile should have no locations$/ do
 	@profile.locations.should have(:no).things
 end
 
-Then /^the "(.*?)" and "(.*?)" (services|specialties) should appear in the profile edit check list$/ do |name1, name2, type|
-	within("#services .#{type}") do
-		page.should have_content name1
-		page.should have_content name2
+Then /^the "(.*?)" and "(.*?)" specialties should appear in the profile edit input list$/ do |name1, name2|
+	within("#specialties .specialty_names") do
+		expect(find("##{MyHelpers.profile_specialty_names_id('1')}").value).to have_content name1
+		expect(find("##{MyHelpers.profile_specialty_names_id('2')}").value).to have_content name2
 	end
 end
 
@@ -781,10 +795,8 @@ Then /^I should see published profile data$/ do
 	page.should have_content @published_profile_data[:last_name]
 end
 
-Then /^I should see (?:a new|an edit) profile form$/ do
-	within('.edit.popover .categories') do
-		page.should have_content @predefined_category.name
-	end
+Then /^I should see a profile edit form$/ do
+	page.should have_content I18n.t 'views.profile.edit.editing_tip'
 end
 
 Then /^I should see the new profile data$/ do

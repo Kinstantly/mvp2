@@ -254,13 +254,8 @@ $masthead_width: 920px;
 	-webkit-box-shadow: inset 1px 1px #d0c4c6;
 	box-shadow: inset 1px 1px #d0c4c6;
 }
-@mixin help_icon {
-	position: relative;
-	width: 16px;
-	height: 16px;
-	display: inline-block;
-	background: url('help_16_blue.png') 0px 0px no-repeat;
-	
+
+@mixin help_popover {
 	.help_popover {
 		display: none;
 		position: absolute;
@@ -273,6 +268,16 @@ $masthead_width: 920px;
 		}
 	}
 }
+
+@mixin help_icon {
+	position: relative;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background: url('help_16_blue.png') 0px 0px no-repeat;
+	@include help_popover;
+}
+
 #search_providers {
 	float: left;
 	margin-left: 14px;
@@ -817,9 +822,9 @@ table.info {
 			white-space: pre-line;
 		}
 	}
-	#specialties, #services {
+	.list_container {
 		td {
-			padding-top: 8px;
+			padding-top: 12px;
 			p + p {
 				margin-top: 0.5em;
 			}
@@ -828,25 +833,49 @@ table.info {
 			}
 		}
 	}
-	#services .popover {
-		width: 510px;
-		.char_count {
-			float: right;
-			padding-top: 25px;
-		}
-		.categories {
-			@include stack-check-box-style;
-		}
-		.predefined_services, .predefined_specialties {
-			div:last-child {
-				margin-bottom: 8px;
+	#specialties {
+		.popover {
+			width: 542px;
+			.char_count {
+				float: right;
+				width: 44px;
+				padding-top: 25px;
+				padding-right: 10px;
+				text-align: right;
 			}
+			.delete_icon {
+				float: right;
+				background: url('delete.gif') 0px 0px no-repeat;
+				width: 16px;
+				height: 16px;
+				margin-top: 24px;
+			}
+			.delete_icon:hover {
+				background-position: 0px -16px;
+				cursor: pointer;
+			}
+			@media (max-width: 480px) {
+				.char_count {
+					padding-top: 0;
+				}
+				.delete_icon {
+					margin-top: 0;
+				}
+			}
+			.categories {
+				@include stack-check-box-style;
+			}
+			.predefined_services, .predefined_specialties {
+				div:last-child {
+					margin-bottom: 8px;
+				}
+			}
+			.text_field input {
+				width: 430px;
+			}
+			@include mobile-popover;
+			@include mobile-formlet-popover;
 		}
-		.text_field input {
-			width: 430px;
-		}
-		@include mobile-popover;
-		@include mobile-formlet-popover;
 	}
 	#availability_service_area {
 		.popover {
@@ -1056,6 +1085,9 @@ $form_element_width: 388px;
 	}
 	label.required:after {
 		margin-left: 0.15em;
+	}
+	input.disabled {
+		background-color: $kinstantly_light_pink;
 	}
 }
 

@@ -403,9 +403,35 @@ module ProfilesHelper
 	end
 
 	def profile_custom_specialties_autocomplete_field_tag(profile, value, suffix, form_builder=nil)
-		autocomplete_form_field profile_custom_specialties_tag_name(form_builder), value, autocomplete_specialty_name_profiles_path, id: profile_custom_specialties_id(suffix), placeholder: I18n.t('views.profile.edit.custom_specialty_placeholder')
+		autocomplete_form_field profile_custom_specialties_tag_name(form_builder), value, autocomplete_specialty_name_profiles_path, id: profile_custom_specialties_id(suffix), placeholder: I18n.t('views.profile.edit.custom_specialty_placeholder'), 'data-suffix' => suffix
+	end
+	
+	def profile_specialty_names_defaults(profile)
+		specialty_names = profile.specialty_names.presence || profile.specialties.map(&:name)
+		padding = 5 - specialty_names.size
+		specialty_names + [''] * (padding < 1 ? 1 : padding)
 	end
 
+	def profile_specialty_names_id(s)
+		profile_specialties_id "name_#{s}"
+	end
+
+	def profile_specialty_names_tag_name(form_builder=nil)
+		profile_attribute_tag_name 'specialty_names', form_builder
+	end
+
+	def profile_specialty_names_hidden_field_tag(form_builder=nil)
+		hidden_field_tag profile_specialty_names_tag_name(form_builder), '', id: profile_specialty_names_id('hidden_field')
+	end
+
+	def profile_specialty_names_text_field_tag(profile, value, suffix, form_builder=nil)
+		text_field_tag profile_specialty_names_tag_name(form_builder), value, id: profile_specialty_names_id(suffix)
+	end
+
+	def profile_specialty_names_autocomplete_field_tag(profile, value, suffix, form_builder=nil)
+		autocomplete_form_field profile_specialty_names_tag_name(form_builder), value, autocomplete_specialty_name_profiles_path, id: profile_specialty_names_id(suffix), placeholder: I18n.t('views.profile.edit.specialty_name_placeholder'), 'data-suffix' => suffix
+	end
+	
 	# Age range helpers
 
 	def profile_age_ranges_id(s)

@@ -45,7 +45,7 @@
 				#year_started.formlet.editable
 					= render partial: 'year_started_formlet'
 			%table.info{border: "0", cellpadding: "0", cellspacing: "0"}
-				%tr#services_placeholder.formlet
+				%tr#specialties_placeholder.formlet
 				%tr#ages_stages.formlet
 					= render partial: 'ages_stages_formlet'
 				%tr#hours.formlet
@@ -97,14 +97,16 @@
 					$('.edit.popover', formlet).prepend '<div class="cancel close-popover-button"></div>'
 				# Cancel buttons should close the formlet.
 				$('.cancel', formlet).on 'click', my_vars.f.close_formlets
+				# Autocompletion configuration that must be done or redone.
+				configure_autocomplete_form_fields '.autocomplete-form-field', formlet
 		
 			$('.formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
 				
 			$('.formlet').each -> my_vars.f.configure_formlet this
 		
--# Do not cache this.  It must process for each request to catch changes to categories, etc.
+-# Do not cache this.  It must process for each request to catch changes to shared specialties.
 %table.hidden.render
-	%tr#services.formlet
-		= render partial: 'services_formlet'
+	%tr#specialties.formlet.list_container
+		= render partial: 'specialties_formlet'
 :coffeescript
-	$('.hidden.render #services').replaceAll '#services_placeholder'
+	$('.hidden.render #specialties').replaceAll '#specialties_placeholder'

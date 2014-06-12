@@ -98,6 +98,8 @@ en:
         too_long: '^The name of each additional service must have no more than %{max} characters.'
       custom_specialty_names:
         too_long: '^The name of each additional specialty must have no more than %{max} characters.'
+      specialty_names:
+        too_long: '^The name of each specialty must have no more than %{max} characters.'
       claimed: 'is already claimed. You cannot send an invitation.'
   activerecord:
     attributes:
@@ -294,6 +296,7 @@ en:
         url: 'website:'
       edit:
         accepting_new_clients_blank: 'Not accepting new clients/customers'
+        add_specialty_text_field: 'Hit ENTER to add another specialty'
         add_text_field: 'Hit ENTER to add another field'
         age_ranges_blank: 'For search, specify ages/stages'
         ages_example: 'Examples: 0-12, 13-18+, teens and young adults'
@@ -347,8 +350,10 @@ en:
         show_tab: 'View Public Profile'
         show_tab_note: 'Note: We save each part of your profile as you edit it. Done editing for now? Click this tab to view your public profile'
         specialties_blank: 'No specialties'
+        specialties_prompt: 'Enter your specialties:'
         specialties_tip_html: '(Check all that apply&mdash;or enter others below)'
         specialties_tip2: "Tip: It's best to limit these to 15, at most, so they're easily scannable"
+        specialty_name_placeholder: 'Type in a specialty'
         stages: 'Stages'
         submit: 'Save'
         submit_disable: 'Saving...'

@@ -8,7 +8,7 @@ Feature: Create a new expert profile
 		Given I am logged in as an administrator
 		When I visit the profile admin page
 			And I create the profile
-		Then I should see an edit profile form
+		Then I should see a profile edit form
 	
 	Scenario: Create new profile as an administrator
 		Given I am logged in as an administrator
@@ -32,4 +32,4 @@ Feature: Create a new expert profile
 		Given I am logged in as a profile editor
 		When I visit the profile admin page
 			And I create the profile
-		Then I should see an edit profile form
+		Then I should see a profile edit form

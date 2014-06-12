@@ -77,135 +77,33 @@ Feature: Edit my expert profile
 			And I click on the "Save" button of the "locations" formlet
 		Then my country code should be set to "CA"
 	
-	Scenario: Select categories
-		Given the "THERAPISTS & PARENTING COACHES" and "TUTORS & COUNSELORS" categories are predefined
-			And I exist as a user
-			And I want my profile
-			And I am logged in
-			And I am on my profile edit page
-		When I open the "categories" formlet
-			And I select the "TUTORS & COUNSELORS" category
-			And I click on the "Save" button of the "categories" formlet
-		Then my profile edit page should show "TUTORS & COUNSELORS" displayed in the "categories" area
-		
-	Scenario: Select services associated with my category
+	Scenario: Fill in specialties
 		Given I exist as a user
 			And I am logged in
-			And I have a category of "THERAPISTS & PARENTING COACHES" in my profile that is associated with the "child psychologist" and "child psychiatrist" services
-			And I am on my profile edit page
-		When I open the "services" formlet
-			And I select the "child psychologist" and "child psychiatrist" services
-			And I click on the "Save" button of the "services" formlet
-		Then my profile edit page should show "child psychologist" and "child psychiatrist" displayed in the "services" area
-	
-	Scenario: Offer services for predefined category
-		Given the predefined category of "THERAPISTS & PARENTING COACHES" is associated with the "child psychologist" and "child psychiatrist" services
-			And I exist as a user
-			And I want my profile
-			And I am logged in
-			And I am on my profile edit page
-		When I open the "services" formlet
-			And I select the "THERAPISTS & PARENTING COACHES" category
-		Then then I should be offered the "child psychologist" and "child psychiatrist" services
-	
-	Scenario: Offer no predefined services when I have selected no predefined categories
-		Given I exist as a user
-			And I am logged in
-			And I have no predefined categories and no services in my profile
-			And I am on my profile edit page
-		When I open the "services" formlet
-		Then I should be offered no services
-
-	Scenario: Add custom services
-		Given I exist as a user
-			And I want my profile
-			And I am logged in
-			And I am on my profile edit page
-		When I open the "services" formlet
-			And I add the "story-book reader" and "dream catcher" custom services
-			And I click on the "Save" button of the "services" formlet
-		Then my profile edit page should show "story-book reader" and "dream catcher" displayed in the "services" area
-		
-	Scenario: Added custom services appear in check list on next profile edit
-		Given I exist as a user
-			And I want my profile
-			And I am logged in
-			And I am on my profile edit page
-		When I open the "services" formlet
-			And I add the "story-book reader" and "dream catcher" custom services
-			And I click on the "Save" button of the "services" formlet
-			And I open the "services" formlet
-		Then the "story-book reader" and "dream catcher" services should appear in the profile edit check list
-		
-	Scenario: Add custom services using enter
-		Given I exist as a user
-			And I want my profile
-			And I am logged in
-			And I am on my profile edit page
-		When I open the "services" formlet
-			And I add the "story-book reader" and "dream catcher" custom services using enter
-			And I click on the "Save" button of the "services" formlet
-		Then my profile edit page should show "story-book reader" and "dream catcher" displayed in the "services" area
-		
-	Scenario: Select specialties associated with my service
-		Given I exist as a user
-			And I am logged in
-			And I have a service of "child psychiatrist" in my profile that is associated with the "behavior" and "adoption" specialties
 			And I am on my profile edit page
 		When I open the "specialties" formlet
-			And I select the "behavior" and "adoption" specialties
-			And I click on the "Save" button of the "specialties" formlet
-		Then my profile edit page should show "behavior" and "adoption" displayed in the "specialties" area
-	
-	Scenario: Add custom specialties
-		Given I exist as a user
-			And I am logged in
-			And I have a category of "THERAPISTS & PARENTING COACHES" in my profile
-			And I am on my profile edit page
-		When I open the "specialties" formlet
-			And I add the "story-books" and "dreams" custom specialties
+			And I fill in the "story-books" and "dreams" specialties
 			And I click on the "Save" button of the "specialties" formlet
 		Then my profile edit page should show "story-books" and "dreams" displayed in the "specialties" area
 	
-	Scenario: Added custom specialties appear in check list on next profile edit
+	Scenario: Filled-in specialties appear in field list on next profile edit
 		Given I exist as a user
 			And I am logged in
-			And I have a category of "THERAPISTS & PARENTING COACHES" in my profile
 			And I am on my profile edit page
 		When I open the "specialties" formlet
-			And I add the "story-books" and "dreams" custom specialties
+			And I fill in the "story-books" and "dreams" specialties
 			And I click on the "Save" button of the "specialties" formlet
 			And I open the "specialties" formlet
-		Then the "story-books" and "dreams" specialties should appear in the profile edit check list
+		Then the "story-books" and "dreams" specialties should appear in the profile edit input list
 	
-	Scenario: Add custom specialties using enter
+	Scenario: Fill in specialties using enter
 		Given I exist as a user
 			And I am logged in
-			And I have a category of "THERAPISTS & PARENTING COACHES" in my profile
 			And I am on my profile edit page
 		When I open the "specialties" formlet
-			And I add the "story-books" and "dreams" custom specialties using enter
+			And I fill in the "story-books" and "dreams" specialties using enter
 			And I click on the "Save" button of the "specialties" formlet
 		Then my profile edit page should show "story-books" and "dreams" displayed in the "specialties" area
-	
-	Scenario: Offer specialties for predefined service
-		Given the predefined category of "THERAPISTS & PARENTING COACHES" is associated with the "child psychologist" and "child psychiatrist" services
-			And the predefined service of "child psychiatrist" is associated with the "adoption" and "toilet training" specialties
-			And I exist as a user
-			And I am logged in
-			And I am on my profile edit page
-		When I open the "specialties" formlet
-			And I select the "THERAPISTS & PARENTING COACHES" category
-			And I select the "child psychiatrist" service
-		Then then I should be offered the "adoption" and "toilet training" specialties
-	
-	Scenario: Offer no predefined specialties when I have selected no predefined services
-		Given I exist as a user
-			And I am logged in
-			And I have no predefined services and no specialties in my profile
-			And I am on my profile edit page
-		When I open the "specialties" formlet
-		Then I should be offered no specialties
 	
 	Scenario: Update Ages/stages text
 		Given I exist as a user

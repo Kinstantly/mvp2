@@ -78,7 +78,13 @@ class ApplicationController < ActionController::Base
 
 	# Translates system error codes into localized error messages
 	alias :get_error_message :translated_message
-
+	
+	# Work around for the rails3-jquery-autocomplete gem's insistence on showing "no existing match" for no match.
+	# This will result in an empty anchor element within the ui-autocomplete list element.
+	def get_autocomplete_items(parameters)
+		super(parameters).presence || [OpenStruct.new(id: '', parameters[:method].to_s => '')]
+	end
+	
 	private
 	
 	def require_location_in_profile

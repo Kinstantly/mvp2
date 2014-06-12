@@ -177,6 +177,7 @@ module ApplicationHelper
 	def autocomplete_form_field(attribute, value, path, options={})
 		options[:id_element] ||= ''
 		options[:update_elements] ||= {}
+		options[:class] = [options[:class].presence, 'autocomplete-form-field'].compact.join(' ')
 		if options[:form_builder]
 			options.delete(:form_builder).autocomplete_field attribute, path, options
 		else
