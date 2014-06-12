@@ -350,9 +350,12 @@ en:
         show_tab: 'View Public Profile'
         show_tab_note: 'Note: We save each part of your profile as you edit it. Done editing for now? Click this tab to view your public profile'
         specialties_blank: 'No specialties'
+        specialties_delete: 'Remove this specialty'
+        specialties_undo_delete: 'Undo remove'
         specialties_prompt: 'Enter your specialties:'
         specialties_tip_html: '(Check all that apply&mdash;or enter others below)'
         specialties_tip2: "Tip: It's best to limit these to 15, at most, so they're easily scannable"
+        specialty_name_button: 'or press here'
         specialty_name_placeholder: 'Type in a specialty'
         stages: 'Stages'
         submit: 'Save'

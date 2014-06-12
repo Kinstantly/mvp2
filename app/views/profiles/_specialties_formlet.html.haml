@@ -16,8 +16,6 @@
 				%br
 				%br
 				%span= t 'views.profile.edit.specialties_prompt'
-				-# = button_tag id: 'add_specialty_names_text_field' do
-				-# 	= content_tag :strong, t('views.profile.edit.specialty_name_button')
 				%br
 				= profile_specialty_names_hidden_field_tag(f)
 				- i = 0; profile_specialty_names_defaults(@profile).each do |name|
@@ -29,6 +27,8 @@
 				- @profile_specialty_names_i = i
 				- @profile_specialty_names_text_field_template = profile_specialty_names_autocomplete_field_tag(@profile, '', 'INDEX', f)
 				%span#specialty_names_field_prompt.note= t 'views.profile.edit.add_specialty_text_field'
+				= button_tag id: 'add_specialty_names_text_field' do
+					= content_tag :strong, t('views.profile.edit.specialty_name_button')
 				%br
 				%span.note= t 'views.profile.edit.specialties_tip2'
 			= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
@@ -44,6 +44,8 @@
 				my_vars.specialty_names_i = #{@profile_specialty_names_i};
 				my_vars.specialty_names_template = 
 					'#{escape_javascript @profile_specialty_names_text_field_template}';
+				my_vars.t.specialties_delete = '#{t "views.profile.edit.specialties_delete"}';
+				my_vars.t.specialties_undo_delete = '#{t "views.profile.edit.specialties_undo_delete"}';
 				
 	- cache 'profiles_specialties_popover_coffeescript' do
 		-# No ruby interpolation in the coffeescript filter.  It breaks caching of the coffeescript filter result.
@@ -57,20 +59,23 @@
 					additionalEvents: 'railsAutocomplete.select',
 				}).focus().keydown (e) ->
 					add_field e if e.which == 13 # carriage return
-				$('.delete_icon', selector).on 'click', (e) ->
+				help_popover = '<div class="help_popover">'+my_vars.t.specialties_delete+'</div>'
+				$('.delete_icon', selector).append(help_popover).on 'click', (e) ->
 					input_element = $(this).siblings('input').first()
 					if input_element.attr?('disabled')
 						input_element.removeAttr('disabled').removeClass('disabled')
+						$('.help_popover', $(this)).html my_vars.t.specialties_delete
 					else
 						input_element.attr('disabled', 'disabled').addClass('disabled')
+						$('.help_popover', $(this)).html my_vars.t.specialties_undo_delete
 					false
 			
 			# Add extra text input tags for specialty names.
 			add_specialty_names_text_field = (e) ->
 				++my_vars.specialty_names_i
-				$('#specialty_names_field_prompt').before '<div class="text_field"><span class="delete_icon"></span><span id="counter_' +
+				$('#specialty_names_field_prompt').before '<div class="text_field"><div class="delete_icon"></div><div id="counter_' +
 					String(my_vars.specialty_names_i) +
-					'" class="char_count"></span>' +
+					'" class="char_count"></div>' +
 					my_vars.specialty_names_template.replace('INDEX', String(my_vars.specialty_names_i)) +
 					'</div>'
 				configure_text_field '.specialty_names .text_field:last', my_vars.edit_profile.max_lengths.specialty_names, add_specialty_names_text_field
@@ -80,7 +85,7 @@
 			# Run after the document is loaded.
 			$ ->
 				# Button for adding a specialty name text field.
-				# $('#add_specialty_names_text_field').on 'click', add_specialty_names_text_field
+				$('#add_specialty_names_text_field').on 'click', add_specialty_names_text_field
 			
 				# Configure specialty text fields that have already been displayed, e.g., on a validation error.
 				configure_text_field '.specialty_names .text_field', my_vars.edit_profile.max_lengths.specialty_names, add_specialty_names_text_field
