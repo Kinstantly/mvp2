@@ -10,13 +10,13 @@ class Profile < ActiveRecord::Base
 	
 	has_paper_trail # Track changes to each profile.
 	
-	attr_writer :custom_service_names, :custom_specialty_names # readers defined below
+	attr_writer :specialty_names, :custom_service_names, :custom_specialty_names # readers defined below
 	
 	attr_accessible :first_name, :last_name, :middle_name, :credentials, :email, 
 		:company_name, :url, :locations_attributes, :reviews_attributes, 
 		:headline, :education, :certifications, :year_started, 
 		:languages, :insurance_accepted, :summary, 
-		:category_ids, :service_ids, :specialty_ids, 
+		:category_ids, :service_ids, :specialty_ids, :specialty_names,
 		:custom_service_names, :custom_specialty_names, 
 		:consult_in_person, :consult_in_group, :consult_by_email, :consult_by_phone, :consult_by_video, 
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, :consult_at_other, 
@@ -95,6 +95,7 @@ class Profile < ActiveRecord::Base
 		availability_service_area_note: 750,
 		hours: 750,
 		admin_notes: 2000,
+		specialty_names: 150,
 		custom_service_names: 150,
 		custom_specialty_names: 150,
 		search_terms: 255
@@ -108,24 +109,26 @@ class Profile < ActiveRecord::Base
 			validates attribute, allow_blank: true, length: {maximum: MAX_LENGTHS[attribute]}
 		end
 	
-	validates_each :custom_service_names, :custom_specialty_names do |record, attribute, names|
+	validates_each :specialty_names, :custom_service_names, :custom_specialty_names do |record, attribute, names|
 		max_length = MAX_LENGTHS[attribute]
 		names.each do |name|
 			record.errors.add attribute, I18n.t("models.profile.#{attribute}.too_long", max: max_length) if name.length > max_length
-		end
+		end if names
 	end
 
 	before_save do
-		# Merge in custom services and specialties.
-		self.services = (services + custom_service_names.map(&:to_service)).uniq
-		self.specialties = (specialties + custom_specialty_names.map(&:to_specialty)).uniq
+		# Create specialties by name if any.
+		self.specialties = specialty_names.map(&:to_specialty).uniq if specialty_names
+		# Merge in custom services and specialties if any.
+		self.services = (services + custom_service_names.map(&:to_service)).uniq if custom_service_names.present?
+		self.specialties = (specialties + custom_specialty_names.map(&:to_specialty)).uniq if custom_specialty_names.present?
 		# No periods in credentials.
 		self.credentials = credentials.try(:delete, '.')
 	end
 	
 	after_save do
-		# Custom services and specialties are now merged and saved, so we don't need their names (especially for AJAX updates).
-		self.custom_service_names, self.custom_specialty_names = nil, nil
+		# Specialty names and custom services/specialties are now merged and saved, so we don't need their names (especially for AJAX updates).
+		self.specialty_names, self.custom_service_names, self.custom_specialty_names = nil, nil, nil
 	end
 	
 	scope :order_by_id, order('id')
@@ -327,6 +330,10 @@ class Profile < ActiveRecord::Base
 	# Returns nil if the profile cannot be found or has been claimed already.
 	def self.find_claimable(token)
 		token.present? && (profile = find_by_invitation_token token) && !profile.claimed? ? profile : nil
+	end
+	
+	def specialty_names
+		remove_blanks_and_strip @specialty_names if @specialty_names
 	end
 	
 	def custom_service_names

@@ -27,3 +27,9 @@ window.place_popover = (popover, pixels) ->
 	popover.offset
 		top: $(window).scrollTop() + pixels
 		left: (($(window).width() - popover.outerWidth()) / 2) + $(window).scrollLeft()
+
+# Do not show the autocompletion selection menu if there are no matches to the input.
+# This work-around is needed because the version of the jQuery autocomplete plugin that is used by the rails3-jquery-autocomplete gem insists on showing "no existing match".
+window.configure_autocomplete_form_fields = (form_field_selector, context = document) ->
+	$(form_field_selector, context).on 'autocompleteresponse', (event, ui) ->
+		$(this).autocomplete('close') if ui.content?[0].id.length == 0
