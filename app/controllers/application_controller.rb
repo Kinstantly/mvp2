@@ -25,11 +25,11 @@ class ApplicationController < ActionController::Base
 		message = if exception
 			"#{exception.class}: #{exception.message}"
 		elsif params[:undefined_path]
-			"path: /#{params[:undefined_path]}"
+			"undefined_path=\"#{params[:undefined_path]}\""
 		else
 			''
 		end
-		logger.error "Not_found_error: #{message}"
+		logger.error "Not_found_error: #{message} | request: fullpath=\"#{request.fullpath}\" remote_ip=#{request.remote_ip}"
 		if user_signed_in?
 			set_flash_message :alert, :page_not_found
 			redirect_to root_path
