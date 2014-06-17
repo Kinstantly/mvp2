@@ -1,0 +1,394 @@
+/* Mixins */
+/*  A basic grid -------------------------------------------------------------------------- */
+/* Used to convert PX to EMs for multiple properties or values or both.
+$base is an optional measurement that allows making measurements relative to the parent font size rather than the current. Also accepts a list of lists (instead a list of values) for properties that accept multiple lists of values. Only numbers are converted; everything else is passed through.
+
+Examples:
+
+@include scale(line-height, 30)
+@include scale(line-height, 30, 16)
+@include scale(width height, 125);
+@include scale(padding, 0 25, 16);
+@include scale(text-shadow, (#0d6e28 1 1) (#777 0 0 2), 16);
+@include scale(box-shadow, (inset 0 0 0 1 #2a9022) (inset 0 0 3 #459966), 16);
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, tt, var,
+dl, dt, dd, ol, ul, li, input, textarea,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline; }
+
+/* remember to define focus styles! */
+:focus {
+  outline: 0; }
+
+body {
+  color: black;
+  background: white; }
+
+ol, ul {
+  list-style: none; }
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+  border-collapse: separate;
+  border-spacing: 0; }
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: ""; }
+
+blockquote, q {
+  quotes: "" ""; }
+
+/*
+ * Corrects `block` display not defined in IE6/7/8/9 & FF3.
+ */
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, navigation, section, summary {
+  display: block; }
+
+/*
+ * Corrects `inline-block` display not defined in IE6/7/8/9 & FF3.
+ */
+audio, canvas, video {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1; }
+
+/*
+ * Prevents modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS5 devices.
+ */
+audio:not([controls]) {
+  display: none;
+  height: 0; }
+
+/*
+ * Addresses styling for `hidden` attribute not present in IE7/8/9, FF3, S4.
+ * Known issue: no IE6 support.
+ */
+[hidden] {
+  display: none; }
+
+#header {
+  zoom: 1; }
+  #header:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+/* End CSS reset */
+/* Icon Font */
+@font-face {
+  font-family: 'FontAwesome';
+  src: url("../fonts/fontawesome-webfont.eot?v=4.1.0");
+  src: url("../fonts/fontawesome-webfont.eot?#iefix&v=4.1.0") format("embedded-opentype"), url("../fonts/fontawesome-webfont.woff?v=4.1.0") format("woff"), url("../fonts/fontawesome-webfont.ttf?v=4.1.0") format("truetype"), url("../fonts/fontawesome-webfont.svg?v=4.1.0#fontawesomeregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+/*
+Base styles
+*/
+html, body {
+  height: 100%;
+  width: 100%;
+  font-size: 100%;
+  font-family: Helvetica, Arial, sans-serif; }
+
+.container {
+  max-width: 60em;
+  margin: 0 auto;
+  padding: 0em 1.25em; }
+
+.edit .container {
+  padding: 0em 2.5em; }
+
+a {
+  color: #346599;
+  text-decoration: none; }
+
+a:hover {
+  color: #213f60; }
+
+a:visited {
+  color: #444444; }
+
+strong, b {
+  font-weight: 700; }
+
+em, i {
+  font-style: italic; }
+
+.editable {
+  background: url("../images/edit-blue.png") left center no-repeat;
+  background-size: 12px 15px;
+  padding-left: 18px;
+  margin-left: -18px; }
+
+.editable:hover {
+  background: url("../images/edit-over.png") left center no-repeat;
+  cursor: pointer; }
+
+/*  Header -------------------------------------------------------------------------- */
+#header {
+  width: 100%;
+  font-family: Helvetica, Arial, sans-serif; }
+  #header #account-bar {
+    background: black;
+    color: white;
+    font-family: "Gotham", Helvetica, Arial, sans-serif;
+    height: 1.5em;
+    overflow-y: visible; }
+    @media (max-width: 24.75em) {
+      #header #account-bar {
+        font-size: 0.75em; } }
+    #header #account-bar ul {
+      text-align: right; }
+      @media (max-width: 36.25em) {
+        #header #account-bar ul li.logged-in {
+          display: none; } }
+      #header #account-bar ul li {
+        font-size: 0.6875em;
+        display: inline-block;
+        line-height: 2.18182em;
+        padding-right: 2.54545em;
+        overflow-y: visible;
+        position: relative; }
+        #header #account-bar ul li:last-of-type {
+          padding-right: 0; }
+        #header #account-bar ul li ul {
+          display: none;
+          position: absolute;
+          z-index: 100;
+          border: 1px solid #dddddd;
+          background: white;
+          right: 2em;
+          min-width: 9.09091em; }
+          #header #account-bar ul li ul li {
+            display: block;
+            font-size: 1.27273em;
+            line-height: 1em;
+            border-bottom: 1px solid #dddddd;
+            padding: 0;
+            text-align: left; }
+            #header #account-bar ul li ul li:last-child {
+              border-bottom: none; }
+            #header #account-bar ul li ul li a {
+              display: block;
+              padding: 0.71429em;
+              color: #346599;
+              font-family: Helvetica, Arial, sans-serif; }
+              #header #account-bar ul li ul li a:hover {
+                color: #213f60; }
+        #header #account-bar ul li:hover a.account {
+          background-position: right -11px; }
+        #header #account-bar ul li:hover > ul {
+          display: block; }
+        #header #account-bar ul li .avatar {
+          padding: 0em 0.72727em 0em 0em;
+          display: block;
+          float: left; }
+          #header #account-bar ul li .avatar img {
+            max-height: 2.18182em;
+            width: auto; }
+        #header #account-bar ul li a {
+          color: white; }
+          #header #account-bar ul li a:hover {
+            color: #d9d9d9; }
+        #header #account-bar ul li a.account {
+          padding-right: 1.90909em;
+          background: url("../images/arrow-down.png") right top no-repeat; }
+        #header #account-bar ul li a.button {
+          background: #00af8b;
+          padding: 1em 0.90909em 0.81818em 0.90909em;
+          -webkit-border-bottom-left-radius: 0.1818em;
+          -moz-border-bottom-left-radius: 0.1818em;
+          -ms-border-bottom-left-radius: 0.1818em;
+          border-bottom-left-radius: 0.1818em;
+          -webkit-border-bottom-right-radius: 0.1818em;
+          -moz-border-bottom-right-radius: 0.1818em;
+          -ms-border-bottom-right-radius: 0.1818em;
+          border-bottom-right-radius: 0.1818em;
+          -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.35);
+          -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.35);
+          box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.35); }
+          #header #account-bar ul li a.button:hover {
+            text-decoration: none;
+            background: #00c99f;
+            -webkit-transition: background-color 0.25s ease-in;
+            -moz-transition: background-color 0.25s ease-in;
+            -o-transition: background-color 0.25s ease-in;
+            transition: background-color 0.25s ease-in;
+            color: white; }
+
+/* Override some jQuery UI styles. */
+.ui-widget-content {
+  color: black; }
+  .ui-widget-content a {
+    color: #346599; }
+
+.auto_width {
+  width: auto !important; }
+
+.note, .blank_attr {
+  font-style: italic;
+  font-weight: lighter;
+  font-size: small; }
+
+.text_area {
+  white-space: pre-line; }
+
+input.placeholder, textarea.placeholder {
+  color: #aaaaaa; }
+
+/* Messages */
+.flash_messages {
+  font-family: Helvetica, Arial, sans-serif;
+  line-height: 20px;
+  text-align: center;
+  width: 962px;
+  margin: 8px auto; }
+  .flash_messages > div {
+    font-weight: 700;
+    padding: 4px;
+    border: 1px solid;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px; }
+  .flash_messages .notice, .flash_messages .alert {
+    color: #e43d5d;
+    background-color: rgba(255, 255, 255, 0.5); }
+
+.formlet .errorExplanation, .formlet #error_explanation, .generic_form .errorExplanation, .generic_form #error_explanation {
+  color: #e43d5d; }
+  .formlet .errorExplanation h2, .formlet .errorExplanation p, .formlet #error_explanation h2, .formlet #error_explanation p, .generic_form .errorExplanation h2, .generic_form .errorExplanation p, .generic_form #error_explanation h2, .generic_form #error_explanation p {
+    display: none; }
+  .formlet .errorExplanation li, .formlet #error_explanation li, .generic_form .errorExplanation li, .generic_form #error_explanation li {
+    line-height: 1.2em; }
+.formlet .field_with_errors label, .generic_form .field_with_errors label {
+  background-color: rgba(228, 61, 93, 0.2); }
+
+/* Accessibility */
+#skip a, #skip a:hover, #skip a:visited {
+  position: absolute;
+  left: 0px;
+  top: -500px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden; }
+#skip a:active, #skip a:focus {
+  position: static;
+  width: auto;
+  height: auto; }
+
+/*  Social footer -------------------------------------------------------------------------- */
+.follow {
+  font-size: 0.875em;
+  display: table;
+  padding: 6.0714em 0 0 0;
+  clear: both; }
+  .follow span {
+    display: table-cell;
+    padding-right: 0.3125em;
+    vertical-align: bottom; }
+  .follow a {
+    width: 24px;
+    height: 24px;
+    background: url(../images/social-icon-sprites.gif) no-repeat;
+    display: table-cell;
+    text-indent: -999em;
+    padding-right: 0.3125em; }
+    @media screen and (max-width: 768px) {
+      .follow a {
+        width: 48px;
+        height: 48px;
+        background: url(../images/social-icon-sprites@2x.png) no-repeat; } }
+  .follow a.fb {
+    background-position: 0 0; }
+  .follow a.tw {
+    background-position: -29px 0; }
+    @media screen and (max-width: 768px) {
+      .follow a.tw {
+        background-position: -58px 0; } }
+  .follow a.gp {
+    background-position: -58px 0; }
+    @media screen and (max-width: 768px) {
+      .follow a.gp {
+        background-position: -116px 0; } }
+
+/*  Special classes -------------------------------------------------------------------------- */
+.pink {
+  background-color: #e43d5d; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+.col {
+  float: left; }
+
+hr {
+  clear: both;
+  width: 100%;
+  height: 1px;
+  color: #dddddd;
+  background: #dddddd;
+  border: 0;
+  margin: 0.875em 0 0 0; }
+
+.rounded img {
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  border-radius: 12px;
+  -webkit-box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 4px 8px 0px rgba(0, 0, 0, 0.15); }
+
+/*  Footer -------------------------------------------------------------------------- */
+#footer {
+  clear: both;
+  width: 100%;
+  background: #EFEFEF;
+  border-top: 1px solid #DDD;
+  margin-top: 1.25em;
+  padding: 1.5em 1em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+#bottom, #copyright {
+  width: 100%;
+  margin: 0px auto;
+  text-align: center;
+  font-size: 0.875em;
+  line-height: 1.42857em;
+  color: black;
+  font-family: Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased; }
+
+#bottom a, #copyright a {
+  color: #346599; }
+
+/* Footer */
+#footer #bottom span + span:before {
+  content: '|';
+  padding-right: 0.24em; }

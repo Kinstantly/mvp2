@@ -1,0 +1,43 @@
+.home .caption {
+	background: transparent;
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#CCFFFFFF,endColorstr=#CCFFFFFF)"; /* IE8 */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#CCFFFFFF,endColorstr=#CCFFFFFF);   /* IE6 & 7 */
+      zoom: 1;
+}
+.no-svg input#search {
+	background-image: url(../images/search.png) !important;
+}
+.no-svg #header #masthead #findProvider input#search {
+	background: transparent url(../images/search-btn.png) !important;
+}
+.no-svg .menu, .no-svg #header #masthead #menu .menu {
+	background-image: url(../images/menu-button.png) !important;
+	-ms-behavior: none !important;
+}
+.lt-ie9 #findProvider form div {
+	width: 45.5%;
+}
+.lt-ie9 #header #account-bar ul li a.account {
+	background: url('../images/arrow-down.png') right 1px no-repeat; 
+}
+.lt-ie9 #header #account-bar ul li:hover a.account {
+	background: url('../images/arrow-down.png') right -11px no-repeat; 
+}
+a.rslides_nav {
+	top: 30.3265306% !important;
+}
+.home #content .col h4 {
+	background: url('../images/h4-icons1.png') top center no-repeat; 
+}
+.home #content #col2 h4 {
+	background: url('../images/h4-icons2.png') top center no-repeat; 
+}
+.home #content #col3 h4 {
+	background: url('../images/h4-icons3.png') top center no-repeat; 
+}
+.home #content #col4 h4 {
+	background: url('../images/h4-icons4.png') top center no-repeat; 
+}
+.home #content #col5 h4 {
+	background: url('../images/h4-icons5.png') top center no-repeat; 
+}

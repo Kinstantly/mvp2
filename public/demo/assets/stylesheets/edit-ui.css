@@ -1,0 +1,34 @@
+@import url('jquery-ui-lightness.css');
+/* Mixins */
+/*  A basic grid -------------------------------------------------------------------------- */
+
+
+
+
+
+.edit .ui-tabs {
+  border: none;
+  border-top: 1px solid #DDDDDD;
+  margin-top: 0.5625em;
+  background: transparent;
+  color: #000;
+  font-size: 1em;
+  padding: 0; }
+  .edit .ui-tabs .ui-tabs-nav {
+    margin: 1em auto 0 auto;
+    border: 1px solid #DDDDDD;
+    background: #e2e2e2;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0; }
+    .edit .ui-tabs .ui-tabs-nav .ui-state-default {
+      background: #f2f2f2; }
+      .edit .ui-tabs .ui-tabs-nav .ui-state-default a {
+        color: #333; }
+        .edit .ui-tabs .ui-tabs-nav .ui-state-default a:hover {
+          color: #e43d5d; }
+      .edit .ui-tabs .ui-tabs-nav .ui-state-default:hover {
+        background: #f7f7f7; }
+    .edit .ui-tabs .ui-tabs-nav .ui-state-active {
+      background: #FFFFFF !important; }
+      .edit .ui-tabs .ui-tabs-nav .ui-state-active a {
+        color: #e43d5d; }
