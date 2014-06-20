@@ -63,7 +63,7 @@
     <!-- *** This fieldType is used by Sunspot! *** -->
     <fieldType name="text" class="solr.TextField" omitNorms="false">
       <analyzer type="query">
-        <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false"/>
+        <filter class="solr.ASCIIFoldingFilterFactory"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
@@ -71,7 +71,7 @@
         <!-- <filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/> -->
       </analyzer>
       <analyzer type="index">
-        <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false"/>
+        <filter class="solr.ASCIIFoldingFilterFactory"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
@@ -83,14 +83,14 @@
     <!-- *** This non-stemmed text. Used to boost exact matches *** -->
     <fieldType name="text_nostem" class="solr.TextField" omitNorms="false"> 
       <analyzer type="index">
-        <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false"/>
+        <filter class="solr.ASCIIFoldingFilterFactory"/>
         <tokenizer class="solr.StandardTokenizerFactory"/> 
         <filter class="solr.StandardFilterFactory"/> 
         <filter class="solr.LowerCaseFilterFactory"/>
         <!-- <filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/> -->
       </analyzer> 
       <analyzer type="query">
-        <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false"/>
+        <filter class="solr.ASCIIFoldingFilterFactory"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
