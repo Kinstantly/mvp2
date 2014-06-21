@@ -7,26 +7,44 @@
 		= render partial: 'edit_form'
 		- if can?(:destroy, @category)
 			= form_for @category, method: :delete, html: {id: 'destroy_category', class: 'destroy_button'} do |f|
-				= f.submit t('views.category.edit.destroy_button'), disable_with: 'Trashing...', confirm: t('views.category.edit.destroy_confirm')
+				= f.submit t('views.category.edit.destroy_button'), disable_with: t('views.category.edit.destroy_button_disable'), confirm: t('views.category.edit.destroy_confirm')
 	#links
 		%a{name: 'links'}
-		%h1= Category.human_attribute_name :services
+		%h1= Category.human_attribute_name :subcategories
+		- if @category.subcategories.present?
+			%table
+				%thead
+					%tr
+						%th.miniform_header
+							= Subcategory.human_attribute_name(:display_order)
+						%th= t 'views.subcategory.edit.edit'
+						%th
+				%tbody
+					- @category.subcategories.by_display_order.order_by_name.each do |record|
+						%tr
+							%td.miniform
+								= form_for @category, url: {action: :update_subcategory}, method: :put do |f|
+									= f.submit t('views.save'), disable_with: t('views.saving')
+									= text_field_tag :subcategory_display_order, @category.category_subcategory(record).subcategory_display_order, size: 4
+									= hidden_field_tag :subcategory_id, record.to_param
+							%td= link_to record.name, edit_subcategory_path(record), class: 'name'
+							%td.miniform
+								= form_for @category, url: {action: :remove_subcategory}, method: :put do |f|
+									= f.submit t('views.remove'), disable_with: t('views.removing')
+									= hidden_field_tag :subcategory_id, record.to_param
+		%h1= t 'views.subcategory.edit.add'
 		%table
 			%thead
 				%tr
 					%th.miniform_header
-						= Service.human_attribute_name(:display_order)
+						= Subcategory.human_attribute_name(:display_order)
 						&nbsp;&nbsp;
-						= t 'views.service.name'
-					%th Edit
+						= t 'views.subcategory.name'
 			%tbody
-				- @category.services.display_order.order_by_name.each do |record|
-					%tr
-						%td.miniform
-							= form_for record do |f|
-								= f.submit 'Save', disable_with: 'Save'
-								= f.text_field :display_order, size: 4
-								= f.text_field :name, size: 30
-								= hidden_field_tag :category_id, @category.id
-						%td= link_to record.name, edit_service_path(record), class: 'name'
+				%tr
+					%td.miniform
+						= form_for @category, url: {action: :add_subcategory}, method: :put do |f|
+							= f.submit t('views.save'), disable_with: t('views.saving')
+							= text_field_tag :subcategory_display_order, '', size: 4
+							= autocomplete_form_field :name, '', autocomplete_subcategory_name_categories_path, placeholder: t('views.subcategory.view.find_by_name'), size: 30
 = render partial: 'shared/save_changes_prompt'

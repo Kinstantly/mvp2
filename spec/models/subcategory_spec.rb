@@ -33,6 +33,31 @@ describe Subcategory do
 	# 	Subcategory.predefined.include?(subcategory).should be_true
 	# end
 	
+	context "categories" do
+		let(:categories) {
+			[FactoryGirl.create(:category, name: 'Activities'),
+				FactoryGirl.create(:category, name: 'Education')]
+		}
+		
+		before(:each) do
+			subcategory.categories = categories
+			subcategory.save
+			subcategory.reload
+		end
+		
+		it "it has persistent associated categories" do
+			categories.each do |category|
+				subcategory.categories.include?(category).should be_true
+			end
+		end
+		
+		it "it has a association model for categories" do
+			categories.each do |category|
+				category.category_subcategory(subcategory).subcategory.should eq subcategory
+			end
+		end
+	end
+	
 	context "services" do
 		let(:services) {
 			[FactoryGirl.create(:service, name: 'Art Therapists'),
@@ -46,22 +71,28 @@ describe Subcategory do
 		end
 		
 		it "it has persistent associated services" do
-			services.each do |svc|
-				subcategory.services.include?(svc).should be_true
+			services.each do |service|
+				subcategory.services.include?(service).should be_true
 			end
 		end
 		
-		it "can supply a list of services that are eligible for assigning to itself" do
-			predefined_services = [FactoryGirl.create(:predefined_service, name: 'Music Tutors'),
-				FactoryGirl.create(:predefined_service, name: 'Math Tutors')]
-			assignable_services = subcategory.assignable_services
-			subcategory.services.each do |svc|
-				assignable_services.include?(svc).should be_true
-			end
-			predefined_services.each do |svc|
-				assignable_services.include?(svc).should be_true
+		it "it has an association model for services" do
+			services.each do |service|
+				subcategory.service_subcategory(service).service.should eq service
 			end
 		end
+		
+		# it "can supply a list of services that are eligible for assigning to itself" do
+		# 	predefined_services = [FactoryGirl.create(:predefined_service, name: 'Music Tutors'),
+		# 		FactoryGirl.create(:predefined_service, name: 'Math Tutors')]
+		# 	assignable_services = subcategory.assignable_services
+		# 	subcategory.services.each do |service|
+		# 		assignable_services.include?(service).should be_true
+		# 	end
+		# 	predefined_services.each do |service|
+		# 		assignable_services.include?(service).should be_true
+		# 	end
+		# end
 	end
 	
 	context "Sunspot/SOLR auto-indexing" do

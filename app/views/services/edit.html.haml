@@ -7,13 +7,16 @@
 		= render partial: 'edit_form'
 		- if can?(:destroy, @service)
 			= form_for @service, method: :delete, html: {id: 'destroy_service', class: 'destroy_button'} do |f|
-				= f.submit t('views.service.edit.destroy_button'), disable_with: 'Trashing...', confirm: t('views.service.edit.destroy_confirm')
+				= f.submit t('views.service.edit.destroy_button'), disable_with: t('views.category.edit.destroy_button_disable'), confirm: t('views.service.edit.destroy_confirm')
 	#links
 		%a{name: 'links'}
-		%h1= Service.human_attribute_name :categories
+		%h1= Service.human_attribute_name :subcategories
 		%ul
-			- @service.categories.order_by_name.each do |record|
-				%li= link_to record.name, edit_category_path(record), class: 'name'
+			- if @service.subcategories.present?
+				- @service.subcategories.order_by_name.each do |record|
+					%li= link_to record.name, edit_subcategory_path(record), class: 'name'
+			- else
+				%li= link_to t('views.service.edit.add_subcategories'), subcategories_path
 		%h1= Service.human_attribute_name :specialties
 		%table
 			%thead

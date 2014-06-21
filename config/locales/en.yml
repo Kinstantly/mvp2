@@ -224,6 +224,7 @@ en:
   views:
     or: 'or'
     accessibility: 'Skip to content'
+    cancel: 'Cancel'
     field_label: '%{name}:'
     optional_field_label: '%{name} (optional):'
     find_button: 'Find'
@@ -239,6 +240,7 @@ en:
       edit:
         create: 'Create a category'
         destroy_button: 'Move category to trash'
+        destroy_button_disable: 'Trashing...'
         destroy_confirm: 'This category will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
         display_order_hint: 'Home page browse by category: less than 10 for left column, more than 10 for right column'
         edit: 'Edit category'
@@ -469,8 +471,10 @@ en:
       name: 'Service'
       edit:
         add: 'Add a service'
+        add_subcategories: 'Click here to assign to one or more subcategories'
         create: 'Create a service'
         destroy_button: 'Move service to trash'
+        destroy_button_disable: 'Trashing...'
         destroy_confirm: 'This service will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
         display_order_hint: 'Within category on the home page'
         edit: 'Edit service'
@@ -505,6 +509,7 @@ en:
         add_search_term_name_field: 'Add a another search term field'
         create: 'Create a specialty'
         destroy_button: 'Move specialty to trash'
+        destroy_button_disable: 'Trashing...'
         destroy_confirm: 'This specialty will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
         edit: 'Edit specialty'
         remove_search_term: 'Remove upon saving'
@@ -515,8 +520,11 @@ en:
     subcategory:
       name: 'Subcategory'
       edit:
+        add: 'Add a subcategory'
+        add_categories: 'Click here to assign to one or more categories'
         create: 'Create a subcategory'
         destroy_button: 'Move subcategory to trash'
+        destroy_button_disable: 'Trashing...'
         destroy_confirm: 'This subcategory will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
         edit: 'Edit subcategory'
       view:

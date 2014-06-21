@@ -1,9 +1,8 @@
 = simple_form_for @category do |f|
 	= f.input :name, required: true
-	= f.input :is_predefined
+	-# = f.input :is_predefined
 	= f.input :home_page_column, collection: Category::HOME_PAGE_COLUMNS, include_blank: 'hide'
-	= f.input :see_all_column, collection: Category::SEE_ALL_COLUMNS, include_blank: false
-	= f.input :display_order, hint: t('views.category.edit.display_order_hint'), input_html: {size: 4}
-	= f.association :services, as: :check_boxes, collection: @category.assignable_services
+	-# = f.input :display_order, hint: t('views.category.edit.display_order_hint'), input_html: {size: 4}
+	-# = f.association :services, as: :check_boxes, collection: @category.assignable_services
 	= f.button :submit
-	= link_to 'Cancel', categories_path
+	= link_to t('views.cancel'), categories_path

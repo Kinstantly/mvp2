@@ -82,6 +82,11 @@ Mvp2::Application.routes.draw do
 	match 'search_providers/service/:service_id/page/:page' => 'profiles#search'
 	
 	resources :categories, except: :show do
+		member do
+			put :add_subcategory
+			put :update_subcategory
+			put :remove_subcategory
+		end
 		collection do
 			get :autocomplete_subcategory_name
 		end

@@ -25,17 +25,18 @@ class Category < ActiveRecord::Base
 	scope :predefined, where(is_predefined: true)
 	scope :order_by_name, order('lower(name)')
 	scope :display_order, order(:display_order)
+	scope :home_page_order, order(:home_page_column)
 	
 	MAX_STRING_LENGTH = 254
-	HOME_PAGE_COLUMNS = 1..2
+	HOME_PAGE_COLUMNS = 1..5
 	SEE_ALL_COLUMNS = 1..3
 	
 	validates :name, presence: true
 	validates :name, length: {maximum: MAX_STRING_LENGTH}
 	validates :display_order, numericality: {only_integer: true}, allow_nil: true
 	validates :home_page_column, numericality: {only_integer: true, greater_than_or_equal_to: HOME_PAGE_COLUMNS.first, less_than_or_equal_to: HOME_PAGE_COLUMNS.last}, allow_nil: true
-	validates :see_all_column, numericality: {only_integer: true, greater_than_or_equal_to: SEE_ALL_COLUMNS.first, less_than_or_equal_to: SEE_ALL_COLUMNS.last}, allow_nil: true
-	validates :see_all_column, presence: true, if: :is_predefined
+	# validates :see_all_column, numericality: {only_integer: true, greater_than_or_equal_to: SEE_ALL_COLUMNS.first, less_than_or_equal_to: SEE_ALL_COLUMNS.last}, allow_nil: true
+	# validates :see_all_column, presence: true, if: :is_predefined
 	
 	after_save :update_category_lists
 	after_save :touch_category_lists

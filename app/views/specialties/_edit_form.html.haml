@@ -25,7 +25,7 @@
 	= button_tag id: 'add_search_term_name_field' do
 		= content_tag :strong, t('views.specialty.edit.add_search_term_name_field')
 	= f.button :submit
-	= link_to 'Cancel', specialties_path
+	= link_to t('views.cancel'), specialties_path
 
 -# No ruby interpolation in the coffeescript filter.  It breaks caching of the coffeescript filter result.
 :coffeescript

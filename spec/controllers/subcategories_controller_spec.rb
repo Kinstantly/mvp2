@@ -67,7 +67,9 @@ describe SubcategoriesController do
 		describe "GET index" do
 			it "assigns all subcategories as @subcategories" do
 				get :index
-				assigns(:subcategories).should eq([subcategory])
+				Subcategory.all.each do |subcat|
+					assigns(:subcategories).should include(subcat)
+				end
 			end
 		end
 

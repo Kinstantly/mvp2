@@ -6,4 +6,4 @@
 	= f.input :display_order, hint: t('views.service.edit.display_order_hint'), input_html: {size: 4}
 	= f.association :specialties, as: :check_boxes, collection: @service.assignable_specialties
 	= f.button :submit
-	= link_to 'Cancel', services_path
+	= link_to t('views.cancel'), services_path
