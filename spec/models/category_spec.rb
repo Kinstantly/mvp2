@@ -43,11 +43,11 @@ describe Category do
 		category.should have(:no).errors_on(:see_all_column)
 	end
 	
-	it "must display on the see-all page if predefined" do
-		category.is_predefined = true
-		category.see_all_column = nil
-		category.should have(1).error_on(:see_all_column)
-	end
+	# it "must display on the see-all page if predefined" do
+	# 	category.is_predefined = true
+	# 	category.see_all_column = nil
+	# 	category.should have(1).error_on(:see_all_column)
+	# end
 	
 	context "category lists" do
 		before(:each) do
@@ -99,17 +99,17 @@ describe Category do
 			end
 		end
 		
-		it "can supply a list of subcategories that are eligible for assigning to itself" do
-			predefined_subcategories = [FactoryGirl.create(:predefined_subcategory, name: 'FAMILY OUTINGS'),
-				FactoryGirl.create(:predefined_subcategory, name: 'ENRICHMENT CLASSES & LESSONS')]
-			assignable_subcategories = category.assignable_subcategories
-			category.subcategories.each do |svc|
-				assignable_subcategories.include?(svc).should be_true
-			end
-			predefined_subcategories.each do |svc|
-				assignable_subcategories.include?(svc).should be_true
-			end
-		end
+		# it "can supply a list of subcategories that are eligible for assigning to itself" do
+		# 	predefined_subcategories = [FactoryGirl.create(:subcategory, name: 'FAMILY OUTINGS'),
+		# 		FactoryGirl.create(:subcategory, name: 'ENRICHMENT CLASSES & LESSONS')]
+		# 	assignable_subcategories = category.assignable_subcategories
+		# 	category.subcategories.each do |svc|
+		# 		assignable_subcategories.include?(svc).should be_true
+		# 	end
+		# 	predefined_subcategories.each do |svc|
+		# 		assignable_subcategories.include?(svc).should be_true
+		# 	end
+		# end
 	end
 	
 	context "Sunspot/SOLR auto-indexing" do

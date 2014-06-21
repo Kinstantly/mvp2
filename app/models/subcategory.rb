@@ -34,6 +34,8 @@ class Subcategory < ActiveRecord::Base
 	validates :name, presence: true
 	validates :name, length: {maximum: MAX_STRING_LENGTH}
 	
+	paginates_per 20 # Default number shown per page in index listing.
+	
 	include CachingForModel
 	
 	include SunspotIndexing

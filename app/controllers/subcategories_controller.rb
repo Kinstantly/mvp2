@@ -14,7 +14,7 @@ class SubcategoriesController < ApplicationController
 	autocomplete :service, :name, full: true
 	
 	def index
-		@subcategories = @subcategories.order_by_name.page(params[:page]).per(20)
+		@subcategories = @subcategories.order_by_name.page(params[:page]).per(params[:per_page])
 	end
 	
 	# def new

@@ -17,7 +17,7 @@ class Service < ActiveRecord::Base
 	
 	default_scope where(trash: false)
 	scope :trash, where(trash: true)
-	scope :belongs_to_a_category, joins(:categories).order('lower(services.name)') # may contain duplicates
+	scope :belongs_to_a_subcategory, joins(:subcategories).order('lower(services.name)') # may contain duplicates
 	scope :predefined, where(is_predefined: true)
 	scope :order_by_name, order('lower(name)')
 	scope :display_order, order(:display_order)
@@ -30,6 +30,8 @@ class Service < ActiveRecord::Base
 	validates :display_order, numericality: {only_integer: true}, allow_nil: true
 	
 	after_save :touch_category_lists
+	
+	paginates_per 20 # Default number shown per page in index listing.
 	
 	include CachingForModel
 	predefined_info_parent :category
