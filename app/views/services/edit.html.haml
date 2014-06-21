@@ -17,21 +17,21 @@
 					%li= link_to record.name, edit_subcategory_path(record), class: 'name'
 			- else
 				%li= link_to t('views.service.edit.add_subcategories'), subcategories_path
-		%h1= Service.human_attribute_name :specialties
-		%table
-			%thead
-				%tr
-					%th.miniform_header
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						= t 'views.specialty.name'
-					%th Edit
-			%tbody
-				- @service.specialties.order_by_name.each do |record|
-					%tr
-						%td.miniform
-							= form_for record do |f|
-								= f.submit 'Save', disable_with: 'Save'
-								= f.text_field :name, size: 30
-								= hidden_field_tag :service_id, @service.id
-						%td= link_to record.name, edit_specialty_path(record), class: 'name'
+		-# %h1= Service.human_attribute_name :specialties
+		-# %table
+		-# 	%thead
+		-# 		%tr
+		-# 			%th.miniform_header
+		-# 				&nbsp;&nbsp;&nbsp;&nbsp;
+		-# 				= t 'views.specialty.name'
+		-# 			%th Edit
+		-# 	%tbody
+		-# 		- @service.specialties.order_by_name.each do |record|
+		-# 			%tr
+		-# 				%td.miniform
+		-# 					= form_for record do |f|
+		-# 						= f.submit 'Save', disable_with: 'Save'
+		-# 						= f.text_field :name, size: 30
+		-# 						= hidden_field_tag :service_id, @service.id
+		-# 				%td= link_to record.name, edit_specialty_path(record), class: 'name'
 = render partial: 'shared/save_changes_prompt'
