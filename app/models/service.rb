@@ -7,7 +7,12 @@ class Service < ActiveRecord::Base
 	auto_strip_attributes :name
 	
 	has_and_belongs_to_many :profiles
+	
 	has_and_belongs_to_many :categories
+	
+	has_many :service_subcategories
+	has_many :subcategories, through: :service_subcategories
+	
 	has_and_belongs_to_many :specialties
 	
 	default_scope where(trash: false)

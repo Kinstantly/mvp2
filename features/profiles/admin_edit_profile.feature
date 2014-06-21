@@ -100,3 +100,27 @@ Feature: Site administrator edits a profile
 			And I enter "<div>some widget code</div>" in the "Widget code" field
 			And I save the profile
 		Then I should see "some widget code" on the page
+
+	Scenario: Set category for a profile
+		Given the "FAMILY SERVICES" and "HEALTH" categories are predefined
+			And I am logged in as a profile editor
+		When I visit the admin edit page for an unclaimed profile
+			And I select the "FAMILY SERVICES" category
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should see "FAMILY SERVICES" on the page
+
+	Scenario: Set subcategory for a profile
+		Given the "CHILD CARE" and "PREGNANCY & BIRTH" subcategories are predefined
+			And I am logged in as a profile editor
+		When I visit the admin edit page for an unclaimed profile
+			And I select the "CHILD CARE" subcategory
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should see "CHILD CARE" on the page
+
+	Scenario: Set service for a profile
+		Given the "Nannies" and "Birth Doulas" services are predefined
+			And I am logged in as a profile editor
+		When I visit the admin edit page for an unclaimed profile
+			And I select the "Nannies" service
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should see "Nannies" on the page

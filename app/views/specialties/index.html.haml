@@ -1,6 +1,6 @@
-- @page_title = "#{company_name} - Specialties"
+- @page_title = "#{company_name} - #{t('views.specialty.name').pluralize}"
 .index
-	%h1 Specialties
+	%h1= t('views.specialty.name').pluralize
 	#top_bar
 		= render partial: 'home/admin_nav'
 	.list{align: 'center'}

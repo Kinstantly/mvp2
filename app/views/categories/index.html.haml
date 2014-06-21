@@ -1,6 +1,6 @@
-- @page_title = "#{company_name} - Categories"
+- @page_title = "#{company_name} - #{t('views.category.name').pluralize}"
 .index
-	%h1 Categories
+	%h1= t('views.category.name').pluralize
 	#top_bar
 		= render partial: 'home/admin_nav'
 	.list{align: 'center'}
@@ -10,12 +10,12 @@
 				%tr
 					%th
 						= t 'views.category.name'
-						%br
-						= t 'views.not_browsable'
+						-# %br
+						-# = t 'views.not_browsable'
 					%th.large
-						= Category.human_attribute_name(:services)
-						%br
-						= t 'views.category.index.service_explanation'
+						= Category.human_attribute_name(:subcategories)
+						-# %br
+						-# = t 'views.category.index.service_explanation'
 					%th= Category.human_attribute_name(:is_predefined)
 					%th= Category.human_attribute_name(:home_page_column)
 					%th= Category.human_attribute_name(:see_all_column)
@@ -25,8 +25,8 @@
 					%tr
 						%td= link_to category.name, edit_category_path(category), class: "#{category.browsable? ? 'browsable' : 'not_browsable'}"
 						%td
-							- category.services.order_by_name.each do |record|
-								= link_to record.name, edit_service_path(record), class: "name #{record.browsable? ? 'browsable' : 'not_browsable'}"
+							- category.subcategories.by_display_order.order_by_name.each do |record|
+								= link_to record.name, edit_subcategory_path(record), class: "name #{record.browsable? ? 'browsable' : 'not_browsable'}"
 						%td{class: "#{category.is_predefined ? 'predefined' : 'not_predefined'}"}= category.is_predefined
 						%td= category.home_page_column
 						%td= category.see_all_column

@@ -16,7 +16,7 @@ class Profile < ActiveRecord::Base
 		:company_name, :url, :locations_attributes, :reviews_attributes, 
 		:headline, :education, :certifications, :year_started, 
 		:languages, :insurance_accepted, :summary, 
-		:category_ids, :service_ids, :specialty_ids, :specialty_names,
+		:category_ids, :subcategory_ids, :service_ids, :specialty_ids, :specialty_names,
 		:custom_service_names, :custom_specialty_names, 
 		:consult_in_person, :consult_in_group, :consult_by_email, :consult_by_phone, :consult_by_video, 
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, :consult_at_other, 
@@ -38,6 +38,7 @@ class Profile < ActiveRecord::Base
 	
 	has_and_belongs_to_many :age_ranges, after_add: :association_changed, after_remove: :association_changed
 	has_and_belongs_to_many :categories, after_add: :association_changed, after_remove: :association_changed
+	has_and_belongs_to_many :subcategories, after_add: :association_changed, after_remove: :association_changed
 	has_and_belongs_to_many :services, after_add: :association_changed, after_remove: :association_changed
 	has_and_belongs_to_many :specialties, after_add: :association_changed, after_remove: :association_changed
 	
@@ -177,6 +178,9 @@ class Profile < ActiveRecord::Base
 		text :categories, boost: 1 do
 			categories.map &:name
 		end
+		text :subcategories, boost: 1 do
+			subcategories.map &:name
+		end
 		text :services, boost: 1 do
 			services.map &:name
 		end
@@ -193,6 +197,9 @@ class Profile < ActiveRecord::Base
 
 		string :categories, multiple: true do
 			categories.map(&:name).map(&:downcase)
+		end
+		string :subcategories, multiple: true do
+			subcategories.map(&:name).map(&:downcase)
 		end
 		string :services, multiple: true do
 			services.map(&:name).map(&:downcase)
@@ -221,6 +228,7 @@ class Profile < ActiveRecord::Base
 		end
 		
 		integer :category_ids, multiple: true
+		integer :subcategory_ids, multiple: true
 		integer :service_ids, multiple: true
 		integer :specialty_ids, multiple: true
 		integer :age_range_ids, multiple: true
@@ -250,10 +258,11 @@ class Profile < ActiveRecord::Base
 	def self.fuzzy_search(query, new_opts={})
 		opts = {
 			solr_params: {mm: '2<-1 4<-2 8<75%', defType: 'edismax', 
-						pf2: 'display_name_or_company_nostem^70 company_name_nostem^70 headline^20 categories^20 services^20 specialties^20 specialty_search_terms^20 search_terms^20'},
+						pf2: 'display_name_or_company_nostem^70 company_name_nostem^70 headline^20 categories^20 subcategories^20 services^20 specialties^20 specialty_search_terms^20 search_terms^20'},
 			query_phrase_slop: 1,
 			phrase_fields: {display_name_or_company: 80, company_name: 80, headline: 30, 
-							categories: 30, services: 30, specialties: 30, specialty_search_terms: 30, search_terms: 30},
+							categories: 30, subcategories:30, services: 30, specialties: 30,
+							specialty_search_terms: 30, search_terms: 30},
 			phrase_slop: 2
 		}.merge(new_opts)
 		self.configurable_search(query, opts)
@@ -291,6 +300,7 @@ class Profile < ActiveRecord::Base
 				boost_fields opts[:boost_fields] if opts[:boost_fields].present?
 				phrase_fields opts[:phrase_fields] if opts[:phrase_fields].present?
 				boost(80.0) { with(:categories, [query.downcase]) }
+				boost(80.0) { with(:subcategories, [query.downcase]) }
 				boost(80.0) { with(:services, [query.downcase]) }
 				boost(80.0) { with(:specialties, [query.downcase]) }
 				boost(80.0) { with(:specialty_search_terms, [query.downcase]) }

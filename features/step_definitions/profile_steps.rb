@@ -204,6 +204,14 @@ Given /^the "(.*?)" and "(.*?)" categories are predefined$/ do |cat1, cat2|
 	end
 end
 
+Given /^the "(.*?)" and "(.*?)" subcategories are predefined$/ do |subcat1, subcat2|
+	[subcat1, subcat2].each do |subcat|
+		subcategory = subcat.to_subcategory
+		subcategory.is_predefined = true
+		subcategory.save
+	end
+end
+
 Given /^the predefined category of "(.*?)" is associated with the "(.*?)" and "(.*?)" services$/ do |cat, svc1, svc2|
 	category = cat.to_category
 	category.is_predefined = true
@@ -420,6 +428,19 @@ When /^I select the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
 	within('#services .categories') do
 		check MyHelpers.profile_categories_id(cat1.to_category.id)
 		check MyHelpers.profile_categories_id(cat2.to_category.id)
+	end
+end
+
+When /^I select the "(.*?)" subcategory$/ do |subcat|
+	within('#services .subcategories') do
+		check MyHelpers.profile_subcategories_id(subcat.to_subcategory.id)
+	end
+end
+
+When /^I select the "(.*?)" and "(.*?)" subcategories$/ do |subcat1, subcat2|
+	within('#services .subcategories') do
+		check MyHelpers.profile_subcategories_id(subcat1.to_subcategory.id)
+		check MyHelpers.profile_subcategories_id(subcat2.to_subcategory.id)
 	end
 end
 

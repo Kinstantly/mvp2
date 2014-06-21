@@ -81,13 +81,29 @@ Mvp2::Application.routes.draw do
 	match 'search_providers/service/:service_id' => 'profiles#search', as: :search_providers_by_service
 	match 'search_providers/service/:service_id/page/:page' => 'profiles#search'
 	
-	resources :categories
-	
-	resources :services do
-		get 'find_by_name', on: :collection
+	resources :categories, except: :show do
+		collection do
+			get :autocomplete_subcategory_name
+		end
 	end
 	
-	resources :specialties do
+	resources :subcategories, except: :show do
+		member do
+			put :add_service
+			put :update_service
+			put :remove_service
+		end
+		collection do
+			get :find_by_name
+			get :autocomplete_service_name
+		end
+	end
+	
+	resources :services, except: :show do
+		get :find_by_name, on: :collection
+	end
+	
+	resources :specialties, except: :show do
 		collection do
 			get :find_by_name
 			get :autocomplete_search_term_name

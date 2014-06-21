@@ -10,8 +10,8 @@ class ProfilesController < ApplicationController
 	# Side effect: loads @profiles or @profile as appropriate.
 	# e.g., for index action, @profiles is set to Profile.accessible_by(current_ability)
 	load_and_authorize_resource new: :admin
-	skip_load_resource only: [:view_my_profile, :edit_my_profile]
-	skip_load_and_authorize_resource only: [:search, :autocomplete_service_name, :autocomplete_specialty_name, :autocomplete_location_city]
+	skip_load_resource only: [:view_my_profile, :edit_my_profile, :autocomplete_service_name]
+	skip_load_and_authorize_resource only: [:search, :autocomplete_specialty_name, :autocomplete_location_city]
 	
 	# Notify profile moderator when profile has been update by profile owner
 	after_filter :notify_profile_moderator, only: :formlet_update
@@ -26,7 +26,7 @@ class ProfilesController < ApplicationController
 	before_filter :seo_keywords, only: :show
 	before_filter :require_new_review, only: :edit_plain
 	
-	# Autocomplete custom service and specialty names.
+	# Autocomplete service and specialty names.
 	autocomplete :service, :name, full: true
 	autocomplete :specialty, :name, full: true
 	

@@ -1,0 +1,5 @@
+= simple_form_for @subcategory do |f|
+	= f.input :name, required: true
+	-# = f.association :services, as: :check_boxes, collection: @subcategory.assignable_services
+	= f.button :submit
+	= link_to 'Cancel', subcategories_path

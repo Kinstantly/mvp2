@@ -9,6 +9,16 @@ class Category < ActiveRecord::Base
 	has_and_belongs_to_many :category_lists
 	has_and_belongs_to_many :profiles
 	has_and_belongs_to_many :services, after_add: :services_changed, after_remove: :services_changed
+	has_many :category_subcategories do
+		def for_subcategory(subcategory)
+			where subcategory_id: subcategory
+		end
+	end
+	has_many :subcategories, through: :category_subcategories do
+		def by_display_order
+			order(CategorySubcategory.table_name + '.subcategory_display_order')
+		end
+	end
 	
 	default_scope where(trash: false)
 	scope :trash, where(trash: true)
@@ -33,6 +43,10 @@ class Category < ActiveRecord::Base
 	include CachingForModel
 	
 	include SunspotIndexing
+	
+	def category_subcategory(subcategory)
+		category_subcategories.for_subcategory(subcategory).first if subcategory
+	end
 	
 	def browsable?
 		!!is_predefined

@@ -5,6 +5,10 @@ class CategoriesController < ApplicationController
 	
 	# @category and @categories initialized by load_and_authorize_resource with cancan ability conditions.
 	load_and_authorize_resource
+	skip_load_resource only: :autocomplete_subcategory_name
+	
+	# Autocomplete subcategory names.
+	autocomplete :subcategory, :name, full: true
 	
 	def index
 		@categories = @categories.order_by_name.page(params[:page]).per(20)
