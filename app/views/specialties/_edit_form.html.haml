@@ -1,7 +1,7 @@
 = simple_form_for @specialty do |f|
 	= f.input :name do
 		= f.autocomplete_field :name, autocomplete_specialty_name_profiles_path, size: 50
-	= f.input :is_predefined
+	-# = f.input :is_predefined
 	- search_term_ids_to_remove_attr = array_attribute_tag_name :search_term_ids_to_remove, :specialty, f
 	= hidden_field_tag search_term_ids_to_remove_attr
 	- if @specialty.search_terms.present?

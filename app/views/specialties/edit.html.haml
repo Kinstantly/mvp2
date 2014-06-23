@@ -9,10 +9,10 @@
 			= form_for @specialty, method: :delete, html: {id: 'destroy_specialty', class: 'destroy_button'} do |f|
 				= f.submit t('views.specialty.edit.destroy_button'), disable_with: t('views.category.edit.destroy_button_disable'), confirm: t('views.specialty.edit.destroy_confirm')
 	#links
-		%h1= Specialty.human_attribute_name :services
-		%ul
-			- @specialty.services.order_by_name.each do |record|
-				%li= link_to record.name, edit_service_path(record), class: 'name'
+		-# %h1= Specialty.human_attribute_name :services
+		-# %ul
+		-# 	- @specialty.services.order_by_name.each do |record|
+		-# 		%li= link_to record.name, edit_service_path(record), class: 'name'
 		%h1= Specialty.human_attribute_name :search_terms
 		%ul
 			- @specialty.search_terms.order_by_name.each do |record|
