@@ -119,7 +119,7 @@ en:
   activerecord:
     attributes:
       category:
-        is_predefined: 'Show category'
+        is_predefined: 'Use category'
       profile:
         accepting_new_clients: 'Accepting new clients/customers'
         adoption_stage: 'adoption'

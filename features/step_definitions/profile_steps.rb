@@ -204,19 +204,15 @@ Given /^the "(.*?)" and "(.*?)" categories are predefined$/ do |cat1, cat2|
 	end
 end
 
-Given /^the "(.*?)" and "(.*?)" subcategories are predefined$/ do |subcat1, subcat2|
-	[subcat1, subcat2].each do |subcat|
-		subcategory = subcat.to_subcategory
-		subcategory.is_predefined = true
-		subcategory.save
-	end
-end
-
-Given /^the predefined category of "(.*?)" is associated with the "(.*?)" and "(.*?)" services$/ do |cat, svc1, svc2|
+Given /^the predefined category of "(.*?)" is associated with the "(.*?)" and "(.*?)" subcategories$/ do |cat, subcat1, subcat2|
 	category = cat.to_category
 	category.is_predefined = true
-	category.services = [svc1.to_service, svc2.to_service]
+	category.subcategories = [subcat1.to_subcategory, subcat2.to_subcategory]
 	category.save
+end
+
+Given /^the predefined subcategory of "(.*?)" is associated with the "(.*?)" and "(.*?)" services$/ do |subcat, svc1, svc2|
+	subcat.to_subcategory.services = [svc1.to_service, svc2.to_service]
 end
 
 Given /^the "(.*?)" and "(.*?)" services are predefined$/ do |svc1, svc2|
@@ -419,41 +415,47 @@ When /^I check "(.*?)"$/ do |field|
 end
 
 When /^I select the "(.*?)" category$/ do |cat|
-	within('#services .categories') do
+	within('.expertise_selection') do
 		check MyHelpers.profile_categories_id(cat.to_category.id)
 	end
 end
 
 When /^I select the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
-	within('#services .categories') do
+	within('.expertise_selection') do
 		check MyHelpers.profile_categories_id(cat1.to_category.id)
 		check MyHelpers.profile_categories_id(cat2.to_category.id)
 	end
 end
 
 When /^I select the "(.*?)" subcategory$/ do |subcat|
-	within('#services .subcategories') do
-		check MyHelpers.profile_subcategories_id(subcat.to_subcategory.id)
+	subcategory = subcat.to_subcategory
+	within('.expertise_selection') do
+		check MyHelpers.profile_subcategories_id(subcategory.categories.first.id, subcategory.id)
 	end
 end
 
 When /^I select the "(.*?)" and "(.*?)" subcategories$/ do |subcat1, subcat2|
-	within('#services .subcategories') do
-		check MyHelpers.profile_subcategories_id(subcat1.to_subcategory.id)
-		check MyHelpers.profile_subcategories_id(subcat2.to_subcategory.id)
+	subcategory1 = subcat1.to_subcategory
+	subcategory2 = subcat2.to_subcategory
+	within('.expertise_selection') do
+		check MyHelpers.profile_subcategories_id(subcategory1.categories.first.id, subcategory1.id)
+		check MyHelpers.profile_subcategories_id(subcategory2.categories.first.id, subcategory2.id)
 	end
 end
 
 When /^I select the "(.*?)" service$/ do |svc|
-	within('#services .services') do
-		check MyHelpers.profile_services_id(svc.to_service.id)
+	service = svc.to_service
+	within('.expertise_selection') do
+		check MyHelpers.profile_services_id(service.subcategories.first.id, service.id)
 	end
 end
 
 When /^I select the "(.*?)" and "(.*?)" services$/ do |svc1, svc2|
-	within('#services .services') do
-		check MyHelpers.profile_services_id(svc1.to_service.id)
-		check MyHelpers.profile_services_id(svc2.to_service.id)
+	service1 = svc1.to_service
+	service2 = svc2.to_service
+	within('.expertise_selection') do
+		check MyHelpers.profile_services_id(service1.subcategories.first.id, service1.id)
+		check MyHelpers.profile_services_id(service2.subcategories.first.id, service2.id)
 	end
 end
 

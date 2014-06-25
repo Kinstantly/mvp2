@@ -276,6 +276,10 @@ module ProfilesHelper
 		display_profile_item_names profile.try(:categories), n
 	end
 
+	def profile_display_subcategories(profile=current_user.try(:profile), n=nil)
+		display_profile_item_names profile.try(:subcategories), n
+	end
+
 	def profile_custom_categories_id(s)
 		profile_categories_id "custom_#{s}"
 	end
@@ -292,14 +296,38 @@ module ProfilesHelper
 		text_field_tag profile_custom_categories_tag_name(form_builder), value, id: profile_custom_categories_id(suffix)
 	end
 
+	# Subcategories helpers
+
+	def profile_subcategories_id(*ids)
+		"profile_subcategories#{ids.map{|id| '_'+id.to_s.to_alphanumeric}.join}"
+	end
+
+	def profile_subcategories_tag_name(form_builder=nil)
+		profile_attribute_tag_name 'subcategory_ids', form_builder
+	end
+
+	def profile_subcategories_hidden_field_tag(form_builder=nil)
+		hidden_field_tag profile_subcategories_tag_name(form_builder), '', id: profile_subcategories_id('hidden_field')
+	end
+
+	def profile_subcategories_check_box_tag(profile, subcategory, category, form_builder=nil)
+		element_id = profile_subcategories_id(category.id, subcategory.id)
+		css_class = profile_subcategories_id(subcategory.id)
+		check_box_tag profile_subcategories_tag_name(form_builder), subcategory.id, profile.subcategories.include?(subcategory), id: element_id, class: css_class, 'data-css-class' => css_class
+	end
+
+	def profile_subcategories_check_box_label(subcategory, category)
+		label_tag profile_subcategories_id(category.id, subcategory.id), subcategory.name
+	end
+
 	# Services helpers
 
 	def profile_new_custom_services(profile)
 		(profile.custom_services.presence || []).select(&:new_record?)
 	end
 
-	def profile_services_id(s)
-		"profile_services_#{s.to_s.to_alphanumeric}"
+	def profile_services_id(*ids)
+		"profile_services#{ids.map{|id| '_'+id.to_s.to_alphanumeric}.join}"
 	end
 
 	def profile_services_tag_name(form_builder=nil)
@@ -308,6 +336,16 @@ module ProfilesHelper
 
 	def profile_services_hidden_field_tag(form_builder=nil)
 		hidden_field_tag profile_services_tag_name(form_builder), '', id: profile_services_id('hidden_field')
+	end
+
+	def profile_services_check_box_tag(profile, service, subcategory, form_builder=nil)
+		element_id = profile_services_id(subcategory.id, service.id)
+		css_class = profile_services_id(service.id)
+		check_box_tag profile_services_tag_name(form_builder), service.id, profile.services.include?(service), id: element_id, class: css_class, 'data-css-class' => css_class
+	end
+
+	def profile_services_check_box_label(service, subcategory)
+		label_tag profile_services_id(subcategory.id, service.id), service.name
 	end
 
 	def profile_services_check_box(profile, id, name, checked, wrapper_class, form_builder=nil)

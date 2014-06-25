@@ -129,6 +129,22 @@ div.view_profile {
 			.expertise_profile > div {
 				padding-bottom: 1em;
 			}
+			.expertise_selection {
+				.col {
+					float: left;
+				}
+				ul {
+					list-style-type: none;
+					li {
+						margin-left: -2em;
+					}
+					ul {
+						li {
+							margin-left: -3em;
+						}
+					}
+				}
+			}
 			.categories, .services, .specialties, .stages, .accepting_new_clients, .consultations, .visits {
 				.check_box {
 					@include check-box-style;

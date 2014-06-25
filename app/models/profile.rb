@@ -342,6 +342,22 @@ class Profile < ActiveRecord::Base
 		token.present? && (profile = find_by_invitation_token token) && !profile.claimed? ? profile : nil
 	end
 	
+	def category_ids=(ids)
+		super(remove_blanks_and_uniq(ids))
+	end
+	
+	def subcategory_ids=(ids)
+		super(remove_blanks_and_uniq(ids))
+	end
+	
+	def service_ids=(ids)
+		super(remove_blanks_and_uniq(ids))
+	end
+	
+	def specialty_ids=(ids)
+		super(remove_blanks_and_uniq(ids))
+	end
+	
 	def specialty_names
 		remove_blanks_and_strip @specialty_names if @specialty_names
 	end

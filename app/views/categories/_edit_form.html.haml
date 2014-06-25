@@ -1,6 +1,6 @@
 = simple_form_for @category do |f|
 	= f.input :name, required: true
-	-# = f.input :is_predefined
+	= f.input :is_predefined #, value: true, as: :hidden
 	= f.input :home_page_column, collection: Category::HOME_PAGE_COLUMNS, include_blank: 'hide'
 	-# = f.input :display_order, hint: t('views.category.edit.display_order_hint'), input_html: {size: 4}
 	-# = f.association :services, as: :check_boxes, collection: @category.assignable_services

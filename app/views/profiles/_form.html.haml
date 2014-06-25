@@ -84,31 +84,33 @@
 	%fieldset.expertise_profile
 		%legend= t 'views.profile.legend.expertise_profile'
 		.categories
-			= f.label :categories
-			%span= t 'views.profile.edit.categories_tip'
-			%br
-			= profile_categories_hidden_field_tag(f)
-			- profile_category_choices(profile).each do |category|
-				.check_box
-					= profile_categories_check_box_tag(profile, category, f)
-					= profile_categories_check_box_label category
+			%span.label= "#{Profile.human_attribute_name(:categories)}:"
+			= profile_display_categories profile
+		.subcategories
+			%span.label= "#{Profile.human_attribute_name(:subcategories)}:"
+			= profile_display_subcategories profile
 		.services
-			= f.label :services
-			%span= t 'views.profile.edit.services_tip_html'
-			%br
-			%span.predefined_services
-			%span.note= t 'views.profile.edit.services_tip2'
-		.custom_services
-			= f.label :custom_service_names
-			= button_tag id: 'add_custom_services_text_field' do
-				= content_tag :strong, 'Enter a service not shown above'
-			%br
-			= profile_custom_services_hidden_field_tag(f)
-			- i = 0; profile.custom_service_names.each do |name|
-				.text_field
-					= profile_custom_services_autocomplete_field_tag(profile, name, "#{i = i+1}", f)
-			- @profile_custom_services_i = i
-			- @profile_custom_services_text_field_template = profile_custom_services_autocomplete_field_tag(profile, '', 'INDEX', f)
+			%span.label= "#{Profile.human_attribute_name(:services)}:"
+			= profile_display_services profile
+		.expertise_selection
+			= profile_categories_hidden_field_tag f
+			= profile_subcategories_hidden_field_tag f
+			= profile_services_hidden_field_tag f
+			- Category.predefined.home_page_order.each do |category|
+				.col
+					%h4
+						= profile_categories_check_box_tag profile, category, f
+						= profile_categories_check_box_label category
+					%ul
+						- category.subcategories.by_display_order.each do |subcategory|
+							%li
+								= profile_subcategories_check_box_tag profile, subcategory, category, f
+								= profile_subcategories_check_box_label subcategory, category
+							%ul
+								- subcategory.services.by_display_order.each do |service|
+									%li
+										= profile_services_check_box_tag profile, service, subcategory, f
+										= profile_services_check_box_label service, subcategory
 		.specialties
 			= f.label :specialties
 			%span= t 'views.profile.edit.specialties_tip_html'
@@ -257,6 +259,7 @@
 -# Any interpolated values needed in the coffeescript should be stored here to be referenced by the result
 -# of the coffeescript filter.  This allows caching of the coffeescript compilation.
 :javascript
+	my_vars.column_width = '#{95 / Category.predefined.count}%';
 	window.edit_profile = {
 		parents: {}, maps: {}, names: {}, ids_names: {},
 		check_box_caches: {}, check_box_templates: {}, hidden_field_tags: {},
@@ -291,7 +294,7 @@
 	edit_profile.prompts['specialties'] = 
 		"#{escape_javascript content_tag(:div, 'Choose a service and we\'ll show you a list of specialties.', class: 'notice')}";
 	// Values to be used in the next script.
-	edit_profile.custom_services_i = #{@profile_custom_services_i};
+	edit_profile.custom_services_i = #{@profile_custom_services_i.presence || 0};
 	edit_profile.custom_specialties_i = #{@profile_custom_specialties_i};
 	edit_profile.t_add_text_field = '#{t "views.profile.edit.add_text_field"}';
 	edit_profile.custom_services_template = '#{escape_javascript @profile_custom_services_text_field_template}';
@@ -364,3 +367,14 @@
 		$('.custom_specialties input:last').focus().keydown (e) ->
 			add_custom_specialties_text_field e if e.which == 13 # carriage return
 	$('#add_custom_specialties_text_field').on 'click', add_custom_specialties_text_field
+	
+	# Run after document is loaded.
+	$ ->
+		# Dynamically set column width based on number of columns.
+		$('.expertise_selection .col').css 'width', my_vars.column_width
+		# The same item might occur elsewhere in the list, so check/uncheck all instances of it.
+		$('.expertise_selection input:checkbox').change (e) ->
+			checked = this.checked
+			$('.expertise_selection .' + $(this).attr('data-css-class')).each (i, element) ->
+				element.checked = checked
+				true # Return explicit true value so that we continue processing any following elements.

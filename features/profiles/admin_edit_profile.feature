@@ -106,21 +106,25 @@ Feature: Site administrator edits a profile
 			And I am logged in as a profile editor
 		When I visit the admin edit page for an unclaimed profile
 			And I select the "FAMILY SERVICES" category
+			And I save the profile
 			And I visit the admin view page for the existing unclaimed profile
 		Then I should see "FAMILY SERVICES" on the page
 
 	Scenario: Set subcategory for a profile
-		Given the "CHILD CARE" and "PREGNANCY & BIRTH" subcategories are predefined
+		Given the predefined category of "FAMILY SERVICES" is associated with the "CHILD CARE" and "PREGNANCY & BIRTH" subcategories
 			And I am logged in as a profile editor
 		When I visit the admin edit page for an unclaimed profile
 			And I select the "CHILD CARE" subcategory
+			And I save the profile
 			And I visit the admin view page for the existing unclaimed profile
 		Then I should see "CHILD CARE" on the page
 
 	Scenario: Set service for a profile
-		Given the "Nannies" and "Birth Doulas" services are predefined
+		Given the predefined category of "FAMILY SERVICES" is associated with the "CHILD CARE" and "PREGNANCY & BIRTH" subcategories
+			And the predefined subcategory of "PREGNANCY & BIRTH" is associated with the "Nannies" and "Birth Doulas" services
 			And I am logged in as a profile editor
 		When I visit the admin edit page for an unclaimed profile
 			And I select the "Nannies" service
+			And I save the profile
 			And I visit the admin view page for the existing unclaimed profile
 		Then I should see "Nannies" on the page
