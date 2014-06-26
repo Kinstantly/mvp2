@@ -15,7 +15,6 @@
 		%meta{content: (@meta_description.presence || t('meta.description')), name: 'description'}
 		= favicon_link_tag '/favicon.ico?v=1'
 		%link{href: '/apple-touch-icon.png', rel: 'apple-touch-icon'}
-		%link{href: "https://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900", rel: "stylesheet", type: "text/css"}
 		%title
 			- if @page_title_prefix.present?
 				= "#{@page_title_prefix} |"
@@ -29,32 +28,71 @@
 		= csrf_meta_tags
 	%body{class: @body_class}
 		-# Name-space my global variables, e.g., my_vars.a_val, my_vars.t.some_text, my_vars.f.a_function
+		#fb-root
 		%script var my_vars={t:{},f:{}};
-		%a{name: 'top'}
-		= yield :body_header
+		%header#header
+			%section#account-bar
+				%ul.container
+					- if user_signed_in?
+						%li.logged-in
+							- if current_user.is_provider? && current_user.profile
+								%span.avatar.mini>
+									= image_tag current_user.profile.profile_photo.url(:medium), alt: "#{current_user.profile.display_name_or_company}", style: "max-width:24px;", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+								= greeting
+								,
+							= account_settings_link
+							- if current_user.is_provider?
+								%ul.account-menu
+									%li
+										= edit_user_profile_link
+									%li
+										= view_user_profile_link
+						%li{:style => "text-transform:uppercase;"}
+							= sign_in_out_link
+					- else
+						%li.logged-out{:style => "text-transform:uppercase;"}
+							= sign_in_out_link
+							- if show_sign_in_link? && show_sign_up_link?
+								|
+							= user_sign_up_link
+					- if !user_signed_in? && show_link?(provider_sign_up_path)
+						%li.provider
+							= provider_sign_up_link "Provider? Join us. It's FREE", {class: :button}
+			= yield :body_header
 		.flash_messages
 			- if notice.present?
 				.notice= notice
 			- if alert.present? and !@suppress_header_alert
 				.alert= alert
-		= yield
+		%article#content{class: "container" + (@content_class ? " #{@content_class}" : "")}
+			= yield
+			.follow
+				%span Follow us on:
+				%a.fb{:href => "https://www.facebook.com/kinstantly", :target => "_blank"} Facebook
+				%a.tw{:href => "https://twitter.com/Kinstantly", :target => "_blank"} Twitter
+				%a.gp{:href => "https://plus.google.com/+Kinstantly", :target => "_blank"} Google Plus
 		%footer#footer
-			%nav
-				%p#bottom
-					= about_link wrapper: {tag: :span}
-					= contact_link wrapper: {tag: :span}
-					= terms_link wrapper: {tag: :span}
-					= privacy_link wrapper: {tag: :span}
-			%p#copyright
+			%p#bottom
+				= about_link wrapper: {tag: :span}
+				= contact_link wrapper: {tag: :span}
+				= terms_link wrapper: {tag: :span}
+				= privacy_link wrapper: {tag: :span}
+				%br/
 				= raw "\&copy; Copyright 2013-#{Date.today.year} Kinstantly, Inc. All Rights Reserved."
-		-# #line
-		-#= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{GOOGLE_BROWSER_API_KEY}&libraries=places&sensor=false".html_safe
-		-#= javascript_include_tag 'https://dme0ih8comzn4.cloudfront.net/js/feather.js' if @using_photo_editor
+		#line
 		= render partial: 'layouts/tracking'
 		= render partial: 'layouts/g_analytics'
 
 		:javascript
 			my_vars.google_api_key = "#{GOOGLE_BROWSER_API_KEY}"
+		:javascript
+			(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) return;
+					js = d.createElement(s); js.id = id;
+					js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=876267945721057&version=v2.0";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));
 		:coffeescript
 			# Autocomplete location field in search form.
 			bind_provider_search_location_autocomplete = () ->

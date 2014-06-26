@@ -1,0 +1,476 @@
+// Styles for the home page.
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, tt, var,
+dl, dt, dd, ol, ul, li, input, textarea,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+body {
+	color: black;
+	background: white;
+}
+ol, ul {
+	list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+caption, th, td {
+	text-align: left;
+	font-weight: normal;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: "";
+}
+blockquote, q {
+	quotes: "" "";
+}
+
+/*
+ * Corrects `block` display not defined in IE6/7/8/9 & FF3.
+ */
+article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {
+	display: block;
+}
+/*
+ * Corrects `inline-block` display not defined in IE6/7/8/9 & FF3.
+ */
+audio,canvas,video {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+}
+/*
+ * Prevents modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS5 devices.
+ */
+audio:not([controls]) {
+	display: none;
+	height: 0;
+}
+/*
+ * Addresses styling for `hidden` attribute not present in IE7/8/9, FF3, S4.
+ * Known issue: no IE6 support.
+ */
+[hidden] {
+	display: none;
+}
+.clearfix:before, .clearfix:after {
+	content: "\0020"; display: block; height: 0; visibility: hidden;	
+} 
+.clearfix:after { clear: both; }
+/* Fix clearfix: blueprintcss.lighthouseapp.com/projects/15318/tickets/5-extra-margin-padding-bottom-of-page */
+.clearfix { zoom: 1; }
+
+/* End CSS reset */
+
+@font-face {
+	font-family: 'museo_slab500';
+	src: url('fonts/museo_slab_500-webfont.eot');
+	src: url('fonts/museo_slab_500-webfont.eot?#iefix') format('embedded-opentype'),
+			 url('fonts/museo_slab_500-webfont.woff') format('woff'),
+			 url('fonts/museo_slab_500-webfont.ttf') format('truetype'),
+			 url('fonts/museo_slab_500-webfont.svg#museo_slab500') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.flash_messages {
+	width: 90%;
+}
+
+/*
+BASE (MOBILE) SIZE
+This are the mobile styles. It's what people see on their phones. If
+you set a great foundation, you won't need to add too many styles in
+the other stylesheets. Remember, keep it light: Speed is Important.
+*/
+
+html, body {
+	height:100%;
+	width: 100%;
+	font-size: 90%;
+}
+#container {
+	width: 100%;
+	margin: 0px auto;
+	font-family: Helvetica, Arial, sans-serif;
+	padding: 0px 10px;
+}
+a {
+	color: $default_link_color;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+/*  Header -------------------------------------------------------------------------- */
+
+#branding {
+	width: 100%;
+}
+#access {
+	display: block;
+	margin: 10px auto 0 auto;
+	font-family: Helvetica, Arial, sans-serif;
+}
+#branding h1 a {
+	display: block;
+	background: transparent url('kinstantly.png');
+	text-indent: -999em;
+	margin: 24px 0 0 -18px;
+	width: 321px;
+	min-height: 116px;
+	background-size: 100% auto;
+}
+#access ul li {
+	float: left;
+	font-size: 1em;
+	display: block;
+	color: #BDBCBD;
+}
+#access ul li#signin {
+	margin-left: .5em;
+	font-size: 0.9375em;
+}
+#access ul {
+	li#skip a:after, li#contact:before, li#myprofile:before, li#settings:before, li#signout:before {
+		content: '|';
+		font-size: 0.9375em;
+		color: #BDBCBD;
+		padding: 0 0.5em;
+	}
+}
+
+#access ul li a {
+	color: $default_link_color;	
+	font-weight: bold;
+	text-decoration: none;
+}
+#access ul li a:hover {
+	text-decoration: underline;
+}
+#msg {
+	font-family: 'museo_slab500', Helvetica, Arial, sans-serif;
+	color: #748814;
+	font-size: 17px;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+}
+
+/*  Home page -------------------------------------------------------------------------- */
+
+.home {
+/*	background: #FFF url('home-img.jpg') -572px -78px no-repeat;*/
+/*	background: #e23e5d;*/
+	background: #FFFFFF;
+}
+#search_providers {
+	background: #e23e5d;
+	padding: 15px;
+	-moz-border-radius: 16px;
+	-webkit-border-radius: 16px;
+	border-radius: 16px;
+	-webkit-background-clip: padding-box;
+	width: 84.375%;
+/*	margin: 168px 0 0 0;*/
+	margin: 22px 0 0 0;
+	h2 {
+		font-family: 'museo_slab500', Helvetica, Arial, sans-serif;
+		font-size: 30px;
+		line-height: 42px;
+		color: #FFF;
+		margin: 0 0 14px 0;
+		letter-spacing: 0.01em;
+		-webkit-font-smoothing: antialiased;
+	}
+	input {
+		padding: 10px 15px;
+		background: $search_input_background;
+		border-top: 1px solid #514447;
+		border-left: 1px solid #514447;
+		border-bottom: 1px solid #a89b9e;
+		border-right: 1px solid #a89b9e;
+		-moz-box-shadow: inset 1px 1px #d0c4c6;
+		-webkit-box-shadow: inset 1px 1px #d0c4c6;
+		box-shadow: inset 1px 1px #d0c4c6;
+		width: 236px;
+		height: 21px;
+		//font-size: 1.3125em;
+		color: $search_input_color;
+		line-height: 1em;
+		margin-bottom: 12px;
+	}
+	#provider_search_button {
+		background: url('search-mag-button-blue.png') no-repeat center 0px;
+		text-indent: -999em;
+		width: 266px;
+		height: 41px;
+		border: none;
+		-moz-box-shadow: none;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+	#provider_search_button:hover {
+		cursor: pointer;
+		background: url('search-mag-button-blue.png') no-repeat center -41px;
+	}
+	.small {
+		font-size: 0.9375em;
+		font-weight: bold;
+		color: #FFF;
+		-webkit-font-smoothing: antialiased;
+	}
+	.small a {
+		color: #fbc5cf;
+		text-decoration: none;
+	}
+	.small a:hover {
+		text-decoration: underline;
+		color: #FFF;
+	}
+	select option {
+		font-size: 150%;
+	}
+}
+.category-list {
+	background: rgba(255,255,255,0.3);
+	padding: 30px 40px;
+	-moz-border-radius: 16px;
+	-webkit-border-radius: 16px;
+	border-radius: 16px;
+	-webkit-background-clip: padding-box;
+	width: 68%;
+	-moz-box-shadow: 1px 6px 8px rgba(151,135,140,0.7);
+	-webkit-box-shadow: 1px 4px 8px rgba(151,135,140,0.7);
+	box-shadow: 1px 6px 8px rgba(151,135,140,0.7);
+	margin: 32px 0 0 0;
+	font-size: 1.5em;
+}
+.category-list h2 {
+	font-family: 'museo_slab500', Helvetica, Arial, sans-serif;
+	font-size: 1.375em;
+	color: #000;
+	margin: 0px 30px 36px 0px;
+	float: left;
+}
+span.help {
+	display: block;
+	float: left;
+	font-size: 0.875em;
+	color: #000;
+	margin-top: 6px;
+	margin-bottom: 36px;
+}
+.col {
+	float: left;
+	width: 176px;
+}
+#col1 {
+	margin-right: 56px;
+	clear: left;
+}
+.col h3 {
+	color: #000;
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 0.8125em;
+	line-height: 1.3846em;
+}
+.col ul {
+	font-size: 0.8125em;
+	font-weight: bold;
+	line-height: 1.30769em;
+	margin-bottom: 22px;
+}
+
+/*  Footer -------------------------------------------------------------------------- */
+
+#footer {
+	clear: both;
+	width: 100%;
+	background: #EFEFEF;
+	border-top: 1px solid #DDD;
+	margin-top: 1.25em;
+	padding: 1.5em 0;
+}
+#bottom, #copyright {
+	width: 100%;
+	margin: 0px auto;
+	text-align: center;
+	font-size: 0.875em;
+	line-height: 1.42857em;
+	color: $default_color;
+	font-family: $font-stack;
+	-webkit-font-smoothing: antialiased;
+}
+#bottom a, #copyright a {
+	color: $default_link_color;
+}
+
+/* Form input / label styling  -------------------------------------------------------------------------- */
+
+.input {
+	display: block;
+	float: left;
+}
+.input span {
+	position: absolute;
+	padding: 10px 15px;
+	z-index: 1;
+	cursor: text;
+	font-family: Helvetica, Arial, sans-serif;;
+	font-size: 1.3125em;
+	color: rgba(153,153,153,0.92);
+}
+#search_providers {
+	.select-wrapper {   
+		-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;
+		background: url('arrow.png') no-repeat 235px center $search_input_background;
+		border-top: 1px solid #514447;
+		border-left: 1px solid #514447;
+		border-bottom: 1px solid #a89b9e;
+		border-right: 1px solid #a89b9e;
+		-moz-box-shadow: inset 1px 1px #d0c4c6;
+		-webkit-box-shadow: inset 1px 1px #d0c4c6;
+		box-shadow: inset 1px 1px #d0c4c6;
+		display: inline-block;
+		width: 256px;
+		height: 41px;
+		font-size: 1.3125em;
+		color: $search_input_color;
+		line-height: 1em;
+		margin-bottom: 12px;
+		position: relative;
+	}   
+
+	.select-text {
+		display: block;
+		font-size: 1em;
+		color: $search_input_color;
+		padding: 10px 15px;
+		z-index: 1;
+	}
+
+	select {
+		/* Position the select over the span*/
+		min-height: 41px !important;
+		padding: 12px 0px;
+		display: block;
+		left: 0;
+		position: absolute;
+		top: 0px;
+		width: 100%;
+		z-index: 100;
+
+		/*  The select is now positioned over the span
+		 *  We don't want to see the select, but we want to be able to click on it 
+		 *  So we set the opacity to 0  
+		 */
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+		-moz-opacity: 0;
+		-khtml-opacity: 0;
+		-webkit-opacity: 0;
+		opacity: 0;
+	}
+}
+#all-cats {   
+	-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;
+	background: transparent;
+	display: block;
+	width: auto;
+	height: 17px;
+	font-size: 0.9375em;
+	color: $default_link_color;
+	line-height: 1.133333em;
+	position: relative;
+}   
+
+#all-cats .select-text {
+	display: inline-block;
+	font-size: 1em;
+	color: $default_link_color;
+	font-weight: bold;
+}
+#all-cats .select-text:after {
+	content: url('green-arrow.png');
+	padding-left: 6px;
+	margin-top: -2px;
+}
+
+#all-cats select {
+	/* Position the select over the span*/
+	min-height: 17px !important;
+	display: block;
+	left: 0;
+	position: absolute;
+	top: 0px;
+	width: 100%;
+
+	/*  The select is now positioned over the span
+	 *  We don't want to see the select, but we want to be able to click on it 
+	 *  So we set the opacity to 0  
+	 */
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	-moz-opacity: 0;
+	-khtml-opacity: 0;
+	-webkit-opacity: 0;
+	opacity: 0;
+}
+#social {
+	width: 53px;
+	height: 25px;
+	margin-top: 2em;
+}
+#social a {
+	text-indent: -999em;
+	display: block;
+	float: left;
+	height: 25px;
+	width: 24px;
+}
+#social a#twitter {
+	background: url('social.gif') 0px 0px;
+	margin-right: 5px;
+}
+#social a#facebook {
+	background: url('social.gif') -29px 0px;
+}
+
+/*
+BIGGER MOBILE
+*/
+@media only screen and (min-width: 728px) {
+	@include bigger-mobile-style;
+}
+
+/*
+DESKTOP
+This is the average viewing window. So Desktops, Laptops, and
+in general anyone not viewing on a mobile device. Here's where
+you can add resource intensive styles.
+*/
+@media only screen and (min-width: 980px) {
+	@include desktop-style;
+}

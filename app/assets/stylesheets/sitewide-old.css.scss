@@ -1,0 +1,198 @@
+// Styles and values used across the entire site, i.e., the home page and all interior pages.
+
+$default_color: #333;
+$default_background: white;
+$font-stack: Helvetica, Arial, sans-serif;
+$header-font-stack: 'Raleway', Helvetica, Arial, sans-serif;
+$default_link_color: #346599;
+$blue: #437FBF;
+
+$text_light_color: #807f7f;
+$text_lighter_color: #d9d8d8;
+$kinstantly_light_gray: #bebebe;
+$kinstantly_gray: #aeaeae;
+$kinstantly_light_chartreuse: #afb434;
+$kinstantly_chartreuse: #9fa42f;
+$kinstantly_light_blue: #437fc0;
+$kinstantly_blue: #366599;
+$kinstantly_pink: #e43d5d;
+$kinstantly_light_pink: #e46d8d;
+$search_input_color: #000;
+$search_input_background: #ffffff;
+$text_field_placeholder_color: #aaa;
+
+@mixin cell-style {
+	border: {
+		width: thin;
+		color: gray;
+		style: solid;
+	}
+	padding: 4px;
+}
+
+@mixin profile-admin-style {
+	> div {
+		margin-bottom: 0.5em;
+		.value {
+			@include cell-style;
+		}
+	}
+}
+
+@mixin check-box-style {
+	display: inline-block;
+	margin-left: 1em;
+	margin-top: 0.5em;
+	background-color: #F5F5F5;
+	label {
+		margin-left: 0.5em;
+		color: $text_light_color;
+		font-size: 14px;
+		font-weight: normal;
+	}
+}
+
+@mixin stack-check-box-style {
+	.check_box {
+		float: left;
+		clear: left;
+	}
+	+ div {
+		padding-top: 12px;
+	}
+}
+
+$button_corner_radius: 4px;
+
+@mixin button-corner-style {
+	-webkit-border-radius: $button_corner_radius;
+	-moz-border-radius: $button_corner_radius;
+	border-radius: $button_corner_radius;
+}
+
+@mixin button-style {
+	background-color: $kinstantly_light_blue;
+	font: {
+		size: 15px;
+		weight: bold;
+	}
+	display: inline-block; // <A> tags are inline by default.  Need this to set their width.
+	width: 7em;
+	text-align: center;
+	text-transform: lowercase;
+	text-decoration: none;
+	color: #ffffff;
+	padding: 4px;
+	margin-right: 1em;
+	@include button-corner-style;
+}
+
+@mixin default-button-style {
+	@include button-style;
+	background-color: $kinstantly_light_blue;
+}
+@mixin default-button-hover-style {
+	@include button-style;
+	background-color: $kinstantly_blue;
+}
+@mixin default-button-disabled-style {
+	@include button-style;
+	background-color: $kinstantly_light_gray;
+}
+
+@mixin cancel-button-style {
+	@include button-style;
+	background-color: $kinstantly_light_gray;
+}
+@mixin cancel-button-hover-style {
+	@include button-style;
+	background-color: $kinstantly_gray;
+}
+
+.auto_width {
+	width: auto !important;
+}
+
+.note, .blank_attr {
+	font: {
+		style: italic;
+		weight: lighter;
+		size: small;
+	}
+}
+
+.text_area {
+	white-space: pre-line;
+}
+
+// Text field placeholders that were fixed for browsers that don't support them as an attribute.
+input.placeholder, textarea.placeholder {
+	color: $text_field_placeholder_color;
+}
+
+/* Messages */
+
+$message_area_width: 962px;
+$message_corner_radius: 8px;
+
+.flash_messages {
+	font-family: $font-stack;
+	line-height: 20px;
+	text-align: center;
+	width: $message_area_width;
+	margin: 8px auto;
+	> div {
+		font-weight: 700;
+		padding: 4px;
+		border: 1px solid;
+		-webkit-border-radius: $message_corner_radius;
+		-moz-border-radius: $message_corner_radius;
+		border-radius: $message_corner_radius;
+	}
+	.notice, .alert {
+		color: $kinstantly_pink;
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+}
+
+.formlet, .generic_form {
+	.errorExplanation, #error_explanation {
+		color: $kinstantly_pink;
+		h2, p {
+			display: none;
+		}
+		li {
+			line-height: 1.2em;
+		}
+	}
+	.field_with_errors label {
+		background-color: rgba(228,61,93,0.2);
+	}
+}
+
+/* Accessibility */
+
+#skip {
+	a, a:hover, a:visited {
+		position: absolute;
+		left: 0px;
+		top: -500px;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+	}
+	a:active, a:focus {
+		position: static;
+		width: auto;
+		height: auto;
+	}
+}
+
+/* Footer */
+
+#footer {
+	#bottom span + span:before {
+		content: '|';
+		padding-right: 0.24em;
+	}
+}

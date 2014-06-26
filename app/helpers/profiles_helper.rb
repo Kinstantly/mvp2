@@ -6,7 +6,7 @@ module ProfilesHelper
 			if block.nil?
 				names.join(' | ') # Join with a separator.
 			else
-				names.collect(&block).join('') # Concatenate result of processing each name.
+				names.collect(&block).join(', ') # Concatenate result of processing each name.
 			end
 		end
 	end
@@ -527,10 +527,10 @@ module ProfilesHelper
 		addendum = [search_area, sorted_by_proximity].compact.join(' ')
 		if query.present?
 			t_scope = 'views.search_results.found_for'
-			"#{total > 0 ? t('how_many', scope: t_scope, count: total, query: query) : t('none', scope: t_scope, query: query)} #{addendum}"
+			"#{total > 0 ? t('how_many', scope: t_scope, count: total, query: query) : t('none', scope: t_scope, query: query)} #{addendum}".html_safe
 		else
 			t_scope = 'views.search_results.found'
-			"#{total > 0 ? t('how_many', scope: t_scope, count: total) : t('none', scope: t_scope)} #{addendum}"
+			"#{total > 0 ? t('how_many', scope: t_scope, count: total) : t('none', scope: t_scope)} #{addendum}".html_safe
 		end
 	end
 

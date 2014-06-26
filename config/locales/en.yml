@@ -235,8 +235,8 @@ en:
       view:
         more:
           how_many:
-            one: '(1 more location)'
-            other: '(%{count} more locations)'
+            one: '1 other location'
+            other: '%{count} other locations'
         total:
           how_many:
             one: '(1 location)'
@@ -333,6 +333,7 @@ en:
         for_search_only_blank: 'For search only, check all that apply'
         headline_example: 'Examples: Pediatric Dentistry, Math Tutoring'
         hours_example_html: 'Examples: M, W, F: 8 am-5 pm <span class="label_highlight">or</span> By appointment only'
+        search_widget_code_example: 'Examples: <p class="note schedule">Schedule a free SAT practice test.</p>'
         invitation_preview_button: 'Send to myself'
         invitation_send_button: 'Send to provider'
         invitation_disable_send_button: 'Sending invitation...'
@@ -409,7 +410,7 @@ en:
         submit_disable: 'Submitting...'
     search:
       address_placeholder: 'ZIP code or city, state'
-      query_placeholder: 'name, specialty, or parenting need...'
+      query_placeholder: 'Tutors, doctors, camps, etc.'
     search_results:
       city_prompt: 'city in California'
       in_search_area: 'in %{name}'
@@ -422,11 +423,11 @@ en:
           one: '1 search result'
           other: '%{count} search results'
       found_for:
-        none: "No search results for '%{query}'"
+        none: "No search results for &ldquo;%{query}&rdquo;"
         how_many:
-          one: "1 search result for '%{query}'"
-          other: "%{count} search results for '%{query}'"
-      more: 'More details'
+          one: "1 search result for &ldquo;%{query}&rdquo;"
+          other: "%{count} search results for &ldquo;%{query}&rdquo;"
+      more: 'More details >'
       postal_code_prompt: 'zip code'
       search_query_prompt: 'Want the results selected by provider types? Enter a search term in the red search bar above.'
       searching: 'Searching...'
@@ -436,7 +437,7 @@ en:
       sorted_by_proximity_prompt: 'Want the results sorted by proximity? Enter a city, state, or zip code in the red search bar above.'
       sorted_by_proximity_to: 'sorted by proximity to %{address}'
       suggest_provider_link: 'Tell us'
-      suggest_provider_prompt_html: 'Are we missing your favorite provider? %{link}!'
+      suggest_provider_prompt_html: 'Are we missing a great provider? %{link}!'
     search_term:
       name: 'Search term'
     show_all_categories:
@@ -489,7 +490,7 @@ en:
       edit:
         email_note: 'We also use this email to contact you.'
         header: 'Account settings'
-        link: 'Settings'
+        link: 'Your Account'
         password_note: "Leave the password blank if you don't want to change it. If you do change it, your password must contain at least %{minimum} characters."
         current_password_note: 'We need your current password to confirm your changes.'
         submit: 'Save changes'
