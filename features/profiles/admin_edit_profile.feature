@@ -128,3 +128,33 @@ Feature: Site administrator edits a profile
 			And I save the profile
 			And I visit the admin view page for the existing unclaimed profile
 		Then I should see "Nannies" on the page
+
+	@javascript
+	Scenario: Add specialties to a profile
+		Given I am logged in as a profile editor
+		When I visit the admin edit page for an unclaimed profile
+			And I add the "guitar pickin" and "banjo pluckin" custom specialties
+			And I save the profile
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should see "guitar pickin" on the page
+			And I should see "banjo pluckin" on the page
+
+	@javascript
+	Scenario: Add specialties to a profile using the ENTER key
+		Given I am logged in as a profile editor
+		When I visit the admin edit page for an unclaimed profile
+			And I add the "guitar pickin" and "banjo pluckin" custom specialties using enter
+			And I save the profile
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should see "guitar pickin" on the page
+			And I should see "banjo pluckin" on the page
+
+	Scenario: Remove a specialty from a profile
+		Given there is an unclaimed profile with the "guitar pickin" and "banjo pluckin" specialties
+			And I am logged in as a profile editor
+		When I visit the admin edit page for the existing unclaimed profile
+			And I uncheck the "guitar pickin" specialty
+			And I save the profile
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should not see "guitar pickin" on the page
+			And I should see "banjo pluckin" on the page

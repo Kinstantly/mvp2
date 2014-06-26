@@ -223,15 +223,12 @@ Given /^the "(.*?)" and "(.*?)" services are predefined$/ do |svc1, svc2|
 	end
 end
 
-Given /^the predefined service of "(.*?)" is associated with the "(.*?)" and "(.*?)" specialties$/ do |svc, spec1, spec2|
-	service = svc.to_service
-	service.is_predefined = true
-	service.specialties = [spec1.to_specialty, spec2.to_specialty]
-	service.save
-end
-
 Given /^there is an unclaimed profile$/ do
 	create_unattached_profile
+end
+
+Given /^there is an unclaimed profile with the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
+	create_unattached_profile specialties: [spec1.to_specialty, spec2.to_specialty]
 end
 
 Given /^I visit the (view|edit|admin view|admin edit) page for (?:a|an|the)( existing)? (claimed|published|unclaimed|unpublished|current) profile( with no locations| with one location| with no reviews| with one review)?$/ do |page, existing, type, items|
@@ -478,17 +475,15 @@ When /^I add the "(.*?)" and "(.*?)" custom services using enter$/ do |svc1, svc
 	end
 end
 
-# This step requires javascript.
-When /^I select the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
-	within('#services .specialties') do
-		check MyHelpers.profile_specialties_id(spec1.to_specialty.id)
-		check MyHelpers.profile_specialties_id(spec2.to_specialty.id)
+When /^I uncheck the "(.*?)" specialty$/ do |spec|
+	within('.predefined_specialties') do
+		uncheck MyHelpers.profile_specialties_id(spec.to_specialty.id)
 	end
 end
 
 # This step requires javascript.
 When /^I add the "(.*?)" and "(.*?)" custom specialties$/ do |spec1, spec2|
-	within('#services .custom_specialties') do
+	within('.expertise_profile .custom_specialties') do
 		click_button 'add_custom_specialties_text_field'
 		fill_in MyHelpers.profile_custom_specialties_id('1'), with: spec1
 		click_button 'add_custom_specialties_text_field'
@@ -498,7 +493,7 @@ end
 
 # This step requires javascript.
 When /^I add the "(.*?)" and "(.*?)" custom specialties using enter$/ do |spec1, spec2|
-	within('#services .custom_specialties') do
+	within('.expertise_profile .custom_specialties') do
 		click_button 'add_custom_specialties_text_field'
 		fill_in MyHelpers.profile_custom_specialties_id('1'), with: "#{spec1}\r"
 		fill_in MyHelpers.profile_custom_specialties_id('2'), with: spec2
