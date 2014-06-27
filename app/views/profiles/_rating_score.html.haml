@@ -8,6 +8,7 @@
 	%span.star.star2
 	%span.star.star1
 .review-num
+	-# Use the "size" method because it uses the underlying counter caching.
 	%span= display_count_for 'rating', profile.ratings.size
 	- if profile.reviews.size > 0
 		= link_to (display_count_for 'review', profile.reviews.size), "#{profile_path(profile)}#reviews"
