@@ -313,7 +313,8 @@
 				new_top_offset = viewport_top - min_top
 				
 				# Place map below search results
-				if (Modernizr.mq('(max-width: 682px)'))
+				# if (Modernizr.mq('(max-width: 682px)')) # Modernizr here causes errors on IE8 and is a CPU hog.
+				if (win.width() < 683)
 					$('.map_positioner').css({ 'position': 'static', 'float': 'none' })
 				# Map top/bottom boundaries are within allowed min/max
 				else if(viewport_top > min_top && (new_top_offset + map_height) < max_bottom)	
