@@ -23,9 +23,9 @@
 					= hidden_field_tag :service_id, @search_service.id if @search_service
 					%div
 						%label{:for => "provider"} Find
-						= text_field_tag :query, default_search_query(@search_query, @search_service), id: 'provider', autocomplete: 'off', placeholder: t('views.search.query_placeholder')
+						= text_field_tag :query, default_search_query(@search_query, @search_service), id: 'provider_search_query', autocomplete: 'off', placeholder: t('views.search.query_placeholder')
 					%div
 						%label{:for => "location"} Near
-						= text_field_tag :address, @search_address, id: 'location', placeholder: t('views.search.address_placeholder')
+						= text_field_tag :address, @search_address, id: 'provider_search_location', placeholder: t('views.search.address_placeholder')
 					= submit_tag 'Search', disable_with: 'Searching...', class: 'button submit pink', id: 'search'
 = render template: 'layouts/application'

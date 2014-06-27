@@ -265,7 +265,7 @@ en:
         claimed_by: 'Claimed by'
         consultation_modes: 'Consultation methods and locations'
         does_not_consult_remotely: 'Does not offer most or all services remotely (phone/video/email)'
-        edit_my_profile_link: 'Make your profile better.  Click here.'
+        edit_my_profile_link: 'Edit your profile'
         email: 'email:'
         email_help: 'We use CAPTCHA to hide the full email address from spam robots. Click to reveal it.'
         followup_review_provider_link: 'Add a follow-up review of %{name}'
@@ -278,7 +278,7 @@ en:
         invitation_to_claim_link: 'Send invitation to claim'
         make_an_appointment: 'Make an appointment'
         more_locations: 'Show more locations'
-        my_profile_link: 'My profile'
+        my_profile_link: 'View your profile'
         not_accepting_new_clients: 'Not accepting new clients/customers at this time'
         not_published: 'Not published'
         profile_is_claimed_by: 'Profile is claimed by %{owner}'
@@ -423,10 +423,10 @@ en:
           one: '1 search result'
           other: '%{count} search results'
       found_for:
-        none: "No search results for &ldquo;%{query}&rdquo;"
+        none: "No search results for '%{query}'"
         how_many:
-          one: "1 search result for &ldquo;%{query}&rdquo;"
-          other: "%{count} search results for &ldquo;%{query}&rdquo;"
+          one: "1 search result for '%{query}'"
+          other: "%{count} search results for '%{query}'"
       more: 'More details >'
       postal_code_prompt: 'zip code'
       search_query_prompt: 'Want the results selected by provider types? Enter a search term in the red search bar above.'

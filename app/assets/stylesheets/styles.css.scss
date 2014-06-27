@@ -591,6 +591,7 @@
 				width: 15.8450704%;
 				
 				img {
+					cursor: pointer;
 					max-width: 100%;
 				}
 				.fb-like {
@@ -614,10 +615,11 @@
 					display: block;
 					float: right;
 					@include scale(padding-top, 4,12);
-					@include scale(padding-right, 16,14);
+					@include scale(padding-left, 16,14);
 					
 					@media (max-width: $break-8) {
 						float: none;
+						padding-left: 0;
 					}
 				}
 				.ratings-section {
@@ -693,6 +695,13 @@
 			@include scale(padding, 8 14 16 14);
 		}
 	}	
+	.search_result {
+		nav.pagination span {
+			display: inline-block;
+			margin-right: 1em;
+			margin-bottom: 0.5em;
+		}
+	}
 }
 
 /*  About pages -------------------------------------------------------------------------- */
