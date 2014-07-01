@@ -16,7 +16,7 @@ class Subcategory < ActiveRecord::Base
 			where service_id: service
 		end
 	end
-	has_many :services, through: :service_subcategories do
+	has_many :services, through: :service_subcategories, after_add: :services_changed, after_remove: :services_changed do
 		def by_display_order
 			order(ServiceSubcategory.table_name + '.service_display_order')
 		end
@@ -36,6 +36,8 @@ class Subcategory < ActiveRecord::Base
 	
 	paginates_per 20 # Default number shown per page in index listing.
 	
+	after_save :notify_categories
+	
 	include CachingForModel
 	
 	include SunspotIndexing
@@ -49,6 +51,10 @@ class Subcategory < ActiveRecord::Base
 	end
 	
 	alias :browsable? :is_predefined
+
+	def services_changed(service)
+		notify_categories
+	end
 	
 	# Services that are eligible to be assigned to this subcategory.
 	# Includes services that are already assigned even if they are not predefined.
@@ -60,9 +66,10 @@ class Subcategory < ActiveRecord::Base
 	# def services_for_home_page
 	# 	services.by_display_order.order_by_name
 	# end
-	#
-	# private
-	#
-	# def services_changed(service)
-	# end
+
+	private
+
+	def notify_categories
+		categories.each { |category| category.subcategories_changed self }
+	end
 end

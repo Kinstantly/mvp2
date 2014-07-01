@@ -7,4 +7,12 @@ class CategorySubcategory < ActiveRecord::Base
 	
 	belongs_to :category, inverse_of: :category_subcategories
 	belongs_to :subcategory, inverse_of: :category_subcategories
+	
+	after_save :notify_category
+	
+	private
+	
+	def notify_category
+		category.subcategories_changed subcategory
+	end
 end

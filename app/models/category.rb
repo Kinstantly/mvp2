@@ -14,7 +14,7 @@ class Category < ActiveRecord::Base
 			where subcategory_id: subcategory
 		end
 	end
-	has_many :subcategories, through: :category_subcategories do
+	has_many :subcategories, through: :category_subcategories, after_add: :subcategories_changed, after_remove: :subcategories_changed do
 		def by_display_order
 			order(CategorySubcategory.table_name + '.subcategory_display_order')
 		end
@@ -67,6 +67,10 @@ class Category < ActiveRecord::Base
 	# Array of this category's services to be displayed on the see-all page, sorted by display_order, then name.
 	def services_for_see_all_page
 		services.display_order.order_by_name
+	end
+	
+	def subcategories_changed(subcategory)
+		touch_category_lists
 	end
 	
 	private

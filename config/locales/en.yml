@@ -249,10 +249,13 @@ en:
     home:
       view:
         browse_title: 'Browse by category'
+        fewer_services: 'hide...'
         marketing_message_default: 'Find top-rated parenting experts, therapists, tutors, and more'
         more_services: 'more...'
         search_title: "I'm looking for..."
         see_all_categories: 'See all'
+        see_all_services: 'See all'
+        see_fewer_services: 'Hide'
         tutorial_link_html: 'Not sure <a href="#">where to start?</a>'
     location:
       view:

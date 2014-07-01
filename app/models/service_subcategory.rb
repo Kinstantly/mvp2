@@ -7,4 +7,12 @@ class ServiceSubcategory < ActiveRecord::Base
 	
 	belongs_to :service, inverse_of: :service_subcategories
 	belongs_to :subcategory, inverse_of: :service_subcategories
+	
+	after_save :notify_subcategory
+	
+	private
+	
+	def notify_subcategory
+		subcategory.services_changed service
+	end
 end

@@ -29,7 +29,7 @@ class Service < ActiveRecord::Base
 	validates :name, length: {maximum: MAX_STRING_LENGTH}
 	validates :display_order, numericality: {only_integer: true}, allow_nil: true
 	
-	after_save :touch_category_lists
+	after_save :notify_subcategories
 	
 	paginates_per 20 # Default number shown per page in index listing.
 	
@@ -50,8 +50,7 @@ class Service < ActiveRecord::Base
 	
 	private
 	
-	# Touch all category lists that this service belongs to.
-	def touch_category_lists
-		(categories.map &:category_lists).flatten.uniq.map &:touch
+	def notify_subcategories
+		subcategories.each { |subcategory| subcategory.services_changed self }
 	end
 end
