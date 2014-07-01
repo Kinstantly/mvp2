@@ -36,10 +36,11 @@
 					- if user_signed_in?
 						%li.logged-in
 							- if current_user.is_provider? && current_user.profile
-								%span.avatar.mini>
-									= image_tag current_user.profile.profile_photo.url(:medium), alt: "#{current_user.profile.display_name_or_company}", style: "max-width:24px;", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
-								= greeting
-								,
+								%span.photo_name_span
+									%span.avatar.mini>
+										= image_tag current_user.profile.profile_photo.url(:medium), alt: "#{current_user.profile.display_name_or_company}", style: "max-width:24px;", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+									= greeting
+									,
 							= account_settings_link
 							- if current_user.is_provider?
 								%ul.account-menu

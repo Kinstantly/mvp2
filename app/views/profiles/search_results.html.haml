@@ -6,11 +6,11 @@
 %section.search.left
 	%header#content-header.header
 		%h1= search_results_title @search, address: @search_address, service: @search_service
+		- if default_search_query(@search_query, @search_service).blank?
+			%h3.search_results_prompt= t 'views.search_results.search_query_prompt'
+		- if @search_address.blank? and @search.total > 1
+			%h3.search_results_prompt= t 'views.search_results.sorted_by_proximity_prompt'
 		%h3.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
-		-# if default_search_query(@search_query, @search_service).blank?
-			-#%h3.search_results_prompt= t 'views.search_results.search_query_prompt'
-		-# if @search_address.blank? and @search.total > 1
-			-#%h3.search_results_prompt= t 'views.search_results.sorted_by_proximity_prompt'
 	#suggest_provider
 		.popover.generic_form
 	%article.search-results
@@ -50,13 +50,13 @@
 							- if profile.first_location.present? && profile.first_location.display_address.present?
 								%p.address
 									- location = profile.first_location
-									= location.try(:display_address)
+									= link_to location.try(:display_address), "javascript:void(0)", class: "location", "data-latitude" => location.latitude, "data-longitude" => location.longitude, target: "_blank"
 									- if (location_count = profile.locations.size) > 1
 										= link_to t('views.location.view.more.how_many', count: (location_count - 1)), "javascript:void(0)", class: "more", onclick: "my_vars.f.toggle_more_locations(this)"
 										%span.other-locations-slider{style: "display:none"}
 											- profile.locations.each_with_index do |location, n|
 												-if n != 0
-													%span= location.try(:display_address)
+													= link_to location.try(:display_address), "javascript:void(0)", class: "location", "data-latitude" => location.latitude, "data-longitude" => location.longitude, target: "_blank"
 							- if profile.search_widget_code.present?
 								= raw profile.search_widget_code
 - if locations_count > 0
@@ -66,11 +66,11 @@
 				#map_canvas
 				-#%h2.map-title Day Care in Berkeley, CA
 .clearfix
-- if @search.results.present?
-	%br/
-	.search_result= paginate @search.results
--# if @search.total > 1
-	-#.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
+.search_footer
+	- if @search.results.present?
+		.search_result= paginate @search.results
+	- if @search.total > 1
+		%h3.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
 = render partial: 'layouts/g_analytics', locals: {search_result_num: @search.total}
 
 :javascript
@@ -78,9 +78,17 @@
 	my_vars.basic_marker_icon = 'https://maps.google.com/mapfiles/kml/paddle/blu-stars-lv.png';
 	my_vars.highlight_marker_icon = 'https://maps.google.com/mapfiles/kml/paddle/red-stars-lv.png';
 	my_vars.provider_suggestion_form_url = '#{new_provider_suggestion_path}';
+	my_vars.one_column_max_width = 683;
 
 - cache 'search_results_coffeescript' do
 	:coffeescript
+		# Sniff UserAgent and detect mobile platform if possible
+		ua = navigator.userAgent.toLowerCase()
+		my_vars.device =
+			iphone: ua.match(/(iphone|ipod|ipad)/i)
+			blackberry: ua.match(/blackberry/i)
+			android: ua.match(/android/i)
+
 		# Provider suggestion pop-over
 		# Close
 		my_vars.f.close_provider_suggestion_form = (e) ->
@@ -136,6 +144,8 @@
 			#binds ui elements to user events
 			bind_actions = ()  ->
 				locations_links.on 'mouseover', (e) ->
+					if ($(window).width() < my_vars.one_column_max_width)
+						return
 					profile_id = $(@).parents('li.result').attr('data-profile-id')
 					this.style.cursor = 'pointer'
 					#$(@).css color: '#000'
@@ -149,6 +159,8 @@
 					toggle_markers_for_profile(profile_id)
 					
 				locations_links.on 'mouseout', (e) ->
+					if ($(window).width() < my_vars.one_column_max_width)
+						return
 					profile_id = $(@).parents('li.result').attr('data-profile-id')
 					this.style.cursor = 'default'
 					#$(@).css color: '#807f7f'
@@ -291,7 +303,7 @@
 				
 			# public
 			init: init
-								
+
 		# when DOM ready
 		$ ->
 			# Push map below the window top by this num of pixels when scrolling
@@ -300,7 +312,7 @@
 			win = $(window)
 			viewport_left = win.scrollLeft()
 			viewport_width = win.width()
-			
+
 			position_map = (e) ->
 				map_width = $('.map_positioner').outerWidth()
 				map_height = $('.map_positioner').outerHeight()
@@ -314,7 +326,7 @@
 				
 				# Place map below search results
 				# if (Modernizr.mq('(max-width: 682px)')) # Modernizr here causes errors on IE8 and is a CPU hog.
-				if (win.width() < 683)
+				if (win.width() < 663)
 					$('.map_positioner').css({ 'position': 'static', 'float': 'none' })
 				# Map top/bottom boundaries are within allowed min/max
 				else if(viewport_top > min_top && (new_top_offset + map_height) < max_bottom)	
@@ -334,6 +346,27 @@
 						$('.map_positioner').css({ 'position': 'relative', 'top': max_top+'px', 'left': '0px' })
 					else
 						$('.map_positioner').css({ 'position': 'relative', 'top': '0px', 'left': '0px' })
+
+				# Link address link to map app if mobile device is detected
+				for address in $('a.location')
+					escaped_address = escape(address.text)
+					address = $(address)
+					#title = escape(address.parents('li.result').find('header.result-title h2 a')[0].innerText)
+					if (win.width() < my_vars.one_column_max_width)
+						address.addClass('linked_address')
+						lat = address.attr('data-latitude')
+						lng = address.attr('data-longitude')
+							
+						if lat && lng	
+							if(my_vars.device.iphone)
+								address.attr href: 'maps:q=' + escaped_address + '@' + lat + ',' + lng
+							else if(my_vars.device.android)
+								address.attr href: 'geo:' + lat + ',' + lng + '?' + escaped_address
+							else
+								address.attr href: 'http://maps.google.com/maps?q=' + escaped_address + '&ll=' + lat + ',' + lng
+					else
+						address.attr href: "javascript:void(0)"
+					
 						
 			win.scroll position_map
 			win.resize position_map

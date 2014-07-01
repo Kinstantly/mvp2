@@ -170,9 +170,11 @@ em, i {
 			text-align: right;
 			
 			li.logged-in {
-				@media(max-width: 36.25em) {
-					display: none;
-					// Demonstration purposes only. You will want to delete this. 
+				.photo_name_span{
+					@media(max-width: 36.25em) {
+						display: none;
+						// Demonstration purposes only. You will want to delete this. 
+					}
 				}
 			}
 		

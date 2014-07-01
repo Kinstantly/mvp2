@@ -1,7 +1,8 @@
 - provider_score = (profile.rating_average_score.presence || 0)
 - provider_score_int = provider_score.to_i
 - provider_score_half = (provider_score - provider_score_int >= 0.5)? 'half' : ''
-%span{class: "reviews reviewed-#{provider_score_int}#{provider_score_half}-star"}
+- provider_score_title = provider_rating_average_score profile
+%span{class: "reviews reviewed-#{provider_score_int}#{provider_score_half}-star", title: provider_score_title}
 	%span.star.star5
 	%span.star.star4
 	%span.star.star3
