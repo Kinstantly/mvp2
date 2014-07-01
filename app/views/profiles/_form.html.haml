@@ -103,7 +103,7 @@
 						= profile_categories_check_box_label category
 					%ul
 						- category.subcategories.by_display_order.each do |subcategory|
-							%li
+							%li.subcategory
 								= profile_subcategories_check_box_tag profile, subcategory, category, f
 								= profile_subcategories_check_box_label subcategory, category
 							%ul
@@ -263,7 +263,7 @@
 -# of the coffeescript filter.  This allows caching of the coffeescript compilation.
 :javascript
 	// Values to be used in the CoffeeScript-generated JavaScript.
-	my_vars.column_width = '#{95 / Category.predefined.count}%';
+	my_vars.column_width = '#{98 / Category.predefined.count}%';
 	my_vars.t.add_text_field = '#{t "views.profile.edit.add_text_field"}';
 	my_vars.custom_specialties_i = #{@profile_custom_specialties_i};
 	my_vars.custom_specialties_template = '#{escape_javascript @profile_custom_specialties_text_field_template}';

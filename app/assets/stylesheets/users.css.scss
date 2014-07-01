@@ -132,11 +132,23 @@ div.view_profile {
 			.expertise_selection {
 				.col {
 					float: left;
+					+ .col {
+						border-left: 1px solid #bbbbbb;
+					}
+				}
+				h4 {
+					text-transform: uppercase;
+					margin: 0 4px;
+					border-top: 1px solid #bbbbbb;
+					background-color: #eeeeee;
 				}
 				ul {
 					list-style-type: none;
-					li {
-						margin-left: -2em;
+					li.subcategory {
+						font-weight: bold;
+						margin: 1em 0.2em 0.5em -2em;
+						border-top: 1px solid #bbbbbb;
+						background-color: #eeeeee;
 					}
 					ul {
 						li {

@@ -19,6 +19,10 @@
 						%th= t 'views.profile.view.claimed_by'
 						%th.large= Profile.human_attribute_name(:admin_notes)
 						%th= Profile.human_attribute_name(:lead_generator)
+					%th.large= Profile.human_attribute_name(:categories)
+					%th.large= Profile.human_attribute_name(:subcategories)
+					%th.large= Profile.human_attribute_name(:services)
+					%th.large= Profile.human_attribute_name(:specialties)
 					%th= t 'views.profile.view.rating'
 					%th= Profile.human_attribute_name(:url)
 					%th= t 'views.profile.view.headline'
@@ -26,9 +30,6 @@
 					%th= Location.human_attribute_name(:address1)
 					%th= Location.human_attribute_name(:phone)
 					%th= Location.human_attribute_name(:search_area_tag_id)
-					%th.large= Profile.human_attribute_name(:categories)
-					%th.large= Profile.human_attribute_name(:services)
-					%th.large= Profile.human_attribute_name(:specialties)
 					%th.large= Profile.human_attribute_name(:specialties_description)
 					%th.large= Profile.human_attribute_name(:ages_stages)
 					%th= t 'views.profile.view.consultation_modes'
@@ -50,6 +51,10 @@
 							%td= p.claimed? ? p.user.email : 'Not claimed'
 							%td= p.admin_notes
 							%td= p.lead_generator
+						%td= profile_display_categories p
+						%td= profile_display_subcategories p
+						%td= profile_display_services p
+						%td= profile_display_specialties p
 						%td= p.rating_average_score.try(:round, 1)
 						%td= profile_linked_website p
 						%td= p.headline
@@ -58,9 +63,6 @@
 						%td= location.try(:display_address)
 						%td= location.try(:display_phone)
 						%td= location.try(:search_area_tag).try(:name)
-						%td= profile_display_categories p
-						%td= profile_display_services p
-						%td= profile_display_specialties p
 						%td= p.specialties_description
 						%td
 							= p.display_age_ranges
