@@ -48,7 +48,7 @@
 						%td= p.company_name
 						- if can_manage_profiles
 							%td= p.is_published ? t('views.profile.view.published') : t('views.profile.view.not_published')
-							%td= p.claimed? ? p.user.email : 'Not claimed'
+							%td= p.claimed? ? p.user.email : t('views.profile.view.not_claimed')
 							%td= p.admin_notes
 							%td= p.lead_generator
 						%td= profile_display_categories p

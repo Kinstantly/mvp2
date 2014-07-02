@@ -64,6 +64,9 @@ Mvp2::Application.routes.draw do
 			get :autocomplete_specialty_name
 			get :autocomplete_location_city
 			get :autocomplete_profile_lead_generator
+			get :no_categories
+			get :no_subcategories
+			get :no_services
 		end
 	end
 	

@@ -166,21 +166,22 @@ module ProfilesHelper
 			check_box_tag(attribute, '1', profile.send(attribute), id: attribute)
 	end
 
-	def profile_list_view_link(profile, name, html_options={})
+	def profile_list_view_link(profile, name, options={})
 		if can?(:view, profile)
-			html_options[:class] = [html_options[:class].presence, 'emphasized'].compact.join(' ') if name.blank?
-			link_to(html_escape(name.presence || 'Click to view'), profile_path(profile), html_options).html_safe
+			url = options.delete(:url).presence || profile_path(profile)
+			options[:class] = [options[:class].presence, 'emphasized'].compact.join(' ') if name.blank?
+			link_to(html_escape(name.presence || 'Click to view/edit'), url, options).html_safe
 		else
 			name
 		end
 	end
 
-	def profile_list_name_link(profile, html_options={})
-		profile_list_view_link profile, profile_display_name(profile), html_options
+	def profile_list_name_link(profile, options={})
+		profile_list_view_link profile, profile_display_name(profile), options
 	end
 
-	def profile_list_name_or_company_link(profile, html_options={})
-		profile_list_view_link profile, profile.display_name_or_company, html_options
+	def profile_list_name_or_company_link(profile, options={})
+		profile_list_view_link profile, profile.display_name_or_company, options
 	end
 
 	def profile_page_title(profile=nil)
