@@ -361,7 +361,7 @@
 							if(my_vars.device.iphone)
 								address.attr href: 'maps:q=' + escaped_address + '@' + lat + ',' + lng
 							else if(my_vars.device.android)
-								address.attr href: 'geo:' + lat + ',' + lng + '?' + escaped_address
+								address.attr href: 'geo:' + lat + ',' + lng + '?q=' + escaped_address
 							else
 								address.attr href: 'http://maps.google.com/maps?q=' + escaped_address + '&ll=' + lat + ',' + lng
 					else
