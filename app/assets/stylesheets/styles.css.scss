@@ -765,10 +765,15 @@
 		}
 		.search_result {
 			@include scale(font-size, 16, 24);
-			nav.pagination span {
-				display: inline-block;
-				margin-right: 1em;
-				margin-bottom: 0.5em;
+			nav.pagination {
+				span {
+					display: inline-block;
+					margin-right: 1em;
+					margin-bottom: 0.5em;
+				}
+				a:visited {
+					color: $default_link_color;
+				}
 			}
 		}
 	}
