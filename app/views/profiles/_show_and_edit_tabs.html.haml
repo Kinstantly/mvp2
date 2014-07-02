@@ -20,4 +20,4 @@
 				ui.jqXHR.error ->
 					ui.panel.html "Couldn't load this tab. We'll try to fix this as soon as possible."
 			load: (event, ui) ->
-				window.init_google_api() if $(ui.tab).hasClass('show_tab')
+				window.post_load_init() if $(ui.tab).hasClass('show_tab')

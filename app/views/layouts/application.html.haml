@@ -86,14 +86,8 @@
 
 		:javascript
 			my_vars.google_api_key = "#{GOOGLE_BROWSER_API_KEY}"
-		:javascript
-			(function(d, s, id) {
-					var js, fjs = d.getElementsByTagName(s)[0];
-					if (d.getElementById(id)) return;
-					js = d.createElement(s); js.id = id;
-					js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=876267945721057&version=v2.0";
-					fjs.parentNode.insertBefore(js, fjs);
-				}(document, 'script', 'facebook-jssdk'));
+			my_vars.fb_api_key	   = "#{FB_API_KEY}"
+		
 		:coffeescript
 			# Autocomplete location field in search form.
 			bind_provider_search_location_autocomplete = () ->
@@ -101,23 +95,36 @@
 				if location_input and google?.maps?.places?.Autocomplete
 					my_vars.provider_search_location_autocomplete ||= new google.maps.places.Autocomplete(location_input, {types: ['geocode']})
 			
-			# Init google autocomplete, google map on profile and search pages if avalable
-			window.init_google_api = () ->
+			# Load fb api and init google autocomplete, google map on profile and search pages
+			window.post_load_init = () ->
 				if google?.maps
 					bind_provider_search_location_autocomplete()
-					my_vars.profile_map?.init()
-					my_vars.search_results_map?.init()
+					my_vars.profile_map?.init(my_vars.f.load_fb_api)
+					my_vars.search_results_map?.init(my_vars.f.load_fb_api)
+				
 				
 			# Appends maps.googleapis script
-			load_google_api = () ->
+			my_vars.f.load_google_api = () ->
 				script = document.createElement('script');
 				script.type = 'text/javascript';
-				script.src = "https://maps.googleapis.com/maps/api/js?key=" + my_vars.google_api_key + "&libraries=places&sensor=false&callback=init_google_api";
+				script.src = "https://maps.googleapis.com/maps/api/js?key=" + my_vars.google_api_key + "&libraries=places&sensor=false&callback=post_load_init";
 				document.body.appendChild(script);
+
+			# Appends FB api script
+			my_vars.f.load_fb_api = () ->
+				id = 'facebook-jssdk'
+				if (document.getElementById(id)) 
+					return;
+				script = document.createElement('script');
+				script.id = id
+				script.type = 'text/javascript';
+				script.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=" + my_vars.fb_api_key + "&version=v2.0";
+				fjs = document.getElementsByTagName('script')[0];
+				fjs.parentNode.insertBefore(script, fjs);
 				
 			window.onload = ->
 				# Load maps.googleapis script
-				load_google_api()
+				my_vars.f.load_google_api()
 				
 				# Cache all jQuery ajax calls
 				$.ajaxSetup({
