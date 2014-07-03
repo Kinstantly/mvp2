@@ -36,17 +36,27 @@
 		#content.category-list.clearfix
 			%h2= t 'views.home.view.browse_title'
 			-# %span.help= t 'views.home.view.tutorial_link_html'
-			- Category::HOME_PAGE_COLUMNS.each do |column|
+			- (1..2).each do |column|
 				.col{id: "col#{column}"}
 					- home_column_categories(column).each do |category|
 						%h3= category.name
-						%ul
-							- category.services_for_home_page.each do |svc|
-								%li
-									= link_to svc.name, search_providers_by_service_path(svc)
-							%li= link_to t('views.home.view.more_services'), show_all_categories_path
-					- if column == Category::HOME_PAGE_COLUMNS.last
-						#all-cats.see-all= link_to t('views.home.view.see_all_categories'), show_all_categories_path
+						- category.subcategories.by_display_order.order_by_name.each do |subcategory|
+							%h4= subcategory.name
+							%ul
+								- visible_service_count = 8
+								- subcategory_i = 0
+								- subcategory.services.by_display_order.order_by_name.each do |service|
+									- li_class = (subcategory_i += 1) > visible_service_count ? 'extra_service' : 'visible_service'
+									%li{class: li_class}
+										= link_to service.name, search_providers_by_service_path(service)
+								- if subcategory_i > visible_service_count
+									%li
+										= link_to t('views.home.view.more_services'), '#', class: 'toggle_extra_services more_services'
+										= link_to t('views.home.view.fewer_services'), '#', class: 'toggle_extra_services fewer_services'
+					- if column == 2
+						#all-cats.see-all
+							= link_to t('views.home.view.see_all_services'), '#', id: 'see_all_services'
+							= link_to t('views.home.view.see_fewer_services'), '#', id: 'see_fewer_services'
 			-#
 				#all-cats.see-all.select-wrapper
 					%span.select-text
@@ -57,3 +67,21 @@
 		#social
 			= link_to t('contact.social.twitter.display'), t('contact.social.twitter.value'), target: '_blank', id: 'twitter'
 			= link_to t('contact.social.facebook.display'), t('contact.social.facebook.value'), target: '_blank', id: 'facebook'
+
+:coffeescript
+	$('li a.toggle_extra_services').on 'click', (e) ->
+		$('li.extra_service', $(this).parent().parent()).toggle(200)
+		$('a', $(this).parent()).toggle()
+		false
+		
+	$('#see_all_services').on 'click', (e) ->
+		$('li.extra_service').show(200)
+		$('a.more_services, #see_all_services').hide()
+		$('a.fewer_services, #see_fewer_services').show()
+		false
+		
+	$('#see_fewer_services').on 'click', (e) ->
+		$('li.extra_service').hide(200)
+		$('a.fewer_services, #see_fewer_services').hide()
+		$('a.more_services, #see_all_services').show()
+		false

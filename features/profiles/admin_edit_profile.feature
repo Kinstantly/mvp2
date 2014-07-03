@@ -100,3 +100,61 @@ Feature: Site administrator edits a profile
 			And I enter "<div>some widget code</div>" in the "Widget code" field
 			And I save the profile
 		Then I should see "some widget code" on the page
+
+	Scenario: Set category for a profile
+		Given the "FAMILY SERVICES" and "HEALTH" categories are predefined
+			And I am logged in as a profile editor
+		When I visit the admin edit page for an unclaimed profile
+			And I select the "FAMILY SERVICES" category
+			And I save the profile
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should see "FAMILY SERVICES" on the page
+
+	Scenario: Set subcategory for a profile
+		Given the predefined category of "FAMILY SERVICES" is associated with the "CHILD CARE" and "PREGNANCY & BIRTH" subcategories
+			And I am logged in as a profile editor
+		When I visit the admin edit page for an unclaimed profile
+			And I select the "CHILD CARE" subcategory
+			And I save the profile
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should see "CHILD CARE" on the page
+
+	Scenario: Set service for a profile
+		Given the predefined category of "FAMILY SERVICES" is associated with the "CHILD CARE" and "PREGNANCY & BIRTH" subcategories
+			And the predefined subcategory of "PREGNANCY & BIRTH" is associated with the "Nannies" and "Birth Doulas" services
+			And I am logged in as a profile editor
+		When I visit the admin edit page for an unclaimed profile
+			And I select the "Nannies" service
+			And I save the profile
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should see "Nannies" on the page
+
+	@javascript
+	Scenario: Add specialties to a profile
+		Given I am logged in as a profile editor
+		When I visit the admin edit page for an unclaimed profile
+			And I add the "guitar pickin" and "banjo pluckin" custom specialties
+			And I save the profile
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should see "guitar pickin" on the page
+			And I should see "banjo pluckin" on the page
+
+	@javascript
+	Scenario: Add specialties to a profile using the ENTER key
+		Given I am logged in as a profile editor
+		When I visit the admin edit page for an unclaimed profile
+			And I add the "guitar pickin" and "banjo pluckin" custom specialties using enter
+			And I save the profile
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should see "guitar pickin" on the page
+			And I should see "banjo pluckin" on the page
+
+	Scenario: Remove a specialty from a profile
+		Given there is an unclaimed profile with the "guitar pickin" and "banjo pluckin" specialties
+			And I am logged in as a profile editor
+		When I visit the admin edit page for the existing unclaimed profile
+			And I uncheck the "guitar pickin" specialty
+			And I save the profile
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should not see "guitar pickin" on the page
+			And I should see "banjo pluckin" on the page

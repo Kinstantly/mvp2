@@ -20,16 +20,23 @@ en:
     keywords: 'parenting children health expert'
     description: "Kinstantly connects families with the parenting experts, children's health providers, and other services they need in smart, convenient ways"
   controllers:
-    access_denied: 'Sorry, you do not have access to that area.'
-    page_not_found: 'Sorry, that page was not found.'
+    access_denied: "We're sorry; you do not have access to that area."
+    not_found_by_name: "'%{name}' was not found."
+    page_not_found: "We're sorry; that page was not found."
     page_not_found_sign_in: 'Sorry, that page was not found. You might need to log in.'
     categories:
+      add_subcategory_error: "Could not add subcategory '%{name}'"
+      add_subcategory_success: "Added subcategory '%{name}'."
       created: "Category '%{name}' was created."
-      create_error: 'The was a problem creating the category.'
+      create_error: 'There was a problem creating the category.'
       destroyed: "Category '%{name}' was trashed."
-      destroy_error: 'The was a problem trashing the category.'
+      destroy_error: 'There was a problem trashing the category.'
       updated: "Category '%{name}' was updated."
-      update_error: 'The was a problem updating the category.'
+      update_error: 'There was a problem updating the category.'
+      remove_subcategory_error: "Could not remove subcategory."
+      remove_subcategory_success: "Removed subcategory '%{name}'."
+      update_subcategory_error: "Could not update subcategory."
+      update_subcategory_success: "Updated subcategory '%{name}'."
     users:
       profile_updated: 'Your profile changes were saved.'
       profile_update_error: 'There was a problem saving your profile.'
@@ -65,20 +72,34 @@ en:
       destroyed: 'The review was destroyed!'
     services:
       created: "Service '%{name}' was created."
-      create_error: 'The was a problem creating the service.'
+      create_error: 'There was a problem creating the service.'
       destroyed: "Service '%{name}' was trashed."
-      destroy_error: 'The was a problem trashing the service.'
+      destroy_error: 'There was a problem trashing the service.'
       not_found_by_name: "Service '%{name}' was not found."
       updated: "Service '%{name}' was updated."
-      update_error: 'The was a problem updating the service.'
+      update_error: 'There was a problem updating the service.'
     specialties:
       created: "Specialty '%{name}' was created."
-      create_error: 'The was a problem creating the specialty.'
+      create_error: 'There was a problem creating the specialty.'
       destroyed: "Specialty '%{name}' was trashed."
-      destroy_error: 'The was a problem trashing the specialty.'
+      destroy_error: 'There was a problem trashing the specialty.'
       not_found_by_name: "Specialty '%{name}' was not found."
       updated: "Specialty '%{name}' was updated."
-      update_error: 'The was a problem updating the specialty.'
+      update_error: 'There was a problem updating the specialty.'
+    subcategories:
+      add_service_error: "Could not add service '%{name}'"
+      add_service_success: "Added service '%{name}'."
+      created: "Subcategory '%{name}' was created."
+      create_error: 'There was a problem creating the subcategory.'
+      destroyed: "Subcategory '%{name}' was trashed."
+      destroy_error: 'There was a problem trashing the subcategory.'
+      not_found_by_name: "Subcategory '%{name}' was not found."
+      remove_service_error: "Could not remove service."
+      remove_service_success: "Removed service '%{name}'."
+      update_service_error: "Could not update service."
+      update_service_success: "Updated service '%{name}'."
+      updated: "Subcategory '%{name}' was updated."
+      update_error: 'There was a problem updating the subcategory.'
   profile_mailer:
     invite:
       subject: 'Introducing Kinstantly (and a bonus for you)'
@@ -104,7 +125,7 @@ en:
   activerecord:
     attributes:
       category:
-        is_predefined: 'Show category'
+        is_predefined: 'Use category'
       profile:
         accepting_new_clients: 'Accepting new clients/customers'
         adoption_stage: 'adoption'
@@ -209,27 +230,38 @@ en:
   views:
     or: 'or'
     accessibility: 'Skip to content'
+    cancel: 'Cancel'
     field_label: '%{name}:'
     optional_field_label: '%{name} (optional):'
     find_button: 'Find'
     not_browsable: '(grayed-out not browsable)'
     form_is_modified: 'You have changes that have not been saved.'
     required: 'Required'
+    remove: 'Remove'
+    removing: 'Removing'
+    save: 'Save'
+    saving: 'Saving'
     category:
       name: 'Category'
       edit:
+        create: 'Create a category'
         destroy_button: 'Move category to trash'
+        destroy_button_disable: 'Trashing...'
         destroy_confirm: 'This category will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
         display_order_hint: 'Home page browse by category: less than 10 for left column, more than 10 for right column'
+        edit: 'Edit category'
       index:
         service_explanation: '(listed alphabetically; see edit page for display order)'
     home:
       view:
         browse_title: 'Browse by category'
+        fewer_services: 'hide...'
         marketing_message_default: 'Find top-rated parenting experts, therapists, tutors, and more'
         more_services: 'more...'
         search_title: "I'm looking for..."
         see_all_categories: 'See all'
+        see_all_services: 'See all'
+        see_fewer_services: 'Hide'
         tutorial_link_html: 'Not sure <a href="#">where to start?</a>'
     location:
       view:
@@ -256,13 +288,14 @@ en:
         admin_info: 'Admin'
         basic_profile: 'Basic profile'
         expertise_profile: 'Expertise'
+        expertise_profile_for: 'Expertise for %{name}'
         professional_profile: 'Professional profile'
         rating_info: 'Average rating'
       view:
         accepting_new_clients: 'Accepting new clients/customers'
         ages_stages: 'ages/stages:'
         availability_service_area_html: 'Availability/<br/>service area'
-        claimed_by: 'Claimed by'
+        claimed_by: 'Owned by'
         consultation_modes: 'Consultation methods and locations'
         does_not_consult_remotely: 'Does not offer most or all services remotely (phone/video/email)'
         edit_my_profile_link: 'Make your profile better.  Click here.'
@@ -279,7 +312,11 @@ en:
         make_an_appointment: 'Make an appointment'
         more_locations: 'Show more locations'
         my_profile_link: 'My profile'
+        no_categories: 'Profiles with no categories'
+        no_subcategories: 'Profiles with no subcategories'
+        no_services: 'Profiles with no services'
         not_accepting_new_clients: 'Not accepting new clients/customers at this time'
+        not_claimed: 'Not owned'
         not_published: 'Not published'
         profile_is_claimed_by: 'Profile is claimed by %{owner}'
         profile_is_public_on_private_site: 'Profile is public on private site'
@@ -374,6 +411,7 @@ en:
         link_body: 'Click here'
         message: 'if you want to replace your existing profile with the one you want to claim.'
     provider_suggestion:
+      name: 'Provider suggestion'
       admin:
         suggester_email: "Suggester's email address"
         suggester_name: "Suggester's name"
@@ -446,9 +484,14 @@ en:
     service:
       name: 'Service'
       edit:
+        add: 'Add a service'
+        add_subcategories: 'Click here to assign to one or more subcategories'
+        create: 'Create a service'
         destroy_button: 'Move service to trash'
+        destroy_button_disable: 'Trashing...'
         destroy_confirm: 'This service will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
         display_order_hint: 'Within category on the home page'
+        edit: 'Edit service'
       view:
         do_not_show_on_home_page: 'hide'
         find_by_name: 'Service name'
@@ -478,13 +521,28 @@ en:
       name: 'Specialty'
       edit:
         add_search_term_name_field: 'Add a another search term field'
+        create: 'Create a specialty'
         destroy_button: 'Move specialty to trash'
+        destroy_button_disable: 'Trashing...'
         destroy_confirm: 'This specialty will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
+        edit: 'Edit specialty'
         remove_search_term: 'Remove upon saving'
         search_term_name_placeholder: 'Search term to add (hit ENTER to add another field)'
       view:
         find_by_name: 'Specialty name'
         not_browsable: '(grayed-out not assigned to a browsable service)'
+    subcategory:
+      name: 'Subcategory'
+      edit:
+        add: 'Add a subcategory'
+        add_categories: 'Click here to assign to one or more categories'
+        create: 'Create a subcategory'
+        destroy_button: 'Move subcategory to trash'
+        destroy_button_disable: 'Trashing...'
+        destroy_confirm: 'This subcategory will be moved to the trash.  It will be removed from all profiles that have it.  Are you sure?'
+        edit: 'Edit subcategory'
+      view:
+        find_by_name: 'Subcategory name'
     user:
       edit:
         email_note: 'We also use this email to contact you.'

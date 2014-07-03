@@ -98,6 +98,14 @@ class ActiveRecord::Base
 		remove_blanks(strings).map &:strip
 	end
 	
+	def uniq_if_array(obj)
+		obj.is_a?(Array) ? obj.uniq : obj
+	end
+	
+	def remove_blanks_and_uniq(strings)
+		uniq_if_array remove_blanks strings
+	end
+	
 	# Display area code, number, and if present, extension.
 	# Display country code if so designated.
 	def display_phone_number(value, show_country_code=false)

@@ -1,0 +1,8 @@
+- @page_title = "#{company_name} - #{t('views.subcategory.edit.create')}"
+.edit
+	%h1= t('views.subcategory.edit.create')
+	#top_bar
+		= render partial: 'home/admin_nav'
+	#forms
+		= render partial: 'edit_form'
+= render partial: 'shared/save_changes_prompt'

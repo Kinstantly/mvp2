@@ -11,6 +11,10 @@ Then /^I should see "(.*?)" on the page$/ do |content|
 	page.should have_content content
 end
 
+Then /^I should not see "(.*?)" on the page$/ do |content|
+	page.should_not have_content content
+end
+
 When /^I click on the "(.*?)" (?:link|button)$/ do |link_or_button|
 	click_link_or_button link_or_button
 end

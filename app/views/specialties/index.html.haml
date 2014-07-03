@@ -1,6 +1,6 @@
-- @page_title = "#{company_name} - Specialties"
+- @page_title = "#{company_name} - #{t('views.specialty.name').pluralize}"
 .index
-	%h1 Specialties
+	%h1= t('views.specialty.name').pluralize
 	#top_bar
 		= render partial: 'home/admin_nav'
 	.list{align: 'center'}
@@ -18,8 +18,8 @@
 						%br
 						= t 'views.specialty.view.not_browsable'
 					%th= Specialty.human_attribute_name(:search_terms)
-					%th= Specialty.human_attribute_name(:is_predefined)
-					%th.large= Specialty.human_attribute_name(:services)
+					-# %th= Specialty.human_attribute_name(:is_predefined)
+					-# %th.large= Specialty.human_attribute_name(:services)
 			%tbody
 				- @specialties.each do |specialty|
 					%tr
@@ -27,10 +27,10 @@
 						%td
 							- specialty.search_terms.order_by_name.each do |record|
 								%span.name= record.name
-						%td{class: "#{specialty.is_predefined ? 'predefined' : 'not_predefined'}"}= specialty.is_predefined
-						%td
-							- specialty.services.order_by_name.each do |record|
-								= link_to record.name, edit_service_path(record), class: "name #{record.browsable? ? 'browsable' : 'not_browsable'}"
+						-# %td{class: "#{specialty.is_predefined ? 'predefined' : 'not_predefined'}"}= specialty.is_predefined
+						-# %td
+						-# 	- specialty.services.order_by_name.each do |record|
+						-# 		= link_to record.name, edit_service_path(record), class: "name #{record.browsable? ?'browsable' : 'not_browsable'}"
 		.pagination_nav
 			= render partial: 'shared/per_page_form', locals: { record_type: Specialty }
 			= paginate @specialties

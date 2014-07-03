@@ -10,8 +10,8 @@ class ProfilesController < ApplicationController
 	# Side effect: loads @profiles or @profile as appropriate.
 	# e.g., for index action, @profiles is set to Profile.accessible_by(current_ability)
 	load_and_authorize_resource new: :admin
-	skip_load_resource only: [:view_my_profile, :edit_my_profile]
-	skip_load_and_authorize_resource only: [:search, :autocomplete_service_name, :autocomplete_specialty_name, :autocomplete_location_city]
+	skip_load_resource only: [:view_my_profile, :edit_my_profile, :autocomplete_service_name, :no_categories, :no_subcategories, :no_services]
+	skip_load_and_authorize_resource only: [:search, :autocomplete_specialty_name, :autocomplete_location_city]
 	
 	# Notify profile moderator when profile has been update by profile owner
 	after_filter :notify_profile_moderator, only: :formlet_update
@@ -26,7 +26,7 @@ class ProfilesController < ApplicationController
 	before_filter :seo_keywords, only: :show
 	before_filter :require_new_review, only: :edit_plain
 	
-	# Autocomplete custom service and specialty names.
+	# Autocomplete service and specialty names.
 	autocomplete :service, :name, full: true
 	autocomplete :specialty, :name, full: true
 	
@@ -51,6 +51,21 @@ class ProfilesController < ApplicationController
 			@profiles = @profiles.order_by_id
 		end
 		@profiles = @profiles.page(params[:page]).per(params[:per_page])
+		render layout: 'plain'
+	end
+	
+	def no_categories
+		@profiles = paged_profiles_with_no CategoryProfile
+		render layout: 'plain'
+	end
+	
+	def no_subcategories
+		@profiles = paged_profiles_with_no ProfileSubcategory
+		render layout: 'plain'
+	end
+	
+	def no_services
+		@profiles = paged_profiles_with_no ProfileService
 		render layout: 'plain'
 	end
 	
@@ -282,5 +297,11 @@ class ProfilesController < ApplicationController
 		if @profile.errors.empty? && !current_user.profile_editor?
 			AdminMailer.on_update_alert(@profile).deliver
 		end
+	end
+	
+	private
+	
+	def paged_profiles_with_no(type)
+		Profile.where('id NOT IN(?)', type.group(:profile_id).select(:profile_id).map(&:profile_id)).page(params[:page]).per(params[:per_page])
 	end
 end

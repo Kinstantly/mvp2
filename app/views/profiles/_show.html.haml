@@ -163,6 +163,10 @@
 			= "#{Profile.human_attribute_name :categories}:"
 			.value
 				%span.attribute_display= profile_wrap_item_names @profile.categories
+		#subcategories_info
+			= "#{Profile.human_attribute_name :subcategories}:"
+			.value
+				%span.attribute_display= profile_wrap_item_names @profile.subcategories
 		#services_info
 			= "#{Profile.human_attribute_name :services}:"
 			.value

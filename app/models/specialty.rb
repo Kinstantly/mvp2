@@ -34,6 +34,8 @@ class Specialty < ActiveRecord::Base
 		self.search_term_names_to_add = nil
 	end
 	
+	paginates_per 20 # Default number shown per page in index listing.
+	
 	include CachingForModel
 	predefined_info_parent :service
 	

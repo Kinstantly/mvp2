@@ -76,7 +76,7 @@
 				$('#specialty_names_field_prompt').before '<div class="text_field"><div class="delete_icon"></div><div id="counter_' +
 					String(my_vars.specialty_names_i) +
 					'" class="char_count"></div>' +
-					my_vars.specialty_names_template.replace('INDEX', String(my_vars.specialty_names_i)) +
+					my_vars.specialty_names_template.replace(/INDEX/g, String(my_vars.specialty_names_i)) +
 					'</div>'
 				configure_text_field '.specialty_names .text_field:last', my_vars.edit_profile.max_lengths.specialty_names, add_specialty_names_text_field
 				configure_autocomplete_form_fields '.specialty_names .text_field:last .autocomplete-form-field'
