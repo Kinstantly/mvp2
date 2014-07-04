@@ -4,15 +4,13 @@ FactoryGirl.define do
 	factory :service do
 		name "FactoryService"
 		
-		factory :predefined_service do
+		factory :predefined_service, aliases: [:service_not_on_home_page] do
 			is_predefined true
 			
 			factory :service_on_home_page do
-				show_on_home_page true
-			end
-			
-			factory :service_not_on_home_page do
-				show_on_home_page false
+				after(:create) do |service, evaluator|
+					service.subcategories = create_list(:subcategory_on_home_page, 1)
+				end
 			end
 		end
 	end

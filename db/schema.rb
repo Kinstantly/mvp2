@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140515054954) do
+ActiveRecord::Schema.define(:version => 20140619021559) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -70,6 +70,17 @@ ActiveRecord::Schema.define(:version => 20140515054954) do
 
   add_index "categories_services", ["category_id"], :name => "index_categories_services_on_category_id"
   add_index "categories_services", ["service_id"], :name => "index_categories_services_on_service_id"
+
+  create_table "categories_subcategories", :force => true do |t|
+    t.integer  "category_id"
+    t.integer  "subcategory_id"
+    t.integer  "subcategory_display_order"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "categories_subcategories", ["category_id"], :name => "index_categories_subcategories_on_category_id"
+  add_index "categories_subcategories", ["subcategory_id"], :name => "index_categories_subcategories_on_subcategory_id"
 
   create_table "category_lists", :force => true do |t|
     t.string   "name"
@@ -202,6 +213,14 @@ ActiveRecord::Schema.define(:version => 20140515054954) do
 
   add_index "profiles_specialties", ["profile_id"], :name => "index_profiles_specialties_on_profile_id"
 
+  create_table "profiles_subcategories", :force => true do |t|
+    t.integer "profile_id"
+    t.integer "subcategory_id"
+  end
+
+  add_index "profiles_subcategories", ["profile_id"], :name => "index_profiles_subcategories_on_profile_id"
+  add_index "profiles_subcategories", ["subcategory_id"], :name => "index_profiles_subcategories_on_subcategory_id"
+
   create_table "provider_suggestions", :force => true do |t|
     t.integer  "suggester_id"
     t.string   "suggester_name"
@@ -281,12 +300,30 @@ ActiveRecord::Schema.define(:version => 20140515054954) do
   add_index "services_specialties", ["service_id"], :name => "index_services_specialties_on_service_id"
   add_index "services_specialties", ["specialty_id"], :name => "index_services_specialties_on_specialty_id"
 
+  create_table "services_subcategories", :force => true do |t|
+    t.integer  "service_id"
+    t.integer  "subcategory_id"
+    t.integer  "service_display_order"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "services_subcategories", ["service_id"], :name => "index_services_subcategories_on_service_id"
+  add_index "services_subcategories", ["subcategory_id"], :name => "index_services_subcategories_on_subcategory_id"
+
   create_table "specialties", :force => true do |t|
     t.string   "name"
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
     t.boolean  "is_predefined", :default => false
     t.boolean  "trash",         :default => false
+  end
+
+  create_table "subcategories", :force => true do |t|
+    t.string   "name"
+    t.boolean  "trash",      :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "users", :force => true do |t|

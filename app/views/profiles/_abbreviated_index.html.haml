@@ -1,0 +1,41 @@
+- can_manage_profiles = can? :manage, Profile
+.profile_index
+	%h1= @header_title
+	#top_bar
+		= render partial: 'home/admin_nav'
+		= render partial: 'stats'
+	.profile_list{align: 'center'}
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: Profile }
+			= paginate @profiles
+		%table
+			%thead
+				%tr
+					%th= Profile.human_attribute_name(:display_name)
+					%th= Profile.human_attribute_name(:company_name)
+					- if can_manage_profiles
+						%th= "#{t 'views.profile.view.published'} or #{t 'views.profile.view.not_published'}"
+						%th= t 'views.profile.view.claimed_by'
+						%th= Profile.human_attribute_name(:lead_generator)
+						%th.large= Profile.human_attribute_name(:admin_notes)
+					%th.large= Profile.human_attribute_name(:categories)
+					%th.large= Profile.human_attribute_name(:subcategories)
+					%th.large= Profile.human_attribute_name(:services)
+					%th.large= Profile.human_attribute_name(:specialties)
+			%tbody
+				- @profiles.each do |p|
+					%tr
+						%td= profile_list_name_link p, url: "#{edit_plain_profile_path(p)}#edit_expertise"
+						%td= p.company_name
+						- if can_manage_profiles
+							%td= p.is_published ? t('views.profile.view.published') : t('views.profile.view.not_published')
+							%td= p.claimed? ? p.user.email : t('views.profile.view.not_claimed')
+							%td= p.lead_generator
+							%td= p.admin_notes
+						%td= profile_display_categories p
+						%td= profile_display_subcategories p
+						%td= profile_display_services p
+						%td= profile_display_specialties p
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: Profile }
+			= paginate @profiles

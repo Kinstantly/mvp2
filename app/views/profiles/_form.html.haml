@@ -81,39 +81,44 @@
 					= lf.collection_select :search_area_tag_id, SearchAreaTag.all, :id, :name, {include_blank: 'Other'}
 			= lf.link_to_remove t('views.location.edit.remove'), confirm: t('views.location.edit.remove_confirm_admin')
 		= f.link_to_add t('views.location.edit.add'), :locations
-	%fieldset.expertise_profile
-		%legend= t 'views.profile.legend.expertise_profile'
+	%fieldset.expertise_profile#edit_expertise
+		%legend= t 'views.profile.legend.expertise_profile_for', name: profile.display_name_or_company
 		.categories
-			= f.label :categories
-			%span= t 'views.profile.edit.categories_tip'
-			%br
-			= profile_categories_hidden_field_tag(f)
-			- profile_category_choices(profile).each do |category|
-				.check_box
-					= profile_categories_check_box_tag(profile, category, f)
-					= profile_categories_check_box_label category
+			%span.label= "#{Profile.human_attribute_name(:categories)}:"
+			= profile_display_categories profile
+		.subcategories
+			%span.label= "#{Profile.human_attribute_name(:subcategories)}:"
+			= profile_display_subcategories profile
 		.services
-			= f.label :services
-			%span= t 'views.profile.edit.services_tip_html'
-			%br
-			%span.predefined_services
-			%span.note= t 'views.profile.edit.services_tip2'
-		.custom_services
-			= f.label :custom_service_names
-			= button_tag id: 'add_custom_services_text_field' do
-				= content_tag :strong, 'Enter a service not shown above'
-			%br
-			= profile_custom_services_hidden_field_tag(f)
-			- i = 0; profile.custom_service_names.each do |name|
-				.text_field
-					= profile_custom_services_autocomplete_field_tag(profile, name, "#{i = i+1}", f)
-			- @profile_custom_services_i = i
-			- @profile_custom_services_text_field_template = profile_custom_services_autocomplete_field_tag(profile, '', 'INDEX', f)
+			%span.label= "#{Profile.human_attribute_name(:services)}:"
+			= profile_display_services profile
+		.expertise_selection
+			= profile_categories_hidden_field_tag f
+			= profile_subcategories_hidden_field_tag f
+			= profile_services_hidden_field_tag f
+			- Category.predefined.home_page_order.each do |category|
+				.col
+					%h4
+						= profile_categories_check_box_tag profile, category, f
+						= profile_categories_check_box_label category
+					%ul
+						- category.subcategories.by_display_order.each do |subcategory|
+							%li.subcategory
+								= profile_subcategories_check_box_tag profile, subcategory, category, f
+								= profile_subcategories_check_box_label subcategory, category
+							%ul
+								- subcategory.services.by_display_order.each do |service|
+									%li
+										= profile_services_check_box_tag profile, service, subcategory, f
+										= profile_services_check_box_label service, subcategory
 		.specialties
 			= f.label :specialties
 			%span= t 'views.profile.edit.specialties_tip_html'
 			%br
 			%span.predefined_specialties
+				= profile_specialties_hidden_field_tag f
+				- profile.specialties.each do |specialty|
+					= profile_specialties_check_box profile, specialty.id, specialty.name, true, 'check_box', f
 			%span.note= t 'views.profile.edit.specialties_tip2'
 		.custom_specialties
 			= f.label :custom_specialty_names
@@ -257,45 +262,11 @@
 -# Any interpolated values needed in the coffeescript should be stored here to be referenced by the result
 -# of the coffeescript filter.  This allows caching of the coffeescript compilation.
 :javascript
-	window.edit_profile = {
-		parents: {}, maps: {}, names: {}, ids_names: {},
-		check_box_caches: {}, check_box_templates: {}, hidden_field_tags: {},
-		prompts: {}
-	};
-	// categories -> services
-	edit_profile.parents['services'] = 'categories';
-	edit_profile.check_box_caches['services'] = 
-		#{profile_services_check_box_cache(profile, 'check_box', f).to_json};
-	edit_profile.check_box_templates['services'] = 
-		"#{escape_javascript profile_services_check_box(profile, '_ID_', '_NAME_', false, 'check_box', f)}";
-	var info = #{profile.categories_services_info.to_json};
-	edit_profile.maps['services'] = info[0];
-	edit_profile.names['services'] = info[1];
-	edit_profile.ids_names['services'] = #{profile.service_ids_names.to_json};
-	edit_profile.hidden_field_tags['services'] = 
-		"#{escape_javascript profile_services_hidden_field_tag(f)}";
-	edit_profile.prompts['services'] = 
-		"#{escape_javascript content_tag(:div, 'Choose a category and we\'ll show you a list of services.', class: 'notice')}";
-	// services -> specialties
-	edit_profile.parents['specialties'] = 'services';
-	edit_profile.check_box_caches['specialties'] = 
-		#{profile_specialties_check_box_cache(profile, 'check_box', f).to_json};
-	edit_profile.check_box_templates['specialties'] = 
-		"#{escape_javascript profile_specialties_check_box(profile, '_ID_', '_NAME_', false, 'check_box', f)}";
-	var info = #{profile.services_specialties_info.to_json};
-	edit_profile.maps['specialties'] = info[0];
-	edit_profile.names['specialties'] = info[1];
-	edit_profile.ids_names['specialties'] = #{profile.specialty_ids_names.to_json};
-	edit_profile.hidden_field_tags['specialties'] = 
-		"#{escape_javascript profile_specialties_hidden_field_tag(f)}";
-	edit_profile.prompts['specialties'] = 
-		"#{escape_javascript content_tag(:div, 'Choose a service and we\'ll show you a list of specialties.', class: 'notice')}";
-	// Values to be used in the next script.
-	edit_profile.custom_services_i = #{@profile_custom_services_i};
-	edit_profile.custom_specialties_i = #{@profile_custom_specialties_i};
-	edit_profile.t_add_text_field = '#{t "views.profile.edit.add_text_field"}';
-	edit_profile.custom_services_template = '#{escape_javascript @profile_custom_services_text_field_template}';
-	edit_profile.custom_specialties_template = '#{escape_javascript @profile_custom_specialties_text_field_template}';
+	// Values to be used in the CoffeeScript-generated JavaScript.
+	my_vars.column_width = '#{98 / Category.predefined.count}%';
+	my_vars.t.add_text_field = '#{t "views.profile.edit.add_text_field"}';
+	my_vars.custom_specialties_i = #{@profile_custom_specialties_i};
+	my_vars.custom_specialties_template = '#{escape_javascript @profile_custom_specialties_text_field_template}';
 
 -# No ruby interpolation in the coffeescript filter.  It breaks caching of the coffeescript filter result.
 :coffeescript
@@ -305,62 +276,24 @@
 	$('.display_name_field').keyup (e) ->
 		refresh_display_name()
 	
-	# Show check boxes for children that belong to the currently checked parents.
-	# In addition, always show check boxes for children that were originally checked (i.e., are currently persisted).
-	show_check_boxes = (children) ->
-		choices = {}
-		$('.'+edit_profile.parents[children]+' .check_box input:checked').each ->
-			ids = edit_profile.maps[children][$(this).val()]
-			if ids
-				choices[edit_profile.names[children][id]] = id for id in ids
-			true
-		choices[id_name.name] = id_name.id for id_name in edit_profile.ids_names[children]
-		boxes = $('.predefined_'+children)
-		$('.check_box', boxes).each ->
-			edit_profile.check_box_caches[children][$('input', this).val()] = this
-		boxes.empty()
-		boxes.append edit_profile.hidden_field_tags[children]
-		names = Object.keys(choices)
-		if names.length > 0
-			for name in names.sort((a, b) -> a.toLowerCase().localeCompare(b.toLowerCase()))
-				id = choices[name]
-				check_box = edit_profile.check_box_caches[children][id] || edit_profile.check_box_templates[children].replace(/_ID_/g, id).replace(/_NAME_/g, name)
-				boxes.append check_box
-		else
-			boxes.append edit_profile.prompts[children]
-		# If redisplaying services, we may have a new set of check boxes to monitor.
-		if children == 'services'
-			$('.services .check_box input').change (e) ->
-				show_check_boxes('specialties')
-	
-	# When a category is changed, redisplay all descendent choices.
-	$('.categories .check_box input').change (e) ->
-		show_check_boxes('services')
-		show_check_boxes('specialties')
-	
-	# Show check boxes for services.
-	show_check_boxes('services')
-	# Show check boxes for specialties.
-	show_check_boxes('specialties')
-	
-	# Add extra text input tags for custom services.
-	add_custom_services_text_field = (e) ->
-		e.preventDefault()
-		$('.custom_services').append '<span id="custom_services_field_prompt" class="note">' +
-			edit_profile.t_add_text_field + '</span>' if $('#custom_services_field_prompt').length == 0
-		$('#custom_services_field_prompt').before '<div class="text_field">' +
-			edit_profile.custom_services_template.replace('INDEX', String(++edit_profile.custom_services_i)) + '</div>'
-		$('.custom_services input:last').focus().keydown (e) ->
-			add_custom_services_text_field e if e.which == 13 # carriage return
-	$('#add_custom_services_text_field').on 'click', add_custom_services_text_field
-	
 	# Add extra text input tags for custom specialties.
 	add_custom_specialties_text_field = (e) ->
 		e.preventDefault()
 		$('.custom_specialties').append '<span id="custom_specialties_field_prompt" class="note">' +
-			edit_profile.t_add_text_field + '</span>' if $('#custom_specialties_field_prompt').length == 0
+			my_vars.t.add_text_field + '</span>' if $('#custom_specialties_field_prompt').length == 0
 		$('#custom_specialties_field_prompt').before '<div class="text_field">' +
-			edit_profile.custom_specialties_template.replace('INDEX', String(++edit_profile.custom_specialties_i)) + '</div>'
+			my_vars.custom_specialties_template.replace(/INDEX/g, String(++my_vars.custom_specialties_i)) + '</div>'
 		$('.custom_specialties input:last').focus().keydown (e) ->
 			add_custom_specialties_text_field e if e.which == 13 # carriage return
 	$('#add_custom_specialties_text_field').on 'click', add_custom_specialties_text_field
+	
+	# Run after document is loaded.
+	$ ->
+		# Dynamically set column width based on number of columns.
+		$('.expertise_selection .col').css 'width', my_vars.column_width
+		# The same item might occur elsewhere in the list, so check/uncheck all instances of it.
+		$('.expertise_selection input:checkbox').change (e) ->
+			checked = this.checked
+			$('.expertise_selection .' + $(this).attr('data-css-class')).each (i, element) ->
+				element.checked = checked
+				true # Return explicit true value so that we continue processing any following elements.

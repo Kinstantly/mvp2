@@ -204,11 +204,15 @@ Given /^the "(.*?)" and "(.*?)" categories are predefined$/ do |cat1, cat2|
 	end
 end
 
-Given /^the predefined category of "(.*?)" is associated with the "(.*?)" and "(.*?)" services$/ do |cat, svc1, svc2|
+Given /^the predefined category of "(.*?)" is associated with the "(.*?)" and "(.*?)" subcategories$/ do |cat, subcat1, subcat2|
 	category = cat.to_category
 	category.is_predefined = true
-	category.services = [svc1.to_service, svc2.to_service]
+	category.subcategories = [subcat1.to_subcategory, subcat2.to_subcategory]
 	category.save
+end
+
+Given /^the predefined subcategory of "(.*?)" is associated with the "(.*?)" and "(.*?)" services$/ do |subcat, svc1, svc2|
+	subcat.to_subcategory.services = [svc1.to_service, svc2.to_service]
 end
 
 Given /^the "(.*?)" and "(.*?)" services are predefined$/ do |svc1, svc2|
@@ -219,15 +223,12 @@ Given /^the "(.*?)" and "(.*?)" services are predefined$/ do |svc1, svc2|
 	end
 end
 
-Given /^the predefined service of "(.*?)" is associated with the "(.*?)" and "(.*?)" specialties$/ do |svc, spec1, spec2|
-	service = svc.to_service
-	service.is_predefined = true
-	service.specialties = [spec1.to_specialty, spec2.to_specialty]
-	service.save
-end
-
 Given /^there is an unclaimed profile$/ do
 	create_unattached_profile
+end
+
+Given /^there is an unclaimed profile with the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
+	create_unattached_profile specialties: [spec1.to_specialty, spec2.to_specialty]
 end
 
 Given /^I visit the (view|edit|admin view|admin edit) page for (?:a|an|the)( existing)? (claimed|published|unclaimed|unpublished|current) profile( with no locations| with one location| with no reviews| with one review)?$/ do |page, existing, type, items|
@@ -411,28 +412,47 @@ When /^I check "(.*?)"$/ do |field|
 end
 
 When /^I select the "(.*?)" category$/ do |cat|
-	within('#services .categories') do
+	within('.expertise_selection') do
 		check MyHelpers.profile_categories_id(cat.to_category.id)
 	end
 end
 
 When /^I select the "(.*?)" and "(.*?)" categories$/ do |cat1, cat2|
-	within('#services .categories') do
+	within('.expertise_selection') do
 		check MyHelpers.profile_categories_id(cat1.to_category.id)
 		check MyHelpers.profile_categories_id(cat2.to_category.id)
 	end
 end
 
+When /^I select the "(.*?)" subcategory$/ do |subcat|
+	subcategory = subcat.to_subcategory
+	within('.expertise_selection') do
+		check MyHelpers.profile_subcategories_id(subcategory.categories.first.id, subcategory.id)
+	end
+end
+
+When /^I select the "(.*?)" and "(.*?)" subcategories$/ do |subcat1, subcat2|
+	subcategory1 = subcat1.to_subcategory
+	subcategory2 = subcat2.to_subcategory
+	within('.expertise_selection') do
+		check MyHelpers.profile_subcategories_id(subcategory1.categories.first.id, subcategory1.id)
+		check MyHelpers.profile_subcategories_id(subcategory2.categories.first.id, subcategory2.id)
+	end
+end
+
 When /^I select the "(.*?)" service$/ do |svc|
-	within('#services .services') do
-		check MyHelpers.profile_services_id(svc.to_service.id)
+	service = svc.to_service
+	within('.expertise_selection') do
+		check MyHelpers.profile_services_id(service.subcategories.first.id, service.id)
 	end
 end
 
 When /^I select the "(.*?)" and "(.*?)" services$/ do |svc1, svc2|
-	within('#services .services') do
-		check MyHelpers.profile_services_id(svc1.to_service.id)
-		check MyHelpers.profile_services_id(svc2.to_service.id)
+	service1 = svc1.to_service
+	service2 = svc2.to_service
+	within('.expertise_selection') do
+		check MyHelpers.profile_services_id(service1.subcategories.first.id, service1.id)
+		check MyHelpers.profile_services_id(service2.subcategories.first.id, service2.id)
 	end
 end
 
@@ -455,17 +475,15 @@ When /^I add the "(.*?)" and "(.*?)" custom services using enter$/ do |svc1, svc
 	end
 end
 
-# This step requires javascript.
-When /^I select the "(.*?)" and "(.*?)" specialties$/ do |spec1, spec2|
-	within('#services .specialties') do
-		check MyHelpers.profile_specialties_id(spec1.to_specialty.id)
-		check MyHelpers.profile_specialties_id(spec2.to_specialty.id)
+When /^I uncheck the "(.*?)" specialty$/ do |spec|
+	within('.predefined_specialties') do
+		uncheck MyHelpers.profile_specialties_id(spec.to_specialty.id)
 	end
 end
 
 # This step requires javascript.
 When /^I add the "(.*?)" and "(.*?)" custom specialties$/ do |spec1, spec2|
-	within('#services .custom_specialties') do
+	within('.expertise_profile .custom_specialties') do
 		click_button 'add_custom_specialties_text_field'
 		fill_in MyHelpers.profile_custom_specialties_id('1'), with: spec1
 		click_button 'add_custom_specialties_text_field'
@@ -475,7 +493,7 @@ end
 
 # This step requires javascript.
 When /^I add the "(.*?)" and "(.*?)" custom specialties using enter$/ do |spec1, spec2|
-	within('#services .custom_specialties') do
+	within('.expertise_profile .custom_specialties') do
 		click_button 'add_custom_specialties_text_field'
 		fill_in MyHelpers.profile_custom_specialties_id('1'), with: "#{spec1}\r"
 		fill_in MyHelpers.profile_custom_specialties_id('2'), with: spec2

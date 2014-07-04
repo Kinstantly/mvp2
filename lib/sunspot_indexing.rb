@@ -28,7 +28,7 @@ module SunspotIndexing
 	def self.included(receiver)
 		receiver.extend         ClassMethods
 		receiver.send :include, InstanceMethods
-		receiver.after_update :reindex_profiles, if: 'name_changed? or trash_changed?'
+		receiver.after_update :reindex_profiles, if: '(respond_to?(:name_changed?) and name_changed?) or (respond_to?(:trash_changed?) and trash_changed?)'
 		# after_destroy, reindex_profiles does not succesfully remove from search index.  Use trash=true instead.
 	end
 end

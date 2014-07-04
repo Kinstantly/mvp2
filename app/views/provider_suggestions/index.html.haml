@@ -1,6 +1,6 @@
-- @page_title = "#{company_name} - Provider suggestions"
+- @page_title = "#{company_name} - #{t('views.provider_suggestion.name').pluralize}"
 .index
-	%h1 Provider suggestions
+	%h1= t('views.provider_suggestion.name').pluralize
 	#top_bar
 		= render partial: 'home/admin_nav'
 	.list{align: 'center'}

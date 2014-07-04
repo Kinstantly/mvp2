@@ -15,6 +15,10 @@ class String
 		to_db_singleton Category
 	end
 	
+	def to_subcategory
+		to_db_singleton Subcategory
+	end
+	
 	def to_service
 		to_db_singleton Service
 	end

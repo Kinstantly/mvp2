@@ -34,13 +34,16 @@ class Specialty < ActiveRecord::Base
 		self.search_term_names_to_add = nil
 	end
 	
+	paginates_per 20 # Default number shown per page in index listing.
+	
 	include CachingForModel
 	predefined_info_parent :service
 	
 	include SunspotIndexing
 	
 	def browsable?
-		services.any? &:browsable?
+		# services.any? &:browsable?
+		true # Specialties are no longer linked to particular services.
 	end
 	
 	def search_term_ids_to_remove

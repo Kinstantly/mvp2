@@ -1,0 +1,57 @@
+- @page_title = "#{company_name} - #{t('views.subcategory.edit.edit')} '#{@subcategory.name}'"
+.edit
+	%h1= "#{t('views.subcategory.edit.edit')} '#{@subcategory.name}'"
+	#top_bar
+		= render partial: 'home/admin_nav'
+	#forms
+		= render partial: 'edit_form'
+		- if can?(:destroy, @subcategory)
+			= form_for @subcategory, method: :delete, html: {id: 'destroy_subcategory', class: 'destroy_button'} do |f|
+				= f.submit t('views.subcategory.edit.destroy_button'), disable_with: t('views.category.edit.destroy_button_disable'), confirm: t('views.subcategory.edit.destroy_confirm')
+	#links
+		%a{name: 'links'}
+		%h1= Subcategory.human_attribute_name :categories
+		%ul
+			- if @subcategory.categories.present?
+				- @subcategory.categories.home_page_order.each do |record|
+					%li= link_to record.name, edit_category_path(record), class: 'name'
+			- else
+				%li= link_to t('views.subcategory.edit.add_categories'), categories_path
+		%h1= Subcategory.human_attribute_name :services
+		- if @subcategory.services.present?
+			%table
+				%thead
+					%tr
+						%th.miniform_header
+							= Service.human_attribute_name(:display_order)
+						%th= t 'views.service.edit.edit'
+						%th
+				%tbody
+					- @subcategory.services.by_display_order.order_by_name.each do |record|
+						%tr
+							%td.miniform
+								= form_for @subcategory, url: {action: :update_service}, method: :put do |f|
+									= f.submit t('views.save'), disable_with: t('views.saving')
+									= text_field_tag :service_display_order, @subcategory.service_subcategory(record).service_display_order, size: 4
+									= hidden_field_tag :service_id, record.to_param
+							%td= link_to record.name, edit_service_path(record), class: 'name'
+							%td.miniform
+								= form_for @subcategory, url: {action: :remove_service}, method: :put do |f|
+									= f.submit t('views.remove'), disable_with: t('views.removing')
+									= hidden_field_tag :service_id, record.to_param
+		%h1= t 'views.service.edit.add'
+		%table
+			%thead
+				%tr
+					%th.miniform_header
+						= Service.human_attribute_name(:display_order)
+						&nbsp;&nbsp;
+						= t 'views.service.name'
+			%tbody
+				%tr
+					%td.miniform
+						= form_for @subcategory, url: {action: :add_service}, method: :put do |f|
+							= f.submit t('views.save'), disable_with: t('views.saving')
+							= text_field_tag :service_display_order, '', size: 4
+							= autocomplete_form_field :name, '', autocomplete_service_name_subcategories_path, placeholder: t('views.service.view.find_by_name'), size: 30
+= render partial: 'shared/save_changes_prompt'

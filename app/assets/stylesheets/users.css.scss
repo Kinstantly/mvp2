@@ -129,6 +129,34 @@ div.view_profile {
 			.expertise_profile > div {
 				padding-bottom: 1em;
 			}
+			.expertise_selection {
+				.col {
+					float: left;
+					+ .col {
+						border-left: 1px solid #bbbbbb;
+					}
+				}
+				h4 {
+					text-transform: uppercase;
+					margin: 0 4px;
+					border-top: 1px solid #bbbbbb;
+					background-color: #eeeeee;
+				}
+				ul {
+					list-style-type: none;
+					li.subcategory {
+						font-weight: bold;
+						margin: 1em 0.2em 0.5em -2em;
+						border-top: 1px solid #bbbbbb;
+						background-color: #eeeeee;
+					}
+					ul {
+						li {
+							margin-left: -3em;
+						}
+					}
+				}
+			}
 			.categories, .services, .specialties, .stages, .accepting_new_clients, .consultations, .visits {
 				.check_box {
 					@include check-box-style;

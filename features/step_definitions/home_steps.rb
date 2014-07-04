@@ -12,30 +12,35 @@ def column_name_to_number(name)
 end
 
 Given /^a category authored to appear in the "(first|second)" column on the home page$/ do |which_column|
-	@authored_category = FactoryGirl.create :category_on_home_page, home_page_column: column_name_to_number(which_column)
+	column_number = column_name_to_number(which_column)
+	@authored_category = case column_number
+	when 1
+		FactoryGirl.create :category_on_home_page, home_page_column: 1
+	when 2
+		FactoryGirl.create :category_on_home_page, home_page_column: 4 # Use 4 until we implement the new design.
+	else
+		pending "column #{column_number}"
+	end
 end
 
 Given /^a category authored to not appear on the home page$/ do
 	@authored_category = FactoryGirl.create :category_not_on_home_page
 end
 
-Given /^a category authored to appear in the "(first|second)" column on the see-all page$/ do |which_column|
-	@authored_category = FactoryGirl.create :predefined_category, see_all_column: column_name_to_number(which_column)
+Given /^a subcategory authored to appear on the home page$/ do
+	@authored_subcategory = FactoryGirl.create :subcategory_on_home_page
+end
+
+Given /^a subcategory authored to not appear on the home page$/ do
+	@authored_subcategory = FactoryGirl.create :subcategory_not_on_home_page
 end
 
 Given /^a service authored to appear on the home page$/ do
 	@authored_service = FactoryGirl.create :service_on_home_page
-	@authored_category = FactoryGirl.create :category_on_home_page, services: [@authored_service]
 end
 
 Given /^a service authored to not appear on the home page$/ do
 	@authored_service = FactoryGirl.create :service_not_on_home_page
-	@authored_category = FactoryGirl.create :category_on_home_page, services: [@authored_service]
-end
-
-Given /^a service authored to appear on the see-all page$/ do
-	@authored_service = FactoryGirl.create :predefined_service
-	@authored_category = FactoryGirl.create :predefined_category, services: [@authored_service]
 end
 
 When /^I visit the "(.*?)" page$/ do |path|
@@ -87,6 +92,14 @@ Then /^I should see that authored category in the "(first|second)" column$/ do |
 	within("#col#{column_name_to_number which_column}") do
 		page.should have_content(@authored_category.name)
 	end
+end
+
+Then /^I should see that authored subcategory$/ do
+	page.should have_content(@authored_subcategory.name)
+end
+
+Then /^I should not see that authored subcategory$/ do
+	page.should_not have_content(@authored_subcategory.name)
 end
 
 Then /^I should see that authored service$/ do

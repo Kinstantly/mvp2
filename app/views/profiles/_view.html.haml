@@ -72,6 +72,9 @@
 		.categories
 			%span.label= "#{Profile.human_attribute_name(:categories)}:"
 			= profile_display_categories profile
+		.subcategories
+			%span.label= "#{Profile.human_attribute_name(:subcategories)}:"
+			= profile_display_subcategories profile
 		.services
 			%span.label= "#{Profile.human_attribute_name(:services)}:"
 			= profile_display_services profile

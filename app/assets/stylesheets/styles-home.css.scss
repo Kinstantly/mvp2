@@ -267,6 +267,9 @@ a:hover {
 	box-shadow: 1px 6px 8px rgba(151,135,140,0.7);
 	margin: 32px 0 0 0;
 	font-size: 1.5em;
+	#see_fewer_services {
+		display: none;
+	}
 }
 .category-list h2 {
 	font-family: 'museo_slab500', Helvetica, Arial, sans-serif;
@@ -291,18 +294,32 @@ span.help {
 	margin-right: 56px;
 	clear: left;
 }
-.col h3 {
-	color: #000;
-	font-weight: bold;
-	text-transform: uppercase;
-	font-size: 0.8125em;
-	line-height: 1.3846em;
+.col {
+	h3, h4 {
+		color: #000;
+		font-weight: bold;
+		text-transform: uppercase;
+		font-size: 0.8125em;
+		line-height: 1.3846em;
+		margin-bottom: 1em;
+	}
+	h3 {
+		font-size: 1.0125em;
+		line-height: 1.5846em;
+	}
 }
 .col ul {
 	font-size: 0.8125em;
 	font-weight: bold;
 	line-height: 1.30769em;
 	margin-bottom: 22px;
+	li {
+		text-indent: -1em;
+		padding-left: 1em;
+	}
+	.extra_service, .fewer_services {
+		display: none;
+	}
 }
 
 /*  Footer -------------------------------------------------------------------------- */
