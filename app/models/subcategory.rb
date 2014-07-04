@@ -50,7 +50,9 @@ class Subcategory < ActiveRecord::Base
 		true
 	end
 	
-	alias :browsable? :is_predefined
+	def browsable?
+		categories.any? &:browsable?
+	end
 
 	def services_changed(service)
 		notify_categories

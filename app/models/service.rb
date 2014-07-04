@@ -39,7 +39,7 @@ class Service < ActiveRecord::Base
 	include SunspotIndexing
 	
 	def browsable?
-		categories.any? &:browsable?
+		subcategories.any? &:browsable?
 	end
 	
 	# Specialties that are eligible to be assigned to this service.

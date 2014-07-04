@@ -44,12 +44,11 @@
 							%h4= subcategory.name
 							%ul
 								- visible_service_count = 8
-								- subcategory_i = 0
-								- subcategory.services.by_display_order.order_by_name.each do |service|
-									- li_class = (subcategory_i += 1) > visible_service_count ? 'extra_service' : 'visible_service'
+								- subcategory.services.by_display_order.order_by_name.each_with_index do |service, i|
+									- li_class = i >= visible_service_count ? 'extra_service' : 'visible_service'
 									%li{class: li_class}
 										= link_to service.name, search_providers_by_service_path(service)
-								- if subcategory_i > visible_service_count
+								- if subcategory.services.size > visible_service_count
 									%li
 										= link_to t('views.home.view.more_services'), '#', class: 'toggle_extra_services more_services'
 										= link_to t('views.home.view.fewer_services'), '#', class: 'toggle_extra_services fewer_services'

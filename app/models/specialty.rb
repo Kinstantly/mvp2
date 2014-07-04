@@ -42,7 +42,8 @@ class Specialty < ActiveRecord::Base
 	include SunspotIndexing
 	
 	def browsable?
-		services.any? &:browsable?
+		# services.any? &:browsable?
+		true # Specialties are no longer linked to particular services.
 	end
 	
 	def search_term_ids_to_remove

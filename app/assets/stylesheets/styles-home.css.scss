@@ -313,6 +313,10 @@ span.help {
 	font-weight: bold;
 	line-height: 1.30769em;
 	margin-bottom: 22px;
+	li {
+		text-indent: -1em;
+		padding-left: 1em;
+	}
 	.extra_service, .fewer_services {
 		display: none;
 	}
