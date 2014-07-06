@@ -115,6 +115,46 @@ module ApplicationHelper
 		link_to 'User admin', path if show_link?(path) && can?(:manage, User)
 	end
 	
+	def admin_provider_suggestion_list_link
+		link_to t('views.provider_suggestion.name').pluralize, provider_suggestions_path if can? :manage, ProviderSuggestion
+	end
+	
+	def admin_category_links
+		if can? :manage, Category
+			link_to(t('views.category.name').pluralize, categories_path) +
+				link_to(t('views.category.edit.create'), new_category_path)
+		end
+	end
+	
+	def admin_subcategory_links
+		if can? :manage, Subcategory
+			link_to(t('views.subcategory.name').pluralize, subcategories_path) +
+				link_to(t('views.subcategory.edit.create'), new_subcategory_path)
+		end
+	end
+	
+	def admin_service_links
+		if can? :manage, Service
+			link_to(t('views.service.name').pluralize, services_path) +
+				link_to(t('views.service.edit.create'), new_service_path)
+		end
+	end
+	
+	def admin_specialty_links
+		if can? :manage, Specialty
+			link_to(t('views.specialty.name').pluralize, specialties_path) +
+				link_to(t('views.specialty.edit.create'), new_specialty_path)
+		end
+	end
+	
+	def admin_profiles_not_categorized_links
+		if can? :manage, Profile
+			link_to(t('views.profile.view.no_categories'), no_categories_profiles_path) +
+				link_to(t('views.profile.view.no_subcategories'), no_subcategories_profiles_path) +
+				link_to(t('views.profile.view.no_services'), no_services_profiles_path)
+		end
+	end
+	
 	def about_link(options={})
 		path = about_path
 		link_wrapper link_to("About us", path), options if show_link?(path)

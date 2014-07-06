@@ -4,6 +4,14 @@
 
 $profile_margin: 10px;
 
+@mixin header-style {
+	text-align: center;
+	font: {
+		size: 24px;
+		weight: bold;
+	}
+}
+
 @mixin profile-areas-div-style {
 	border: {
 		width: medium;
@@ -205,6 +213,9 @@ div.view_profile {
 
 .profile_index, .profile_admin, .admin, .index {
 	margin: $profile_margin;
+	h1 {
+		@include header-style;
+	}
 	#top_bar {
 		margin-bottom: 1em;
 		> div {
@@ -215,6 +226,11 @@ div.view_profile {
 		}
 		#profile_stats {
 			float: right;
+			background-color: #eeeeee;
+		}
+		.buttons a {
+			line-height: 1.5em;
+			display: inline-block;
 		}
 	}
 	.pagination {

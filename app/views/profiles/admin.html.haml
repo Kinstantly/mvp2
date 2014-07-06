@@ -2,9 +2,10 @@
 .profile_admin
 	#top_bar
 		.buttons
+			= render partial: 'stats'
 			= admin_profile_list_link
 			= admin_profile_list_by_id_link
-		= render partial: 'stats'
+			= admin_profiles_not_categorized_links
 	.content
 		#new_profile
 			= nested_form_for @profile do |f|

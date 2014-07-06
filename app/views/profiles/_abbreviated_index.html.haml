@@ -2,8 +2,8 @@
 .profile_index
 	%h1= @header_title
 	#top_bar
-		= render partial: 'home/admin_nav'
 		= render partial: 'stats'
+		= render partial: 'home/admin_nav'
 	.profile_list{align: 'center'}
 		.pagination_nav
 			= render partial: 'shared/per_page_form', locals: { record_type: Profile }

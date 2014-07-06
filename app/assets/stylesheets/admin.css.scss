@@ -1,13 +1,5 @@
 // Styles for the admin interface.
 
-@mixin header-style {
-	text-align: center;
-	font: {
-		size: 16px;
-		weight: bold;
-	}
-}
-
 .index {
 	h1 {
 		@include header-style;
