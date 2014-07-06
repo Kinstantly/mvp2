@@ -102,12 +102,12 @@
 						= profile_categories_check_box_tag profile, category, f
 						= profile_categories_check_box_label category
 					%ul
-						- category.subcategories.by_display_order.each do |subcategory|
+						- category.subcategories.by_display_order.order_by_name.each do |subcategory|
 							%li.subcategory
 								= profile_subcategories_check_box_tag profile, subcategory, category, f
 								= profile_subcategories_check_box_label subcategory, category
 							%ul
-								- subcategory.services.by_display_order.each do |service|
+								- subcategory.services.by_display_order.order_by_name.each do |service|
 									%li
 										= profile_services_check_box_tag profile, service, subcategory, f
 										= profile_services_check_box_label service, subcategory
