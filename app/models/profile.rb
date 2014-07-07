@@ -437,6 +437,8 @@ class Profile < ActiveRecord::Base
 		!user.nil?
 	end
 	
+	alias :owned? :claimed?
+	
 	def owned_by?(user)
 		user.try(:profile) == self
 	end
