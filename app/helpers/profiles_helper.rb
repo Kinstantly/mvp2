@@ -189,19 +189,27 @@ module ProfilesHelper
 	end
 
 	def profile_total_count
-		"Total: #{Profile.count}"
+		"#{t('views.profile.view.total')}: #{Profile.count}" if can? :manage, Profile
 	end
 
-	def profile_claimed_count
-		"Claimed: #{Profile.where('user_id is not null').count}"
+	def profile_owned_count
+		"#{t('views.profile.view.owned')}: #{Profile.joins(:user).count}" if can? :manage, Profile
 	end
 
-	def profile_unclaimed_count
-		"Unclaimed: #{Profile.where(user_id: nil).count}"
+	def profile_not_owned_count
+		"#{t('views.profile.view.not_owned')}: #{Profile.where(user_id: nil).count}" if can? :manage, Profile
 	end
 
 	def profile_published_count
-		"Published: #{Profile.where(is_published: true).count}"
+		"#{t('views.profile.view.published')}: #{Profile.where(is_published: true).count}" if can? :manage, Profile
+	end
+
+	def profile_owned_published_count
+		"#{t('views.profile.view.owned_published')}: #{Profile.joins(:user).where(is_published: true).count}" if can? :manage, Profile
+	end
+
+	def profile_owned_not_published_count
+		"#{t('views.profile.view.owned_not_published')}: #{Profile.joins(:user).where(is_published: false).count}" if can? :manage, Profile
 	end
 
 	def serialize_profile_text(text)

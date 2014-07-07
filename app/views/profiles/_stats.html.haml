@@ -1,9 +1,11 @@
 #profile_stats
 	- if can? :manage, Profile
-		%strong= 'Profile counts'
-		&nbsp;
-		= profile_claimed_count
-		&nbsp;
+		%strong= t('views.profile.view.stats_title')
+		%br
+		= profile_owned_published_count
+		%br
+		= profile_owned_not_published_count
+		%br
 		= profile_published_count
 		&nbsp;
 		= profile_total_count
