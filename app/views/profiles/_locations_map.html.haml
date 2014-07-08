@@ -159,14 +159,16 @@
 			div.appendChild(document.createTextNode(str));
 			div.innerHTML;
 		
-		init = () ->
+		init = (callback) ->
 			init_markers()
 			if map_obj is null && my_vars.location_remote_only
 				$(map_canvas).append "<p class='ui-corner-all ui-state-default'>" + my_vars.location_remote_only_msg + "</p>"
 			else
 				bind_actions()
+			callback()
 
 		# public
-		init: init
+		init: (callback) ->
+			init(callback)
 
 	#locations_google_map_module.init()

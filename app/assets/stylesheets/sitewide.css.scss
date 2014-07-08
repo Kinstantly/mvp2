@@ -1,112 +1,283 @@
 // Styles and values used across the entire site, i.e., the home page and all interior pages.
 
-$default_color: #333;
-$default_background: white;
-$font-stack: Helvetica, Arial, sans-serif;
-$header-font-stack: 'Raleway', Helvetica, Arial, sans-serif;
-$default_link_color: #346599;
-$blue: #437FBF;
+@import 'variables-mixins';
+@import 'emConvert';
 
-$text_light_color: #807f7f;
-$text_lighter_color: #d9d8d8;
-$kinstantly_light_gray: #bebebe;
-$kinstantly_gray: #aeaeae;
-$kinstantly_light_chartreuse: #afb434;
-$kinstantly_chartreuse: #9fa42f;
-$kinstantly_light_blue: #437fc0;
-$kinstantly_blue: #366599;
-$kinstantly_pink: #e43d5d;
-$kinstantly_light_pink: #e46d8d;
-$search_input_color: #000;
-$search_input_background: #ffffff;
-$text_field_placeholder_color: #aaa;
 
-@mixin cell-style {
-	border: {
-		width: thin;
-		color: gray;
-		style: solid;
-	}
-	padding: 4px;
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, tt, var,
+dl, dt, dd, ol, ul, li, input, textarea,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+body {
+	color: $default_color;
+	background: $default_background;
+}
+ol, ul {
+	list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+caption, th, td {
+	text-align: left;
+	font-weight: normal;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: "";
+}
+blockquote, q {
+	quotes: "" "";
 }
 
-@mixin profile-admin-style {
-	> div {
-		margin-bottom: 0.5em;
-		.value {
-			@include cell-style;
+/*
+ * Corrects `block` display not defined in IE6/7/8/9 & FF3.
+ */
+article,aside,details,figcaption,figure,footer,header,hgroup,nav,navigation,section,summary {
+	display: block;
+}
+/*
+ * Corrects `inline-block` display not defined in IE6/7/8/9 & FF3.
+ */
+audio,canvas,video {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+}
+/*
+ * Prevents modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS5 devices.
+ */
+audio:not([controls]) {
+	display: none;
+	height: 0;
+}
+/*
+ * Addresses styling for `hidden` attribute not present in IE7/8/9, FF3, S4.
+ * Known issue: no IE6 support.
+ */
+[hidden] {
+	display: none;
+}
+%clearfix {
+	zoom: 1;
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+/* End CSS reset */
+
+/* Icon Font */
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('#{$fa-font-path}/fontawesome-webfont.eot?v=#{$fa-version}');
+  src: url('#{$fa-font-path}/fontawesome-webfont.eot?#iefix&v=#{$fa-version}') format('embedded-opentype'),
+    url('#{$fa-font-path}/fontawesome-webfont.woff?v=#{$fa-version}') format('woff'),
+    url('#{$fa-font-path}/fontawesome-webfont.ttf?v=#{$fa-version}') format('truetype'),
+    url('#{$fa-font-path}/fontawesome-webfont.svg?v=#{$fa-version}#fontawesomeregular') format('svg');
+  //src: url('#{$fa-font-path}/FontAwesome.otf') format('opentype'); // used when developing fonts
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*
+Base styles
+*/
+
+html, body {
+	height:100%;
+	width: 100%;
+	font-size: 100%;
+	font-family: $font-stack;
+}
+.container {
+	@include scale(max-width, 960);
+	margin: 0 auto;
+	@include scale(padding, 0 20);
+}
+.edit .container {
+	@include scale(padding, 0 40);
+}
+a {
+	color: $default_link_color;
+	text-decoration: none;
+}
+a:hover {
+	color: darken($default_link_color, 15%);
+}
+a:visited {
+	color: $visited_link_color;
+}
+strong, b {
+	font-weight: 700;
+}
+em, i {
+	font-style: italic;
+}
+.editable {
+    background: url('#{$image-path}/edit-blue.png') left center no-repeat;
+    background-size: 12px 15px;
+    padding-left: 18px;
+    margin-left: -18px;
+}
+.editable:hover {
+    background: url('#{$image-path}/edit-over.png') left center no-repeat;
+    cursor: pointer;
+}
+
+/*  Header -------------------------------------------------------------------------- */
+
+#header {
+	width: 100%;
+	font-family: $font-stack;
+	@extend %clearfix;
+	
+	#account-bar {
+		background: $default_color;
+		color: $toplink_color;
+		font-family: $secondary-font-stack;
+		@include scale(height, 24);
+		overflow-y: visible;
+		
+		@media(max-width: 24.75em) {
+			font-size: 0.75em;
+		}
+		
+		ul {
+			text-align: right;
+			
+			li.logged-in {
+				.photo_name_span{
+					@media(max-width: 36.25em) {
+						display: none;
+						// Demonstration purposes only. You will want to delete this. 
+					}
+				}
+			}
+		
+			li {
+				@include scale(font-size, 11);
+				display: inline-block;
+				vertical-align: top;
+				@include scale(line-height, 24, 11);
+				@include scale(padding-right, 28, 11);
+				overflow-y: visible;
+				position: relative;
+				&:last-of-type {
+					padding-right: 0;
+				}
+				ul {
+					display: none;
+					position: absolute;
+					z-index: 100;
+					border: 1px solid $medium-gray;
+					background: $white;
+					@include scale(right, 28,14);
+					@include scale(min-width, 100, 11);
+						
+						li {
+							display: block;
+							@include scale(font-size, 14, 11);
+							line-height: 1em;
+							border-bottom: 1px solid $medium-gray;
+							padding: 0;
+							text-align: left; 
+							
+							&:last-child {
+								border-bottom: none;
+							}
+							
+							a {
+								display: block;
+								@include scale(padding, 10, 14);
+								color: $default_link_color;
+								font-family: $font-stack;
+								
+								&:hover {
+									color: darken($default_link_color, 15%);
+								}
+							}
+
+						}
+				}
+				&:hover a.account {
+						background-position: right -11px;
+						
+				}
+				&:hover > ul {
+					display: block;
+				}
+				
+				.avatar {
+					@include scale(padding, 0 8 0 0, 11);
+					display: block;
+					float: left;
+					
+					img {
+						@include scale(max-height, 24, 11);
+						width: auto;
+					}
+				}
+		
+				a {
+					color: $toplink_color;
+					
+					&:hover {
+						color: darken($toplink_color, 15%);
+					}
+				}
+				a.account {
+					@include scale(padding-right, 21, 11);
+					background: url('#{$image-path}/arrow-down.png') right top no-repeat;
+					
+				}
+				a.button {
+					background: $green;
+					@include scale(padding, 11 10 9 10, 11);
+					@include border-bottom-radius(.1818em);
+					@include box-shadow(0px,1px,2px,rgba(0,0,0,0.35),false);
+					
+					&:hover {
+						text-decoration: none;
+						background: lighten($green, 5%);
+						@include transition-bg(0.25s);
+						color: $toplink_color;
+					}
+				}
+			}
 		}
 	}
 }
 
-@mixin check-box-style {
-	display: inline-block;
-	margin-left: 1em;
-	margin-top: 0.5em;
-	background-color: #F5F5F5;
-	label {
-		margin-left: 0.5em;
-		color: $text_light_color;
-		font-size: 14px;
-		font-weight: normal;
+/* Override some jQuery UI styles. */
+.ui-widget-content {
+	color: $default_color;
+	a {
+		color: $default_link_color;
 	}
-}
-
-@mixin stack-check-box-style {
-	.check_box {
-		float: left;
-		clear: left;
-	}
-	+ div {
-		padding-top: 12px;
-	}
-}
-
-$button_corner_radius: 4px;
-
-@mixin button-corner-style {
-	-webkit-border-radius: $button_corner_radius;
-	-moz-border-radius: $button_corner_radius;
-	border-radius: $button_corner_radius;
-}
-
-@mixin button-style {
-	background-color: $kinstantly_light_blue;
-	font: {
-		size: 15px;
-		weight: bold;
-	}
-	display: inline-block; // <A> tags are inline by default.  Need this to set their width.
-	width: 7em;
-	text-align: center;
-	text-transform: lowercase;
-	text-decoration: none;
-	color: #ffffff;
-	padding: 4px;
-	margin-right: 1em;
-	@include button-corner-style;
-}
-
-@mixin default-button-style {
-	@include button-style;
-	background-color: $kinstantly_light_blue;
-}
-@mixin default-button-hover-style {
-	@include button-style;
-	background-color: $kinstantly_blue;
-}
-@mixin default-button-disabled-style {
-	@include button-style;
-	background-color: $kinstantly_light_gray;
-}
-
-@mixin cancel-button-style {
-	@include button-style;
-	background-color: $kinstantly_light_gray;
-}
-@mixin cancel-button-hover-style {
-	@include button-style;
-	background-color: $kinstantly_gray;
 }
 
 .auto_width {
@@ -186,6 +357,112 @@ $message_corner_radius: 8px;
 		width: auto;
 		height: auto;
 	}
+}
+
+/*  Social footer -------------------------------------------------------------------------- */
+
+.follow {
+		font-size: 0.875em;
+		display: table;
+		padding: 6.0714em 0 0 0;
+		clear: both;
+		
+		span {
+			display: table-cell;
+			padding-right: 0.3125em;
+			vertical-align: bottom;
+		}
+		
+		a {
+			width: 24px;
+			height: 24px;
+			background: url(#{$image-path}/social-icon-sprites.gif) no-repeat;
+			display: table-cell;
+			text-indent: -999em;
+			padding-right: 0.3125em;
+			
+			@media screen and (max-width: $break-7) {
+				width: 48px;
+				height: 48px;
+				background: url(#{$image-path}/social-icon-sprites@2x.png) no-repeat;
+			}	
+		}
+		a.fb {
+			background-position: 0 0;
+		}
+		a.tw {
+			background-position: -29px 0;
+			@media screen and (max-width: $break-7) {
+				background-position: -58px 0;
+			}
+		}
+		a.gp {
+			background-position: -58px 0;
+			@media screen and (max-width: $break-7) {
+				background-position: -116px 0;
+			}
+		}
+	}
+
+/*  Special classes -------------------------------------------------------------------------- */
+
+.pink {
+	background-color: $kinstantly_pink;
+}
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
+.col {
+	float: left;
+}
+hr {
+	clear: both;
+	width: 100%;
+	height: 1px;
+    color: $medium-gray;
+    background: $medium-gray;
+    border: 0;
+    margin: 0.875em 0 0 0;
+}
+.rounded img { 
+	@include border-radius(12px);
+	-webkit-box-shadow: 2px 4px 8px 0px rgba(0,0,0,0.15);
+	-moz-box-shadow: 2px 4px 8px 0px rgba(0,0,0,0.15);
+	box-shadow: 2px 4px 8px 0px rgba(0,0,0,0.15);
+}
+.clearfix{
+	@extend %clearfix;
+}
+.clickable{
+	cursor: pointer;
+}
+
+/*  Footer -------------------------------------------------------------------------- */
+
+#footer {
+	clear: both;
+	width: 100%;
+	background: #EFEFEF;
+	border-top: 1px solid #DDD;
+	margin-top: 1.25em;
+	padding: 1.5em 1em;
+	@include box-sizing;
+}
+#bottom, #copyright {
+	width: 100%;
+	margin: 0px auto;
+	text-align: center;
+	font-size: 0.875em;
+	line-height: 1.42857em;
+	color: $default_color;
+	font-family: $font-stack;
+	-webkit-font-smoothing: antialiased;
+}
+#bottom a, #copyright a {
+	color: $default_link_color;
 }
 
 /* Footer */

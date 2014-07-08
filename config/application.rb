@@ -103,3 +103,4 @@ PROFILE_MODERATOR_EMAIL = 'profile_monitor@kinstantly.com'
 SEARCH_DEFAULT_PER_PAGE = ENV['SEARCH_DEFAULT_PER_PAGE'].presence || 20
 PaperTrail.config.version_limit = 20
 GOOGLE_BROWSER_API_KEY = 'AIzaSyAcg1gF_tDu3I3qOnYDLD8KUkvnAPXYVow'
+FB_API_KEY = '876267945721057'

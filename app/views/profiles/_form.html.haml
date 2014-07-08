@@ -251,6 +251,12 @@
 				.label_area
 					= label_tag :widget_code, Profile.human_attribute_name(:widget_code)
 				= text_area_tag :widget_code, @profile.widget_code, size: '100x10'
+			#search_widget_code
+				.label_area
+					= label_tag :search_widget_code, Profile.human_attribute_name(:search_widget_code)
+				= text_area_tag :search_widget_code, @profile.search_widget_code, size: '100x10'
+				%br
+				%span.note= t 'views.profile.edit.search_widget_code_example'
 			.check_box
 				= profile_admin_check_box :public_on_private_site, @profile
 				= label_tag :public_on_private_site, Profile.human_attribute_name(:public_on_private_site)

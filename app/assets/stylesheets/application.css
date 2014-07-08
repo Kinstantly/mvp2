@@ -10,6 +10,5 @@
  *
  *= require_self
  *= require plain
- *= require jquery-ui-lightness
- *= require jquery.rating
+ *= require ie
  */

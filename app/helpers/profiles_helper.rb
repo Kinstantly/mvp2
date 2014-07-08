@@ -6,7 +6,7 @@ module ProfilesHelper
 			if block.nil?
 				names.join(' | ') # Join with a separator.
 			else
-				names.collect(&block).join('') # Concatenate result of processing each name.
+				names.collect(&block).join(', ') # Concatenate result of processing each name.
 			end
 		end
 	end
@@ -130,7 +130,7 @@ module ProfilesHelper
 
 	def view_my_profile_link(options={})
 		path = my_profile_path
-		link_wrapper link_to(t('views.profile.view.my_profile_link'), path, id: 'view_my_profile_link'), options if can?(:view_my_profile, current_user.profile) && show_link?(path)
+		link_wrapper link_to(t('views.profile.view.my_profile_link'), path, id: 'view_my_profile_link'), options if can?(:view_my_profile, current_user.profile)
 	end
 
 	def edit_my_profile_link(options={})

@@ -1,83 +1,76 @@
+- @body_class = 'interior search'
 - location_remote_only_msg = t "controllers.profiles.location_remote_only"
 - locations_array = {}
 = javascript_include_tag 'profile_search'
-.search_results
-	%h1= search_results_title @search, address: @search_address, service: @search_service
-	- if default_search_query(@search_query, @search_service).blank?
-		.search_results_prompt= t 'views.search_results.search_query_prompt'
-	- if @search_address.blank? and @search.total > 1
-		.search_results_prompt= t 'views.search_results.sorted_by_proximity_prompt'
-	.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
+%hr/
+%section.search.left
+	%header#content-header.header
+		%h1= search_results_title @search, address: @search_address, service: @search_service
+		- if default_search_query(@search_query, @search_service).blank?
+			%h3.search_results_prompt= t 'views.search_results.search_query_prompt'
+		- if @search_address.blank? and @search.total > 1
+			%h3.search_results_prompt= t 'views.search_results.sorted_by_proximity_prompt'
+		%h3.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
 	#suggest_provider
-		.popover
-	#content
-		.search_results_list.ui-helper-clearfix
-			.column-right
-				.locations_map
-					.map_positioner
-						#map_canvas
-			.column-left
-				- @search.results.each do |profile|
-					- profile_id = "profile_#{profile.id}"
-					- locations_array[profile_id] = {}
-					- locations_array[profile_id]['name'] = profile.display_name_or_company
-					- locations_array[profile_id]['locations'] = profile.sorted_locations
-					- cache ['search_result', profile] do
-						%article.search_result.clearfix{itemscope: "", itemtype: "http://schema.org/Person", id: "search_result_#{profile.id}"}
-							.short-profile{id: profile_id}
-								.popover
-									.photo-wrapper-medium
-										= image_tag profile.profile_photo.url(:medium), alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(profile)
-									.profile
-										%h1{itemprop: "name"}
-											= profile.display_name_or_company
-											- if profile.headline.present?
-												%span.headline= profile.headline
-										- location = profile.first_location
-										%span
-											%span.location{itemprop: "telephone"}= location.try(:display_phone)
-											- if profile.email.present?
-												%span.location{itemprop: "email"}
-													= t 'views.profile.view.email'
-													= profile_obscured_email profile
-											- if profile.url.present?
-												%span.location{itemprop: "url"}
-													= t 'views.profile.view.url'
-													= profile_display_website profile
-										%span
-											%span.location{itemprop: "street-address"}
-												= location.try(:display_address)
-												- if (location_count = profile.locations.size) > 1
-													= t 'views.location.view.more.how_many', count: (location_count - 1)
-										- if profile.ages_stages_note.present?
-											%span.location.age_ranges
-												= t 'views.profile.view.ages_stages'
-												= profile_display_truncated profile.ages_stages_note, length: 150
-									.specialties= search_result_specialties_truncated profile, length: 700
-									.summary
-										%span= profile_display_truncated profile.summary, length: 180
-
-							.photo-wrapper-small
-								= image_tag profile.profile_photo.url(:medium), onclick: "document.location='#{profile_path(profile)}'", alt: "#{profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(profile)
-							.profile
-								%h1.show_profile{itemprop: "name", 'data-profile-id' => profile_id}
-									= profile_list_name_or_company_link profile, class: 'open'
-									- if profile.headline.present?
-										%span.headline= profile.headline
-								%span.specialties= search_result_specialties_truncated profile, length: 200
-								%span.location.location-link{itemprop: "street-address"}= search_result_location profile
-								%span.summary
-									= profile_display_truncated profile.summary, length: 200, links: true
-									= link_to t('views.search_results.more'), profile_path(profile), class: 'open'
-								.rating-contact
-									= render partial: 'profiles/rating_score', locals: {profile: profile}
-								-#.appointment
-									%a{href: "#"} Make an appointment
-			.ui-helper-clearfix	
-			- if @search.results.present?
-				.search_result= paginate @search.results
-		- if @search.total > 1
-			.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
+		.popover.generic_form
+	%article.search-results
+		%ol
+			- locations_count = 0
+			- @search.results.each do |profile|
+				- profile_id = profile.id
+				- locations_array[profile_id] = {}
+				- locations_array[profile_id]['name'] = profile.display_name_or_company
+				- locations_array[profile_id]['locations'] = profile.sorted_locations
+				- locations_count += profile.sorted_locations.count if profile.first_location.present? && profile.first_location.display_address.present?
+				- cache ['search_result', profile] do
+					%li.result{id: "result#{profile_id}", "data-profile-id" => profile_id}
+						%aside.photo
+							= image_tag profile.profile_photo.url(:medium), onclick: "document.location='#{profile_path(profile)}'", alt: "#{profile.display_name_or_company}", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+							.fb-like{"data-action" => "like", "data-href" => "http://kinstantly.com", "data-layout" => "box_count", "data-share" => "false", "data-show-faces" => "false"}
+						%header.result-title
+							%h2
+								= profile_list_name_or_company_link profile
+							%aside.more
+								= link_to t('views.search_results.more'), profile_path(profile)
+							.ratings-section
+								= render partial: 'profiles/rating_score', locals: {profile: profile}
+						%section.description
+							- if (profile.first_name.present? || profile.last_name.present?) && profile.company_name.present?
+								%h3=profile.company_name
+							- if profile.headline.present?
+								%h4= profile.headline
+							%p
+								- if profile.ages_stages_note.present?
+									%span.meta.ages
+										%strong Ages:
+										= profile_display_truncated profile.ages_stages_note, length: 150
+								%span.meta.specialties
+									%strong Specialties:
+									= search_result_specialties_truncated profile, length: 700
+							- if profile.first_location.present? && profile.first_location.display_address.present?
+								%p.address
+									- location = profile.first_location
+									= link_to location.try(:display_address), "javascript:void(0)", class: "location", "data-latitude" => location.latitude, "data-longitude" => location.longitude, target: "_blank"
+									- if (location_count = profile.locations.size) > 1
+										= link_to t('views.location.view.more.how_many', count: (location_count - 1)), "javascript:void(0)", class: "more", onclick: "my_vars.f.toggle_more_locations(this)"
+										%span.other-locations-slider{style: "display:none"}
+											- profile.locations.each_with_index do |location, n|
+												-if n != 0
+													= link_to location.try(:display_address), "javascript:void(0)", class: "location", "data-latitude" => location.latitude, "data-longitude" => location.longitude, target: "_blank"
+							- if profile.search_widget_code.present?
+								= raw profile.search_widget_code
+- if locations_count > 0
+	%section.results-map.right
+		.map-embed
+			.map_positioner
+				#map_canvas
+				-#%h2.map-title Day Care in Berkeley, CA
+.clearfix
+.search_footer
+	- if @search.results.present?
+		.search_result= paginate @search.results
+	- if @search.total > 1
+		%h3.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
 = render partial: 'layouts/g_analytics', locals: {search_result_num: @search.total}
 
 :javascript
@@ -85,9 +78,17 @@
 	my_vars.basic_marker_icon = 'https://maps.google.com/mapfiles/kml/paddle/blu-stars-lv.png';
 	my_vars.highlight_marker_icon = 'https://maps.google.com/mapfiles/kml/paddle/red-stars-lv.png';
 	my_vars.provider_suggestion_form_url = '#{new_provider_suggestion_path}';
+	my_vars.one_column_max_width = 683;
 
 - cache 'search_results_coffeescript' do
 	:coffeescript
+		# Sniff UserAgent and detect mobile platform if possible
+		ua = navigator.userAgent.toLowerCase()
+		my_vars.device =
+			iphone: ua.match(/(iphone|ipod|ipad)/i)
+			blackberry: ua.match(/blackberry/i)
+			android: ua.match(/android/i)
+
 		# Provider suggestion pop-over
 		# Close
 		my_vars.f.close_provider_suggestion_form = (e) ->
@@ -110,39 +111,13 @@
 			$(document).on 'click', my_vars.f.outer_close_provider_suggestion_form
 			false
 		
-		event_is_over_element = (e, el) ->
-			el_coords = el.offset()
-			e.pageY > el_coords.top && e.pageY < el_coords.top + el.outerHeight() &&
-				e.pageX > el_coords.left && e.pageX < el_coords.left + el.outerWidth()
-		# Pop-up short profiles
-		my_vars.f.setup_popup_profiles = ->
-			$('.show_profile').mouseenter (e) ->
-				short_profile = $('#' + $(this).attr('data-profile-id'))
-				short_profile.css('top', $(this).height() + 8) # first try placing below the mouse-over area
-				# next see if the short profile is entirely within the viewport
-				win = $(window)
-				viewport_top = win.scrollTop()
-				viewport_bottom = viewport_top + win.height()
-				popover_height = $('.popover', short_profile).outerHeight() # only the popover DIV has the proper height
-				if short_profile.offset().top + popover_height > viewport_bottom # off the bottom of the viewport?
-					short_profile.css('top', -(popover_height + 12)) # place above the mouse-over area
-					if short_profile.offset().top < viewport_top # are we now off the top of the viewport?
-						short_profile.offset({top: viewport_top + 4, left: short_profile.offset().left}) # place below top of viewport
-						my_vars.on_popover = event_is_over_element e, $('.popover', short_profile) # pointer might be on the popover!
-				short_profile.addClass 'active' # make it appear
-				false
-			$('.show_profile').mouseleave ->
-				$('#' + $(this).attr('data-profile-id')).removeClass 'active' unless my_vars.on_popover
-				false
-			$('.short-profile').mouseleave ->
-				my_vars.on_popover = false
-				$(this).removeClass 'active'
-				false
-		my_vars.f.setup_popup_profiles()
+		# Locations Slider
+		my_vars.f.toggle_more_locations = (el) ->
+			$(el).parent().find('.other-locations-slider').slideToggle()
 		
-		#google map module
-		#reads JSON string of locations from my_vars.locations_json and
-		#adds markers and popups on map for each valid location  
+		# Google map module
+		# Reads JSON string of locations from my_vars.locations_json and
+		# Adds markers and popups on map for each valid location  
 		my_vars.search_results_map = do ->
 			#private
 			map_options = 
@@ -162,14 +137,16 @@
 			map_obj = null
 			map_bounds = null
 			locations_json = $.parseJSON my_vars.locations_json
-			locations_links = $('.profile span.location-link[itemprop="street-address"]')
+			locations_links = $('p.address')
 			markers = {}
 			popups  = {}
 			
 			#binds ui elements to user events
 			bind_actions = ()  ->
 				locations_links.on 'mouseover', (e) ->
-					profile_id = $(@).parent('div.profile').find('h1.show_profile').attr('data-profile-id')
+					if ($(window).width() < my_vars.one_column_max_width)
+						return
+					profile_id = $(@).parents('li.result').attr('data-profile-id')
 					this.style.cursor = 'pointer'
 					#$(@).css color: '#000'
 					markers_for_profile = markers[profile_id]
@@ -182,7 +159,9 @@
 					toggle_markers_for_profile(profile_id)
 					
 				locations_links.on 'mouseout', (e) ->
-					profile_id = $(@).parent('div.profile').find('h1.show_profile').attr('data-profile-id')
+					if ($(window).width() < my_vars.one_column_max_width)
+						return
+					profile_id = $(@).parents('li.result').attr('data-profile-id')
 					this.style.cursor = 'default'
 					#$(@).css color: '#807f7f'
 					toggle_markers_for_profile(profile_id)
@@ -212,9 +191,11 @@
 					
 			init_markers = () ->
 				for link, i in locations_links
-					id = $(link).parent('div.profile').find('h1.show_profile').attr('data-profile-id')
+					id = $(link).parents('li.result').attr('data-profile-id')
+					
 					if not locations_json[id]?
 						continue
+					
 					name = locations_json[id]['name']
 					for location, i in locations_json[id]['locations']
 						lat = location.latitude
@@ -316,41 +297,50 @@
 				div.appendChild(document.createTextNode(str))
 				div.innerHTML
 				
-			init = () ->
+			init = (callback) ->
 				init_markers()
 				bind_actions() if map_obj?
+				callback()
 				
 			# public
-			init: init
-			
-		#search_results_map.init()
-			
-		#when DOM ready
+			init: (callback) ->
+				init(callback)
+
+		# when DOM ready
 		$ ->
+			# Push map below the window top by this num of pixels when scrolling
 			map_top_padding = 16
-			base_line = $('.column-left').offset().top - map_top_padding
-			max_bottom = $('.column-left').outerHeight()
-			map_height = $('.map_positioner').outerHeight()
-			max_top = max_bottom - map_height
-			map_width = $('.map_positioner').outerWidth()
 			map_is_fixed = false
 			win = $(window)
 			viewport_left = win.scrollLeft()
 			viewport_width = win.width()
-			
+
 			position_map = (e) ->
+				map_width = $('.map_positioner').outerWidth()
+				map_height = $('.map_positioner').outerHeight()
+
+				min_top  = $('section.search.left').offset().top - map_top_padding	
+				max_bottom = $('section.search.left').outerHeight()
+				max_top = max_bottom - map_height
+			
 				viewport_top = win.scrollTop()
-				new_top_offset = viewport_top - base_line
-				if(viewport_top > base_line && (new_top_offset + map_height) < max_bottom)	
+				new_top_offset = viewport_top - min_top
+				
+				# Place map below search results
+				# if (Modernizr.mq('(max-width: 682px)')) # Modernizr here causes errors on IE8 and is a CPU hog.
+				if (win.width() < 663)
+					$('.map_positioner').css({ 'position': 'static', 'float': 'none' })
+				# Map top/bottom boundaries are within allowed min/max
+				else if(viewport_top > min_top && (new_top_offset + map_height) < max_bottom)	
 					unless map_is_fixed && viewport_left == win.scrollLeft() && viewport_width == win.width()
 						map_is_fixed = true
 						viewport_left = win.scrollLeft()
 						viewport_width = win.width()
-						container = $('.locations_map')
+						container = $('.map-embed')
 						# In fixed mode, we need to position with respect to the left side of the viewport.
 						# But the container is floated right, so we measure starting at the right side of the container, i.e., left+width of the container.
 						map_left = Math.ceil(container.offset().left + container.outerWidth() - map_width - viewport_left)
-						$('.map_positioner').css({ 'position': 'fixed', 'top': map_top_padding+'px', 'left': map_left+'px' })
+						$('.map_positioner').css({ 'position': 'fixed', 'top': map_top_padding+'px', 'left': map_left + 'px' })
 				else if map_is_fixed
 					map_is_fixed = false
 					# In fixed mode we are positioning with 'left', so it's easier to override using 'left' while in relative mode.  Also, use 'left' in the style sheet.
@@ -358,6 +348,28 @@
 						$('.map_positioner').css({ 'position': 'relative', 'top': max_top+'px', 'left': '0px' })
 					else
 						$('.map_positioner').css({ 'position': 'relative', 'top': '0px', 'left': '0px' })
-						
+
+				# Link address link to map app if mobile device is detected
+				for address in $('a.location')
+					escaped_address = escape(address.text)
+					address = $(address)
+					#title = escape(address.parents('li.result').find('header.result-title h2 a')[0].innerText)
+					if (win.width() < my_vars.one_column_max_width)
+						address.addClass('linked_address')
+						lat = address.attr('data-latitude')
+						lng = address.attr('data-longitude')
+							
+						if lat && lng
+							address.attr target: '_blank'
+							if(my_vars.device.iphone)
+								address.attr href: 'maps:q=' + escaped_address + '@' + lat + ',' + lng
+							else if(my_vars.device.android)
+								address.attr href: 'geo:' + lat + ',' + lng + '?q=' + escaped_address
+							else
+								address.attr href: 'http://maps.google.com/maps?q=' + escaped_address + '&ll=' + lat + ',' + lng
+					else
+						address.attr href: "javascript:void(0)"
+						address.attr target: null
+								
 			win.scroll position_map
 			win.resize position_map
