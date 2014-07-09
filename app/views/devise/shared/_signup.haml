@@ -4,6 +4,7 @@
 - email_tip = t "views.sign_up.email_tip"
 - username_tip = t "views.sign_up.username_tip"
 - password_tip = t "views.sign_up.password_tip", minimum: User::MIN_LENGTHS[:password]
+- registration_special_code_tip = t 'views.sign_up.registration_special_code_tip'
 - parent_tag = t "views.sign_up.parent_tag"
 - provider_tag = t "views.sign_up.provider_tag"
 - parent_provider_tag = t "views.sign_up.parent_provider_tag"
@@ -42,10 +43,18 @@
 			= f.label :password_confirmation
 			%br
 			= f.password_field :password_confirmation, autocomplete: 'off'
+
+		.registration_special_code.text_field
+			= f.label :registration_special_code
+			%br
+			= f.text_field :registration_special_code
+			%span.help_icon
+				.help_popover
+					%p.tip.grey_text= registration_special_code_tip
+
 		- if claiming_profile
 			= f.hidden_field :is_provider, :value => '1'
 		- else
-
 			.radio_buttons
 				%label
 					= f.radio_button :is_provider, ''

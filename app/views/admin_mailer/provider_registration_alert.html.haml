@@ -10,6 +10,10 @@
 			%p
 				username:
 				= @user.username
+			- if @user.registration_special_code.present?
+				%p
+					%b The provider entered this special code:
+					= @user.registration_special_code
 			- if @user.claiming_profile?
 				%p The provider is in the process of claiming a profile.
 				- if (profile = @user.profile_to_claim)

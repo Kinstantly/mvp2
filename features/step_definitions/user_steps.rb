@@ -70,6 +70,7 @@ def sign_up(sign_up_path='/provider/sign_up')
     fill_in User.human_attribute_name(:password), :with => @visitor[:password]
     fill_in User.human_attribute_name(:password_confirmation), :with => @visitor[:password_confirmation]
     fill_in User.human_attribute_name(:username), :with => @visitor[:username] if @visitor[:username]
+    fill_in User.human_attribute_name(:registration_special_code), :with => @visitor[:registration_special_code] if @visitor[:registration_special_code]
     click_button 'sign_up_button'
   end
   find_user
@@ -195,6 +196,18 @@ When /^I sign up with a mismatched password confirmation$/ do
   create_visitor
   @visitor = @visitor.merge(:password_confirmation => "please123")
   sign_up
+end
+
+When /^I sign up with a special code of "(.*?)"$/ do |code|
+  create_visitor
+  @visitor = @visitor.merge(:registration_special_code => code)
+  sign_up
+end
+
+When /^I sign up as a (?:non\-expert|parent) with a special code of "(.*?)"$/ do |code|
+  create_visitor
+  @visitor = @visitor.merge(:username => "hoffman", :registration_special_code => code)
+  sign_up_member
 end
 
 When /^I return to the site$/ do
