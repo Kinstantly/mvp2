@@ -300,7 +300,7 @@
 			init = (callback) ->
 				init_markers()
 				bind_actions() if map_obj?
-				callback()
+				setTimeout callback, 1000
 				
 			# public
 			init: (callback) ->

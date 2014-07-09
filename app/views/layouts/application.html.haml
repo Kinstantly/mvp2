@@ -118,6 +118,7 @@
 				script = document.createElement('script');
 				script.id = id
 				script.type = 'text/javascript';
+				script.async = true;
 				script.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=" + my_vars.fb_api_key + "&version=v2.0";
 				fjs = document.getElementsByTagName('script')[0];
 				fjs.parentNode.insertBefore(script, fjs);
