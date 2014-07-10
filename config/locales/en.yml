@@ -205,6 +205,7 @@ en:
         password_confirmation: 'Retype password'
         phone: 'Phone number we use to contact you'
         admin_confirmation_sent_at: ''
+        registration_special_code: 'Special code'
     errors:
       messages:
         invalid_phone_number: '^Phone number must be valid and properly formatted, e.g., "800-555-0199 x47"'
@@ -523,6 +524,7 @@ en:
       parent_tag: "I'm a parent (or planning a family)"
       provider_tag: "I provide services to families"
       parent_provider_tag: "I'm both a parent and a provider"
+      registration_special_code_tip: 'Have a promotional code? Enter it here.'
     specialty:
       name: 'Specialty'
       edit:

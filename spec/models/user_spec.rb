@@ -60,7 +60,7 @@ describe User do
 		end
 		
 		context "phone number" do
-			it "he happy with a valid US phone number and extension" do
+			it "is happy with a valid US phone number and extension" do
 				@kelly.phone = '(800) 555-1234 x56'
 				@kelly.should have(:no).errors_on(:phone)
 			end
@@ -76,6 +76,20 @@ describe User do
 				@kelly.should have(:no).errors_on(:phone)
 				@kelly.phone += '0'
 				@kelly.should have(1).error_on(:phone)
+			end
+		end
+		
+		context "registration special code" do
+			it "should allow a blank code" do
+				@kelly.registration_special_code = ''
+				@kelly.should have(:no).errors_on(:registration_special_code)
+			end
+			
+			it "should not allow a code that is too long" do
+				@kelly.registration_special_code = 'a' * User::MAX_LENGTHS[:registration_special_code]
+				@kelly.should have(:no).errors_on(:registration_special_code)
+				@kelly.registration_special_code += 'a'
+				@kelly.should have(1).error_on(:registration_special_code)
 			end
 		end
 	

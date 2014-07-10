@@ -10,6 +10,10 @@
 			%p
 				username:
 				= @user.username
+			- if @user.registration_special_code.present?
+				%p
+					%b The parent entered this special code:
+					= @user.registration_special_code
 			%p= mailer_edit_user_link @user
 		- else
 			%p Oops, can't find the parent's record.

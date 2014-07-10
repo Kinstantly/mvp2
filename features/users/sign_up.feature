@@ -83,3 +83,14 @@ Feature: Sign up
 			When I sign up as a parent with valid user data
 				And "admin@kinstantly.com" opens the email with subject /Parent.*has registered/
 			Then they should see /parent.*registered/ in the email body
+
+		Scenario: Admin receives notification when an expert registers with a special code
+			When I sign up with a special code of "IamsoSpecial"
+				And "admin@kinstantly.com" opens the email with subject /Provider.*has registered/
+			Then they should see "IamsoSpecial" in the email body
+
+		@private_site
+		Scenario: Admin receives notification when a parent registers with a special code when running as a private site
+			When I sign up as a parent with a special code of "IamaSpecialParent"
+				And "admin@kinstantly.com" opens the email with subject /Parent.*has registered/
+			Then they should see "IamaSpecialParent" in the email body

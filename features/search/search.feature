@@ -56,8 +56,9 @@ Feature: search the provider directory
 
 	@javascript
 	Scenario: search results displayed on map
-		Given I am not logged in 
-		When I enter "" in the search box
+		Given a published profile with last name "Tebaldi" and specialty "ADHD"
+			And I am not logged in 
+		When I enter "ADHD" in the search box
 		Then I should see a Google Map
 
 	Scenario: can search the provider directory from the about page

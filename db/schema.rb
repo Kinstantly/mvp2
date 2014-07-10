@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140619021559) do
+ActiveRecord::Schema.define(:version => 20140709054459) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -353,6 +353,7 @@ ActiveRecord::Schema.define(:version => 20140619021559) do
     t.integer  "reviews_given_count",           :default => 0,  :null => false
     t.datetime "admin_confirmation_sent_at"
     t.integer  "admin_confirmation_sent_by_id"
+    t.string   "registration_special_code"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 	
 	# Setup accessible (or protected) attributes for your model
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
-		:profile_attributes, :phone, :is_provider, :username
+		:profile_attributes, :phone, :is_provider, :username, :registration_special_code
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :email, :phone, :username
@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
 		email: EmailValidator::MAX_LENGTH,
 		password: Devise.password_length.end,
 		phone: PhoneNumberValidator::MAX_LENGTH,
+		registration_special_code: 250,
 		username: UsernameValidator::MAX_LENGTH
 	}
 	
@@ -48,6 +49,7 @@ class User < ActiveRecord::Base
 	validates :username, username: true, if: :validate_username?
 	validates :username, uniqueness: { case_sensitive: false }, if: 'username.present?'
 	validates :phone, phone_number: true, allow_blank: true
+	validates :registration_special_code, length: {maximum: MAX_LENGTHS[:registration_special_code]}
 	
 	scope :order_by_id, order('id')
 	scope :order_by_descending_id, order('id DESC')

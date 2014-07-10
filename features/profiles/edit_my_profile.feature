@@ -36,7 +36,7 @@ Feature: Edit my expert profile
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page
-		When I open the "insurance" formlet
+		When I open the "website" formlet
 			And I click on the "Cancel" link of the "website" formlet
 		Then I should remain on the profile edit page
 	
@@ -178,7 +178,6 @@ Feature: Edit my expert profile
 			And I am on my profile edit page
 		When I open the "locations" formlet
 			And I click on the "Fill in a new location" link of the "locations" formlet
-			And I click on the "Save" button of the "locations" formlet
 		Then I should see form fields for an extra location on my profile edit page
 	
 	Scenario: Enter extra location
