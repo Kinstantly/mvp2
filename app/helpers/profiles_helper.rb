@@ -146,7 +146,7 @@ module ProfilesHelper
 	end
 
 	def new_invitation_profile_link(profile)
-		link_to t('views.profile.view.invitation_to_claim_link'), new_invitation_profile_path(profile), id: 'new_invitation_profile' if can?(:update, profile)
+		link_to t('views.profile.view.invitation_to_claim_link'), new_invitation_profile_path(profile) if can?(:update, profile)
 	end
 
 	def profile_invitation_info(profile)

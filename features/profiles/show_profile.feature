@@ -52,10 +52,10 @@ Feature: View a provider's profile
 		When I visit the published profile page
 		Then I should see a Google Map
 
-	Scenario: Info for Provider with remote services and no locations displayed instead of map
+	Scenario: Info for provider that consults remotely displayed instead of map
 		Given I am not logged in 
-			And I visit the view page for a published profile with no locations
-		Then I should see "controllers.profiles.location_remote_only" message
+			And I visit the view page for a published profile with remote consultations
+		Then the profile should show "This provider operates 100% remotely"
 
 	@private_site
 	Scenario: New site visitor cannot view profiles when running as a private site

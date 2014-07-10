@@ -122,7 +122,7 @@ group :development, :test do
 	# gem 'webrat', '~> 0.7'
 	gem 'factory_girl_rails', '~> 4.1'
 	gem 'email_spec', '~> 1.4'
-	gem 'capybara', '~> 1.1'
+	gem 'capybara', '~> 2.4'
 	gem 'capybara-webkit'
 	gem 'launchy', '~> 2.1'
 	gem 'syntax'

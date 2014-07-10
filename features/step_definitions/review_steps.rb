@@ -38,7 +38,7 @@ end
 
 When /^I give a rating of "(.*?)" (?:in|on) the (new|first|second) review on the admin profile edit page$/ do |score, which|
 	within(review_selector which) do
-		choose "rating_score_#{score}"
+		find("div#rating_score_#{score} a").click
 	end
 end
 
