@@ -231,7 +231,7 @@ Given /^there is an unclaimed profile with the "(.*?)" and "(.*?)" specialties$/
 	create_unattached_profile specialties: [spec1.to_specialty, spec2.to_specialty]
 end
 
-Given /^I visit the (view|edit|admin view|admin edit) page for (?:a|an|the)( existing)? (claimed|published|unclaimed|unpublished|current) profile( with no locations| with one location| with no reviews| with one review)?$/ do |page, existing, type, items|
+Given /^I visit the (view|edit|admin view|admin edit) page for (?:a|an|the)( existing)? (claimed|published|unclaimed|unpublished|current) profile( with no locations| with one location| with no reviews| with one review| with remote consultations)?$/ do |page, existing, type, items|
 	attrs = case items.try(:sub, /\A\s*with\s*/, '')
 	when 'no locations'
 		{ locations: [] }
@@ -243,6 +243,8 @@ Given /^I visit the (view|edit|admin view|admin edit) page for (?:a|an|the)( exi
 		# The review needs a reviewer associated for display purposes, but should not have the
 		# associated profile preset because we need to associate it with the profile created here.
 		{ reviews: [FactoryGirl.create(:review, reviewer: FactoryGirl.create(:parent))] }
+	when 'remote consultations'
+		{ locations: [], consult_remotely: true }
 	else
 		{}
 	end
@@ -373,7 +375,7 @@ end
 # Requires javascript.
 When /^I enter( | new | my )profile information$/ do |which|
 	profile_data = (which.strip == 'my' ? @profile_data : @unattached_profile_data)
-	find('#display_name').click
+	find('#display_name *', match: :first).click
 	within('#display_name') do
 		fill_in 'profile_first_name', with: profile_data[:first_name]
 		fill_in 'profile_middle_name', with: profile_data[:middle_name]
@@ -470,7 +472,7 @@ end
 When /^I add the "(.*?)" and "(.*?)" custom services using enter$/ do |svc1, svc2|
 	within('#services .custom_services') do
 		click_button 'add_custom_services_text_field'
-		fill_in MyHelpers.profile_custom_services_id('1'), with: "#{svc1}\r"
+		fill_in MyHelpers.profile_custom_services_id('1'), with: "#{svc1}\r\n"
 		fill_in MyHelpers.profile_custom_services_id('2'), with: svc2
 	end
 end
@@ -495,7 +497,7 @@ end
 When /^I add the "(.*?)" and "(.*?)" custom specialties using enter$/ do |spec1, spec2|
 	within('.expertise_profile .custom_specialties') do
 		click_button 'add_custom_specialties_text_field'
-		fill_in MyHelpers.profile_custom_specialties_id('1'), with: "#{spec1}\r"
+		fill_in MyHelpers.profile_custom_specialties_id('1'), with: "#{spec1}\r\n"
 		fill_in MyHelpers.profile_custom_specialties_id('2'), with: spec2
 	end
 end
@@ -511,7 +513,7 @@ end
 # This step requires javascript.
 When /^I fill in the "(.*?)" and "(.*?)" specialties using enter$/ do |spec1, spec2|
 	within('#specialties .specialty_names .text_field:last-of-type') do
-		find('input').set "#{spec1}\r"
+		find('input').set "#{spec1}\r\n"
 	end
 	within('#specialties .specialty_names .text_field:last-of-type') do
 		find('input').set spec2
@@ -546,7 +548,7 @@ When /^I click on the link for an unclaimed profile$/ do
 end
 
 When /^I open the "(.*?)" formlet$/ do |formlet|
-	find("##{formlet_id formlet}").click
+	find("##{formlet_id formlet} *", match: :first).click
 end
 
 When /^I enter "(.*?)" in the "(.*?)" field of the "(.*?)" formlet$/ do |text, field, formlet|
@@ -605,13 +607,13 @@ When /^I click on the profile claim (confirm )?link$/ do |force|
 end
 
 When /^I invite "(.*?)" to claim the profile$/ do |email|
-	click_link 'new_invitation_profile'
+	click_link I18n.t('views.profile.view.invitation_to_claim_link'), match: :first
 	fill_in 'invitation_email', with: email
 	click_button 'send_invitation_profile'
 end
 
 When /^I preview the invitation to "(.*?)" to claim the profile$/ do |email|
-	click_link 'new_invitation_profile'
+	click_link I18n.t('views.profile.view.invitation_to_claim_link'), match: :first
 	fill_in 'invitation_email', with: email
 	click_button 'test_invitation_profile'
 end
@@ -698,7 +700,7 @@ Then /^I should see my profile information$/ do
 end
 
 Then /^meta\-data should contain "(.*?)"$/ do |text|
-	page.should have_selector "meta[content~=\"#{text.downcase}\"]"
+	page.should have_selector("meta[content~=\"#{text.downcase}\"]", visible: false)
 end
 
 Then /^I should see one of my specialties$/ do
@@ -784,7 +786,7 @@ end
 Then /^my profile edit page should show "([^\"]+)" displayed( | second | third )(as a link )?in the "([^\"]+)" area$/ do |value, which, link, formlet|
 	selector = attribute_display_selector formlet, which
 	selector += ' a' if link.present?
-	within(selector) do
+	within(selector, match: :first) do
 		page.should have_content value
 	end
 end
@@ -863,9 +865,7 @@ Then /^I should see profile data for that user$/ do
 end
 
 Then /^I should see "(.*?)" in the page title$/ do |words|
-	within('title') do
-		page.should have_content words
-	end
+	expect(find(:xpath, '//head/title', visible: false)).to have_content words
 end
 
 Then /^the profile should be attached to my account$/ do
@@ -902,9 +902,9 @@ end
 
 Then /^I should see a Google Map$/ do
 	within 'body' do
-		page.should have_xpath "//script[starts-with(@src, 'https://maps.googleapis.com/maps/api')]"
-  	end
-  	within('#map_canvas') do
+		page.should have_xpath("//script[starts-with(@src, 'https://maps.googleapis.com/maps/api')]", visible: false)
+	end
+	within('#map_canvas') do
 		page.should_not be_blank
 	end
 end

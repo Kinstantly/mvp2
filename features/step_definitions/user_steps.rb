@@ -366,10 +366,10 @@ end
 Then /^I should (not )?see confirmation instructions form$/ do |no|
   if no.present?
     page.has_button?('Send confirmation instructions').should_not be_true    
-    page.has_css?("input[value='#{@user_2[:email]}']").should_not be_true
+    # page.has_css?("input[value='#{@user_2[:email]}']").should_not be_true
   else
     page.has_button?('Send confirmation instructions').should be_true
-    page.has_css?("input[value='#{@user_2[:email]}']").should be_true
+    find('input#user_email', visible: false).value.should == @user_2[:email]
   end
 end
 

@@ -7,4 +7,4 @@ Feature: Review provider
 		Given a published profile exists
 			And I am not logged in
 		When I enter published profile data in the search box
-		Then I should see "Are we missing your favorite provider?" on the page
+		Then I should see "Are we missing a great provider?" on the page
