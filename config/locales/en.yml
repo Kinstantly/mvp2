@@ -171,6 +171,7 @@ en:
         specialties_description: 'My specialties'
         summary: 'About'
         url: 'Website'
+        user_registration_special_code: "Owner's special code"
         visit_home: 'Home visits'
         visit_school: 'School visits'
       location:
@@ -232,6 +233,7 @@ en:
     or: 'or'
     accessibility: 'Skip to content'
     cancel: 'Cancel'
+    click_to_view: 'click to view'
     field_label: '%{name}:'
     optional_field_label: '%{name} (optional):'
     find_button: 'Find'

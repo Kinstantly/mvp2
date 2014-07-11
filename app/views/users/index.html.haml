@@ -8,24 +8,28 @@
 		%table
 			%thead
 				%tr
-					%th Login email
-					%th Name or username
-					%th Profile (click to view)
-					%th Roles
-					%th Current sign-in
-					%th Last sign-in
-					%th Sign-in count
-					%th Created
-					%th Updated
-					%th Confirmation sent
-					%th Confirmed
+					%th= User.human_attribute_name :email
+					%th= User.human_attribute_name :username
+					%th= Profile.human_attribute_name :display_name
+					%th= "#{User.human_attribute_name :profile} (#{t 'views.click_to_view'})"
+					%th= User.human_attribute_name :roles
+					%th= User.human_attribute_name :registration_special_code
+					%th= User.human_attribute_name :current_sign_in_at
+					%th= User.human_attribute_name :last_sign_in_at
+					%th= User.human_attribute_name :sign_in_count
+					%th= User.human_attribute_name :created_at
+					%th= User.human_attribute_name :updated_at
+					%th= User.human_attribute_name :confirmation_sent_at
+					%th= User.human_attribute_name :confirmed_at
 			%tbody
 				- @users.each do |u|
 					%tr
 						%td= link_to u.email, edit_user_path(u)
-						%td= u.is_provider? ? profile_display_name(u.profile) : u.username
+						%td= u.username
+						%td= profile_display_name u.profile if u.is_provider?
 						%td= user_list_profile_link u.profile if u.is_provider?
 						%td= u.roles.join(', ')
+						%td= u.registration_special_code
 						%td= u.current_sign_in_at
 						%td= u.last_sign_in_at
 						%td= u.sign_in_count

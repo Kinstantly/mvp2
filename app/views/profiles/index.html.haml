@@ -19,6 +19,7 @@
 						%th= t 'views.profile.view.claimed_by'
 						%th.large= Profile.human_attribute_name(:admin_notes)
 						%th= Profile.human_attribute_name(:lead_generator)
+						%th= Profile.human_attribute_name(:user_registration_special_code)
 					%th.large= Profile.human_attribute_name(:categories)
 					%th.large= Profile.human_attribute_name(:subcategories)
 					%th.large= Profile.human_attribute_name(:services)
@@ -51,6 +52,7 @@
 							%td= p.claimed? ? p.user.email : t('views.profile.view.not_claimed')
 							%td= p.admin_notes
 							%td= p.lead_generator
+							%td= p.user.try :registration_special_code
 						%td= profile_display_categories p
 						%td= profile_display_subcategories p
 						%td= profile_display_services p
