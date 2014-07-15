@@ -659,13 +659,13 @@ module ProfilesHelper
 Hi #{@profile.first_name.presence || 'there'},
 <br/>
 <br/>
-I'm Jim Scott, the founder and CEO of Kinstantly &mdash; a new free parenting site that makes it easier for families to find experts like you, learn about your services, and connect with you in ways that are more convenient for them <i>and</i> you.
+I'm Jim Scott, the founder and CEO of Kinstantly, a new free parenting site that makes it easier for families to find experts like you and learn about your services -- so <i>you</i> can grow your business.
 <br/>
 <br/>
-As a simple first step, we created a temporary profile for you that highlights the information parents tell us they want. Take a look and make any changes you'd like by clicking here: #{link_to 'Claim my profile', '<<claim_url>>'}. (Note: To protect your security, you'll first be taken to a sign-in page.)
+Here's the bonus we promised: To make things as easy as possible, we created a temporary profile for you that highlights the information parents tell us they want. Take a look and make any changes you'd like by clicking here: #{link_to 'Claim my profile', '<<claim_url>>'}. (Note: To protect your security, you'll first be taken to a sign-in page.)
 <br/>
 <br/>
-In the meantime, here's a bit about me: I'm the former Global VP of Editorial of BabyCenter, the largest parenting site in the world, with more than 20 million visitors a month &mdash; and a co-founder of Caring.com, the leading eldercare site in the country. You can learn more about the Kinstantly team and mission by visiting #{link_to 'About Us', about_url}.		
+In the meantime, here's a bit about me: I'm the former Global VP of Editorial of BabyCenter, the largest parenting site in the world, with more than 20 million visitors a month -- and a co-founder of Caring.com, the leading eldercare site in the country. You can learn more about our Kinstantly team and mission by visiting #{link_to 'About Us', about_url}.
 <br/>
 <br/>
 We want to make Kinstantly as perfect for you as we can, so please let me know if you have any questions or suggestions. Just hit reply or shoot me an email to the address below.

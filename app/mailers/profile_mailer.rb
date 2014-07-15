@@ -12,7 +12,7 @@ class ProfileMailer < ActionMailer::Base
 	end
 
 	def invite(email, subject, body, profile, test_invitation=false)
-		@body = body.sub("<<claim_url>>", claim_user_profile_url(token: profile.invitation_token))
+		@body = body.gsub(' -- ', ' &mdash; ').gsub("<<claim_url>>", claim_user_profile_url(token: profile.invitation_token))
 		if test_invitation
 			sendgrid_category :invitation_preview
 		elsif profile.invitation_tracking_category.present?

@@ -1,7 +1,11 @@
 = "Hi #{@resource.name_for_greeting.presence || 'there'},"
+- if @resource.is_provider?
+	%br
+	%br
+	You're just a few clicks away from building your free profile on Kinstantly!
 %br
 %br
-Please confirm the new Kinstantly account email address you recently created by clicking this link:
+Please confirm the email address you used to create your Kinstantly account by clicking this link:
 %br
 %br
 = link_to 'Confirm my email address', confirmation_url(@resource, confirmation_token: @resource.confirmation_token)
