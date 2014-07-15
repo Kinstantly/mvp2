@@ -65,6 +65,7 @@
 				.notice= notice
 			- if alert.present? and !@suppress_header_alert
 				.alert= alert
+		= yield :body_before_main_content
 		%article#content{class: "container" + (@content_class ? " #{@content_class}" : "")}
 			= yield
 			.follow

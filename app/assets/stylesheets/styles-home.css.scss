@@ -257,10 +257,10 @@ body {
 						background: transparent;
 						color: #AAA;
 						display: inline-block;
-						width: calc(100% - 2.65em);
+						width: calc(100% - 2.9em);
 					}
 				}
-				#search {
+				#provider_search_button {
 					background: $kinstantly_pink url(#{$image-path}/search.svg) center center no-repeat;
 					background-size: cover;
 					text-indent: -999em;
