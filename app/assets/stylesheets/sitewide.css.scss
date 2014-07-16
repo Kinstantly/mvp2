@@ -310,7 +310,7 @@ $message_corner_radius: 8px;
 	font-family: $font-stack;
 	line-height: 20px;
 	text-align: center;
-	width: $message_area_width;
+	max-width: $message_area_width;
 	margin: 8px auto;
 	> div {
 		font-weight: 700;
@@ -319,6 +319,10 @@ $message_corner_radius: 8px;
 		-webkit-border-radius: $message_corner_radius;
 		-moz-border-radius: $message_corner_radius;
 		border-radius: $message_corner_radius;
+		margin: 0 1.25em;
+		@media (max-width: 36em) {
+			@include scale(font-size, 14);
+		}
 	}
 	.notice, .alert {
 		color: $kinstantly_pink;

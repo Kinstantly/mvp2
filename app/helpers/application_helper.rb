@@ -70,8 +70,7 @@ module ApplicationHelper
 
 	def account_settings_link(options={})
 		path = edit_user_registration_path
-		options[:class] = 'account' if current_user.try :is_provider?
-		link_to(t('views.user.edit.link'), path, options) if user_signed_in? && show_link?(path)
+		link_to 'Settings', path, options if user_signed_in? && show_link?(path)
 	end
 	
 	def view_user_profile_link

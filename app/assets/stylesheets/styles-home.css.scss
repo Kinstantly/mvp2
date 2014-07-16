@@ -56,9 +56,9 @@ body {
 			position: relative;
 			z-index: 100;
 			
-			@media (max-width: 36em) {
+			/*@media (max-width: 36em) {
 				position: inherit;
-			}
+			}*/
 			
 			.menu {
 				@include scale(width, 32, 11);
@@ -94,10 +94,10 @@ body {
 				
 				@media (max-width: 36em) {
 					max-width: none;
-					min-width: 93.75vw;
+					/*min-width: 93.75vw;
 					width: 93.75vw ; 
 					left: 3.125% !important;
-					top: 3.5em !important;
+					top: 3.5em !important;*/
 				}
 				
 				li {

@@ -103,21 +103,16 @@
 									= link_to service.name, search_providers_by_service_path(service)
 					
 :javascript
-	//hide utf8 param
-	if($('#providerSearch input[name="utf8"]') && $('#providerSearch input[name="utf8"]').parent())
-		$('#providerSearch input[name="utf8"]').parent().hide() 
-	
 	// accordion menu
 	$(".accordion > li").click(function(){
-	if(false == $(this).next().is(':visible')) {
-		$('.accordion > ul').slideUp(300);
-	}
-	$(this).next('ul').slideToggle(300);
-	$(this).toggleClass( 'open' );
+		if(false == $(this).next().is(':visible')) {
+			$('.accordion > ul').slideUp(300);
+		}
+		$(this).next('ul').slideToggle(300);
+		$(this).toggleClass( 'open' );
 	});
 	
 	// fake html5 placeholders in older browsers
-	
 	$('[placeholder]').focus(function() {
 		var input = $(this);
 		if (input.val() == input.attr('placeholder')) {
@@ -137,6 +132,7 @@
 		$("#slider").responsiveSlides({
 			maxwidth: 1146,
 			speed: 800,
+			timeout: 8000, 
 			nav: true
 		});
 	});

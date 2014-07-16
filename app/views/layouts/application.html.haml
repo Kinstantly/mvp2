@@ -41,9 +41,11 @@
 										= image_tag current_user.profile.profile_photo.url(:medium), alt: "#{current_user.profile.display_name_or_company}", style: "max-width:24px;", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
 									= greeting
 									,
-							= account_settings_link
-							- if current_user.is_provider?
-								%ul.account-menu
+							= link_to t('views.user.edit.link'), 'javascript:void(0)', {class: :account}
+							%ul.account-menu
+								%li
+									= account_settings_link
+								- if current_user.is_provider?
 									%li
 										= edit_my_profile_link
 									%li
@@ -88,6 +90,10 @@
 		:javascript
 			my_vars.google_api_key = "#{GOOGLE_BROWSER_API_KEY}"
 			my_vars.fb_api_key	   = "#{FB_API_KEY}"
+
+			//hide utf8 param in search provider form
+			if($('#providerSearch input[name="utf8"]') && $('#providerSearch input[name="utf8"]').parent())
+				$('#providerSearch input[name="utf8"]').parent().hide() 
 		
 		:coffeescript
 			# Autocomplete location field in search form.
