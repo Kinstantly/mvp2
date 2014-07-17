@@ -1,13 +1,7 @@
-- provider_score = (profile.rating_average_score.presence || 0)
-- provider_score_int = provider_score.to_i
-- provider_score_half = (provider_score - provider_score_int >= 0.5)? 'half' : ''
 - provider_score_title = provider_rating_average_score profile
-%span{class: "reviews reviewed-#{provider_score_int}#{provider_score_half}-star", title: provider_score_title}
-	%span.star.star5
-	%span.star.star4
-	%span.star.star3
-	%span.star.star2
-	%span.star.star1
+%span{class: "reviews #{provider_rating_stars_css_class profile}", title: provider_score_title}
+	- Rating::SCORES.reverse_each do |i|
+		%span{class: "star star#{i}"}
 .review-num
 	-# Use the "size" method because it uses the underlying counter caching.
 	%span= display_count_for 'rating', profile.ratings.size

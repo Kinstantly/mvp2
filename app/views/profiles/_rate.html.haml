@@ -2,32 +2,35 @@
 - doing_review = [:review].include? embedded_in
 - submit_by_ajax ||= doing_review
 - current_rating ||= profile.rating_by(current_user)
-.rate_provider_form
-	- form_id = "rate_provider_#{profile.id}"
-	- unless doing_review
-		.rate-this
-			= current_rating ? t('rating.prompt_for_score') : t('rating.prompt_for_first_score')
-	= form_tag rate_profile_path(profile), id: form_id, method: :get do
-		- current_user_score = current_rating.try(:score).try(:round).presence || -1
-		- Rating::SCORES.each do |i|
-			= radio_button_tag 'score', i, (i == current_user_score), class: "rate_provider", title: provider_rating_title(i), id: "rate_provider_#{i}"
-	- if doing_review
-		.rate-this
-			= current_rating ? t('rating.change_review_score_html') : t('rating.add_review_score')
+- rate_provider_id = "rate_provider_#{profile.id}"
+- score_provider_id = "score_provider_#{profile.id}"
+- unless doing_review
+	%h5.ratings-header= t 'rating.prompt_for_score'
+%span{class: "rate reviews #{provider_rating_stars_css_class profile}", id: rate_provider_id}
+	- Rating::SCORES.reverse_each do |i|
+		%span{class: "star star#{i}", title: provider_rating_title(i), 'data-score' => i}
+	= form_tag rate_profile_path(profile), method: :get do
+		= hidden_field_tag 'score', current_rating.try(:score).try(:round), id: score_provider_id
+- if doing_review
+	.rate-this
+		= current_rating ? t('rating.change_review_score_html') : t('rating.add_review_score')
+
 :javascript
 	(function() {
 		var post_rating;
-		post_rating = function(value, link) {
+		post_rating = function(value) {
 			if (#{!!submit_by_ajax}) {
 				return $.post('#{rate_profile_path profile}', { score: value }, function(success) {
 					return $('.provider_rating').load('#{rating_score_profile_path profile} .provider_rating > *', my_vars.f.rating_score_reset);
 				}, 'json');
 			} else {
-				return $('##{form_id}').submit();
+				$('##{score_provider_id}').val(value);
+				return $('##{rate_provider_id} form').submit();
 			}
 		};
-		$('form##{form_id} input.rate_provider').rating({ callback: post_rating });
-		my_vars.f.rate_reset = function() {
-			return $('form input.rate_provider').rating({ callback: post_rating });
-		};
+		
+		$('##{rate_provider_id} .star').on('click', function(e) {
+			post_rating($(this).attr('data-score'));
+			return false;
+		});
 	}).call(this);

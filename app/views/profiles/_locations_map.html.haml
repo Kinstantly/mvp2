@@ -3,9 +3,9 @@
 #map_canvas
 
 :javascript
-	my_vars.locations_json	= '#{escape_javascript @profile.sorted_locations.to_json}';
-	my_vars.locations_total	=  parseInt('#{@profile.locations.size}');
-	my_vars.location_remote_only = ('#{@profile.consult_remotely}' == 'true')? true: false;
+	my_vars.locations_json	= '#{escape_javascript profile.sorted_locations.to_json}';
+	my_vars.locations_total	=  parseInt('#{profile.locations.size}');
+	my_vars.location_remote_only = ('#{profile.consult_remotely}' == 'true')? true: false;
 	my_vars.location_remote_only_msg = '#{location_remote_only_msg}';
 	my_vars.basic_marker_icon = 'https://maps.google.com/mapfiles/kml/paddle/blu-stars-lv.png';
 	my_vars.highlight_marker_icon = 'https://maps.google.com/mapfiles/kml/paddle/red-stars-lv.png';
@@ -23,14 +23,30 @@
 			streetViewControl: false,
 			overviewMapControl: false
 		
-		map_canvas 	  = document.getElementById "map_canvas"	
+		map_canvas = null
 		map_obj = null
 		locations_json = $.parseJSON my_vars.locations_json
-		locations_links = $('.profile .location_block')
-		control_links = $('.profile .location_block a')
+		locations_links = null
+		control_links = null
 		markers = []
 		popups  = []
-	
+
+		# setup that depends on the document state.  This should be run after all elements are created.
+		set_up = ->
+			resize_map_canvas()
+			resize_adjustments()
+			locations_links = $('.profile .location_block')
+			control_links = $('.profile .location_block a.more, .profile .location_block a.less')
+		
+		resize_map_canvas = ->
+			map_canvas = document.getElementById "map_canvas" unless map_canvas
+			map_canvas_wrapper = $(map_canvas)
+			map_canvas_wrapper.css('width', map_canvas_wrapper.parent('div').outerWidth())
+		
+		resize_adjustments = ->
+			$(window).on 'resize', (e) ->
+				resize_map_canvas()
+		
 		#binds ui elements to user events
 		bind_actions = ()  ->			
 			locations_links.on 'mouseover', (e) ->
@@ -160,6 +176,7 @@
 			div.innerHTML;
 		
 		init = (callback) ->
+			set_up()
 			init_markers()
 			if map_obj is null && my_vars.location_remote_only
 				$(map_canvas).append "<p class='ui-corner-all ui-state-default'>" + my_vars.location_remote_only_msg + "</p>"

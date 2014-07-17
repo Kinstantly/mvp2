@@ -283,6 +283,7 @@ class ProfilesController < ApplicationController
 	def seo_keywords
 		@meta_keywords = [@meta_keywords,
 			@profile.categories.map(&:lower_case_name),
+			@profile.subcategories.map(&:lower_case_name),
 			@profile.services.map(&:lower_case_name),
 			@profile.specialties.map(&:lower_case_name)].flatten.compact.uniq.join(', ')
 	end

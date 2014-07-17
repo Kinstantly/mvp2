@@ -208,10 +208,10 @@
 		clear: right;
 		
 		@media (max-width: $break-6) {
-		width: 100%;
-		float: none;
-		margin-right: 0;
-	}
+			width: 100%;
+			float: none;
+			margin-right: 0;
+		}
 		
 		.header {
 			font-family: $header-font-stack;
@@ -314,13 +314,27 @@
 					a:before {
 						content: "\f003";
 					}
-					a.info {
+					span.info {
 						font-family: $icon-font-stack;
 						color: $icon_blue;
 						@include scale(font-size, 16);
 						
 						&:before {
 							content: "";
+						}
+						
+						@include help_popover;
+						position: relative;
+						.help_popover {
+							left: -94px;
+							bottom: 24px;
+							width: 188px;
+							font-size: 13px;
+							padding: 4px;
+							color: #222;
+							background-color: rgba(255, 255, 255, 0.85);
+							border: 1px solid black;
+							@include button-corner-style;
 						}
 					}
 				}
@@ -374,15 +388,33 @@
 			@extend %clearfix;
 			@include scale(margin-bottom, 26, 14);
 			
+			.location_block + .location_block {
+				clear: both;
+				display: none;
+			}
+			
 			.location {
 				@include scale(padding, 10 10 10 30,14);
 				float: left;
 				width: 38.2473118%;
 				position: relative;
 				
-				a.more {
-					@include scale(font-size, 11,14);
+				span + span { 
 					display: block;
+					margin-top: .25em;
+				}
+				
+				a.more, a.less {
+					@include scale(font-size, 12,14);
+				}
+				span ~ a.more, span ~ a.less {
+					@include scale(padding-top, 10,14);
+				}
+				a.more {
+					display: block;
+				}
+				a.less {
+					display: none;
 				}
 				
 				&:before {
@@ -398,14 +430,14 @@
 					left: 10;
 				}
 				
-				&:first-of-type {
+				&.address {
 					padding-right: 0;
 					
 					&:before {
 						content: "\f041";
 					}
 				}
-				&:last-of-type {
+				&.telephone {
 					float: right;
 					
 					&:before {
@@ -415,12 +447,35 @@
 						@include scale(left, 12,22);
 					}
 				}
+				&.information {
+					clear: both;
+					width: 90%;
+					padding-top: 0;
+				}
 			}
 			
 			.map-embed {
-					float: none;
-					width: 100%;
-					padding: 0;
+				float: none;
+				width: 100%;
+				padding: 0;
+				
+				#map_canvas, #map_canvas_placeholder {
+					height: 217px;
+				}
+				#map_canvas {
+					p:not(.map_popup_text){
+						margin-top: 15px;
+						padding: 10px 15px;
+						font-size: 15px;
+					}
+					p.map_popup_text {
+						text-transform: capitalize;
+						overflow: hidden !important;
+					}
+					p.map_popup_title {
+						font-weight: bold;
+					}
+				}
 			}
 			.editable {
 				background-position: 1em .5em;
@@ -430,6 +485,11 @@
 						display: none !important;
 					}
 			}
+		}
+		.promo {
+			border: 1px solid $medium-gray;
+			@extend %clearfix;
+			@include scale(margin-bottom, 30, 14);
 		}
 		.schedule {
 			background: $light-gray;
@@ -475,8 +535,15 @@
 			
 			li.review {
 				@include scale(padding-bottom, 30,14);
-				border-bottom: 1px solid $medium-gray;
+				border-bottom: 2px solid $dark-gray;
 				@include scale(margin-bottom, 24, 14);
+				
+				hr {
+					color: $default_background;
+					background-color: $default_background;
+					margin: 0;
+					width: 100%;
+				}
 				
 				.author {
 					float: left;
@@ -484,6 +551,15 @@
 					margin-right: 4.3010753%;
 					font-size: .785714286em;
 					line-height: 1.2em;
+					overflow-x: hidden;
+					
+					.name {
+						color: $blue;
+					}
+					
+					.meta {
+						display: block;
+					}
 					
 					@media (max-width: $break-8) {
 						float: none;
@@ -512,6 +588,11 @@
 				.review {
 					float: left;
 					width: 80.5602151%;
+					border-top: 1px solid $medium-gray;
+					
+					&:first-of-type {
+						border-top: none;
+					}
 					
 					@media (max-width: $break-8) {
 						width: 100%;
@@ -532,14 +613,23 @@
 						.date {
 							display: block;
 							line-height: 1.5em;
+							margin-top: 0.5em;
+						}
+						
+						h4 {
+							font-weight: bold;
 						}
 					}
 					.review-text {
 							line-height: 1.5em;
 							
 							p {
-								margin-bottom: 1.5em;
+								margin-bottom: 1em;
+								white-space: pre-line;
 							}
+					}
+					.tip {
+						margin-bottom: 1em;
 					}
 				}
 				.tip {

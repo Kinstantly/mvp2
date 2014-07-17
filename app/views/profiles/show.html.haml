@@ -19,8 +19,9 @@
 		= admin_link
 		- if can?(:destroy, @profile)
 			= render partial: 'destroy', locals: {profile: @profile}
-%article#content.profile_content
-	- if show_and_edit
-		= render partial: 'show_and_edit_tabs', locals: {active_tab: :show}
-	- else
-		= render partial: 'show'
+-# %article#content.profile_content
+%hr/
+- if show_and_edit
+	= render partial: 'show_and_edit_tabs', locals: {active_tab: :show}
+- else
+	= render partial: 'show'

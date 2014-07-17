@@ -632,10 +632,13 @@ module ProfilesHelper
 		profile.rating_average_score.try(:round, 1) || t('rating.no_score')
 	end
 
+	def provider_rating_stars_css_class(profile)
+		rating_score_stars_css_class profile.rating_average_score
+	end
+
 	def profile_review_link(profile)
-		provider_name = profile.display_name_or_company
 		text_key = profile.has_reviews_by(current_user) ? 'followup_review_provider_link' : 'review_provider_link'
-		link_to t(text_key, scope: 'views.profile.view', name: provider_name), new_review_for_profile_url(profile)
+		link_to t(text_key, scope: 'views.profile.view'), new_review_for_profile_url(profile)
 	end
 
 	def suggest_provider_link
