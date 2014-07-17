@@ -94,6 +94,7 @@ body {
 				
 				@media (max-width: 36em) {
 					max-width: none;
+					@include scale(left, -167);
 					/*min-width: 93.75vw;
 					width: 93.75vw ; 
 					left: 3.125% !important;

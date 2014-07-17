@@ -113,6 +113,10 @@
 						border: 1px solid $kinstantly_light_gray;
 						background: $white;
 						z-index: 100;
+						
+						@media (max-width: 36em) {
+							@include scale(left, -167);
+						}
 					}
 			
 			.menu {
