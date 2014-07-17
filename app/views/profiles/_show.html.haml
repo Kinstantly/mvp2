@@ -28,7 +28,8 @@
 				%ul
 					- if @profile.url.present?
 						%li#url{itemprop: 'url'}
-							= profile_linked_website @profile
+							%span.short= profile_linked_website @profile, strip_url(@profile.url), 24
+							%span.long= profile_linked_website @profile, strip_url(@profile.url), 40
 					- if @profile.email.present?
 						%li#email{itemprop: 'email'}
 							= profile_captcha_email @profile
@@ -83,10 +84,15 @@
 				= render partial: 'profiles/locations_map', locals: {profile: @profile}
 			- (locations = @profile.sorted_locations).each_with_index do |location, i|
 				.location_block{'data-i' => "#{i}"}
-					%aside.address.location
-						%span{itemprop: 'street-address'}= location.display_address
-					%aside.telephone.location
-						%span{itemprop: 'telephone'}= location_linked_phone location
+					- if location.display_address.present?
+						%aside.address.location
+							%span{itemprop: 'street-address'}
+								%span= location.address1
+								%span= location.address2
+								%span= location.display_city_region_postal_code
+					- if location.phone.present?
+						%aside.telephone.location
+							%span{itemprop: 'telephone'}= location_linked_phone location
 					%aside.information.location
 						- if location.note.present?
 							%span= location.note

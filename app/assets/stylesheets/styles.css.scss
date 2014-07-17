@@ -309,6 +309,24 @@
 						content: "\f0ac";
 						@include scale(font-size, 19,16);
 					}
+					.short {
+						display: inline-block;
+					}
+					.long {
+						display: none;
+							
+						a:before {
+							padding-right: 4.040404%;
+						}
+					}
+					@media (max-width: $break-8) {
+						.short {
+							display: none;
+						}
+						.long {
+							display: inline-block;
+						}
+					}
 				}
 				#email {
 					a:before {
