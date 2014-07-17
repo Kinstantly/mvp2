@@ -6,7 +6,7 @@
 - score_provider_id = "score_provider_#{profile.id}"
 - unless doing_review
 	%h5.ratings-header= t 'rating.prompt_for_score'
-%span{class: "rate reviews #{provider_rating_stars_css_class profile}", id: rate_provider_id}
+%span{class: "rate reviews #{rating_score_stars_css_class current_rating.try(:score)}", id: rate_provider_id}
 	- Rating::SCORES.reverse_each do |i|
 		%span{class: "star star#{i}", title: provider_rating_title(i), 'data-score' => i}
 	= form_tag rate_profile_path(profile), method: :get do
