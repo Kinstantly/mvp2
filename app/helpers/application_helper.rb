@@ -167,14 +167,15 @@ module ApplicationHelper
 		url.strip.sub(/^https?:\/\//i, '')
 	end
 	
-	def display_url(url, max_length=44)
+	def display_url(url, max_length=nil)
+		max_length ||= 44
 		truncate strip_url(url), length: max_length
 	end
 	
-	def display_linked_url(url, title=nil)
+	def display_linked_url(url, title=nil, max_length=nil)
 		if url.present?
-			auto_link "http://#{strip_url url}", link: :urls, html: { target: '_blank', title: title } do |body|
-				display_url body
+			auto_link "http://#{strip_url url}", link: :urls, html: { target: '_blank', title: title.try(:html_escape) } do |body|
+				display_url body, max_length
 			end
 		end
 	end

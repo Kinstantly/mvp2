@@ -140,8 +140,28 @@ $button_corner_radius: 4px;
 	background-color: $kinstantly_gray;
 }
 
+@mixin help_popover {
+	.help_popover {
+		display: none;
+		position: absolute;
+		z-index: 10;
+	}
+	&:hover {
+		cursor: pointer;
+		.help_popover {
+			display: block;
+		}
+	}
+}
 
-/* Mixins */
+@mixin help_icon {
+	position: relative;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background: url('help_16_blue.png') 0px 0px no-repeat;
+	@include help_popover;
+}
 
 @mixin box-sizing {
 	-webkit-box-sizing: border-box;

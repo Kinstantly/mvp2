@@ -26,7 +26,7 @@
 					%li.result{id: "result#{profile_id}", "data-profile-id" => profile_id}
 						%aside.photo
 							= image_tag profile.profile_photo.url(:medium), onclick: "document.location='#{profile_path(profile)}'", alt: "#{profile.display_name_or_company}", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
-							.fb-like{"data-action" => "like", "data-href" => "http://kinstantly.com", "data-layout" => "box_count", "data-share" => "false", "data-show-faces" => "false"}
+							.fb-like{"data-action" => "like", "data-href" => "#{profile_url profile}", "data-layout" => "box_count", "data-share" => "false", "data-show-faces" => "false"}
 						%header.result-title
 							%h2
 								= profile_list_name_or_company_link profile

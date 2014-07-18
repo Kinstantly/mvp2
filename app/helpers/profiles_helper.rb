@@ -63,8 +63,8 @@ module ProfilesHelper
 		display_linked_url profile.try(:photo_source_url), title
 	end
 
-	def profile_linked_website(profile=current_user.try(:profile), title=nil)
-		display_linked_url profile.try(:url), title
+	def profile_linked_website(profile=current_user.try(:profile), title=nil, max_length=nil)
+		display_linked_url profile.try(:url), title, max_length
 	end
 
 	def profile_display_website(profile=current_user.try(:profile), msg_when_blank=nil)
@@ -77,7 +77,7 @@ module ProfilesHelper
 	
 	def profile_linked_email(profile=current_user.try(:profile), title=nil)
 		if (email = profile.try(:email)).present?
-			auto_link email.strip, link: :email_addresses, html: { title: title }
+			auto_link email.strip, link: :email_addresses, html: { title: title.try(:html_escape) }
 		end
 	end
 	
@@ -95,7 +95,7 @@ module ProfilesHelper
 
 	def profile_captcha_email(profile=current_user.try(:profile), title=nil)
 		if (email = profile.try(:email)).present?
-			hidden_email = profile_obscured_email profile
+			hidden_email = truncate profile_obscured_email(profile), length: 24
 			mailhide_link = RecaptchaMailhide::URL.url_for(email)
 			js_click_event = "window.open(this.href, '#{title}', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300,left=200,top=200'); return false;"
 			link_to hidden_email, mailhide_link, { title: title, onclick: js_click_event }
@@ -632,10 +632,13 @@ module ProfilesHelper
 		profile.rating_average_score.try(:round, 1) || t('rating.no_score')
 	end
 
+	def provider_rating_stars_css_class(profile)
+		rating_score_stars_css_class profile.rating_average_score
+	end
+
 	def profile_review_link(profile)
-		provider_name = profile.display_name_or_company
 		text_key = profile.has_reviews_by(current_user) ? 'followup_review_provider_link' : 'review_provider_link'
-		link_to t(text_key, scope: 'views.profile.view', name: provider_name), new_review_for_profile_url(profile)
+		link_to t(text_key, scope: 'views.profile.view'), new_review_for_profile_url(profile)
 	end
 
 	def suggest_provider_link
