@@ -244,6 +244,10 @@ class ProfilesController < ApplicationController
 	def rating_score
 		render layout: false
 	end
+
+	def edit_rating
+		render layout: false
+	end
 	
 	def rate
 		respond_to do |format|

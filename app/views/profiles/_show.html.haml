@@ -15,6 +15,7 @@
 		-# Do not try to cache the user's rating and review info because it is unique to each user.
 		- unless @profile == current_user.try(:profile)
 			.ratings-section
+				%h5.ratings-header= t 'rating.prompt_for_score'
 				= render partial: 'profiles/rate', locals: {profile: @profile}
 				.review-num.add-review= profile_review_link @profile
 	- cache ['profile_links_description', @profile] do

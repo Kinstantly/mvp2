@@ -4,15 +4,17 @@
 - body_placeholder = t('review.body_placeholder')
 - good_to_know_placeholder = t('review.good_to_know_placeholder')
 = javascript_include_tag 'review_new'
-						
+
 #content
-	.new_review_div.wider_form
-		.left.column_70
+	.new_review_div
+		.left.column
 			%p= (current_user_score > 0)? t('rating.thanks_for_rating', name: profile_name, count: current_user_score): t('review.review_header', name: profile_name)
 			%p= current_rating ? t('review.prompt_for_review') : ''
-		.right.column_25				
+		.right.column
 			- if can? :rate, @review.profile
-				= render partial: 'profiles/rate', locals: {profile: @review.profile, current_rating: current_rating, embedded_in: :review}
+				= render partial: 'profiles/rate', locals: {profile: @review.profile, current_rating: current_rating, submit_by_ajax: true, allow_clear: true}
+				%p.rate-this
+					= current_rating ? t('rating.change_review_score_html') : t('rating.add_review_score')
 		- if can? :create, @review
 			= form_for @review, url: save_review_for_profile_path(@review.profile) do |f|
 				= f.error_messages

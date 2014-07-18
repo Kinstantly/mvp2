@@ -1252,6 +1252,15 @@
 			color: $kinstantly_pink_light;
 	}
 }
+.clear_rating {
+	display: inline-block;
+	padding: 0.25em 0 0 0.5em;
+	font-size: 90%;
+	
+	a:hover {
+		cursor: pointer;
+	}
+}
 
 .reviewed-1-star {
 	span.star1:before {
@@ -1424,7 +1433,7 @@ div.popover {
 
 .generic_form {
 	@include form-style;
-	width: 418px;
+	width: $generic_form_width;
 	margin: 0 auto;
 	h1 {
 		font-family: $header-font-stack;
@@ -1439,6 +1448,7 @@ div.popover {
 	.buttons {
 		input, a {
 			margin-right: 1em;
+			margin-bottom: 1em;
 		}
 		.default {
 			@include default-button-style;
@@ -1464,5 +1474,82 @@ div.popover {
 	}
 	.grey_text{
 		color: #807F7F;
+	}
+}
+
+.wider_form{
+	@extend .generic_form;
+	width: $generic_form_width * 1.5;
+	.text_field {
+		textarea, input, select {
+			width: $form_element_width * 1.5 + 15px;
+			max-width: $form_element_width * 1.5 + 15px;
+		}
+		label{
+			@extend .ui-corner-all;
+			padding: 4px;
+		}
+	}
+	.field_with_errors{
+		textarea, input, select {
+			border: 1px solid rgba(228, 61, 93, 0.4);
+		}
+	}
+	.column{
+		position:relative;
+		width: 47%;
+		margin: 0 0 30px 0;
+		display: inline-block;
+		vertical-align: top;
+		
+		p{
+			margin-top:8px;
+			font-size: 17px;
+			padding-top: 8px;
+		}
+	}
+	.left{
+		float: left;
+		margin-left:0;
+
+	}
+	.right{
+		float: right;
+		margin-right:0;
+	}
+}
+
+.new_review_div {
+	@extend .wider_form;
+	
+	.left.column {
+		width: 55%;
+	}
+	.right.column {
+		width: 40%;
+	}
+	.rate-this {
+		clear: left;
+		font-size: 13px !important;
+		color: $text_light_color;
+		font-style: italic;
+		float: left;
+	}
+	
+	@media screen and (max-width: $break-7) {
+		width: 100%;
+		
+		.left.column, .right.column {
+			width: 100%;
+			float: left;
+		}
+		.left.column {
+			margin-bottom: 12px;
+		}
+		.text_field {
+			textarea {
+				width: 90%;
+			}
+		}
 	}
 }

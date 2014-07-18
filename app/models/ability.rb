@@ -20,6 +20,7 @@ class Ability
 		end
 		
 		# Any confirmed user can rate a published profile that is not their own.
+		alias_action :edit_rating, to: :rate
 		can :rate, Profile, is_published: true if user.confirmed?
 		cannot :rate, Profile, user_id: user.id
 		

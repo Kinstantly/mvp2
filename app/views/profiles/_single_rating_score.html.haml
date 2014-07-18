@@ -1,4 +1,4 @@
 - rating_title = rating.try(:score) || t('rating.no_score')
-%span{class: "reviews #{rating_score_stars_css_class rating.score}", title: rating_title}
+%span{class: "reviews #{rating_score_stars_css_class rating.try(:score)}", title: rating_title}
 	- Rating::SCORES.reverse_each do |i|
 		%span{class: "star star#{i}"}

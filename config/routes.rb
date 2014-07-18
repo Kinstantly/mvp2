@@ -45,6 +45,7 @@ Mvp2::Application.routes.draw do
 			get 'new_invitation'
 			put 'send_invitation'
 			get 'rating_score'
+			get 'edit_rating'
 			get 'rate'
 			post 'rate'
 			put 'formlet_update'
