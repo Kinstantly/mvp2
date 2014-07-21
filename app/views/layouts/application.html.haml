@@ -69,7 +69,7 @@
 				.alert= alert
 		= yield :body_before_main_content
 		%article#content{class: "container" + (@content_class ? " #{@content_class}" : "")}
-			- if @body_class =~ /\binterior\b/
+			- if @body_class.try :match, /\binterior\b/
 				%hr/
 			= yield
 			.follow
