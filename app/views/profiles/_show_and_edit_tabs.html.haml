@@ -1,6 +1,6 @@
 - active_tab ||= :show
 #tabs.ui-tabs.ui-widget.ui-widget-content.ui-corner-all
-	%ul.ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-corner-all
+	%ul.ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-corner-all.container
 		%li
 			= link_to t('views.profile.edit.show_tab'), show_tab_profile_path(@profile), class: 'show_tab'
 		%li

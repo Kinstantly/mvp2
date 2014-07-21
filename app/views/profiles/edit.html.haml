@@ -1,3 +1,4 @@
+- @content_class = 'profile_content'
 = javascript_include_tag 'profile_edit'
 - if can?(:manage, Profile)
 	.editor_buttons
@@ -9,5 +10,4 @@
 		= admin_link
 		- if can?(:destroy, @profile)
 			= render partial: 'destroy', locals: {profile: @profile}
-%article#content.profile_content
-	= render partial: 'show_and_edit_tabs', locals: {active_tab: :edit}
+= render partial: 'show_and_edit_tabs', locals: {active_tab: :edit}
