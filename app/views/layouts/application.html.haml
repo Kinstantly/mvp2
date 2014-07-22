@@ -70,7 +70,8 @@
 		= yield :body_before_main_content
 		%article#content{class: "container" + (@content_class ? " #{@content_class}" : "")}
 			- if @body_class.try :match, /\binterior\b/
-				%hr/
+				- unless @content_class.try :include?, 'no-upper-hr'
+					%hr/
 			= yield
 			.follow
 				%span Follow us on:

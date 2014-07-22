@@ -1,7 +1,9 @@
+- @body_class = 'interior about'
+- @content_class = 'contact-page no-upper-hr'
 - @page_title = "#{company_name} - Contact us"
 - info_email = "#{t('contact.emails.info.value')}@#{t('email_domain')}"
 - cache 'contact_page' do
-	#contact-page.content
+	.contact-wrapper
 		%section.contact-section
 			%header
 				%h1 Ask us anything
@@ -15,5 +17,3 @@
 			%span.photo-credit.section-bg
 				= link_to '&copy; Slava Basovich'.html_safe, profile_path(1509)
 			%p Or send a note (or cookies) to: Kinstantly, Inc., 350 Townsend St. #683, San Francisco, CA 94107
-		.container
-			= render partial: 'social'
