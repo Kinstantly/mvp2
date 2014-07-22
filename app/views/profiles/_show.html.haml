@@ -1,7 +1,10 @@
 - @page_title_prefix = @profile.display_name_or_company
 -# = javascript_include_tag 'profile_show'
-%aside.help
-	= link_to t('views.profile.view.feedback'), '#'
+- if can?(:manage_my_profile, @profile) || can?(:edit, @profile)
+	#editing_tip.clearfix= t 'views.profile.view.editing_tip'
+- else
+	%aside.help
+		= link_to t('views.profile.view.feedback'), '#'
 %section.profile.left
 	%header#content-header.header{itemscope: '', itemtype: 'http://schema.org/Person'}
 		- cache ['profile_header_sans_rating', @profile] do

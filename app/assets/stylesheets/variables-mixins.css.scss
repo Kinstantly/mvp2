@@ -54,6 +54,7 @@ $break-4: 428px;
 
 $generic_form_width: 418px;
 $form_element_width: 388px;
+$large_photo_y: 168px;
 
 @mixin cell-style {
 	border: {
@@ -110,6 +111,7 @@ $button_corner_radius: 4px;
 		size: 15px;
 		weight: bold;
 	}
+	line-height: 16px;
 	display: inline-block; // <A> tags are inline by default.  Need this to set their width.
 	width: 7em;
 	text-align: center;
@@ -137,9 +139,10 @@ $button_corner_radius: 4px;
 @mixin cancel-button-style {
 	@include button-style;
 	background-color: $kinstantly_light_gray;
+	line-height: 17px; // Cancel buttons are usually <A> tags which render shorter than buttons.
 }
 @mixin cancel-button-hover-style {
-	@include button-style;
+	@include cancel-button-style;
 	background-color: $kinstantly_gray;
 }
 
