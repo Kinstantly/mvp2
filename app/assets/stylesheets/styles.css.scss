@@ -1389,6 +1389,8 @@
 	background: #FFF;
 }
 
+/* Pop-over forms */
+
 div.popover {
 	display: none;
 	position: absolute;
@@ -1409,6 +1411,24 @@ div.popover {
 	margin-left: -25px;
 	@include form-style;
 	@include mobile-popover;
+}
+
+.active {
+	background: none !important;
+	div.popover {
+		display: block;
+	}
+}
+
+.formlet {
+	.blank_attr {
+		display: inline;
+		color: $text_light_color;
+	}
+	cursor: auto;
+	.popover {
+		@include mobile-formlet-popover;
+	}
 }
 
 .close-popover-button{
@@ -1597,6 +1617,13 @@ div.popover {
 				}
 			}
 		}
+		.ui-tabs-panel {
+			#editing_tip {
+				font-size: 15px;
+				color: $default_link_color;
+				margin-bottom: 8px;
+			}
+		}
 		.panel_loading {
 			background-image: url('loading_large.gif');
 			background-position: center top;
@@ -1605,4 +1632,99 @@ div.popover {
 			height: 1000px;
 		}
 	}
+}
+
+/* Profile edit */
+
+.hidden {
+	display: none;
+}
+
+/* Profile photo upload */
+
+span.inline_block_attr{
+		display: inline-block;
+		width: 100%;
+		text-align: center;
+}
+
+.profile-photo-update{
+	width:508px !important;
+	p{
+		color: #807f7f;
+		font-size: 14px;
+		padding: 5px 0 0 0;
+	}
+	.errorExplanation {
+		margin-bottom: 1em;
+	}
+}
+
+.file-drop{
+		height: $large_photo_y;
+		width: $large_photo_y;
+		border: 1px solid red;
+		background-color: #efefef;
+		margin: 10px 0 5px 135px;
+		position: relative;
+		padding: 0;
+		overflow:hidden;
+}
+.file-drop span{
+	color: #aaa;
+	font-size:14px;
+	top: 70px;
+	position: relative;
+	width: 100%;
+	text-align: center;
+	display: inline-block;
+}
+.upload-result{
+	@extend .file-drop;
+	border:0;
+}
+
+.upload-waiter{
+	background: url('loading_large.gif') no-repeat center center;
+	background-color:rgba(240,240,240,0.7);
+	position: absolute;
+	top: 0px;
+	right: 0;
+	height: $large_photo_y;
+	width: $large_photo_y;
+}
+
+.upload-button{
+//	font-family: "Goudy Old Style", Garamond, "Big Caslon", "Times New Roman", serif;
+	font-family: $font-stack;
+	font-weight: bold;
+	font-size: 17px;
+	color:#fff;
+	background-color: $kinstantly_light_blue;
+	padding: 13px 9px;
+	@extend .clickable;
+}
+
+.upload-button:after{
+	content: "upload";
+}
+
+.upload-button:hover{
+	background-color: $kinstantly_blue;
+}
+
+.aria-hidden{
+	display: none;
+}
+
+.step_three h3{
+	color: #3D3D3D;
+	margin: 5px 0 0 0;
+	font-weight: bold;
+}
+
+ul.links-list > li{
+	margin-left:30px;
+	font-size: 15px;
+	color: #807f7f;
 }

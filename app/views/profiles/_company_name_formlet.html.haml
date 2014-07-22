@@ -1,0 +1,19 @@
+- formlet = 'company_name'
+.edit.popover
+	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+		= f.error_messages
+		= hidden_field_tag 'formlet', formlet
+		.text_field#company_name_field
+			%span.char_count
+			= f.label :company_name
+			= f.text_field :company_name
+			%p.note= t 'views.profile.edit.company_name_example'
+		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
+%h2.editable.attribute_display{itemprop: 'affiliation'}
+	= @profile.errorfree.company_name.presence || profile_blank_attribute_message(Profile.human_attribute_name :company_name)
+
+:coffeescript
+	# Show character count while filling in fields.
+	for attribute in ['company_name']
+		$('#'+attribute+'_field input').simplyCountable({counter: '#'+attribute+'_field .char_count', maxCount: my_vars.edit_profile.max_lengths[attribute]})

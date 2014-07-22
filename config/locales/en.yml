@@ -302,6 +302,7 @@ en:
         consultation_modes: 'Consultation methods and locations'
         does_not_consult_remotely: 'Does not offer most or all services remotely (phone/video/email)'
         edit_my_profile_link: 'Edit your profile'
+        editing_tip: 'Click the Edit Profile tab to add or edit information'
         email: 'email:'
         email_help: 'We use CAPTCHA to hide the full email address from spam robots. Click to reveal it.'
         feedback: 'Help us improve this listing'
@@ -361,8 +362,8 @@ en:
         custom_specialty_placeholder: 'Type in a specialty'
         custom_specialty_button: 'Enter a specialty not shown above'
         custom_specialty_prompt: "Choose a service and we'll show you a list of specialties."
-        display_name_blank: 'Your company name is shown if these fields are left blank.'
-        display_name_or_company_blank: 'Your name'
+        display_name_blank: 'Your name'
+        display_name_blank_note: 'Your company name is shown if these fields are left blank.'
         edit_review: 'Edit review by %{name}'
         edit_tab: 'Edit Profile'
         editing_tip: 'Click the pencils to add or edit information'

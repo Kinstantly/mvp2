@@ -7,8 +7,140 @@
 	my_vars.edit_profile.text_area_value_length = function(el) { return el.val().replace(/\n/g, '\r\n').length; };
 	my_vars.edit_location = my_vars.edit_location || {};
 	my_vars.edit_location.max_lengths = #{Location::MAX_LENGTHS.to_json};
--# = javascript_include_tag 'profile_edit'
-- cache ['edit_profile', @profile] do
+- cache ['edit_profile_left', @profile] do
+	#editing_tip.clearfix= t 'views.profile.edit.editing_tip'
+	%section.profile.left
+		%header#content-header.header{itemscope: '', itemtype: 'http://schema.org/Person'}
+			#company_name.formlet= render partial: 'company_name_formlet'
+			#display_name.formlet= render partial: 'display_name_formlet'
+			#headline.formlet= render partial: 'headline_formlet'
+			.ratings-section
+				%h5.ratings-header= t 'views.profile.view.average_rating'
+				= render partial: 'profiles/rating_score', locals: {profile: @profile}
+			-# No rating of the provider from this view; the provider is not allowed and editors use the admin view.
+		%section.links
+			#profile-photo.profile-photos.photo-wrapper-large.clickable
+				- if @profile.profile_photo.blank?
+					= image_tag Profile::DEFAULT_EDIT_PHOTO_PATH, alt: "#{@profile.display_name_or_company}", border: '0', itemprop: 'image'
+				- else
+					= image_tag @profile.profile_photo.url(:original), alt: "#{@profile.display_name_or_company}", border: '0', itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+				#profile_photo.formlet= render partial: 'profile_photo'
+			%aside.links
+				%ul
+					- if @profile.url.present?
+						%li#url{itemprop: 'url'}
+							%span.short= profile_linked_website @profile, strip_url(@profile.url), 24
+							%span.long= profile_linked_website @profile, strip_url(@profile.url), 40
+					- if @profile.email.present?
+						%li#email{itemprop: 'email'}
+							= profile_captcha_email @profile
+							%span.info.tooltip{:href => "#"}
+								
+								.help_popover= t 'views.profile.view.email_help'
+					-# %li#videos{itemprop: 'videos'}
+					-# 	%a{:href => "#"} 3 videos
+					%li#likes{itemprop: 'facebook'}
+						.fb-like{"data-action" => "like", "data-href" => "#{profile_url @profile}", "data-layout" => "button_count", "data-share" => "false", "data-show-faces" => "false"}
+		%section.description
+			- if @profile.summary.present?
+				%h3= Profile.human_attribute_name :summary
+				.show-more
+					%p.text_area= profile_display_text @profile.summary, preserve: true, links: true
+			- if @profile.specialties.present?
+				%h3= Profile.human_attribute_name :specialties
+				%ul
+					- @profile.specialties.each do |specialty|
+						%li= specialty.name
+			- if @profile.hours.present?
+				%h3= Profile.human_attribute_name :hours
+				%p.text_area= profile_display_text @profile.hours, preserve: true, links: true
+			- if @profile.availability_service_area_note.present?
+				%h3= Profile.human_attribute_name :availability_service_area_note
+				%p.text_area= profile_display_text @profile.availability_service_area_note, preserve: true, links: true
+			- if @profile.ages_stages_note.present?
+				%h3= Profile.human_attribute_name :ages_stages
+				%p.text_area= profile_display_text @profile.ages_stages_note, preserve: true
+			- if @profile.pricing.present?
+				%h3= Profile.human_attribute_name :pricing
+				%p.text_area= profile_display_text @profile.pricing, preserve: true, links: true
+			- if @profile.insurance_accepted.present?
+				%h3= Profile.human_attribute_name :insurance_accepted
+				%p= profile_display_text @profile.insurance_accepted, serialize: true, links: true
+			- if @profile.languages.present?
+				%h3= Profile.human_attribute_name :languages
+				%p= profile_display_text @profile.languages, serialize: true
+			- if @profile.certifications.present?
+				%h3= Profile.human_attribute_name :certifications
+				%p= profile_display_text @profile.certifications, serialize: true, links: true
+			- if @profile.education.present?
+				%h3= Profile.human_attribute_name :education
+				%p.text_area= profile_display_text @profile.education, preserve: true, links: true
+			- if @profile.year_started.present?
+				%h3= Profile.human_attribute_name :year_started
+				%p= @profile.year_started
+%section.profile.right
+	- cache ['edit_profile_map_promo', @profile] do
+		%section.map
+			.map-embed
+				= render partial: 'profiles/locations_map', locals: {profile: @profile}
+			- (locations = @profile.sorted_locations).each_with_index do |location, i|
+				.location_block{'data-i' => "#{i}"}
+					- if location.display_address.present?
+						%aside.address.location
+							%span{itemprop: 'street-address'}
+								%span= location.address1
+								%span= location.address2
+								%span= location.display_city_region_postal_code
+					- if location.phone.present?
+						%aside.telephone.location
+							%span{itemprop: 'telephone'}= location_linked_phone location
+					%aside.information.location
+						- if location.note.present?
+							%span= location.note
+						- if i == 0 && locations.size > 1
+							= link_to t('views.profile.view.more_locations'), '#', class: 'more'
+							= link_to t('views.profile.view.hide_locations'), '#', class: 'less'
+		%section.promo
+			- if @profile.widget_code.present?
+				-# .ui-helper-clearfix
+				.promo_container= raw @profile.widget_code
+	-# Cache the entire reviews section so we do not have to read nested reviewer caches unless necessary.
+	-# Use the same cache keys as the show view because there is no editing of the reviews here.
+	- ordered_reviews = @profile.reviews.order_by_descending_created_at
+	- cache ['profile_reviews', @profile]+ordered_reviews.map(&:reviewer).uniq do
+		%section#reviews.reviews-list
+			%ol
+				- reviewer_i = 0
+				- ordered_reviews.group_by(&:reviewer_email).each do |reviewer_email, reviews|
+					- reviewer = reviews.first.reviewer
+					- rating = @profile.rating_by(reviewer)
+					- cache ['profile_reviewer', reviewer, rating]+reviews do
+						%li.review{id: "review#{reviewer_i += 1}"}
+							- reviews.each_with_index do |review, i|
+								%header.author.vcard
+									- if i == 0
+										-# %img.avatar{:alt => "avatar", :src => "http://placehold.it/60x60"}/
+										-# = user_profile_link reviewer, class: 'name'
+										%span.name= user_display_name reviewer
+										%span.meta= user_review_count reviewer
+									- else
+										&nbsp;
+								%article.review
+									%footer.meta
+										- if i == 0
+											= render partial: 'single_rating_score', locals: {rating: rating}
+										%span.date= display_profile_date review.created_at
+										%h4= review.title
+									.review-text
+										%p= profile_display_text review.body, preserve: true
+									-if review.good_to_know.present?
+										%aside.tip
+											%strong= t 'views.review.view.good_to_know_heading'
+											= review.good_to_know
+							-# .review-bottom &nbsp;
+							%hr/
+
+/
 	%header.content-header.clearfix
 		#profile-photo.photo-wrapper-large.clickable
 			- if @profile.profile_photo.blank?
@@ -58,6 +190,8 @@
 					= render partial: 'languages_formlet'
 				%tr#availability_service_area.formlet
 					= render partial: 'availability_service_area_formlet'
+
+#temporary
 	:coffeescript
 		# Run after the document is loaded and everything is in place.
 		$ ->
