@@ -180,8 +180,8 @@ module ProfilesHelper
 		profile_list_view_link profile, profile_display_name(profile), options
 	end
 
-	def profile_list_name_or_company_link(profile, options={})
-		profile_list_view_link profile, profile.display_name_or_company, options
+	def profile_company_otherwise_display_name_link(profile, options={})
+		profile_list_view_link profile, profile.company_otherwise_display_name, options
 	end
 
 	def profile_page_title(profile=nil)
@@ -579,14 +579,14 @@ module ProfilesHelper
 
 	def search_result_name_specialties(profile)
 		specs = html_escape(display_profile_item_names(profile.specialties, 2))
-		name_link = profile_list_name_or_company_link(profile)
+		name_link = profile_company_otherwise_display_name_link(profile)
 		s = [name_link.presence, specs.presence].compact.join(' | ')
 		name_link.html_safe? ? s.html_safe : s
 	end
 
 	def search_result_name_headline(profile)
 		headline = html_escape(profile.headline)
-		name_link = profile_list_name_or_company_link(profile)
+		name_link = profile_company_otherwise_display_name_link(profile)
 		s = [name_link.presence, headline.presence].compact.join(' | ')
 		name_link.html_safe? ? s.html_safe : s
 	end

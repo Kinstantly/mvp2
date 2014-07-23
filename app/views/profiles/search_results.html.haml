@@ -18,24 +18,24 @@
 			- @search.results.each do |profile|
 				- profile_id = profile.id
 				- locations_array[profile_id] = {}
-				- locations_array[profile_id]['name'] = profile.display_name_or_company
+				- locations_array[profile_id]['name'] = profile.company_otherwise_display_name
 				- locations_array[profile_id]['locations'] = profile.sorted_locations
 				- locations_count += profile.sorted_locations.count if profile.first_location.present? && profile.first_location.display_address.present?
 				- cache ['search_result', profile] do
 					%li.result{id: "result#{profile_id}", "data-profile-id" => profile_id}
 						%aside.photo
-							= image_tag profile.profile_photo.url(:medium), onclick: "document.location='#{profile_path(profile)}'", alt: "#{profile.display_name_or_company}", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+							= image_tag profile.profile_photo.url(:medium), onclick: "document.location='#{profile_path(profile)}'", alt: "#{profile.company_otherwise_display_name}", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
 							.fb-like{"data-action" => "like", "data-href" => "#{profile_url profile}", "data-layout" => "box_count", "data-share" => "false", "data-show-faces" => "false"}
 						%header.result-title
 							%h2
-								= profile_list_name_or_company_link profile
+								= profile_company_otherwise_display_name_link profile
 							%aside.more
 								= link_to t('views.search_results.more'), profile_path(profile)
 							.ratings-section
 								= render partial: 'profiles/rating_score', locals: {profile: profile}
 						%section.description
-							- if (profile.first_name.present? || profile.last_name.present?) && profile.company_name.present?
-								%h3=profile.company_name
+							- if profile.display_name_presentable? && profile.company_name.present?
+								%h3=profile.display_name
 							- if profile.headline.present?
 								%h4= profile.headline
 							%p

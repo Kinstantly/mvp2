@@ -8,9 +8,9 @@
 %section.profile.left
 	%header#content-header.header{itemscope: '', itemtype: 'http://schema.org/Person'}
 		- cache ['profile_header_sans_rating', @profile] do
-			- if @profile.company_name.present? && @profile.display_name.present?
+			- if @profile.company_name.present? && @profile.display_name_presentable?
 				%h2{itemprop: 'affiliation'}= @profile.company_name
-			%h1{itemprop: 'name'}= @profile.display_name_or_company
+			%h1{itemprop: 'name'}= @profile.display_name_otherwise_company
 			%h3{itemprop: 'jobTitle'}= @profile.headline
 			.ratings-section
 				%h5.ratings-header= t 'views.profile.view.average_rating'

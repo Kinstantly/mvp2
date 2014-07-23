@@ -152,7 +152,7 @@ class Profile < ActiveRecord::Base
 		text :languages
 		
 		text :company_name, :as => :company_name_nostem, boost: 30 do
-			first_name.present? || last_name.present? ? (company_name.presence || '') : ''
+			display_name_presentable? ? (company_name.presence || '') : ''
 		end
 		
 		# To do full-text search and highlighting on the summary field, uncomment the line below.
@@ -388,8 +388,22 @@ class Profile < ActiveRecord::Base
 		name
 	end
 	
-	def display_name_or_company
-		first_name.present? || last_name.present? ? display_name : (company_name.presence || '')
+	def display_name_presentable?
+		first_name.present? || last_name.present?
+	end
+	
+	def presentable_display_name
+		display_name_presentable? ? display_name : ''
+	end
+	
+	def display_name_otherwise_company
+		presentable_display_name.presence || company_name.presence || ''
+	end
+	
+	alias :display_name_or_company :display_name_otherwise_company
+	
+	def company_otherwise_display_name
+		company_name.presence || presentable_display_name
 	end
 
 	def photo_path
