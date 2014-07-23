@@ -304,6 +304,7 @@ en:
         edit_my_profile_link: 'Edit your profile'
         editing_tip: 'Click the Edit Profile tab to add or edit information'
         email: 'email:'
+        email_edit_help: 'We use CAPTCHA to hide the full email address from spam robots.'
         email_help: 'We use CAPTCHA to hide the full email address from spam robots. Click to reveal it.'
         feedback: 'Help us improve this listing'
         followup_review_provider_link: 'Add a follow-up review'

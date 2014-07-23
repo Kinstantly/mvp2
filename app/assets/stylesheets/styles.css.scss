@@ -293,7 +293,7 @@
 					}
 				
 				li {
-					a { 
+					a, .blank_attr { 
 						vertical-align: top;
 						display: inline-block;
 						white-space: nowrap;
@@ -308,10 +308,12 @@
 						}
 					}
 				}
-				#url {
-					a:before {
-						content: "\f0ac";
-						@include scale(font-size, 19,16);
+				.url {
+					.url_icon {
+						a:before, .blank_attr:before {
+							content: "\f0ac";
+							@include scale(font-size, 19,16);
+						}
 					}
 					.short {
 						display: inline-block;
@@ -332,9 +334,11 @@
 						}
 					}
 				}
-				#email {
-					a:before {
-						content: "\f003";
+				.email {
+					.email_icon {
+						a:before, .blank_attr:before {
+							content: "\f003";
+						}
 					}
 					span.info {
 						font-family: $icon-font-stack;
@@ -360,7 +364,7 @@
 						}
 					}
 				}
-				#videos {
+				.videos {
 					a:before {
 						content: "\f03d";
 						padding-right: 10%;

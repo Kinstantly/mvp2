@@ -11,9 +11,12 @@
 	#editing_tip.clearfix= t 'views.profile.edit.editing_tip'
 	%section.profile.left
 		%header#content-header.header{itemscope: '', itemtype: 'http://schema.org/Person'}
-			#company_name.formlet= render partial: 'company_name_formlet'
-			#display_name.formlet= render partial: 'display_name_formlet'
-			#headline.formlet= render partial: 'headline_formlet'
+			%h2{itemprop: 'affiliation'}
+				#company_name.formlet= render partial: 'company_name_formlet'
+			%h1{itemprop: 'name'}
+				#display_name.formlet= render partial: 'display_name_formlet'
+			%h3{itemprop: 'jobTitle'}
+				#headline.formlet= render partial: 'headline_formlet'
 			.ratings-section
 				%h5.ratings-header= t 'views.profile.view.average_rating'
 				= render partial: 'profiles/rating_score', locals: {profile: @profile}
@@ -27,25 +30,14 @@
 				#profile_photo.formlet= render partial: 'profile_photo'
 			%aside.links
 				%ul
-					- if @profile.url.present?
-						%li#url{itemprop: 'url'}
-							%span.short= profile_linked_website @profile, strip_url(@profile.url), 24
-							%span.long= profile_linked_website @profile, strip_url(@profile.url), 40
-					- if @profile.email.present?
-						%li#email{itemprop: 'email'}
-							= profile_captcha_email @profile
-							%span.info.tooltip{:href => "#"}
-								
-								.help_popover= t 'views.profile.view.email_help'
-					-# %li#videos{itemprop: 'videos'}
+					%li.url{itemprop: 'url'}
+						#url.formlet= render partial: 'url_formlet'
+					%li.email{itemprop: 'email'}
+						#email.formlet= render partial: 'email_formlet'
+					-# %li.videos{itemprop: 'videos'}
 					-# 	%a{:href => "#"} 3 videos
-					%li#likes{itemprop: 'facebook'}
-						.fb-like{"data-action" => "like", "data-href" => "#{profile_url @profile}", "data-layout" => "button_count", "data-share" => "false", "data-show-faces" => "false"}
 		%section.description
-			- if @profile.summary.present?
-				%h3= Profile.human_attribute_name :summary
-				.show-more
-					%p.text_area= profile_display_text @profile.summary, preserve: true, links: true
+			#summary.formlet= render partial: 'summary_formlet'
 			- if @profile.specialties.present?
 				%h3= Profile.human_attribute_name :specialties
 				%ul
@@ -237,6 +229,8 @@
 			$('.formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
 				
 			$('.formlet').each -> my_vars.f.configure_formlet this
+			
+			# $('.show-more').shorten({showChars: 210})
 		
 -# Do not cache this.  It must process for each request to catch changes to shared specialties.
 %table.hidden.render
