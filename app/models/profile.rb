@@ -527,6 +527,11 @@ class Profile < ActiveRecord::Base
 	def first_location
 		@first_location ||= sorted_locations.first
 	end
+	
+	# Return all of the sorted locations that have a displayable address.
+	def displayable_sorted_locations
+		sorted_locations.select { |location| location.display_address.present? }
+	end
 
 	# Returns an array with the map of all predefined categories and this profiles categories to their associated services, followed by a hash of ID to name of the same services.
 	def categories_services_info

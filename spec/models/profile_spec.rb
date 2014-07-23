@@ -318,6 +318,14 @@ describe Profile do
 			# so it's a reliable count of the associated location records.
 			profile.locations_count.should == profile.locations.count
 		end
+		
+		it "should have a list of displayable locations" do
+			profile = FactoryGirl.build :profile
+			profile.locations = []
+			profile.locations.build(phone: '1-505-555-1001')
+			profile.locations.build(city: 'Albuquerque', region: 'NM')
+			profile.displayable_sorted_locations.count.should == 1
+		end
 	end
 	
 	context "reviews" do
