@@ -164,7 +164,7 @@ module ApplicationHelper
 	end
 	
 	def strip_url(url)
-		url.strip.sub(/^https?:\/\//i, '')
+		url.strip.sub(/^https?:\/\//i, '') if url
 	end
 	
 	def display_url(url, max_length=nil)

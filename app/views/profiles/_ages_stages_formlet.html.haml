@@ -1,21 +1,18 @@
 - formlet = 'ages_stages'
-%th
-	%span.editable= Profile.human_attribute_name :ages_stages
-%td
-	- if @profile.errorfree.ages_stages_note.present?
-		%p.text_area.attribute_display= profile_display_text @profile.errorfree.ages_stages_note, preserve: true
-	.edit.popover
-		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
-			= f.error_messages
-			= hidden_field_tag 'formlet', formlet
-			.text_field#ages_stages_note_field
-				%span.char_count
-				= f.label :ages_stages_note
-				= f.text_field :ages_stages_note, class: 'attr'
-				%p.note= t 'views.profile.edit.ages_stages_note_example_html'
-			.buttons
-				= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
-				= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
+%h3.editable= Profile.human_attribute_name :ages_stages
+%p.text_area.attribute_display= profile_display_text @profile.errorfree.ages_stages_note, preserve: true
+.edit.popover
+	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+		= f.error_messages
+		= hidden_field_tag 'formlet', formlet
+		.text_field#ages_stages_note_field
+			%span.char_count
+			= f.label :ages_stages_note
+			= f.text_field :ages_stages_note, class: 'attr'
+			%p.note= t 'views.profile.edit.ages_stages_note_example_html'
+		.buttons
+			= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+			= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 
 :coffeescript
 	# Show character count while filling in field.

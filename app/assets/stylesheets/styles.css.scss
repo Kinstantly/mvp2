@@ -293,7 +293,7 @@
 					}
 				
 				li {
-					a { 
+					a, .blank_attr { 
 						vertical-align: top;
 						display: inline-block;
 						white-space: nowrap;
@@ -308,10 +308,12 @@
 						}
 					}
 				}
-				#url {
-					a:before {
-						content: "\f0ac";
-						@include scale(font-size, 19,16);
+				.url {
+					.url_icon {
+						a:before, .blank_attr:before {
+							content: "\f0ac";
+							@include scale(font-size, 19,16);
+						}
 					}
 					.short {
 						display: inline-block;
@@ -332,9 +334,11 @@
 						}
 					}
 				}
-				#email {
-					a:before {
-						content: "\f003";
+				.email {
+					.email_icon {
+						a:before, .blank_attr:before {
+							content: "\f003";
+						}
 					}
 					span.info {
 						font-family: $icon-font-stack;
@@ -360,7 +364,7 @@
 						}
 					}
 				}
-				#videos {
+				.videos {
 					a:before {
 						content: "\f03d";
 						padding-right: 10%;
@@ -1642,6 +1646,79 @@ div.popover {
 
 .hidden {
 	display: none;
+}
+
+.profile_content{
+	#specialties {
+		.popover {
+			width: 542px;
+			.char_count {
+				float: right;
+				width: 44px;
+				padding-top: 25px;
+				padding-right: 10px;
+				text-align: right;
+			}
+			.delete_icon {
+				float: right;
+				background: url('delete.gif') 0px 0px no-repeat;
+				width: 16px;
+				height: 16px;
+				margin-top: 24px;
+				position: relative;
+				@include help_popover;
+				.help_popover {
+					right: 0px;
+					bottom: 18px;
+					min-width: 10em;
+					font-size: 11px;
+					text-align: center;
+					padding: 4px;
+					color: #222;
+					background-color: rgba(255, 255, 255, 0.75);
+					border: 1px solid black;
+					@include button-corner-style;
+				}
+			}
+			.delete_icon:hover {
+				background-position: 0px -16px;
+				cursor: pointer;
+			}
+			@media (max-width: 480px) {
+				.char_count {
+					padding-top: 0;
+				}
+				.delete_icon {
+					margin-top: 0;
+				}
+			}
+			.text_field input {
+				width: 430px;
+			}
+			@include mobile-popover;
+			@include mobile-formlet-popover;
+		}
+	}
+	#availability_service_area {
+		.popover {
+			width: 468px;
+			textarea {
+				width: 438px;
+			}
+			@include mobile-popover;
+			@include mobile-formlet-popover;
+		}
+	}
+	#ages_stages {
+		.popover {
+			width: 478px;
+			.text_field input {
+				width: 448px;
+			}
+			@include mobile-popover;
+			@include mobile-formlet-popover;
+		}
+	}
 }
 
 /* Profile photo upload */

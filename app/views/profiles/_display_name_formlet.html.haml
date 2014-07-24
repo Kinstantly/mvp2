@@ -1,4 +1,6 @@
 - formlet = 'display_name'
+%span.editable.attribute_display
+	= @profile.errorfree.display_name.presence || profile_blank_attribute_message(t 'views.profile.edit.display_name_blank')
 .edit.popover
 	- if @profile.display_name.blank?
 		%span.note= t 'views.profile.edit.display_name_blank_note'
@@ -28,8 +30,7 @@
 				= profile_display_name @profile
 		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
 		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
-%h1.editable.attribute_display{itemprop: "name"}
-	= @profile.errorfree.display_name.presence || profile_blank_attribute_message(t 'views.profile.edit.display_name_blank')
+
 :coffeescript
 	# Refresh display name as contributing input tags are modified.
 	refresh_display_name = () ->

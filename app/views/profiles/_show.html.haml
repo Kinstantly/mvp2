@@ -31,16 +31,16 @@
 			%aside.links
 				%ul
 					- if @profile.url.present?
-						%li#url{itemprop: 'url'}
-							%span.short= profile_linked_website @profile, strip_url(@profile.url), 24
-							%span.long= profile_linked_website @profile, strip_url(@profile.url), 40
+						%li.url{itemprop: 'url'}
+							%span.short.url_icon= profile_linked_website @profile, strip_url(@profile.url), 24
+							%span.long.url_icon= profile_linked_website @profile, strip_url(@profile.url), 40
 					- if @profile.email.present?
-						%li#email{itemprop: 'email'}
-							= profile_captcha_email @profile
+						%li.email{itemprop: 'email'}
+							%span.email_icon= profile_captcha_email @profile
 							%span.info.tooltip{:href => "#"}
 								
 								.help_popover= t 'views.profile.view.email_help'
-					-# %li#videos{itemprop: 'videos'}
+					-# %li.videos{itemprop: 'videos'}
 					-# 	%a{:href => "#"} 3 videos
 					%li#likes{itemprop: 'facebook'}
 						.fb-like{"data-action" => "like", "data-href" => "#{profile_url @profile}", "data-layout" => "button_count", "data-share" => "false", "data-show-faces" => "false"}

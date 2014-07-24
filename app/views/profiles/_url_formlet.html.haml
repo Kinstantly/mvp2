@@ -1,19 +1,21 @@
-- formlet = 'company_name'
-%span.editable.attribute_display
-	= @profile.errorfree.company_name.presence || profile_blank_attribute_message(Profile.human_attribute_name :company_name)
+- formlet = 'url'
+%span.short.url_icon.editable.attribute_display
+	= profile_linked_website @profile.errorfree, strip_url(@profile.url), 24, Profile.human_attribute_name(:url)
+%span.long.url_icon.editable.attribute_display
+	= profile_linked_website @profile.errorfree, strip_url(@profile.url), 40, Profile.human_attribute_name(:url)
 .edit.popover
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
-		.text_field#company_name_field
+		.text_field#url_field
 			%span.char_count
-			= f.label :company_name
-			= f.text_field :company_name
-			%p.note= t 'views.profile.edit.company_name_example'
+			= f.label :url
+			= f.text_field :url
+			%p.note= t 'views.profile.edit.url_example'
 		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
 		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 
 :coffeescript
 	# Show character count while filling in fields.
-	for attribute in ['company_name']
+	for attribute in ['url']
 		$('#'+attribute+'_field input').simplyCountable({counter: '#'+attribute+'_field .char_count', maxCount: my_vars.edit_profile.max_lengths[attribute]})

@@ -1,5 +1,7 @@
 - formlet = 'summary'
-%h3= Profile.human_attribute_name(:summary)
+%h3.editable= Profile.human_attribute_name :summary
+.show-more
+	%p.text_area.attribute_display= profile_display_text @profile.errorfree.summary, preserve: true, links: true
 .edit.popover
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
@@ -11,8 +13,11 @@
 			%p.note= t 'views.profile.edit.summary_tip'
 		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
 		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
-%p.text_area.attribute_display= profile_display_text @profile.errorfree.summary, preserve: true, links: true
 
 :coffeescript
 	# Show character count while filling in field.
 	$('#summary_field textarea').simplyCountable({counter: '#summary_field .char_count', maxCount: my_vars.edit_profile.max_lengths.summary, valueLength: my_vars.edit_profile.text_area_value_length})
+	# Add more/less link for long content.
+	$('#summary .show-more').shorten({showChars: 210})
+	# Don't activate the pop-over formlet when clicking more/less.
+	$('#summary a.morelink').addClass('dont_popover')

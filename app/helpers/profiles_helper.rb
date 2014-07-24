@@ -63,8 +63,12 @@ module ProfilesHelper
 		display_linked_url profile.try(:photo_source_url), title
 	end
 
-	def profile_linked_website(profile=current_user.try(:profile), title=nil, max_length=nil)
-		display_linked_url profile.try(:url), title, max_length
+	def profile_linked_website(profile=current_user.try(:profile), title=nil, max_length=nil, msg_when_blank=nil)
+		if (url = profile.try(:url)).present?
+			display_linked_url url, title, max_length
+		elsif msg_when_blank
+			profile_blank_attribute_message msg_when_blank
+		end
 	end
 
 	def profile_display_website(profile=current_user.try(:profile), msg_when_blank=nil)
@@ -75,9 +79,11 @@ module ProfilesHelper
 		end
 	end
 	
-	def profile_linked_email(profile=current_user.try(:profile), title=nil)
+	def profile_linked_email(profile=current_user.try(:profile), title=nil, msg_when_blank=nil)
 		if (email = profile.try(:email)).present?
 			auto_link email.strip, link: :email_addresses, html: { title: title.try(:html_escape) }
+		elsif msg_when_blank
+			profile_blank_attribute_message msg_when_blank
 		end
 	end
 	

@@ -284,12 +284,16 @@ em, i {
 	width: auto !important;
 }
 
-.note, .blank_attr {
+.note {
 	font: {
 		style: italic;
 		weight: lighter;
 		size: small;
 	}
+}
+
+.blank_attr {
+	font-weight: 400;
 }
 
 .text_area {
