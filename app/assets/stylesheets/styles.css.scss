@@ -1456,6 +1456,7 @@ div.popover {
 
 .generic_form {
 	@include form-style;
+	@include mobile-popover;
 	width: $generic_form_width;
 	margin: 0 auto;
 	h1 {
@@ -1539,6 +1540,9 @@ div.popover {
 	.right{
 		float: right;
 		margin-right:0;
+	}
+	@media screen and (max-width: $break-7) {
+		width: 80%;
 	}
 }
 
