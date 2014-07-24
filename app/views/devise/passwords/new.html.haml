@@ -6,5 +6,5 @@
 			.email.text_field
 				= f.label :email
 				= f.email_field :email
-			.buttons= f.submit t('devise.passwords.new_password_submit'), disable_with: t('devise.passwords.new_password_submit_disable'), class: 'default auto_width'
+			.buttons= f.submit t('views.passwords.new_password_submit'), disable_with: t('devise.passwords.new_password_submit_disable'), class: 'default auto_width'
 		= render "devise/shared/links"
