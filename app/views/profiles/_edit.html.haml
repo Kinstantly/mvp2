@@ -39,33 +39,15 @@
 		%section.description
 			#summary.formlet= render partial: 'summary_formlet'
 			#specialties_placeholder.formlet
-			- if @profile.hours.present?
-				%h3= Profile.human_attribute_name :hours
-				%p.text_area= profile_display_text @profile.hours, preserve: true, links: true
-			- if @profile.availability_service_area_note.present?
-				%h3= Profile.human_attribute_name :availability_service_area_note
-				%p.text_area= profile_display_text @profile.availability_service_area_note, preserve: true, links: true
-			- if @profile.ages_stages_note.present?
-				%h3= Profile.human_attribute_name :ages_stages
-				%p.text_area= profile_display_text @profile.ages_stages_note, preserve: true
-			- if @profile.pricing.present?
-				%h3= Profile.human_attribute_name :pricing
-				%p.text_area= profile_display_text @profile.pricing, preserve: true, links: true
-			- if @profile.insurance_accepted.present?
-				%h3= Profile.human_attribute_name :insurance_accepted
-				%p= profile_display_text @profile.insurance_accepted, serialize: true, links: true
-			- if @profile.languages.present?
-				%h3= Profile.human_attribute_name :languages
-				%p= profile_display_text @profile.languages, serialize: true
-			- if @profile.certifications.present?
-				%h3= Profile.human_attribute_name :certifications
-				%p= profile_display_text @profile.certifications, serialize: true, links: true
-			- if @profile.education.present?
-				%h3= Profile.human_attribute_name :education
-				%p.text_area= profile_display_text @profile.education, preserve: true, links: true
-			- if @profile.year_started.present?
-				%h3= Profile.human_attribute_name :year_started
-				%p= @profile.year_started
+			#hours.formlet= render partial: 'hours_formlet'
+			#availability_service_area.formlet= render partial: 'availability_service_area_formlet'
+			#ages_stages.formlet= render partial: 'ages_stages_formlet'
+			#pricing.formlet= render partial: 'pricing_formlet'
+			#insurance_accepted.formlet= render partial: 'insurance_accepted_formlet'
+			#languages.formlet= render partial: 'languages_formlet'
+			#certifications.formlet= render partial: 'certifications_formlet'
+			#education.formlet= render partial: 'education_formlet'
+			#year_started.formlet= render partial: 'year_started_formlet'
 %section.profile.right
 	- cache ['edit_profile_map_promo', @profile] do
 		%section.map

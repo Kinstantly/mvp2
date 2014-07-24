@@ -1,5 +1,6 @@
 - formlet = 'year_started'
-%h3= Profile.human_attribute_name(:year_started)
+%h3.editable= Profile.human_attribute_name :year_started
+%p.attribute_display= @profile.errorfree.year_started
 .edit.popover
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
@@ -11,7 +12,6 @@
 			%p.note= t 'views.profile.edit.year_started_example'
 		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
 		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
-%p.attribute_display= @profile.errorfree.year_started
 
 :coffeescript
 	# Show character count while filling in field.

@@ -1,19 +1,17 @@
 - formlet = 'languages'
-%th
-	%span.editable= Profile.human_attribute_name(:languages)
-%td
-	%span.attribute_display= profile_display_text @profile.errorfree.languages, serialize: true
-	.edit.popover
-		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
-			= f.error_messages
-			= hidden_field_tag 'formlet', formlet
-			.text_field#languages_field
-				%span.char_count
-				= f.label :languages
-				= f.text_field :languages, class: 'attr'
-				%p.note= t 'views.profile.edit.languages_example'
-			= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
-			= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
+%h3.editable= Profile.human_attribute_name :languages
+%p.attribute_display= profile_display_text @profile.errorfree.languages, serialize: true
+.edit.popover
+	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+		= f.error_messages
+		= hidden_field_tag 'formlet', formlet
+		.text_field#languages_field
+			%span.char_count
+			= f.label :languages
+			= f.text_field :languages, class: 'attr'
+			%p.note= t 'views.profile.edit.languages_example'
+		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 
 :coffeescript
 	# Show character count while filling in field.

@@ -1,11 +1,8 @@
 - formlet = 'specialties'
 %h3.editable= Profile.human_attribute_name :specialties
 %ul
-	- if @profile.errorfree.specialties.present?
-		- @profile.errorfree.specialties.each do |specialty|
-			%li.attribute_display= specialty.name
-	- else
-		%li.blank_attr=  t 'views.profile.edit.specialties_blank'
+	- @profile.errorfree.specialties.each do |specialty|
+		%li.attribute_display= specialty.name
 .edit.popover
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
