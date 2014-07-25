@@ -1,6 +1,32 @@
 - formlet = 'locations'
 - locations = @profile.sorted_locations
 - @country ||= (locations.first.try(:country).presence || default_profile_country)
+
+-# Display the locations of the STORED profile.
+-# However, if there are none, display a dummy entry to provide a way to activate this formlet.
+- (locations = @profile.errorfree.sorted_locations.presence || [Location.new]).each_with_index do |location, i|
+	.location_block{'data-i' => "#{i}"}
+		%aside.address.location.editable
+			%span.attribute_display{itemprop: 'street-address'}
+				- if location.display_address.present?
+					%span= location.address1
+					%span= location.address2
+					%span= location.display_city_region_postal_code
+				- else
+					%span= profile_blank_attribute_message(Location.human_attribute_name :display_address)
+		%aside.telephone.location.editable
+			%span.attribute_display{itemprop: 'telephone'}
+				- if location.phone.present?
+					= location_linked_phone(location)
+				- else
+					= profile_blank_attribute_message(Location.human_attribute_name :display_phone)
+		%aside.information.location.editable
+			%span.attribute_display
+				= location.note.presence || profile_blank_attribute_message(Location.human_attribute_name :note)
+			- if i == 0 && locations.size > 1
+				= link_to t('views.profile.view.more_locations'), '#', class: 'more'
+				= link_to t('views.profile.view.hide_locations'), '#', class: 'less'
+
 .edit.popover
 	= nested_form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		%h3{class: 'form_section'}= Profile.human_attribute_name :locations
@@ -40,34 +66,24 @@
 		#locations_buttons
 			= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
 			= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
--# Display the locations of the STORED profile.
--# However, if there are none, display a dummy entry to provide a way to activate this formlet.
-- (locations = @profile.errorfree.sorted_locations.presence || [Location.new]).each_index do |i|
-	%span{class: "location location_address editable attribute_display#{i > 0 ? ' more' : ''}", itemprop: "street-address"}
-		= locations[i].display_address.presence || profile_blank_attribute_message(Location.human_attribute_name :display_address)
-	- if i == 0 && locations.size > 1
-		%span
-			= link_to t('views.profile.view.more_locations'), '#', class: 'more_locations'
-			= link_to t('views.profile.view.hide_locations'), '#', class: 'hide_locations'
-	%span{class: "location editable attribute_display#{i > 0 ? ' more' : ''}", itemprop: "telephone"}
-		= locations[i].display_phone.presence || profile_blank_attribute_message(Location.human_attribute_name :display_phone)
-	%span{class: "location location_note editable attribute_display#{i > 0 ? ' more' : ''}"}
-		= locations[i].note.presence || profile_blank_attribute_message(Location.human_attribute_name :note)
 
 :coffeescript
 	# If we had a validation error, we are redisplaying the formlet and must hide locations that are marked for destruction.
 	$('.fields.marked_for_destruction').css('display', 'none')
 	
-	$('.more_locations').on 'click', () ->
-		$(this).css 'display', 'none'
-		$('.hide_locations').css 'display', 'inline'
-		$('span.location.more').css 'display', 'block'
-		false
+	# Don't activate the pop-over formlet when clicking more/less.
+	$('.location.editable a.more, .location.editable a.less').addClass('dont_popover')
 	
-	$('.hide_locations').on 'click', () ->
-		$(this).css 'display', 'none'
-		$('.more_locations').css 'display', 'inline'
-		$('span.location.more').css 'display', 'none'
+	$('.location.editable a.more').on 'click', () ->
+		clicked = $(this).css 'display', 'none'
+		$('a.less', clicked.parent()).css 'display', 'block'
+		$('.location_block + .location_block').css 'display', 'block'
+		false
+		
+	$('.location.editable a.less').on 'click', () ->
+		clicked = $(this).css 'display', 'none'
+		$('a.more', clicked.parent()).css 'display', 'block'
+		$('.location_block + .location_block').css 'display', 'none'
 		false
 	
 	setup_note_counter = (field) ->
@@ -75,7 +91,11 @@
 			counter: field.find('.location_note_field .char_count'),
 			maxCount: my_vars.edit_location.max_lengths.note
 		})
+	
 	# Set up counters for fields that are already loaded.
 	$('.fields').each -> setup_note_counter $(this)
-	# Set up counters for any fields that are added after the page loaded.
-	$(document).on 'nested:fieldAdded:locations', (event) -> setup_note_counter(event.field)
+	
+	# Set up counters and autocompletion for any fields that are added after the page loaded.
+	$(document).on 'nested:fieldAdded:locations', (event) ->
+		setup_note_counter event.field
+		configure_autocomplete_form_fields '.autocomplete-form-field', event.field

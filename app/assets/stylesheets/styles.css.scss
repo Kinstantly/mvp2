@@ -478,6 +478,17 @@
 					width: 90%;
 					padding-top: 0;
 				}
+				&.editable {
+					background-position: 1em .5em;
+					margin-left: 0;
+				
+					&.information {
+						background-position: 1em 0;
+					}
+					&:before {
+						display: none !important;
+					}
+				}
 			}
 			
 			.map-embed {
@@ -502,14 +513,6 @@
 						font-weight: bold;
 					}
 				}
-			}
-			.editable {
-				background-position: 1em .5em;
-				margin-left: 0;
-				
-					&:before {
-						display: none !important;
-					}
 			}
 		}
 		.promo {

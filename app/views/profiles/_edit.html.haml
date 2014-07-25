@@ -53,23 +53,7 @@
 		%section.map
 			.map-embed
 				= render partial: 'profiles/locations_map', locals: {profile: @profile}
-			- (locations = @profile.sorted_locations).each_with_index do |location, i|
-				.location_block{'data-i' => "#{i}"}
-					- if location.display_address.present?
-						%aside.address.location
-							%span{itemprop: 'street-address'}
-								%span= location.address1
-								%span= location.address2
-								%span= location.display_city_region_postal_code
-					- if location.phone.present?
-						%aside.telephone.location
-							%span{itemprop: 'telephone'}= location_linked_phone location
-					%aside.information.location
-						- if location.note.present?
-							%span= location.note
-						- if i == 0 && locations.size > 1
-							= link_to t('views.profile.view.more_locations'), '#', class: 'more'
-							= link_to t('views.profile.view.hide_locations'), '#', class: 'less'
+			#locations.formlet= render partial: 'locations_formlet'
 		%section.promo
 			- if @profile.widget_code.present?
 				-# .ui-helper-clearfix
@@ -77,14 +61,14 @@
 	-# Cache the entire reviews section so we do not have to read nested reviewer caches unless necessary.
 	-# Use the same cache keys as the show view because there is no editing of the reviews here.
 	- ordered_reviews = @profile.reviews.order_by_descending_created_at
-	- cache ['profile_reviews', @profile]+ordered_reviews.map(&:reviewer).uniq do
+	- cache ['edit_profile_reviews', @profile]+ordered_reviews.map(&:reviewer).uniq do
 		%section#reviews.reviews-list
 			%ol
 				- reviewer_i = 0
 				- ordered_reviews.group_by(&:reviewer_email).each do |reviewer_email, reviews|
 					- reviewer = reviews.first.reviewer
 					- rating = @profile.rating_by(reviewer)
-					- cache ['profile_reviewer', reviewer, rating]+reviews do
+					- cache ['edit_profile_reviewer', reviewer, rating]+reviews do
 						%li.review{id: "review#{reviewer_i += 1}"}
 							- reviews.each_with_index do |review, i|
 								%header.author.vcard

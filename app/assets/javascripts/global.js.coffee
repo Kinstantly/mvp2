@@ -32,4 +32,4 @@ window.place_popover = (popover, pixels) ->
 # This work-around is needed because the version of the jQuery autocomplete plugin that is used by the rails3-jquery-autocomplete gem insists on showing "no existing match".
 window.configure_autocomplete_form_fields = (form_field_selector, context = document) ->
 	$(form_field_selector, context).on 'autocompleteresponse', (event, ui) ->
-		$(this).autocomplete('close') if ui.content?[0].id.length == 0
+		$(this).autocomplete('close') if ui.content?[0].value.length == 0
