@@ -419,6 +419,13 @@
 				display: none;
 			}
 			
+			&:hover .location_block .location {
+				color: #555;
+			}
+			.location_block:hover .location, .location_block.highlight .location {
+				color: #000 !important;
+			}
+			
 			.location {
 				@include scale(padding, 10 10 10 30,14);
 				float: left;

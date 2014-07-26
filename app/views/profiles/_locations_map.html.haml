@@ -34,6 +34,9 @@
 		control_links = null
 		markers = null
 		popups  = null
+		location_blocks = null
+		selector_context = null
+		active_mouseover_timer = null
 
 		# setup that depends on the document state.  This should be run after all elements are created.
 		# Also re-initialize anything that may have changed during location editing, e.g.,
@@ -44,11 +47,12 @@
 			locations_json = $.parseJSON my_vars.locations_json
 			markers = []
 			popups  = []
+			location_blocks = []
 			resize_map_canvas()
 			resize_adjustments()
-			context = $(map_canvas).parents('.map').first()
-			locations_links = $('.location_block', context)
-			control_links = $('.location_block a.more, .profile .location_block a.less', context)
+			selector_context = $(map_canvas).parents('.map').first()
+			locations_links = $('.location_block', selector_context)
+			control_links = $('.location_block a.more, .profile .location_block a.less', selector_context)
 		
 		resize_map_canvas = ->
 			map_canvas = document.getElementById my_vars.map_canvas_id unless map_canvas
@@ -64,18 +68,17 @@
 			locations_links.on 'mouseover', (e) ->
 				index = @.getAttribute('data-i')
 				this.style.cursor = 'pointer'
-				$(this).children().css color: '#000'
 				marker = markers[index]
 				if marker?
 					marker_coords = marker.getPosition()
 					if map_obj.getBounds().contains(marker_coords) is false
-						map_obj.setCenter(marker_coords)
+						active_mouseover_timer = setTimeout((-> map_obj.setCenter(marker_coords)), 1000)
 				toggle_highlight_marker(index)
 
 			locations_links.on 'mouseout', (e) ->
+				clearTimeout active_mouseover_timer
 				index = @.getAttribute('data-i')
 				this.style.cursor = 'default'
-				$(this).children().css color: '#807f7f'
 				toggle_highlight_marker(index)
 
 			#remove mouse events from show/hide more locations 
@@ -94,6 +97,7 @@
 						for popup_el in popups
 							popup_el.close() if popup_el
 						index = index_in_array markers, @
+						location_blocks[index].addClass 'highlight'
 						show_marker index
 						popups[index].open(map_obj, @)
 						@.setIcon(my_vars.highlight_marker_icon)
@@ -101,6 +105,7 @@
 					google.maps.event.addListener marker, 'mouseout', ->
 						#popup.close();
 						index = index_in_array markers, @
+						location_blocks[index].removeClass 'highlight'
 						@.setIcon(my_vars.basic_marker_icon)
 		
 		init_map = (map_center_lat, map_center_lng) ->
@@ -117,6 +122,7 @@
 				lng = location.longitude
 				marker = add_marker lat, lng
 				markers[i] = marker
+				location_blocks[i] = $('.location_block[data-i="'+i+'"]', selector_context)
 
 				popup = null
 				if marker
