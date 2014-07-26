@@ -52,7 +52,7 @@
 	- cache ['edit_profile_map_promo', @profile] do
 		%section.map
 			.map-embed
-				= render partial: 'profiles/locations_map', locals: {profile: @profile}
+				= render partial: 'profiles/locations_map', locals: {profile: @profile, context: :profile_edit}
 			#locations.formlet= render partial: 'locations_formlet'
 		%section.promo
 			- if @profile.widget_code.present?

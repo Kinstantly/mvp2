@@ -496,10 +496,10 @@
 				width: 100%;
 				padding: 0;
 				
-				#map_canvas, #map_canvas_placeholder {
+				#map_canvas, #map_canvas_profile_edit, #map_canvas_placeholder {
 					height: 217px;
 				}
-				#map_canvas {
+				#map_canvas, #map_canvas_profile_edit {
 					p:not(.map_popup_text){
 						margin-top: 15px;
 						padding: 10px 15px;
@@ -827,7 +827,7 @@
 			float: right;
 			border: 1px solid $medium-gray;	
 
-			#map_canvas{
+			#map_canvas, #map_canvas_profile_edit {
 				width: 372px;
 				height: 372px;
 				@media (max-width: $break-10) {

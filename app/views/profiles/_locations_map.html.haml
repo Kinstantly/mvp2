@@ -1,8 +1,12 @@
+- context ||= :default
+-# When editing the profile, we need a different map_canvas element ID for the edit tab.
+- map_canvas_id = context == :profile_edit ? 'map_canvas_profile_edit' : 'map_canvas'
 - location_remote_only_msg = t "controllers.profiles.location_remote_only"
 
-#map_canvas
+%div{id: map_canvas_id}
 
 :javascript
+	my_vars.map_canvas_id = '#{map_canvas_id}';
 	my_vars.locations_json	= '#{escape_javascript profile.sorted_locations.to_json}';
 	my_vars.locations_total	=  parseInt('#{profile.locations.size}');
 	my_vars.location_remote_only = ('#{profile.consult_remotely}' == 'true')? true: false;
@@ -25,21 +29,29 @@
 		
 		map_canvas = null
 		map_obj = null
-		locations_json = $.parseJSON my_vars.locations_json
+		locations_json = null
 		locations_links = null
 		control_links = null
-		markers = []
-		popups  = []
+		markers = null
+		popups  = null
 
 		# setup that depends on the document state.  This should be run after all elements are created.
+		# Also re-initialize anything that may have changed during location editing, e.g.,
+		#  we need to create a new map object that will reference the new popup and marker objects.
 		set_up = ->
+			map_canvas = null
+			map_obj = null
+			locations_json = $.parseJSON my_vars.locations_json
+			markers = []
+			popups  = []
 			resize_map_canvas()
 			resize_adjustments()
-			locations_links = $('.profile .location_block')
-			control_links = $('.profile .location_block a.more, .profile .location_block a.less')
+			context = $(map_canvas).parents('.map').first()
+			locations_links = $('.location_block', context)
+			control_links = $('.location_block a.more, .profile .location_block a.less', context)
 		
 		resize_map_canvas = ->
-			map_canvas = document.getElementById "map_canvas" unless map_canvas
+			map_canvas = document.getElementById my_vars.map_canvas_id unless map_canvas
 			map_canvas_wrapper = $(map_canvas)
 			map_canvas_wrapper.css('width', map_canvas_wrapper.parent('div').outerWidth())
 		
@@ -182,7 +194,7 @@
 				$(map_canvas).append "<p class='ui-corner-all ui-state-default'>" + my_vars.location_remote_only_msg + "</p>"
 			else
 				bind_actions()
-			callback()
+			callback?()
 
 		# public
 		init: (callback) ->

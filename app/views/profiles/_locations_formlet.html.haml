@@ -1,10 +1,9 @@
 - formlet = 'locations'
-- locations = @profile.sorted_locations
-- @country ||= (locations.first.try(:country).presence || default_profile_country)
 
 -# Display the locations of the STORED profile.
 -# However, if there are none, display a dummy entry to provide a way to activate this formlet.
-- (locations = @profile.errorfree.sorted_locations.presence || [Location.new]).each_with_index do |location, i|
+- display_locations = @profile.errorfree.sorted_locations.presence || [Location.new]
+- display_locations.each_with_index do |location, i|
 	.location_block{'data-i' => "#{i}"}
 		%aside.address.location.editable
 			%span.attribute_display{itemprop: 'street-address'}
@@ -23,15 +22,18 @@
 		%aside.information.location.editable
 			%span.attribute_display
 				= location.note.presence || profile_blank_attribute_message(Location.human_attribute_name :note)
-			- if i == 0 && locations.size > 1
+			- if i == 0 && display_locations.size > 1
 				= link_to t('views.profile.view.more_locations'), '#', class: 'more'
 				= link_to t('views.profile.view.hide_locations'), '#', class: 'less'
 
+- locations = @profile.sorted_locations
+- @country ||= (locations.first.try(:country).presence || default_profile_country)
 .edit.popover
 	= nested_form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		%h3{class: 'form_section'}= Profile.human_attribute_name :locations
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
+		= hidden_field_tag 'reload_map', 't'
 		= f.fields_for :locations, locations do |lf|
 			.text_field
 				= lf.label :address1
@@ -57,10 +59,6 @@
 				= lf.label :note
 				= lf.text_field :note
 				%p.note= t 'views.location.edit.note_example'
-			- if current_user.profile_editor?
-				.text_field
-					= lf.label :search_area_tag_id
-					= lf.collection_select :search_area_tag_id, SearchAreaTag.all, :id, :name, {include_blank: t('views.profile.edit.search_area_tag_other')}
 			= lf.link_to_remove t('views.location.edit.remove'), confirm: t('views.location.edit.remove_confirm')
 		= f.link_to_add t('views.location.edit.add'), :locations, class: 'form_section'
 		#locations_buttons
@@ -99,3 +97,13 @@
 	$(document).on 'nested:fieldAdded:locations', (event) ->
 		setup_note_counter event.field
 		configure_autocomplete_form_fields '.autocomplete-form-field', event.field
+
+-# After the partial document is loaded, reload the map with the updated locations list.
+- if params[:reload_map].present?
+	:javascript
+		$(function () {
+			my_vars.locations_json	= '#{escape_javascript @profile.sorted_locations.to_json}';
+			my_vars.locations_total	=  #{@profile.locations.size};
+			my_vars.location_remote_only = #{@profile.consult_remotely ? 'true' : 'false'};
+			my_vars.profile_map.init();
+		});
