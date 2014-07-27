@@ -432,6 +432,10 @@
 				width: 38.2473118%;
 				position: relative;
 				
+				@media (max-width: $break-6) {
+					width: 37%;
+				}
+				
 				span + span { 
 					display: block;
 					margin-top: .25em;
@@ -468,6 +472,17 @@
 					
 					&:before {
 						content: "\f041";
+					}
+					a.linked_address {
+						display: none;
+					}
+					@media (max-width: $break-6) {
+						a.linked_address {
+							display: inline;
+						}
+						span.nonlinked_address {
+							display: none;
+						}
 					}
 				}
 				&.telephone {
@@ -679,6 +694,15 @@
 			}
 		}
 	}
+	
+	@media (max-width: $break-6) {
+		.ui-tabs .profile .map .location {
+			&.address, &.telephone {
+				width: 35%;
+			}
+		}
+	}
+	
 	.search {
 		@extend %span4of6;
 		@media (max-width: $break-6) {

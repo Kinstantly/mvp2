@@ -82,13 +82,6 @@
 
 - cache 'search_results_coffeescript' do
 	:coffeescript
-		# Sniff UserAgent and detect mobile platform if possible
-		ua = navigator.userAgent.toLowerCase()
-		my_vars.device =
-			iphone: ua.match(/(iphone|ipod|ipad)/i)
-			blackberry: ua.match(/blackberry/i)
-			android: ua.match(/android/i)
-
 		# Provider suggestion pop-over
 		# Close
 		my_vars.f.close_provider_suggestion_form = (e) ->
@@ -350,26 +343,14 @@
 						$('.map_positioner').css({ 'position': 'relative', 'top': '0px', 'left': '0px' })
 
 				# Link address link to map app if mobile device is detected
-				for address in $('a.location')
-					escaped_address = escape(address.text)
-					address = $(address)
-					#title = escape(address.parents('li.result').find('header.result-title h2 a')[0].innerText)
-					if (win.width() < my_vars.one_column_max_width)
-						address.addClass('linked_address')
-						lat = address.attr('data-latitude')
-						lng = address.attr('data-longitude')
-							
-						if lat && lng
-							address.attr target: '_blank'
-							if(my_vars.device.iphone)
-								address.attr href: 'maps:q=' + escaped_address + '@' + lat + ',' + lng
-							else if(my_vars.device.android)
-								address.attr href: 'geo:' + lat + ',' + lng + '?q=' + escaped_address
-							else
-								address.attr href: 'http://maps.google.com/maps?q=' + escaped_address + '&ll=' + lat + ',' + lng
-					else
+				addresses = $('a.location')
+				if (win.width() < my_vars.one_column_max_width)
+					link_addresses_to_map addresses
+				else
+					for address in addresses
+						address = $(address)
 						address.attr href: "javascript:void(0)"
 						address.attr target: null
-								
+						
 			win.scroll position_map
 			win.resize position_map

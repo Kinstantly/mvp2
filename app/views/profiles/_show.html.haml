@@ -90,7 +90,11 @@
 				.location_block{'data-i' => "#{i}"}
 					- if location.display_address.present?
 						%aside.address.location
-							%span{itemprop: 'street-address'}
+							%span{itemprop: 'street-address', class: 'nonlinked_address'}
+								%span= location.address1
+								%span= location.address2
+								%span= location.display_city_region_postal_code
+							%a{itemprop: 'street-address', 'data-latitude' => location.latitude, 'data-longitude' => location.longitude}
 								%span= location.address1
 								%span= location.address2
 								%span= location.display_city_region_postal_code
@@ -205,3 +209,5 @@
 			false
 			
 		$('.show-more').shorten({showChars: 210})
+		
+		link_addresses_to_map $('.address.location > a')
