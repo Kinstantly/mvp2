@@ -1879,6 +1879,7 @@ ul.links-list > li{
 				
 				@media (max-width: $break-5) {
 					@include scale(font-size, 12);
+					max-width: 100%;
 				}
 			}
 
@@ -1929,12 +1930,25 @@ ul.links-list > li{
 				}
 			}
 
-			@media (max-width: $break-5) {
-				li{
-					@include scale(font-size, 14);
+			li{
+				@include scale(font-size, 21);
+				
+				a{
+					padding: 0.5em;
 				}
-				v_tip{
-					max-width: 100%;
+
+				@media (max-width: $break-5) {
+					@include scale(font-size, 16);
+					a{
+						padding: 0.5em 0.2em;
+					}			
+				}
+				@media (max-width: $break-4) {
+					width: 100%;
+					white-space: normal;
+					a{
+						padding: 0.5em 1em;
+					}
 				}
 			}
 
@@ -1946,10 +1960,6 @@ ul.links-list > li{
 					a{
 						font-size: .78em;
 					}
-				}
-				li{
-					width: 100%;
-					white-space: normal;
 				}
 			}
 			
@@ -1975,12 +1985,14 @@ ul.links-list > li{
 				#sign_up_button, #sign_in_button{
 					background-color: $kinstantly_pink;
 					width: calc(100% - 0.7em); // Match input width
-					@include scale(padding, 14);
-					@include scale(font-size, 16);
+					@include scale(padding-top, 5);
+					@include scale(padding-bottom, 6);
+					@include scale(font-size, 21);
+					line-height: 130%;
 					text-transform: none;
 
 					@media (max-width: $break-5) {
-						@include scale(font-size, 14);
+						@include scale(font-size, 16);
 					}
 				}
 			}
