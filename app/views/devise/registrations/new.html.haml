@@ -1,7 +1,3 @@
-- @body_class = 'home'
-- content_for :head_before_js do
-	= stylesheet_link_tag 'home_page', media: 'screen, handheld, print'
-	/[if lt IE 9]
-		= stylesheet_link_tag 'home_page_ie8', media: 'screen, handheld, print'
-#content
-	= render "devise/shared/tabs"
+- @hide_search_providers = true
+- @content_class = 'no-upper-hr'
+= render "devise/shared/tabs"

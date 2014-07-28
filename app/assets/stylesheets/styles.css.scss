@@ -1809,3 +1809,181 @@ ul.links-list > li{
 	font-size: 15px;
 	color: #807f7f;
 }
+
+#login_pannel {
+	max-width: 71.25em;
+	width: 100%;
+	margin: 1.5em auto 0 auto;
+	font-family: $font-stack;
+	overflow: visible;
+	
+	.positioner {
+		height: 100%;
+		width: 100%;
+		max-width: 42.5em;
+		@include box-sizing;
+		position: relative;
+		left: 3%;
+		overflow: visible;
+
+		@media (max-width: $break-8) {
+			left: 1%;
+		}
+		@media (max-width: $break-7) {
+			left: 0;
+		}
+	
+		.company_desc{
+			max-width: 43.5em;
+			
+			@media (max-width: 48em) {
+				max-width: 40.5em;
+			}
+
+			h2 {
+				font-family: $header-font-stack;
+				@include scale(font-size, 24);
+				text-indent: -0.5em;
+				letter-spacing: 0.03em;
+				line-height: 1.2em;
+				color: $default_color;
+				
+				@media (max-width: 48em) {
+					text-align: center;
+					font-weight: 500;
+					@include scale(font-size, 19);
+					text-indent: 0;
+				}
+
+				@media (max-width: 36em) {
+					@include scale(font-size, 16);
+				}
+			}
+			
+			.alpha_note{
+				@include scale(font-size, 18);
+				padding: 20px 10px 0 10px;
+			}
+		}
+
+		#tabs{
+			max-width: 27.5em;
+			margin-top: 1.95em;
+			margin-right: auto;
+			margin-left: auto;
+
+			.v_tip{
+				max-width: calc(100% + 2.5em);
+				@include scale(font-size, 13);
+				margin-top: -8px;
+				
+				@media (max-width: $break-5) {
+					@include scale(font-size, 12);
+				}
+			}
+
+			.help_icon {
+				@include help-icon;
+				position: absolute;
+				right: -1.1em;
+				top: 44px;
+				width:24px;
+				height:24px;
+				background: url('help_24_blue.png') 0px 0px no-repeat;
+				
+				.help_popover {
+					@include help_popover;
+					right: -48px;
+					top: 35px;
+					width: 240px;
+					font-size: 13px;
+					padding: 7px;
+					color: #222;
+					background-color: rgba(255, 255, 255, 0.85);
+					border: #7F7F7F solid 1px;
+					@include button-corner-style;
+				}
+				.help_popover:after {
+					content: '';
+					position: absolute;
+					border-style: solid;
+					border-width: 0 15px 15px;
+					border-color: #FFFFFF transparent;
+					display: block;
+					width: 0;
+					z-index: 1;
+					top: -14px;
+					right: 44px;
+				}
+				.help_popover:before {
+					content: '';
+					position: absolute;
+					border-style: solid;
+					border-width: 0 15px 15px;
+					border-color: #7F7F7F transparent;
+					display: block;
+					width: 0;
+					z-index: 0;
+					top: -15px;
+					right: 44px;
+				}
+			}
+
+			@media (max-width: $break-5) {
+				li{
+					@include scale(font-size, 14);
+				}
+				v_tip{
+					max-width: 100%;
+				}
+			}
+
+			@media (max-width: $break-4) {
+				label{
+					font-size: .75em;
+				}
+				.devise_shared_links, .radio_buttons{
+					a{
+						font-size: .78em;
+					}
+				}
+				li{
+					width: 100%;
+					white-space: normal;
+				}
+			}
+			
+			.generic_form{
+				margin:0;
+				width: 100%;
+				@include box-sizing;
+
+				@media (max-width: $break-7) {
+					padding-right: 1.4em;
+					width: 100%;
+				}
+				
+				.text_field{
+					position: relative;
+
+					input{
+						@include box-sizing;
+						width: calc(100% - 0.7em); // Create space for popup icon
+					}
+				}
+
+				#sign_up_button, #sign_in_button{
+					background-color: $kinstantly_pink;
+					width: calc(100% - 0.7em); // Match input width
+					@include scale(padding, 14);
+					@include scale(font-size, 16);
+					text-transform: none;
+
+					@media (max-width: $break-5) {
+						@include scale(font-size, 14);
+					}
+				}
+			}
+		}
+	}	
+}
