@@ -66,6 +66,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	end
 	
 	def registrations_layout
-		['new', 'create'].include?(action_name) ? 'interior_no_top_nav' : 'interior'
+		['new', 'create'].include?(action_name) ? 'interior' : 'interior'
 	end
 end
