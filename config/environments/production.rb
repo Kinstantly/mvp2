@@ -57,7 +57,7 @@ Mvp2::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w( home_page.css interior.css home_page_ie8.css )
+  config.assets.precompile += %w( home_page.css interior.css home_page_ie8.css plain.css )
 
   # Precompile additional js manifests
   config.assets.precompile += %w( profile_edit.js profile_search.js profile_show.js review_new.js)
