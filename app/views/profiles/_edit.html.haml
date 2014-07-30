@@ -75,7 +75,8 @@
 									- if i == 0
 										-# %img.avatar{:alt => "avatar", :src => "http://placehold.it/60x60"}/
 										-# = user_profile_link reviewer, class: 'name'
-										%span.name= user_display_name reviewer
+										- user_display_name = user_display_name reviewer
+										%span.name{title: user_display_name}= user_display_name
 										%span.meta= user_review_count reviewer
 									- else
 										&nbsp;

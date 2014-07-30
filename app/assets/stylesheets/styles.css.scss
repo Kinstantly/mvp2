@@ -603,9 +603,10 @@
 					font-size: .785714286em;
 					line-height: 1.2em;
 					overflow-x: hidden;
+					text-overflow: ellipsis;
 					
 					.name {
-						color: $blue;
+						font-weight: 600;
 					}
 					
 					.meta {
