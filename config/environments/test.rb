@@ -36,7 +36,7 @@ Mvp2::Application.configure do
   config.active_support.deprecation = :stderr
 
 	# Needed for testing email, e.g., from rspec.
-	config.action_mailer.default_url_options = { :host => 'localhost:5000' }
+	config.action_mailer.default_url_options = { :host => config.default_host }
 
   # Paperclip config
   config.paperclip_defaults = {

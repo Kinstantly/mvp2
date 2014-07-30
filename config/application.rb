@@ -15,11 +15,18 @@ module Mvp2
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     
+    # Fallback host name used in URLs, etc.
+    config.default_host = 'localhost:5000'
+    
     # If true, we are running a private site.
     config.running_as_private_site = ENV['RUNNING_AS_PRIVATE_SITE'].present?
     
     # Query-string parameter placed in URLs to aid in tracking the profile-claiming funnel.
     config.claim_profile_tracking_parameter = {claim_profile: 't'}
+    
+    # Sitemap generator configuration.
+    config.sitemap_default_host = "http://#{config.default_host}/"
+    config.sitemap_sitemaps_path = 'sitemaps_dev/'
 
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/lib)

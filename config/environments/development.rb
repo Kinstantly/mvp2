@@ -46,7 +46,7 @@ Mvp2::Application.configure do
   config.assets.debug = true
 
 	# Devise needs this for its email.
-	config.action_mailer.default_url_options = { :host => 'localhost:5000' }
+	config.action_mailer.default_url_options = { :host => config.default_host }
 
   # Configure ActionMailer for smtp.
   # By default, puts the email in the log file.
@@ -88,8 +88,6 @@ Mvp2::Application.configure do
   }
 end
 
-SITEMAP_DEFAULT_HOST = 'http://localhost:5000/'
-SITEMAP_SITEMAPS_PATH = 'sitemaps_dev/'
 REINDEX_PROFILES_IN_BACKGROUND = true
 
 Kaminari.configure do |config|

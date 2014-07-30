@@ -1,10 +1,10 @@
 # See: https://github.com/kjvarga/sitemap_generator/wiki/Generate-Sitemaps-on-read-only-filesystems-like-Heroku
 
 # Set the host name for URL creation
-SitemapGenerator::Sitemap.default_host = SITEMAP_DEFAULT_HOST
+SitemapGenerator::Sitemap.default_host = Rails.configuration.sitemap_default_host
 SitemapGenerator::Sitemap.sitemaps_host = "https://#{ENV['FOG_DIRECTORY']}.s3.amazonaws.com/"
 SitemapGenerator::Sitemap.public_path = 'tmp/'
-SitemapGenerator::Sitemap.sitemaps_path = SITEMAP_SITEMAPS_PATH
+SitemapGenerator::Sitemap.sitemaps_path = Rails.configuration.sitemap_sitemaps_path
 SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new
 
 SitemapGenerator::Sitemap.create do
