@@ -14,7 +14,7 @@ class ProfilesController < ApplicationController
 	skip_load_and_authorize_resource only: [:search, :autocomplete_specialty_name, :autocomplete_location_city]
 	
 	# Notify profile moderator when profile has been update by profile owner
-	after_filter :notify_profile_moderator, only: :formlet_update
+	after_filter :notify_profile_moderator, only: [:formlet_update, :photo_update]
 	
 	# *After* profile is loaded:
 	#   ensure it has at least one location
