@@ -85,7 +85,7 @@
 	- cache ['profile_map_promo', @profile] do
 		%section.map
 			.map-embed
-				= render partial: 'profiles/locations_map', locals: {profile: @profile}
+				= render partial: 'profiles/locations_map', locals: {profile: @profile, context: :profile_show}
 			- (locations = @profile.sorted_locations).each_with_index do |location, i|
 				.location_block{'data-i' => "#{i}"}
 					- if location.display_address.present?

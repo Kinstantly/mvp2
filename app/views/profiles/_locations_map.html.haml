@@ -6,6 +6,7 @@
 %div{id: map_canvas_id}
 
 :javascript
+	my_vars.locations_map_context = '#{context.to_s}';
 	my_vars.map_canvas_id = '#{map_canvas_id}';
 	my_vars.locations_json	= '#{escape_javascript profile.sorted_locations.to_json}';
 	my_vars.locations_total	=  parseInt('#{profile.locations.size}');
@@ -196,8 +197,11 @@
 		init = (callback) ->
 			set_up()
 			init_markers()
-			if map_obj is null && my_vars.location_remote_only
-				$(map_canvas).append "<p class='ui-corner-all ui-state-default'>" + my_vars.location_remote_only_msg + "</p>"
+			if map_obj is null
+				if my_vars.locations_map_context == 'profile_show'
+					$('.map').addClass 'no-map-box'
+				if my_vars.location_remote_only
+					$(map_canvas).append "<p class='ui-corner-all ui-state-default'>" + my_vars.location_remote_only_msg + "</p>"
 			else
 				bind_actions()
 			callback?()

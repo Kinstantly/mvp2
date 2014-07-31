@@ -414,6 +414,14 @@
 			@extend %clearfix;
 			@include scale(margin-bottom, 26, 14);
 			
+			&.no-map-box {
+				border-style: none;
+				
+				#map_canvas {
+					height: auto !important;
+				}
+			}
+			
 			.location_block + .location_block {
 				clear: both;
 				display: none;

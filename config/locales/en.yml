@@ -62,7 +62,7 @@ en:
       profile_photo_processing_timeout: 'Photo processing took too long.  Please try a smaller photo file size.'
       profile_photo_processing_timeout_html: 'Photo processing took too long. Please try a smaller photo file size. <a href="#" class="more-help">Click here for help.</a>'
       profile_photo_no_dnd_support: 'Drag and Drop is not supported by your browser. Please use one of upload options below.'
-      location_remote_only: 'This provider operates 100% remotely. <br/>That means you can talk to this provider at home, at your office, at a park... the sky&#39;s the limit!'
+      location_remote_only: 'This provider offers remote access by phone, email, or video.'
     provider_suggestions:
       destroyed: "The provider suggestion for '%{name}' was removed!"
       destroy_error: "Sorry.  The provider suggestion for '%{name}' was NOT removed."
