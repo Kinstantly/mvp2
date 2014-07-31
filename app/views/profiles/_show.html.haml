@@ -2,9 +2,9 @@
 -# = javascript_include_tag 'profile_show'
 - if can?(:manage_my_profile, @profile) || can?(:edit, @profile)
 	#editing_tip.clearfix= t 'views.profile.view.editing_tip'
-- else
-	%aside.help
-		= link_to t('views.profile.view.feedback'), '#'
+-# - else
+-# 	%aside.help
+-# 		= link_to t('views.profile.view.feedback'), '#'
 %section.profile.left
 	%header#content-header.header{itemscope: '', itemtype: 'http://schema.org/Person'}
 		- cache ['profile_header_sans_rating', @profile] do
