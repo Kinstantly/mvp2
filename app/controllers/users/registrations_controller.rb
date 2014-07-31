@@ -41,11 +41,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 			end
 			# Create profile if needed.
 			resource.load_profile
-			# If we have a new provider, notify admin.
-			# Otherwise assume it's a parent and notify admin only if we're running as a private site.
+			# Notify admin that either a provider or parent has registered.
 			if resource.is_provider?
 				AdminMailer.provider_registration_alert(resource).deliver
-			elsif running_as_private_site?
+			else
 				AdminMailer.parent_registration_alert(resource).deliver
 			end
 		end
