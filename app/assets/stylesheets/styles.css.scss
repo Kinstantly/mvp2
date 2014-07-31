@@ -1628,6 +1628,33 @@ div.popover {
 	}
 }
 
+/* jQuery UI tabs defaults */
+
+.ui-tabs {
+	.ui-tabs-nav {
+		.ui-state-default {
+			background: #f2f2f2;
+			
+			a {
+				color: $kinstantly_pink_lighter;
+			}
+			a:hover {
+				color: $kinstantly_blue;
+			}
+			&:hover {
+				background: #f7f7f7;
+			}
+		}
+		.ui-state-active {
+			background: #FFFFFF !important;
+			
+			a {
+				color: $kinstantly_blue;
+			}
+		}
+	}
+}
+
 /* jQuery UI tabs on profile pages */
 
 .profile_content {
@@ -1646,27 +1673,6 @@ div.popover {
 			background: #e2e2e2;
 			border-bottom-left-radius: 0;
 			border-bottom-right-radius: 0;
-			
-			.ui-state-default {
-				background: #f2f2f2;
-				
-				a {
-					color: #333;
-				}
-				a:hover {
-					color: #e43d5d;
-				}
-				&:hover {
-					background: #f7f7f7;
-				}
-			}
-			.ui-state-active {
-				background: #FFFFFF !important;
-				
-				a {
-					color: #e43d5d;
-				}
-			}
 		}
 		.ui-tabs-panel {
 			#editing_tip {

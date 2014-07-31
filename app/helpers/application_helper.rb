@@ -35,7 +35,7 @@ module ApplicationHelper
 	def sign_in_out_link(options={})
 		if user_signed_in?
 			link_wrapper link_to(t('views.sign_out.label'), destroy_user_session_path, method: :delete), options
-		elsif show_sign_in_link?
+		else
 			link_wrapper link_to(t('views.sign_in.label'), new_user_session_path), options
 		end
 	end
@@ -53,7 +53,7 @@ module ApplicationHelper
 	end
 
 	def user_sign_up_link
-		(link_to "Sign up", new_user_registration_path) unless user_signed_in? || controller_name == 'registrations'
+		(link_to "Sign up", new_user_registration_path) unless user_signed_in?
 	end
 	
 	def provider_sign_up_link(body='Provider? Join us', options={})

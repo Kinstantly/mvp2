@@ -55,12 +55,10 @@
 					- else
 						%li.logged-out{:style => "text-transform:uppercase;"}
 							= sign_in_out_link
-							- if show_sign_in_link? && show_sign_up_link?
-								|
+							|
 							= user_sign_up_link
-					- if !user_signed_in? && show_link?(provider_sign_up_path)
 						%li.provider
-							= provider_sign_up_link "Provider? Join us. It's FREE", {class: :button}
+							= provider_sign_up_link t('views.sign_up.provider_link'), {class: :button}
 			= yield :body_header
 		.flash_messages
 			- if notice.present?
@@ -85,7 +83,7 @@
 				= terms_link wrapper: {tag: :span}
 				= privacy_link wrapper: {tag: :span}
 				%br/
-				= raw "\&copy; Copyright 2013-#{Date.today.year} Kinstantly, Inc. All Rights Reserved."
+				= t 'company.copyright_html', year: Date.today.year
 		#line
 		= render partial: 'layouts/tracking'
 		= render partial: 'layouts/g_analytics'

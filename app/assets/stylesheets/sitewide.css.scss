@@ -166,6 +166,13 @@ em, i {
 			font-size: 0.75em;
 		}
 		
+		@media(max-width: $break-6) {
+			height: 2em;
+			ul {
+				@include scale(padding, 0 4);
+			}
+		}
+		
 		ul {
 			text-align: right;
 			
@@ -188,6 +195,10 @@ em, i {
 				position: relative;
 				&:last-of-type {
 					padding-right: 0;
+				}
+				@media(max-width: $break-6) {
+					@include scale(font-size, 16);
+					@include scale(padding-right, 6);
 				}
 				ul {
 					display: none;
@@ -224,7 +235,7 @@ em, i {
 						}
 				}
 				&:hover a.account {
-						background-position: right -11px;
+						background-position: right -22px;
 						
 				}
 				&:hover > ul {
@@ -251,7 +262,7 @@ em, i {
 				}
 				a.account {
 					@include scale(padding-right, 21, 11);
-					background: url('#{$image-path}/arrow-down.png') right top no-repeat;
+					background: url('#{$image-path}/arrow-down-up.png') right top no-repeat;
 					
 				}
 				a.button {
