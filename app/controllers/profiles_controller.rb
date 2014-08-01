@@ -227,7 +227,7 @@ class ProfilesController < ApplicationController
 		@subject, @body = params[:subject], params[:body]
 		test_invitation = (params[:commit] == t('views.profile.edit.invitation_preview_button'))
 		email = test_invitation.present? ? current_user.email : nil
-		if @profile.update_attributes(params[:profile]) && @profile.invite(@subject, @body, email)
+		if @profile.update_attributes(params[:profile]) && @profile.invite(@subject, @body, sender: current_user, preview_email: email)
 			set_flash_message :notice, :invitation_sent, recipient: (email.presence || @profile.invitation_email)
 			if test_invitation.present?
 				render action: :new_invitation, layout: 'plain'

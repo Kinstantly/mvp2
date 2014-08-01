@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140709054459) do
+ActiveRecord::Schema.define(:version => 20140801053239) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -103,6 +103,20 @@ ActiveRecord::Schema.define(:version => 20140709054459) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "email_deliveries", :force => true do |t|
+    t.string   "recipient"
+    t.string   "sender"
+    t.string   "email_type"
+    t.string   "token"
+    t.string   "tracking_category"
+    t.integer  "profile_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "email_deliveries", ["profile_id"], :name => "index_email_deliveries_on_profile_id"
+  add_index "email_deliveries", ["token"], :name => "index_email_deliveries_on_token"
 
   create_table "locations", :force => true do |t|
     t.integer  "profile_id"

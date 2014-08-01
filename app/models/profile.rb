@@ -51,6 +51,8 @@ class Profile < ActiveRecord::Base
 	has_many :ratings, as: :rateable, dependent: :destroy
 	has_many :raters, through: :ratings
 	# has_many :ratings, through: :reviews # when we had one rating per review.
+	
+	has_many :email_deliveries
 
 	has_attached_file :profile_photo,
 					:styles => {
@@ -415,15 +417,19 @@ class Profile < ActiveRecord::Base
 		age_range_names.join(', ')
 	end
 	
-	# If email is not supplied, assume we're doing a preview and thus, need no tracking.
-	def invite(subject, body, email=nil)
-		test_invitation = email.present?
+	# Invite a provider via email to claim this profile.
+	# Note: no delivery tracking is done if we're doing a preview.
+	def invite(subject, body, options={})
+		test_invitation = options[:preview_email].present?
 		if !test_invitation && !validate_invitable
 			errors.add :invitation_sent_at, I18n.t('models.profile.invitation_sent_at.save_error')
 		elsif generate_and_save_invitation_token
-			ProfileMailer.invite((email.presence || invitation_email), subject, body, self, test_invitation).deliver
-			self.invitation_sent_at = Time.zone.now unless test_invitation
-			errors.add :invitation_sent_at, I18n.t('models.profile.invitation_sent_at.save_error') unless save
+			recipient = options[:preview_email].presence || invitation_email
+			delivery_token = generate_token
+			ProfileMailer.invite(recipient, subject, body, self, delivery_token, test_invitation).deliver
+			unless test_invitation or invitation_delivered recipient, options[:sender], delivery_token
+				errors.add :invitation_sent_at, I18n.t('models.profile.invitation_sent_at.save_error')
+			end
 		end
 		errors.empty?
 	end
@@ -574,13 +580,24 @@ class Profile < ActiveRecord::Base
 		errors.empty?
 	end
 	
+	# Generate a unique token.
+	def generate_token
+		UUIDTools::UUID.timestamp_create.to_s
+	end
+	
 	# Return true if this profile is already in the database and
 	#   we were able to successfully save the generated token.
 	# Otherwise, return false, e.g., if this profile hasn't been saved yet
 	#   (we don't want to save for the first time as a side effect).
 	def generate_and_save_invitation_token
-		self.invitation_token = UUIDTools::UUID.timestamp_create.to_s
+		self.invitation_token = generate_token
 		errors.add :invitation_token, I18n.t('models.profile.invitation_token.save_error') unless persisted? && save
 		errors.empty?
+	end
+	
+	# Mark an invitation as delivered.
+	def invitation_delivered(recipient, sender, token)
+		sender_value = sender.is_a?(User) ? "user:#{sender.to_param}" : sender.try(:to_s)
+		email_deliveries.create recipient: recipient, sender: sender_value, email_type: 'invitation', token: token, tracking_category: invitation_tracking_category
 	end
 end

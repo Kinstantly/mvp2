@@ -366,6 +366,10 @@ Given /^I have (a|no) profile photo$/ do |photo_present|
 	@profile.save
 end
 
+Given /^"(.*?)" opted out of receiving email from us$/ do |arg1|
+	pending 'implementation of opt-out records'
+end
+
 ### WHEN ###
 
 When /^I view my profile$/ do
@@ -909,7 +913,7 @@ Then /^I should see a Google Map$/ do
 	end
 end
 
-Then /^I should see "(.*?)" message$/ do |locale_path|
+Then /^I should see (?:the )"(.*?)" message$/ do |locale_path|
  	page.should have_content I18n.t locale_path
 end
 
@@ -923,4 +927,10 @@ end
 
 Then /^the administrator should receive (an|no|\d+) emails?$/ do |amount|
   unread_emails_for(@user.email).size.should == parse_email_count(amount)
+end
+
+Then /^I should see an invitation to "(.*?)" to claim their profile$/ do |email|
+	within '.invitation_state' do
+		page.should have_content email
+	end
 end

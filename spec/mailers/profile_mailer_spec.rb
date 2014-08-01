@@ -9,6 +9,7 @@ describe ProfileMailer do
 		let(:recipient) { 'maria@stuarda.com' }
 		let(:subject) { 'Claim your profile' }
 		let(:body) { 'We are inviting you to claim your profile.' }
+		let(:delivery_token) { '895d1d74-1951-11e4-83cc-00264afffe0a' }
 		let(:profile) {
 			FactoryGirl.create :profile,
 				invitation_email: recipient,
@@ -16,7 +17,7 @@ describe ProfileMailer do
 		}
 		
 		context "with plain message body" do
-			let(:email) { ProfileMailer.invite recipient, subject, body, profile }
+			let(:email) { ProfileMailer.invite recipient, subject, body, profile, delivery_token }
 		
 			it "should be set to be delivered to the specified recipient" do
 				email.should deliver_to(recipient)
@@ -33,7 +34,7 @@ describe ProfileMailer do
 		
 		context "with claim URL in the message body" do
 			let(:body_with_claim_url) { body + ' <a href="<<claim_url>>">Click here.</a>' }
-			let(:email) { ProfileMailer.invite recipient, subject, body_with_claim_url, profile }
+			let(:email) { ProfileMailer.invite recipient, subject, body_with_claim_url, profile, delivery_token }
 		
 			it "should contain a link for claiming the profile" do
 				email.should have_body_text(/#{claim_user_profile_url(token: profile.invitation_token)}/)

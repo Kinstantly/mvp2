@@ -480,6 +480,7 @@ describe Profile do
 		let(:recipient) { 'nicola@filacuridi.it' }
 		let(:subject) { 'Claim your profile' }
 		let(:body) { 'We are inviting you to claim your profile.' }
+		let(:delivery_token) { '895d1d74-1951-11e4-83cc-00264afffe0a' }
 		
 		before(:each) do
 			@profile.invitation_email = recipient
@@ -497,12 +498,14 @@ describe Profile do
 		
 		context "when profile is saved before invitation is attempted" do
 			before(:each) do
+				@profile.invitation_tracking_category = 'profile_claim'
 				@profile.save
 			end
 		
 			it "sends invitation email" do
 				message = mock('message')
-				ProfileMailer.should_receive(:invite).with(recipient, subject, body, @profile, false).and_return(message)
+				@profile.stub(:generate_token).and_return(delivery_token)
+				ProfileMailer.should_receive(:invite).with(recipient, subject, body, @profile, delivery_token, false).and_return(message)
 				message.should_receive(:deliver)
 				@profile.invite subject, body
 			end
@@ -516,10 +519,19 @@ describe Profile do
 				it "sets invitation token" do
 					@profile.invitation_token.should be_present
 				end
+				
+				it "tracks invitation recipient" do
+					@profile.email_deliveries.where(recipient: recipient, email_type: 'invitation').last.should be_present
+				end
 			
-				it "sets invitation delivery time" do
-					@profile.invitation_sent_at.should be_present
-					@profile.invitation_sent_at.to_f.should be_within(600).of(Time.zone.now.to_f) # be generous: within 10 minutes
+				it "tracks invitation delivery time" do
+					(delivery = @profile.email_deliveries.where(recipient: recipient, email_type: 'invitation').last).should be_present
+					delivery.created_at.to_f.should be_within(600).of(Time.zone.now.to_f) # be generous: within 10 minutes
+				end
+			
+				it "has a tracking category" do
+					(delivery = @profile.email_deliveries.where(recipient: recipient, email_type: 'invitation').last).should be_present
+					delivery.tracking_category.should == @profile.invitation_tracking_category
 				end
 			end
 		end

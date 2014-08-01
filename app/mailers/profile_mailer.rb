@@ -11,8 +11,9 @@ class ProfileMailer < ActionMailer::Base
 		mail to: profile.invitation_email, from: 'Jim Scott <jscott@kinstantly.com>', subject: subject
 	end
 
-	def invite(email, subject, body, profile, test_invitation=false)
+	def invite(email, subject, body, profile, delivery_token, test_invitation=false)
 		@body = body.gsub(' -- ', ' &mdash; ').gsub("<<claim_url>>", claim_user_profile_url(token: profile.invitation_token))
+		@delivery_token = delivery_token
 		if test_invitation
 			sendgrid_category :invitation_preview
 		elsif profile.invitation_tracking_category.present?

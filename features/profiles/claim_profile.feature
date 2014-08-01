@@ -16,17 +16,31 @@ Feature: Claim profile
 			And I invite "asleep@thewheel.wv.us" to claim the profile
 		Then "asleep@thewheel.wv.us" should have an email
 	
+	Scenario: Track the invitation to claim a profile
+		Given I am logged in as an administrator
+		When I visit the view page for an unclaimed profile
+			And I invite "asleep@thewheel.wv.us" to claim the profile
+			And I visit the admin view page for the existing unclaimed profile
+		Then I should see an invitation to "asleep@thewheel.wv.us" to claim their profile
+	
+	Scenario: Do not deliver an invitation to someone who opted out of email from us
+		Given "asleep@thewheel.wv.us" opted out of receiving email from us
+			And I am logged in as an administrator
+		When I visit the view page for an unclaimed profile
+			And I invite "asleep@thewheel.wv.us" to claim the profile
+		Then I should see the "has opted out" message
+	
 	Scenario: Unregistered provider must register to claim profile
-	  Given I am not logged in
+		Given I am not logged in
 			And I have been invited to claim a profile
-	  When I click on the profile claim link
-	  Then I should be on the provider registration page
+		When I click on the profile claim link
+		Then I should be on the provider registration page
 	
 	Scenario: Newly registered provider claims profile without confirmation
-	  Given I am not logged in
+		Given I am not logged in
 			And I have been invited to claim a profile
-	  When I click on the profile claim link
-	  Then I should be on the provider registration page
+		When I click on the profile claim link
+		Then I should be on the provider registration page
 		When I sign up with valid user data
 		Then I should receive a welcome email
 			And the profile should be attached to my account
