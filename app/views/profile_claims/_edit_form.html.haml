@@ -1,0 +1,10 @@
+%hr
+%p
+	= "#{ProfileClaim.human_attribute_name :profile}:"
+	= @profile_claim.profile.try :display_name
+= simple_form_for @profile_claim do |f|
+	= f.input :claimant_email, label: t('views.profile_claim.admin.claimant_email')
+	= f.input :claimant_phone, label: t('views.profile_claim.admin.claimant_phone')
+	= f.input :admin_notes, input_html: {size: '50x5'}
+	= f.button :submit
+	= link_to 'Cancel', profile_claim_path(@profile_claim)

@@ -1,4 +1,7 @@
 Mvp2::Application.routes.draw do
+  resources :profile_claims
+
+
 	# Home page.
 	root :to => 'home#index'
 	
@@ -131,6 +134,9 @@ Mvp2::Application.routes.draw do
 	post 'review/:profile_id'     => 'reviews#create', as: :save_review_for_profile
 	
 	resources :provider_suggestions
+
+	resources :profile_claims
+	get 'profile_claim/:profile_id' => 'profile_claims#new', as: :new_claim_for_profile
 	
 	# Catch all other routing requests and do something benign.
 	# The main purpose of this route is to provide as little information as possible to site probers.

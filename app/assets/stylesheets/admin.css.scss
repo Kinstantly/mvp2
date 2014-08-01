@@ -52,6 +52,9 @@
 		@include header-style;
 	}
 	#forms {
+		label{
+			vertical-align: top;
+		}
 		.input, p {
 			margin: 1em 0.25em;
 			input, select, textarea, .hint {

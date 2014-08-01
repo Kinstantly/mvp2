@@ -1,0 +1,37 @@
+- @page_title = "#{company_name} - #{t('views.profile_claim.name').pluralize}"
+.index
+	%h1= t('views.profile_claim.name').pluralize
+	#top_bar
+		= render partial: 'home/admin_nav'
+	.list{align: 'center'}
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: ProfileClaim }
+			= paginate @profile_claims
+		%table
+			%thead
+				%tr
+					%th= ProfileClaim.human_attribute_name :profile
+					%th= ProfileClaim.human_attribute_name :claimant
+					%th= ProfileClaim.human_attribute_name :claimant_email
+					%th= ProfileClaim.human_attribute_name :claimant_phone
+					%th.large= ProfileClaim.human_attribute_name :admin_notes
+					%th.small
+					%th.small
+					%th.small
+			%tbody
+				- @profile_claims.each do |profile_claim|
+					- profile_name = profile_claim.profile.try :display_name
+					- claimant_name = profile_claim.claimant.try :username_or_email
+					%tr
+						%td= link_to_if profile_claim.profile, profile_name, profile_claim.profile, target: "_blank"
+						- # Because path evaluated before link_to_if condition, we need hash to prevent nil error for when claimant does not exist 
+						%td= link_to_if profile_claim.claimant, claimant_name, hash_for_edit_user_path(id: profile_claim.claimant), target: "_blank"
+						%td= profile_claim.claimant_email
+						%td= profile_claim.claimant_phone
+						%td.large= profile_claim.admin_notes
+						%td.small= link_to 'Show', profile_claim
+						%td.small= link_to 'Edit', edit_profile_claim_path(profile_claim)
+						%td.small= link_to 'Remove', profile_claim, method: :delete, data: { confirm: t('views.profile_claim.destroy.confirm_prompt', name: profile_name) }
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: ProfileClaim }
+			= paginate @profile_claims

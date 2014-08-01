@@ -384,7 +384,28 @@ $button_corner_radius: 4px;
 		background-color: $kinstantly_light_blue;
 	}
 }
-
+@mixin form_popover{
+	display: none;
+	.note {
+		margin: 8px 0 0 0;
+	}
+	h1, #confirmation {
+		width: 100%;
+		padding: 0;
+		text-align: center;
+	}
+	#confirmation p {
+		margin: 5em 0 0 0;
+	}	
+}
+@mixin loading_form_popover{
+	display: block;
+	background: #FFF url('loading_large.gif') no-repeat center center;
+}
+@mixin loaded_form_popover{
+	display: block;
+	background: #FFF;
+}
 /*  A basic grid -------------------------------------------------------------------------- */
 
 %span1of2 {

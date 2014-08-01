@@ -1,0 +1,17 @@
+%h1= t 'views.profile_claim.new.header'
+%p= t 'views.profile_claim.new.intro'
+= form_for @profile_claim, remote: true do |f|
+	= f.error_messages
+	.text_field#claimant_email_field
+		= f.label :claimant_email, class: 'required'
+		= f.text_field :claimant_email, value: (current_user.email if user_signed_in?)
+	.text_field#claimant_phone_field
+		= f.label :claimant_phone, class: 'attr'
+		= f.text_field :claimant_phone
+	= f.hidden_field :profile_id, value: (@profile_claim.profile.id if @profile_claim.profile.present?)
+	= f.submit t('views.profile_claim.edit.submit'), disable_with: t('views.profile_claim.edit.submit_disable'), class: 'save'
+	= link_to t('views.profile_claim.edit.cancel'), '#', class: 'cancel button'
+
+:coffeescript
+	# Cancel buttons should close and clear the pop-over.
+	$('#claim_profile .cancel').on 'click', my_vars.f.close_profile_claim_form

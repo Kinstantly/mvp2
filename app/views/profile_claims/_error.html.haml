@@ -1,0 +1,9 @@
+#confirmation
+	%p
+		= t('views.profile_claim.edit.blank_profile_error')
+	%p
+		= link_to t('views.profile_claim.edit.close'), '#', class: 'cancel button'
+
+:coffeescript
+	# Cancel buttons should close and clear the pop-over.
+	$('#claim_profile .cancel').on 'click', my_vars.f.close_profile_claim_form
