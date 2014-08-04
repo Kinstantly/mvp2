@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140801053239) do
+ActiveRecord::Schema.define(:version => 20140802030856) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -87,6 +87,15 @@ ActiveRecord::Schema.define(:version => 20140801053239) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "contact_blockers", :force => true do |t|
+    t.string   "email"
+    t.integer  "email_delivery_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "contact_blockers", ["email_delivery_id"], :name => "index_contact_blockers_on_email_delivery_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0

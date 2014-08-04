@@ -16,6 +16,8 @@
 					%ul
 						- profile_invitation_info.each do |info|
 							%li= info
+						- @profile.contact_blockers.each do |contact_blocker|
+							%li= t('models.profile.invitation_email.contact_blocked_for', email: contact_blocker.email)
 			.registration_special_code
 				- if (registration_special_code = profile.user.try :registration_special_code)
 					= "#{Profile.human_attribute_name :user_registration_special_code}: #{registration_special_code}"

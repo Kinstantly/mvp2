@@ -28,7 +28,32 @@ Feature: Claim profile
 			And I am logged in as an administrator
 		When I visit the view page for an unclaimed profile
 			And I invite "asleep@thewheel.wv.us" to claim the profile
-		Then I should see the "has opted out" message
+		Then I should see "'asleep@thewheel.wv.us' has opted out" on the page
+	
+	Scenario: Cannot invite to claim a profile whose provider has opted out of email from us
+		Given I am logged in as an administrator
+			And there is an unclaimed profile for which the recipient of a previous invitation opted out of email from us
+		When I visit the view page for the existing unclaimed profile
+		Then I should see no invitation link
+	
+	Scenario: Invited provider clicks the unsubscribe link
+		Given I am not logged in
+			And I have been invited to claim a profile
+		When I click on the unsubscribe link in the unclaimed profile invitation
+		Then I should be on the unsubscribe page
+	
+	Scenario: Invited provider unsubscribes
+		Given I am not logged in
+			And I have been invited to claim a profile
+		When I click on the unsubscribe link in the unclaimed profile invitation
+			And I click submit on the unsubscribe page
+		Then I should be on the unsubscribe confirmation page
+	
+	Scenario: Invited provider clicks a corrupted unsubscribe link
+		Given I am not logged in
+			And I have been invited to claim a profile
+		When I click on a bad unsubscribe link in the unclaimed profile invitation
+		Then I should be on the unsubscribe recovery page
 	
 	Scenario: Unregistered provider must register to claim profile
 		Given I am not logged in

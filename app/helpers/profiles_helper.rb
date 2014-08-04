@@ -157,7 +157,7 @@ module ProfilesHelper
 					tracking = tracking_category ? "'#{tracking_category}'" : 'subject line'
 					t 'views.profile.view.invitation_to_claim_info', invitee: delivery.recipient, time: display_profile_time(delivery.created_at), tracking: tracking
 				end
-			else
+			elsif profile.contact_blockers.blank?
 				[new_invitation_profile_link(profile)]
 			end
 		end

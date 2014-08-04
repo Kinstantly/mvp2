@@ -53,6 +53,7 @@ class Profile < ActiveRecord::Base
 	# has_many :ratings, through: :reviews # when we had one rating per review.
 	
 	has_many :email_deliveries
+	has_many :contact_blockers, through: :email_deliveries
 
 	has_attached_file :profile_photo,
 					:styles => {
@@ -576,6 +577,11 @@ class Profile < ActiveRecord::Base
 			errors.add :profile, I18n.t('models.profile.claimed')
 		elsif invitation_email.blank?
 			errors.add :invitation_email, I18n.t('models.profile.invitation_email.missing')
+		elsif contact_blockers.present?
+			emails = contact_blockers.map(&:email).join(', ')
+			errors.add :invitation_email, I18n.t('models.profile.invitation_email.contact_blocked_by_invitee', emails: emails)
+		elsif (contact_blocker = ContactBlocker.find_by_email invitation_email)
+			errors.add :invitation_email, I18n.t('models.profile.invitation_email.contact_blocked_for', email: contact_blocker.email)
 		end
 		errors.empty?
 	end

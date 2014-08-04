@@ -13,7 +13,7 @@
 	.editor_buttons
 		= full_profile_link @profile
 		= edit_full_profile_link @profile
-		- if !@profile.claimed?
+		- unless @profile.claimed? or @profile.contact_blockers.present?
 			= new_invitation_profile_link @profile
 		= admin_profiles_link
 		= admin_link

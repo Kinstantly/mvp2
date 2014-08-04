@@ -31,6 +31,10 @@ class Ability
 		
 		# The public can suggest providers.
 		can :create, ProviderSuggestion
+		
+		# In response to an email we sent, any one can request we never contact them.
+		alias_action :new_from_email_delivery, to: :create_from_email_delivery
+		can :create_from_email_delivery, ContactBlocker
 
 		# Experts should only be able to edit the profile attached to their user.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.

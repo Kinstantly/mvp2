@@ -29,7 +29,11 @@ describe ProfileMailer do
 		
 			it "should use the specified message body" do
 				email.should have_body_text(body)
-			end 
+			end
+			
+			it "should contain an unsubscribe link" do
+				email.should have_body_text(new_contact_blocker_from_email_delivery_url email_delivery_token: delivery_token)
+			end
 		end
 		
 		context "with claim URL in the message body" do

@@ -366,10 +366,6 @@ Given /^I have (a|no) profile photo$/ do |photo_present|
 	@profile.save
 end
 
-Given /^"(.*?)" opted out of receiving email from us$/ do |arg1|
-	pending 'implementation of opt-out records'
-end
-
 ### WHEN ###
 
 When /^I view my profile$/ do

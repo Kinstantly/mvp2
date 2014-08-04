@@ -110,6 +110,8 @@ en:
       invitation_token:
         save_error: 'could not be saved'
       invitation_email:
+        contact_blocked_by_invitee: 'is blocked. Previous invitee(s) for this profile have opted out of email from us: %{emails}'
+        contact_blocked_for: "'%{email}' has opted out of email from us"
         missing: 'address is required'
       name_and_company:
         missing: 'and last name, or company name, are required'
@@ -255,6 +257,16 @@ en:
         edit: 'Edit category'
       index:
         service_explanation: '(listed alphabetically; see edit page for display order)'
+    contact_blocker:
+      view:
+        unsubscribe_confirmation_html: '<p>Unsubscribe successful &mdash; you will no longer receive marketing emails from Kinstantly.</p><br /><p>Thank you.</p>'
+        unsubscribe_error: "Sorry. We didn't understand your request. If you want to get off our mailing list, please send email to"
+        unsubscribe_link: 'Unsubscribe from all future emails'
+      edit:
+        unsubscribe_note: 'Unsubscribe from all Kinstantly marketing communications.'
+        unsubscribe_submit: 'Unsubscribe'
+        unsubscribe_submit_disable: 'Unsubscribing...'
+        unsubscribe_title: 'Unsubscribe from Marketing Messages'
     home:
       view:
         browse_title: 'Browse by category'
