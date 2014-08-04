@@ -49,11 +49,16 @@ class Ability
 			can :manage_my_profile, Profile, user_id: user.id
 		end
 		
+		alias_action :new_invitation, to: :send_invitation
+		
 		# Profile editors can do anything to profiles, except remove a claimed profile.
 		if user.profile_editor?
 			can :manage, Profile
 			cannot :destroy, Profile
 			can :destroy, Profile, user: nil
+			cannot :send_invitation, Profile do |profile|
+				profile.contact_blockers.present?
+			end
 		end
 		
 		# Administrators can do anything, except remove a claimed profile.
@@ -62,6 +67,9 @@ class Ability
 			can :manage, :all
 			cannot :destroy, Profile
 			can :destroy, Profile, user: nil
+			cannot :send_invitation, Profile do |profile|
+				profile.contact_blockers.present?
+			end
 		end
 		
 		# Define abilities for the passed in user here. For example:

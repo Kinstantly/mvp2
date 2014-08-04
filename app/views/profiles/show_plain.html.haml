@@ -6,7 +6,7 @@
 		= edit_profile_link @profile
 		= edit_full_profile_link @profile
 		= link_to Profile.human_attribute_name(:reviews), "#{request.path}#review_area"
-		- if !@profile.claimed?
+		- if not @profile.claimed? and can?(:send_invitation, @profile)
 			= new_invitation_profile_link @profile
 		- if can?(:destroy, @profile)
 			= render partial: 'destroy', locals: {profile: @profile}
