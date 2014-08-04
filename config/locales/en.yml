@@ -128,6 +128,8 @@ en:
     attributes:
       category:
         is_predefined: 'Use category'
+      contact_blocker:
+        email: 'Email address'
       profile:
         accepting_new_clients: 'Accepting new clients/customers'
         adoption_stage: 'adoption'

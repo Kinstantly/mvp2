@@ -74,7 +74,7 @@ describe ContactBlockersController do
 				it "cannot assign the email delivery record" do
 					email_delivery = FactoryGirl.create :email_delivery
 					expect {
-						post :create_from_email_delivery, contact_blocker: valid_attributes_with_email_delivery.merge(email_delivery_id: email_delivery.to_param)
+						post :create_from_email_delivery, email_delivery_token: email_delivery.token, contact_blocker: valid_attributes_with_email_delivery.merge(email_delivery_id: email_delivery.to_param)
 					}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
 				end
 			end

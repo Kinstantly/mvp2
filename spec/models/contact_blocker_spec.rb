@@ -36,4 +36,20 @@ describe ContactBlocker do
 		ContactBlocker.find_by_email(given_email).should be_present
 		ContactBlocker.find_by_email(recipient).should be_present
 	end
+	
+	it "will not create duplicate records" do
+		email = 'junior_brown@example.org'
+		expect {
+			contact_blocker.update_attributes_from_email_delivery email: email
+			contact_blocker.update_attributes_from_email_delivery email: email
+		}.to change(ContactBlocker, :count).by(1)
+	end
+	
+	it "will not create duplicate records based on the email delivery" do
+		given_email = 'Other'+contact_blocker_with_email_delivery.email_delivery.recipient
+		expect {
+			contact_blocker_with_email_delivery.update_attributes_from_email_delivery email: given_email
+			contact_blocker_with_email_delivery.update_attributes_from_email_delivery email: given_email
+		}.to change(ContactBlocker, :count).by(2)
+	end
 end

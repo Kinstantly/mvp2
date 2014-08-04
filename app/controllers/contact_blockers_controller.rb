@@ -25,7 +25,7 @@ class ContactBlockersController < ApplicationController
 			if @contact_blocker.update_attributes_from_email_delivery params[:contact_blocker]
 				redirect_to contact_blocker_confirmation_url
 			else
-				respond_with @contact_blocker
+				render action: :new_from_email_delivery
 			end
 		else
 			redirect_to email_delivery_not_found_url
