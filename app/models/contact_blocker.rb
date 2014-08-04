@@ -14,14 +14,8 @@ class ContactBlocker < ActiveRecord::Base
 	# Additionally, if this contact_blocker is associated with an email_delivery and the given email is different from the email_delivery recipient, also block that recipient.
 	# Prevent duplicates.
 	def update_attributes_from_email_delivery(values)
-		if self.class.find_by_email values[:email]
+		if self.class.find_by_email(values[:email]) || update_attributes(values)
 			if email_delivery
-				email_delivery.contact_blockers.where(email: email_delivery.recipient).first_or_create
-			else
-				true
-			end
-		elsif update_attributes values
-			if email_delivery && values[:email] != email_delivery.recipient
 				email_delivery.contact_blockers.where(email: email_delivery.recipient).first_or_create
 			else
 				true
