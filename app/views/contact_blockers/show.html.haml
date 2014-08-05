@@ -1,0 +1,19 @@
+.show
+	= render partial: 'shared/nav_title', locals: { title: t('views.contact_blocker.view.title', email: @contact_blocker.email) }
+	%p#notice= notice
+	
+	%table
+		%tr
+			%td= ContactBlocker.human_attribute_name :email
+			%td= @contact_blocker.email
+		%tr
+			%td= ContactBlocker.human_attribute_name :created_at
+			%td= display_profile_time @contact_blocker.created_at
+		%tr
+			%td= ContactBlocker.human_attribute_name :email_delivery
+			%td= render partial: 'email_delivery_info'
+	= link_to 'Edit', edit_contact_blocker_path(@contact_blocker)
+	|
+	= link_to 'List', contact_blockers_path
+	|
+	= link_to 'Remove', @contact_blocker, method: :delete, data: { confirm: t('views.contact_blocker.edit.confirm_destroy', email: @contact_blocker.email) }

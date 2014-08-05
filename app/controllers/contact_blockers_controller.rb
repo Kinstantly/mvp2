@@ -32,86 +32,53 @@ class ContactBlockersController < ApplicationController
 		end
 	end
 	
-	# GET /contact_blockers
-	# GET /contact_blockers.json
 	def index
-		@contact_blockers = ContactBlocker.all
-
-		respond_to do |format|
-			format.html # index.html.erb
-			format.json { render json: @contact_blockers }
-		end
+		@contact_blockers = @contact_blockers.order_by_descending_id.page(params[:page]).per(params[:per_page])
+		respond_with @contact_blockers, layout: 'plain'
 	end
 
-	# GET /contact_blockers/1
-	# GET /contact_blockers/1.json
 	def show
-		@contact_blocker = ContactBlocker.find(params[:id])
-
-		respond_to do |format|
-			format.html # show.html.erb
-			format.json { render json: @contact_blocker }
-		end
+		render layout: 'plain'
 	end
 
-	# GET /contact_blockers/new
-	# GET /contact_blockers/new.json
 	def new
-		@contact_blocker = ContactBlocker.new
-
-		respond_to do |format|
-			format.html # new.html.erb
-			format.json { render json: @contact_blocker }
-		end
+		render layout: 'plain'
 	end
 
-	# GET /contact_blockers/1/edit
 	def edit
-		@contact_blocker = ContactBlocker.find(params[:id])
+		render layout: 'plain'
 	end
 
-	# POST /contact_blockers
-	# POST /contact_blockers.json
 	def create
-		@contact_blocker = ContactBlocker.new(params[:contact_blocker])
-
-		respond_to do |format|
+		respond_with(@contact_blocker) do |format|
 			if @contact_blocker.save
-				format.html { redirect_to @contact_blocker, notice: 'Contact blocker was successfully created.' }
-				format.json { render json: @contact_blocker, status: :created, location: @contact_blocker }
+				set_flash_message :notice, :created, email: @contact_blocker.email
 			else
-				format.html { render action: "new" }
-				format.json { render json: @contact_blocker.errors, status: :unprocessable_entity }
+				set_flash_message :alert, :create_error
+				format.html { render 'new', layout: 'plain' }
 			end
 		end
 	end
 
-	# PUT /contact_blockers/1
-	# PUT /contact_blockers/1.json
 	def update
-		@contact_blocker = ContactBlocker.find(params[:id])
-
-		respond_to do |format|
-			if @contact_blocker.update_attributes(params[:contact_blocker])
-				format.html { redirect_to @contact_blocker, notice: 'Contact blocker was successfully updated.' }
-				format.json { head :no_content }
+		respond_with(@contact_blocker) do |format|
+			if @contact_blocker.update_attributes params[:contact_blocker]
+				set_flash_message :notice, :updated, email: @contact_blocker.email
 			else
-				format.html { render action: "edit" }
-				format.json { render json: @contact_blocker.errors, status: :unprocessable_entity }
+				set_flash_message :alert, :update_error
+				format.html { render 'edit', layout: 'plain' }
 			end
 		end
 	end
 
-	# DELETE /contact_blockers/1
-	# DELETE /contact_blockers/1.json
 	def destroy
-		@contact_blocker = ContactBlocker.find(params[:id])
 		@contact_blocker.destroy
-
-		respond_to do |format|
-			format.html { redirect_to contact_blockers_url }
-			format.json { head :no_content }
+		if @contact_blocker.destroyed?
+			set_flash_message :notice, :destroyed, email: @contact_blocker.email
+		else
+			set_flash_message :alert, :destroy_error, email: @contact_blocker.email
 		end
+		respond_with @contact_blocker
 	end
 	
 	private

@@ -23,10 +23,16 @@
 		.not_browsable, .not_browsable a {
 			color: gray !important;
 		}
+		.buttons {
+			margin-top: 1em;
+		}
 	}
 }
 
 .show {
+	h1 {
+		@include header-style;
+	}
 	margin: 20px;
 	table {
 		border-collapse: collapse;

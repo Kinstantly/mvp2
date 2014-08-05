@@ -148,14 +148,18 @@ module ProfilesHelper
 	def new_invitation_profile_link(profile)
 		link_to t('views.profile.view.invitation_to_claim_link'), new_invitation_profile_path(profile) if can?(:update, profile)
 	end
+	
+	def profile_invitation_to_claim_info(delivery)
+		tracking_category = delivery.tracking_category.presence
+		tracking = tracking_category ? "'#{tracking_category}'" : 'subject line'
+		t 'views.profile.view.invitation_to_claim_info', invitee: delivery.recipient, time: display_profile_time(delivery.created_at), tracking: tracking
+	end
 
 	def profile_invitation_info(profile)
 		if can?(:manage, profile) && !profile.claimed?
 			if (deliveries = profile.email_deliveries.where(email_type: 'invitation').presence)
 				deliveries.map do |delivery|
-					tracking_category = delivery.tracking_category.presence
-					tracking = tracking_category ? "'#{tracking_category}'" : 'subject line'
-					t 'views.profile.view.invitation_to_claim_info', invitee: delivery.recipient, time: display_profile_time(delivery.created_at), tracking: tracking
+					profile_invitation_to_claim_info delivery
 				end
 			elsif profile.contact_blockers.blank?
 				[new_invitation_profile_link(profile)]

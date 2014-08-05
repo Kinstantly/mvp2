@@ -211,7 +211,7 @@ div.view_profile {
 	@include profile-areas-div-style;
 }
 
-.profile_index, .profile_admin, .admin, .index {
+.profile_index, .profile_admin, .admin, .index, .show, .edit {
 	margin: $profile_margin;
 	h1 {
 		@include header-style;

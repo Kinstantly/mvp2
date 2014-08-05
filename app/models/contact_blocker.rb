@@ -10,6 +10,8 @@ class ContactBlocker < ActiveRecord::Base
 	
 	validates :email, email: true
 	
+	scope :order_by_descending_id, order('id DESC')
+	
 	# Update attributes with given values as usual.
 	# Additionally, if this contact_blocker is associated with an email_delivery and the given email is different from the email_delivery recipient, also block that recipient.
 	# Prevent duplicates.

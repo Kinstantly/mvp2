@@ -62,7 +62,7 @@ describe ContactBlockersController do
 					assigns(:contact_blocker).should be_a_new(ContactBlocker)
 				end
 
-				it "renders the 'create' template" do
+				it "renders the 'new_from_email_delivery' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					ContactBlocker.any_instance.stub(:update_attributes_from_email_delivery).and_return(false)
 					post :create_from_email_delivery, email_delivery_token: email_delivery.token, contact_blocker: {}
@@ -83,6 +83,10 @@ describe ContactBlockersController do
 
 	context "as admin user" do
 		let(:admin_user) { FactoryGirl.create :admin_user, email: 'iris@example.com' }
+
+		before (:each) do
+			sign_in admin_user
+		end
 		
 		context "creating a new record manually" do
 			describe "GET new" do
@@ -96,19 +100,19 @@ describe ContactBlockersController do
 				describe "with valid params" do
 					it "creates a new ContactBlocker" do
 						expect {
-							post :create, {:contact_blocker => valid_attributes}
+							post :create, {contact_blocker: valid_attributes}
 						}.to change(ContactBlocker, :count).by(1)
 					end
 
 					it "assigns a newly created contact_blocker as @contact_blocker" do
-						post :create, {:contact_blocker => valid_attributes}
+						post :create, {contact_blocker: valid_attributes}
 						assigns(:contact_blocker).should be_a(ContactBlocker)
 						assigns(:contact_blocker).should be_persisted
 					end
 
 					it "redirects to the created contact_blocker" do
-						post :create, {:contact_blocker => valid_attributes}
-						response.should render_template('create')
+						post :create, {contact_blocker: valid_attributes}
+						response.should redirect_to ContactBlocker.order('id').last
 					end
 				end
 
@@ -116,29 +120,22 @@ describe ContactBlockersController do
 					it "assigns a newly created but unsaved contact_blocker as @contact_blocker" do
 						# Trigger the behavior that occurs when invalid params are submitted
 						ContactBlocker.any_instance.stub(:save).and_return(false)
-						post :create, {:contact_blocker => {}}
+						post :create, {contact_blocker: {}}
 						assigns(:contact_blocker).should be_a_new(ContactBlocker)
 					end
 
-					it "renders the 'create' template" do
+					it "renders the 'new' template" do
 						# Trigger the behavior that occurs when invalid params are submitted
 						ContactBlocker.any_instance.stub(:save).and_return(false)
-						post :create, {:contact_blocker => {}}
-						response.should render_template('create')
+						post :create, {contact_blocker: {}}
+						response.should render_template 'new'
 					end
 				end
 			
 				describe "attempting to modify protected attribute(s)" do
-					it "cannot assign admin notes" do
+					it "cannot assign the email delivery record" do
 						expect {
-							post :create, contact_blocker: valid_attributes.merge(admin_notes: 'Sneaky notes.')
-						}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-					end
-
-					it "cannot assign the suggester" do
-						suggester = FactoryGirl.create :parent
-						expect {
-							post :create, contact_blocker: valid_attributes.merge(suggester_id: suggester.to_param)
+							post :create, contact_blocker: valid_attributes.merge(email_delivery_id: email_delivery.to_param)
 						}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
 					end
 				end
@@ -148,7 +145,6 @@ describe ContactBlockersController do
 		context "editing existing records" do
 			before (:each) do
 				contact_blocker # Make sure a persistent contact_blocker exists.
-				sign_in admin_user
 			end
 		
 			describe "GET index" do
@@ -156,18 +152,23 @@ describe ContactBlockersController do
 					get :index
 					assigns(:contact_blockers).should eq([contact_blocker])
 				end
+				
+				it "renders 'index'" do
+					get :index
+					response.should render_template 'index'
+				end
 			end
 
 			describe "GET show" do
 				it "assigns the requested contact_blocker as @contact_blocker" do
-					get :show, {:id => contact_blocker.to_param}
+					get :show, {id: contact_blocker.to_param}
 					assigns(:contact_blocker).should eq(contact_blocker)
 				end
 			end
 
 			describe "GET edit" do
 				it "assigns the requested contact_blocker as @contact_blocker" do
-					get :edit, {:id => contact_blocker.to_param}
+					get :edit, {id: contact_blocker.to_param}
 					assigns(:contact_blocker).should eq(contact_blocker)
 				end
 			end
@@ -179,17 +180,17 @@ describe ContactBlockersController do
 						# specifies that the newly created ContactBlocker
 						# receives the :update_attributes message with whatever params are
 						# submitted in the request as the admin role.
-						ContactBlocker.any_instance.should_receive(:update_attributes).with({'these' => 'params'}, {as: :admin})
-						put :update, {:id => contact_blocker.to_param, :contact_blocker => {'these' => 'params'}}
+						ContactBlocker.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
+						put :update, {id: contact_blocker.to_param, contact_blocker: {'these' => 'params'}}
 					end
 
 					it "assigns the requested contact_blocker as @contact_blocker" do
-						put :update, {:id => contact_blocker.to_param, :contact_blocker => valid_attributes}
+						put :update, {id: contact_blocker.to_param, contact_blocker: valid_attributes}
 						assigns(:contact_blocker).should eq(contact_blocker)
 					end
 
 					it "redirects to the contact_blocker" do
-						put :update, {:id => contact_blocker.to_param, :contact_blocker => valid_attributes}
+						put :update, {id: contact_blocker.to_param, contact_blocker: valid_attributes}
 						response.should redirect_to(contact_blocker)
 					end
 				end
@@ -198,23 +199,15 @@ describe ContactBlockersController do
 					it "assigns the contact_blocker as @contact_blocker" do
 						# Trigger the behavior that occurs when invalid params are submitted
 						ContactBlocker.any_instance.stub(:save).and_return(false)
-						put :update, {:id => contact_blocker.to_param, :contact_blocker => {}}
+						put :update, {id: contact_blocker.to_param, contact_blocker: {}}
 						assigns(:contact_blocker).should eq(contact_blocker)
 					end
 
 					it "re-renders the 'edit' template" do
 						# Trigger the behavior that occurs when invalid params are submitted
 						ContactBlocker.any_instance.stub(:update_attributes).and_return(false)
-						put :update, {:id => contact_blocker.to_param, :contact_blocker => {}}
-						response.should render_template("edit")
-					end
-				end
-			
-				describe "admin can modify attribute(s) that are protected from the default role" do
-					it "can assign admin notes" do
-						expect {
-							put :update, id: contact_blocker.to_param, contact_blocker: {admin_notes: 'Good notes.'}
-						}.to_not raise_error(ActiveModel::MassAssignmentSecurity::Error)
+						put :update, {id: contact_blocker.to_param, contact_blocker: {}}
+						response.should render_template 'edit'
 					end
 				end
 			end
@@ -222,12 +215,12 @@ describe ContactBlockersController do
 			describe "DELETE destroy" do
 				it "destroys the requested contact_blocker" do
 					expect {
-						delete :destroy, {:id => contact_blocker.to_param}
+						delete :destroy, {id: contact_blocker.to_param}
 					}.to change(ContactBlocker, :count).by(-1)
 				end
 
 				it "redirects to the contact_blockers list" do
-					delete :destroy, {:id => contact_blocker.to_param}
+					delete :destroy, {id: contact_blocker.to_param}
 					response.should redirect_to(contact_blockers_url)
 				end
 			end
