@@ -686,6 +686,6 @@ Founder and CEO
 	end
 
 	def claim_profile_link
-		link_to t('views.profile.view.claim_profile_link'), '#', class: 'claim_profile_link'
+		link_to t('views.profile.view.claim_profile_link'), '#', id: 'claim_profile_link', class: 'claim_profile_link'
 	end
 end
