@@ -37,6 +37,14 @@ en:
       remove_subcategory_success: "Removed subcategory '%{name}'."
       update_subcategory_error: "Could not update subcategory."
       update_subcategory_success: "Updated subcategory '%{name}'."
+    contact_blockers:
+      created: "Opt-out for '%{email}' was created."
+      create_error: 'There was a problem creating the opt-out.'
+      destroyed: "Opt-out for '%{email}' was trashed."
+      destroy_error: 'There was a problem trashing the opt-out.'
+      not_found_by_email: "Opt-put for '%{email}' was not found."
+      updated: "Opt-out for '%{email}' was updated."
+      update_error: 'There was a problem updating the opt-out.'
     users:
       profile_updated: 'Your profile changes were saved.'
       profile_update_error: 'There was a problem saving your profile.'
@@ -110,6 +118,8 @@ en:
       invitation_token:
         save_error: 'could not be saved'
       invitation_email:
+        contact_blocked_by_invitee: 'is blocked. Previous invitee(s) for this profile have opted out of email from us: %{emails}'
+        contact_blocked_for: "'%{email}' has opted out of email from us."
         missing: 'address is required'
       name_and_company:
         missing: 'and last name, or company name, are required'
@@ -126,6 +136,9 @@ en:
     attributes:
       category:
         is_predefined: 'Use category'
+      contact_blocker:
+        email: 'Email address'
+        email_delivery: 'Email delivered'
       profile:
         accepting_new_clients: 'Accepting new clients/customers'
         adoption_stage: 'adoption'
@@ -233,7 +246,7 @@ en:
     or: 'or'
     accessibility: 'Skip to content'
     cancel: 'Cancel'
-    click_to_view: 'click to view'
+    click_to_view: 'Click to view.'
     field_label: '%{name}:'
     optional_field_label: '%{name} (optional):'
     find_button: 'Find'
@@ -255,6 +268,21 @@ en:
         edit: 'Edit category'
       index:
         service_explanation: '(listed alphabetically; see edit page for display order)'
+    contact_blocker:
+      name: 'Contact opt-out'
+      view:
+        title: 'Contact opt-out for %{email}'
+        unsubscribe_confirmation_html: '<p>Unsubscribe successful &mdash; you will no longer receive marketing emails from Kinstantly.</p><br /><p>Thank you.</p>'
+        unsubscribe_error: "Sorry. We didn't understand your request. If you want to get off our mailing list, please send email to"
+        unsubscribe_link: 'Unsubscribe from all future emails'
+      edit:
+        confirm_destroy: 'Are you sure you want to remove the opt-out record for %{email}?'
+        create: 'Create a new contact opt-out'
+        title: 'Edit contact opt-out for %{email}'
+        unsubscribe_note: 'Unsubscribe from all Kinstantly marketing communications.'
+        unsubscribe_submit: 'Unsubscribe'
+        unsubscribe_submit_disable: 'Unsubscribing...'
+        unsubscribe_title: 'Unsubscribe from Marketing Messages'
     home:
       view:
         browse_title: 'Browse by category'

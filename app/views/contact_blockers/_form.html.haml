@@ -1,0 +1,7 @@
+= render partial: 'email_delivery_info'
+
+= simple_form_for @contact_blocker do |f|
+	= f.error_notification
+	= f.input :email
+	= f.button :submit
+	= link_to 'Cancel', (@contact_blocker.new_record? ? contact_blockers_path : contact_blocker_path(@contact_blocker))

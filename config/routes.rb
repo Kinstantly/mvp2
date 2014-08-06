@@ -131,6 +131,12 @@ Mvp2::Application.routes.draw do
 	
 	resources :provider_suggestions
 	
+	resources :contact_blockers
+	get 'noemail/:email_delivery_token' => 'contact_blockers#new_from_email_delivery', as: :new_contact_blocker_from_email_delivery
+	post 'noemail/:email_delivery_token' => 'contact_blockers#create_from_email_delivery', as: :create_contact_blocker_from_email_delivery
+	get 'noemailerror' => 'contact_blockers#email_delivery_not_found', as: :email_delivery_not_found
+	get 'noemailconfirmation' => 'contact_blockers#contact_blocker_confirmation', as: :contact_blocker_confirmation
+	
 	# Catch all other routing requests and do something benign.
 	# The main purpose of this route is to provide as little information as possible to site probers.
 	# For Rails 4, add "via: :all".

@@ -1,0 +1,6 @@
+- title ||= nil
+#top_bar
+	= render partial: 'home/admin_nav'
+- if title
+	- @page_title = "#{company_name} - #{title}"
+	%h1= title

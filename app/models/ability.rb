@@ -31,6 +31,10 @@ class Ability
 		
 		# The public can suggest providers.
 		can :create, ProviderSuggestion
+		
+		# In response to an email we sent, any one can request we never contact them.
+		alias_action :new_from_email_delivery, to: :create_from_email_delivery
+		can :create_from_email_delivery, ContactBlocker
 
 		# Experts should only be able to edit the profile attached to their user.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.
@@ -45,11 +49,16 @@ class Ability
 			can :manage_my_profile, Profile, user_id: user.id
 		end
 		
+		alias_action :new_invitation, to: :send_invitation
+		
 		# Profile editors can do anything to profiles, except remove a claimed profile.
 		if user.profile_editor?
 			can :manage, Profile
 			cannot :destroy, Profile
 			can :destroy, Profile, user: nil
+			cannot :send_invitation, Profile do |profile|
+				profile.contact_blockers.present?
+			end
 		end
 		
 		# Administrators can do anything, except remove a claimed profile.
@@ -58,6 +67,9 @@ class Ability
 			can :manage, :all
 			cannot :destroy, Profile
 			can :destroy, Profile, user: nil
+			cannot :send_invitation, Profile do |profile|
+				profile.contact_blockers.present?
+			end
 		end
 		
 		# Define abilities for the passed in user here. For example:

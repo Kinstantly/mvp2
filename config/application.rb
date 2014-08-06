@@ -100,6 +100,7 @@ Phonie::Phone.default_country_code = '1'
 ADMIN_EMAIL = 'admin@kinstantly.com'
 REVIEW_MODERATOR_EMAIL = 'admin@kinstantly.com'
 PROFILE_MODERATOR_EMAIL = 'profile_monitor@kinstantly.com'
+SUPPORT_EMAIL = 'support@kinstantly.com'
 SEARCH_DEFAULT_PER_PAGE = ENV['SEARCH_DEFAULT_PER_PAGE'].presence || 20
 PaperTrail.config.version_limit = 20
 GOOGLE_BROWSER_API_KEY = 'AIzaSyAcg1gF_tDu3I3qOnYDLD8KUkvnAPXYVow'

@@ -1,0 +1,15 @@
+#content
+	.unsubscribe.wider_form
+		%h1= t 'views.contact_blocker.edit.unsubscribe_title'
+		= form_for @contact_blocker, url: create_contact_blocker_from_email_delivery_path(@contact_blocker.email_delivery.token) do |f|
+			= f.error_messages
+			
+			.text_field
+				= f.label :email
+				%br
+				= f.email_field :email
+				
+				%p= t 'views.contact_blocker.edit.unsubscribe_note'
+				
+			.buttons
+				= f.submit t('views.contact_blocker.edit.unsubscribe_submit'), disable_with: t('views.contact_blocker.edit.unsubscribe_submit_disable'), class: 'default'

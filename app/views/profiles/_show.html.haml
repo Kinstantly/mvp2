@@ -147,7 +147,15 @@
 		.user_state
 			= @profile.owned? ? t('views.profile.view.profile_is_owned_by', owner: @profile.user.email) : t('views.profile.view.profile_is_not_owned')
 		.invitation_state
-			= profile_invitation_info @profile
+			- if (profile_invitation_info = profile_invitation_info @profile)
+				%ul
+					- profile_invitation_info.each do |info|
+						%li= info
+					- @profile.contact_blockers.each do |contact_blocker|
+						%li
+							= t('models.profile.invitation_email.contact_blocked_for', email: contact_blocker.email)
+							- if can? :manage, contact_blocker
+								= link_to t('views.click_to_view'), contact_blocker
 		.registration_special_code
 			- if (registration_special_code = @profile.user.try :registration_special_code)
 				= "#{Profile.human_attribute_name :user_registration_special_code}: #{registration_special_code}"

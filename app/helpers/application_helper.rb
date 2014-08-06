@@ -119,6 +119,13 @@ module ApplicationHelper
 		link_to t('views.provider_suggestion.name').pluralize, provider_suggestions_path if can? :manage, ProviderSuggestion
 	end
 	
+	def admin_contact_blocker_links
+		if can? :manage, ContactBlocker
+			link_to(t('views.contact_blocker.name').pluralize, contact_blockers_path) +
+				link_to(t('views.contact_blocker.edit.create'), new_contact_blocker_path)
+		end
+	end
+	
 	def admin_category_links
 		if can? :manage, Category
 			link_to(t('views.category.name').pluralize, categories_path) +

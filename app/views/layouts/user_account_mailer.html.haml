@@ -7,3 +7,14 @@
 			%tr
 				%td
 					= yield
+			%tr
+				%td{align: 'center'}
+					%br
+					%br
+					Kinstantly, Inc.&nbsp;&nbsp;&nbsp;350 Townsend Street, #683&nbsp;&nbsp;&nbsp;San Francisco, CA 94107
+			- if @unsubscribe_url
+				%tr
+					%td{align: 'center'}
+						%br
+						%br
+						= link_to t('views.contact_blocker.view.unsubscribe_link'), @unsubscribe_url

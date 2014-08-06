@@ -1,0 +1,29 @@
+.index
+	= render partial: 'shared/nav_title', locals: { title: t('views.contact_blocker.name').pluralize }
+	.list{align: 'center'}
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: ContactBlocker }
+			= paginate @contact_blockers
+		%table
+			%thead
+				%tr
+					%th= ContactBlocker.human_attribute_name :email
+					%th= ContactBlocker.human_attribute_name :created_at
+					%th.large= ContactBlocker.human_attribute_name :email_delivery
+					%th.small
+					%th.small
+					%th.small
+			%tbody
+				- @contact_blockers.each do |contact_blocker|
+					%tr
+						%td= contact_blocker.email
+						%td= display_profile_time contact_blocker.created_at
+						%td= render partial: 'email_delivery_info', locals: { contact_blocker: contact_blocker }
+						%td.small= link_to 'Show', contact_blocker
+						%td.small= link_to 'Edit', edit_contact_blocker_path(contact_blocker)
+						%td.small= link_to 'Remove', contact_blocker, method: :delete, data: { confirm: t('views.contact_blocker.edit.confirm_destroy', email: contact_blocker.email) }
+		.buttons
+			= link_to t('views.contact_blocker.edit.create'), new_contact_blocker_path
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: ContactBlocker }
+			= paginate @contact_blockers
