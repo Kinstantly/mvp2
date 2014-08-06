@@ -20,7 +20,7 @@
 					%th.small
 			%tbody
 				- @profile_claims.each do |profile_claim|
-					- profile_name = profile_claim.profile.try :display_name
+					- profile_name = profile_claim.profile.try :display_name_otherwise_company
 					- claimant_name = profile_claim.claimant.try :username_or_email
 					%tr
 						%td= link_to_if profile_claim.profile, profile_name, profile_claim.profile, target: "_blank"

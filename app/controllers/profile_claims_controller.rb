@@ -13,6 +13,7 @@ class ProfileClaimsController < ApplicationController
 	
 	# GET /profile_claims/new
 	def new
+		@profile_claim.claimant_email = current_user.email if user_signed_in?
 		respond_with @profile_claim, layout: false
 	end
 	

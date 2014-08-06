@@ -2,7 +2,7 @@ class ProfileClaim < ActiveRecord::Base
   	#attr_accessible :admin_notes, :claimant_email, :claimant_id, :claimant_phone
 	has_paper_trail # Track changes to each profile claim.
 	
-	ACCESSIBLE_ATTRIBUTES = [:profile_id, :claimant_email, :claimant_phone]
+	ACCESSIBLE_ATTRIBUTES = [:claimant_email, :claimant_phone]
 	attr_accessible *ACCESSIBLE_ATTRIBUTES
 	attr_accessible *ACCESSIBLE_ATTRIBUTES, :admin_notes, as: :admin
 

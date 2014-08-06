@@ -1,7 +1,4 @@
 Mvp2::Application.routes.draw do
-  resources :profile_claims
-
-
 	# Home page.
 	root :to => 'home#index'
 	

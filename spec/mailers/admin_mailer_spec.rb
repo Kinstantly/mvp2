@@ -73,4 +73,21 @@ describe AdminMailer do
 			email.should have_body_text(/#{provider_suggestion_url(provider_suggestion)}/)
 		end
 	end
+
+	context "profile claim notice" do
+		let(:profile_claim) { FactoryGirl.create :profile_claim }
+		let(:email) { AdminMailer.profile_claim_notice profile_claim }
+		
+		it "should be delivered to profile admin" do
+			email.should deliver_to(PROFILE_MODERATOR_EMAIL)
+		end
+
+		it "should mention 'profile claim' in the subject" do
+			email.should have_subject(/profile claim/i)
+		end
+	
+		it "should contain a link to view the claim" do
+			email.should have_body_text(/#{profile_claim_url(profile_claim)}/)
+		end
+	end
 end

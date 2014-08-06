@@ -1,4 +1,4 @@
-- profile_name = @profile_claim.profile.try :display_name
+- profile_name = @profile_claim.profile.try :display_name_otherwise_company
 - claimant_name = @profile_claim.claimant.try :username_or_email
 .show
 	%p#notice= notice

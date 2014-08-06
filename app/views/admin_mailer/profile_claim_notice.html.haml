@@ -12,7 +12,7 @@
 					= profile_claimed.id
 					%br
 					name:
-					= profile_claimed.display_name
+					= profile_claimed.display_name_otherwise_company
 				- else
 					Can't fine profile.
 			%p
@@ -25,7 +25,7 @@
 					email:
 					= claimant.email
 				- else
-					The claimant was made by site visitor.
+					The claim was made by site visitor.
 				%br
 				Claimant contact info:
 				%br
