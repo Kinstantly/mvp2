@@ -5,7 +5,7 @@
 				Claim created on
 				= mailer_display_time @profile_claim.created_at
 			%p
-				Profile claimed:
+				Profile requested:
 				%br
 				- if (profile_claimed = @profile_claim.profile)
 					id:
@@ -14,7 +14,7 @@
 					name:
 					= profile_claimed.display_name_otherwise_company
 				- else
-					Can't fine profile.
+					Can't find profile.
 			%p
 				- if (claimant = @profile_claim.claimant)
 					The claim was made by this registered user:
@@ -25,7 +25,8 @@
 					email:
 					= claimant.email
 				- else
-					The claim was made by site visitor.
+					The claim was made by a site visitor.
+				%br
 				%br
 				Claimant contact info:
 				%br

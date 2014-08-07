@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140729232229) do
+ActiveRecord::Schema.define(:version => 20140802030856) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -88,6 +88,15 @@ ActiveRecord::Schema.define(:version => 20140729232229) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "contact_blockers", :force => true do |t|
+    t.string   "email"
+    t.integer  "email_delivery_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "contact_blockers", ["email_delivery_id"], :name => "index_contact_blockers_on_email_delivery_id"
+
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
     t.integer  "attempts",   :default => 0
@@ -103,6 +112,20 @@ ActiveRecord::Schema.define(:version => 20140729232229) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "email_deliveries", :force => true do |t|
+    t.string   "recipient"
+    t.string   "sender"
+    t.string   "email_type"
+    t.string   "token"
+    t.string   "tracking_category"
+    t.integer  "profile_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "email_deliveries", ["profile_id"], :name => "index_email_deliveries_on_profile_id"
+  add_index "email_deliveries", ["token"], :name => "index_email_deliveries_on_token"
 
   create_table "locations", :force => true do |t|
     t.integer  "profile_id"
@@ -364,6 +387,7 @@ ActiveRecord::Schema.define(:version => 20140729232229) do
     t.integer  "reviews_given_count",           :default => 0,  :null => false
     t.datetime "admin_confirmation_sent_at"
     t.integer  "admin_confirmation_sent_by_id"
+    t.string   "registration_special_code"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
