@@ -69,6 +69,11 @@ en:
       destroy_error: "Sorry.  The provider suggestion for '%{name}' was NOT removed."
       updated: 'The provider suggestion was saved.'
       update_error: 'There was a problem saving the provider suggestion.'
+    profile_claims:
+      destroyed: "The profile claim for '%{name}' was removed!"
+      destroy_error: "Sorry. The profile claim for '%{name}' was NOT removed."
+      updated: 'The profile claim was saved.'
+      update_error: 'There was a problem saving the profile claim.'
     reviews:
       destroyed: 'The review was destroyed!'
     services:
@@ -192,6 +197,10 @@ en:
         suggester: 'Logged-in suggester'
         suggester_email: 'Your email address'
         suggester_name: 'Your name'
+      profile_claim:
+        claimant: 'Logged-in claimant'
+        claimant_email: 'Email address'
+        claimant_phone: 'Phone number'
       review:
         body: 'Review'
         good_to_know: 'Tip'
@@ -228,6 +237,10 @@ en:
           attributes:
             password:
               confirmation: 'and retyped password must be the same'
+        profile_claim:
+          attributes:
+            profile:
+              blank: 'cannot be found. It may have been removed recently.'
   views:
     or: 'or'
     accessibility: 'Skip to content'
@@ -301,6 +314,7 @@ en:
         ages_stages: 'ages/stages:'
         availability_service_area_html: 'Availability/<br/>service area'
         average_rating: 'Average rating:'
+        claim_profile_link: 'Is this your profile? Click here to claim it.'
         claimed_by: 'Owned by'
         consultation_modes: 'Consultation methods and locations'
         does_not_consult_remotely: 'Does not offer most or all services remotely (phone/video/email)'
@@ -440,6 +454,25 @@ en:
         submit_disable: 'Submitting...'
         suggester_email_tip: 'In case we have a quick follow-up question'
         suggester_name_tip: 'First and last'
+    profile_claim:
+      name: 'Profile claim'
+      admin:
+        claimant_email: "Claimant's email address"
+        claimant_phone: "Claimant's phone number"
+      new:
+        header: "Thanks for claiming your profile!"
+        intro: "Because we want to make sure that Kinstantly has the highest quality of (real!) profiles, please enter the following information, so that we can verify your identity:"
+      edit:
+        blank_profile_error: 'Sorry, this profile does not exist. It may have been removed recently.'
+        cancel: 'Cancel'
+        submit: 'Submit'
+        submit_disable: 'Submitting...'
+        close: 'Close'
+      create:
+        confirmation: "The claim has been submitted. We will contact you shortly."
+        done: 'Done'
+      destroy:
+        confirm_prompt: "Are you sure you want to remove the profile claim for '%{name}'?"
     review:
       view:
         good_to_know_heading: 'TIP:'
@@ -631,3 +664,8 @@ en:
           display_html: "Get our <a href='#' title='Newsletter for parents'>newsletter for parents</a> or <a href='#' title='Newsletter for providers'>newsletter for providers</a>"
       blog:
           display_html: "Read our blogs: <a href='#' title='Kinstant Messages'>Kinstant Messages</a> and <a href='#' title='TK'>TK</a>"
+  helpers:
+    label:
+      profile_claim:
+        claimant_email: Email address
+        claimant_phone: Phone number

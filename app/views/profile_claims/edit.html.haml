@@ -1,0 +1,15 @@
+- profile_name = @profile_claim.profile.present? ? @profile_claim.profile.display_name : 'unknown'
+- @page_title = "#{company_name} - Edit profile claim of '#{profile_name}'"
+.edit
+	%h1= "Edit profile claim of '#{profile_name}'"
+	#top_bar
+		= render partial: 'home/admin_nav'
+	#forms
+		= render partial: 'edit_form'
+		%br
+		= link_to 'Show', @profile_claim
+		|
+		= link_to 'List', profile_claims_path
+= render partial: 'shared/save_changes_prompt'
+
+

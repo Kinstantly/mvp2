@@ -366,6 +366,10 @@ Given /^I have (a|no) profile photo$/ do |photo_present|
 	@profile.save
 end
 
+Given /^I visit a published unclaimed profile?$/ do
+	create_unattached_profile({is_published: true})
+	visit profile_path(@unattached_profile)
+end
 ### WHEN ###
 
 When /^I view my profile$/ do

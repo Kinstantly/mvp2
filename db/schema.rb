@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140622051559) do
+ActiveRecord::Schema.define(:version => 20140729232229) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -122,6 +122,16 @@ ActiveRecord::Schema.define(:version => 20140622051559) do
   end
 
   add_index "locations", ["profile_id"], :name => "index_locations_on_profile_id"
+
+  create_table "profile_claims", :force => true do |t|
+    t.integer  "profile_id"
+    t.integer  "claimant_id"
+    t.string   "claimant_email"
+    t.string   "claimant_phone"
+    t.text     "admin_notes"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
 
   create_table "profiles", :force => true do |t|
     t.string   "first_name"

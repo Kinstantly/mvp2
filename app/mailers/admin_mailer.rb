@@ -36,4 +36,13 @@ class AdminMailer < ActionMailer::Base
 		sendgrid_unique_args provider_suggestion_id: provider_suggestion.to_param
 		mail subject: subject
 	end
+
+	# Notify the profile moderator when profile claimed.
+	def profile_claim_notice(profile_claim)
+		@profile_claim = profile_claim
+		subject = 'New profile claim has been submitted.'
+		sendgrid_category subject
+		sendgrid_unique_args profile_claim_id: profile_claim.to_param
+		mail subject: subject
+	end
 end

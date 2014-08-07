@@ -205,6 +205,11 @@
 		float: right;
 		font-size: 0.875em;
 		@include scale(margin-bottom, 11);
+
+		a:not(:last-child){
+			display: inline-block;
+			padding-bottom: 0.3em
+		}
 	}
 	
 	.profile {
@@ -1410,30 +1415,17 @@
 #suggest_provider {
 	position: relative;
 	.popover {
-		display: none;
+		@include form_popover;
 		min-height: 500px;
-		.note {
-			margin: 8px 0 0 0;
-		}
-		h1, #confirmation {
-			width: 100%;
-			padding: 0;
-			text-align: center;
-		}
-		#confirmation p {
-			margin: 5em 0 0 0;
-		}
 	}
 }
 
 #suggest_provider.loading .popover {
-	display: block;
-	background: #FFF url('loading_large.gif') no-repeat center center;
+	@include loading_form_popover;
 }
 
 #suggest_provider.loaded .popover {
-	display: block;
-	background: #FFF;
+	@include loaded_form_popover;
 }
 
 /* Pop-over forms */
@@ -2047,4 +2039,22 @@ ul.links-list > li{
 			}
 		}
 	}	
+}
+
+/* Claim profile pop-over */
+
+#claim_profile {
+	position: relative;
+	.popover {
+		min-height: 375px;
+		@include form_popover;
+	}
+}
+
+#claim_profile.loading .popover {
+	@include loading_form_popover;
+}
+
+#claim_profile.loaded .popover {
+	@include loaded_form_popover;
 }

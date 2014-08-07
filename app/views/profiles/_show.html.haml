@@ -2,9 +2,14 @@
 -# = javascript_include_tag 'profile_show'
 - if can?(:manage_my_profile, @profile) || can?(:edit, @profile)
 	#editing_tip.clearfix= t 'views.profile.view.editing_tip'
--# - else
--# 	%aside.help
--# 		= link_to t('views.profile.view.feedback'), '#'
+- else
+	%aside.help
+		-# = link_to t('views.profile.view.feedback'), '#'
+		- unless @profile.claimed?
+			-# %br/
+			= claim_profile_link
+#claim_profile
+	.popover.generic_form
 %section.profile.left
 	%header#content-header.header{itemscope: '', itemtype: 'http://schema.org/Person'}
 		- cache ['profile_header_sans_rating', @profile] do
@@ -195,6 +200,10 @@
 			.value
 				%span.attribute_display= display_wrapped_names @profile.search_terms_array
 
+:javascript
+	my_vars.profile_claim_form_url = '#{new_claim_for_profile_path @profile}';
+	my_vars.profile_id = '#{@profile.id}';
+
 :coffeescript
 	$ ->
 		$('.location a.more').on 'click', () ->
@@ -212,3 +221,26 @@
 		$('.show-more').shorten({showChars: 210})
 		
 		link_addresses_to_map $('.address.location > a')
+
+		# Claim Profile pop-over
+		# Close
+		my_vars.f.close_profile_claim_form = (e) ->
+			$('#claim_profile').removeClass('loaded').removeClass('loading')
+			$('#profile_claim_form').empty()
+			$(document).off 'click', my_vars.f.outer_close_profile_claim_form
+			false # No bubbling up.
+		# Close if clicked outside the pop-over
+		my_vars.f.outer_close_profile_claim_form = (e) ->
+			if $(e.target).closest('#claim_profile').length == 0
+				my_vars.f.close_profile_claim_form(e)
+		# Load and show
+		$('.claim_profile_link').on 'click', (e) ->
+			container = $('#claim_profile').addClass 'loading'
+			popover = $('.popover', container)
+			place_popover popover, 10
+			popover.load my_vars.profile_claim_form_url, ->
+				container.removeClass 'loading'
+				container.addClass 'loaded'
+			$(document).on 'click', my_vars.f.outer_close_profile_claim_form
+			false
+		
