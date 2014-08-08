@@ -70,17 +70,17 @@ module ApplicationHelper
 
 	def account_settings_link(options={})
 		path = edit_user_registration_path
-		link_to 'Settings', path, options if user_signed_in? && show_link?(path)
+		link_to t('views.user.view.link'), path, options if user_signed_in? && show_link?(path)
 	end
 	
 	def view_user_profile_link
 		path = view_user_profile_path
-		link_to 'View your profile', path if show_link?(path) && can?(:show, User)
+		link_to t('views.user.view.view_user_profile'), path if show_link?(path) && can?(:show, User)
 	end
 	
 	def edit_user_profile_link
 		path = edit_user_profile_path
-		link_to "Edit your profile", path if show_link?(path) && can?(:update, User)
+		link_to t('views.user.view.edit_user_profile'), path if show_link?(path) && can?(:update, User)
 	end
 	
 	def admin_profile_list_by_id_link
@@ -125,6 +125,10 @@ module ApplicationHelper
 	
 	def admin_provider_suggestion_list_link
 		link_to t('views.provider_suggestion.name').pluralize, provider_suggestions_path if can? :manage, ProviderSuggestion
+	end
+	
+	def admin_profile_claim_list_link
+		link_to t('views.profile_claim.name').pluralize, profile_claims_path if can? :manage, ProfileClaim
 	end
 	
 	def admin_contact_blocker_links
@@ -172,32 +176,32 @@ module ApplicationHelper
 	
 	def index_link(options={})
 		path = root_path
-		link_wrapper link_to("Home", path), options if show_link?(path)
+		link_wrapper link_to(t('views.home.view.home'), path), options if show_link?(path)
 	end
 	
 	def about_link(options={})
 		path = about_path
-		link_wrapper link_to("About us", path), options if show_link?(path)
+		link_wrapper link_to(t('views.home.view.about'), path), options if show_link?(path)
 	end
 	
 	def contact_link(options={})
 		path = contact_path
-		link_wrapper link_to("Contact us", path), options if show_link?(path)
+		link_wrapper link_to(t('views.home.view.contact'), path), options if show_link?(path)
 	end
 	
 	def faq_link(options={})
 		path = faq_path
-		link_wrapper link_to("FAQ", path), options if show_link?(path)
+		link_wrapper link_to(t('views.home.view.faq'), path), options if show_link?(path)
 	end
 	
 	def terms_link(options={})
 		path = terms_path
-		link_wrapper link_to("Terms of use", path), options if show_link?(path)
+		link_wrapper link_to(t('views.home.view.terms'), path), options if show_link?(path)
 	end
 
 	def privacy_link(options={})
 		path = privacy_path
-		link_wrapper link_to("Privacy policy", path), options if show_link?(path)
+		link_wrapper link_to(t('views.home.view.privacy'), path), options if show_link?(path)
 	end
 	
 	def become_expert_link

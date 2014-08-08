@@ -2,6 +2,7 @@
 - claiming_profile = session[:claiming_profile].present?
 - whoami = is_provider ? (claiming_profile ? 'claiming_profile' : 'provider') : 'member'
 - email_tip = t "views.sign_up.email_tip"
+- username_inline_tip = t "views.sign_up.username_inline_tip"
 - username_tip = t "views.sign_up.username_tip"
 - password_tip = t "views.sign_up.password_tip", minimum: User::MIN_LENGTHS[:password]
 - registration_special_code_tip = t 'views.sign_up.registration_special_code_tip'
@@ -29,8 +30,7 @@
 		%span.help_icon
 			.help_popover
 				%p.tip.grey_text= username_tip
-		%p.v_tip.grey_text
-			Your username will show up next to any reviews or posts you write
+		%p.v_tip.grey_text= username_inline_tip
 
 	.password.text_field
 		= f.label :password
