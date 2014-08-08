@@ -2058,3 +2058,46 @@ ul.links-list > li{
 #claim_profile.loaded .popover {
 	@include loaded_form_popover;
 }
+
+/* For admin info and buttons on the profile.  Also used for the provider claim link. */
+.profile_content {
+	.editor_buttons, .editor_info, .admin_info, .search_info {
+		@include profile-info-style(#F5F5F5);
+		clear: both;
+		padding-left: 8px;
+		padding-right: 8px;
+		
+		a {
+			margin: 0 1em 0 1em;
+		}
+		#destroy_profile {
+			float: right;
+			input {
+				color: $default_link_color;
+				background: none;
+			}
+			input:hover {
+				text-decoration: underline;
+			}
+		}
+		.admin_notes {
+			margin-right: 40px;
+		}
+	}
+	.editor_info, .admin_info, .search_info {
+		@include profile-admin-style;
+		.attribute_display {
+			@include bullet-separator-style;
+		}
+	}
+	.editor_buttons {
+		margin-top: -1em;
+	}
+	.editor_info {
+		border-top: 1px solid #DDD;
+	}
+	.provider_buttons {
+		@include profile-info-style(#F5F5F5);
+		text-align: center;
+	}
+}

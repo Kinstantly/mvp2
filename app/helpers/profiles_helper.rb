@@ -1,18 +1,20 @@
 module ProfilesHelper
-	def display_profile_item_names(items, n=nil, &block)
+	def display_profile_item_names(items, n=nil, separator=nil, &block)
 		if items.present?
 			n ||= items.length # If n is missing or explicitly passed in as nil, use all items.
 			names = items.collect(&:name).sort_by(&:downcase).slice(0, n)
 			if block.nil?
-				names.join(' | ') # Join with a separator.
+				separator ||= ' | '
+				names.join(separator) # Join with a separator.
 			else
-				names.collect(&block).join(', ') # Concatenate result of processing each name.
+				separator ||= ''
+				names.collect(&block).join(separator) # Concatenate result of processing each name.
 			end
 		end
 	end
 
-	def profile_wrap_item_names(items, n=nil)
-		display_profile_item_names items, n do |name|
+	def profile_wrap_item_names(items, n=nil, separator=nil)
+		display_profile_item_names items, n, separator do |name|
 			content_tag :span, name.html_escape
 		end.try(:html_safe)
 	end
@@ -612,11 +614,11 @@ module ProfilesHelper
 	end
 
 	def search_result_specialties(profile)
-		profile_wrap_item_names profile.specialties
+		profile_wrap_item_names profile.specialties, 30, ', '
 	end
 
 	def search_result_specialties_truncated(profile, options={})
-		sanitize profile_display_truncated search_result_specialties(profile), length: options[:length], separator: '</span><span>', omission: '...</span>'
+		sanitize profile_display_truncated search_result_specialties(profile), length: options[:length], separator: '</span>, <span>', omission: '...</span>'
 	end
 
 	# Show the first location associated with the profile.

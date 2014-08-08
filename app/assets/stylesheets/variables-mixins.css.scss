@@ -67,6 +67,13 @@ $large_photo_y: 168px;
 	padding: 4px;
 }
 
+/* For admin info and buttons on the profile.  Also used for the provider claim link. */
+@mixin profile-info-style($bg) {
+	background: $bg;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	font-family: $font-stack;
+}
 @mixin profile-admin-style {
 	> div {
 		margin-bottom: 0.5em;
@@ -411,6 +418,7 @@ $button_corner_radius: 4px;
 	display: block;
 	background: #FFF;
 }
+
 /*  A basic grid -------------------------------------------------------------------------- */
 
 %span1of2 {
