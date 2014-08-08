@@ -1,4 +1,6 @@
-- if (show_and_edit = can?(:manage_my_profile, @profile) || can?(:edit, @profile))
+- @content_class = 'profile_content'
+- show_and_edit = can?(:manage_my_profile, @profile) || can?(:edit, @profile)
+- if show_and_edit
 	= javascript_include_tag 'profile_edit'
 - else
 	= javascript_include_tag 'profile_show'
@@ -19,8 +21,7 @@
 		= admin_link
 		- if can?(:destroy, @profile)
 			= render partial: 'destroy', locals: {profile: @profile}
-%article#content.profile_content
-	- if show_and_edit
-		= render partial: 'show_and_edit_tabs', locals: {active_tab: :show}
-	- else
-		= render partial: 'show'
+- if show_and_edit
+	= render partial: 'show_and_edit_tabs', locals: {active_tab: :show}
+- else
+	= render partial: 'show'

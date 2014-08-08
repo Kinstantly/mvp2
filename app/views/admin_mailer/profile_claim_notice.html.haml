@@ -1,0 +1,41 @@
+%html
+	%body
+		- if @profile_claim
+			%p
+				Claim created on
+				= mailer_display_time @profile_claim.created_at
+			%p
+				Profile requested:
+				%br
+				- if (profile_claimed = @profile_claim.profile)
+					id:
+					= profile_claimed.id
+					%br
+					name:
+					= profile_claimed.display_name_otherwise_company
+				- else
+					Can't find profile.
+			%p
+				- if (claimant = @profile_claim.claimant)
+					The claim was made by this registered user:
+					%br
+					username:
+					= claimant.username
+					%br
+					email:
+					= claimant.email
+				- else
+					The claim was made by a site visitor.
+				%br
+				%br
+				Claimant contact info:
+				%br
+				email:
+				= @profile_claim.claimant_email
+				- if (phone = @profile_claim.claimant_phone)
+					%br
+					phone:
+					= @profile_claim.claimant_phone
+			%p= link_to 'View profile claim.', profile_claim_url(@profile_claim)
+		- else
+			%p Oops, can't find the profile claim record.

@@ -36,6 +36,11 @@ class Location < ActiveRecord::Base
 		join_present_attrs ', ', :city, :region
 	end
 	
+	def display_city_region_postal_code
+		addr = join_present_attrs ', ', :city, :region
+		[addr.presence, postal_code.presence].compact.join(' ')
+	end
+	
 	def display_address
 		addr = join_present_attrs ', ', :address1, :address2, :city, :region
 		[addr.presence, postal_code.presence].compact.join(' ')

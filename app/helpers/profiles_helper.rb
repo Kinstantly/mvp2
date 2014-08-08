@@ -6,7 +6,7 @@ module ProfilesHelper
 			if block.nil?
 				names.join(' | ') # Join with a separator.
 			else
-				names.collect(&block).join('') # Concatenate result of processing each name.
+				names.collect(&block).join(', ') # Concatenate result of processing each name.
 			end
 		end
 	end
@@ -63,8 +63,12 @@ module ProfilesHelper
 		display_linked_url profile.try(:photo_source_url), title
 	end
 
-	def profile_linked_website(profile=current_user.try(:profile), title=nil)
-		display_linked_url profile.try(:url), title
+	def profile_linked_website(profile=current_user.try(:profile), title=nil, max_length=nil, msg_when_blank=nil)
+		if (url = profile.try(:url)).present?
+			display_linked_url url, title, max_length
+		elsif msg_when_blank
+			profile_blank_attribute_message msg_when_blank
+		end
 	end
 
 	def profile_display_website(profile=current_user.try(:profile), msg_when_blank=nil)
@@ -75,9 +79,11 @@ module ProfilesHelper
 		end
 	end
 	
-	def profile_linked_email(profile=current_user.try(:profile), title=nil)
+	def profile_linked_email(profile=current_user.try(:profile), title=nil, msg_when_blank=nil)
 		if (email = profile.try(:email)).present?
-			auto_link email.strip, link: :email_addresses, html: { title: title }
+			auto_link email.strip, link: :email_addresses, html: { title: title.try(:html_escape) }
+		elsif msg_when_blank
+			profile_blank_attribute_message msg_when_blank
 		end
 	end
 	
@@ -95,7 +101,7 @@ module ProfilesHelper
 
 	def profile_captcha_email(profile=current_user.try(:profile), title=nil)
 		if (email = profile.try(:email)).present?
-			hidden_email = profile_obscured_email profile
+			hidden_email = truncate profile_obscured_email(profile), length: 24
 			mailhide_link = RecaptchaMailhide::URL.url_for(email)
 			js_click_event = "window.open(this.href, '#{title}', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300,left=200,top=200'); return false;"
 			link_to hidden_email, mailhide_link, { title: title, onclick: js_click_event }
@@ -130,7 +136,7 @@ module ProfilesHelper
 
 	def view_my_profile_link(options={})
 		path = my_profile_path
-		link_wrapper link_to(t('views.profile.view.my_profile_link'), path, id: 'view_my_profile_link'), options if can?(:view_my_profile, current_user.profile) && show_link?(path)
+		link_wrapper link_to(t('views.profile.view.my_profile_link'), path, id: 'view_my_profile_link'), options if can?(:view_my_profile, current_user.profile)
 	end
 
 	def edit_my_profile_link(options={})
@@ -186,8 +192,8 @@ module ProfilesHelper
 		profile_list_view_link profile, profile_display_name(profile), options
 	end
 
-	def profile_list_name_or_company_link(profile, options={})
-		profile_list_view_link profile, profile.display_name_or_company, options
+	def profile_company_otherwise_display_name_link(profile, options={})
+		profile_list_view_link profile, profile.company_otherwise_display_name, options
 	end
 
 	def profile_page_title(profile=nil)
@@ -593,14 +599,14 @@ module ProfilesHelper
 
 	def search_result_name_specialties(profile)
 		specs = html_escape(display_profile_item_names(profile.specialties, 2))
-		name_link = profile_list_name_or_company_link(profile)
+		name_link = profile_company_otherwise_display_name_link(profile)
 		s = [name_link.presence, specs.presence].compact.join(' | ')
 		name_link.html_safe? ? s.html_safe : s
 	end
 
 	def search_result_name_headline(profile)
 		headline = html_escape(profile.headline)
-		name_link = profile_list_name_or_company_link(profile)
+		name_link = profile_company_otherwise_display_name_link(profile)
 		s = [name_link.presence, headline.presence].compact.join(' | ')
 		name_link.html_safe? ? s.html_safe : s
 	end
@@ -646,10 +652,13 @@ module ProfilesHelper
 		profile.rating_average_score.try(:round, 1) || t('rating.no_score')
 	end
 
+	def provider_rating_stars_css_class(profile)
+		rating_score_stars_css_class profile.rating_average_score
+	end
+
 	def profile_review_link(profile)
-		provider_name = profile.display_name_or_company
 		text_key = profile.has_reviews_by(current_user) ? 'followup_review_provider_link' : 'review_provider_link'
-		link_to t(text_key, scope: 'views.profile.view', name: provider_name), new_review_for_profile_url(profile)
+		link_to t(text_key, scope: 'views.profile.view'), new_review_for_profile_url(profile)
 	end
 
 	def suggest_provider_link
@@ -688,5 +697,9 @@ Founder and CEO
 <br/>
 #{mail_to 'jscott@kinstantly.com'}
 		eos
+	end
+
+	def claim_profile_link
+		link_to t('views.profile.view.claim_profile_link'), '#', id: 'claim_profile_link', class: 'claim_profile_link'
 	end
 end

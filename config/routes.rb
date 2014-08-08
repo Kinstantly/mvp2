@@ -45,6 +45,7 @@ Mvp2::Application.routes.draw do
 			get 'new_invitation'
 			put 'send_invitation'
 			get 'rating_score'
+			get 'edit_rating'
 			get 'rate'
 			post 'rate'
 			put 'formlet_update'
@@ -130,6 +131,9 @@ Mvp2::Application.routes.draw do
 	post 'review/:profile_id'     => 'reviews#create', as: :save_review_for_profile
 	
 	resources :provider_suggestions
+
+	resources :profile_claims
+	get 'profile_claim/:profile_id' => 'profile_claims#new', as: :new_claim_for_profile
 	
 	resources :contact_blockers
 	get 'noemail/:email_delivery_token' => 'contact_blockers#new_from_email_delivery', as: :new_contact_blocker_from_email_delivery

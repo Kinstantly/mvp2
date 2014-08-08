@@ -146,6 +146,16 @@ ActiveRecord::Schema.define(:version => 20140802030856) do
 
   add_index "locations", ["profile_id"], :name => "index_locations_on_profile_id"
 
+  create_table "profile_claims", :force => true do |t|
+    t.integer  "profile_id"
+    t.integer  "claimant_id"
+    t.string   "claimant_email"
+    t.string   "claimant_phone"
+    t.text     "admin_notes"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
   create_table "profiles", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -218,6 +228,7 @@ ActiveRecord::Schema.define(:version => 20140802030856) do
     t.text     "widget_code"
     t.string   "invitation_tracking_category"
     t.text     "search_terms"
+    t.text     "search_widget_code"
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"

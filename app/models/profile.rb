@@ -1,8 +1,8 @@
 class Profile < ActiveRecord::Base
 	
 	# Placeholder for profiles with no photo.
-	DEFAULT_PHOTO_PATH = 'profile-photo-placeholder-large.png'
-	DEFAULT_EDIT_PHOTO_PATH = 'profile-edit-photo-placeholder-large.png'
+	DEFAULT_PHOTO_PATH = 'profile-photo-placeholder-225.png'
+	DEFAULT_EDIT_PHOTO_PATH = 'profile-edit-photo-placeholder-225.png'
 	
 	# Possible modes by which the provider may communicate.  Boolean attributes.
 	# Will be displayed in this order.
@@ -155,7 +155,7 @@ class Profile < ActiveRecord::Base
 		text :languages
 		
 		text :company_name, :as => :company_name_nostem, boost: 30 do
-			first_name.present? || last_name.present? ? (company_name.presence || '') : ''
+			display_name_presentable? ? (company_name.presence || '') : ''
 		end
 		
 		# To do full-text search and highlighting on the summary field, uncomment the line below.
@@ -391,8 +391,22 @@ class Profile < ActiveRecord::Base
 		name
 	end
 	
-	def display_name_or_company
-		first_name.present? || last_name.present? ? display_name : (company_name.presence || '')
+	def display_name_presentable?
+		first_name.present? || last_name.present?
+	end
+	
+	def presentable_display_name
+		display_name_presentable? ? display_name : ''
+	end
+	
+	def display_name_otherwise_company
+		presentable_display_name.presence || company_name.presence || ''
+	end
+	
+	alias :display_name_or_company :display_name_otherwise_company
+	
+	def company_otherwise_display_name
+		company_name.presence || presentable_display_name
 	end
 
 	def photo_path
@@ -521,6 +535,11 @@ class Profile < ActiveRecord::Base
 	# Use this method so that we are consistent on what is considered the first location.
 	def first_location
 		@first_location ||= sorted_locations.first
+	end
+	
+	# Return all of the sorted locations that have a displayable address.
+	def displayable_sorted_locations
+		sorted_locations.select { |location| location.display_address.present? }
 	end
 
 	# Returns an array with the map of all predefined categories and this profiles categories to their associated services, followed by a hash of ID to name of the same services.

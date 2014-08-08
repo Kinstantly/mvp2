@@ -2,35 +2,30 @@
 - content_for :head_before_js do
 	= stylesheet_link_tag "interior", media: "screen, handheld, print"
 - content_for :body_header do
-	%header#branding.clearfix
-		.container
-			%h3#tagline= t 'company.tagline'
-			%nav#access.clearfix
-				%ul
-					%li#skip
-						%a{href: '#content'}= t 'views.accessibility'
-					= about_link wrapper: {tag: :li, id: :about}
-					= contact_link wrapper: {tag: :li, id: :contact}
-					- if user_signed_in?
-						- if current_user.is_provider?
-							= view_my_profile_link wrapper: {tag: :li, id: :myprofile}
-						= account_settings_link wrapper: {tag: :li, id: :settings}
-						= sign_in_out_link wrapper: {tag: :li, id: :signout}
-					- elsif show_sign_in_link?
-						%li#signin
-							= t 'views.sign_in.prompt'
-							= sign_in_out_link
-		#masthead.clearfix
-			%h1= home_link
-			- unless @hide_search_providers
-				#search_providers.aside
-					= form_tag search_providers_path, method: :get, id: 'providerSearch' do
-						= hidden_field_tag :service_id, @search_service.id if @search_service
+	#masthead.container
+		%h1
+			= home_link
+		%nav#menu
+			%button.menu Menu
+			%ul
+				= index_link wrapper: {tag: :li}
+				-#%li
+					-#%a{:href => "#"} Browse by Category
+				-#%li
+					-#%a{:href => "#"} Q & A
+				= about_link wrapper: {tag: :li}
+				= contact_link wrapper: {tag: :li}
+				= terms_link wrapper: {tag: :li}
+				= privacy_link wrapper: {tag: :li}
+		- unless @hide_search_providers
+			#findProvider.search
+				= form_tag search_providers_path, method: :get, id: 'providerSearch' do
+					= hidden_field_tag :service_id, @search_service.id if @search_service
+					%div
+						%label{:for => "provider"} Find
 						= text_field_tag :query, default_search_query(@search_query, @search_service), id: 'provider_search_query', autocomplete: 'off', placeholder: t('views.search.query_placeholder')
+					%div
+						%label{:for => "location"} Near
 						= text_field_tag :address, @search_address, id: 'provider_search_location', placeholder: t('views.search.address_placeholder')
-						= submit_tag 'Search for free', disable_with: 'Searching...', class: 'button submit green', id: 'provider_search_button'
-					- if !user_signed_in? && show_link?(provider_sign_up_path)
-						%p#provider_sign_up_link.small
-							= t 'views.sign_up.provider_prompt'
-							= provider_sign_up_link t('views.sign_up.provider_link')
+					= submit_tag 'Search', disable_with: 'Searching...', class: 'button submit pink', id: 'search'
 = render template: 'layouts/application'

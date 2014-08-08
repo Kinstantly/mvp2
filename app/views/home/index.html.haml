@@ -1,86 +1,139 @@
 - @body_class = 'home'
+- @content_class = 'category-list'
 - content_for :head_before_js do
 	= stylesheet_link_tag 'home_page', media: 'screen, handheld, print'
-	/[if lt IE 9]
-		= stylesheet_link_tag 'home_page_ie8', media: 'screen, handheld, print'
-#container.clearfix
-	%header#branding.clearfix
-		%nav#access.clearfix
+- content_for :body_header do
+	#masthead.container
+		%h1
+			= home_link
+		%nav#menu
+			%button.menu Menu
 			%ul
-				%li#skip
-					%a{href: '#content'}= t 'views.accessibility'
-				%li#about= about_link
-				%li#contact= contact_link
-				- if user_signed_in?
-					- if current_user.is_provider?
-						%li#myprofile= view_my_profile_link
-					%li#settings= account_settings_link
-					%li#signout= sign_in_out_link
-				- else
-					%li#signin
-						= t 'views.sign_in.prompt'
-						= sign_in_out_link
-		%h1= home_link_with_tagline
-		-# #msg= t 'views.home.view.marketing_message_default'
-	#search_providers.aside
-		= form_tag search_providers_path, method: :get, id: 'providerSearch' do
-			%h2= t 'views.home.view.search_title'
-			= text_field_tag :query, default_search_query(@search_query, @search_service), id: 'provider_search_query', autocomplete: 'off', placeholder: t('views.search.query_placeholder')
-			= text_field_tag :address, @search_address, id: 'provider_search_location', placeholder: t('views.search.address_placeholder')
-			= submit_tag 'Search for free', disable_with: 'Searching...', class: 'button submit green', id: 'provider_search_button'
-			- if !user_signed_in?
-				%p.small
-					= t 'views.sign_up.provider_prompt'
-					= provider_sign_up_link t('views.sign_up.provider_link')
-	- cache CategoryList.home_list do
-		#content.category-list.clearfix
-			%h2= t 'views.home.view.browse_title'
-			-# %span.help= t 'views.home.view.tutorial_link_html'
-			- (1..2).each do |column|
-				.col{id: "col#{column}"}
-					- home_column_categories(column).each do |category|
-						%h3= category.name
-						- category.subcategories.by_display_order.order_by_name.each do |subcategory|
-							%h4= subcategory.name
-							%ul
-								- visible_service_count = 8
-								- subcategory.services.by_display_order.order_by_name.each_with_index do |service, i|
-									- li_class = i >= visible_service_count ? 'extra_service' : 'visible_service'
-									%li{class: li_class}
-										= link_to service.name, search_providers_by_service_path(service)
-								- if subcategory.services.size > visible_service_count
-									%li
-										= link_to t('views.home.view.more_services'), '#', class: 'toggle_extra_services more_services'
-										= link_to t('views.home.view.fewer_services'), '#', class: 'toggle_extra_services fewer_services'
-					- if column == 2
-						#all-cats.see-all
-							= link_to t('views.home.view.see_all_services'), '#', id: 'see_all_services'
-							= link_to t('views.home.view.see_fewer_services'), '#', id: 'see_fewer_services'
-			-#
-				#all-cats.see-all.select-wrapper
-					%span.select-text
-					%select
-						%option{:selected => "selected"} See all
-						%option This is a dropdown
-						%option of all categories?
-		#social
-			= link_to t('contact.social.twitter.display'), t('contact.social.twitter.value'), target: '_blank', id: 'twitter'
-			= link_to t('contact.social.facebook.display'), t('contact.social.facebook.value'), target: '_blank', id: 'facebook'
+				= index_link wrapper: {tag: :li}
+				-#%li
+					-#%a{:href => "#"} Browse by Category
+				-#%li
+					-#%a{:href => "#"} Q & A
+				= about_link wrapper: {tag: :li}
+				= contact_link wrapper: {tag: :li}
+				= terms_link wrapper: {tag: :li}
+				= privacy_link wrapper: {tag: :li}
+- content_for :body_before_main_content do
+	%section#banner
+		.container
+			#findProvider.search
+				= form_tag search_providers_path, method: :get, id: 'providerSearch' do
+					%div
+						%label{:for => "provider"} Find
+						= text_field_tag :query, default_search_query(@search_query, @search_service), id: 'provider_search_query', autocomplete: 'off', placeholder: t('views.search.query_placeholder')
+					%div
+						%label{:for => "location"} Near
+						= text_field_tag :address, @search_address, id: 'provider_search_location', placeholder: t('views.search.address_placeholder')
+					= submit_tag 'Search', class: 'button submit pink', id: 'provider_search_button'
+			%header.banner-header
+				%h1= t 'views.home.view.marketing_message_line1_html'
+				%h2= t 'views.home.view.marketing_message_line2_html'
+		%ul#slider.banner
+			%li
+				= image_tag "Breastfeeding.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("CarrieFinger48X48.jpg", class: "avatar", alt: "Carrie Finger"), profile_path(1578)
+					%p
+						= link_to "Carrie Finger", profile_path(1578)
+						offers in-home lactation consulting and massage in the East Bay
+				%p.credit
+					= link_to '&copy; Slava Basovich'.html_safe, profile_path(1509)
+			%li
+				= image_tag "Tutor1.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("NurturingWisdom48X48.jpg", class: "avatar", alt: "Nurturing Wisdom"), search_providers_path(query: 'Nurturing Wisdom')
+					%p
+						= link_to "Nurturing Wisdom", search_providers_path(query: 'Nurturing Wisdom')
+						offers 1:1 tutoring and test prep in San Francisco and Chicago
+			%li
+				= image_tag "Baby7.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("KarenSchwarzbach48X48.jpg", class: "avatar", alt: "Child sleep consultant Karen Schwarzbach"), profile_path(819)
+					%p
+						= link_to "Child sleep consultant Karen Schwarzbach", profile_path(819)
+						is available by phone or video anywhere
+			%li
+				= image_tag "Rachelandstudent.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("RachelCondry48X48.jpg", class: "avatar", alt: "Rachel Condry"), profile_path(1191)
+					%p
+						= link_to "Rachel Condry", profile_path(1191)
+						teaches clarinet in Emeryville, CA
+			%li
+				= image_tag "Slava1.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("SlavaBasovich48X48.jpg", class: "avatar", alt: "Slava Basovich"), profile_path(1509)
+					%p
+						= link_to "Slava Basovich", profile_path(1509)
+						shoots family photos throughout the Bay Area
+				%p.credit
+					= link_to '&copy; Slava Basovich'.html_safe, profile_path(1509)
+			%li
+				= image_tag "CuteBlondeGirl-003.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("JessicaMichelson48X48.jpg", class: "avatar", alt: "Dr. Jessica Michelson"), profile_path(117)
+					%p
+						= link_to "Dr. Jessica Michelson", profile_path(117)
+						offers early parenthood coaching in Oakland, CA
+			%li
+				= image_tag "Baseball.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("BALLSummerCamp48X48.jpg", class: "avatar", alt: "East Bay's BALL Summer Camp"), profile_path(1461)
+					%p
+						= link_to "East Bay's BALL Summer Camp", profile_path(1461)
+						is for boys and girls ages 6-11
+- cache CategoryList.home_list do
+	- (1..5).each do |column|
+		.col{id: "col#{column}"}
+			- index = column - 1
+			- category = CategoryList.home_list.categories[index]
+			- if category.present?
+				%h4= category.name
+				%ul.accordion
+					- category.subcategories.by_display_order.order_by_name.each do |subcategory|
+						%li= subcategory.name
+						%ul
+							- subcategory.services.by_display_order.order_by_name.each_with_index do |service, i|
+								%li
+									= link_to service.name, search_providers_by_service_path(service)
+					
+:javascript
+	// accordion menu
+	$(".accordion > li").click(function(){
+		if(false == $(this).next().is(':visible')) {
+			$('.accordion > ul').slideUp(300);
+		}
+		$(this).next('ul').slideToggle(300);
+		$(this).toggleClass( 'open' );
+	});
+	
+	// fake html5 placeholders in older browsers
+	$('[placeholder]').focus(function() {
+		var input = $(this);
+		if (input.val() == input.attr('placeholder')) {
+			input.val('');
+			input.removeClass('placeholder');
+		}
+	}).blur(function() {
+		var input = $(this);
+		if (input.val() == '' || input.val() == input.attr('placeholder')) {
+			input.addClass('placeholder');
+			input.val(input.attr('placeholder'));
+		}
+	}).blur();
 
-:coffeescript
-	$('li a.toggle_extra_services').on 'click', (e) ->
-		$('li.extra_service', $(this).parent().parent()).toggle(200)
-		$('a', $(this).parent()).toggle()
-		false
-		
-	$('#see_all_services').on 'click', (e) ->
-		$('li.extra_service').show(200)
-		$('a.more_services, #see_all_services').hide()
-		$('a.fewer_services, #see_fewer_services').show()
-		false
-		
-	$('#see_fewer_services').on 'click', (e) ->
-		$('li.extra_service').hide(200)
-		$('a.fewer_services, #see_fewer_services').hide()
-		$('a.more_services, #see_all_services').show()
-		false
+	// Slideshow 1
+	$(function () {
+		$("#slider").responsiveSlides({
+			maxwidth: 1146,
+			speed: 800,
+			timeout: 8000, 
+			nav: true
+		});
+	});
+

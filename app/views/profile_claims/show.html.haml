@@ -1,0 +1,23 @@
+- profile_name = @profile_claim.profile.try :display_name_otherwise_company
+- claimant_name = @profile_claim.claimant.try :username_or_email
+.show
+	%p#notice= notice
+	%table
+		%tr
+			%td= ProfileClaim.human_attribute_name :profile
+			%td= link_to_if @profile_claim.profile, profile_name, @profile_claim.profile, target: "_blank"
+		%tr
+			%td= ProfileClaim.human_attribute_name :claimant
+			%td= link_to_if @profile_claim.claimant, claimant_name, hash_for_edit_user_path(id: @profile_claim.claimant), target: "_blank"
+		%tr
+			%td= ProfileClaim.human_attribute_name :claimant_email
+			%td= @profile_claim.claimant_email
+		%tr
+			%td= ProfileClaim.human_attribute_name :claimant_phone
+			%td= @profile_claim.claimant_phone
+		%tr
+			%td= ProfileClaim.human_attribute_name :admin_notes
+			%td= @profile_claim.admin_notes
+	= link_to 'Edit', edit_profile_claim_path(@profile_claim)
+	|
+	= link_to 'List', profile_claims_path

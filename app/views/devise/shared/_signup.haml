@@ -10,67 +10,67 @@
 - parent_provider_tag = t "views.sign_up.parent_provider_tag"
 
 %h1= t "views.sign_up.#{whoami}_title" unless embedded_in
-.smaller_form
-	= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
-		= devise_error_messages!
-		= hidden_field_tag :is_private_alpha, params[:is_private_alpha]
-		
-		.email.text_field
-			= f.label :email
-			%br
-			= f.email_field :email
-			%span.help_icon
-				.help_popover
-					%p.tip.grey_text= email_tip
-
-		.username.text_field
-			= f.label :username
-			%br
-			= f.text_field :username
-			%span.help_icon
-				.help_popover
-					%p.tip.grey_text= username_tip
-
-		.password.text_field
-			= f.label :password
-			%br
-			= f.password_field :password, autocomplete: 'off'
-			%span.help_icon
-				.help_popover
-					%p.tip.grey_text= password_tip
-
-		.password_confirmation.text_field
-			= f.label :password_confirmation
-			%br
-			= f.password_field :password_confirmation, autocomplete: 'off'
-
-		.registration_special_code.text_field
-			= f.label :registration_special_code
-			%br
-			= f.text_field :registration_special_code
-			%span.help_icon
-				.help_popover
-					%p.tip.grey_text= registration_special_code_tip
-
-		- if claiming_profile
-			= f.hidden_field :is_provider, :value => '1'
-		- else
-			.radio_buttons
-				%label
-					= f.radio_button :is_provider, ''
-					= parent_tag
-				%br
-				%label
-					- if params[:is_provider].present?
-						= f.radio_button :is_provider, '1', checked: true
-					- else
-						= f.radio_button :is_provider, '1'
-					= provider_tag
-				%br
-				%label
-					= f.radio_button :is_provider, '2'
-					= parent_provider_tag
-
-		.buttons
-			= f.submit t((is_provider ? :provider_label : :label), scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'
+= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+	= devise_error_messages!
+	= hidden_field_tag :is_private_alpha, params[:is_private_alpha]
 	
+	.email.text_field
+		= f.label :email
+		%br
+		= f.email_field :email
+		%span.help_icon
+			.help_popover
+				%p.tip.grey_text= email_tip
+
+	.username.text_field
+		= f.label :username
+		%br
+		= f.text_field :username
+		%span.help_icon
+			.help_popover
+				%p.tip.grey_text= username_tip
+		%p.v_tip.grey_text
+			Your username will show up next to any reviews or posts you write
+
+	.password.text_field
+		= f.label :password
+		%br
+		= f.password_field :password, autocomplete: 'off'
+		%span.help_icon
+			.help_popover
+				%p.tip.grey_text= password_tip
+
+	.password_confirmation.text_field
+		= f.label :password_confirmation
+		%br
+		= f.password_field :password_confirmation, autocomplete: 'off'
+
+	.registration_special_code.text_field
+		= f.label :registration_special_code
+		%br
+		= f.text_field :registration_special_code
+		%span.help_icon
+			.help_popover
+				%p.tip.grey_text= registration_special_code_tip
+
+	- if claiming_profile
+		= f.hidden_field :is_provider, :value => '1'
+	- else
+		.radio_buttons
+			%label
+				= f.radio_button :is_provider, ''
+				= parent_tag
+			%br
+			%label
+				- if params[:is_provider].present?
+					= f.radio_button :is_provider, '1', checked: true
+				- else
+					= f.radio_button :is_provider, '1'
+				= provider_tag
+			%br
+			%label
+				= f.radio_button :is_provider, '2'
+				= parent_provider_tag
+
+	.buttons
+		= f.submit t((is_provider ? :provider_label : :label), scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'

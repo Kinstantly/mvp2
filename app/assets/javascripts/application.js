@@ -13,8 +13,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require jquery.shorten
 //= require global.js.coffee
 //= require jquery.MetaData
 //= require jquery.placeholder
-//= require modernizr.custom.71412
+//= require modernizr-2.5.3.min
+//= require respond.min
+//= require responsiveslides.min
 //= require autocomplete-rails
+//= require selectivizr-min

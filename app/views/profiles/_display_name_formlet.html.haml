@@ -1,7 +1,9 @@
 - formlet = 'display_name'
+%span.editable.attribute_display
+	= @profile.errorfree.display_name.presence || profile_blank_attribute_message(t 'views.profile.edit.display_name_blank')
 .edit.popover
 	- if @profile.display_name.blank?
-		%span.note= t 'views.profile.edit.display_name_blank'
+		%span.note= t 'views.profile.edit.display_name_blank_note'
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
@@ -24,16 +26,15 @@
 			%p.note= t 'views.profile.edit.credentials_example'
 		.display_name_area
 			= f.label :display_name
-			%span.display_name
+			.display_name
 				= profile_display_name @profile
 		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
 		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
-%h1.editable.attribute_display{itemprop: "name"}
-	= @profile.errorfree.display_name_or_company.presence || profile_blank_attribute_message(t 'views.profile.edit.display_name_or_company_blank')
+
 :coffeescript
 	# Refresh display name as contributing input tags are modified.
 	refresh_display_name = () ->
-		$('#display_name span.display_name').text profile_display_name($('#first_name_field input').val(), $('#middle_name_field input').val(), $('#last_name_field input').val(), $('#credentials_field input').val())
+		$('#display_name .display_name').text profile_display_name($('#first_name_field input').val(), $('#middle_name_field input').val(), $('#last_name_field input').val(), $('#credentials_field input').val())
 	$('.display_name_field').on 'keyup blur', (e) -> refresh_display_name()
 	
 	# Show character count while filling in fields.

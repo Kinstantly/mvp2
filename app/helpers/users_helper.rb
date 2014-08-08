@@ -21,8 +21,8 @@ module UsersHelper
 		# profile && can?(:show, profile) ? profile_path(profile) : '#'
 	end
 	
-	def user_profile_link(user)
-		link_to user_display_name(user), user_profile_path(user)
+	def user_profile_link(user, options={})
+		link_to user_display_name(user), user_profile_path(user), options
 	end
 	
 	def user_review_count(user)

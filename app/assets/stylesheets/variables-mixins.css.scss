@@ -1,0 +1,448 @@
+$default_color: #000;
+$secondary-color: #333;
+$default_background: white;
+
+$font-stack: Helvetica, Arial, sans-serif;
+$header-font-stack: 'Raleway', Helvetica, Arial, sans-serif;
+$secondary-font-stack: 'Gotham', Helvetica, Arial, sans-serif;
+$icon-font-stack: 'FontAwesome', Helvetica, Arial, sans-serif;
+
+$fa-font-path:        "/assets/fonts" !default;
+//$fa-font-path:        "//netdna.bootstrapcdn.com/font-awesome/4.1.0/fonts" !default; // for referencing Bootstrap CDN font files directly
+$fa-css-prefix:       fa !default;
+$fa-version:          "4.1.0" !default;
+$fa-border-color:     #eee !default;
+$fa-inverse:          #fff !default;
+$fa-li-width:         (30em / 14) !default;
+
+$image-path: ".";
+
+$default_link_color: #346599;
+$visited_link_color: #444444;
+$toplink_color: #FFFFFF;
+$blue: #437FBF;
+$green: #00AF8B;
+$medium-gray: #DDDDDD;
+$light-gray: #EFEFEF;
+$dark-gray: #CCCCCC;
+$white: #FFFFFF;
+
+$text_light_color: #807f7f;
+$text_lighter_color: #d9d8d8;
+$kinstantly_light_gray: #BBBBBB;
+$kinstantly_gray: #aeaeae;
+$kinstantly_light_chartreuse: #afb434;
+$kinstantly_chartreuse: #9fa42f;
+$kinstantly_light_blue: #437fc0;
+$kinstantly_blue: #366599;
+$kinstantly_blue_light: #6695c9;
+$kinstantly_pink: #e43d5d;
+$kinstantly_pink_light: #f44e56;
+$kinstantly_pink_lighter: #f64f6f;
+$search_input_color: #000;
+$search_input_background: #ffffff;
+$text_field_placeholder_color: #aaa;
+$profile_icon_color: #777777;
+$icon_blue: #0085C3;
+
+$break-10: 990px;
+$break-9: 972px;
+$break-8: 854px;
+$break-7: 768px;
+$break-6: 682px;
+$break-6-2: 600px;
+$break-5: 568px;
+$break-4: 428px;
+
+$generic_form_width: 418px;
+$form_element_width: 388px;
+$large_photo_y: 168px;
+
+@mixin cell-style {
+	border: {
+		width: thin;
+		color: gray;
+		style: solid;
+	}
+	padding: 4px;
+}
+
+@mixin profile-admin-style {
+	> div {
+		margin-bottom: 0.5em;
+		.value {
+			@include cell-style;
+		}
+	}
+}
+
+@mixin check-box-style {
+	display: inline-block;
+	margin-left: 1em;
+	margin-top: 0.5em;
+	background-color: #F5F5F5;
+	label {
+		margin-left: 0.5em;
+		color: $text_light_color;
+		font-size: 14px;
+		font-weight: normal;
+	}
+}
+
+@mixin stack-check-box-style {
+	.check_box {
+		float: left;
+		clear: left;
+	}
+	+ div {
+		padding-top: 12px;
+	}
+}
+
+$button_corner_radius: 4px;
+
+@mixin button-corner-style {
+	-webkit-border-radius: $button_corner_radius;
+	-moz-border-radius: $button_corner_radius;
+	border-radius: $button_corner_radius;
+}
+
+@mixin button-style {
+	background-color: $kinstantly_light_blue;
+	font: {
+		size: 15px;
+		weight: bold;
+	}
+	line-height: 16px;
+	display: inline-block; // <A> tags are inline by default.  Need this to set their width.
+	width: 7em;
+	text-align: center;
+	text-transform: lowercase;
+	text-decoration: none;
+	color: #ffffff;
+	padding: 4px;
+	margin-right: 1em;
+	@include button-corner-style;
+}
+
+@mixin default-button-style {
+	@include button-style;
+	background-color: $kinstantly_light_blue;
+}
+@mixin default-button-hover-style {
+	@include button-style;
+	background-color: $kinstantly_blue;
+}
+@mixin default-button-disabled-style {
+	@include button-style;
+	background-color: $kinstantly_light_gray;
+}
+
+@mixin cancel-button-style {
+	@include button-style;
+	background-color: $kinstantly_light_gray;
+	line-height: 17px; // Cancel buttons are usually <A> tags which render shorter than buttons.
+}
+@mixin cancel-button-hover-style {
+	@include cancel-button-style;
+	background-color: $kinstantly_gray;
+}
+
+@mixin help_popover {
+	.help_popover {
+		display: none;
+		position: absolute;
+		z-index: 10;
+	}
+	&:hover {
+		cursor: pointer;
+		.help_popover {
+			display: block;
+		}
+	}
+}
+
+@mixin help_icon {
+	position: relative;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background: url('help_16_blue.png') 0px 0px no-repeat;
+	@include help_popover;
+}
+
+@mixin box-sizing {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+@mixin border-top-radius($radius) {
+  -webkit-border-top-left-radius: $radius;
+     -moz-border-top-left-radius: $radius;
+      -ms-border-top-left-radius: $radius;
+          border-top-left-radius: $radius;
+  -webkit-border-top-right-radius: $radius;
+     -moz-border-top-right-radius: $radius;
+      -ms-border-top-right-radius: $radius;
+          border-top-right-radius: $radius;
+}
+@mixin border-bottom-radius($radius) {
+  -webkit-border-bottom-left-radius: $radius;
+     -moz-border-bottom-left-radius: $radius;
+      -ms-border-bottom-left-radius: $radius;
+          border-bottom-left-radius: $radius;
+  -webkit-border-bottom-right-radius: $radius;
+     -moz-border-bottom-right-radius: $radius;
+      -ms-border-bottom-right-radius: $radius;
+          border-bottom-right-radius: $radius;
+}
+@mixin box-shadow($top, $left, $blur, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $top $left $blur $color;
+    -moz-box-shadow:inset $top $left $blur $color;
+    box-shadow:inset $top $left $blur $color;
+  } @else {
+    -webkit-box-shadow: $top $left $blur $color;
+    -moz-box-shadow: $top $left $blur $color;
+    box-shadow: $top $left $blur $color;
+  }
+}
+@mixin text-shadow($top, $left, $blur, $color, $inset: false) {
+  @if $inset {
+    -webkit-text-shadow:inset $top $left $blur $color;
+    -moz-text-shadow:inset $top $left $blur $color;
+    text-shadow:inset $top $left $blur $color;
+  } @else {
+    -webkit-text-shadow: $top $left $blur $color;
+    -moz-text-shadow: $top $left $blur $color;
+    text-shadow: $top $left $blur $color;
+  }
+}
+@mixin transition-bg($time) {
+	-webkit-transition:background-color $time ease-in;  
+		-moz-transition:background-color $time ease-in; 
+		-o-transition:background-color $time ease-in;  
+		transition:background-color $time ease-in;
+}
+@mixin pipe-separator-style {
+	content: '|';
+	font-size: 0.9375em;
+	padding: 0 0.7333em;
+}
+
+@mixin bullet-separator-style {
+	span {
+		display: inline;
+		padding-right: 0.38em;
+	}
+	span + span:before {
+		display: inline-block; // This allows word-wrap to break around a bullet.
+		content: '\2022';
+		font-size: 150%;
+		padding-right: 0.25em;
+		color: $default_link_color;
+	}
+}
+@mixin background-size($bgsize,$iesize) {
+	background-position: $iesize; /* Internet Explorer 7/8 */
+	background-size: $bgsize;
+	-moz-background-size: $bgsize;
+	-ms-behavior: url(#{$image-path}/backgroundsize.min.htc);
+}
+@mixin column-count($count,$gap) {
+	-moz-column-count: $count;
+	-moz-column-gap: $gap;
+	-webkit-column-count: $count;
+	-webkit-column-gap: $gap;
+	column-count: $count;
+	column-gap: $gap;
+}
+@mixin mobile-popover {
+	@media screen and (max-width: 480px) {
+		width: 80%;
+		form, h1, .generic_form {
+			width: 100%;
+		}
+		.text_field {
+			width: 100%;
+			input, textarea, select {
+				width: 90%;
+			}
+		}
+	}
+}
+@mixin mobile-formlet-popover {
+	@media screen {
+		@media (max-width: 480px) {
+			width: 320px;
+			input[type="submit"] {
+				margin-bottom: 8px;
+			}
+		}
+		@media (max-width: 380px) {
+			width: 220px;
+		}
+	}
+}
+@mixin form-style {
+	form {
+		> div, .form_section {
+			margin: 12px 0px 13px 0px;
+			clear: left;
+			> label {
+				margin-bottom: 6px;
+			}
+		}
+	}
+	.text_field {
+		textarea, input, select {
+			border: 1px solid #D5D5D5;
+			padding: 14px;
+			-moz-box-shadow: inset 4px 4px 10px #E5E5E5;
+			-webkit-box-shadow: inset 4px 4px 10px #E5E5E5;
+			box-shadow: inset 4px 4px 10px #E5E5E5;
+			width: 388px;
+			font-size: 13px;
+			color: $default_color;
+			line-height: 18px;
+			margin: 12px 0px 13px 0px;
+			+ .note {
+				margin-top: -4px;
+			}
+		}
+	}
+	label {
+		font-weight: bold;
+		color: #000;
+		font-size: 14px;
+		+ span {
+			font-size: 14px;
+		}
+	}
+	.check_box {
+		@include check-box-style;
+		+ .text_field {
+			margin-top: 16px;
+		}
+	}
+	.check_boxes.stacked {
+		@include stack-check-box-style;
+	}
+	.char_count {
+		float: right;
+		width: auto;
+		color: $text_light_color;
+		font-size: 16px;
+	}
+	.char_count.over {
+		color: $kinstantly_pink;
+	}
+	.note {
+		margin-bottom: 14px;
+		line-height: normal;
+		+ .note {
+			margin-top: -4px;
+		}
+	}
+	.save {
+		@include default-button-style;
+	}
+	.save:hover {
+		@include default-button-hover-style;
+	}
+	.save:disabled {
+		@include default-button-disabled-style;
+	}
+	a.cancel {
+		@include cancel-button-style;
+	}
+	a.cancel:hover {
+		@include cancel-button-hover-style;
+	}
+	.label_highlight {
+		color: $default_link_color;
+	}
+	.required_tip {
+		color: $kinstantly_pink;
+	}
+	.required_tip:before, label.required:after {
+		content: '*';
+		color: $kinstantly_pink;
+		font-size: 1.5em;
+	}
+	.required_tip:before {
+		margin-right: 0.15em;
+	}
+	label.required:after {
+		margin-left: 0.15em;
+	}
+	input.disabled {
+		background-color: $kinstantly_light_blue;
+	}
+}
+@mixin form_popover{
+	display: none;
+	.note {
+		margin: 8px 0 0 0;
+	}
+	h1, #confirmation {
+		width: 100%;
+		padding: 0;
+		text-align: center;
+	}
+	p {
+		line-height: 1.3em;
+	}
+	#confirmation p {
+		margin: 5em 0 0 0;
+	}	
+}
+@mixin loading_form_popover{
+	display: block;
+	background: #FFF url('loading_large.gif') no-repeat center center;
+}
+@mixin loaded_form_popover{
+	display: block;
+	background: #FFF;
+}
+/*  A basic grid -------------------------------------------------------------------------- */
+
+%span1of2 {
+	width: 48.4375%;
+	margin-right: 3.125%;
+	float: left;
+	
+	&:last-of-type {
+		margin-right: 0;
+	}
+}
+%span1of5 {
+		width: 18.333333%;
+		@media (max-width: 48em) {
+			width: 100%;
+			display: inline-block;
+			float: none;
+		}
+		@media (max-width: 32.5em) {
+			width: 100%;
+			margin-right: 0;
+		}
+}
+%span4of6 {
+	width: 59.1666667%;
+}
+%span2of6 {
+	width: 38.75%;
+}
+%unspan {
+	width: 100%;
+	float: none;
+	margin-right: 0;
+	margin-left: 0;
+}

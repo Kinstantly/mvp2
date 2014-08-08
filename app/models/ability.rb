@@ -20,6 +20,7 @@ class Ability
 		end
 		
 		# Any confirmed user can rate a published profile that is not their own.
+		alias_action :edit_rating, to: :rate
 		can :rate, Profile, is_published: true if user.confirmed?
 		cannot :rate, Profile, user_id: user.id
 		
@@ -29,8 +30,9 @@ class Ability
 		cannot :create, Review, profile: { is_published: [false, nil] }
 		cannot :create, Review, profile: { user_id: user.id }
 		
-		# The public can suggest providers.
+		# The public can suggest providers and claim profiles
 		can :create, ProviderSuggestion
+		can :create, ProfileClaim
 		
 		# In response to an email we sent, any one can request we never contact them.
 		alias_action :new_from_email_delivery, to: :create_from_email_delivery

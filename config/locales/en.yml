@@ -3,6 +3,7 @@
 
 en:
   company:
+    copyright_html: '&copy; Copyright 2013-%{year} Kinstantly, Inc. All Rights Reserved.'
     legal_name: 'Kinstantly, Inc.'
     location:
       street_address: '350 Townsend St., #683'
@@ -70,12 +71,17 @@ en:
       profile_photo_processing_timeout: 'Photo processing took too long.  Please try a smaller photo file size.'
       profile_photo_processing_timeout_html: 'Photo processing took too long. Please try a smaller photo file size. <a href="#" class="more-help">Click here for help.</a>'
       profile_photo_no_dnd_support: 'Drag and Drop is not supported by your browser. Please use one of upload options below.'
-      location_remote_only: 'This provider operates 100% remotely. <br/>That means you can talk to this provider at home, at your office, at a park... the sky&#39;s the limit!'
+      location_remote_only: 'This provider offers remote access by phone, email, or video.'
     provider_suggestions:
       destroyed: "The provider suggestion for '%{name}' was removed!"
       destroy_error: "Sorry.  The provider suggestion for '%{name}' was NOT removed."
       updated: 'The provider suggestion was saved.'
       update_error: 'There was a problem saving the provider suggestion.'
+    profile_claims:
+      destroyed: "The profile claim for '%{name}' was removed!"
+      destroy_error: "Sorry. The profile claim for '%{name}' was NOT removed."
+      updated: 'The profile claim was saved.'
+      update_error: 'There was a problem saving the profile claim.'
     reviews:
       destroyed: 'The review was destroyed!'
     services:
@@ -205,6 +211,10 @@ en:
         suggester: 'Logged-in suggester'
         suggester_email: 'Your email address'
         suggester_name: 'Your name'
+      profile_claim:
+        claimant: 'Logged-in claimant'
+        claimant_email: 'Email address'
+        claimant_phone: 'Phone number'
       review:
         body: 'Review'
         good_to_know: 'Tip'
@@ -242,6 +252,10 @@ en:
           attributes:
             password:
               confirmation: 'and retyped password must be the same'
+        profile_claim:
+          attributes:
+            profile:
+              blank: 'cannot be found. It may have been removed recently.'
   views:
     or: 'or'
     accessibility: 'Skip to content'
@@ -288,6 +302,8 @@ en:
         browse_title: 'Browse by category'
         fewer_services: 'hide...'
         marketing_message_default: 'Find top-rated parenting experts, therapists, tutors, and more'
+        marketing_message_line1_html: 'Find the best family services'
+        marketing_message_line2_html: '&mdash; from child care to college admissions advisors'
         more_services: 'more...'
         search_title: "I'm looking for..."
         see_all_categories: 'See all'
@@ -298,8 +314,8 @@ en:
       view:
         more:
           how_many:
-            one: '(1 more location)'
-            other: '(%{count} more locations)'
+            one: '1 other location'
+            other: '%{count} other locations'
         total:
           how_many:
             one: '(1 location)'
@@ -314,6 +330,8 @@ en:
         remove_confirm: 'This location will be removed when you click save.'
         remove_confirm_admin: 'This location will be removed when you save the profile.'
         add: 'Fill in a new location'
+    passwords:
+      new_password_submit: 'Send me password instructions'
     profile:
       legend:
         admin_info: 'Admin'
@@ -326,13 +344,18 @@ en:
         accepting_new_clients: 'Accepting new clients/customers'
         ages_stages: 'ages/stages:'
         availability_service_area_html: 'Availability/<br/>service area'
+        average_rating: 'Average rating:'
+        claim_profile_link: 'Is this your profile? Click here to claim it.'
         claimed_by: 'Owned by'
         consultation_modes: 'Consultation methods and locations'
         does_not_consult_remotely: 'Does not offer most or all services remotely (phone/video/email)'
-        edit_my_profile_link: 'Make your profile better.  Click here.'
+        edit_my_profile_link: 'Edit your profile'
+        editing_tip: 'Click the Edit Profile tab to add or edit information'
         email: 'email:'
+        email_edit_help: 'We use CAPTCHA to hide the full email address from spam robots.'
         email_help: 'We use CAPTCHA to hide the full email address from spam robots. Click to reveal it.'
-        followup_review_provider_link: 'Add a follow-up review of %{name}'
+        feedback: 'Help us improve this listing'
+        followup_review_provider_link: 'Add a follow-up review'
         headline: 'Professional headline'
         hide_locations: 'Hide locations below'
         id: 'Profile ID: %{id}'
@@ -341,11 +364,11 @@ en:
         invitation_to_claim_info: 'Invitation to claim has been sent to %{invitee} at %{time}. Tracked by %{tracking}.'
         invitation_to_claim_link: 'Send invitation to claim'
         make_an_appointment: 'Make an appointment'
-        more_locations: 'Show more locations'
-        my_profile_link: 'My profile'
+        more_locations: 'More locations'
         no_categories: 'Profiles with no categories'
         no_subcategories: 'Profiles with no subcategories'
         no_services: 'Profiles with no services'
+        my_profile_link: 'View your profile'
         not_accepting_new_clients: 'Not accepting new clients/customers at this time'
         not_claimed: 'Not owned'
         not_owned: 'Not owned'
@@ -365,8 +388,8 @@ en:
         specialty_search_terms: 'Specialty search terms:'
         stats_title: 'Profile counts'
         rating: 'Rating'
-        review_provider_link: 'Review %{name}'
         total: 'Total'
+        review_provider_link: 'Add your review'
         url: 'website:'
       edit:
         accepting_new_clients_blank: 'Not accepting new clients/customers'
@@ -394,8 +417,8 @@ en:
         custom_specialty_placeholder: 'Type in a specialty'
         custom_specialty_button: 'Enter a specialty not shown above'
         custom_specialty_prompt: "Choose a service and we'll show you a list of specialties."
-        display_name_blank: 'Your company name is shown if these fields are left blank.'
-        display_name_or_company_blank: 'Your name'
+        display_name_blank: 'Your name'
+        display_name_blank_note: 'Your company name is shown if these fields are left blank.'
         edit_review: 'Edit review by %{name}'
         edit_tab: 'Edit Profile'
         editing_tip: 'Click the pencils to add or edit information'
@@ -407,6 +430,7 @@ en:
         for_search_only_blank: 'For search only, check all that apply'
         headline_example: 'Examples: Pediatric Dentistry, Math Tutoring'
         hours_example_html: 'Examples: M, W, F: 8 am-5 pm <span class="label_highlight">or</span> By appointment only'
+        search_widget_code_example: 'Examples: <p class="note schedule">Schedule a free SAT practice test.</p>'
         invitation_preview_button: 'Send to myself'
         invitation_send_button: 'Send to provider'
         invitation_disable_send_button: 'Sending invitation...'
@@ -467,6 +491,25 @@ en:
         submit_disable: 'Submitting...'
         suggester_email_tip: 'In case we have a quick follow-up question'
         suggester_name_tip: 'First and last'
+    profile_claim:
+      name: 'Profile claim'
+      admin:
+        claimant_email: "Claimant's email address"
+        claimant_phone: "Claimant's phone number"
+      new:
+        header: "Thanks for claiming your profile!"
+        intro: "Because we want to make sure that Kinstantly has the highest quality of (real!) profiles, please enter the following information, so that we can verify your identity:"
+      edit:
+        blank_profile_error: 'Sorry, this profile does not exist. It may have been removed recently.'
+        cancel: 'Cancel'
+        submit: 'Submit'
+        submit_disable: 'Submitting...'
+        close: 'Close'
+      create:
+        confirmation: "The claim has been submitted. We will contact you shortly."
+        done: 'Done'
+      destroy:
+        confirm_prompt: "Are you sure you want to remove the profile claim for '%{name}'?"
     review:
       view:
         good_to_know_heading: 'TIP:'
@@ -484,7 +527,7 @@ en:
         submit_disable: 'Submitting...'
     search:
       address_placeholder: 'ZIP code or city, state'
-      query_placeholder: 'name, specialty, or parenting need...'
+      query_placeholder: 'Tutors, doctors, camps, etc.'
     search_results:
       city_prompt: 'city in California'
       in_search_area: 'in %{name}'
@@ -501,7 +544,7 @@ en:
         how_many:
           one: "1 search result for '%{query}'"
           other: "%{count} search results for '%{query}'"
-      more: 'More details'
+      more: 'More details >'
       postal_code_prompt: 'zip code'
       search_query_prompt: 'Want the results selected by provider types? Enter a search term in the red search bar above.'
       searching: 'Searching...'
@@ -511,7 +554,7 @@ en:
       sorted_by_proximity_prompt: 'Want the results sorted by proximity? Enter a city, state, or zip code in the red search bar above.'
       sorted_by_proximity_to: 'sorted by proximity to %{address}'
       suggest_provider_link: 'Tell us'
-      suggest_provider_prompt_html: 'Are we missing your favorite provider? %{link}!'
+      suggest_provider_prompt_html: 'Are we missing a great provider? %{link}!'
     search_term:
       name: 'Search term'
     show_all_categories:
@@ -543,7 +586,7 @@ en:
       label: 'Sign up'
       member_title: 'Become a member'
       provider_label: 'Join us!'
-      provider_link: 'Join us'
+      provider_link: "Provider? Join us. It's FREE"
       provider_prompt: 'Provider?'
       provider_title: 'Create your profile'
       submit_disable: 'Signing up...'
@@ -585,7 +628,7 @@ en:
       edit:
         email_note: 'We also use this email to contact you.'
         header: 'Account settings'
-        link: 'Settings'
+        link: 'Your Account'
         password_note: "Leave the password blank if you don't want to change it. If you do change it, your password must contain at least %{minimum} characters."
         current_password_note: 'We need your current password to confirm your changes.'
         submit: 'Save changes'
@@ -602,11 +645,12 @@ en:
     score_2: 'Not so good'
     score_3: 'Just okay'
     score_4: 'Really good'
-    score_5: 'Super!'
+    score_5: 'Super'
     add_review_score: 'Please click the stars to rate this provider'
-    change_review_score_html: 'Was this rating a mistake? Click the stars to change your rating &mdash; or click the "no" symbol to delete your rating entirely'
-    prompt_for_score: 'Click the stars to change your rating'
-    prompt_for_first_score: 'Click the stars to add your rating'
+    change_review_score_html: 'Was this rating a mistake? Click the stars to change your rating &mdash; or click "Clear" to delete your rating entirely'
+    clear: 'Clear'
+    prompt_for_score: 'Click to rate:'
+    prompt_for_first_score: 'Click to rate:'
     none: 'No ratings'
     how_many:
       one: '1 rating'
@@ -658,3 +702,8 @@ en:
           display_html: "Get our <a href='#' title='Newsletter for parents'>newsletter for parents</a> or <a href='#' title='Newsletter for providers'>newsletter for providers</a>"
       blog:
           display_html: "Read our blogs: <a href='#' title='Kinstant Messages'>Kinstant Messages</a> and <a href='#' title='TK'>TK</a>"
+  helpers:
+    label:
+      profile_claim:
+        claimant_email: Email address
+        claimant_phone: Phone number

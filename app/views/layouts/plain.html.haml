@@ -3,7 +3,7 @@
 %html
 	%head
 		%title= @page_title.presence || company_name
-		= stylesheet_link_tag    "application", :media => "all"
+		= stylesheet_link_tag    "plain", :media => "all"
 		= javascript_include_tag "application"
 		-# Name-space my global variables, e.g., my_vars.a_val, my_vars.t.some_text, my_vars.f.a_function
 		%script var my_vars={t:{},f:{}};

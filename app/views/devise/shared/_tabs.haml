@@ -1,18 +1,13 @@
 - is_private_alpha = params[:is_private_alpha].present?
 - default_tab = controller.controller_name == 'registrations' ? 0 : 1;
 - company_name = "#{t('company.name')}"
-- tagline = "#{t('company.short_tagline')}"
 - short_company_description = t 'company.short_company_description_html'
 - alpha_note = "#{t('company.alpha_note')}"
 
-.content-wrapper.two-column.logo-wallpaper
-	.column.left-rail
-	.column.main-column
-		.mid-aligned
-			.logo-company-name
-				= home_link
-				%p.tagline= tagline
-			%p.short-company-description= short_company_description
+#login_pannel
+	.container.positioner
+		.company_desc
+			%h2= short_company_description
 			-if is_private_alpha
 				%p.alpha_note= alpha_note
 		#tabs.ui-tabs.ui-widget.ui-widget-content.ui-corner-all

@@ -1,11 +1,16 @@
+- context ||= :default
+-# When editing the profile, we need a different map_canvas element ID for the edit tab.
+- map_canvas_id = context == :profile_edit ? 'map_canvas_profile_edit' : 'map_canvas'
 - location_remote_only_msg = t "controllers.profiles.location_remote_only"
 
-#map_canvas
+%div{id: map_canvas_id}
 
 :javascript
-	my_vars.locations_json	= '#{escape_javascript @profile.sorted_locations.to_json}';
-	my_vars.locations_total	=  parseInt('#{@profile.locations.size}');
-	my_vars.location_remote_only = ('#{@profile.consult_remotely}' == 'true')? true: false;
+	my_vars.locations_map_context = '#{context.to_s}';
+	my_vars.map_canvas_id = '#{map_canvas_id}';
+	my_vars.locations_json	= '#{escape_javascript profile.sorted_locations.to_json}';
+	my_vars.locations_total	=  parseInt('#{profile.locations.size}');
+	my_vars.location_remote_only = ('#{profile.consult_remotely}' == 'true')? true: false;
 	my_vars.location_remote_only_msg = '#{location_remote_only_msg}';
 	my_vars.basic_marker_icon = 'https://maps.google.com/mapfiles/kml/paddle/blu-stars-lv.png';
 	my_vars.highlight_marker_icon = 'https://maps.google.com/mapfiles/kml/paddle/red-stars-lv.png';
@@ -23,31 +28,58 @@
 			streetViewControl: false,
 			overviewMapControl: false
 		
-		map_canvas 	  = document.getElementById "map_canvas"	
+		map_canvas = null
 		map_obj = null
-		locations_json = $.parseJSON my_vars.locations_json
-		locations_links = $('.profile .location_block')
-		control_links = $('.profile .location_block a')
-		markers = []
-		popups  = []
-	
+		locations_json = null
+		locations_links = null
+		control_links = null
+		markers = null
+		popups  = null
+		location_blocks = null
+		selector_context = null
+		active_mouseover_timer = null
+
+		# setup that depends on the document state.  This should be run after all elements are created.
+		# Also re-initialize anything that may have changed during location editing, e.g.,
+		#  we need to create a new map object that will reference the new popup and marker objects.
+		set_up = ->
+			map_canvas = null
+			map_obj = null
+			locations_json = $.parseJSON my_vars.locations_json
+			markers = []
+			popups  = []
+			location_blocks = []
+			resize_map_canvas()
+			resize_adjustments()
+			selector_context = $(map_canvas).parents('.map').first()
+			locations_links = $('.location_block', selector_context)
+			control_links = $('.location_block a.more, .profile .location_block a.less', selector_context)
+		
+		resize_map_canvas = ->
+			map_canvas = document.getElementById my_vars.map_canvas_id unless map_canvas
+			map_canvas_wrapper = $(map_canvas)
+			map_canvas_wrapper.css('width', map_canvas_wrapper.parent('div').outerWidth())
+		
+		resize_adjustments = ->
+			$(window).on 'resize', (e) ->
+				resize_map_canvas()
+		
 		#binds ui elements to user events
 		bind_actions = ()  ->			
 			locations_links.on 'mouseover', (e) ->
 				index = @.getAttribute('data-i')
 				this.style.cursor = 'pointer'
-				$(this).children().css color: '#000'
 				marker = markers[index]
 				if marker?
 					marker_coords = marker.getPosition()
 					if map_obj.getBounds().contains(marker_coords) is false
-						map_obj.setCenter(marker_coords)
+						active_mouseover_timer = setTimeout((-> map_obj.setCenter(marker_coords)), 1000)
 				toggle_highlight_marker(index)
 
 			locations_links.on 'mouseout', (e) ->
+				clearTimeout active_mouseover_timer
 				index = @.getAttribute('data-i')
 				this.style.cursor = 'default'
-				$(this).children().css color: '#807f7f'
 				toggle_highlight_marker(index)
 
 			#remove mouse events from show/hide more locations 
@@ -66,6 +98,7 @@
 						for popup_el in popups
 							popup_el.close() if popup_el
 						index = index_in_array markers, @
+						location_blocks[index].addClass 'highlight'
 						show_marker index
 						popups[index].open(map_obj, @)
 						@.setIcon(my_vars.highlight_marker_icon)
@@ -73,6 +106,7 @@
 					google.maps.event.addListener marker, 'mouseout', ->
 						#popup.close();
 						index = index_in_array markers, @
+						location_blocks[index].removeClass 'highlight'
 						@.setIcon(my_vars.basic_marker_icon)
 		
 		init_map = (map_center_lat, map_center_lng) ->
@@ -89,6 +123,7 @@
 				lng = location.longitude
 				marker = add_marker lat, lng
 				markers[i] = marker
+				location_blocks[i] = $('.location_block[data-i="'+i+'"]', selector_context)
 
 				popup = null
 				if marker
@@ -159,14 +194,20 @@
 			div.appendChild(document.createTextNode(str));
 			div.innerHTML;
 		
-		init = () ->
+		init = (callback) ->
+			set_up()
 			init_markers()
-			if map_obj is null && my_vars.location_remote_only
-				$(map_canvas).append "<p class='ui-corner-all ui-state-default'>" + my_vars.location_remote_only_msg + "</p>"
+			if map_obj is null
+				if my_vars.locations_map_context == 'profile_show'
+					$('.map').addClass 'no-map-box'
+				if my_vars.location_remote_only
+					$(map_canvas).append "<p class='ui-corner-all ui-state-default'>" + my_vars.location_remote_only_msg + "</p>"
 			else
 				bind_actions()
+			callback?()
 
 		# public
-		init: init
+		init: (callback) ->
+			init(callback)
 
 	#locations_google_map_module.init()

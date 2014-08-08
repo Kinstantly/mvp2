@@ -10,7 +10,7 @@
 			%tbody
 				- @profiles.each do |p|
 					%tr
-						%td= profile_list_name_or_company_link p
+						%td= profile_company_otherwise_display_name_link p
 		.pagination_nav
 			= render partial: 'shared/per_page_form', locals: { record_type: Profile }
 			= paginate @profiles

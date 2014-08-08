@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Profile do
 	before(:each) do
 		@profile_data ||= {
-			first_name: 'Joe', last_name: 'Black',
+			first_name: 'Joe', last_name: 'Black', company_name: 'Coffee is Good',
 			categories: [FactoryGirl.create(:category, name: 'THERAPISTS & PARENTING COACHES')],
 			services: [FactoryGirl.create(:service, name: 'board-certified behavior analyst'),
 				FactoryGirl.create(:service, name: 'child/clinical psychologist')],
@@ -33,9 +33,54 @@ describe Profile do
 			@profile.credentials = 'BA, MA'
 			@profile.display_name.should =~ /#{@profile.first_name}.*#{@profile.middle_name}.*#{@profile.last_name}.*#{@profile.credentials}/
 		end
+		
+		context "presentable display name" do
+			it "is presentable if there is a first name" do
+				@profile.last_name = ''
+				@profile.display_name_presentable?.should be_true
+				@profile.presentable_display_name.should be_present
+			end
+
+			it "is presentable if there is a last name" do
+				@profile.first_name = ''
+				@profile.display_name_presentable?.should be_true
+				@profile.presentable_display_name.should be_present
+			end
+			
+			it "is not presentable if there is no first or last name" do
+				@profile.first_name = ''
+				@profile.last_name = ''
+				@profile.display_name_presentable?.should be_false
+				@profile.presentable_display_name.should_not be_present
+			end
+		end
 	end
 	
-	context "display name or company" do
+	context "company name if present, otherwise display name" do
+		it "returns company name if present and first name is present" do
+			@profile.last_name = ''
+			@profile.company_otherwise_display_name.should == @profile.company_name
+		end
+		
+		it "returns company name if present and last name is present" do
+			@profile.first_name = ''
+			@profile.company_otherwise_display_name.should == @profile.company_name
+		end
+		
+		it "returns display name if company name is not present" do
+			@profile.company_name = ''
+			@profile.company_otherwise_display_name.should == @profile.display_name
+		end
+		
+		it "returns empty string if none of company, first, and last name are present" do
+			@profile.first_name = ''
+			@profile.last_name = ''
+			@profile.company_name = ''
+			@profile.company_otherwise_display_name.should == ''
+		end
+	end
+	
+	context "display name if present, otherwise company name" do
 		it "returns display name if first name is present" do
 			@profile.last_name = ''
 			@profile.display_name_or_company.should == @profile.display_name
@@ -272,6 +317,14 @@ describe Profile do
 			# The count method on the association always does a database query,
 			# so it's a reliable count of the associated location records.
 			profile.locations_count.should == profile.locations.count
+		end
+		
+		it "should have a list of displayable locations" do
+			profile = FactoryGirl.build :profile
+			profile.locations = []
+			profile.locations.build(phone: '1-505-555-1001')
+			profile.locations.build(city: 'Albuquerque', region: 'NM')
+			profile.displayable_sorted_locations.count.should == 1
 		end
 	end
 	

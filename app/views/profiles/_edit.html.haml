@@ -7,106 +7,142 @@
 	my_vars.edit_profile.text_area_value_length = function(el) { return el.val().replace(/\n/g, '\r\n').length; };
 	my_vars.edit_location = my_vars.edit_location || {};
 	my_vars.edit_location.max_lengths = #{Location::MAX_LENGTHS.to_json};
--# = javascript_include_tag 'profile_edit'
-- cache ['edit_profile', @profile] do
-	%header.content-header.clearfix
-		#profile-photo.photo-wrapper-large.clickable
-			- if @profile.profile_photo.blank?
-				= image_tag Profile::DEFAULT_EDIT_PHOTO_PATH, alt: "#{@profile.display_name_or_company}", itemprop: 'image'
-			- else
-				= image_tag @profile.profile_photo.url(:original), alt: "#{@profile.display_name_or_company}", itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
-			#profile_photo.formlet
-				= render partial: 'profile_photo'
-		.profile{itemscope: "", itemtype: "http://schema.org/Person"}
-			#display_name.formlet
-				= render partial: 'display_name_formlet'
-			#job.formlet
-				= render partial: 'job_formlet'
-			#locations.formlet
-				= render partial: 'locations_formlet'
-			#internet.formlet
-				= render partial: 'internet_formlet'
-			.rate_review
+- cache ['edit_profile_left', @profile] do
+	#editing_tip.clearfix= t 'views.profile.edit.editing_tip'
+	%section.profile.left
+		%header#content-header.header{itemscope: '', itemtype: 'http://schema.org/Person'}
+			%h2{itemprop: 'affiliation'}
+				#company_name.formlet= render partial: 'company_name_formlet'
+			%h1{itemprop: 'name'}
+				#display_name.formlet= render partial: 'display_name_formlet'
+			%h3{itemprop: 'jobTitle'}
+				#headline.formlet= render partial: 'headline_formlet'
+			.ratings-section
+				%h5.ratings-header= t 'views.profile.view.average_rating'
 				= render partial: 'profiles/rating_score', locals: {profile: @profile}
-		.locations_map
-			#map_canvas_placeholder
-		- if @profile.widget_code.present?
-			.ui-helper-clearfix
-			.promo_container= raw @profile.widget_code
-	%section.details.clearfix
-		.interior
-			.summary-text
-				#summary.formlet.editable
-					= render partial: 'summary_formlet'
-				#certifications.formlet.editable
-					= render partial: 'certifications_formlet'
-				#education.formlet.editable
-					= render partial: 'education_formlet'
-				#year_started.formlet.editable
-					= render partial: 'year_started_formlet'
-			%table.info{border: "0", cellpadding: "0", cellspacing: "0"}
-				%tr#specialties_placeholder.formlet
-				%tr#ages_stages.formlet
-					= render partial: 'ages_stages_formlet'
-				%tr#hours.formlet
-					= render partial: 'hours_formlet'
-				%tr#pricing.formlet
-					= render partial: 'pricing_formlet'
-				%tr#insurance_accepted.formlet
-					= render partial: 'insurance_accepted_formlet'
-				%tr#languages.formlet
-					= render partial: 'languages_formlet'
-				%tr#availability_service_area.formlet
-					= render partial: 'availability_service_area_formlet'
-	:coffeescript
-		# Run after the document is loaded and everything is in place.
-		$ ->
-			# Place the formlet the specified number of pixels below the top of the viewport.
-			my_vars.f.place_formlet = (formlet) ->
-				place_popover $('.popover', formlet), 20
-			
-			# Close any open formlets.
-			my_vars.f.close_formlets = (e) ->
-				$('.formlet.active').removeClass 'active'
-				$(document).off 'click', my_vars.f.outer_close_formlets
-				$('.open-formlet-popover').on 'click', my_vars.f.open_formlet
-				$('.open-photo-popover').on 'click', my_vars.profile_photo_module.open_popover
-				false # No bubble up.
-			
-			# Close open formlets if clicked outside open formlet.
-			my_vars.f.outer_close_formlets = (e) ->
-				clicked = $(e.target)
-				if clicked.closest('.popover', '.formlet.active').length == 0 && clicked.closest('.ui-autocomplete').length == 0
-					my_vars.f.close_formlets e
-			
-			# Open the formlet unless already activated or we clicked on a 'dont_popover' element.
-			my_vars.f.open_formlet = (e) ->
-				unless $(this).hasClass('active') or $(e.target).hasClass('dont_popover')
-					$('.formlet.active').removeClass 'active' # Close any active formlet.
-					$(this).addClass 'active'
-					my_vars.f.place_formlet this
-					$('.open-formlet-popover').off 'click', my_vars.f.open_formlet
-					$('.open-photo-popover').off 'click', my_vars.profile_photo_module.open_popover
-					$(document).on 'click', my_vars.f.outer_close_formlets
-					false
+			-# No rating of the provider from this view; the provider is not allowed and editors use the admin view.
+		%section.links
+			#profile-photo.profile-photos.photo-wrapper-large.clickable
+				- if @profile.profile_photo.blank?
+					= image_tag Profile::DEFAULT_EDIT_PHOTO_PATH, alt: "#{@profile.display_name_or_company}", border: '0', itemprop: 'image'
+				- else
+					= image_tag @profile.profile_photo.url(:original), alt: "#{@profile.display_name_or_company}", border: '0', itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+				#profile_photo.formlet= render partial: 'profile_photo'
+			%aside.links
+				%ul
+					%li.url{itemprop: 'url'}
+						#url.formlet= render partial: 'url_formlet'
+					%li.email{itemprop: 'email'}
+						#email.formlet= render partial: 'email_formlet'
+					-# %li.videos{itemprop: 'videos'}
+					-# 	%a{:href => "#"} 3 videos
+		%section.description
+			#summary.formlet= render partial: 'summary_formlet'
+			#specialties_placeholder.formlet
+			#hours.formlet= render partial: 'hours_formlet'
+			#availability_service_area.formlet= render partial: 'availability_service_area_formlet'
+			#ages_stages.formlet= render partial: 'ages_stages_formlet'
+			#pricing.formlet= render partial: 'pricing_formlet'
+			#insurance_accepted.formlet= render partial: 'insurance_accepted_formlet'
+			#languages.formlet= render partial: 'languages_formlet'
+			#certifications.formlet= render partial: 'certifications_formlet'
+			#education.formlet= render partial: 'education_formlet'
+			#year_started.formlet= render partial: 'year_started_formlet'
+%section.profile.right
+	- cache ['edit_profile_map_promo', @profile] do
+		%section.map
+			.map-embed
+				= render partial: 'profiles/locations_map', locals: {profile: @profile, context: :profile_edit}
+			#locations.formlet= render partial: 'locations_formlet'
+		%section.promo
+			- if @profile.widget_code.present?
+				-# .ui-helper-clearfix
+				.promo_container= raw @profile.widget_code
+	-# Cache the entire reviews section so we do not have to read nested reviewer caches unless necessary.
+	-# Use the same cache keys as the show view because there is no editing of the reviews here.
+	- ordered_reviews = @profile.reviews.order_by_descending_created_at
+	- cache ['edit_profile_reviews', @profile]+ordered_reviews.map(&:reviewer).uniq do
+		%section#reviews.reviews-list
+			%ol
+				- reviewer_i = 0
+				- ordered_reviews.group_by(&:reviewer_email).each do |reviewer_email, reviews|
+					- reviewer = reviews.first.reviewer
+					- rating = @profile.rating_by(reviewer)
+					- cache ['edit_profile_reviewer', reviewer, rating]+reviews do
+						%li.review{id: "review#{reviewer_i += 1}"}
+							- reviews.each_with_index do |review, i|
+								%header.author.vcard
+									- if i == 0
+										-# %img.avatar{:alt => "avatar", :src => "http://placehold.it/60x60"}/
+										-# = user_profile_link reviewer, class: 'name'
+										- user_display_name = user_display_name reviewer
+										%span.name{title: user_display_name}= user_display_name
+										%span.meta= user_review_count reviewer
+									- else
+										&nbsp;
+								%article.review
+									%footer.meta
+										- if i == 0
+											= render partial: 'single_rating_score', locals: {rating: rating}
+										%span.date= display_profile_date review.created_at
+										%h4= review.title
+									.review-text
+										%p= profile_display_text review.body, preserve: true
+									-if review.good_to_know.present?
+										%aside.tip
+											%strong= t 'views.review.view.good_to_know_heading'
+											= review.good_to_know
+							-# .review-bottom &nbsp;
+							%hr/
+
+:coffeescript
+	# Run after the document is loaded and everything is in place.
+	$ ->
+		# Place the formlet the specified number of pixels below the top of the viewport.
+		my_vars.f.place_formlet = (formlet) ->
+			place_popover $('.popover', formlet), 20
 		
-			# Final touches to a newly created or updated formlet element.
-			my_vars.f.configure_formlet = (formlet) ->
-				# Add close button to top of pop-over if not already added.
-				if $('.close-popover-button', formlet).length == 0
-					$('.edit.popover', formlet).prepend '<div class="cancel close-popover-button"></div>'
-				# Cancel buttons should close the formlet.
-				$('.cancel', formlet).on 'click', my_vars.f.close_formlets
-				# Autocompletion configuration that must be done or redone.
-				configure_autocomplete_form_fields '.autocomplete-form-field', formlet
+		# Close any open formlets.
+		my_vars.f.close_formlets = (e) ->
+			$('.formlet.active').removeClass 'active'
+			$(document).off 'click', my_vars.f.outer_close_formlets
+			$('.open-formlet-popover').on 'click', my_vars.f.open_formlet
+			$('.open-photo-popover').on 'click', my_vars.profile_photo_module.open_popover
+			false # No bubble up.
 		
-			$('.formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
-				
-			$('.formlet').each -> my_vars.f.configure_formlet this
+		# Close open formlets if clicked outside open formlet.
+		my_vars.f.outer_close_formlets = (e) ->
+			clicked = $(e.target)
+			if clicked.closest('.popover', '.formlet.active').length == 0 && clicked.closest('.ui-autocomplete').length == 0
+				my_vars.f.close_formlets e
 		
+		# Open the formlet unless already activated or we clicked on a 'dont_popover' element.
+		my_vars.f.open_formlet = (e) ->
+			unless $(this).hasClass('active') or $(e.target).hasClass('dont_popover')
+				$('.formlet.active').removeClass 'active' # Close any active formlet.
+				$(this).addClass 'active'
+				my_vars.f.place_formlet this
+				$('.open-formlet-popover').off 'click', my_vars.f.open_formlet
+				$('.open-photo-popover').off 'click', my_vars.profile_photo_module.open_popover
+				$(document).on 'click', my_vars.f.outer_close_formlets
+				false
+	
+		# Final touches to a newly created or updated formlet element.
+		my_vars.f.configure_formlet = (formlet) ->
+			# Add close button to top of pop-over if not already added.
+			if $('.close-popover-button', formlet).length == 0
+				$('.edit.popover', formlet).prepend '<div class="cancel close-popover-button"></div>'
+			# Cancel buttons should close the formlet.
+			$('.cancel', formlet).on 'click', my_vars.f.close_formlets
+			# Autocompletion configuration that must be done or redone.
+			configure_autocomplete_form_fields '.autocomplete-form-field', formlet
+			
+		$('.formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
+		
+		$('.formlet').each -> my_vars.f.configure_formlet this
+
 -# Do not cache this.  It must process for each request to catch changes to shared specialties.
-%table.hidden.render
-	%tr#specialties.formlet.list_container
-		= render partial: 'specialties_formlet'
+.hidden.render
+	#specialties.formlet= render partial: 'specialties_formlet'
 :coffeescript
 	$('.hidden.render #specialties').replaceAll '#specialties_placeholder'

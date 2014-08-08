@@ -1,0 +1,2 @@
+- partial = @profile_claim.persisted? ? 'created' : (@profile_claim.profile.blank? ? 'error' : 'form')
+= render partial: partial

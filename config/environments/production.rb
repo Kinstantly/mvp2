@@ -1,5 +1,12 @@
 Mvp2::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
+  
+  # Fallback host name used in URLs, etc.
+  config.default_host = ENV['DEFAULT_HOST'].presence || 'www.kinstantly.com'
+  
+  # Sitemap generator configuration.
+  config.sitemap_default_host = "https://#{config.default_host}/"
+  config.sitemap_sitemaps_path = ''
 
   # Code is not reloaded between requests
   config.cache_classes = true
@@ -57,7 +64,7 @@ Mvp2::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w( home_page.css interior.css home_page_ie8.css )
+  config.assets.precompile += %w( home_page.css interior.css home_page_ie8.css plain.css )
 
   # Precompile additional js manifests
   config.assets.precompile += %w( profile_edit.js profile_search.js profile_show.js review_new.js)
@@ -91,13 +98,13 @@ Mvp2::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
 	# Devise needs this for its email.
-	config.action_mailer.default_url_options = { :host => 'www.kinstantly.com' }
+	config.action_mailer.default_url_options = { :host => config.default_host }
 
   # Paperclip config for S3.
   config.paperclip_defaults = {
     :storage => :s3,
     :path => 'images/profiles/:hash.:extension',
-    :s3_host_alias => 'd27zr285hfv284.cloudfront.net',
+    :s3_host_alias => ENV['CLOUDFRONT_DOMAIN_NAME'],
     :url => ':s3_alias_url',
     :default_url => "profile-photo-placeholder.jpg",
     :hash_secret => ENV['PAPERCLIP_HASH_SECRET'],
@@ -113,7 +120,5 @@ Mvp2::Application.configure do
 
 end
 
-SITEMAP_DEFAULT_HOST = 'https://www.kinstantly.com/'
-SITEMAP_SITEMAPS_PATH = ''
 REINDEX_PROFILES_IN_BACKGROUND = true
 

@@ -1,21 +1,18 @@
 - formlet = 'availability_service_area'
-%th
-	%span.editable= t 'views.profile.view.availability_service_area_html'
-%td
-	- if @profile.errorfree.availability_service_area_note.present?
-		%p.text_area.attribute_display= profile_display_text @profile.errorfree.availability_service_area_note, preserve: true, links: true
-	.edit.popover
-		= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
-			= f.error_messages
-			= hidden_field_tag 'formlet', formlet
-			.text_field#availability_service_area_note_field
-				%span.char_count
-				= f.label :availability_service_area_note
-				= f.text_area :availability_service_area_note, size: '50x5', class: 'attr'
-				%p.note= t 'views.profile.edit.availability_service_area_note_example_html'
-			.buttons
-				= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
-				= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
+%h3.editable= Profile.human_attribute_name :availability_service_area_note
+%p.text_area.attribute_display= profile_display_text @profile.errorfree.availability_service_area_note, preserve: true, links: true
+.edit.popover
+	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+		= f.error_messages
+		= hidden_field_tag 'formlet', formlet
+		.text_field#availability_service_area_note_field
+			%span.char_count
+			= f.label :availability_service_area_note
+			= f.text_area :availability_service_area_note, size: '50x5', class: 'attr'
+			%p.note= t 'views.profile.edit.availability_service_area_note_example_html'
+		.buttons
+			= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+			= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 
 :coffeescript
 	# Show character count while filling in field.

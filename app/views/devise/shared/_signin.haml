@@ -1,32 +1,31 @@
 - embedded_in ||= false
-.sign_in.generic_form.smaller_form
-	%h1= t 'views.sign_in.label' unless embedded_in
-	= form_for(resource, as: resource_name, url: session_path(resource_name), html: {id: 'sign_in_form'}) do |f|
-		- if alert.present? and params[:sign_in_attempt].present?
-			- @suppress_header_alert = true
-			.errorExplanation
-				%ul
-					%li= alert
-		= hidden_field_tag :sign_in_attempt, 't'
-		
-		= hidden_field_tag :is_private_alpha, params[:is_private_alpha]
-		
-		.email.text_field
-			= f.label :email, for: 'sign_in_email'
-			%br
-			= f.email_field :email, id: 'sign_in_email'
-
-		.password.text_field
-			= f.label :password, for: 'sign_in_password'
-			%br
-			= f.password_field :password, autocomplete: 'off', id: 'sign_in_password'
-
-		- if devise_mapping.rememberable?
-			.remember_me
-				= f.check_box :remember_me
-				= f.label :remember_me
-
-		.buttons
-			= f.submit t('views.sign_in.label'), disable_with: t('views.sign_in.submit_disable'), class: 'default', id: 'sign_in_button'
+%h1= t 'views.sign_in.label' unless embedded_in
+= form_for(resource, as: resource_name, url: session_path(resource_name), html: {id: 'sign_in_form'}) do |f|
+	- if alert.present? and params[:sign_in_attempt].present?
+		- @suppress_header_alert = true
+		.errorExplanation
+			%ul
+				%li= alert
+	= hidden_field_tag :sign_in_attempt, 't'
+	
+	= hidden_field_tag :is_private_alpha, params[:is_private_alpha]
+	
+	.email.text_field
+		= f.label :email, for: 'sign_in_email'
 		%br
-		= render "devise/shared/links"
+		= f.email_field :email, id: 'sign_in_email'
+
+	.password.text_field
+		= f.label :password, for: 'sign_in_password'
+		%br
+		= f.password_field :password, autocomplete: 'off', id: 'sign_in_password'
+
+	- if devise_mapping.rememberable?
+		.remember_me
+			= f.check_box :remember_me
+			= f.label :remember_me
+
+	.buttons
+		= f.submit t('views.sign_in.label'), disable_with: t('views.sign_in.submit_disable'), class: 'default', id: 'sign_in_button'
+	%br
+	= render "devise/shared/links"

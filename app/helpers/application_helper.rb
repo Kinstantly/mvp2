@@ -27,17 +27,21 @@ module ApplicationHelper
 	def show_sign_in_link?
 		controller_name != 'sessions'
 	end
+
+	def show_sign_up_link?
+		controller_name != 'registrations'
+	end
 	
 	def sign_in_out_link(options={})
 		if user_signed_in?
 			link_wrapper link_to(t('views.sign_out.label'), destroy_user_session_path, method: :delete), options
-		elsif show_sign_in_link?
+		else
 			link_wrapper link_to(t('views.sign_in.label'), new_user_session_path), options
 		end
 	end
 	
 	def greeting
-		"Hello, #{profile_display_name.presence || current_user.username.presence || current_user.email}" if user_signed_in?
+		"Hello #{profile_display_name.presence || current_user.username.presence || current_user.email}" if user_signed_in?
 	end
 	
 	def user_home_page
@@ -47,9 +51,13 @@ module ApplicationHelper
 	def sign_up_links
 		"Become a #{link_to 'provider', provider_sign_up_path} or a #{link_to 'member', member_sign_up_path}".html_safe unless user_signed_in? || controller_name == 'registrations'
 	end
+
+	def user_sign_up_link
+		(link_to "Sign up", new_user_registration_path) unless user_signed_in?
+	end
 	
-	def provider_sign_up_link(body='Provider? Join us')
-		link_to body, provider_sign_up_path unless user_signed_in?
+	def provider_sign_up_link(body='Provider? Join us', options={})
+		link_to body, provider_sign_up_path, options unless user_signed_in?
 	end
 	
 	def home_link
@@ -59,20 +67,20 @@ module ApplicationHelper
 	def home_link_with_tagline
 		link_to "#{company_name} | #{t 'company.tagline'}", root_path
 	end
-	
+
 	def account_settings_link(options={})
 		path = edit_user_registration_path
-		link_wrapper link_to(t('views.user.edit.link'), path), options if user_signed_in? && show_link?(path)
+		link_to 'Settings', path, options if user_signed_in? && show_link?(path)
 	end
 	
 	def view_user_profile_link
 		path = view_user_profile_path
-		link_to 'View my profile', path if show_link?(path) && can?(:show, User)
+		link_to 'View your profile', path if show_link?(path) && can?(:show, User)
 	end
 	
 	def edit_user_profile_link
 		path = edit_user_profile_path
-		link_to "Edit my profile", path if show_link?(path) && can?(:update, User)
+		link_to "Edit your profile", path if show_link?(path) && can?(:update, User)
 	end
 	
 	def admin_profile_list_by_id_link
@@ -162,6 +170,11 @@ module ApplicationHelper
 		end
 	end
 	
+	def index_link(options={})
+		path = root_path
+		link_wrapper link_to("Home", path), options if show_link?(path)
+	end
+	
 	def about_link(options={})
 		path = about_path
 		link_wrapper link_to("About us", path), options if show_link?(path)
@@ -198,17 +211,18 @@ module ApplicationHelper
 	end
 	
 	def strip_url(url)
-		url.strip.sub(/^https?:\/\//i, '')
+		url.strip.sub(/^https?:\/\//i, '') if url
 	end
 	
-	def display_url(url, max_length=44)
+	def display_url(url, max_length=nil)
+		max_length ||= 44
 		truncate strip_url(url), length: max_length
 	end
 	
-	def display_linked_url(url, title=nil)
+	def display_linked_url(url, title=nil, max_length=nil)
 		if url.present?
-			auto_link "http://#{strip_url url}", link: :urls, html: { target: '_blank', title: title } do |body|
-				display_url body
+			auto_link "http://#{strip_url url}", link: :urls, html: { target: '_blank', title: title.try(:html_escape) } do |body|
+				display_url body, max_length
 			end
 		end
 	end

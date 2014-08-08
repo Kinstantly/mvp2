@@ -32,4 +32,32 @@ window.place_popover = (popover, pixels) ->
 # This work-around is needed because the version of the jQuery autocomplete plugin that is used by the rails3-jquery-autocomplete gem insists on showing "no existing match".
 window.configure_autocomplete_form_fields = (form_field_selector, context = document) ->
 	$(form_field_selector, context).on 'autocompleteresponse', (event, ui) ->
-		$(this).autocomplete('close') if ui.content?[0].id.length == 0
+		$(this).autocomplete('close') if ui.content?[0].value.length == 0
+
+# Sniff UserAgent and detect mobile platform if possible
+window.user_agent_info = ->
+		ua = navigator.userAgent.toLowerCase()
+		info =
+			user_agent: ua
+			iphone: ua.match(/(iphone|ipod|ipad)/i)
+			blackberry: ua.match(/blackberry/i)
+			android: ua.match(/android/i)
+		info
+
+# Link the given address elements to an external map app or URL.
+window.link_addresses_to_map = (addresses) ->
+	for address in addresses
+		address = $(address)
+		address.addClass('linked_address')
+		lat = address.attr('data-latitude')
+		lng = address.attr('data-longitude')
+		if lat && lng
+			user_agent_info = window.user_agent_info()
+			escaped_address = escape(address.text())
+			address.attr target: '_blank'
+			if(user_agent_info.iphone)
+				address.attr href: 'maps:q=' + escaped_address + '@' + lat + ',' + lng
+			else if(user_agent_info.android)
+				address.attr href: 'geo:' + lat + ',' + lng + '?q=' + escaped_address
+			else
+				address.attr href: 'http://maps.google.com/maps?q=' + escaped_address + '&ll=' + lat + ',' + lng

@@ -1,63 +1,62 @@
+- @body_class = 'interior about'
 - @page_title = "#{company_name} - About us"
 - jim_email = "jscott@#{t('email_domain')}"
 - edward_email = "esimpson@#{t('email_domain')}"
 - cache 'about_page' do
-	.content
-		%section.content-section
-			%header.section-header
-				%h1 Meet the Founders
-			.left.col2
-				.bio-photo.left
-					%a{href: "https://www.linkedin.com/in/hookooejim", target: '_blank'}
-						= image_tag "jim_416X500.jpg", alt: "Jim Scott", itemprop: 'image', border: "0", height: "100%", width: "100%"
-				.bio.right
-					%h3 Jim Scott, Founder and CEO
-					%p
-						= mail_to jim_email
-					%h4 Why I&rsquo;m doing this
-					%p My wife and I have six kids &ndash; three boys and three girls &ndash; and we&rsquo;ve experienced all the whack-a-mole days and sleepless nights that go with that.
-					%h4 Before Kinstantly
-					%p 
-						I co-founded
-						= succeed ',' do
-							%a{href: "http://caring.com", target: '_blank'} Caring.com
-						the leading eldercare site in the country, and for ten years before that was Global VP of Editorial for
-						= succeed ',' do
-							%a{href: "http://babycenter.com", target: '_blank'} BabyCenter
-						the leading parenting site in the world.
-			.right.col2
-				.bio-photo.right
-					%a{href: "https://www.linkedin.com/in/edwardvsimpson", target: '_blank'}
-						= image_tag "edward_416X500.jpg", alt: "Edward Simpson", itemprop: 'image', border: "0", height: "100%", width: "100%"
-				.bio.left
-					%h3 Edward Simpson, Founder and CTO
-					%p
-						= mail_to edward_email
-					%h4 Why I&rsquo;m doing this
-					%p My wife is a childcare provider, and we&rsquo;re both involved in the backyard neighborhoods movement &ndash; helping families create shared spaces where kids can play together spontaneously and neighbors can meet and hang out.
-					%h4 Before Kinstantly
-					%p
-						I was a freelance full-stack developer, a senior developer for
-						= succeed ',' do
-							%a{href: 'http://babycenter.com', target: '_blank'} BabyCenter
-						and Technical Director for the
-						= succeed '.' do
-							%a{href: 'http://www.igc.org/html/aboutigc.html', target: '_blank'} Institute for Global Communications
-		%hr/
-		%section.content-section
-			%header.section-header
-				%h1 The Idea
-				%h2 Connecting parents to family services in more convenient ways
-			.col3.right
-				%p Kinstantly is based on a simple idea: Parents want an easier way to connect with the huge range of services they need &mdash; from preconception through high school graduation and beyond.
-				%p They want a better way to find a highly rated lactation consultant who makes house calls, a bilingual day care that has an opening for a toddler who isn&rsquo;t yet potty-trained, an ADHD coach who&rsquo;s great with teen boys and has Saturday hours. And they want to self-schedule on any device that&rsquo;s handy: phone, tablet, or laptop. (No more phone and email tag!)
-				%p Providers, in turn, want someone else to handle the marketing and scheduling and payments, so they can concentrate on doing the work they love: helping families. They&rsquo;re tired of losing money when they have no-shows or unfilled holes in their schedule. And they want an easier way to create a great web and mobile presence to attract new customers without spending a fortune to hire someone or taking forever to do it themselves.
-				%p That&rsquo;s why we&rsquo;re building Kinstantly. After talking to hundreds of parents and providers over the past year, we&rsquo;ve zeroed in on some great solutions. We&rsquo;re just getting started. But in the weeks and months ahead, we&rsquo;ll be working to connect you all, dot by dot, in ways we think you&rsquo;ll love.
-			%aside.testimonial.left
-				.photo-container
-					= image_tag "testimonial_photo.png", alt: "", itemprop: 'image', border: "0"
-					%span.photo-credit
-						= link_to '&copy; Slava Basovich'.html_safe, profile_path(1509)
-				%blockquote I wanted a doula to help me during labor and after &ndash; and Kinstantly showed me the options and helped me get a real feel for each one and how she worked. It was fast and cut the stress. And I love my doula!
-				%small.author &ndash; Sierra R., mother of a 4-month-old daughter
-		= render partial: 'social'
+	%section.content-section
+		%header.section-header
+			%h1 Meet the Founders
+		%section.left.col2
+			.bio-photo.left
+				%a{href: "https://www.linkedin.com/in/hookooejim", target: '_blank'}
+					= image_tag "jim_416X500.jpg", alt: "Jim Scott", itemprop: 'image', border: "0", height: "100%", width: "100%"
+			.bio.right
+				%h3 Jim Scott, Founder and CEO
+				%p
+					= mail_to jim_email
+				%h4 Why I&rsquo;m doing this
+				%p My wife and I have six kids &ndash; three boys and three girls &ndash; and we&rsquo;ve experienced all the whack-a-mole days and sleepless nights that go with that.
+				%h4 Before Kinstantly
+				%p 
+					I co-founded
+					= succeed ',' do
+						%a{href: "http://caring.com", target: '_blank'} Caring.com
+					the leading eldercare site in the country, and for ten years before that was Global VP of Editorial for
+					= succeed ',' do
+						%a{href: "http://babycenter.com", target: '_blank'} BabyCenter
+					the leading parenting site in the world.
+		%section.right.col2
+			.bio-photo.right
+				%a{href: "https://www.linkedin.com/in/edwardvsimpson", target: '_blank'}
+					= image_tag "edward_416X500.jpg", alt: "Edward Simpson", itemprop: 'image', border: "0", height: "100%", width: "100%"
+			.bio.left
+				%h3 Edward Simpson, Founder and CTO
+				%p
+					= mail_to edward_email
+				%h4 Why I&rsquo;m doing this
+				%p My wife is a childcare provider, and we&rsquo;re both involved in the backyard neighborhoods movement &ndash; helping families create shared spaces where kids can play together spontaneously and neighbors can meet and hang out.
+				%h4 Before Kinstantly
+				%p
+					I was a freelance full-stack developer, a senior developer for
+					= succeed ',' do
+						%a{href: 'http://babycenter.com', target: '_blank'} BabyCenter
+					and Technical Director for the
+					= succeed '.' do
+						%a{href: 'http://www.igc.org/html/aboutigc.html', target: '_blank'} Institute for Global Communications
+	%hr/
+	%section.content-section
+		%header.section-header
+			%h1 The Idea
+			%h2 Connecting parents to family services in more convenient ways
+		%section.col3.right
+			%p Kinstantly is based on a simple idea: Parents want an easier way to connect with the huge range of services they need &mdash; from preconception through high school graduation and beyond.
+			%p They want a better way to find a highly rated lactation consultant who makes house calls, a bilingual day care that has an opening for a toddler who isn&rsquo;t yet potty-trained, an ADHD coach who&rsquo;s great with teen boys and has Saturday hours. And they want to self-schedule on any device that&rsquo;s handy: phone, tablet, or laptop. (No more phone and email tag!)
+			%p Providers, in turn, want someone else to handle the marketing and scheduling and payments, so they can concentrate on doing the work they love: helping families. They&rsquo;re tired of losing money when they have no-shows or unfilled holes in their schedule. And they want an easier way to create a great web and mobile presence to attract new customers without spending a fortune to hire someone or taking forever to do it themselves.
+			%p That&rsquo;s why we&rsquo;re building Kinstantly. After talking to hundreds of parents and providers over the past year, we&rsquo;ve zeroed in on some great solutions. We&rsquo;re just getting started. But in the weeks and months ahead, we&rsquo;ll be working to connect you all, dot by dot, in ways we think you&rsquo;ll love.
+		%aside.testimonial.left
+			.photo-container
+				= image_tag "testimonial_photo.png", alt: "", itemprop: 'image', border: "0"
+				%span.photo-credit
+					= link_to '&copy; Slava Basovich'.html_safe, profile_path(1509)
+			%blockquote I wanted a doula to help me during labor and after &ndash; and Kinstantly showed me the options and helped me get a real feel for each one and how she worked. It was fast and cut the stress. And I love my doula!
+			%small.author &ndash; Sierra R., mother of a 4-month-old daughter

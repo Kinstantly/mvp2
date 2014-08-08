@@ -102,6 +102,7 @@ class ApplicationController < ActionController::Base
 			@profile.assign_text_param_if_used :admin_notes, params[:admin_notes]
 			@profile.assign_text_param_if_used :lead_generator, params[:lead_generator]
 			@profile.assign_text_param_if_used :widget_code, params[:widget_code]
+			@profile.assign_text_param_if_used :search_widget_code, params[:search_widget_code]
 			@profile.assign_text_param_if_used :invitation_email, params[:invitation_email]
 			@profile.assign_text_param_if_used :invitation_tracking_category, params[:invitation_tracking_category]
 		end

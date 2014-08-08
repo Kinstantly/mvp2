@@ -14,7 +14,7 @@ class ProfilesController < ApplicationController
 	skip_load_and_authorize_resource only: [:search, :autocomplete_specialty_name, :autocomplete_location_city]
 	
 	# Notify profile moderator when profile has been update by profile owner
-	after_filter :notify_profile_moderator, only: :formlet_update
+	after_filter :notify_profile_moderator, only: [:formlet_update, :photo_update]
 	
 	# *After* profile is loaded:
 	#   ensure it has at least one location
@@ -244,6 +244,10 @@ class ProfilesController < ApplicationController
 	def rating_score
 		render layout: false
 	end
+
+	def edit_rating
+		render layout: false
+	end
 	
 	def rate
 		respond_to do |format|
@@ -283,6 +287,7 @@ class ProfilesController < ApplicationController
 	def seo_keywords
 		@meta_keywords = [@meta_keywords,
 			@profile.categories.map(&:lower_case_name),
+			@profile.subcategories.map(&:lower_case_name),
 			@profile.services.map(&:lower_case_name),
 			@profile.specialties.map(&:lower_case_name)].flatten.compact.uniq.join(', ')
 	end
