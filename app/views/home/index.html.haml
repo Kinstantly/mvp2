@@ -112,21 +112,6 @@
 		$(this).toggleClass( 'open' );
 	});
 	
-	// fake html5 placeholders in older browsers
-	$('[placeholder]').focus(function() {
-		var input = $(this);
-		if (input.val() == input.attr('placeholder')) {
-			input.val('');
-			input.removeClass('placeholder');
-		}
-	}).blur(function() {
-		var input = $(this);
-		if (input.val() == '' || input.val() == input.attr('placeholder')) {
-			input.addClass('placeholder');
-			input.val(input.attr('placeholder'));
-		}
-	}).blur();
-
 	// Slideshow 1
 	$(function () {
 		$("#slider").responsiveSlides({

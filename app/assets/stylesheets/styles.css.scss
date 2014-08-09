@@ -73,7 +73,7 @@
 				
 				input {
 					background: transparent;
-					color: #AAA;
+					color: $search_input_color;
 					display: inline-block;
 					width: calc(100% - 3em);
 				}

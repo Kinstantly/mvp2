@@ -552,12 +552,12 @@ en:
           other: "%{count} search results for '%{query}'"
       more: 'More details >'
       postal_code_prompt: 'zip code'
-      search_query_prompt: 'Want the results selected by provider types? Enter a search term in the red search bar above.'
+      search_query_prompt: 'Want the results selected by provider types? Enter a search term in the search bar above.'
       searching: 'Searching...'
       showing_nearest_to_you: 'Showing nearest to you'
       short_profile:
         more: "See full details"
-      sorted_by_proximity_prompt: 'Want the results sorted by proximity? Enter a city, state, or zip code in the red search bar above.'
+      sorted_by_proximity_prompt: 'Want the results sorted by proximity? Enter a city, state, or zip code in the search bar above.'
       sorted_by_proximity_to: 'sorted by proximity to %{address}'
       suggest_provider_link: 'Tell us'
       suggest_provider_prompt_html: 'Are we missing a great provider? %{link}!'
