@@ -270,11 +270,11 @@ Given /^a published profile with last name "(.*?)" and specialty "(.*?)"$/ do |n
 	@published_profile.save
 end
 
-Given /^a published profile with last name "(.*?)", specialty "(.*?)", and search area tag "(.*?)"$/ do |name, spec, tag|
+Given /^a published profile with last name "(.*?)", specialty "(.*?)", and postal code "(.*?)"$/ do |name, spec, postal_code|
 	create_published_profile
 	@published_profile.last_name = name
 	@published_profile.specialties = [spec.to_specialty]
-	@published_profile.locations = [FactoryGirl.create(:location, search_area_tag: FactoryGirl.create(:search_area_tag, name: tag))]
+	@published_profile.locations = [FactoryGirl.create(:location, postal_code: postal_code)]
 	@published_profile.save
 end
 
@@ -892,6 +892,14 @@ Then /^I should see a Google Map$/ do
 	within('#map_canvas') do
 		page.should_not be_blank
 	end
+end
+
+# Need the following two step definitions because for some strange reason Sunspot will not commit updates to Solr when we are testing with javascript and therefore we can't use javascript when testing search.
+Then /^I should see a Google Map container$/ do
+	page.should have_css('#map_canvas')
+end
+Then /^I should not see a Google Map container$/ do
+	page.should_not have_css('#map_canvas')
 end
 
 Then /^I should see (?:the )"(.*?)" message$/ do |locale_path|

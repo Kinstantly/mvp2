@@ -54,12 +54,21 @@ Feature: search the provider directory
 			And I enter "Menlo Park, CA" in the search location box
 		Then I should see "San Mateo" first in the search results list
 
-	@javascript
 	Scenario: search results displayed on map
-		Given a published profile with last name "Tebaldi" and specialty "ADHD"
-			And I am not logged in 
-		When I enter "ADHD" in the search box
-		Then I should see a Google Map
+		Given a published profile with last name "Tebaldi", specialty "soprano", and postal code "94107"
+			And I am not logged in
+			And I visit the "/" page
+		When I enter "soprano" in the search box
+		Then I should see "Tebaldi" and "soprano" in the search results list
+			And I should see a Google Map container
+
+	Scenario: no map displayed when there are no search results
+		Given a published profile with last name "Tebaldi", specialty "soprano", and postal code "94107"
+			And I am not logged in
+			And I visit the "/" page
+		When I enter "the brewing lair of the lost sierra" in the search box
+		Then I should see no search results
+			And I should not see a Google Map container
 
 	Scenario: can search the provider directory from the about page
 		Given a published profile exists
