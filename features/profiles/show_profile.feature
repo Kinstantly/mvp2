@@ -55,7 +55,7 @@ Feature: View a provider's profile
 	Scenario: Info for provider that consults remotely displayed instead of map
 		Given I am not logged in 
 			And I visit the view page for a published profile with remote consultations
-		Then the profile should show "This provider operates 100% remotely"
+		Then the profile should show "This provider offers remote access"
 
 	@private_site
 	Scenario: New site visitor cannot view profiles when running as a private site

@@ -10,8 +10,7 @@ Feature: Profile with many locations
 		When I visit the published profile page
 		Then the profile should show "Albuquerque" within the first location address
 			And the profile should show "NM" within the first location address
-			And the profile should not show "Durham" within the second location address
-			And the profile should not show "NC" within the second location address
+			And the profile should not display the second location
 
 	Scenario: On provider's profile page, click link to see all locations
 		Given a published profile with cities "Albuquerque" and "Durham" and states "NM" and "NC"

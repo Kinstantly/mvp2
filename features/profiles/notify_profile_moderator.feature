@@ -12,7 +12,7 @@ Feature: Notify profile moderator
 			And I save the profile
 		Then "profile_monitor@kinstantly.com" should receive no emails with subject "Provider Profile updated on Kinstantly"
 	
-	Scenario: Profile owner edits his profile
+	Scenario: Profile editor edits a profile
 		Given I am logged in as a profile editor
 			And I visit the edit page for an unclaimed profile
 		When I open the "display name" formlet
@@ -20,7 +20,7 @@ Feature: Notify profile moderator
 			And I click on the "Save" button of the "display name" formlet
 		Then "profile_monitor@kinstantly.com" should receive no emails with subject "Provider Profile updated on Kinstantly"
 	
-	Scenario: Profile editor edites somebody's profile 
+	Scenario: Profile owner edits their own profile
 		Given I exist as a user
 			And I am logged in
 			And I am on my profile edit page

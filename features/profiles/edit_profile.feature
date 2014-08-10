@@ -31,16 +31,6 @@ Feature: Edit an expert's profile
 		Then the last name in the unclaimed profile should be "Capulet"
 
 	@javascript
-	Scenario: Assign search area tag as a profile editor
-		Given there is a search area tag named "East Bay"
-			And I am logged in as a profile editor
-			And I visit the edit page for an unclaimed profile
-		When I open the "locations" formlet
-			And I select "East Bay" as the search area tag in the "locations" formlet
-			And I click on the "Save" button of the "locations" formlet
-		Then the search area tag in the unclaimed profile should be "East Bay"
-
-	@javascript
 	Scenario: Save notes as an administrator
 		Given I am logged in as an administrator
 			And I visit the edit page for an unclaimed profile

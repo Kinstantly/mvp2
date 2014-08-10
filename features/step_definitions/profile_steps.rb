@@ -5,15 +5,17 @@
 def set_up_new_data
 	create_visitor
 	@profile_data ||= { first_name: 'Know', middle_name: 'I', last_name: 'Tall_59284872465',
-		primary_phone: '415-555-1234', url: 'http://knowitall.com' }
+		company_name: 'Co_59284872465', primary_phone: '415-555-1234', url: 'http://knowitall.com' }
 	@profile_data_2 ||= { first_name: 'Can', middle_name: 'I', last_name: 'Helpyou_57839029577',
-		primary_phone: '800-555-1111', url: 'http://canihelpyou.com' }
+		company_name: 'Co_57839029577', primary_phone: '800-555-1111', url: 'http://canihelpyou.com' }
 	@unattached_profile_data ||= { first_name: 'Prospect', middle_name: 'A', last_name: 'Expert_109284920473',
-		primary_phone: '888-555-5555', url: 'http://UnattachedExpert.com' }
+		company_name: 'Co_109284920473', primary_phone: '888-555-5555', url: 'http://UnattachedExpert.com' }
 	@published_profile_data ||= { first_name: 'Sandy', middle_name: 'A', last_name: 'Known_58792040839757',
-		primary_phone: '888-555-7777', url: 'http://KnownExpert.com', is_published: true }
+		company_name: 'Co_58792040839757', primary_phone: '888-555-7777', url: 'http://KnownExpert.com',
+		is_published: true }
 	@published_profile_data_2 ||= { first_name: 'Yeti', middle_name: 'B', last_name: 'Foot_6594098385732',
-		primary_phone: '888-555-6666', url: 'http://yetibfoot.com', is_published: true }
+		company_name: 'Co_6594098385732', primary_phone: '888-555-6666', url: 'http://yetibfoot.com',
+		is_published: true }
 	@predefined_category = FactoryGirl.create(:predefined_category, name: 'TUTORS') unless @predefined_category
 end
 
@@ -94,8 +96,8 @@ def formlet_id(name)
 end
 
 def location_address_selector(which)
-	selector = 'div.location_block:first-of-type'
-	selector = 'div.location_block:first-of-type ~ .location_block' if which.strip == 'second'
+	selector = '.map div:first-of-type + .location_block'
+	selector += ' + .location_block' if which.strip == 'second'
 	selector
 end
 
@@ -732,13 +734,8 @@ Then /^(?:my|the) profile should show "([^\"]+)" within the (first|second) locat
 	end
 end
 
-Then /^(?:my|the) profile should not show "([^\"]+)" within the (first|second) location address$/ do |value, which|
-	within(location_address_selector which) do
-		page.all('.location', :visible => true).each do |el|
-			el.should_not have_content(value)
-		end
-	end
-
+Then /^(?:my|the) profile should not display the (first|second) location$/ do |which|
+	page.should_not have_css(location_address_selector which)
 end
 
 Then /^my profile should have no locations$/ do
@@ -787,20 +784,20 @@ Then /^my profile edit page should show "([^\"]+)" and "([^\"]+)" displayed in t
 end
 
 Then /^I should see more than one profile$/ do
-	page.should have_content @profile_data[:last_name]
-	page.should have_content @profile_data_2[:last_name]
+	page.should have_content @profile_data[:company_name]
+	page.should have_content @profile_data_2[:company_name]
 end
 
 Then /^I should not see profile data$/ do
-	page.should_not have_content @profile_data[:last_name]
+	page.should_not have_content @profile_data[:company_name]
 end
 
 Then /^I should not see profile data that is not my own$/ do
-	page.should_not have_content @profile_data_2[:last_name]
+	page.should_not have_content @profile_data_2[:company_name]
 end
 
 Then /^I should see published profile data$/ do
-	page.should have_content @published_profile_data[:last_name]
+	page.should have_content @published_profile_data[:company_name]
 end
 
 Then /^I should see a profile edit form$/ do
