@@ -90,8 +90,7 @@
 - cache CategoryList.home_list do
 	- (1..5).each do |column|
 		.col{id: "col#{column}"}
-			- index = column - 1
-			- category = CategoryList.home_list.categories[index]
+			- category = CategoryList.home_list.categories.where(home_page_column: column).first
 			- if category.present?
 				%h4= category.name
 				%ul.accordion

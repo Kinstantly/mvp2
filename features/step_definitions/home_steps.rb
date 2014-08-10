@@ -7,20 +7,12 @@ def column_name_to_number(name)
 	when 'second'
 		2
 	else
-		pending "#{which_column} column"
+		pending "#{name} column"
 	end
 end
 
 Given /^a category authored to appear in the "(first|second)" column on the home page$/ do |which_column|
-	column_number = column_name_to_number(which_column)
-	@authored_category = case column_number
-	when 1
-		FactoryGirl.create :category_on_home_page, home_page_column: 1
-	when 2
-		FactoryGirl.create :category_on_home_page, home_page_column: 4 # Use 4 until we implement the new design.
-	else
-		pending "column #{column_number}"
-	end
+	@authored_category = FactoryGirl.create :category_on_home_page, home_page_column: column_name_to_number(which_column)
 end
 
 Given /^a category authored to not appear on the home page$/ do
