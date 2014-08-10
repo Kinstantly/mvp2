@@ -53,7 +53,7 @@ When /^I visit the review page for the current profile$/ do
 end
 
 When /^I click on the review link$/ do
-	click_link @published_profile.display_name_or_company
+	click_link 'Add your review'
 end
 
 ### THEN ###
