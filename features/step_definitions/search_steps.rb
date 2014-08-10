@@ -5,7 +5,7 @@ Given /^I am on the search results page$/ do
 end
 
 When /^I enter published profile data in the search box$/ do
-	within('#search_providers') do
+	within('#providerSearch') do
 		fill_in 'provider_search_query', with: @published_profile_data[:last_name]
 		click_button 'provider_search_button'
 	end

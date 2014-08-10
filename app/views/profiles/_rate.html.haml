@@ -4,7 +4,7 @@
 - rate_provider_id = "rate_provider_#{profile.id}"
 - score_provider_id = "score_provider_#{profile.id}"
 %div{id: rate_provider_id}
-	%p
+	%p.rate_provider
 		%span{class: "rate reviews #{rating_score_stars_css_class current_rating.try(:score)}"}
 			- Rating::SCORES.reverse_each do |i|
 				%span{class: "star star#{i} post", title: provider_rating_title(i), 'data-score' => i}

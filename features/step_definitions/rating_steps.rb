@@ -6,22 +6,26 @@ Given /^a published profile with no ratings exists$/ do
 	create_published_profile ratings: []
 end
 
+Given /^a published profile with ratings of (\d+) and (\d+) exists$/ do |score1, score2|
+	create_published_profile ratings: [FactoryGirl.create(:rating, score: score1), FactoryGirl.create(:rating, score: score2)]
+end
+
 ### WHEN ###
 
 When /^I click on the (\d+) star$/ do |number|
-	within(".rate_provider_form form div#rate_provider_#{number}") do
-		find('a').click
+	within('.rate_provider .rate') do
+		find(".star[data-score=\"#{number}\"]").click
 	end
 end
 
 ### THEN ###
 
 Then /^the profile should have an average rating of ([\d.]+)$/ do |rating|
-	page.has_selector?(".provider_rating form input[title=\"#{rating}\"]", visible: false).should be_true
+	page.should have_css(".ratings-section .reviews[title=\"#{rating}\"]")
 end
 
 Then /^my rating for this provider should be (\d+)$/ do |rating|
-	find('.rate_provider_form form input[checked="checked"]', visible: false).value.should == rating
+	page.should have_css(".rate_provider .rate.reviewed-#{rating}-star")
 end
 
 Then /^the published profile should have no ratings$/ do

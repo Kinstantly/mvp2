@@ -44,3 +44,9 @@ Feature: Rate provider
 			And I click on the 5 star
 			And I sign up as a non-expert with valid user data
 		Then the published profile should have no ratings
+
+	Scenario: Provider's profile displays their average rating
+		Given a published profile with ratings of 4 and 5 exists
+			And I am not logged in
+		When I visit the published profile page
+		Then the profile should have an average rating of 4.5
