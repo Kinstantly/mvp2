@@ -77,11 +77,7 @@ def formlet_id(name)
 	when 'insurance'
 		'insurance_accepted'
 	when 'website'
-		'internet'
-	when 'categories'
-		'services'
-	when 'specialties'
-		'specialties'
+		'url'
 	when 'consultation methods'
 		'contact_options'
 	when 'service area'
@@ -95,18 +91,6 @@ def formlet_id(name)
 	else
 		name
 	end
-end
-
-def attribute_display_selector(formlet, which)
-	selector = "##{formlet_id formlet}" + case formlet
-	when 'services'
-		' .attribute_display + .attribute_display'
-	else
-		' .attribute_display'
-	end
-	selector += ' + .attribute_display' if which.strip == 'second'
-	selector += ' + .attribute_display + .attribute_display' if which.strip == 'third'
-	selector
 end
 
 def location_address_selector(which)
@@ -552,7 +536,7 @@ When /^I click on the link for an unclaimed profile$/ do
 end
 
 When /^I open the "(.*?)" formlet$/ do |formlet|
-	find("##{formlet_id formlet} *", match: :first).click
+	find("##{formlet_id formlet} .editable", match: :first).click
 end
 
 When /^I enter "(.*?)" in the "(.*?)" field of the "(.*?)" formlet$/ do |text, field, formlet|
@@ -672,8 +656,8 @@ end
 
 When /^I upload a valid image file "(.*?)"$/ do |file_name|
 	within('li.step_one') do
-  		attach_file 'standard-attachment', Rails.root.join('spec/fixtures/assets', "#{file_name}").to_s
-  	end
+		attach_file 'standard-attachment', Rails.root.join('spec/fixtures/assets', "#{file_name}").to_s
+	end
 end
 
 When /^I import a valid image file from "(.*?)"$/ do |url|
@@ -787,16 +771,16 @@ Then /^I should be offered no (.*?)$/ do |things|
 	end
 end
 
-Then /^my profile edit page should show "([^\"]+)" displayed( | second | third )(as a link )?in the "([^\"]+)" area$/ do |value, which, link, formlet|
-	selector = attribute_display_selector formlet, which
+Then /^my profile edit page should show "([^\"]+)" displayed (as a link )?in the "([^\"]+)" area$/ do |value, link, formlet|
+	selector = "##{formlet_id formlet}"
 	selector += ' a' if link.present?
 	within(selector, match: :first) do
 		page.should have_content value
 	end
 end
 
-Then /^my profile edit page should show "([^\"]+)" and "([^\"]+)" displayed( | second )in the "([^\"]+)" area$/ do |value1, value2, which, formlet|
-	within(attribute_display_selector formlet, which) do
+Then /^my profile edit page should show "([^\"]+)" and "([^\"]+)" displayed in the "([^\"]+)" area$/ do |value1, value2, formlet|
+	within("##{formlet_id formlet}") do
 		page.should have_content value1
 		page.should have_content value2
 	end
@@ -932,5 +916,12 @@ end
 Then /^I should see an invitation to "(.*?)" to claim their profile$/ do |email|
 	within '.invitation_state' do
 		page.should have_content email
+	end
+end
+
+Then /^I should see the photo editor$/ do
+	pending 'figure out why Capybara does not recognize the visible state of the Aviary photo editor'
+	using_wait_time 3 do
+		page.should have_css('#avpw_controls')
 	end
 end

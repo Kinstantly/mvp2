@@ -17,7 +17,7 @@
 //= require global.js.coffee
 //= require jquery.MetaData
 //= require jquery.placeholder
-//= require modernizr-2.5.3.min
+//= require modernizr.custom.02124
 //= require respond.min
 //= require responsiveslides.min
 //= require autocomplete-rails

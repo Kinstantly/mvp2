@@ -56,8 +56,8 @@ Feature: Edit my expert profile
 			And my profile edit page should show "Ames" displayed in the "locations" area
 			And my profile edit page should show "IA" displayed in the "locations" area
 			And my profile edit page should show "50010" displayed in the "locations" area
-			And my profile edit page should show "(505) 555-0123" displayed second in the "locations" area
-			And my profile edit page should show "Bike parking in front." displayed third in the "locations" area
+			And my profile edit page should show "(505) 555-0123" displayed in the "locations" area
+			And my profile edit page should show "Bike parking in front." displayed in the "locations" area
 	
 	Scenario: Country code is US by default
 		Given I exist as a user
@@ -189,7 +189,7 @@ Feature: Edit my expert profile
 			And I enter "La Fenice" in the "Street address" field of the second location on my profile edit page
 			And I click on the "Save" button of the "locations" formlet
 			And I click on the link to see all locations
-		Then my profile edit page should show "La Fenice" displayed third in the "locations" area
+		Then my profile edit page should show "La Fenice" displayed in the "locations" area
 	
 	Scenario: Delete location
 		Given I exist as a user
@@ -207,7 +207,7 @@ Feature: Edit my expert profile
 		When I open the "locations" formlet
 			And I enter "505-555-9087x47 " in the "Phone" field of the first location on my profile edit page
 			And I click on the "Save" button of the "locations" formlet
-		Then my profile edit page should show "(505) 555-9087, x47" displayed second in the "locations" area
+		Then my profile edit page should show "(505) 555-9087, x47" displayed in the "locations" area
 	
 	Scenario: My profile should display my website with a link
 		Given I exist as a user
@@ -217,7 +217,7 @@ Feature: Edit my expert profile
 			And I enter "www.sfopera.com" in the "Website" field of the "website" formlet
 			And I click on the "Save" button of the "website" formlet
 			And I view my profile
-		Then my profile should show "www.sfopera.com" within "location a"
+		Then my profile should show "www.sfopera.com" within "url a"
 
 	Scenario: Enter year started
 		Given I exist as a user
@@ -260,6 +260,7 @@ Feature: Edit my expert profile
 		When I open the "profile photo" formlet
 			And I see step "two" of "profile photo" formlet
 			And I click on the "upload a different photo" link of the "profile photo" formlet
+			And I see step "one" of "profile photo" formlet
 			And I upload a valid image file "profile_photo_test_under1MB.jpg"
 		Then edit my profile page should show "profile_photo_test_under1MB.jpg" image as my profile photo
 
@@ -271,8 +272,8 @@ Feature: Edit my expert profile
 			And I am on my profile edit page
 			And I open the "profile photo" formlet
 		When I see step "two" of "profile photo" formlet
-			And I click on the "edit_profile_photo" link of the "profile photo" formlet
-		Then my profile should show "Photo Editor"
+			And I click on the "edit this photo" link of the "profile photo" formlet
+		Then I should see the photo editor
 
 	@photo_upload
 	Scenario: View photo upload help page
