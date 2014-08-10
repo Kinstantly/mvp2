@@ -280,13 +280,13 @@ end
 
 ### THEN ###
 Then /^I should be signed in$/ do
-  page.should have_content I18n.t('views.sign_out.label')
+  page.should have_content I18n.t('views.sign_out.label').upcase
   page.should_not have_content I18n.t('views.sign_in.label')
 end
 
 Then /^I should be signed out$/ do
   page.should have_content I18n.t('views.sign_in.label')
-  page.should_not have_content I18n.t('views.sign_out.label')
+  page.should_not have_content I18n.t('views.sign_out.label').upcase
 end
 
 Then /^I see an unconfirmed account message$/ do
