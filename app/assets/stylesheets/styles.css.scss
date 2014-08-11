@@ -2031,7 +2031,11 @@ ul.links-list > li{
 					@include scale(font-size, 21);
 					line-height: 130%;
 					text-transform: none;
-
+					
+					&:hover {
+						cursor: pointer;
+						background-color: lighten($kinstantly_pink, 5%);
+					}
 					@media (max-width: $break-5) {
 						@include scale(font-size, 16);
 					}
