@@ -131,6 +131,9 @@ a:hover {
 a:visited {
 	color: $visited_link_color;
 }
+a:visited:hover {
+	color: darken($visited_link_color, 10%);
+}
 strong, b {
 	font-weight: 700;
 }
