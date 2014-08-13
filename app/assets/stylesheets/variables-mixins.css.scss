@@ -53,6 +53,7 @@ $break-6: 682px;
 $break-6-2: 600px;
 $break-5: 568px;
 $break-4: 428px;
+$break-3: 380px;
 
 $generic_form_width: 418px;
 $form_element_width: 388px;
@@ -130,6 +131,9 @@ $button_corner_radius: 4px;
 	padding: 4px;
 	margin-right: 1em;
 	@include button-corner-style;
+	@media screen and (max-width: $break-3) {
+		font-size: 12px;
+	}
 }
 
 @mixin default-button-style {
@@ -282,6 +286,9 @@ $button_corner_radius: 4px;
 				width: 90%;
 			}
 		}
+		input[type="submit"] {
+			margin-bottom: 8px;
+		}
 	}
 }
 @mixin mobile-formlet-popover {
@@ -292,7 +299,7 @@ $button_corner_radius: 4px;
 				margin-bottom: 8px;
 			}
 		}
-		@media (max-width: 380px) {
+		@media (max-width: $break-3) {
 			width: 220px;
 		}
 	}
