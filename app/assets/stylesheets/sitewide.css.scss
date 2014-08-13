@@ -293,6 +293,14 @@ em, i {
 		color: $default_link_color;
 	}
 }
+@media screen and (max-width: $break-3) {
+	.ui-tabs .ui-tabs-nav li {
+		font-size: 80%;
+		.mobile-hide {
+			display: none;
+		}
+	}
+}
 
 .auto_width {
 	width: auto !important;
