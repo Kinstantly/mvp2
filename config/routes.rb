@@ -141,6 +141,8 @@ Mvp2::Application.routes.draw do
 	get 'noemailerror' => 'contact_blockers#email_delivery_not_found', as: :email_delivery_not_found
 	get 'noemailconfirmation' => 'contact_blockers#contact_blocker_confirmation', as: :contact_blocker_confirmation
 	
+	post 'magenta/:provider_id' => 'stripe#webhook'
+	
 	# Catch all other routing requests and do something benign.
 	# The main purpose of this route is to provide as little information as possible to site probers.
 	# For Rails 4, add "via: :all".
