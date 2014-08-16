@@ -27,7 +27,7 @@
 				= link_to "import an image from a URL.", '#', id: 'import_from_url_link'
 				.text_field.aria-hidden
 					%input{type: :text, name: 'source_url', placeholder: source_url_prompt, title: 'import an image from a URL'}
-					%span#import_from_url_button.upload-button.ui-corner-all
+					#import_from_url_button.upload-button.ui-corner-all
 					%p.note= profile_photo_source_url_example
 
 			%p
@@ -95,7 +95,7 @@
 			%p
 				Done?
 				= link_to 'Go back to editing your profile.', '#', id: 'back_to_edit_link'
-
+	#aviary-popover		
 %span.clickable.editable.attribute_display.inline_block_attr{itemprop: "profilePhoto"}
 	%span.blank_attr= profile_photo_prompt
 
@@ -391,6 +391,9 @@
 				new Aviary.Feather
 					apiKey: 'v9iu6cbcuf2crihe',
 					apiVersion: 3,
+					maxSize: 168,
+					theme: 'light',
+					appendTo: 'aviary-popover',
 					tools: ['resize', 'crop', 'orientation', 'brightness', 'contrast', 'saturation', 'warmth'],
 					cropPresets: [['Square', '1:1'], 'Original']
 					onLoad: () ->
