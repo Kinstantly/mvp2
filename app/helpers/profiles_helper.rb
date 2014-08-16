@@ -679,7 +679,7 @@ Hi #{@profile.first_name.presence || 'there'},
 I'm Jim Scott, the founder and CEO of Kinstantly, a new free parenting site that makes it easier for families to find experts like you, learn about your services, and connect in more convenient ways.
 <br/>
 <br/>
-To make things as easy as possible, we created a temporary profile for you that highlights the information parents tell us they want. You can take a look and make any changes you'd like by clicking here: #{link_to 'Claim my profile', '<<claim_url>>'}. (Note: To protect your security, you'll first be taken to a sign-in page.)
+Here's the bonus we promised: To make things as easy as possible, we created a temporary profile for you that highlights the information parents tell us they want. You can take a look and make any changes you'd like by clicking here: #{link_to 'Claim my profile', '<<claim_url>>'}. (Note: To protect your security, you'll first be taken to a sign-in page.)
 <br/>
 <br/>
 In the meantime, here's a bit about me: I'm the former Global VP of Editorial of #{link_to 'BabyCenter', 'http://www.babycenter.com/'}, the largest parenting site in the world, with more than 20 million visitors a month -- and a co-founder of #{link_to 'Caring.com', 'http://www.caring.com/'}, the leading eldercare site in the country. You can learn more about our Kinstantly team and mission by visiting #{link_to 'About Us', about_url}.
