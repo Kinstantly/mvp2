@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/thoughtbot/jack_up.git
+  revision: 98b1ba572c2d9389a4e95f55c4ba8bcadc8cdb70
+  specs:
+    jack_up (0.1.1)
+      rails (~> 3.1)
+
+GIT
   remote: git://github.com/edsimpson/sunspot.git
   revision: 9a97e2608a5adaa8ab073826deb6d0450f4e2979
   specs:
@@ -15,13 +22,6 @@ GIT
     sunspot_rails (2.0.0.pre.130115)
       nokogiri
       sunspot (= 2.0.0.pre.130115)
-
-GIT
-  remote: https://github.com/thoughtbot/jack_up.git
-  revision: 98b1ba572c2d9389a4e95f55c4ba8bcadc8cdb70
-  specs:
-    jack_up (0.1.1)
-      rails (~> 3.1)
 
 GEM
   remote: https://rubygems.org/
