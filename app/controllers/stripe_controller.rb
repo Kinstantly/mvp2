@@ -4,12 +4,18 @@ class StripeController < ApplicationController
 	
 	def webhook
 		event = JSON.parse(request.body.read)
-		provider_id = params[:provider_id]
-		logger.debug "event = #{event}" if Rails.env == 'development'
-		if provider_id == 'hank'
-			logger.info "webhook: provider_id=>\"#{provider_id}\"; type=>\"#{event['type']}\"; user_id=>\"#{event['user_id']}\"; amount=>\"#{event['data']['object']['amount']}\""
+		provider_id = params[:provider_id].try(:to_s)
+		logger.debug "event = #{event.to_s}" if Rails.env == 'development'
+		if not event.is_a?(Hash)
+			logger.info "webhook: provider_id=>\"#{provider_id}\"; event is a #{event.class}"
+		elsif provider_id == 'hank' and event['type'] == 'charge.succeeded'
+			event.delete('id')
+			event['data'].try(:'[]', 'object').try(:delete, 'id')
+			event['data'].try(:'[]', 'object').try(:delete, 'card')
+			event['data'].try(:'[]', 'object').try(:delete, 'balance_transaction')
+			logger.info "webhook: provider_id=>\"#{provider_id}\"; event=>#{event.to_s}"
 		else
-			logger.info "webhook: provider_id=>\"#{provider_id}\"; price=>\"#{event['price']}\"; custom=>\"#{event['custom']}\""
+			logger.info "webhook: provider_id=>\"#{provider_id}\""
 		end
 		# response.status = 200
 		render json: {}
