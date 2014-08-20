@@ -184,4 +184,4 @@ gem 'sendgrid'
 gem 'whenever', :require => false
 
 # Stripe Connect
-gem 'omniauth-stripe-connect'
+gem 'omniauth-stripe-connect', :git => 'https://github.com/isaacsanders/omniauth-stripe-connect.git'
