@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
 	# :token_authenticatable,
 	# :timeoutable and :omniauthable
 	devise :database_authenticatable, :registerable, :confirmable,
-		:recoverable, :rememberable, :trackable, :validatable, :lockable
+		:recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable
 	
 	before_create :skip_confirmation!, if: :claiming_profile?
 	after_create :send_welcome_email, if: :claiming_profile?

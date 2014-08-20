@@ -235,4 +235,12 @@ Devise.setup do |config|
   # When using omniauth, Devise cannot automatically set Omniauth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = "/my_engine/users/auth"
+
+  #Stripe Connect config
+  config.omniauth :stripe_connect,
+    ENV['STRIPE_CONNECT_CLIENT_ID'].presence || 'ca_4aJhcyjprTFSJzhMA0NmuzWUIJiznZAb',
+    ENV['STRIPE_SECRET_KEY'].presence || 'sk_test_AAv7llm8N32E7HErvRqgvjm6', 
+    :scope => 'read_write', # or :scope => 'read_only'
+    :stripe_landing => 'register' # Determines whether to show a login screen by default. Set to stripe_landing=login, if users already have existing Stripe accounts. 
+
 end

@@ -1,0 +1,12 @@
+.confirmation_panel
+	%p.blue
+		Thank you for connecting your Stripe account.
+	%p= link_to 'Close', '#', class: 'close_button'
+:coffeescript
+	close_window = ->  
+		window.close()
+		false
+	
+	setTimeout close_window, 5000
+
+	$('.confirmation_panel .close_button').on 'click', close_window

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140802030856) do
+ActiveRecord::Schema.define(:version => 20140819000658) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -352,6 +352,17 @@ ActiveRecord::Schema.define(:version => 20140802030856) do
     t.boolean  "is_predefined", :default => false
     t.boolean  "trash",         :default => false
   end
+
+  create_table "stripe_infos", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "stripe_user_id"
+    t.text     "access_token"
+    t.text     "publishable_key"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "stripe_infos", ["user_id"], :name => "index_stripe_infos_on_user_id"
 
   create_table "subcategories", :force => true do |t|
     t.string   "name"

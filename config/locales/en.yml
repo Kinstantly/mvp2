@@ -634,7 +634,7 @@ en:
     user:
       edit:
         email_note: 'We also use this email to contact you.'
-        header: 'Account settings'
+        header: 'Basic account settings'
         password_note: "Leave the password blank if you don't want to change it. If you do change it, your password must contain at least %{minimum} characters."
         current_password_note: 'We need your current password to confirm your changes.'
         submit: 'Save changes'
@@ -643,6 +643,8 @@ en:
         cancel_account: 'Cancel my account'
         cancel_account_confirmation: 'We will completely remove your account. Are you sure?'
         cancel_account_prompt: 'Unhappy?'
+        stripe_connect_header: 'Payments and scheduling settings'
+        stripe_connect_prompt: 'Make online payments easy by connecting your Kinstantly account to Stripe.'
       view:
         edit_user_profile: 'Edit your profile'
         link: 'Settings'

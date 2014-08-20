@@ -1,0 +1,9 @@
+!!! XML
+!!!
+%html
+	%head
+		%title= @page_title.presence || company_name
+		= stylesheet_link_tag    "interior", :media => "all"
+		= javascript_include_tag "application"
+	%body
+		= yield

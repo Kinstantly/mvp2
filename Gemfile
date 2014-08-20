@@ -182,3 +182,6 @@ gem 'sendgrid'
 
 # Cron jobs
 gem 'whenever', :require => false
+
+# Stripe Connect
+gem 'omniauth-stripe-connect'
