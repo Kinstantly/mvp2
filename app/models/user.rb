@@ -29,6 +29,8 @@ class User < ActiveRecord::Base
 	
 	belongs_to :admin_confirmation_sent_by, class_name: 'User'
 	
+	has_one :stripe_info
+	
 	# Define minimum and/or maximum lengths of string and text attributes in a publicly accessible way.
 	# This allows them to be used at the view layer for character counts in input and textarea tags.
 	MIN_LENGTHS = {

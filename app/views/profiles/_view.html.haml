@@ -5,6 +5,10 @@
 			%legend= t 'views.profile.legend.admin_info'
 			.profile_id
 				= t 'views.profile.view.id', id: profile.id
+			.show_stripe_connect_state
+				= profile.show_stripe_connect ? t('views.profile.view.showing_stripe_connect') : t('views.profile.view.not_showing_stripe_connect')
+			.stripe_info
+				= profile_stripe_info @profile
 			.public_on_private_site_state
 				= profile.public_on_private_site ? t('views.profile.view.profile_is_public_on_private_site') : t('views.profile.view.profile_is_not_public_on_private_site')
 			.publish_state

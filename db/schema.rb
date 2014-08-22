@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140819000658) do
+ActiveRecord::Schema.define(:version => 20140822040352) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -229,6 +229,7 @@ ActiveRecord::Schema.define(:version => 20140819000658) do
     t.string   "invitation_tracking_category"
     t.text     "search_terms"
     t.text     "search_widget_code"
+    t.boolean  "show_stripe_connect",            :default => false
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"

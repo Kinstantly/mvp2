@@ -174,6 +174,12 @@ module ProfilesHelper
 			end
 		end
 	end
+	
+	def profile_stripe_info(profile)
+		if (user = profile.user) and can?(:manage, user) and (stripe_info = user.stripe_info)
+			t 'views.user.view.stripe_info_created_at', created_at: display_profile_time(stripe_info.created_at)
+		end
+	end
 
 	def profile_admin_check_box(attribute, profile)
 		hidden_field_tag(attribute, '', id: "#{attribute}_not") +

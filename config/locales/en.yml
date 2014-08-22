@@ -379,6 +379,7 @@ en:
         not_claimed: 'Not owned'
         not_owned: 'Not owned'
         not_published: 'Not published'
+        not_showing_stripe_connect: 'NOT showing Stripe Connect button on user settings page'
         owned: 'Owned'
         owned_not_published: 'Owned, not published'
         owned_published: 'Owned, published'
@@ -391,6 +392,7 @@ en:
         profile_photo_placeholder: 'Photo upload coming soon'
         published: 'Published'
         search_terms: 'Search terms associated with this profile:'
+        showing_stripe_connect: 'Showing Stripe Connect button on user settings page'
         specialty_search_terms: 'Specialty search terms:'
         stats_title: 'Profile counts'
         rating: 'Rating'
@@ -650,6 +652,7 @@ en:
         link: 'Settings'
         menu_title: 'Your Account'
         no_name: 'Anonymous'
+        stripe_info_created_at: 'Connected to Stripe at %{created_at}'
         view_user_profile: 'View your profile'
   rating:
     no_score: 'Not rated yet'

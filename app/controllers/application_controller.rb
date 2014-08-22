@@ -99,6 +99,7 @@ class ApplicationController < ActionController::Base
 		if current_user.profile_editor? && can?(:save, @profile)
 			@profile.assign_boolean_param_if_used :is_published, params[:is_published]
 			@profile.assign_boolean_param_if_used :public_on_private_site, params[:public_on_private_site]
+			@profile.assign_boolean_param_if_used :show_stripe_connect, params[:show_stripe_connect]
 			@profile.assign_text_param_if_used :admin_notes, params[:admin_notes]
 			@profile.assign_text_param_if_used :lead_generator, params[:lead_generator]
 			@profile.assign_text_param_if_used :widget_code, params[:widget_code]
