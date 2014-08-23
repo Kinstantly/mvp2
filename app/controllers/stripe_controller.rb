@@ -15,7 +15,7 @@ class StripeController < ApplicationController
 			event['data'].try(:'[]', 'object').try(:delete, 'balance_transaction')
 			logger.info "webhook: provider_id=>\"#{provider_id}\"; event=>#{event.to_s}"
 		else
-			logger.info "webhook: provider_id=>\"#{provider_id}\""
+			logger.info "webhook: provider_id=>\"#{provider_id}\"; event['type']=>#{event['type']}"
 		end
 		# response.status = 200
 		render json: {}
