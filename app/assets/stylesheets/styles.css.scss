@@ -1771,11 +1771,15 @@ span.inline_block_attr{
 }
 
 .profile-photo-update{
-	width:508px !important;
 	p{
 		color: #807f7f;
 		font-size: 14px;
 		padding: 5px 0 0 0;
+	}
+	p.note{
+		@media (max-width: $break-6) {
+			font-size: 12px;
+		}
 	}
 	.errorExplanation {
 		margin-bottom: 1em;
@@ -1787,7 +1791,7 @@ span.inline_block_attr{
 		width: $large_photo_y;
 		border: 1px solid red;
 		background-color: #efefef;
-		margin: 10px 0 5px 135px;
+		margin: 10px auto;
 		position: relative;
 		padding: 0;
 		overflow:hidden;
@@ -1824,6 +1828,7 @@ span.inline_block_attr{
 	color:#fff;
 	background-color: $kinstantly_light_blue;
 	padding: 13px 9px;
+	text-align: center;
 	@extend .clickable;
 }
 
@@ -1851,6 +1856,38 @@ ul.links-list > li{
 	color: #807f7f;
 }
 
+//#aviary-popover{
+//	@include form_popover;
+//	display: block;
+//}
+//#avpw_controls{
+//	min-width: 200px !important;
+//}
+//#avpw_canvas_element{
+//	-webkit-transform: none !important;
+//	-moz-transform:    none !important;
+//	-ms-transform:     none !important;
+//	-o-transform:      none !important;
+//	transform:         none !important;
+//	top: 50px !important;
+//	left: 50% !important;
+//	margin-left: -84px;
+//	margin-right: 84px;
+//}
+//.avpw_mode_action.avpw_mode_action_right{
+//	top: 108px !important;
+//	border-bottom: 1px solid #ccc;
+//}
+//.avpw_tool_pager .avpw_clip{
+//	left: auto !important;
+//	right: auto !important;
+//}
+//.avpw_scroll_page_complete{
+//	text-align: left !important;
+//}
+//.avpw_tool_icon{
+//	margin-right: 3px !important;
+//}
 #login_pannel {
 	max-width: 71.25em;
 	width: 100%;
