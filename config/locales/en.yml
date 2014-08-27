@@ -351,7 +351,7 @@ en:
         ages_stages: 'ages/stages:'
         availability_service_area_html: 'Availability/<br/>service area'
         average_rating: 'Average rating:'
-        claim_profile_link: 'Is this your profile? Click here to claim it.'
+        claim_profile_link: 'Is this your business?'
         claimed_by: 'Owned by'
         consultation_modes: 'Consultation methods and locations'
         does_not_consult_remotely: 'Does not offer most or all services remotely (phone/video/email)'
