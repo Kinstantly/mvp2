@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140822040352) do
+ActiveRecord::Schema.define(:version => 20140829013922) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -353,6 +353,42 @@ ActiveRecord::Schema.define(:version => 20140822040352) do
     t.boolean  "is_predefined", :default => false
     t.boolean  "trash",         :default => false
   end
+
+  create_table "stripe_cards", :force => true do |t|
+    t.integer  "stripe_customer_id"
+    t.string   "api_card_id"
+    t.boolean  "deleted",            :default => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+  end
+
+  add_index "stripe_cards", ["stripe_customer_id"], :name => "index_stripe_cards_on_stripe_customer_id"
+
+  create_table "stripe_charges", :force => true do |t|
+    t.integer  "stripe_card_id"
+    t.string   "api_charge_id"
+    t.integer  "amount"
+    t.integer  "amount_refunded"
+    t.boolean  "paid",            :default => false
+    t.boolean  "refunded",        :default => false
+    t.boolean  "captured",        :default => false
+    t.boolean  "deleted",         :default => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+  end
+
+  add_index "stripe_charges", ["stripe_card_id"], :name => "index_stripe_charges_on_stripe_card_id"
+
+  create_table "stripe_customers", :force => true do |t|
+    t.integer  "stripe_info_id"
+    t.string   "api_customer_id"
+    t.string   "description"
+    t.boolean  "deleted",         :default => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+  end
+
+  add_index "stripe_customers", ["stripe_info_id"], :name => "index_stripe_customers_on_stripe_info_id"
 
   create_table "stripe_infos", :force => true do |t|
     t.integer  "user_id"

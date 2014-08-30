@@ -143,6 +143,7 @@ Mvp2::Application.routes.draw do
 	get 'noemailconfirmation' => 'contact_blockers#contact_blocker_confirmation', as: :contact_blocker_confirmation
 	
 	post 'magenta/:provider_id' => 'stripe#webhook'
+	mount StripeEvent::Engine => '/cyan'
 	
 	# Catch all other routing requests and do something benign.
 	# The main purpose of this route is to provide as little information as possible to site probers.
