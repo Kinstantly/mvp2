@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140829013922) do
+ActiveRecord::Schema.define(:version => 20140902044713) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -360,6 +360,7 @@ ActiveRecord::Schema.define(:version => 20140829013922) do
     t.boolean  "deleted",            :default => false
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
+    t.boolean  "livemode"
   end
 
   add_index "stripe_cards", ["stripe_customer_id"], :name => "index_stripe_cards_on_stripe_customer_id"
@@ -375,6 +376,7 @@ ActiveRecord::Schema.define(:version => 20140829013922) do
     t.boolean  "deleted",         :default => false
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
+    t.boolean  "livemode"
   end
 
   add_index "stripe_charges", ["stripe_card_id"], :name => "index_stripe_charges_on_stripe_card_id"
@@ -386,6 +388,7 @@ ActiveRecord::Schema.define(:version => 20140829013922) do
     t.boolean  "deleted",         :default => false
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
+    t.boolean  "livemode"
   end
 
   add_index "stripe_customers", ["stripe_info_id"], :name => "index_stripe_customers_on_stripe_info_id"

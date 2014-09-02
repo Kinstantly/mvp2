@@ -7,6 +7,10 @@ module SiteConfigurationHelpers
 		def claim_profile_tracking_parameter
 			Rails.configuration.claim_profile_tracking_parameter
 		end
+		
+		def stripe_live_mode?
+			Rails.configuration.stripe_live_mode
+		end
 	end
 	
 	module InstanceMethods
@@ -16,6 +20,10 @@ module SiteConfigurationHelpers
 		
 		def claim_profile_tracking_parameter
 			Rails.configuration.claim_profile_tracking_parameter
+		end
+		
+		def stripe_live_mode?
+			Rails.configuration.stripe_live_mode
 		end
 	end
 	

@@ -1,5 +1,7 @@
 module StripeProcessing
 	class Base
+		include SiteConfigurationHelpers
+		
 		def initialize(logger=Rails.logger)
 			@logger = logger
 		end
@@ -26,8 +28,9 @@ module StripeProcessing
 		end
 		
 		def first_or_create_customer(wrapper)
+			livemode = wrapper[:livemode]
 			obj = data_object(wrapper)
-			stripe_info(wrapper).stripe_customers.where(api_customer_id: obj[:id]).first_or_create!
+			stripe_info(wrapper).stripe_customers.where(api_customer_id: obj[:id]).first_or_create!(livemode: livemode)
 		end
 		
 		def find_customer(wrapper)
@@ -35,9 +38,10 @@ module StripeProcessing
 		end
 		
 		def first_or_create_card(wrapper)
+			livemode = wrapper[:livemode]
 			obj = data_object(wrapper)
 			card_id, customer_id = obj[:id], obj[:customer]
-			stripe_info(wrapper).stripe_customers.find_by_api_customer_id!(customer_id).stripe_cards.where(api_card_id: card_id).first_or_create!
+			stripe_info(wrapper).stripe_customers.find_by_api_customer_id!(customer_id).stripe_cards.where(api_card_id: card_id).first_or_create!(livemode: livemode)
 		end
 		
 		def find_card(wrapper)
@@ -47,11 +51,12 @@ module StripeProcessing
 		end
 		
 		def first_or_create_charge(wrapper)
+			livemode = wrapper[:livemode]
 			obj = data_object(wrapper)
 			charge_id, card_data = obj[:id], obj[:card]
 			card_id, customer_id = card_data[:id], card_data[:customer]
 			card = stripe_info(wrapper).stripe_customers.find_by_api_customer_id!(customer_id).stripe_cards.find_by_api_card_id!(card_id)
-			card.stripe_charges.where(api_charge_id: charge_id).first_or_create!
+			card.stripe_charges.where(api_charge_id: charge_id).first_or_create!(livemode: livemode)
 		end
 	end
 	
@@ -128,8 +133,10 @@ module StripeProcessing
 			if event_id =~ /\A\w+\z/ and user_id =~ /\A\w+\z/
 				api_key = StripeInfo.find_by_stripe_user_id!(user_id).access_token
 				event = Stripe::Event.retrieve(event_id, api_key)
+				event_type = stripe_live_mode? && !event.livemode ? 'ignore' : event.type
 				{
-					type: event.type,
+					type: event_type,
+					livemode: event.livemode,
 					user_id: user_id,
 					event: event
 				}

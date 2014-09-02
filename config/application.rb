@@ -24,6 +24,9 @@ module Mvp2
     # Query-string parameter placed in URLs to aid in tracking the profile-claiming funnel.
     config.claim_profile_tracking_parameter = {claim_profile: 't'}
     
+    # If true, we should only process Stripe events that have livemode == true.
+    config.stripe_live_mode = ENV['STRIPE_LIVE_MODE'].present?
+    
     # Sitemap generator configuration.
     config.sitemap_default_host = "http://#{config.default_host}/"
     config.sitemap_sitemaps_path = 'sitemaps_dev/'
