@@ -23,6 +23,7 @@
 		= yield :head_before_js
 		/[if lt IE 9]
 			= javascript_include_tag '//html5shim.googlecode.com/svn/trunk/html5.js'
+			= stylesheet_link_tag 'ie', media: 'screen, handheld, print'
 		= javascript_include_tag 'application'
 		= yield :head
 		= csrf_meta_tags
