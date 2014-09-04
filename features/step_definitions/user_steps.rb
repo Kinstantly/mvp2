@@ -237,6 +237,10 @@ When /^I enter a new password(?: of "([^"]*?)")?$/ do |password|
 	fill_in 'user_current_password', with: @visitor[:password]
 end
 
+When /^I enter my current password$/ do
+  fill_in 'user_current_password', with: @visitor[:password]
+end
+
 When /^I enter a new email address(?: of "([^"]*?)")?$/ do |email|
 	email ||= "new_#{@visitor[:email]}"
 	fill_in 'user_current_password', with: @visitor[:password]
