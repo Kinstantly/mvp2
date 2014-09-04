@@ -1508,6 +1508,12 @@ div.popover {
 	.text_field input {
 		font-size: 16px;
 	}
+	.checkbox.newsletters_and_marketing_emails{
+		padding: 5px 0;
+		label{
+			font-weight: normal;
+		}
+	}
 	.buttons {
 		input, a {
 			margin-right: 1em;
@@ -2027,6 +2033,9 @@ ul.links-list > li{
 						padding: 0.5em 1em;
 					}
 				}
+			}
+			input[type=checkbox], input[type=radio]{
+				vertical-align: middle;
 			}
 
 			@media (max-width: $break-4) {

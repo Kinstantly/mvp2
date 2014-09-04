@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140822040352) do
+ActiveRecord::Schema.define(:version => 20140830014506) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -373,8 +373,8 @@ ActiveRecord::Schema.define(:version => 20140822040352) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                         :default => "", :null => false
-    t.string   "encrypted_password",            :default => "", :null => false
+    t.string   "email",                         :default => "",    :null => false
+    t.string   "encrypted_password",            :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -383,8 +383,8 @@ ActiveRecord::Schema.define(:version => 20140822040352) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                                    :null => false
-    t.datetime "updated_at",                                    :null => false
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
     t.text     "roles"
     t.string   "phone"
     t.integer  "failed_attempts",               :default => 0
@@ -396,10 +396,14 @@ ActiveRecord::Schema.define(:version => 20140822040352) do
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
     t.datetime "welcome_sent_at"
-    t.integer  "reviews_given_count",           :default => 0,  :null => false
+    t.integer  "reviews_given_count",           :default => 0,     :null => false
     t.datetime "admin_confirmation_sent_at"
     t.integer  "admin_confirmation_sent_by_id"
     t.string   "registration_special_code"
+    t.boolean  "parent_marketing_emails",       :default => false
+    t.boolean  "parent_newsletters",            :default => false
+    t.boolean  "provider_marketing_emails",     :default => false
+    t.boolean  "provider_newsletters",          :default => false
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

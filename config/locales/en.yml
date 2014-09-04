@@ -230,6 +230,10 @@ en:
         phone: 'Phone number we use to contact you'
         admin_confirmation_sent_at: ''
         registration_special_code: 'Special code'
+        parent_newsletters: 'Send me occasional newsletters with parenting tips from our experts, recommendations for local activities, and other helpful suggestions.'
+        parent_marketing_emails: 'Send me occasional deals and offers from Kinstantly and Kinstantly partners.'
+        provider_newsletters: 'Send me occasional newsletters with tips for growing my business, marketing my skills, and connecting with parents in the smartest, easiest ways.'
+        provider_marketing_emails: 'Send me occasional deals and offers from Kinstantly and Kinstantly partners.'
     errors:
       messages:
         invalid_phone_number: '^Phone number must be valid and properly formatted, e.g., "800-555-0199 x47"'
@@ -647,6 +651,7 @@ en:
         cancel_account_prompt: 'Unhappy?'
         stripe_connect_header: 'Payments and scheduling settings'
         stripe_connect_prompt: 'Make online payments easy by connecting your Kinstantly account to Stripe.'
+        newsletters_and_marketing_emails_label: 'Send me Kinstantly news'
       view:
         edit_user_profile: 'Edit your profile'
         link: 'Settings'
