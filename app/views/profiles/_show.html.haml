@@ -48,7 +48,7 @@
 					-# %li.videos{itemprop: 'videos'}
 					-# 	%a{:href => "#"} 3 videos
 					%li#likes{itemprop: 'facebook'}
-						.fb-like{"data-action" => "like", "data-href" => "#{profile_url @profile}", "data-layout" => "button_count", "data-share" => "false", "data-show-faces" => "false"}
+						.fb-like{"data-action" => "like", "data-href" => "#{profile_url @profile}", "data-layout" => "button_count", "data-share" => "true", "data-show-faces" => "false"}
 		%section.description
 			- if @profile.summary.present?
 				%h3= Profile.human_attribute_name :summary

@@ -369,6 +369,13 @@
 						}
 					}
 				}
+				#likes {
+					.fb-like {
+						span {
+							max-height: 20px;
+						}
+					}
+				}
 				.videos {
 					a:before {
 						content: "\f03d";
