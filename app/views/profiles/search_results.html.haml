@@ -26,7 +26,7 @@
 					%li.result{id: "result#{profile_id}", "data-profile-id" => profile_id}
 						%aside.photo
 							= image_tag profile.profile_photo.url(:medium), onclick: "document.location='#{profile_path(profile)}'", alt: "#{profile.company_otherwise_display_name}", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
-							.fb-like{"data-action" => "like", "data-href" => "#{profile_url profile}", "data-layout" => "box_count", "data-share" => "false", "data-show-faces" => "false"}
+							.fb-like{"data-action" => "like", "data-href" => "#{profile_url profile}", "data-layout" => "box_count", "data-share" => "true", "data-show-faces" => "false"}
 						%header.result-title
 							%h2
 								= profile_company_otherwise_display_name_link profile
