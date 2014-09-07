@@ -1,4 +1,16 @@
 - @content_class = 'profile_content'
+- content_for :head do
+	%meta{property: 'og:url', content: profile_url(@profile)}
+	- if (og_title = @profile.company_otherwise_display_name).present?
+		%meta{property: 'og:title', content: og_title}
+	- if @profile.profile_photo_file_name.present?
+		%meta{property: 'og:image', content: @profile.profile_photo.url(:original)}
+	%meta{property: 'og:type', content: 'profile'}
+	- if (og_description = @profile.headline).present?
+		%meta{property: 'og:description', content: og_description}
+	%meta{property: 'og:site_name', content: t('company.name')}
+	%meta{property: 'og:determiner', content: ''}
+	%meta{property: 'og:updated_time', content: display_profile_date(@profile.updated_at)}
 - show_and_edit = can?(:manage_my_profile, @profile) || can?(:edit, @profile)
 - if show_and_edit
 	= javascript_include_tag 'profile_edit'

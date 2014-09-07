@@ -2,6 +2,8 @@
 - @content_class = 'category-list'
 - content_for :head_before_js do
 	= stylesheet_link_tag 'home_page', media: 'screen, handheld, print'
+- content_for :head do
+	%meta{property: 'fb:app_id', content: '876267945721057'}
 - content_for :body_header do
 	#masthead.container
 		%h1
