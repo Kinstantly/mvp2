@@ -38,7 +38,7 @@
 						%li.logged-in
 							- if current_user.is_provider? && current_user.profile
 								%span.photo_name_span
-									%span.avatar.mini>
+									%span.avatar.mini
 										= image_tag current_user.profile.profile_photo.url(:medium), alt: "#{current_user.profile.display_name_or_company}", style: "max-width:24px;", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
 									= greeting
 									,
