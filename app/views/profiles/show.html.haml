@@ -5,7 +5,7 @@
 		%meta{property: 'og:title', content: og_title}
 	- if @profile.profile_photo_file_name.present?
 		%meta{property: 'og:image', content: @profile.profile_photo.url(:original)}
-	%meta{property: 'og:type', content: 'profile'}
+	%meta{property: 'og:type', content: 'business.business'}
 	- if (og_description = @profile.headline).present?
 		%meta{property: 'og:description', content: og_description}
 	%meta{property: 'og:site_name', content: t('company.name')}
