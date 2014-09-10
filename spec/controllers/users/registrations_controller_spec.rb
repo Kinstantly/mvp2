@@ -10,13 +10,41 @@ describe Users::RegistrationsController do
 	end
 	
 	context "as a non-provider member" do
-		let(:mimi) { FactoryGirl.create(:client_user) }
-		
-		before (:each) do
-			sign_in mimi
+		describe "POST create" do
+			context "new user signs up" do
+				it "marketing_emails_and_newsletters is true" do
+					post :create, user: {
+						email: email,
+						password: new_password,
+						password_confirmation: new_password,
+						username: username
+					}, marketing_emails_and_newsletters: true
+					
+					assigns[:user].parent_marketing_emails.should be_true
+					assigns[:user].parent_newsletters.should be_true
+				end
+
+				it "marketing_emails_and_newsletters is false" do
+					post :create, user: {
+						email: email,
+						password: new_password,
+						password_confirmation: new_password,
+						username: username
+					}, marketing_emails_and_newsletters: false
+
+					assigns[:user].parent_marketing_emails.should be_false
+					assigns[:user].parent_newsletters.should be_false
+				end
+			end
 		end
 	
 		describe "PUT update" do
+			let(:mimi) { FactoryGirl.create(:client_user) }
+		
+			before (:each) do
+				sign_in mimi
+			end
+
 			it "updates email address for confirmation" do
 				put :update, user: {email: email, current_password: mimi.password}
 				response.should redirect_to '/'
@@ -37,6 +65,34 @@ describe Users::RegistrationsController do
 	
 	context "as a provider" do
 		describe "POST create" do
+			context "new provider signs up" do			
+				it "marketing_emails_and_newsletters is true" do
+					post :create, user: {
+						is_provider: '1',
+						email: email,
+						password: new_password,
+						password_confirmation: new_password,
+						username: username
+					}, marketing_emails_and_newsletters: true
+
+					assigns[:user].provider_marketing_emails.should be_true
+					assigns[:user].provider_newsletters.should be_true
+				end
+
+				it "marketing_emails_and_newsletters is false" do
+					post :create, user: {
+						is_provider: '1',
+						email: email,
+						password: new_password,
+						password_confirmation: new_password,
+						username: username
+					}, marketing_emails_and_newsletters: false
+
+					assigns[:user].provider_marketing_emails.should be_false
+					assigns[:user].provider_newsletters.should be_false
+				end
+			end
+
 			context "after registration" do
 				before(:each) do
 					post :create, user: {

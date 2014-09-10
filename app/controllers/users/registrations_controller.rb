@@ -9,6 +9,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 	layout :registrations_layout
 
+	def create
+		if (params[:marketing_emails_and_newsletters])
+			params[:user].merge!(:parent_marketing_emails => true, 
+								:parent_newsletters => true, 
+								:provider_marketing_emails => true, 
+								:provider_newsletters => true)
+		end
+   		super
+  	end
+
 	protected
 
 	# Override build_resource method in superclass.

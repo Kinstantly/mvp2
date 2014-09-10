@@ -399,10 +399,6 @@ When /^(?:I )?click edit my profile$/ do
 	click_link 'edit_my_profile_link'
 end
 
-When /^I check "(.*?)"$/ do |field|
-	check field
-end
-
 When /^I select the "(.*?)" category$/ do |cat|
 	within('.expertise_selection') do
 		check MyHelpers.profile_categories_id(cat.to_category.id)
