@@ -39,14 +39,12 @@ Mvp2::Application.routes.draw do
 	#match 'users' => 'users#index'
 	
 	# Admin can list all and edit/update individual profiles.
-	resources :users, only: [:index, :edit, :update]
-
-	# User can update profile_help attr 
-	resources :users do
+	# User can update profile_help attribute.
+	resources :users, only: [:index, :edit, :update] do
 		member do
-    		put 'update_profile_help'
-    	end 
-  	end
+			put 'update_profile_help'
+		end 
+	end
 	
 	resources :profiles do
 		member do
