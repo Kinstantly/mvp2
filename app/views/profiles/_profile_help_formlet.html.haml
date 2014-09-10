@@ -1,0 +1,33 @@
+- info_email = "#{t('contact.emails.info.value')}@#{t('email_domain')}"
+= link_to "Profile help", "#", class: 'profile-help-link editable'
+.ui-helper-clearfix
+.popover
+	= form_for @current_user, url: update_profile_help_user_path(@current_user), method: :put, remote: true, html: {id: "edit-profile-help"} do |f|
+		= f.submit t('views.profile.edit.profile_help_close_button_1'), disable_with: t('views.profile.edit.submit_disable'), class: 'close-link'
+		%p.errorExplanation
+		%h2
+			Welcome to your profile!
+		= f.hidden_field :profile_help, value: false
+		%p
+			Click on a blue pencil 
+			%span.editable-icon
+			to edit that field.
+		%p
+			When you're done editing a specific field, hit the save button at the bottom of the pop-up window! We save each part of your profile separately, so even if you only have a few minutes between appointments, you can still make progress!
+		%p
+			It's best to start filling in your basic information at the top of your profile, such as your name, website, and phone number. 
+		%p
+			It's also important to add your physical address (or at least a city, state, and ZIP code), so a map will appear on your profile, and you'll also be included on maps of the local area on relevant search results pages.
+		%p
+			Your photo (warm and smiling is best) will show up on search results pages as well.
+		%p
+			Your profile has built in social features, too - both a Facebook like button and ratings and reviews - so you can start to gather support from clients who love you!
+		%p
+			Questions? Concerns? Comments? Please email us at
+			= succeed '.' do
+				= mail_to info_email
+		%p
+			Happy editing!
+		%p
+			= f.submit t('views.profile.edit.profile_help_close_button_2'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+		%p.errorExplanation

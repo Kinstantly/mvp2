@@ -47,6 +47,7 @@ class Ability
 			can :create, User, id: user.id
 			can :update, User, id: user.id
 			can :show, User, id: user.id
+			can :update_profile_help, User, id: user.id 
 			alias_action :view_my_profile, :edit_my_profile, :formlet_update, :photo_update, :services_info, :show_tab, :edit_tab, to: :manage_my_profile
 			can :manage_my_profile, Profile, user_id: user.id
 		end

@@ -141,6 +141,11 @@ Given /^I am on my account edit page$/ do
 	visit edit_user_registration_path
 end
 
+Given /^chose to hide profile help by default$/ do
+  @user.profile_help = false
+  @user.save
+end
+
 ### WHEN ###
 When /^I sign in with valid credentials$/ do
   create_visitor

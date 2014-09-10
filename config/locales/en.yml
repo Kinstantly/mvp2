@@ -474,6 +474,9 @@ en:
         profile_photo_source_url_prompt: 'http:// or https://'
         profile_photo_source_url_example: 'Example: http://allkidstutoring.com/images/photo.jpg'
         search_terms_tip: 'Put each search term on a new line (Hit ENTER to separate search terms)'
+        profile_help_close_button_1: 'Got it! X'
+        profile_help_close_button_2: "Got it! Don't show me this message again."
+        profile_help_update_error: 'An unexpected error occurred. Please try again later.'
       claim:
         message: 'Click here to claim your profile'
       claim_confirm:

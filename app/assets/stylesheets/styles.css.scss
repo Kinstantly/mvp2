@@ -2141,8 +2141,14 @@ ul.links-list > li{
 		text-align: center;
 	}
 }
-
-#payments_setup{
+.profile-help-link.editable{
+	display:block;
+	padding: 0 10px 10px;
+	float: right;
+	text-decoration: underline;
+	background: none;
+}
+#payments_setup, #profile_help{
 	h2 {
 		font-family: $header-font-stack;
 		@include scale(font-size, 18,14);
@@ -2151,7 +2157,7 @@ ul.links-list > li{
 		text-align: center;
 		width: 70%;
 		margin: 0 auto;
-		margin-bottom: 1.2em;
+		margin-bottom: 0.8em;
 
 		@media (max-width: $break-6) {
 			width: 100%;
@@ -2163,9 +2169,32 @@ ul.links-list > li{
 		@include scale(margin-bottom, 13,18);
 	}
 	p{
-		line-height: 1.5em;
-		margin: 0 0 1.5em 0;
+		line-height: 1.3em;
+		margin: 0 0 1em 0;
 		font-size: 0.875em;
+
+		span.editable-icon{
+			display: inline-block;
+			width: 15px;
+			height:15px;
+			margin-left: 2px;
+			background: url('#{$image-path}/edit-blue.png') left center no-repeat;
+    		background-size: 12px 15px;
+		}
+		.save{
+			width: 100%;
+			text-transform: none;
+			word-wrap: break-word;
+			cursor: pointer;
+		}
+	}
+	.close-link{
+		position: absolute;
+		top: 7px;
+		right: 7px;
+		background-color: transparent;
+		color: $kinstantly_blue;
+		cursor: pointer;
 	}
 	.stripe-connect {
 	  display: block;
