@@ -1671,6 +1671,8 @@ div.popover {
 				font-size: 15px;
 				color: $default_link_color;
 				margin-bottom: 8px;
+				display: inline-block;
+				margin-right: 60px;
 			}
 		}
 		.panel_loading {
@@ -2141,9 +2143,13 @@ ul.links-list > li{
 		text-align: center;
 	}
 }
+ #profile_help{
+ 	display: inline-block;
+ 	float: right;
+ }
 .profile-help-link.editable{
 	display:block;
-	padding: 0 10px 10px;
+	font-size: 15px;
 	float: right;
 	text-decoration: underline;
 	background: none;
@@ -2184,8 +2190,21 @@ ul.links-list > li{
 		.save{
 			width: 100%;
 			text-transform: none;
-			word-wrap: break-word;
 			cursor: pointer;
+		}
+		.mobile{
+			display: none;
+		}
+		.regular{
+			display: block;
+		}
+		@media (max-width: $break-3) {
+			.mobile{
+				display: block;
+			}
+			.regular{
+				display: none;
+			}
 		}
 	}
 	.close-link{

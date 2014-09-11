@@ -3,7 +3,7 @@
 .ui-helper-clearfix
 .popover
 	= form_for @current_user, url: update_profile_help_user_path(@current_user), method: :put, remote: true, html: {id: "edit-profile-help"} do |f|
-		= f.submit t('views.profile.edit.profile_help_close_button_1'), disable_with: t('views.profile.edit.submit_disable'), class: 'close-link'
+		= f.submit "#{t('views.profile.edit.profile_help_close_button_1')} X", disable_with: t('views.profile.edit.submit_disable'), class: 'close-link'
 		%p.errorExplanation
 		%h2
 			Welcome to your profile!
@@ -29,5 +29,6 @@
 		%p
 			Happy editing!
 		%p
-			= f.submit t('views.profile.edit.profile_help_close_button_2'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+			= f.submit t('views.profile.edit.profile_help_close_button_2'), disable_with: t('views.profile.edit.submit_disable'), class: 'save regular'
+			= f.submit t('views.profile.edit.profile_help_close_button_1'), disable_with: t('views.profile.edit.submit_disable'), class: 'save mobile'
 		%p.errorExplanation

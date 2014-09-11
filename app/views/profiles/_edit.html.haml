@@ -9,7 +9,10 @@
 	my_vars.edit_location.max_lengths = #{Location::MAX_LENGTHS.to_json};
 	my_vars.edit_profile.profile_help = !!#{@current_user.profile_help} && !!#{@profile.owned_by? @current_user};
 - cache ['edit_profile_left', @profile] do
-	#editing_tip.clearfix= t 'views.profile.edit.editing_tip'
+	.clearfix
+		#editing_tip= t 'views.profile.edit.editing_tip'
+		- if @profile.owned_by? @current_user
+			#profile_help.formlet= render partial: 'profile_help_formlet'
 	%section.profile.left
 		%header#content-header.header{itemscope: '', itemtype: 'http://schema.org/Person'}
 			%h2{itemprop: 'affiliation'}
@@ -51,8 +54,6 @@
 			#year_started.formlet= render partial: 'year_started_formlet'
 %section.profile.right
 	- cache ['edit_profile_map_promo', @profile] do
-		- if @profile.owned_by? @current_user
-			#profile_help.formlet= render partial: 'profile_help_formlet'
 		%section.map
 			.map-embed
 				= render partial: 'profiles/locations_map', locals: {profile: @profile, context: :profile_edit}
