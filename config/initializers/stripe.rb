@@ -11,5 +11,6 @@ StripeEvent.configure do |events|
 	events.subscribe 'customer.card.deleted', StripeProcessing::CustomerCardDeleted.new
 	events.subscribe 'charge.succeeded', StripeProcessing::ChargeSucceeded.new
 	events.subscribe 'charge.captured', StripeProcessing::ChargeCaptured.new
+	events.subscribe 'charge.updated', StripeProcessing::ChargeUpdated.new
 	events.subscribe 'charge.refunded', StripeProcessing::ChargeRefunded.new
 end
