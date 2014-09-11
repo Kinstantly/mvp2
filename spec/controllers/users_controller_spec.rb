@@ -72,6 +72,7 @@ describe UsersController do
 			email = 'billie@example.com'
 			put :update_profile_help,  id: id, user: {email: email}, format: :js
 			@kelly.reload.email.should_not == email
+			@kelly.unconfirmed_email.should_not == email
 		end
 
 		it "cannot update profile_help attribute of another user" do

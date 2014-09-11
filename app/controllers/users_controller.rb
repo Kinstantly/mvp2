@@ -56,7 +56,7 @@ class UsersController < ApplicationController
 	end
 
 	def update_profile_help
-		params[:user].slice(:profile_help)
+		params[:user].slice!(:profile_help)
 		if current_user.update_attributes(params[:user])
 			@update_succeeded = true
 		end
