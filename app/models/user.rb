@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 	
 	# Setup accessible (or protected) attributes for your model
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
-		:profile_attributes, :phone, :is_provider, :username, :registration_special_code, 
+		:profile_attributes, :phone, :is_provider, :username, :registration_special_code, :profile_help,
 		:parent_marketing_emails, :parent_newsletters, :provider_marketing_emails, :provider_newsletters
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.

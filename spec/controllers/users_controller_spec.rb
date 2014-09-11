@@ -57,6 +57,29 @@ describe UsersController do
 			assigns[:profile].first_name.should_not == new_first_name
 		end
 	end
+
+	describe "PUT update_profile_help" do
+		it "successfully updates a profile_help attribute" do
+			id = @kelly.id
+			attrs = {profile_help: false}
+			put :update_profile_help, id: id, user: attrs, format: :js
+			assigns[:update_succeeded].should be_true
+			@kelly.reload.profile_help.should == attrs[:profile_help]
+		end
+		
+		it "should not update user attributes other than profile_help" do
+			id = @kelly.id
+			email = 'billie@example.com'
+			put :update_profile_help,  id: id, user: {email: email}, format: :js
+			@kelly.reload.email.should_not == email
+		end
+
+		it "cannot update profile_help attribute of another user" do
+			other_user_id = FactoryGirl.create(:user).id
+			put :update_profile_help, id: other_user_id, user: FactoryGirl.attributes_for(:user, profile_help: true), format: :js
+			assigns[:update_succeeded].should be_false
+		end
+	end
 	
 	describe "GET claim_profile" do
 		before(:each) do

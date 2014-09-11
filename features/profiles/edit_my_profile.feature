@@ -315,3 +315,11 @@ Feature: Edit my expert profile
 		When I view my profile
 			And I click on the profile edit tab
 		Then I should see the "display name" formlet
+	
+	@profile_help
+	Scenario: I can view profile help even if I chose to hide it by default
+		Given I exist as a user
+			And I am logged in
+			And chose to hide profile help by default
+			And I am on my profile edit page
+		Then I should see the "profile_help" formlet

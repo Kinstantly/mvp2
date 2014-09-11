@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 	layout 'plain'
-	
+	respond_to :js, only: :update_profile_help
+
 	before_filter :authenticate_user!
 	before_filter :set_up_user, only: [:view_profile, :update_profile, :edit_profile]
 	load_and_authorize_resource
@@ -21,7 +22,7 @@ class UsersController < ApplicationController
 		end
 		@users = @users.page(params[:page]).per(params[:per_page])
 	end
-	
+
 	def update_profile
 		if @user.update_attributes(params[:user])
 			set_flash_message :notice, :profile_updated
@@ -53,7 +54,15 @@ class UsersController < ApplicationController
 		@force_claim_profile = true
 		claim_profile
 	end
-	
+
+	def update_profile_help
+		params[:user].slice(:profile_help)
+		if current_user.update_attributes(params[:user])
+			@update_succeeded = true
+		end
+		render template: "profiles/profile_help_formlet_update"
+	end
+
 	private
 	
 	def set_up_user

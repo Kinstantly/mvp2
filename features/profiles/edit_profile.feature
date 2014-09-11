@@ -47,3 +47,10 @@ Feature: Edit an expert's profile
 			And I enter "Miah Persson" in the "Lead generator" field of the "admin" formlet
 			And I click on the "Save" button of the "admin" formlet
 		Then the profile should show "Miah Persson"
+
+	@javascript
+	@profile_help
+	Scenario: No profile help link for an administrator
+		Given I am logged in as an administrator
+			And I visit the edit page for an unclaimed profile
+		Then the profile should not show "Profile help"
