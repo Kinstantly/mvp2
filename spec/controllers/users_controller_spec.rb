@@ -59,6 +59,11 @@ describe UsersController do
 	end
 
 	describe "PUT update_profile_help" do
+		before(:each) do
+			@kelly.profile_help = true
+			@kelly.save
+		end
+		
 		it "successfully updates a profile_help attribute" do
 			id = @kelly.id
 			attrs = {profile_help: false}

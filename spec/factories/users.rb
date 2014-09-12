@@ -8,6 +8,7 @@ FactoryGirl.define do
 		email 'FactoryEmail@example.com'
 		password 'FactoryPassword'
 		password_confirmation 'FactoryPassword'
+		profile_help false
 		
 		# In case we are using the Devise Confirmable module, do not require the confirmation step
 		# unless otherwise specified.
