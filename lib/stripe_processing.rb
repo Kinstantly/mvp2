@@ -6,6 +6,12 @@ module StripeProcessing
 			@logger = logger
 		end
 		
+		def call(params)
+			process(params)
+		rescue ActiveRecord::RecordNotFound => error
+			@logger.error "#{self.class} Error: #{error}"
+		end
+		
 		private
 		
 		def log_event(wrapper)
@@ -14,6 +20,8 @@ module StripeProcessing
 				data = event.data
 				object = data.try :[], 'object'
 				@logger.info "#{self.class}: livemode=>\"#{event.livemode}\", type=>\"#{event.type}\", user_id=>\"#{user_id}\", object['id']=>\"#{object.try :[], 'id'}\", object['customer']=>\"#{object.try :[], 'customer'}\", object['amount']=>\"#{object.try :[], 'amount'}\""
+			elsif wrapper[:type] == 'ignore'
+				@logger.info "#{self.class}: ignoring event for livemode=>\"#{wrapper[:livemode]}\", type=>\"#{wrapper[:event_type]}\", id=>\"#{wrapper[:id]}\", user_id=>\"#{user_id}\""
 			else
 				@logger.error "#{self.class}: could not retrieve event for type=>\"#{wrapper[:type]}\", user_id=>\"#{user_id}\""
 			end
@@ -60,8 +68,9 @@ module StripeProcessing
 		end
 	end
 	
+	# The description attribute is used to identify the creating app.
 	class CustomerCreated < Base
-		def call(wrapper)
+		def process(wrapper)
 			obj = data_object(wrapper)
 			customer = first_or_create_customer(wrapper)
 			customer.update_attributes!(description: obj[:description])
@@ -69,15 +78,16 @@ module StripeProcessing
 		end
 	end
 	
+	# Do not update the description! We are using it to identify the app that created this customer.
 	class CustomerUpdated < Base
-		def call(wrapper)
+		def process(wrapper)
 			customer = first_or_create_customer(wrapper)
 			@logger.info "#{self.class}: #{customer.inspect}"
 		end
 	end
 	
 	class CustomerDeleted < Base
-		def call(wrapper)
+		def process(wrapper)
 			customer = find_customer(wrapper)
 			customer.update_attribute(:deleted, true)
 			@logger.info "#{self.class}: #{customer.inspect}"
@@ -85,57 +95,72 @@ module StripeProcessing
 	end
 	
 	class CustomerCardCreated < Base
-		def call(wrapper)
+		def process(wrapper)
 			card = first_or_create_card(wrapper)
 			@logger.info "#{self.class}: #{card.inspect}"
 		end
 	end
 	
 	class CustomerCardDeleted < Base
-		def call(wrapper)
+		def process(wrapper)
 			card = find_card(wrapper)
 			card.update_attribute(:deleted, true)
 			@logger.info "#{self.class}: #{card.inspect}"
 		end
 	end
 	
-	class ChargeSucceeded < Base
-		def call(wrapper)
+	class ChargeBase < Base
+		def process(wrapper)
 			obj = data_object(wrapper)
 			charge = first_or_create_charge(wrapper)
-			charge.update_attributes!(amount: obj[:amount], paid: obj[:paid], captured: obj[:captured])
+			values = {
+				amount: obj[:amount], paid: obj[:paid], captured: obj[:captured],
+				amount_refunded: obj[:amount_refunded], refunded: obj[:refunded]
+			}
+			charge.update_attributes!(values)
 			@logger.info "#{self.class}: #{charge.inspect}"
 		end
 	end
 	
-	class ChargeCaptured < ChargeSucceeded
+	class ChargeSucceeded < ChargeBase
 	end
 	
-	class ChargeRefunded < Base
-		def call(wrapper)
-			obj = data_object(wrapper)
-			charge = first_or_create_charge(wrapper)
-			charge.update_attributes!(amount_refunded: obj[:amount_refunded], refunded: obj[:refunded])
-			@logger.info "#{self.class}: #{charge.inspect}"
-		end
+	class ChargeCaptured < ChargeBase
+	end
+	
+	class ChargeUpdated < ChargeBase
+	end
+	
+	class ChargeRefunded < ChargeBase
 	end
 	
 	class EventLogger < Base
-		def call(wrapper)
+		def process(wrapper)
 			log_event wrapper
 		end
 	end
 	
+	# Confirm the data sent to the web hook by retrieving the event from Stripe.  Return the event data retrieved from Stripe instead of the data sent to the web hook.
+	# If we are live and the event is a test, ignore it.
+	# If the sent data is corrupted, drop it.
 	class EventRetriever < Base
-		def call(params)
+		def process(params)
 			event_id = params[:id]
+			event_livemode = params[:livemode]
 			user_id = params[:user_id]
-			if event_id =~ /\A\w+\z/ and user_id =~ /\A\w+\z/
+			if stripe_live_mode? && !event_livemode
+				{
+					type: 'ignore',
+					livemode: event_livemode,
+					event_type: params[:type],
+					id: event_id,
+					user_id: user_id
+				}
+			elsif event_id =~ /\A\w+\z/ and user_id =~ /\A\w+\z/
 				api_key = StripeInfo.find_by_stripe_user_id!(user_id).access_token
 				event = Stripe::Event.retrieve(event_id, api_key)
-				event_type = stripe_live_mode? && !event.livemode ? 'ignore' : event.type
 				{
-					type: event_type,
+					type: event.type,
 					livemode: event.livemode,
 					user_id: user_id,
 					event: event
@@ -143,8 +168,6 @@ module StripeProcessing
 			else
 				{}
 			end
-		rescue ActiveRecord::RecordNotFound => error
-			@logger.error "#{self.class}: #{error}"
 		end
 	end
 end

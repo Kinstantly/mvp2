@@ -3,5 +3,7 @@
 FactoryGirl.define do
 	factory :stripe_card do
 		api_card_id "FactoryApiCardId"
+		deleted false
+		livemode true
 	end
 end
