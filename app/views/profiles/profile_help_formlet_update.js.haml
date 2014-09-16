@@ -1,5 +1,5 @@
 - if @update_succeeded
-	my_vars.f.close_formlets();
+	//my_vars.f.close_formlets();
 - else
-	$('#profile_help #edit-profile-help .errorExplanation').text("#{t('views.profile.edit.profile_help_update_error')}");
-	setTimeout("my_vars.f.close_formlets()", 1800);
+	$('#profile_help #edit-profile-help .errorExplanation').show().text("#{t('views.profile.edit.profile_help_update_error')}");
+	//setTimeout("my_vars.f.close_formlets()", 1800);
