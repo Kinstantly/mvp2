@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140905001342) do
+ActiveRecord::Schema.define(:version => 20140918043600) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -230,6 +230,7 @@ ActiveRecord::Schema.define(:version => 20140905001342) do
     t.text     "search_terms"
     t.text     "search_widget_code"
     t.boolean  "show_stripe_connect",            :default => false
+    t.boolean  "allow_charge_authorizations",    :default => false
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"
@@ -255,6 +256,20 @@ ActiveRecord::Schema.define(:version => 20140905001342) do
 
   add_index "profiles_subcategories", ["profile_id"], :name => "index_profiles_subcategories_on_profile_id"
   add_index "profiles_subcategories", ["subcategory_id"], :name => "index_profiles_subcategories_on_subcategory_id"
+
+  create_table "provider_customers", :force => true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "provider_customers_providers", :force => true do |t|
+    t.integer "provider_customer_id"
+    t.integer "user_id"
+  end
+
+  add_index "provider_customers_providers", ["provider_customer_id"], :name => "index_provider_customers_providers_on_provider_customer_id"
+  add_index "provider_customers_providers", ["user_id"], :name => "index_provider_customers_providers_on_user_id"
 
   create_table "provider_suggestions", :force => true do |t|
     t.integer  "suggester_id"
@@ -385,12 +400,14 @@ ActiveRecord::Schema.define(:version => 20140905001342) do
     t.integer  "stripe_info_id"
     t.string   "api_customer_id"
     t.string   "description"
-    t.boolean  "deleted",         :default => false
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.boolean  "deleted",              :default => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.boolean  "livemode"
+    t.integer  "provider_customer_id"
   end
 
+  add_index "stripe_customers", ["provider_customer_id"], :name => "index_stripe_customers_on_provider_customer_id"
   add_index "stripe_customers", ["stripe_info_id"], :name => "index_stripe_customers_on_stripe_info_id"
 
   create_table "stripe_infos", :force => true do |t|

@@ -486,6 +486,10 @@ en:
       claim_confirm:
         link_body: 'Click here'
         message: 'if you want to replace your existing profile with the one you want to claim.'
+    provider_customer:
+      edit:
+        authorization_button: 'Authorize with card'
+        authorization_title: 'Charge authorization'
     provider_suggestion:
       name: 'Provider suggestion'
       admin:
@@ -662,6 +666,8 @@ en:
         no_name: 'Anonymous'
         stripe_info_created_at: 'Connected to Stripe at %{created_at}'
         view_user_profile: 'View your profile'
+  payment:
+    provider_not_allowed_charge_authorizations: 'This provider cannot be authorized to perform charges.'
   rating:
     no_score: 'Not rated yet'
     score_1: 'Terrible'

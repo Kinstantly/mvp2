@@ -147,8 +147,13 @@ Mvp2::Application.routes.draw do
 	get 'noemailerror' => 'contact_blockers#email_delivery_not_found', as: :email_delivery_not_found
 	get 'noemailconfirmation' => 'contact_blockers#contact_blocker_confirmation', as: :contact_blocker_confirmation
 	
+	# Stripe web hooks
 	post 'magenta/:provider_id' => 'stripe#webhook'
 	mount StripeEvent::Engine => '/cyan'
+	
+	# Customer of a provider.
+	resources :provider_customers
+	get 'authorize_payment/:profile_id' => 'provider_customers#new', as: :authorize_payment
 	
 	# Catch all other routing requests and do something benign.
 	# The main purpose of this route is to provide as little information as possible to site probers.

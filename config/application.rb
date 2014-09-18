@@ -24,8 +24,14 @@ module Mvp2
     # Query-string parameter placed in URLs to aid in tracking the profile-claiming funnel.
     config.claim_profile_tracking_parameter = {claim_profile: 't'}
     
-    # If true, we should only process Stripe events that have livemode == true.
-    config.stripe_live_mode = ENV['STRIPE_LIVE_MODE'].present?
+    # Stripe configuration (payment gateway).
+    # If stripe[:live_mode] is true, we should only process Stripe events that have livemode == true.
+    config.stripe = {
+      publishable_key:    ENV['STRIPE_PUBLISHABLE_KEY'].presence || 'pk_test_9m9Wy7Yc81OU2NZxELrPVbch',
+      secret_key:         ENV['STRIPE_SECRET_KEY'].presence || 'sk_test_AAv7llm8N32E7HErvRqgvjm6',
+      connect_client_id:  ENV['STRIPE_CONNECT_CLIENT_ID'].presence || 'ca_4aJhcyjprTFSJzhMA0NmuzWUIJiznZAb',
+      live_mode:          ENV['STRIPE_LIVE_MODE'].present?
+    }
     
     # Sitemap generator configuration.
     config.sitemap_default_host = "http://#{config.default_host}/"

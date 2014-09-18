@@ -25,6 +25,8 @@ en:
       send_paranoid_instructions: 'If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes.'
     failure:
       claiming_profile: 'To claim your profile, please sign up below. If you already have an account, please log in.'
+      force_claiming_profile: 'To claim your profile, please log in.'
+      new_provider_customer: 'Please sign up below. If you already have an account, please log in.'
       reviewing_provider: 'To finish rating, please sign up or log in.'
       running_as_private_site: ''
       already_authenticated: 'You are already logged in.'

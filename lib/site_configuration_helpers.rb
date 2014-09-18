@@ -9,7 +9,7 @@ module SiteConfigurationHelpers
 		end
 		
 		def stripe_live_mode?
-			Rails.configuration.stripe_live_mode
+			Rails.configuration.stripe[:live_mode]
 		end
 	end
 	
@@ -23,7 +23,7 @@ module SiteConfigurationHelpers
 		end
 		
 		def stripe_live_mode?
-			Rails.configuration.stripe_live_mode
+			Rails.configuration.stripe[:live_mode]
 		end
 	end
 	

@@ -37,6 +37,12 @@ class Ability
 		# In response to an email we sent, any one can request we never contact them.
 		alias_action :new_from_email_delivery, to: :create_from_email_delivery
 		can :create_from_email_delivery, ContactBlocker
+		
+		# Any confirmed user can become a customer of a provider.
+		if user.confirmed?
+			can :create, ProviderCustomer
+			can :show, ProviderCustomer, user_id: user.id
+		end
 
 		# Experts should only be able to edit the profile attached to their user.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.
