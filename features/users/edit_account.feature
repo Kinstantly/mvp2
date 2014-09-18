@@ -63,3 +63,15 @@ Feature: Edit account
 			And I enter my current password
 			And I save the account settings
 		Then I should see an account edited message
+
+	@javascript
+	Scenario: Provider can see html code for buttons for his personal website
+		Given I am logged in as a provider
+			And I am on my account edit page
+		When I click on the "Add a button" link
+		Then I should see "views.user.edit.add_button_header" text on the page
+
+	Scenario: Non-provider cannot see html code for buttons for his personal website
+		Given I am logged in as a client user
+			And I am on my account edit page
+		Then I should not see "Add a button" on the page

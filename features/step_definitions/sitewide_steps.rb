@@ -11,6 +11,10 @@ Then /^I should see "(.*?)" on the page$/ do |content|
 	page.should have_content content
 end
 
+Then /^I should see "(.*?)" text on the page$/ do |locale_path|
+	page.should have_content I18n.t locale_path
+end
+
 Then /^I should not see "(.*?)" on the page$/ do |content|
 	page.should_not have_content content
 end

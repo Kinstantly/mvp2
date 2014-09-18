@@ -655,6 +655,11 @@ en:
         stripe_connect_header: 'Payments and scheduling settings'
         stripe_connect_prompt: 'Make online payments easy by connecting your Kinstantly account to Stripe.'
         newsletters_and_marketing_emails_label: 'Send me Kinstantly news'
+        add_button_header: 'Profile extras'
+        add_button_prompt: 'Send people to your Kinstantly profile by adding a button to your personal website.'
+        add_reviews_button_title: 'See my reviews on Kinstantly'
+        add_schedule_button_title: 'See my schedule on Kinstantly'
+        add_like_button_title: 'Like my profile on Kinstantly'
       view:
         edit_user_profile: 'Edit your profile'
         link: 'Settings'

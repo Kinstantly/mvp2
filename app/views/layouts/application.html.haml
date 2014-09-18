@@ -28,9 +28,9 @@
 		= yield :head
 		= csrf_meta_tags
 	%body{class: @body_class}
-		-# Name-space my global variables, e.g., my_vars.a_val, my_vars.t.some_text, my_vars.f.a_function
 		#fb-root
-		%script var my_vars={t:{},f:{}};
+		-# Point global namespace my_vars to window.my_vars defined in global.js.coffee
+		%script var my_vars = window.my_vars;
 		%header#header
 			%section#account-bar
 				%ul.container

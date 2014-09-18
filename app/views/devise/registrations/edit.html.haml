@@ -46,12 +46,11 @@
 			- if resource.is_provider? and resource.profile.try(:show_stripe_connect)
 				%br
 				%h1= t 'views.user.edit.stripe_connect_header'
-				#payments_setup.formlet
+				#payments_setup.formlet.info-popover
 					%h3
 						= t 'views.user.edit.stripe_connect_prompt'
-						= link_to 'Learn More', '#', id: 'stripe_more', class: 'more'
-					#stripe_details.popover
-						.cancel.close-popover-button
+						= link_to 'Learn More', '#', id: 'stripe_more', class: 'link'
+					.edit.popover
 						%h2
 							Connecting your Kinstantly account to Stripe
 						%p
@@ -71,6 +70,49 @@
 					%br
 					=link_to user_omniauth_authorize_path(:stripe_connect), class: "stripe-connect" do
 						%span Connect with Stripe
+			- if resource.is_provider?
+				%br
+				%h1= t 'views.user.edit.add_button_header'
+				#add_button.formlet.info-popover
+					%h3
+						= t 'views.user.edit.add_button_prompt'
+					= link_to 'Add a button', '#', class: 'link'
+					.edit.popover
+						%h2
+							Add a Kinstantly button to...
+						%ul
+							%li
+								showcase positive customer ratings and attract new reviews
+							%li
+								generate more customer leads
+							%li
+								make it easy for customers to schedule your services
+						%p
+							Choose a button below. Then copy the code and paste it into the HTML of your website.
+						%textarea.ui-corner-all.ui-widget-content{onclick: "$(this).select()"}
+							=raw profile_button_image profile_url(@user.profile), :reviews
+						.preview
+							%label
+								Preview:
+							=profile_button_image profile_url(@user.profile), :reviews
+						%hr/
+						%textarea.ui-corner-all.ui-widget-content{onclick: "$(this).select()"}
+							=raw profile_button_image profile_url(@user.profile), :schedule
+						.preview
+							%label
+								Preview:
+							=profile_button_image profile_url(@user.profile), :schedule
+						%hr/
+						%textarea.ui-corner-all.ui-widget-content{onclick: "$(this).select()"}
+							=raw profile_button_image profile_url(@user.profile), :like
+						.preview
+							%label
+								Preview:
+							=profile_button_image profile_url(@user.profile), :like	
+						%p.note 
+							Need help? Email us at
+							= succeed '.' do
+								= mail_to info_email
 	-#
 		.cancel_account.generic_form
 			= t('views.user.edit.cancel_account_prompt')
@@ -90,22 +132,7 @@
 			url = $(@).attr("href")
 			my_vars.f.win_popup(url, 380, 600, 'Stripe Connect')
 			false
+	
+		$('.formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
 		
-		payments_setup_area = $('#payments_setup')
-
-		# Open popover.
-		$('#stripe_more').on 'click', (e) ->
-			unless payments_setup_area.hasClass('active') 
-				payments_setup_area.addClass 'active'
-				place_popover $('#stripe_details'), 20
-			false
-
-		# Close button closes popover.
-		$('#stripe_details .close-popover-button').on 'click', (e) ->
-			payments_setup_area.removeClass 'active'
-
-		# Close popover if clicked outside.
-		$(document).on 'click', (e) ->
-			clicked = $(e.target)
-			if clicked.closest('.popover', '.formlet.active').length == 0
-				payments_setup_area.removeClass 'active'
+		$('.formlet').each -> my_vars.f.configure_formlet this

@@ -98,6 +98,8 @@ module Mvp2
     # Compress responses.
     # Ensure etag is calculated and conditional-get is assessed *before* compression is done.
     config.middleware.insert_before Rack::ConditionalGet, Rack::Deflater
+
+    config.cloudfront_domain_name = ENV['CLOUDFRONT_DOMAIN_NAME'].presence || 'd3nqozpn39ttwm.cloudfront.net'
   end
 end
 
