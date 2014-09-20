@@ -74,7 +74,7 @@ Mvp2::Application.configure do
     :bucket => 'kinstantly-assets-development',
     #:bucket => 'assets.kinstantly-develop.com',
     #:s3_host_alias => 'assets.kinstantly-develop.com',
-    :s3_host_alias => 'd3nqozpn39ttwm.cloudfront.net',
+    :s3_host_alias => config.cloudfront_domain_name,
     :url => ':s3_alias_url',
     #:url => ":s3_domain_url",
     :hash_secret => 'DLJsk1RTbt2ybEsDx5ib71mRJPBRmeJ/+vxAun3zZS+3v8Dctd+jUP3IfgVNdmhXaIGguuM74ucCRiiXTg7jhg==',

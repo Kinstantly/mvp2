@@ -283,7 +283,6 @@ module ApplicationHelper
 			btn_image = "btn-like.gif"
 			btn_title = t 'views.user.edit.add_like_button_title'
 		end
-		cloudfront_domain_name = Rails.configuration.cloudfront_domain_name
 		url = "http://#{cloudfront_domain_name}/images/widgets/#{btn_image}"
 
 		if btn_image && btn_title

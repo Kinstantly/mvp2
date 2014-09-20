@@ -11,6 +11,10 @@ module SiteConfigurationHelpers
 		def stripe_live_mode?
 			Rails.configuration.stripe_live_mode
 		end
+		
+		def cloudfront_domain_name
+			Rails.configuration.cloudfront_domain_name
+		end
 	end
 	
 	module InstanceMethods
@@ -24,6 +28,10 @@ module SiteConfigurationHelpers
 		
 		def stripe_live_mode?
 			Rails.configuration.stripe_live_mode
+		end
+		
+		def cloudfront_domain_name
+			Rails.configuration.cloudfront_domain_name
 		end
 	end
 	
