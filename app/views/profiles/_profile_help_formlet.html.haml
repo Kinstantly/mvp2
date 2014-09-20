@@ -3,7 +3,7 @@
 .ui-helper-clearfix
 .popover
 	= form_for @current_user, url: update_profile_help_user_path(@current_user), method: :put, remote: true, html: {id: "edit-profile-help"} do |f|
-		= f.submit "#{t('views.profile.edit.profile_help_close_button_1')} X", onclick: '$(this).submit();my_vars.f.close_formlets();', class: 'close-link dont_popover'
+		= f.submit "#{t('views.profile.edit.profile_help_close_button_1')} X", disable_with: "#{t('views.profile.edit.profile_help_close_button_1')} X", onclick: '$(this).submit();my_vars.f.close_formlets();', class: 'close-link dont_popover'
 		%p.errorExplanation
 		%h2
 			Welcome to your profile!
@@ -30,5 +30,5 @@
 			= succeed '.' do
 				= mail_to info_email
 		%p
-			= f.submit t('views.profile.edit.profile_help_close_button_2'), onclick: '$(this).submit();my_vars.f.close_formlets();' ,class: 'save regular dont_popover'
-			= f.submit t('views.profile.edit.profile_help_close_button_1'), onclick: '$(this).submit();my_vars.f.close_formlets();', class: 'save mobile dont_popover'
+			= f.submit t('views.profile.edit.profile_help_close_button_2'), disable_with: t('views.profile.edit.profile_help_close_button_2'), onclick: '$(this).submit();my_vars.f.close_formlets();' ,class: 'save regular dont_popover'
+			= f.submit t('views.profile.edit.profile_help_close_button_1'), disable_with: t('views.profile.edit.profile_help_close_button_2'), onclick: '$(this).submit();my_vars.f.close_formlets();', class: 'save mobile dont_popover'
