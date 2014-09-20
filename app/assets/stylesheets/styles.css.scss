@@ -2193,7 +2193,7 @@ ul.links-list > li{
 			background: url('#{$image-path}/edit-blue.png') left center no-repeat;
     		background-size: 12px 15px;
 		}
-		.save{
+		.save, .save:hover{
 			width: 100%;
 			text-transform: none;
 			cursor: pointer;
