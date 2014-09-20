@@ -270,5 +270,27 @@ module ApplicationHelper
 			"#{option_string}<option value=\"#{value}\"#{' selected="selected"' if value == selected}>#{name}</option>"
 		end.html_safe
 	end
+
+	def profile_button_image(profile_path, btn_type)
+		case btn_type
+		when :reviews
+			btn_image = "btn-reviews.gif"
+			btn_title = t 'views.user.edit.add_reviews_button_title'
+		when :schedule
+			btn_image = "btn-schedule.gif"
+			btn_title = t 'views.user.edit.add_schedule_button_title'
+		when :like
+			btn_image = "btn-like.gif"
+			btn_title = t 'views.user.edit.add_like_button_title'
+		end
+		cloudfront_domain_name = Rails.configuration.cloudfront_domain_name
+		url = "http://#{cloudfront_domain_name}/images/widgets/#{btn_image}"
+
+		if btn_image && btn_title
+			content_tag :a, :href => profile_path, :target => '_blank' do
+	    		image_tag url, size: "170x81", alt: btn_title, title: btn_title
+    		end
+    	end
+	end
 	
 end
