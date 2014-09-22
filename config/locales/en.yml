@@ -301,6 +301,10 @@ en:
         unsubscribe_submit: 'Unsubscribe'
         unsubscribe_submit_disable: 'Unsubscribing...'
         unsubscribe_title: 'Unsubscribe from Marketing Messages'
+    customer:
+      edit:
+        authorization_button: 'Authorize with card'
+        authorization_title: 'Charge authorization'
     home:
       view:
         about: 'About us'
@@ -486,10 +490,6 @@ en:
       claim_confirm:
         link_body: 'Click here'
         message: 'if you want to replace your existing profile with the one you want to claim.'
-    provider_customer:
-      edit:
-        authorization_button: 'Authorize with card'
-        authorization_title: 'Charge authorization'
     provider_suggestion:
       name: 'Provider suggestion'
       admin:

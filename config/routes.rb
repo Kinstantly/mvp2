@@ -152,8 +152,8 @@ Mvp2::Application.routes.draw do
 	mount StripeEvent::Engine => '/cyan'
 	
 	# Customer of a provider.
-	resources :provider_customers
-	get 'authorize_payment/:profile_id' => 'provider_customers#new', as: :authorize_payment
+	resources :customers
+	get 'authorize_payment/:profile_id' => 'customers#new', as: :authorize_payment
 	
 	# Catch all other routing requests and do something benign.
 	# The main purpose of this route is to provide as little information as possible to site probers.

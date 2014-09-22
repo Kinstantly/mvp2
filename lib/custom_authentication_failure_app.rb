@@ -11,8 +11,8 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 			super(:force_claiming_profile)
 		elsif reviewing_provider?
 			super(:reviewing_provider)
-		elsif new_provider_customer?
-			super(:new_provider_customer)
+		elsif new_customer?
+			super(:new_customer)
 		elsif running_as_private_site?
 			super(:running_as_private_site)
 		else
@@ -22,7 +22,7 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 	
 	def redirect_url
 		#return super unless [:worker, :employer, :user].include?(scope) #make it specific to a scope
-		if reviewing_provider? or new_provider_customer?
+		if reviewing_provider? or new_customer?
 			member_sign_up_url
 		elsif claiming_profile?
 			session[:claiming_profile] = params[:token]
@@ -67,8 +67,8 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 			(params[:controller] == 'reviews' && ['new', 'create'].include?(params[:action]))
 	end
 	
-	# If we are a new provider customer, we need to register or sign in as a member.
-	def new_provider_customer?
-		params[:controller] == 'provider_customers' && ['new', 'create'].include?(params[:action])
+	# If we are a new customer, we need to register or sign in as a member.
+	def new_customer?
+		params[:controller] == 'customers' && ['new', 'create'].include?(params[:action])
 	end
 end

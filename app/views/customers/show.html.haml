@@ -1,0 +1,5 @@
+%p= "You have authorized some charge amount at #{@customer.created_at}."
+%p= "Your email address is #{@customer.user.email}."
+%p= "customer => #{(stripe_customer = @customer.stripe_customer).inspect}"
+%p= "card => #{(stripe_card = stripe_customer.stripe_cards.first).inspect}"
+%p= "charge => #{stripe_card.stripe_charges.first.inspect}"

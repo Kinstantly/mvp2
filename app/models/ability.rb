@@ -38,10 +38,10 @@ class Ability
 		alias_action :new_from_email_delivery, to: :create_from_email_delivery
 		can :create_from_email_delivery, ContactBlocker
 		
-		# Any confirmed user can become a customer of a provider.
+		# Any confirmed user can become a customer.
 		if user.confirmed?
-			can :create, ProviderCustomer
-			can :show, ProviderCustomer, user_id: user.id
+			can :create, Customer
+			can :show, Customer, user_id: user.id
 		end
 
 		# Experts should only be able to edit the profile attached to their user.

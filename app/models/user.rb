@@ -31,8 +31,13 @@ class User < ActiveRecord::Base
 	belongs_to :admin_confirmation_sent_by, class_name: 'User'
 	
 	has_one :stripe_info
-	has_and_belongs_to_many :customers, class_name: 'ProviderCustomer', join_table: 'provider_customers_providers'
-	has_one :as_customer, class_name: 'ProviderCustomer'
+	has_many :customers, through: :customer_files
+	has_many :customer_files do
+		def for_customer(customer)
+			where(customer_id: customer).first
+		end
+	end
+	has_one :as_customer, class_name: 'Customer'
 	
 	# Define minimum and/or maximum lengths of string and text attributes in a publicly accessible way.
 	# This allows them to be used at the view layer for character counts in input and textarea tags.

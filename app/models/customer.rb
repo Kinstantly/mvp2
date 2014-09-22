@@ -1,19 +1,24 @@
-class ProviderCustomer < ActiveRecord::Base
+class Customer < ActiveRecord::Base
 	has_paper_trail # Track changes to each provider-customer record.
 	
 	# attr_accessible 
 	
 	belongs_to :user
-	has_and_belongs_to_many :providers, class_name: 'User', join_table: 'provider_customers_providers'
+	has_many :providers, class_name: 'User', through: :customer_files
+	has_many :customer_files do
+		def for_provider(provider)
+			where(user_id: provider).first
+		end
+	end
 	has_one :stripe_customer
 	
 	validates :user, presence: true
 	
-	def create_customer_with_card(options={})
+	def save_with_authorization(options={})
 		self.user ||= options[:user]
 		
 		profile = Profile.find options[:profile_id]
-		if profile.try(:allow_charge_authorizations) and (provider = profile.user)
+		if profile.try(:allow_charge_authorizations) and (provider = profile.user) and provider.stripe_info
 			providers << provider unless providers.include?(provider)
 		else
 			raise Payment::ChargeAuthorizationError, I18n.t('payment.provider_not_allowed_charge_authorizations')
@@ -35,7 +40,7 @@ class ProviderCustomer < ActiveRecord::Base
 			customer:    customer.id,
 			amount:      options[:amount],
 			capture:     options[:capture].present?, # Important! By default, we do NOT want to debit the card.
-			description: 'Provider customer charge authorization',
+			description: 'payment authorization',
 			currency:    'usd'
 		)
 		card = charge.card
@@ -53,9 +58,15 @@ class ProviderCustomer < ActiveRecord::Base
 			livemode:      charge.livemode
 		)
 
-		save
+		save!
+
+		customer_file = customer_files.for_provider(provider)
+		customer_file.authorization_amount = options[:amount]
+		customer_file.save!
 		
-	rescue Stripe::CardError, Payment::ChargeAuthorizationError => error
+		true
+	rescue Stripe::CardError, Payment::ChargeAuthorizationError, ActiveRecord::RecordInvalid => error
 		errors.add :base, error.message
+		false
 	end
 end
