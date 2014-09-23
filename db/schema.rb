@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140905001342) do
+ActiveRecord::Schema.define(:version => 20140923180023) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -264,8 +264,9 @@ ActiveRecord::Schema.define(:version => 20140905001342) do
     t.string   "provider_url"
     t.text     "description"
     t.text     "admin_notes"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
+    t.boolean  "permission_use_suggester_name", :default => false
   end
 
   create_table "ratings", :force => true do |t|

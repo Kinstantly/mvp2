@@ -491,6 +491,7 @@ en:
       admin:
         suggester_email: "Suggester's email address"
         suggester_name: "Suggester's name"
+        permission_use_suggester_name: "Permission to use suggester's name"
       edit:
         cancel: 'Cancel'
         confirmation: "Thank you for suggesting '%{name}'"
@@ -506,6 +507,8 @@ en:
         submit_disable: 'Submitting...'
         suggester_email_tip: 'In case we have a quick follow-up question'
         suggester_name_tip: 'First and last'
+        permission_use_suggester_name_label: 'May we use your name when contacting this provider?'
+        permission_use_suggester_name_true_label: 'Yes'
     profile_claim:
       name: 'Profile claim'
       admin:

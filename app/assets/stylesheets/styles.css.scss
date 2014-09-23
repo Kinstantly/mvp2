@@ -1433,6 +1433,18 @@
 
 #suggest_provider.loaded .popover {
 	@include loaded_form_popover;
+
+	input[type=checkbox]{
+		vertical-align: middle;
+		margin-top: 2px;
+	}
+
+	.label{
+		margin-bottom: .7em;
+	}
+	#permission_use_suggester_name_field{
+		margin-bottom: 1.7em;
+	}
 }
 
 /* Pop-over forms */

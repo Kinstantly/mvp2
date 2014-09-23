@@ -1,7 +1,7 @@
 class ProviderSuggestion < ActiveRecord::Base
 	has_paper_trail # Track changes to each provider suggestion.
 	
-	ACCESSIBLE_ATTRIBUTES = [:description, :provider_name, :provider_url, :suggester_email, :suggester_name]
+	ACCESSIBLE_ATTRIBUTES = [:description, :provider_name, :provider_url, :suggester_email, :suggester_name, :permission_use_suggester_name]
 	attr_accessible *ACCESSIBLE_ATTRIBUTES
 	attr_accessible *ACCESSIBLE_ATTRIBUTES, :admin_notes, as: :admin
 	

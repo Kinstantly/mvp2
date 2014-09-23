@@ -25,6 +25,10 @@
 		= f.label :description, t('views.provider_suggestion.edit.description_label'), class: 'required'
 		.note= t 'views.provider_suggestion.edit.description_tip'
 		= f.text_area :description, size: '45x4', class: 'attr'
+	#permission_use_suggester_name_field
+		.label= t('views.provider_suggestion.edit.permission_use_suggester_name_label')
+		= f.check_box :permission_use_suggester_name
+		= f.label :permission_use_suggester_name, t('views.provider_suggestion.edit.permission_use_suggester_name_true_label')
 	= f.submit t('views.provider_suggestion.edit.submit'), disable_with: t('views.provider_suggestion.edit.submit_disable'), class: 'save'
 	= link_to t('views.provider_suggestion.edit.cancel'), '#', class: 'cancel button'
 :coffeescript
