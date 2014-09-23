@@ -1,4 +1,5 @@
 - search_result_num ||= -1
+- user_role =  current_user.try(:admin?) ? 'admin' : (current_user.try(:expert?) ? 'expert' : (current_user.try(:client?) ? 'client' : ''))
 
 - if @ga_module_included.blank?
 	:javascript
@@ -10,13 +11,19 @@
 		ga('create', 'UA-49857002-1', 'kinstantly.com');
 
 		var search_result_num = "#{search_result_num}";
+		var user_role = "#{user_role}";
+		
+		// Set user_role dimension at index 1
+		if(user_role)
+			ga('set', 'dimension1', user_role);
+
 		if(search_result_num == "-1")
 			ga('send', 'pageview');
 		else{
 			var path = document.location.pathname;
 			var query = document.location.search;
 
-			query += "&result_num=" + search_result_num
+			query += "&result_num=" + search_result_num;
 			ga('send', 'pageview', path + query);
 		}
 
