@@ -72,7 +72,7 @@
 				= f.radio_button :is_provider, '2'
 				= parent_provider_tag
 	.checkbox
-		=check_box_tag :marketing_emails_and_newsletters
+		=check_box_tag :marketing_emails_and_newsletters, 1, (:checked unless flash[:marketing_emails_and_newsletters] == false)
 		=label_tag :marketing_emails_and_newsletters, (t 'views.user.edit.newsletters_and_marketing_emails_label')
 	.buttons
 		= f.submit t((is_provider ? :provider_label : :label), scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'

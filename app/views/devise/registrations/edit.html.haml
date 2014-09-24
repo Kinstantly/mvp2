@@ -28,17 +28,17 @@
 				%span.note= t 'views.user.edit.current_password_note'
 			- if resource.is_provider?
 				.checkbox.newsletters_and_marketing_emails
-					= f.check_box :provider_marketing_emails, id: 'provider_marketing_emails'
+					= f.check_box :provider_marketing_emails, id: 'user_provider_marketing_emails'
 					= f.label :provider_marketing_emails
 				.checkbox.newsletters_and_marketing_emails
-					= f.check_box :provider_newsletters, id: 'provider_newsletters'
+					= f.check_box :provider_newsletters, id: 'user_provider_newsletters'
 					= f.label :provider_newsletters
 			- else
 				.checkbox.newsletters_and_marketing_emails
-					= f.check_box :parent_marketing_emails, id: 'parent_marketing_emails'
+					= f.check_box :parent_marketing_emails, id: 'user_parent_marketing_emails'
 					= f.label :parent_marketing_emails
-				.checkbox
-					= f.check_box :parent_newsletters, id: 'parent_newsletters'
+				.checkbox.newsletters_and_marketing_emails
+					= f.check_box :parent_newsletters, id: 'user_parent_newsletters'
 					= f.label :parent_newsletters
 			.buttons
 				= f.submit t('views.user.edit.submit'), disable_with: t('views.user.edit.submit_disable'), class: 'default'
