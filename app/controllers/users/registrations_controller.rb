@@ -15,6 +15,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 								:parent_newsletters => true, 
 								:provider_marketing_emails => true, 
 								:provider_newsletters => true)
+			flash[:marketing_emails_and_newsletters] = true
+		else
+			flash[:marketing_emails_and_newsletters] = false
 		end
    		super
   	end

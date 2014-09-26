@@ -49,8 +49,8 @@ Feature: Edit account
 	Scenario: Change news settings as a client
 		Given I am logged in as a client user
 			And I am on my account edit page
-		When I check "parent_marketing_emails"
-			And I check "parent_newsletters"
+		When I check "user_parent_marketing_emails"
+			And I check "user_parent_newsletters"
 			And I enter my current password
 			And I save the account settings
 		Then I should see an account edited message
@@ -58,8 +58,8 @@ Feature: Edit account
 	Scenario: Change news settings as a provider
 		Given I am logged in as a provider
 			And I am on my account edit page
-		When I check "provider_marketing_emails"
-			And I check "provider_newsletters"
+		When I check "user_provider_marketing_emails"
+			And I check "user_provider_newsletters"
 			And I enter my current password
 			And I save the account settings
 		Then I should see an account edited message
