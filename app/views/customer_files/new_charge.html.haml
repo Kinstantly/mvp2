@@ -1,0 +1,18 @@
+#content
+	%h1= t 'views.customer_file.new_charge.title'
+	%p= t 'views.customer_file.new_charge.authorization_amount', amount: display_currency_amount(@customer_file.authorization_amount)
+	.generic_form
+		= form_for @customer_file, url: {action: :create_charge}, method: :put do |f|
+			= f.error_messages
+			.text_field
+				= f.label :charge_amount, class: 'required'
+				= f.text_field :charge_amount
+			.text_field
+				= f.label :charge_description
+				= f.text_field :charge_description
+			.text_field
+				= f.label :charge_statement_description
+				= f.text_field :charge_statement_description
+			.buttons
+				= f.submit t('views.customer_file.new_charge.submit'), disable_with: t('views.customer_file.new_charge.submit_disable'), class: 'save'
+				= link_to t('views.customer_file.new_charge.cancel'), @customer_file, class: 'cancel button'

@@ -151,9 +151,15 @@ Mvp2::Application.routes.draw do
 	post 'magenta/:provider_id' => 'stripe#webhook'
 	mount StripeEvent::Engine => '/cyan'
 	
-	# Customer of a provider.
+	# Customers of a provider.
 	resources :customers
 	get 'authorize_payment/:profile_id' => 'customers#new', as: :authorize_payment
+	resources :customer_files, only: [:index, :show] do
+		member do
+			get :new_charge
+			put :create_charge
+		end
+	end
 	
 	# Catch all other routing requests and do something benign.
 	# The main purpose of this route is to provide as little information as possible to site probers.

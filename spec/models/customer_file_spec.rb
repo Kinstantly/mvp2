@@ -15,4 +15,8 @@ describe CustomerFile do
 		customer_file.authorization_amount = 2500
 		customer_file.should have(:no).errors_on(:authorization_amount)
 	end
+	
+	it "should create a charge" do
+		pending 'stub of Stripe::Charge.create'
+	end
 end

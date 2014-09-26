@@ -1,0 +1,2 @@
+- @customer_files.each do |customer_file|
+	%p= link_to customer_file.customer.user.email, customer_file_path(customer_file)

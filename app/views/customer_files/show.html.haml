@@ -1,0 +1,3 @@
+%p= "email: #{@customer_file.customer.user.email}"
+%p= "authorized: #{display_currency_amount @customer_file.authorization_amount}"
+%p= link_to t('views.customer_file.view.new_charge'), new_charge_customer_file_path(@customer_file)

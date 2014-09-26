@@ -38,8 +38,8 @@ class Customer < ActiveRecord::Base
 
 		charge = Stripe::Charge.create(
 			customer:    customer.id,
-			amount:      options[:amount],
-			capture:     options[:capture].present?, # Important! By default, we do NOT want to debit the card.
+			amount:      100,   # We're just storing the card. Use a token amount (zero fails).
+			capture:     false, # Important! We do NOT want to debit the card.
 			description: 'payment authorization',
 			currency:    'usd'
 		)
@@ -58,6 +58,7 @@ class Customer < ActiveRecord::Base
 			livemode:      charge.livemode
 		)
 
+		# Save *after* we're sure all the Stripe API calls succeeded.
 		save!
 
 		customer_file = customer_files.for_provider(provider)
@@ -65,8 +66,11 @@ class Customer < ActiveRecord::Base
 		customer_file.save!
 		
 		true
-	rescue Stripe::CardError, Payment::ChargeAuthorizationError, ActiveRecord::RecordInvalid => error
+	rescue Stripe::CardError, Payment::ChargeAuthorizationError => error
 		errors.add :base, error.message
+		false
+	rescue ActiveRecord::RecordInvalid, Stripe::InvalidRequestError => error
+		errors.add :base, I18n.t('payment.contact_support') if errors.empty?
 		false
 	end
 end

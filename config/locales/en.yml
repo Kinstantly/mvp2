@@ -305,6 +305,15 @@ en:
       edit:
         authorization_button: 'Authorize with card'
         authorization_title: 'Charge authorization'
+    customer_file:
+      new_charge:
+        authorization_amount: 'Authorized amount remaining: %{amount}'
+        cancel: 'Cancel'
+        submit: 'Charge card'
+        submit_disable: 'Charging...'
+        title: 'Add new payment'
+      view:
+        new_charge: 'Charge card'
     home:
       view:
         about: 'About us'
@@ -667,6 +676,7 @@ en:
         stripe_info_created_at: 'Connected to Stripe at %{created_at}'
         view_user_profile: 'View your profile'
   payment:
+    contact_support: 'There was a problem.  Please contact support@kinstantly.com'
     provider_not_allowed_charge_authorizations: 'This provider cannot be authorized to perform charges.'
   rating:
     no_score: 'Not rated yet'
