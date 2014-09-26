@@ -7,6 +7,8 @@
 	= f.input :provider_name
 	= f.input :provider_url
 	= f.input :description, input_html: {size: '50x5'}
+	= f.label :permission_use_suggester_name, "#{t('views.provider_suggestion.admin.permission_use_suggester_name')}:"
+	= f.input :permission_use_suggester_name, label: t('views.provider_suggestion.edit.permission_use_suggester_name_true_label')
 	= f.input :admin_notes, input_html: {size: '50x5'}
 	= f.button :submit
 	= link_to 'Cancel', provider_suggestion_path(@provider_suggestion)

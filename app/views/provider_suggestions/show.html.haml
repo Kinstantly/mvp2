@@ -20,6 +20,9 @@
 			%td= ProviderSuggestion.human_attribute_name :description
 			%td= @provider_suggestion.description
 		%tr
+			%td= t 'views.provider_suggestion.admin.permission_use_suggester_name'
+			%td= @provider_suggestion.permission_use_suggester_name ? 'Yes' : 'No'
+		%tr
 			%td= ProviderSuggestion.human_attribute_name :admin_notes
 			%td= @provider_suggestion.admin_notes
 	= link_to 'Edit', edit_provider_suggestion_path(@provider_suggestion)
