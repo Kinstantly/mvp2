@@ -6,7 +6,7 @@ describe Customer do
 	let(:profile) { FactoryGirl.create :claimed_profile }
 	let(:provider) { profile.user }
 	let(:stripe_token) { 'tok_14dHeE2wVg10iFMK9gYM2T72' }
-	let(:authorization_amount) { 1000 }
+	let(:authorized_amount) { 1000 }
 	
 	it "should be associated with a user, e.g., a parent" do
 		customer.user = parent
@@ -31,7 +31,7 @@ describe Customer do
 			user:         parent,
 			profile_id:   profile.id,
 			stripe_token: stripe_token,
-			amount:       authorization_amount
+			amount:       authorized_amount
 		)
 	end
 end

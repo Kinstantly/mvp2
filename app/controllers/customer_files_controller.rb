@@ -28,10 +28,8 @@ class CustomerFilesController < ApplicationController
 	def create_charge
 		respond_with @customer_file do |format|
 			if @customer_file.create_charge(params[:customer_file])
-				flash[:notice] = 'Charge was completed.'
+				set_flash_message :notice, :created_charge
 			else
-				log_message = @customer_file.errors.delete :log_message
-				logger.error log_message if log_message
 				format.html { render :new_charge }
 			end
 		end

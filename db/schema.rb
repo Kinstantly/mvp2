@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140921061231) do
+ActiveRecord::Schema.define(:version => 20140929082910) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -100,12 +100,14 @@ ActiveRecord::Schema.define(:version => 20140921061231) do
   create_table "customer_files", :force => true do |t|
     t.integer  "customer_id"
     t.integer  "user_id"
-    t.integer  "authorization_amount"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.integer  "authorized_amount"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "stripe_card_id"
   end
 
   add_index "customer_files", ["customer_id"], :name => "index_customer_files_on_customer_id"
+  add_index "customer_files", ["stripe_card_id"], :name => "index_customer_files_on_stripe_card_id"
   add_index "customer_files", ["user_id"], :name => "index_customer_files_on_user_id"
 
   create_table "customers", :force => true do |t|
@@ -390,15 +392,17 @@ ActiveRecord::Schema.define(:version => 20140921061231) do
     t.string   "api_charge_id"
     t.integer  "amount"
     t.integer  "amount_refunded"
-    t.boolean  "paid",            :default => false
-    t.boolean  "refunded",        :default => false
-    t.boolean  "captured",        :default => false
-    t.boolean  "deleted",         :default => false
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.boolean  "paid",             :default => false
+    t.boolean  "refunded",         :default => false
+    t.boolean  "captured",         :default => false
+    t.boolean  "deleted",          :default => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.boolean  "livemode"
+    t.integer  "customer_file_id"
   end
 
+  add_index "stripe_charges", ["customer_file_id"], :name => "index_stripe_charges_on_customer_file_id"
   add_index "stripe_charges", ["stripe_card_id"], :name => "index_stripe_charges_on_stripe_card_id"
 
   create_table "stripe_customers", :force => true do |t|

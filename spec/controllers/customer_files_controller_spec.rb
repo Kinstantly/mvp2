@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CustomerFilesController do
-	let(:customer_file_1) { FactoryGirl.create :customer_file, authorization_amount: 10000 }
+	let(:customer_file_1) { FactoryGirl.create :customer_file, authorized_amount: 10000 }
 	let(:provider) { customer_file_1.provider }
 	let(:customer_file_2) { FactoryGirl.create :second_customer_file, provider: provider }
 	let(:customer_1) { customer_file_1.customer }
@@ -91,7 +91,7 @@ describe CustomerFilesController do
 			it "creates a charge record" do
 				pending 'stub of CustomerFile#create_charge'
 				expect {
-					amount = customer_file_1.authorization_amount / 2
+					amount = customer_file_1.authorized_amount / 2
 					put :create_charge, id: customer_file_1.id, charge_amount: amount, charge_description: 'test', charge_statement_description: 'test'
 				}.to change(StripeCharge, :count).by(1)
 			end

@@ -14,63 +14,91 @@ class Customer < ActiveRecord::Base
 	
 	validates :user, presence: true
 	
-	def save_with_authorization(options={})
-		self.user ||= options[:user]
-		
-		profile = Profile.find options[:profile_id]
-		if profile.try(:allow_charge_authorizations) and (provider = profile.user) and provider.stripe_info
-			providers << provider unless providers.include?(provider)
+	def authorized_amount_for_profile(id)
+		if persisted?
+			customer_files.for_provider(provider_for_profile(id)).try(:authorized_amount)
 		else
-			raise Payment::ChargeAuthorizationError, I18n.t('payment.provider_not_allowed_charge_authorizations')
+			nil
 		end
+	rescue Payment::ChargeAuthorizationError => error
+		Rails.logger.error "#{self.class} Error: #{error}"
+		nil
+	end
+	
+	def save_with_authorization(options={})
+		self.user ||= options[:user] if options[:user]
 		
-		customer = Stripe::Customer.create(
-			email: user.try(:email),
-			card:  options[:stripe_token],
-			description: 'Kinstantly provider customer'
-		)
+		# Make sure we have a permissible provider. Raises error if not.
+		provider = provider_for_profile options[:profile_id] 
+		providers << provider unless providers.include?(provider)
 		
-		stripe_customer = build_stripe_customer(
-			api_customer_id: customer.id,
-			description: customer.description,
-			livemode: customer.livemode
-		)
+		stripe_card = nil # Initialize for first card or changing the card.
+		
+		if not stripe_customer # First time for this customer.
+			customer = Stripe::Customer.create(
+				email: user.try(:email),
+				card:  options[:stripe_token],
+				description: 'Kinstantly provider customer'
+			)
+		
+			build_stripe_customer(
+				api_customer_id: customer.id,
+				description: customer.description,
+				livemode: customer.livemode
+			)
 
-		charge = Stripe::Charge.create(
-			customer:    customer.id,
-			amount:      100,   # We're just storing the card. Use a token amount (zero fails).
-			capture:     false, # Important! We do NOT want to debit the card.
-			description: 'payment authorization',
-			currency:    'usd'
-		)
-		card = charge.card
-		
-		stripe_card = stripe_customer.stripe_cards.build(
-			api_card_id: card.id,
-			livemode: charge.livemode
-		)
-		
-		stripe_charge = stripe_card.stripe_charges.build(
-			api_charge_id: charge.id,
-			amount:        charge.amount,
-			paid:          charge.paid,
-			captured:      charge.captured,
-			livemode:      charge.livemode
-		)
+			stripe_card = stripe_customer.stripe_cards.build(
+				api_card_id: customer.default_card,
+				livemode: customer.livemode
+			)
+
+		elsif options[:stripe_token].present? # Adding a new card.
+			customer = Stripe::Customer.retrieve stripe_customer.api_customer_id
+			card = customer.cards.create card: options[:stripe_token]
+
+			stripe_card = stripe_customer.stripe_cards.create(
+				api_card_id: card.id,
+				livemode: stripe_customer.livemode
+			)
+		end
 
 		# Save *after* we're sure all the Stripe API calls succeeded.
 		save!
 
+		# Note: customer_file was created by save because provider was added via the 'has_many through' association.
 		customer_file = customer_files.for_provider(provider)
-		customer_file.authorization_amount = options[:amount]
+		customer_file.stripe_card = stripe_card if stripe_card
+		customer_file.authorized_amount = options[:amount] if options[:amount].present?
+		customer_file.authorized_amount_increment = options[:amount_increment] if options[:amount_increment].present?
 		customer_file.save!
 		
 		true
 	rescue Stripe::CardError, Payment::ChargeAuthorizationError => error
 		errors.add :base, error.message
 		false
-	rescue ActiveRecord::RecordInvalid, Stripe::InvalidRequestError => error
-		errors.add :base, I18n.t('payment.contact_support') if errors.empty?
+	rescue ActiveRecord::RecordInvalid => error
+		customer_file.errors.full_messages.each do |message|
+			errors.add :base, message
+		end
+		# errors.add :base, error.message if errors.empty?
 		false
+	rescue Stripe::InvalidRequestError => error
+		if errors.empty?
+			Rails.logger.error "#{self.class} Error: #{error}"
+			errors.add :base, I18n.t('payment.contact_support')
+		end
+		false
+	end
+	
+	private
+	
+	# Return the provider (User) associated with the given profile ID only if that provider is allowed to make charges.
+	def provider_for_profile(id)
+		profile = Profile.find id
+		if profile.allow_charge_authorizations and (provider = profile.user) and provider.stripe_info
+			provider
+		else
+			raise Payment::ChargeAuthorizationError, I18n.t('payment.provider_not_allowed_charge_authorizations')
+		end
 	end
 end

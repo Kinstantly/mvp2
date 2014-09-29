@@ -46,6 +46,10 @@ en:
       not_found_by_email: "Opt-put for '%{email}' was not found."
       updated: "Opt-out for '%{email}' was updated."
       update_error: 'There was a problem updating the opt-out.'
+    customers:
+      payment_authorized: 'Payment has been authorized.'
+    customer_files:
+      created_charge: 'Charge was completed.'
     users:
       profile_updated: 'Your profile changes were saved.'
       profile_update_error: 'There was a problem saving your profile.'
@@ -145,6 +149,8 @@ en:
       contact_blocker:
         email: 'Email address'
         email_delivery: 'Email delivered'
+      customer_file:
+        authorized_amount_increment: 'Amount to add'
       profile:
         accepting_new_clients: 'Accepting new clients/customers'
         adoption_stage: 'adoption'
@@ -303,11 +309,18 @@ en:
         unsubscribe_title: 'Unsubscribe from Marketing Messages'
     customer:
       edit:
+        add_card: 'Add card'
+        add_new_card: 'Add new card'
         authorization_button: 'Authorize with card'
         authorization_title: 'Charge authorization'
+        authorized_amount_increment_title: 'Add to your authorized amount of %{authorized_amount}'
+        cancel: 'Cancel'
+        credit_card_button: 'Authorize'
+        submit: 'Authorize'
+        submit_disable: 'Authorizing...'
     customer_file:
       new_charge:
-        authorization_amount: 'Authorized amount remaining: %{amount}'
+        authorized_amount: 'Authorized amount remaining: %{amount}'
         cancel: 'Cancel'
         submit: 'Charge card'
         submit_disable: 'Charging...'

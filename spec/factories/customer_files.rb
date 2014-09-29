@@ -4,7 +4,7 @@ FactoryGirl.define do
 	factory :customer_file do
 		association :provider, factory: :provider
 		association :customer, factory: :customer
-		authorization_amount 1000
+		authorized_amount 1000
 		
 		factory :second_customer_file do
 			association :provider, factory: :second_provider

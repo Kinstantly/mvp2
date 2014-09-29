@@ -12,8 +12,8 @@ describe CustomerFile do
 	end
 	
 	it "specifies the amount authorized by the customer that the provider can charge" do
-		customer_file.authorization_amount = 2500
-		customer_file.should have(:no).errors_on(:authorization_amount)
+		customer_file.authorized_amount = 2500
+		customer_file.should have(:no).errors_on(:authorized_amount)
 	end
 	
 	it "should create a charge" do
