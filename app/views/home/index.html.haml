@@ -46,6 +46,13 @@
 				%p.credit
 					= link_to '&copy; Slava Basovich'.html_safe, profile_path(1509)
 			%li
+				= image_tag "Pumpkinpicking2.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("LemosFarm48X48.jpg", class: "avatar", alt: "Visit the Lemos Farm Pumpkin Patch"), profile_path(1485)
+					%p
+						= link_to "Visit the Lemos Farm Pumpkin Patch", profile_path(1485)
+						in Half Moon Bay, CA
+			%li
 				= image_tag "Tutor1.jpg", class: "slide", alt: ""
 				%aside.caption
 					= link_to image_tag("NurturingWisdom48X48.jpg", class: "avatar", alt: "Nurturing Wisdom"), search_providers_path(query: 'Nurturing Wisdom')
