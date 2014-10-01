@@ -11,7 +11,9 @@
 		= link_to t('devise.unlocks.new_unlock_link'), new_unlock_path(resource_name)
 		%br
 
-	- if devise_mapping.omniauthable?
-		- resource_class.omniauth_providers.each do |provider|
-			= link_to t('devise.omniauth.authorize_link', provider_name: provider.to_s.titleize), omniauth_authorize_path(resource_name, provider)
-			%br
+	-# Uncomment the following if you want log-in with an Omniauth provider.
+	-# However, you probably want to filter out :stripe_connect.
+	-# - if devise_mapping.omniauthable?
+	-# 	- resource_class.omniauth_providers.each do |provider|
+	-# 		= link_to t('devise.omniauth.authorize_link', provider_name: provider.to_s.titleize), omniauth_authorize_path(resource_name, provider)
+	-# 		%br
