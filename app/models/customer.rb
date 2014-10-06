@@ -13,16 +13,23 @@ class Customer < ActiveRecord::Base
 	has_one :stripe_customer
 	
 	validates :user, presence: true
+
+	# Return the provider (User) associated with the given profile ID only if that provider is allowed to make charges.
+	def provider_for_profile(id)
+		profile = Profile.find id.to_i
+		if profile.allow_charge_authorizations and (provider = profile.user) and provider.stripe_info
+			provider
+		else
+			raise Payment::ChargeAuthorizationError, I18n.t('payment.provider_not_allowed_charge_authorizations')
+		end
+	end
 	
 	def authorized_amount_for_profile(id)
 		if persisted?
-			customer_files.for_provider(provider_for_profile(id)).try(:authorized_amount)
+			customer_files.for_provider(provider_for_profile(id)).try(:authorized_amount_usd)
 		else
 			nil
 		end
-	rescue Payment::ChargeAuthorizationError => error
-		Rails.logger.error "#{self.class} Error: #{error}"
-		nil
 	end
 	
 	def save_with_authorization(options={})
@@ -68,8 +75,8 @@ class Customer < ActiveRecord::Base
 		# Note: customer_file was created by save because provider was added via the 'has_many through' association.
 		customer_file = customer_files.for_provider(provider)
 		customer_file.stripe_card = stripe_card if stripe_card
-		customer_file.authorized_amount = options[:amount] if options[:amount].present?
-		customer_file.authorized_amount_increment = options[:amount_increment] if options[:amount_increment].present?
+		customer_file.authorized_amount_usd = options[:amount] if options[:amount].present?
+		customer_file.authorized_amount_increment_usd = options[:amount_increment] if options[:amount_increment].present?
 		customer_file.save!
 		
 		true
@@ -88,17 +95,5 @@ class Customer < ActiveRecord::Base
 			errors.add :base, I18n.t('payment.contact_support')
 		end
 		false
-	end
-	
-	private
-	
-	# Return the provider (User) associated with the given profile ID only if that provider is allowed to make charges.
-	def provider_for_profile(id)
-		profile = Profile.find id
-		if profile.allow_charge_authorizations and (provider = profile.user) and provider.stripe_info
-			provider
-		else
-			raise Payment::ChargeAuthorizationError, I18n.t('payment.provider_not_allowed_charge_authorizations')
-		end
 	end
 end

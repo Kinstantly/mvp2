@@ -12,7 +12,24 @@ class CustomersController < ApplicationController
 	# GET /authorize_payment/:profile_id
 	def authorize_payment
 		@customer = current_user.as_customer.presence || Customer.new
+		@profile = @customer.provider_for_profile(params[:profile_id]).profile
+		@authorized_amount = @customer.authorized_amount_for_profile params[:profile_id]
 		respond_with @customer
+	rescue Payment::ChargeAuthorizationError => error
+		logger.error "#{self.class} Error: #{error}"
+		set_flash_message :alert, :authorize_payment_error
+		redirect_to @customer
+	end
+
+	# GET /authorize_payment_confirmation/:profile_id
+	def authorize_payment_confirmation
+		@customer = current_user.as_customer
+		@profile = @customer.provider_for_profile(params[:profile_id]).profile
+		@authorized_amount = @customer.authorized_amount_for_profile params[:profile_id]
+		respond_with @customer
+	rescue Payment::ChargeAuthorizationError => error
+		logger.error "#{self.class} Error: #{error}"
+		set_flash_message :alert, :authorize_payment_error
 	end
 	
 	# POST /customers
@@ -24,7 +41,7 @@ class CustomersController < ApplicationController
 			amount:       params[:authorized_amount]
 		)
 		
-		respond_with @customer do |format|
+		respond_with @customer, location: authorize_payment_confirmation_path(params[:profile_id]) do |format|
 			if success
 				set_flash_message :notice, :payment_authorized
 			else
@@ -34,13 +51,15 @@ class CustomersController < ApplicationController
 	end
 	
 	def update
+		@authorized_amount = @customer.authorized_amount_for_profile params[:profile_id]
 		success = @customer.save_with_authorization(
 			profile_id:       params[:profile_id],
 			stripe_token:     params[:stripeToken],
+			amount:           params[:authorized_amount],
 			amount_increment: params[:authorized_amount_increment]
 		)
 		
-		respond_with @customer do |format|
+		respond_with @customer, location: authorize_payment_confirmation_path(params[:profile_id]) do |format|
 			if success
 				set_flash_message :notice, :payment_authorized
 			else

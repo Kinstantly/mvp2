@@ -154,6 +154,7 @@ Mvp2::Application.routes.draw do
 	# Customers of a provider.
 	resources :customers
 	get 'authorize_payment/:profile_id' => 'customers#authorize_payment', as: :authorize_payment
+	get 'authorize_payment_confirmation/:profile_id' => 'customers#authorize_payment_confirmation', as: :authorize_payment_confirmation
 	resources :customer_files, only: [:index, :show] do
 		member do
 			get :new_charge

@@ -1,2 +1,9 @@
-- @customer_files.each do |customer_file|
-	%p= link_to customer_file.customer.user.email, customer_file_path(customer_file)
+#content
+	#customer_listing
+		%p= t 'views.customer_file.view.listing'
+		%ul
+			- @customer_files.each do |customer_file|
+				- user = customer_file.customer.user
+				%li
+					%div= link_to user.username, customer_file_path(customer_file)
+					%div= link_to user.email, customer_file_path(customer_file)

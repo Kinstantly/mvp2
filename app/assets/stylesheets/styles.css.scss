@@ -212,6 +212,66 @@
 		}
 	}
 	
+	#authorize_payment_confirmation {
+		p + p {
+			@include scale(margin-top, 24);
+		}
+	}
+	#customer_listing {
+		li {
+			@include scale(margin-top, 12);
+			
+			div {
+				display: inline-block;
+			}
+			div:first-of-type {
+				min-width: 25%;
+			}
+		}
+	}
+	#customer_file {
+		h1, h2 {
+			font-family: $header-font-stack;
+			font-weight: 500;
+			font-size: 1.5em;
+			color: $blue;
+			line-height: 1.5em;
+		}
+		h2 {
+			font-size: 1em;
+			@include scale(margin-top, 18);
+		}
+		div {
+			@include scale(margin-top, 12);
+		}
+		.buttons {
+			.default {
+				@include default-button-style;
+				&:hover {
+					@include default-button-hover-style;
+				}
+			}
+			.cancel {
+				@include cancel-button-style;
+				&:hover {
+					@include cancel-button-hover-style;
+				}
+			}
+		}
+		th, td {
+			@include scale(padding-top, 12);
+		}
+		th {
+			width: 50%;
+		}
+		.tablesorter {
+			th {
+				width: auto;
+				min-width: 4em;
+			}
+		}
+	}
+	
 	.profile {
 		@extend %span1of2;
 		clear: right;
@@ -556,6 +616,12 @@
 					}
 				}
 			}
+		}
+		.payment_promo {
+			border-top: 1px solid $medium-gray;
+			@extend %clearfix;
+			@include scale(padding, 30 0, 14);
+			text-align: center;
 		}
 		.promo {
 			border: 1px solid $medium-gray;

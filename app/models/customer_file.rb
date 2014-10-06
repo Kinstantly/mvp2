@@ -2,12 +2,26 @@ class CustomerFile < ActiveRecord::Base
 	has_paper_trail # Track changes to each customer file.
 	
 	attr_accessor :charge_amount, :charge_description, :charge_statement_description, :authorized_amount_increment
-	attr_accessible :charge_amount, :charge_description, :charge_statement_description
+	attr_accessible :charge_amount_usd, :charge_description, :charge_statement_description
 	
 	belongs_to :provider, class_name: 'User', foreign_key: 'user_id'
 	belongs_to :customer
 	belongs_to :stripe_card
 	has_many :stripe_charges
+	
+	# Define maximum length of each string or text attribute in a publicly accessible way.
+	# This allows them to be used at the view layer for character counts in input and textarea tags.
+	MAX_LENGTHS = {
+		charge_description: StripeCharge::MAX_LENGTHS[:description],
+		charge_statement_description: StripeCharge::MAX_LENGTHS[:statement_description]
+	}
+	[:charge_description, :charge_statement_description].each do |attribute|
+		validates attribute, allow_blank: true, length: {maximum: MAX_LENGTHS[attribute]}
+	end
+	
+	monetize :authorized_amount, as: 'authorized_amount_usd', allow_nil: true
+	monetize :authorized_amount_increment, as: 'authorized_amount_increment_usd', allow_nil: true
+	monetize :charge_amount, as: 'charge_amount_usd', allow_nil: true
 	
 	validates :authorized_amount, numericality: {only_integer: true, greater_than_or_equal_to: 0}, allow_blank: true
 	validates :charge_amount, :authorized_amount_increment, numericality: {only_integer: true, greater_than: 0}, allow_blank: true
@@ -48,13 +62,26 @@ class CustomerFile < ActiveRecord::Base
 			access_token
 		)
 		
+		# Get the fees.
+		balance_transaction = Stripe::BalanceTransaction.retrieve charge.balance_transaction, access_token
+		fee_details = balance_transaction.fee_details.inject({}) { |detail_hash, detail|
+			detail_hash[detail.type] = detail.amount
+			detail_hash
+		}
+		
 		# Store the charge information locally.
 		stripe_charge = stripe_card.stripe_charges.build(
-			api_charge_id: charge.id,
-			amount:        charge.amount,
-			paid:          charge.paid,
-			captured:      charge.captured,
-			livemode:      charge.livemode
+			api_charge_id:         charge.id,
+			amount:                charge.amount,
+			paid:                  charge.paid,
+			captured:              charge.captured,
+			livemode:              charge.livemode,
+			description:           charge.description,
+			statement_description: charge.statement_description,
+			balance_transaction:   charge.balance_transaction,
+			fee:                   balance_transaction.fee,
+			stripe_fee:            fee_details['stripe_fee'],
+			application_fee:       fee_details['application_fee']
 		)
 		stripe_charges << stripe_charge
 		
@@ -79,7 +106,7 @@ class CustomerFile < ActiveRecord::Base
 		if valid? and charge_amount.present? and authorized_amount and charge_amount.to_i <= authorized_amount
 			true
 		else
-			errors.add :charge_amount, "is invalid: #{charge_amount}"
+			errors.add :charge_amount, "is invalid: #{charge_amount_usd}" if errors.empty?
 			false
 		end
 	end

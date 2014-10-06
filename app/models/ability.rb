@@ -41,6 +41,7 @@ class Ability
 		# Any confirmed user can become a customer...
 		# ...and they can read their own customer files.
 		if user.confirmed?
+			alias_action :authorize_payment_confirmation, to: :authorize_payment
 			can :authorize_payment, Customer
 			can :create, Customer unless user.as_customer
 			can :show, Customer, user_id: user.id

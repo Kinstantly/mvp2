@@ -112,6 +112,10 @@
 						- if i == 0 && locations.size > 1
 							= link_to t('views.profile.view.more_locations'), '#', class: 'more'
 							= link_to t('views.profile.view.hide_locations'), '#', class: 'less'
+		- if @profile.allow_charge_authorizations
+			%section.payment_promo
+				= t 'views.profile.view.payment_promo'
+				= link_to t('views.profile.view.payment_link'), authorize_payment_path(@profile)
 		%section.promo
 			- if @profile.widget_code.present?
 				-# .ui-helper-clearfix

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140929082910) do
+ActiveRecord::Schema.define(:version => 20141003093948) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -400,6 +400,12 @@ ActiveRecord::Schema.define(:version => 20140929082910) do
     t.datetime "updated_at",                          :null => false
     t.boolean  "livemode"
     t.integer  "customer_file_id"
+    t.string   "balance_transaction"
+    t.integer  "fee"
+    t.integer  "stripe_fee"
+    t.integer  "application_fee"
+    t.string   "description"
+    t.string   "statement_description"
   end
 
   add_index "stripe_charges", ["customer_file_id"], :name => "index_stripe_charges_on_customer_file_id"

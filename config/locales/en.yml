@@ -47,6 +47,7 @@ en:
       updated: "Opt-out for '%{email}' was updated."
       update_error: 'There was a problem updating the opt-out.'
     customers:
+      authorize_payment_error: 'The was a problem with authorizing payment.'
       payment_authorized: 'Payment has been authorized.'
     customer_files:
       created_charge: 'Charge was completed.'
@@ -151,6 +152,9 @@ en:
         email_delivery: 'Email delivered'
       customer_file:
         authorized_amount_increment: 'Amount to add'
+        charge_amount_usd: 'Amount to charge'
+        charge_description: 'Description'
+        charge_statement_description: "Description on customer's statement"
       profile:
         accepting_new_clients: 'Accepting new clients/customers'
         adoption_stage: 'adoption'
@@ -311,9 +315,11 @@ en:
       edit:
         add_card: 'Add card'
         add_new_card: 'Add new card'
+        authorization_agreement: 'I authorize %{provider} to charge my credit card for services, including answering phone calls, emails, or video sessions that I initiate outside of regular appointments up to the amount of'
         authorization_button: 'Authorize with card'
         authorization_title: 'Charge authorization'
         authorized_amount_increment_title: 'Add to your authorized amount of %{authorized_amount}'
+        authorized_amount_placeholder: 'Amount, in dollars'
         cancel: 'Cancel'
         credit_card_button: 'Authorize'
         submit: 'Authorize'
@@ -326,7 +332,19 @@ en:
         submit_disable: 'Charging...'
         title: 'Add new payment'
       view:
+        authorized_amount: 'Authorized amount remaining: %{amount}'
+        cancel: 'Client list'
+        charge_history: 'Transaction history'
+        charge_history_amount: 'Amount charged'
+        charge_history_date: 'Date'
+        charge_history_description: 'Description'
+        charge_history_fee: 'Fee'
+        charge_history_statement_description: "Description on customer's statement"
+        contact_information: 'Contact information'
+        email: 'Email address:'
+        listing: "Click on a client's username or email address to charge their card, view transaction history, or edit their profile."
         new_charge: 'Charge card'
+        reminder_prompt: 'Remind %{user} to reup their authorized amount'
     home:
       view:
         about: 'About us'
@@ -413,6 +431,8 @@ en:
         owned: 'Owned'
         owned_not_published: 'Owned, not published'
         owned_published: 'Owned, published'
+        payment_link: 'Learn more'
+        payment_promo: 'This provider accepts credit card payments.'
         profile_is_owned_by: 'Profile is owned by %{owner}'
         profile_is_public_on_private_site: 'Profile is public on private site'
         profile_is_published: 'Profile is published'

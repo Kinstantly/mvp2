@@ -1,19 +1,30 @@
+= javascript_include_tag 'payment'
 #content
 	%h1= t 'views.customer_file.new_charge.title'
-	%p= t 'views.customer_file.new_charge.authorized_amount', amount: display_currency_amount(@customer_file.authorized_amount)
+	%p= t 'views.customer_file.new_charge.authorized_amount', amount: display_currency_amount(@customer_file.authorized_amount_usd)
 	.generic_form
 		= form_for @customer_file, url: {action: :create_charge}, method: :put do |f|
 			= f.error_messages
 			.required_tip= t 'views.required'
 			.text_field
-				= f.label :charge_amount, class: 'required'
-				= f.text_field :charge_amount
-			.text_field
+				= f.label :charge_amount_usd, class: 'required'
+				= f.text_field :charge_amount_usd
+			.text_field#charge_description_field
+				%span.char_count
 				= f.label :charge_description
 				= f.text_field :charge_description
-			.text_field
+			.text_field#charge_statement_description_field
+				%span.char_count
 				= f.label :charge_statement_description
 				= f.text_field :charge_statement_description
 			.buttons
 				= f.submit t('views.customer_file.new_charge.submit'), disable_with: t('views.customer_file.new_charge.submit_disable'), class: 'save'
 				= link_to t('views.customer_file.new_charge.cancel'), @customer_file, class: 'cancel button'
+
+:javascript
+	my_vars.customer_file = my_vars.customer_file || {};
+	my_vars.customer_file.max_lengths = #{CustomerFile::MAX_LENGTHS.to_json};
+:coffeescript
+	# Show character count while filling in fields.
+	for attribute in ['charge_description', 'charge_statement_description']
+		$('#'+attribute+'_field input').simplyCountable({counter: '#'+attribute+'_field .char_count', maxCount: my_vars.customer_file.max_lengths[attribute]})
