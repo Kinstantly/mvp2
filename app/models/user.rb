@@ -171,7 +171,86 @@ class User < ActiveRecord::Base
 		running_as_private_site? &&
 			!confirmed? && admin_confirmation_sent_at.nil? ? :confirmation_not_sent : super
 	end
-	
+
+	#Sync subscription info (create new or update) with MailChimp mailing list
+	def subscribe_to_mailing_list
+		list_id = Rails.configuration.mailchimp_list_id
+		email_struct = {euid: subscriber_euid, leid: subscriber_leid}
+		merge_vars = {groupings: []}
+		first_name = username.presence || email.presence
+		last_name  = ''
+		if client?
+			groups = []
+			groups << 'marketing_emails' if parent_marketing_emails
+			groups << 'newsletters' if parent_newsletters
+			if groups.any?
+				merge_vars[:groupings] << {name: 'parent', groups: groups}
+			end
+		end
+		if expert?
+			first_name = profile.first_name if profile.first_name.present?
+			last_name  = profile.last_name if profile.last_name.present?
+			groups = []
+			groups << 'marketing_emails' if provider_marketing_emails
+			groups << 'newsletters' if provider_newsletters
+			if groups.any?
+				merge_vars[:groupings] << {name: 'provider', groups: groups}
+			end
+		end
+
+		merge_vars[:FNAME] = first_name 
+		merge_vars[:LNAME] = last_name 
+
+		if subscriber_euid && subscriber_leid
+			# User is subscribed, but probably changed their email or name.
+			# The email attribute have been updated at this time.
+			# Do not use new email as user identifier in email_struct,
+			# instruct MailChimp to update the email.
+			merge_vars['new-email'] = email
+		else
+			email_struct[:email] = email
+		end
+
+		if merge_vars[:groupings].any?
+			begin
+				gb = Gibbon::API.new
+				r = gb.lists.subscribe id: list_id, 
+					email: email_struct,
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+
+				self.subscriber_euid = r['euid']
+				self.subscriber_leid = r['leid']
+				save
+			rescue Gibbon::MailChimpError => e
+				logger.error "MailChimp_error while subscribing user #{id} to #{merge_vars}: #{e.message}, error code: #{e.code}"
+  				raise e
+  			end
+		end
+	end
+
+	# Remove subscription from MailChimp mailing list
+	def unsubscribe_from_mailing_list
+		list_id = Rails.configuration.mailchimp_list_id
+		email_struct = {email: email, euid: subscriber_euid, leid: subscriber_leid}
+		begin
+			gb = Gibbon::API.new
+			r = gb.lists.unsubscribe id: list_id, 
+				email: email_struct,
+				delete_member: true,
+				send_goodbye: false,
+				send_notify: false
+
+			self.subscriber_euid = nil
+			self.subscriber_leid = nil
+			save
+		rescue Gibbon::MailChimpError => e
+			logger.error "MailChimp_error while unsubscribing user #{id}: #{e.message}, error code: #{e.code}"
+			raise e
+		end
+	end
+
 	# Public class methods.
 	#
 	# For methods whose behavior is identical in the superclass when not running as a private site,
@@ -261,6 +340,7 @@ class User < ActiveRecord::Base
 	# This can happen as part of registration or if the user changed their email address.
 	def after_confirmation
 		send_welcome_email if is_provider?
+		delay.subscribe_to_mailing_list
 	end
 	
 	private

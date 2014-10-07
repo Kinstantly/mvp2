@@ -186,3 +186,6 @@ gem 'whenever', :require => false
 # Stripe Connect
 gem 'omniauth-stripe-connect', :git => 'https://github.com/isaacsanders/omniauth-stripe-connect.git'
 gem 'stripe_event'
+
+# Mailchimp API wrapper
+gem "gibbon"
