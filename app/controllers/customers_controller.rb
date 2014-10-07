@@ -32,6 +32,11 @@ class CustomersController < ApplicationController
 		set_flash_message :alert, :authorize_payment_error
 	end
 	
+	# GET /customers/:id
+	def show
+		@customer_files = @customer.customer_files
+	end
+	
 	# POST /customers
 	def create
 		success = @customer.save_with_authorization(

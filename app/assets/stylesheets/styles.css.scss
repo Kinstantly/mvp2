@@ -212,24 +212,7 @@
 		}
 	}
 	
-	#authorize_payment_confirmation {
-		p + p {
-			@include scale(margin-top, 24);
-		}
-	}
-	#customer_listing {
-		li {
-			@include scale(margin-top, 12);
-			
-			div {
-				display: inline-block;
-			}
-			div:first-of-type {
-				min-width: 25%;
-			}
-		}
-	}
-	#customer_file {
+	#customer_file, #customer_files, #customer, #authorize_payment_confirmation {
 		h1, h2 {
 			font-family: $header-font-stack;
 			font-weight: 500;
@@ -268,6 +251,25 @@
 			th {
 				width: auto;
 				min-width: 4em;
+			}
+		}
+	}
+	#authorize_payment_confirmation {
+		p + p, .buttons {
+			@include scale(margin-top, 24);
+		}
+	}
+	#customer {
+		.button {
+			@include default-button-style;
+			&:hover {
+				@include default-button-hover-style;
+			}
+			@media (min-width: $break-7) {
+				width: 14em;
+				&:hover {
+					width: 14em;
+				}
 			}
 		}
 	}

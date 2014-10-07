@@ -16,12 +16,8 @@ class Customer < ActiveRecord::Base
 
 	# Return the provider (User) associated with the given profile ID only if that provider is allowed to make charges.
 	def provider_for_profile(id)
-		profile = Profile.find id.to_i
-		if profile.allow_charge_authorizations and (provider = profile.user) and provider.stripe_info
-			provider
-		else
-			raise Payment::ChargeAuthorizationError, I18n.t('payment.provider_not_allowed_charge_authorizations')
-		end
+		Profile.find(id.to_i).payable_provider || 
+			raise(Payment::ChargeAuthorizationError, I18n.t('payment.provider_not_allowed_charge_authorizations'))
 	end
 	
 	def authorized_amount_for_profile(id)

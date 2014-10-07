@@ -569,6 +569,11 @@ class Profile < ActiveRecord::Base
 		search_terms.present? ? search_terms.strip.split(/\s*[\n\r]\s*/) : []
 	end
 	
+	# Return this profile's provider (user) if the provider is configured to accept payments.
+	def payable_provider
+		allow_charge_authorizations && user.try(:stripe_info) ? user : nil
+	end
+	
 	private
 	
 	# Addition or removal of elements from this association should trigger the creation of new fragment caches for this profile.  Touch will result in a new cache key.

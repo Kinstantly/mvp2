@@ -1,5 +1,22 @@
-%p= "You have authorized some charge amount at #{@customer.created_at}."
-%p= "Your email address is #{@customer.user.email}."
-%p= "customer => #{(stripe_customer = @customer.stripe_customer).inspect}"
-%p= "card => #{(stripe_card = stripe_customer.stripe_cards.first).inspect}"
-%p= "charge => #{stripe_card.stripe_charges.first.inspect}"
+= javascript_include_tag 'payment'
+#content
+	#customer
+		%h1= t 'views.customer.view.customer_title'
+		%p= t 'views.customer.view.provider_list_description_html'
+		%table.tablesorter#provider_list
+			%thead
+				%tr
+					%th= t 'views.customer.view.provider_name'
+					%th= t 'views.customer.view.authorized_amount'
+					%th= t 'views.customer.view.add_to_authorize_amount_buttons'
+			%tbody
+				- @customer_files.each do |customer_file|
+					- profile = customer_file.provider.profile
+					%tr
+						%td= link_to profile.company_otherwise_display_name, profile
+						%td= display_currency_amount customer_file.authorized_amount
+						%td= link_to t('views.customer.view.add_to_authorized_amount'), authorize_payment_path(profile), class: 'button'
+
+:coffeescript
+	$ ->
+		$('#provider_list').tablesorter({sortList: [[0,0]], headers: {2: {sorter: false}}})

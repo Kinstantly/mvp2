@@ -318,12 +318,20 @@ en:
         authorization_agreement: 'I authorize %{provider} to charge my credit card for services, including answering phone calls, emails, or video sessions that I initiate outside of regular appointments up to the amount of'
         authorization_button: 'Authorize with card'
         authorization_title: 'Charge authorization'
-        authorized_amount_increment_title: 'Add to your authorized amount of %{authorized_amount}'
+        authorized_amount_increment_title_html: 'Add to your authorized amount of %{authorized_amount} for payment to <strong>%{provider}</strong>'
         authorized_amount_placeholder: 'Amount, in dollars'
         cancel: 'Cancel'
         credit_card_button: 'Authorize'
         submit: 'Authorize'
         submit_disable: 'Authorizing...'
+      view:
+        add_to_authorized_amount: 'Add to authorized amount'
+        add_to_authorize_amount_buttons: ' '
+        authorized_amount: 'Authorized amount'
+        customer_button: 'Payment information'
+        customer_title: 'Payment information'
+        provider_list_description_html: "You have authorized the providers listed below to charge you for services up to the amount listed.  The increase the amount, click the on provider's <strong>Add to authorized amount</strong> button."
+        provider_name: 'Provider'
     customer_file:
       new_charge:
         authorized_amount: 'Authorized amount remaining: %{amount}'
@@ -341,8 +349,11 @@ en:
         charge_history_fee: 'Fee'
         charge_history_statement_description: "Description on customer's statement"
         contact_information: 'Contact information'
+        customer_email: 'Email address'
+        customer_list_description: "Click on a client's username or email address to charge their card, view transaction history, or edit their profile."
+        customer_list_title: 'Client list'
+        customer_username: 'Username'
         email: 'Email address:'
-        listing: "Click on a client's username or email address to charge their card, view transaction history, or edit their profile."
         new_charge: 'Charge card'
         reminder_prompt: 'Remind %{user} to reup their authorized amount'
     home:
