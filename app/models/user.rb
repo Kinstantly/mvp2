@@ -144,6 +144,11 @@ class User < ActiveRecord::Base
 		!!profile.try(:persisted?)
 	end
 	
+	# Is this user a provider with a profile and set up to receive payments?
+	def is_payable?
+		!!(is_provider? && profile.try(:allow_charge_authorizations) && stripe_info)
+	end
+	
 	# This method declares that this user is in the process of claiming their profile.
 	def claiming_profile!(token)
 		@claim_token = token

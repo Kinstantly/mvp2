@@ -315,7 +315,7 @@ en:
       edit:
         add_card: 'Add card'
         add_new_card: 'Add new card'
-        authorization_agreement: 'I authorize %{provider} to charge my credit card for services, including answering phone calls, emails, or video sessions that I initiate outside of regular appointments up to the amount of'
+        authorization_agreement_html: 'I authorize <strong>%{provider}</strong> to charge my credit card for services, including answering phone calls, emails, or video sessions that I initiate outside of regular appointments up to the amount of'
         authorization_button: 'Authorize with card'
         authorization_title: 'Charge authorization'
         authorized_amount_increment_title_html: 'Add to your authorized amount of %{authorized_amount} for payment to <strong>%{provider}</strong>'
@@ -328,6 +328,11 @@ en:
         add_to_authorized_amount: 'Add to authorized amount'
         add_to_authorize_amount_buttons: ' '
         authorized_amount: 'Authorized amount'
+        charge_history: 'Transaction history'
+        charge_history_amount: 'Amount charged'
+        charge_history_date: 'Date'
+        charge_history_provider: 'Provider'
+        charge_history_statement_description: "Description on your statement"
         customer_button: 'Payment information'
         customer_title: 'Payment information'
         provider_list_description_html: "You have authorized the providers listed below to charge you for services up to the amount listed.  The increase the amount, click the on provider's <strong>Add to authorized amount</strong> button."
@@ -350,6 +355,7 @@ en:
         charge_history_statement_description: "Description on customer's statement"
         contact_information: 'Contact information'
         customer_email: 'Email address'
+        customer_list_cancel: 'Cancel'
         customer_list_description: "Click on a client's username or email address to charge their card, view transaction history, or edit their profile."
         customer_list_title: 'Client list'
         customer_username: 'Username'
@@ -709,8 +715,12 @@ en:
         cancel_account: 'Cancel my account'
         cancel_account_confirmation: 'We will completely remove your account. Are you sure?'
         cancel_account_prompt: 'Unhappy?'
-        stripe_connect_header: 'Payments and scheduling settings'
+        customer_header: 'Payments to your providers'
+        customer_link: 'View authorizations and payments to your providers'
+        customer_list_link: 'View clients and charge credit cards'
+        payments_scheduling_header: 'Payments and scheduling settings'
         stripe_connect_prompt: 'Make online payments easy by connecting your Kinstantly account to Stripe.'
+        stripe_connected: 'Your Kinstantly account is connected to Stripe.'
         newsletters_and_marketing_emails_label: 'Send me Kinstantly news'
       view:
         edit_user_profile: 'Edit your profile'

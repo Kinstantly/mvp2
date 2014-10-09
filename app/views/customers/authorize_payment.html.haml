@@ -17,7 +17,7 @@
 				.buttons
 					%script{src: 'https://checkout.stripe.com/checkout.js', class: 'stripe-button', 'data-key' => Rails.configuration.stripe[:publishable_key], 'data-description' => t('views.customer.edit.add_new_card'), 'data-email' => current_user.email, 'data-panel-label' => "#{t 'views.customer.edit.add_card'}", 'data-allow-remember-me' => 'false', 'data-label' => t('views.customer.edit.add_new_card')}
 		- else
-			%p= t 'views.customer.edit.authorization_agreement', provider: @profile.company_otherwise_display_name
+			%p= t 'views.customer.edit.authorization_agreement_html', provider: @profile.company_otherwise_display_name
 			= form_for @customer do |f|
 				= f.error_messages
 				= hidden_field_tag :profile_id, params[:profile_id]

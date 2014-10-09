@@ -571,7 +571,7 @@ class Profile < ActiveRecord::Base
 	
 	# Return this profile's provider (user) if the provider is configured to accept payments.
 	def payable_provider
-		allow_charge_authorizations && user.try(:stripe_info) ? user : nil
+		user.try(:is_payable?) ? user : nil
 	end
 	
 	private
