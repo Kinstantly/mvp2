@@ -57,6 +57,35 @@ class User < ActiveRecord::Base
 	scope :order_by_id, order('id')
 	scope :order_by_descending_id, order('id DESC')
 	scope :order_by_email, order('lower(email)')
+
+	after_save do
+		# Create new or update/delete existing subscription.
+		new_subscription = subscriber_euid.blank? && subscriber_leid.blank?
+		subscription_attr = changes.slice :email, 
+								:username, 
+								:parent_marketing_emails, 
+								:parent_newsletters, 
+								:provider_marketing_emails, 
+								:provider_newsletters
+		# Proceed only if no subscription exists or subscription exists and least one subscription-related attr changed.
+		if errors.empty? && (new_subscription || subscription_attr.any?)
+			# Find and update/delete subscription groups related to user current role(s).
+			subscription_groups = []
+			if client?
+				subscription_groups << 'parent_marketing_emails' if parent_marketing_emails
+				subscription_groups << 'parent_newsletters' if parent_newsletters
+			end
+			if expert?
+				subscription_groups << 'provider_marketing_emails' if provider_marketing_emails
+				subscription_groups << 'provider_newsletters' if provider_newsletters
+			end
+			if Rails.env.production?
+				subscription_groups.any? ? delay.subscribe_to_mailing_list : delay.unsubscribe_from_mailing_list
+			else
+				subscription_groups.any? ? subscribe_to_mailing_list : unsubscribe_from_mailing_list
+			end
+		end
+	end
 	
 	# Solr search configuration.
 	# searchable do
@@ -172,8 +201,11 @@ class User < ActiveRecord::Base
 			!confirmed? && admin_confirmation_sent_at.nil? ? :confirmation_not_sent : super
 	end
 
-	#Sync subscription info (create new or update) with MailChimp mailing list
+	#Sync subscription info (create new or update) with MailChimp mailing list.
 	def subscribe_to_mailing_list
+		# Do nothing if this user is not confirmed.
+		return false if !confirmed?
+
 		list_id = Rails.configuration.mailchimp_list_id
 		email_struct = {euid: subscriber_euid, leid: subscriber_leid}
 		merge_vars = {groupings: []}
@@ -220,11 +252,10 @@ class User < ActiveRecord::Base
 					double_optin: false,
 					update_existing: true
 
-				self.subscriber_euid = r['euid']
-				self.subscriber_leid = r['leid']
-				save
+				update_column(:subscriber_euid, r['euid'])
+				update_column(:subscriber_leid, r['leid'])
 			rescue Gibbon::MailChimpError => e
-				logger.error "MailChimp_error while subscribing user #{id} to #{merge_vars}: #{e.message}, error code: #{e.code}"
+				logger.error "MailChimp error while subscribing user #{id} to #{merge_vars}: #{e.message}, error code: #{e.code}" if logger
   				raise e
   			end
 		end
@@ -242,11 +273,10 @@ class User < ActiveRecord::Base
 				send_goodbye: false,
 				send_notify: false
 
-			self.subscriber_euid = nil
-			self.subscriber_leid = nil
-			save
+			update_column(:subscriber_euid, nil)
+			update_column(:subscriber_leid, nil)
 		rescue Gibbon::MailChimpError => e
-			logger.error "MailChimp_error while unsubscribing user #{id}: #{e.message}, error code: #{e.code}"
+			logger.error "MailChimp error while unsubscribing user #{id}: #{e.message}, error code: #{e.code}" if logger
 			raise e
 		end
 	end
@@ -340,7 +370,6 @@ class User < ActiveRecord::Base
 	# This can happen as part of registration or if the user changed their email address.
 	def after_confirmation
 		send_welcome_email if is_provider?
-		delay.subscribe_to_mailing_list
 	end
 	
 	private

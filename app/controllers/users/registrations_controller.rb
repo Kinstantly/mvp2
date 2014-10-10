@@ -3,7 +3,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	
 	before_filter :before_registration, only: :create
 	after_filter :after_registration, only: :create
-	after_filter :after_update, only: :update
 	
 	# User settings page should not be cached because it might display sensitive information.
 	after_filter :set_no_cache_response_headers, only: [:edit, :update]
@@ -60,25 +59,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 				AdminMailer.provider_registration_alert(resource).deliver
 			else
 				AdminMailer.parent_registration_alert(resource).deliver
-			end
-		end
-	end
-
-	def after_update
-		if resource && resource.errors.empty?
-			user_subscriptions = []
-			if resource.client?
-				user_subscriptions << 'parent_marketing_emails' if resource.parent_marketing_emails
-				user_subscriptions << 'parent_newsletters' if resource.parent_newsletters
-			end
-			if resource.expert?
-				user_subscriptions << 'provider_marketing_emails' if resource.provider_marketing_emails
-				user_subscriptions << 'provider_newsletters' if resource.provider_newsletters
-			end
-			if user_subscriptions.any?
-				resource.delay.subscribe_to_mailing_list
-			else
-				resource.delay.unsubscribe_from_mailing_list
 			end
 		end
 	end

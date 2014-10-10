@@ -103,10 +103,6 @@ class ProfilesController < ApplicationController
 	
 	def update
 		if @profile.update_attributes(params[:profile])
-			profile_name_changed = @profile.previous_changes.slice(:first_name, :last_name).any?
-			if profile_name_changed
-				current_user.delay.subscribe_to_mailing_list
-			end
 			set_flash_message :notice, :updated
 			redirect_to profile_url @profile
 		else
@@ -123,10 +119,6 @@ class ProfilesController < ApplicationController
 		else
 			@refresh_formlets = params[:refresh_formlets]
 			@update_succeeded = @profile.update_attributes(params[:profile])
-			profile_name_changed = @profile.previous_changes.slice(:first_name, :last_name).any?
-			if @update_succeeded && profile_name_changed
-				current_user.delay.subscribe_to_mailing_list
-			end
 		end
 		respond_with @profile, layout: false
 	end
