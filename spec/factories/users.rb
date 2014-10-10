@@ -44,6 +44,11 @@ FactoryGirl.define do
 			factory :provider_with_unpublished_profile do
 				association :profile, factory: :unpublished_profile
 			end
+			
+			factory :payable_provider do
+				stripe_info
+				association :profile, factory: :profile_allowed_charge_authorizations
+			end
 		end
 		
 		factory :admin_user do

@@ -223,8 +223,9 @@
 		h2 {
 			font-size: 1em;
 			@include scale(margin-top, 18);
+			border-top: 1px solid $medium-gray;
 		}
-		div {
+		div, p {
 			@include scale(margin-top, 12);
 		}
 		.buttons {

@@ -34,6 +34,8 @@
 							%td= display_currency_amount charge.amount_usd
 							%td= link_to provider_name, profile
 							%td= charge.statement_description
+		.buttons
+			= link_to t('views.customer.view.cancel'), edit_user_registration_path, class: 'cancel'
 
 :coffeescript
 	$ ->

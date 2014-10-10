@@ -11,14 +11,14 @@ class CustomersController < ApplicationController
 
 	# GET /authorize_payment/:profile_id
 	def authorize_payment
-		@customer = current_user.as_customer.presence || Customer.new
+		@customer = current_user.as_customer || Customer.new
 		@profile = @customer.provider_for_profile(params[:profile_id]).profile
 		@authorized_amount = @customer.authorized_amount_for_profile params[:profile_id]
 		respond_with @customer
 	rescue Payment::ChargeAuthorizationError => error
 		logger.error "#{self.class} Error: #{error}"
 		set_flash_message :alert, :authorize_payment_error
-		redirect_to @customer
+		redirect_to(@customer.new_record? ? edit_user_registration_url : @customer)
 	end
 
 	# GET /authorize_payment_confirmation/:profile_id
@@ -56,6 +56,7 @@ class CustomersController < ApplicationController
 	end
 	
 	def update
+		@profile = @customer.provider_for_profile(params[:profile_id]).profile
 		@authorized_amount = @customer.authorized_amount_for_profile params[:profile_id]
 		success = @customer.save_with_authorization(
 			profile_id:       params[:profile_id],

@@ -328,6 +328,7 @@ en:
         add_to_authorized_amount: 'Add to authorized amount'
         add_to_authorize_amount_buttons: ' '
         authorized_amount: 'Authorized amount'
+        cancel: 'Settings'
         charge_history: 'Transaction history'
         charge_history_amount: 'Amount charged'
         charge_history_date: 'Date'
@@ -335,7 +336,7 @@ en:
         charge_history_statement_description: "Description on your statement"
         customer_button: 'Payment information'
         customer_title: 'Payment information'
-        provider_list_description_html: "You have authorized the providers listed below to charge you for services up to the amount listed.  The increase the amount, click the on provider's <strong>Add to authorized amount</strong> button."
+        provider_list_description_html: "You have authorized the providers listed below to charge you for services up to the amount listed.  To increase the amount, click the on provider's <strong>Add to authorized amount</strong> button."
         provider_name: 'Provider'
     customer_file:
       new_charge:
@@ -355,7 +356,7 @@ en:
         charge_history_statement_description: "Description on customer's statement"
         contact_information: 'Contact information'
         customer_email: 'Email address'
-        customer_list_cancel: 'Cancel'
+        customer_list_cancel: 'Settings'
         customer_list_description: "Click on a client's username or email address to charge their card, view transaction history, or edit their profile."
         customer_list_title: 'Client list'
         customer_username: 'Username'
