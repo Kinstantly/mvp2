@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
 
 	after_save do
 		# Create new or update/delete existing subscription.
-		new_subscription = subscriber_euid.blank? && subscriber_leid.blank?
+		new_subscription = !subscribed_to_mailing_list?
 		subscription_attr = changes.slice :email, 
 								:username, 
 								:parent_marketing_emails, 
@@ -200,6 +200,11 @@ class User < ActiveRecord::Base
 		running_as_private_site? &&
 			!confirmed? && admin_confirmation_sent_at.nil? ? :confirmation_not_sent : super
 	end
+	
+	# True if this user is currently subscribed to a mailing list.
+	def subscribed_to_mailing_list?
+		subscriber_euid.present? || subscriber_leid.present?
+	end
 
 	#Sync subscription info (create new or update) with MailChimp mailing list.
 	def subscribe_to_mailing_list
@@ -263,6 +268,8 @@ class User < ActiveRecord::Base
 
 	# Remove subscription from MailChimp mailing list
 	def unsubscribe_from_mailing_list
+		return unless subscribed_to_mailing_list? # Gibbon complains if user is not already subscribed.
+		
 		list_id = Rails.configuration.mailchimp_list_id
 		email_struct = {email: email, euid: subscriber_euid, leid: subscriber_leid}
 		begin
