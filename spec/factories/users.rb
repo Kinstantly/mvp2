@@ -48,6 +48,10 @@ FactoryGirl.define do
 			factory :payable_provider do
 				stripe_info
 				association :profile, factory: :profile_allowed_charge_authorizations
+				
+				factory :second_payable_provider do
+					email 'FactoryEmailSecondPayableProvider@example.com'
+				end
 			end
 		end
 		

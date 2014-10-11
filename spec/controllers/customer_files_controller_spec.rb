@@ -1,15 +1,41 @@
 require 'spec_helper'
 
 describe CustomerFilesController do
-	let(:customer_file_1) { FactoryGirl.create :customer_file, authorized_amount: 10000 }
+	let(:authorized_amount_cents) { 10000 }
+	let(:charge_amount_usd) { '25.00' }
+	let(:charge_amount_cents) { (charge_amount_usd.to_f * 100).to_i }
+	let(:charge_fee_cents) { (charge_amount_cents * 0.05).to_i }
+	let(:customer_file_1) { FactoryGirl.create :customer_file, authorized_amount: authorized_amount_cents }
 	let(:provider) { customer_file_1.provider }
 	let(:customer_file_2) { FactoryGirl.create :second_customer_file, provider: provider }
 	let(:customer_1) { customer_file_1.customer }
 	let(:parent_1) { customer_1.user }
+
+	let(:api_token) { double('Stripe::Token').as_null_object }
+	let(:api_charge) { 
+		charge = double('Stripe::Charge').as_null_object
+		charge.stub amount: charge_amount_cents
+		charge
+	}
+	let(:api_balance_transaction) {
+		transaction = double('Stripe::BalanceTransaction').as_null_object
+		transaction.stub fee: charge_fee_cents, fee_details: []
+		transaction
+	}
 	
 	before(:each) do
 		customer_file_1
 		customer_file_2
+		
+		Stripe::Token.stub(:create).with(any_args) do
+			api_token
+		end
+		Stripe::Charge.stub(:create).with(any_args) do
+			api_charge
+		end
+		Stripe::BalanceTransaction.stub(:retrieve).with(any_args) do
+			api_balance_transaction
+		end
 	end
 		
 	context "customer or provider is not signed in" do
@@ -89,10 +115,13 @@ describe CustomerFilesController do
 		
 		describe "PUT create_charge" do
 			it "creates a charge record" do
-				pending 'stub of CustomerFile#create_charge'
 				expect {
-					amount = customer_file_1.authorized_amount / 2
-					put :create_charge, id: customer_file_1.id, charge_amount: amount, charge_description: 'test', charge_statement_description: 'test'
+					params = {
+						charge_amount_usd: charge_amount_usd,
+						charge_description: 'test',
+						charge_statement_description: 'test'
+					}
+					put :create_charge, id: customer_file_1.id, customer_file: params
 				}.to change(StripeCharge, :count).by(1)
 			end
 		end
