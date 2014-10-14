@@ -10,7 +10,8 @@ describe "customer_files/new_charge" do
 	
 	it "should show the remaining authorized amount" do
 		assign :customer_file, customer_file
+		controller.request.path_parameters[:id] = customer_file.to_param # Needed for the form_for URL. Go figure.
 		render
-		rendered.should have_content MyHelpers::display_currency_amount(customer_file.authorized_amount)
+		rendered.should have_content display_currency_amount(customer_file.authorized_amount_usd)
 	end
 end
