@@ -45,16 +45,25 @@
 				= link_to t('views.user.edit.cancel'), user_home_page, class: 'cancel_link'
 			- if resource.is_provider? and resource.profile.try(:show_stripe_connect)
 				%br
-				%h1= t 'views.user.edit.stripe_connect_header'
+				%h1= t 'views.user.edit.payments_scheduling_header'
 				#payments_setup.formlet.info-popover
 					%h3
-						= t 'views.user.edit.stripe_connect_prompt'
+						- if resource.is_payable? # Already connected
+							= t 'views.user.edit.stripe_connected'
+						-else
+							= t 'views.user.edit.stripe_connect_prompt'
 						= link_to 'Learn More', '#', id: 'stripe_more', class: 'link'
 					.edit.popover
-						%h2
-							Connecting your Kinstantly account to Stripe
-						%p
-							When you connect your Kinstantly account to Stripe, we'll be able to interact with Stripe to make online payments as simple and easy as possible for you. 
+						- if resource.is_payable? # Already connected
+							%h2
+								Your Kinstantly account and Stripe
+							%p
+								Because your Kinstantly account is connected to Stripe, we are able to interact with Stripe to make online payments as simple and easy as possible for you.
+						-else
+							%h2
+								Connecting your Kinstantly account to Stripe
+							%p
+								When you connect your Kinstantly account to Stripe, we'll be able to interact with Stripe to make online payments as simple and easy as possible for you. 
 						%p
 							All sensitive information, such as bank account and credit card numbers, are stored by Stripe and never by Kinstantly. To read more about Stripe's security, please see
 							= succeed '.' do
@@ -67,9 +76,12 @@
 							Questions? Concerns? Send us an email at
 							= succeed '.' do
 								= mail_to info_email
-					%br
-					=link_to user_omniauth_authorize_path(:stripe_connect), class: "stripe-connect" do
-						%span Connect with Stripe
+					- if resource.is_payable? # Already connected
+						= link_to t('views.user.edit.customer_list_link'), customer_files_path, class: 'dont_popover'
+					- else
+						%br
+						= link_to user_omniauth_authorize_path(:stripe_connect), class: "stripe-connect" do
+							%span Connect with Stripe
 			- if resource.is_provider?
 				%br
 				%h1= t 'views.user.edit.add_button_header'
@@ -113,6 +125,10 @@
 							Need help? Email us at
 							= succeed '.' do
 								= mail_to info_email
+			- if resource.as_customer
+				%h1= t 'views.user.edit.customer_header'
+				%br
+				%p= link_to t('views.user.edit.customer_link'), resource.as_customer
 	-#
 		.cancel_account.generic_form
 			= t('views.user.edit.cancel_account_prompt')

@@ -36,6 +36,10 @@ FactoryGirl.define do
 			factory :public_profile_on_private_site do
 				public_on_private_site true
 			end
+			
+			factory :profile_allowed_charge_authorizations do
+				allow_charge_authorizations true
+			end
 		end
 		
 		factory :unpublished_profile do

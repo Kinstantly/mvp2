@@ -31,6 +31,13 @@ class User < ActiveRecord::Base
 	belongs_to :admin_confirmation_sent_by, class_name: 'User'
 	
 	has_one :stripe_info
+	has_many :customers, through: :customer_files
+	has_many :customer_files do
+		def for_customer(customer)
+			where(customer_id: customer).first
+		end
+	end
+	has_one :as_customer, class_name: 'Customer'
 	
 	# Define minimum and/or maximum lengths of string and text attributes in a publicly accessible way.
 	# This allows them to be used at the view layer for character counts in input and textarea tags.
@@ -135,6 +142,11 @@ class User < ActiveRecord::Base
 	
 	def has_persisted_profile?
 		!!profile.try(:persisted?)
+	end
+	
+	# Is this user a provider with a profile and set up to receive payments?
+	def is_payable?
+		!!(is_provider? && profile.try(:allow_charge_authorizations) && stripe_info)
 	end
 	
 	# This method declares that this user is in the process of claiming their profile.

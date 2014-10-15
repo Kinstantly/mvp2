@@ -238,8 +238,8 @@ Devise.setup do |config|
 
   #Stripe Connect config
   config.omniauth :stripe_connect,
-    ENV['STRIPE_CONNECT_CLIENT_ID'].presence || 'ca_4aJhcyjprTFSJzhMA0NmuzWUIJiznZAb',
-    ENV['STRIPE_SECRET_KEY'].presence || 'sk_test_AAv7llm8N32E7HErvRqgvjm6', 
+    Rails.configuration.stripe[:connect_client_id],
+    Rails.configuration.stripe[:secret_key], 
     :scope => 'read_write', # or :scope => 'read_only'
     :stripe_landing => 'login' #'register' # Determines whether to show a login screen by default. Set to stripe_landing=login, if users already have existing Stripe accounts. 
 

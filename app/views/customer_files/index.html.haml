@@ -1,0 +1,22 @@
+= javascript_include_tag 'payment'
+#content
+	#customer_files
+		%h1= t 'views.customer_file.view.customer_list_title'
+		%p= t 'views.customer_file.view.customer_list_description'
+		%table.tablesorter#customer_list
+			%thead
+				%tr
+					%th= t 'views.customer_file.view.customer_username'
+					%th= t 'views.customer_file.view.customer_email'
+			%tbody
+				- @customer_files.each do |customer_file|
+					- user = customer_file.customer.user
+					%tr
+						%td= link_to user.username, customer_file_path(customer_file)
+						%td= link_to user.email, customer_file_path(customer_file)
+		.buttons
+			= link_to t('views.customer_file.view.customer_list_cancel'), edit_user_registration_path, class: 'cancel'
+
+:coffeescript
+	$ ->
+		$('#customer_list').tablesorter({sortList: [[0,0]]})

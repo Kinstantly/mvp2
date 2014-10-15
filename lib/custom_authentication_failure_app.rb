@@ -7,8 +7,12 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 			super
 		elsif claiming_profile?
 			super(:claiming_profile)
+		elsif force_claiming_profile?
+			super(:force_claiming_profile)
 		elsif reviewing_provider?
 			super(:reviewing_provider)
+		elsif new_customer?
+			super(:new_customer)
 		elsif running_as_private_site?
 			super(:running_as_private_site)
 		else
@@ -18,11 +22,14 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 	
 	def redirect_url
 		#return super unless [:worker, :employer, :user].include?(scope) #make it specific to a scope
-		if reviewing_provider?
+		if reviewing_provider? or new_customer?
 			member_sign_up_url
 		elsif claiming_profile?
 			session[:claiming_profile] = params[:token]
 			provider_sign_up_url claim_profile_tracking_parameter
+		elsif force_claiming_profile?
+			session[:claiming_profile] = params[:token]
+			new_user_session_url claim_profile_tracking_parameter
 		elsif running_as_private_site?
 			alpha_sign_up_url
 		else
@@ -46,13 +53,22 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 	
 	# If attempting to claim a profile, we need to register as a provider first.
 	def claiming_profile?
-		attempted_path && attempted_path.start_with?(claim_user_profile_path('1').chop)
+		params[:controller] == 'users' && params[:action] == 'claim_profile'
 	end
 	
-	# If attempting to rate a provider, we need to register or sign in first.
+	# If attempting to replace our profile with the profile we want to claim, we need to sign in first.
+	def force_claiming_profile?
+		params[:controller] == 'users' && params[:action] == 'force_claim_profile'
+	end
+	
+	# If attempting to rate or review a provider, we need to register or sign in first.
 	def reviewing_provider?
-		(canonical_path = attempted_path.try(:sub, /\d+/, '1')) &&
-			(canonical_path.start_with?(rate_profile_path('1')) ||
-			 canonical_path.start_with?(new_review_for_profile_path('1')))
+		(params[:controller] == 'profiles' && params[:action] == 'rate') ||
+			(params[:controller] == 'reviews' && ['new', 'create'].include?(params[:action]))
+	end
+	
+	# If we are a new customer, we need to register or sign in as a member.
+	def new_customer?
+		params[:controller] == 'customers' && ['new', 'create'].include?(params[:action])
 	end
 end

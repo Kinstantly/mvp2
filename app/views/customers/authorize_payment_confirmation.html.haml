@@ -1,0 +1,17 @@
+#content
+	#authorize_payment_confirmation
+		- if @profile and @authorized_amount
+			%p
+				Congrats! You're all set up for Kinstantly Pre-Auth with
+				= link_to @profile.company_otherwise_display_name, @profile
+				= "up to #{display_currency_amount(@authorized_amount)}."
+			%p
+				Questions? Concerns? Please email
+				= mail_to SUPPORT_EMAIL
+				at any time, and we'll get back to you right away.
+		- else
+			There was a problem.  Please email
+			= mail_to SUPPORT_EMAIL
+			and we'll get back to you right away.
+		.buttons
+			= link_to t('views.customer.view.customer_button'), @customer, class: 'default'

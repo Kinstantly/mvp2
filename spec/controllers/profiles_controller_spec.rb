@@ -909,6 +909,11 @@ describe ProfilesController do
 			Profile.find(profile_to_rate.id).should have(:no).ratings
 		end
 		
+		it "redirects to the member sign-up page if not signed in" do
+			post :rate, id: profile_to_rate.id, score: '2'
+			response.should redirect_to member_sign_up_path
+		end
+		
 		it "should fail to rate the rater's profile" do
 			sign_in FactoryGirl.create(:provider, profile: profile_to_rate)
 			post :rate, id: profile_to_rate.id, score: '2'
@@ -983,13 +988,6 @@ describe ProfilesController do
 		describe "GET 'search'" do
 			it "redirects to the sign-up page" do
 				get :search, query: published_profile.last_name
-				response.should redirect_to alpha_sign_up_path
-			end
-		end
-		
-		describe "POST 'rate'" do
-			it "redirects to the sign-up page" do
-				post :rate, id: published_profile.id, score: '2'
 				response.should redirect_to alpha_sign_up_path
 			end
 		end

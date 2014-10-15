@@ -46,6 +46,11 @@ en:
       not_found_by_email: "Opt-put for '%{email}' was not found."
       updated: "Opt-out for '%{email}' was updated."
       update_error: 'There was a problem updating the opt-out.'
+    customers:
+      authorize_payment_error: 'The was a problem with authorizing payment.'
+      payment_authorized: 'Payment has been authorized.'
+    customer_files:
+      created_charge: 'Charge was completed.'
     users:
       profile_updated: 'Your profile changes were saved.'
       profile_update_error: 'There was a problem saving your profile.'
@@ -145,6 +150,11 @@ en:
       contact_blocker:
         email: 'Email address'
         email_delivery: 'Email delivered'
+      customer_file:
+        authorized_amount_increment: 'Amount to add'
+        charge_amount_usd: 'Amount to charge'
+        charge_description: 'Description'
+        charge_statement_description: "Description on customer's statement"
       profile:
         accepting_new_clients: 'Accepting new clients/customers'
         adoption_stage: 'adoption'
@@ -301,6 +311,58 @@ en:
         unsubscribe_submit: 'Unsubscribe'
         unsubscribe_submit_disable: 'Unsubscribing...'
         unsubscribe_title: 'Unsubscribe from Marketing Messages'
+    customer:
+      edit:
+        add_card: 'Add card'
+        add_new_card: 'Add new card'
+        authorization_agreement_html: 'I authorize <strong>%{provider}</strong> to charge my credit card for services, including answering phone calls, emails, or video sessions that I initiate outside of regular appointments up to the amount of'
+        authorization_button: 'Authorize with card'
+        authorization_title: 'Charge authorization'
+        authorized_amount_increment_title_html: 'Add to your authorized amount of %{authorized_amount} for payment to <strong>%{provider}</strong>'
+        authorized_amount_placeholder: 'Amount, in dollars'
+        cancel: 'Cancel'
+        credit_card_button: 'Authorize'
+        submit: 'Authorize'
+        submit_disable: 'Authorizing...'
+      view:
+        add_to_authorized_amount: 'Add to authorized amount'
+        add_to_authorize_amount_buttons: ' '
+        authorized_amount: 'Authorized amount'
+        cancel: 'Settings'
+        charge_history: 'Transaction history'
+        charge_history_amount: 'Amount charged'
+        charge_history_date: 'Date'
+        charge_history_provider: 'Provider'
+        charge_history_statement_description: "Description on your statement"
+        customer_button: 'Payment information'
+        customer_title: 'Payment information'
+        provider_list_description_html: "You have authorized the providers listed below to charge you for services up to the amount listed.  To increase the amount, click the on provider's <strong>Add to authorized amount</strong> button."
+        provider_name: 'Provider'
+    customer_file:
+      new_charge:
+        authorized_amount: 'Authorized amount remaining: %{amount}'
+        cancel: 'Cancel'
+        submit: 'Charge card'
+        submit_disable: 'Charging...'
+        title: 'Add new payment'
+      view:
+        authorized_amount: 'Authorized amount remaining: %{amount}'
+        cancel: 'Client list'
+        charge_history: 'Transaction history'
+        charge_history_amount: 'Amount charged'
+        charge_history_date: 'Date'
+        charge_history_description: 'Description'
+        charge_history_fee: 'Fee'
+        charge_history_statement_description: "Description on customer's statement"
+        contact_information: 'Contact information'
+        customer_email: 'Email address'
+        customer_list_cancel: 'Settings'
+        customer_list_description: "Click on a client's username or email address to charge their card, view transaction history, or edit their profile."
+        customer_list_title: 'Client list'
+        customer_username: 'Username'
+        email: 'Email address:'
+        new_charge: 'Charge card'
+        reminder_prompt: 'Remind %{user} to reup their authorized amount'
     home:
       view:
         about: 'About us'
@@ -387,6 +449,8 @@ en:
         owned: 'Owned'
         owned_not_published: 'Owned, not published'
         owned_published: 'Owned, published'
+        payment_link: 'Learn more'
+        payment_promo: 'This provider accepts credit card payments.'
         profile_is_owned_by: 'Profile is owned by %{owner}'
         profile_is_public_on_private_site: 'Profile is public on private site'
         profile_is_published: 'Profile is published'
@@ -655,8 +719,12 @@ en:
         cancel_account: 'Cancel my account'
         cancel_account_confirmation: 'We will completely remove your account. Are you sure?'
         cancel_account_prompt: 'Unhappy?'
-        stripe_connect_header: 'Payments and scheduling settings'
+        customer_header: 'Payments to your providers'
+        customer_link: 'View authorizations and payments to your providers'
+        customer_list_link: 'View clients and charge credit cards'
+        payments_scheduling_header: 'Payments and scheduling settings'
         stripe_connect_prompt: 'Make online payments easy by connecting your Kinstantly account to Stripe.'
+        stripe_connected: 'Your Kinstantly account is connected to Stripe.'
         newsletters_and_marketing_emails_label: 'Send me Kinstantly news'
         add_button_header: 'Profile extras'
         add_button_prompt: 'Send people to your Kinstantly profile by adding a button to your personal website.'
@@ -670,6 +738,9 @@ en:
         no_name: 'Anonymous'
         stripe_info_created_at: 'Connected to Stripe at %{created_at}'
         view_user_profile: 'View your profile'
+  payment:
+    contact_support: 'There was a problem.  Please contact support@kinstantly.com'
+    provider_not_allowed_charge_authorizations: 'This provider cannot be authorized to perform charges.'
   rating:
     no_score: 'Not rated yet'
     score_1: 'Terrible'

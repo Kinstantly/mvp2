@@ -29,6 +29,10 @@ FactoryGirl.define do
 			# Do it here because welcome_sent_at cannot be mass assigned.
 			after(:build) { |user, evaluator| user.welcome_sent_at = Time.at(0).utc unless evaluator.pending_welcome }
 			
+			factory :second_provider do
+				email 'FactoryEmailSecondProvider@example.com'
+			end
+			
 			factory :provider_with_username do
 				username 'FactoryUsernameProvider'
 			end
@@ -39,6 +43,15 @@ FactoryGirl.define do
 			
 			factory :provider_with_unpublished_profile do
 				association :profile, factory: :unpublished_profile
+			end
+			
+			factory :payable_provider do
+				stripe_info
+				association :profile, factory: :profile_allowed_charge_authorizations
+				
+				factory :second_payable_provider do
+					email 'FactoryEmailSecondPayableProvider@example.com'
+				end
 			end
 		end
 		

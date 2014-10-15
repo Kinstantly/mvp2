@@ -9,7 +9,7 @@ module SiteConfigurationHelpers
 		end
 		
 		def stripe_live_mode?
-			Rails.configuration.stripe_live_mode
+			Rails.configuration.stripe[:live_mode]
 		end
 		
 		def cloudfront_domain_name
@@ -27,7 +27,7 @@ module SiteConfigurationHelpers
 		end
 		
 		def stripe_live_mode?
-			Rails.configuration.stripe_live_mode
+			Rails.configuration.stripe[:live_mode]
 		end
 		
 		def cloudfront_domain_name

@@ -6,5 +6,15 @@ FactoryGirl.define do
 		description 'FactoryDescription'
 		deleted false
 		livemode true
+		
+		factory :stripe_customer_with_cards do
+			ignore do
+				card_count 1
+			end
+
+			after(:create) do |stripe_customer, evaluator|
+				create_list(:stripe_card, evaluator.card_count, stripe_customer: stripe_customer)
+			end
+		end
 	end
 end

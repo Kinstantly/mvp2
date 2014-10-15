@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140923180023) do
+ActiveRecord::Schema.define(:version => 20141003093948) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -96,6 +96,27 @@ ActiveRecord::Schema.define(:version => 20140923180023) do
   end
 
   add_index "contact_blockers", ["email_delivery_id"], :name => "index_contact_blockers_on_email_delivery_id"
+
+  create_table "customer_files", :force => true do |t|
+    t.integer  "customer_id"
+    t.integer  "user_id"
+    t.integer  "authorized_amount"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "stripe_card_id"
+  end
+
+  add_index "customer_files", ["customer_id"], :name => "index_customer_files_on_customer_id"
+  add_index "customer_files", ["stripe_card_id"], :name => "index_customer_files_on_stripe_card_id"
+  add_index "customer_files", ["user_id"], :name => "index_customer_files_on_user_id"
+
+  create_table "customers", :force => true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "customers", ["user_id"], :name => "index_customers_on_user_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -230,6 +251,7 @@ ActiveRecord::Schema.define(:version => 20140923180023) do
     t.text     "search_terms"
     t.text     "search_widget_code"
     t.boolean  "show_stripe_connect",            :default => false
+    t.boolean  "allow_charge_authorizations",    :default => false
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"
@@ -371,15 +393,23 @@ ActiveRecord::Schema.define(:version => 20140923180023) do
     t.string   "api_charge_id"
     t.integer  "amount"
     t.integer  "amount_refunded"
-    t.boolean  "paid",            :default => false
-    t.boolean  "refunded",        :default => false
-    t.boolean  "captured",        :default => false
-    t.boolean  "deleted",         :default => false
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.boolean  "paid",                  :default => false
+    t.boolean  "refunded",              :default => false
+    t.boolean  "captured",              :default => false
+    t.boolean  "deleted",               :default => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.boolean  "livemode"
+    t.integer  "customer_file_id"
+    t.string   "balance_transaction"
+    t.integer  "fee"
+    t.integer  "stripe_fee"
+    t.integer  "application_fee"
+    t.string   "description"
+    t.string   "statement_description"
   end
 
+  add_index "stripe_charges", ["customer_file_id"], :name => "index_stripe_charges_on_customer_file_id"
   add_index "stripe_charges", ["stripe_card_id"], :name => "index_stripe_charges_on_stripe_card_id"
 
   create_table "stripe_customers", :force => true do |t|
@@ -390,8 +420,10 @@ ActiveRecord::Schema.define(:version => 20140923180023) do
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
     t.boolean  "livemode"
+    t.integer  "customer_id"
   end
 
+  add_index "stripe_customers", ["customer_id"], :name => "index_stripe_customers_on_customer_id"
   add_index "stripe_customers", ["stripe_info_id"], :name => "index_stripe_customers_on_stripe_info_id"
 
   create_table "stripe_infos", :force => true do |t|
@@ -445,6 +477,8 @@ ActiveRecord::Schema.define(:version => 20140923180023) do
     t.boolean  "provider_marketing_emails",     :default => false
     t.boolean  "provider_newsletters",          :default => false
     t.boolean  "profile_help",                  :default => true
+    t.string   "subscriber_euid"
+    t.string   "subscriber_leid"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

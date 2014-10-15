@@ -37,11 +37,30 @@ class Ability
 		# In response to an email we sent, any one can request we never contact them.
 		alias_action :new_from_email_delivery, to: :create_from_email_delivery
 		can :create_from_email_delivery, ContactBlocker
+		
+		# Any confirmed user can become a customer...
+		# ...and they can read their own customer files.
+		if user.confirmed?
+			alias_action :authorize_payment_confirmation, to: :authorize_payment
+			can :authorize_payment, Customer
+			can :create, Customer unless user.as_customer
+			can :show, Customer, user_id: user.id
+			can :update, Customer, user_id: user.id
+			can :read, CustomerFile, customer_id: user.as_customer.id if user.as_customer
+		end
+		
+		# Provider can read the files of their customers to do charges.
+		# But they shouldn't be able to modify the authorization amount.
+		alias_action :new_charge, to: :create_charge
+		if user.is_provider?
+			can :read, CustomerFile, user_id: user.id
+			can :create_charge, CustomerFile, user_id: user.id
+		end
 
-		# Experts should only be able to edit the profile attached to their user.
+		# Providers should only be able to edit the profile attached to their user account.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.
-		# But don't allow expert to view or edit their profile via the users_controller, because it is too permissive.
-		if user.expert?
+		# But don't allow provider to view or edit their profile via the users_controller, because it is too permissive.
+		if user.is_provider?
 			alias_action :claim_profile, :force_claim_profile, to: :claim_my_profile
 			can :claim_my_profile, User, id: user.id
 			can :create, User, id: user.id

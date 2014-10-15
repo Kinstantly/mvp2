@@ -1,4 +1,4 @@
-Stripe.api_key = ENV['STRIPE_SECRET_KEY'].presence || 'sk_test_AAv7llm8N32E7HErvRqgvjm6'
+Stripe.api_key = Rails.configuration.stripe[:secret_key]
 
 StripeEvent.event_retriever = StripeProcessing::EventRetriever.new
 
