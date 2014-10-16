@@ -358,4 +358,27 @@ describe User do
 		user.should have(:no).errors_on(:username)
 		user.username.should == username
 	end
+	
+	context "email subscriptions" do
+		let(:parent) { FactoryGirl.create :parent }
+		
+		it "can subscribe to mailing lists" do
+			parent.parent_marketing_emails = true
+			parent.parent_newsletters = true
+			parent.save
+			parent.reload
+			parent.parent_marketing_emails.should be_true
+			parent.parent_newsletters.should be_true
+		end
+		
+		it "cannot subscribe to mailing lists if previously blocked" do
+			FactoryGirl.create :contact_blocker, email: parent.email
+			parent.parent_marketing_emails = true
+			parent.parent_newsletters = true
+			parent.save
+			parent.reload
+			parent.parent_marketing_emails.should be_false
+			parent.parent_newsletters.should be_false
+		end
+	end
 end

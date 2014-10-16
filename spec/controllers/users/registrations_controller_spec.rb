@@ -19,9 +19,10 @@ describe Users::RegistrationsController do
 						password_confirmation: new_password,
 						username: username
 					}, marketing_emails_and_newsletters: true
-					
-					assigns[:user].parent_marketing_emails.should be_true
-					assigns[:user].parent_newsletters.should be_true
+
+					user = assigns[:user].reload
+					user.parent_marketing_emails.should be_true
+					user.parent_newsletters.should be_true
 				end
 
 				it "marketing_emails_and_newsletters is false" do
@@ -32,8 +33,9 @@ describe Users::RegistrationsController do
 						username: username
 					}, marketing_emails_and_newsletters: false
 
-					assigns[:user].parent_marketing_emails.should be_false
-					assigns[:user].parent_newsletters.should be_false
+					user = assigns[:user].reload
+					user.parent_marketing_emails.should be_false
+					user.parent_newsletters.should be_false
 				end
 			end
 		end
@@ -60,6 +62,31 @@ describe Users::RegistrationsController do
 				put :update, user: {email: email+"'", current_password: mimi.password}
 				response.should render_template('edit')
 			end
+			
+			it "can subscribe to mailing lists" do
+				put :update, user: {
+					parent_marketing_emails: true,
+					parent_newsletters: true,
+					current_password: mimi.password
+				}
+				
+				user = assigns[:user].reload
+				user.parent_marketing_emails.should be_true
+				user.parent_newsletters.should be_true
+			end
+			
+			it "cannot subscribe to mailing lists if previously blocked" do
+				FactoryGirl.create :contact_blocker, email: mimi.email
+				put :update, user: {
+					parent_marketing_emails: true,
+					parent_newsletters: true,
+					current_password: mimi.password
+				}
+				
+				user = assigns[:user].reload
+				user.parent_marketing_emails.should be_false
+				user.parent_newsletters.should be_false
+			end
 		end
 	end
 	
@@ -75,8 +102,9 @@ describe Users::RegistrationsController do
 						username: username
 					}, marketing_emails_and_newsletters: true
 
-					assigns[:user].provider_marketing_emails.should be_true
-					assigns[:user].provider_newsletters.should be_true
+					user = assigns[:user].reload
+					user.provider_marketing_emails.should be_true
+					user.provider_newsletters.should be_true
 				end
 
 				it "marketing_emails_and_newsletters is false" do
@@ -88,8 +116,9 @@ describe Users::RegistrationsController do
 						username: username
 					}, marketing_emails_and_newsletters: false
 
-					assigns[:user].provider_marketing_emails.should be_false
-					assigns[:user].provider_newsletters.should be_false
+					user = assigns[:user].reload
+					user.provider_marketing_emails.should be_false
+					user.provider_newsletters.should be_false
 				end
 			end
 

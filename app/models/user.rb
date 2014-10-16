@@ -53,6 +53,7 @@ class User < ActiveRecord::Base
 	validates :username, uniqueness: { case_sensitive: false }, if: 'username.present?'
 	validates :phone, phone_number: true, allow_blank: true
 	validates :registration_special_code, length: {maximum: MAX_LENGTHS[:registration_special_code]}
+	validates :parent_marketing_emails, :parent_newsletters, :provider_marketing_emails, :provider_newsletters, email_subscription: true
 	
 	scope :order_by_id, order('id')
 	scope :order_by_descending_id, order('id DESC')
@@ -201,6 +202,11 @@ class User < ActiveRecord::Base
 			!confirmed? && admin_confirmation_sent_at.nil? ? :confirmation_not_sent : super
 	end
 	
+	# True if we are not allowed to contact this user (most likely because they unsubscribed their email address).
+	def contact_is_blocked?
+		email.present? and ContactBlocker.find_by_email(email).present?
+	end
+	
 	# True if this user is currently subscribed to a mailing list.
 	def subscribed_to_mailing_list?
 		subscriber_euid.present? || subscriber_leid.present?
@@ -208,8 +214,8 @@ class User < ActiveRecord::Base
 
 	#Sync subscription info (create new or update) with MailChimp mailing list.
 	def subscribe_to_mailing_list
-		# Do nothing if this user is not confirmed.
-		return false if !confirmed?
+		# Do nothing if this user is not confirmed or we are not allowed to contact them.
+		return false if !confirmed? or contact_is_blocked?
 
 		list_id = Rails.configuration.mailchimp_list_id
 		email_struct = {euid: subscriber_euid, leid: subscriber_leid}
@@ -286,6 +292,16 @@ class User < ActiveRecord::Base
 			logger.error "MailChimp error while unsubscribing user #{id}: #{e.message}, error code: #{e.code}" if logger
 			raise e
 		end
+	end
+	
+	# Ensure that this user is not subscribed to any of our emails.
+	# Assumes that the user will be unsubscribed from external mailing lists via callback(s).
+	def remove_email_subscriptions
+		self.parent_marketing_emails = false
+		self.parent_newsletters = false
+		self.provider_marketing_emails = false
+		self.provider_newsletters = false
+		save!
 	end
 
 	# Public class methods.

@@ -103,7 +103,7 @@ Given /^I am logged in$/ do
   sign_in
 end
 
-Given /^I exist as a user$/ do
+Given /^I exist as a (?:user|provider)$/ do
   create_user
 end
 
