@@ -189,3 +189,6 @@ gem 'stripe_event'
 
 # Money! https://github.com/RubyMoney
 gem 'money-rails'
+
+# Mailchimp API wrapper
+gem "gibbon"

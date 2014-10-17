@@ -118,6 +118,11 @@ Mvp2::Application.configure do
     }
   }
 
+  #Wrapper for MailChimp API
+  Gibbon::API.api_key = "085e4a089df6bbf7d8d748371f95c1b0-us9"
+  Gibbon::API.timeout = 20
+  config.mailchimp_list_id = '7ff7507deb'
+
 end
 
 REINDEX_PROFILES_IN_BACKGROUND = true

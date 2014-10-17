@@ -3,11 +3,11 @@
 ### UTILITY METHODS ###
 
 def create_visitor
-  @visitor ||= { :email => "example@example.com",
+  @visitor ||= { :email => "example@kinstantly.com",
     :password => "P1eas@nt", :password_confirmation => "P1eas@nt" }
-  @visitor_2 ||= { :email => "second_example@example.com",
+  @visitor_2 ||= { :email => "second_example@kinstantly.com",
     :password => "P1eas@ntly", :password_confirmation => "P1eas@ntly" }
-  @admin_user ||= { :email => "admin_example@example.com",
+  @admin_user ||= { :email => "admin_example@kinstantly.com",
     :password => "P1eas@nt", :password_confirmation => "P1eas@nt" }
 end
 
@@ -103,7 +103,7 @@ Given /^I am logged in$/ do
   sign_in
 end
 
-Given /^I exist as a user$/ do
+Given /^I exist as a (?:user|provider)$/ do
   create_user
 end
 

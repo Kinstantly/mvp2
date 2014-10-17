@@ -249,6 +249,7 @@ en:
         invalid_phone_number: '^Phone number must be valid and properly formatted, e.g., "800-555-0199 x47"'
         invalid_email: 'must be a valid address'
         blank: 'is required'
+        contact_is_blocked: 'Sorry. You are blocked from subscribing to our mailing lists. Please contact %{support_email} for more information.'
         not_alphanumeric: 'must contain only letters, numbers, or underscores'
         too_long: 'must have no more than %{count} characters'
         too_short: 'must have at least %{count} characters'

@@ -60,10 +60,40 @@ class User < ActiveRecord::Base
 	validates :username, uniqueness: { case_sensitive: false }, if: 'username.present?'
 	validates :phone, phone_number: true, allow_blank: true
 	validates :registration_special_code, length: {maximum: MAX_LENGTHS[:registration_special_code]}
+	validates :parent_marketing_emails, :parent_newsletters, :provider_marketing_emails, :provider_newsletters, email_subscription: true
 	
 	scope :order_by_id, order('id')
 	scope :order_by_descending_id, order('id DESC')
 	scope :order_by_email, order('lower(email)')
+
+	after_save do
+		# Create new or update/delete existing subscription.
+		new_subscription = !subscribed_to_mailing_list?
+		subscription_attr = changes.slice :email, 
+								:username, 
+								:parent_marketing_emails, 
+								:parent_newsletters, 
+								:provider_marketing_emails, 
+								:provider_newsletters
+		# Proceed only if no subscription exists or subscription exists and least one subscription-related attr changed.
+		if errors.empty? && (new_subscription || subscription_attr.any?)
+			# Find and update/delete subscription groups related to user current role(s).
+			subscription_groups = []
+			if client?
+				subscription_groups << 'parent_marketing_emails' if parent_marketing_emails
+				subscription_groups << 'parent_newsletters' if parent_newsletters
+			end
+			if expert?
+				subscription_groups << 'provider_marketing_emails' if provider_marketing_emails
+				subscription_groups << 'provider_newsletters' if provider_newsletters
+			end
+			if Rails.env.production?
+				subscription_groups.any? ? delay.subscribe_to_mailing_list : delay.unsubscribe_from_mailing_list
+			else
+				subscription_groups.any? ? subscribe_to_mailing_list : unsubscribe_from_mailing_list
+			end
+		end
+	end
 	
 	# Solr search configuration.
 	# searchable do
@@ -184,6 +214,108 @@ class User < ActiveRecord::Base
 			!confirmed? && admin_confirmation_sent_at.nil? ? :confirmation_not_sent : super
 	end
 	
+	# True if we are not allowed to contact this user (most likely because they unsubscribed their email address).
+	def contact_is_blocked?
+		email.present? and ContactBlocker.find_by_email(email).present?
+	end
+	
+	# True if this user is currently subscribed to a mailing list.
+	def subscribed_to_mailing_list?
+		subscriber_euid.present? || subscriber_leid.present?
+	end
+
+	#Sync subscription info (create new or update) with MailChimp mailing list.
+	def subscribe_to_mailing_list
+		# Do nothing if this user is not confirmed or we are not allowed to contact them.
+		return false if !confirmed? or contact_is_blocked?
+
+		list_id = Rails.configuration.mailchimp_list_id
+		email_struct = {euid: subscriber_euid, leid: subscriber_leid}
+		merge_vars = {groupings: []}
+		first_name = username.presence || email.presence
+		last_name  = ''
+		if client?
+			groups = []
+			groups << 'marketing_emails' if parent_marketing_emails
+			groups << 'newsletters' if parent_newsletters
+			if groups.any?
+				merge_vars[:groupings] << {name: 'parent', groups: groups}
+			end
+		end
+		if expert?
+			first_name = profile.first_name if profile.first_name.present?
+			last_name  = profile.last_name if profile.last_name.present?
+			groups = []
+			groups << 'marketing_emails' if provider_marketing_emails
+			groups << 'newsletters' if provider_newsletters
+			if groups.any?
+				merge_vars[:groupings] << {name: 'provider', groups: groups}
+			end
+		end
+
+		merge_vars[:FNAME] = first_name 
+		merge_vars[:LNAME] = last_name 
+
+		if subscriber_euid && subscriber_leid
+			# User is subscribed, but probably changed their email or name.
+			# The email attribute have been updated at this time.
+			# Do not use new email as user identifier in email_struct,
+			# instruct MailChimp to update the email.
+			merge_vars['new-email'] = email
+		else
+			email_struct[:email] = email
+		end
+
+		if merge_vars[:groupings].any?
+			begin
+				gb = Gibbon::API.new
+				r = gb.lists.subscribe id: list_id, 
+					email: email_struct,
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+
+				update_column(:subscriber_euid, r['euid'])
+				update_column(:subscriber_leid, r['leid'])
+			rescue Gibbon::MailChimpError => e
+				logger.error "MailChimp error while subscribing user #{id} to #{merge_vars}: #{e.message}, error code: #{e.code}" if logger
+  				raise e
+  			end
+		end
+	end
+
+	# Remove subscription from MailChimp mailing list
+	def unsubscribe_from_mailing_list
+		return unless subscribed_to_mailing_list? # Gibbon complains if user is not already subscribed.
+		
+		list_id = Rails.configuration.mailchimp_list_id
+		email_struct = {email: email, euid: subscriber_euid, leid: subscriber_leid}
+		begin
+			gb = Gibbon::API.new
+			r = gb.lists.unsubscribe id: list_id, 
+				email: email_struct,
+				delete_member: true,
+				send_goodbye: false,
+				send_notify: false
+
+			update_column(:subscriber_euid, nil)
+			update_column(:subscriber_leid, nil)
+		rescue Gibbon::MailChimpError => e
+			logger.error "MailChimp error while unsubscribing user #{id}: #{e.message}, error code: #{e.code}" if logger
+			raise e
+		end
+	end
+	
+	# Ensure that this user is not subscribed to any of our emails.
+	# Assumes that the user will be unsubscribed from external mailing lists via callback(s).
+	def remove_email_subscriptions
+		self.parent_marketing_emails = false
+		self.parent_newsletters = false
+		self.provider_marketing_emails = false
+		self.provider_newsletters = false
+		save!
+	end
+
 	# Public class methods.
 	#
 	# For methods whose behavior is identical in the superclass when not running as a private site,

@@ -133,6 +133,15 @@ class Profile < ActiveRecord::Base
 	after_save do
 		# Specialty names and custom services/specialties are now merged and saved, so we don't need their names (especially for AJAX updates).
 		self.specialty_names, self.custom_service_names, self.custom_specialty_names = nil, nil, nil
+		# Update MailChimp subscription if first or last name changed
+		subscription_attr = changes.slice(:first_name, :last_name)
+		if claimed? && errors.empty? && subscription_attr.any?
+			if Rails.env.production?
+				user.delay.subscribe_to_mailing_list
+			else
+				user.subscribe_to_mailing_list
+			end
+		end
 	end
 	
 	scope :order_by_id, order('id')
