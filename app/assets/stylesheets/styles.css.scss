@@ -260,7 +260,7 @@
 			@include scale(margin-top, 24);
 		}
 	}
-	#customer {
+	#customer, #customer_files {
 		.button {
 			@include default-button-style;
 			&:hover {

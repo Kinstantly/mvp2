@@ -326,7 +326,7 @@ en:
         submit: 'Authorize'
         submit_disable: 'Authorizing...'
       view:
-        add_to_authorized_amount: 'Add to authorized amount'
+        add_to_authorized_amount: 'add to authorized amount'
         add_to_authorize_amount_buttons: ' '
         authorized_amount: 'Authorized amount'
         cancel: 'Settings'
@@ -337,7 +337,7 @@ en:
         charge_history_statement_description: "Description on your statement"
         customer_button: 'Payment information'
         customer_title: 'Payment information'
-        provider_list_description_html: "You have authorized the providers listed below to charge you for services up to the amount listed.  To increase the amount, click the on provider's <strong>Add to authorized amount</strong> button."
+        provider_list_description_html: "You have authorized the providers listed below to charge you for services up to the amount listed.  To increase the amount, click on the provider's &quot;<strong>%{button_text}</strong>&quot; button."
         provider_name: 'Provider'
     customer_file:
       new_charge:
@@ -345,7 +345,7 @@ en:
         cancel: 'Cancel'
         submit: 'Charge card'
         submit_disable: 'Charging...'
-        title: 'Add new payment'
+        title: 'Add new payment for %{customer}'
       view:
         authorized_amount: 'Authorized amount remaining: %{amount}'
         cancel: 'Client list'
@@ -355,15 +355,18 @@ en:
         charge_history_description: 'Description'
         charge_history_fee: 'Fee'
         charge_history_statement_description: "Description on customer's statement"
+        charge_or_view: 'charge or view'
+        charge_or_view_buttons: ' '
         contact_information: 'Contact information'
+        customer_authorized_amount: 'Authorized amount'
         customer_email: 'Email address'
         customer_list_cancel: 'Settings'
-        customer_list_description: "Click on a client's username or email address to charge their card, view transaction history, or edit their profile."
+        customer_list_description_html: "Click on a client's &quot;<strong>%{button_text}</strong>&quot; button to charge their card or view their transaction history."
         customer_list_title: 'Client list'
         customer_username: 'Username'
         email: 'Email address:'
         new_charge: 'Charge card'
-        reminder_prompt: 'Remind %{user} to reup their authorized amount'
+        reminder_prompt: 'Click here to remind %{user} to increase their authorized amount.'
     home:
       view:
         about: 'About us'

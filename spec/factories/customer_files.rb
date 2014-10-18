@@ -6,6 +6,14 @@ FactoryGirl.define do
 		association :customer, factory: :customer_with_card
 		authorized_amount 1000
 		
+		ignore do
+			authorized_amount_usd nil
+		end
+		
+		after(:build) do |customer_file, evaluator|
+			customer_file.authorized_amount_usd = evaluator.authorized_amount_usd if evaluator.authorized_amount_usd.present?
+		end
+		
 		factory :second_customer_file do
 			association :provider, factory: :second_payable_provider
 			association :customer, factory: :second_customer_with_card

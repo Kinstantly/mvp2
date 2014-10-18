@@ -34,3 +34,9 @@ end
 Then /^I should land on the home page$/ do
 	current_path.should eq root_path
 end
+
+Then /^I should see a "(.*?)" link button on the page$/ do |label|
+	within('a.button') do
+		page.should have_content label
+	end
+end

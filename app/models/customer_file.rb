@@ -100,6 +100,18 @@ class CustomerFile < ActiveRecord::Base
 		false
 	end
 	
+	def customer_email
+		customer.try(:user).try(:email)
+	end
+	
+	def customer_username
+		customer.try(:user).try(:username)
+	end
+	
+	def customer_name
+		customer_username.presence or customer_email
+	end
+	
 	private
 	
 	def charge_amount_is_valid?

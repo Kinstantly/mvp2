@@ -9,6 +9,8 @@ def create_visitor
     :password => "P1eas@ntly", :password_confirmation => "P1eas@ntly" }
   @admin_user ||= { :email => "admin_example@kinstantly.com",
     :password => "P1eas@nt", :password_confirmation => "P1eas@nt" }
+  @payable_provider ||= { :email => "payable_provider@kinstantly.com",
+    :password => "P1eas@nton", :password_confirmation => "P1eas@nton" }
 end
 
 def find_user
@@ -57,6 +59,11 @@ def create_user_2
 	@user_2 = FactoryGirl.create(:expert_user, @visitor_2)
 end
 
+def create_payable_provider
+	create_visitor
+	@user = FactoryGirl.create :payable_provider, @payable_provider
+end
+
 def delete_user
   @user ||= User.where(:email => @visitor[:email]).first
   @user.destroy unless @user.nil?
@@ -91,6 +98,10 @@ end
 
 def sign_in_admin
   sign_in @admin_user
+end
+
+def sign_in_payable_provider
+	sign_in @payable_provider
 end
 
 ### GIVEN ###
