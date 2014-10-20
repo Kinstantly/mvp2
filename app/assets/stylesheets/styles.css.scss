@@ -242,6 +242,9 @@
 				}
 			}
 		}
+		button {
+			text-transform: lowercase;
+		}
 		th, td {
 			@include scale(padding-top, 12);
 		}

@@ -48,6 +48,7 @@ en:
       update_error: 'There was a problem updating the opt-out.'
     customers:
       authorize_payment_error: 'The was a problem with authorizing payment.'
+      card_changed: 'Your card has been changed.'
       payment_authorized: 'Payment has been authorized.'
     customer_files:
       created_charge: 'Charge was completed.'
@@ -322,6 +323,8 @@ en:
         authorized_amount_increment_title_html: 'Add to your authorized amount of %{authorized_amount} for payment to <strong>%{provider}</strong>'
         authorized_amount_placeholder: 'Amount, in dollars'
         cancel: 'Cancel'
+        change_card_button: 'Change card'
+        change_card_title: 'Enter card details'
         credit_card_button: 'Authorize'
         submit: 'Authorize'
         submit_disable: 'Authorizing...'
@@ -330,6 +333,7 @@ en:
         add_to_authorize_amount_buttons: ' '
         authorized_amount: 'Authorized amount'
         cancel: 'Settings'
+        change_card_buttons: ' '
         charge_history: 'Transaction history'
         charge_history_amount: 'Amount charged'
         charge_history_date: 'Date'

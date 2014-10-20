@@ -46,7 +46,9 @@ class CustomersController < ApplicationController
 			amount:       params[:authorized_amount]
 		)
 		
-		respond_with @customer, location: authorize_payment_confirmation_path(params[:profile_id]) do |format|
+		success_path = authorize_payment_confirmation_path params[:profile_id], created: true
+		
+		respond_with @customer, location: success_path do |format|
 			if success
 				set_flash_message :notice, :payment_authorized
 			else
@@ -65,8 +67,12 @@ class CustomersController < ApplicationController
 			amount_increment: params[:authorized_amount_increment]
 		)
 		
-		respond_with @customer, location: authorize_payment_confirmation_path(params[:profile_id]) do |format|
-			if success
+		success_path = authorize_payment_confirmation_path params[:profile_id], card_changed: params[:card_changed]
+		
+		respond_with @customer, location: success_path do |format|
+			if success and params[:card_changed]
+				set_flash_message :notice, :card_changed
+			elsif success
 				set_flash_message :notice, :payment_authorized
 			else
 				format.html { render :authorize_payment }
