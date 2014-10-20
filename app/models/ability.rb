@@ -24,6 +24,11 @@ class Ability
 		can :rate, Profile, is_published: true if user.confirmed?
 		cannot :rate, Profile, user_id: user.id
 		
+		# Profiles for providers that are set up to receive payments.
+		can :about_payments, Profile do |profile|
+			profile.payable_provider.present? and profile.is_published
+		end
+		
 		# Any confirmed user can create a review of a published profile.
 		# However, a provider cannot review themself.
 		can :create, Review if user.confirmed?

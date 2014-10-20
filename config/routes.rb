@@ -63,6 +63,7 @@ Mvp2::Application.routes.draw do
 			get 'services_info'
 			get 'show_tab'
 			get 'edit_tab'
+			get 'about_payments'
 		end
 		collection do
 			get :admin

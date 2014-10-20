@@ -1,0 +1,19 @@
+- @body_class = 'interior about'
+- @page_title = "#{company_name} - Learn more about payments"
+- cache ['about_payments', @profile] do
+	%section#content
+		%header#about_payments.payments
+			%h1 Kinstantly gives families and providers a better way to handle payments and invoicing.
+			%h2 Kinstantly Pre-Authorized Payments lets you
+			%ul
+				%li Enter your credit card details securely
+				%li Enter an upper limit for what the provider can charge you
+				%li Not have to worry about paying for each appointment, as long as you haven't exceeded your limit
+				%li Unlock the ability to pay for shorter periods of time with your provider, like a ten-minute phone call or five-minute video chat when you need answers most
+			%p
+				Ready to get started?
+				= link_to 'Just click here', authorize_payment_path(@profile)
+				- if user_signed_in?
+					and fill out a short form.
+				- else
+					and fill out a short form (you'll be asked to sign up or log in first).

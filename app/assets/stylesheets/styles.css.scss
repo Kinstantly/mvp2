@@ -212,7 +212,7 @@
 		}
 	}
 	
-	#customer_file, #customer_files, #customer, #authorize_payment_confirmation {
+	.payments {
 		h1, h2 {
 			font-family: $header-font-stack;
 			font-weight: 500;
@@ -255,7 +255,20 @@
 			}
 		}
 	}
-	#authorize_payment_confirmation {
+	#about_payments {
+		h2, p {
+			@include scale(padding-top, 24);
+		}
+		p {
+			font-size: 100%;
+		}
+		li {
+			list-style: disc;
+			@include scale(padding-top, 12);
+			@include scale(margin-left, 12);
+		}
+	}
+	#authorize_payment_confirmation, #about_payments {
 		p + p, .buttons {
 			@include scale(margin-top, 24);
 		}

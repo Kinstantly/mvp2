@@ -66,6 +66,11 @@ def create_published_profile_2
 	@published_profile_2 = FactoryGirl.create(:profile, @published_profile_data_2)
 end
 
+def create_profile_for_payable_provider
+	customer_file = FactoryGirl.create :customer_file
+	@profile_for_payable_provider = customer_file.provider.profile
+end
+
 def formlet_id(name)
 	case name
 	when 'availability/service area'
@@ -321,6 +326,10 @@ Given /^(?:my|the) profile with admin notes "(.*?)"$/ do |notes|
 	@profile.save
 end
 
+Given /^a profile for a payable provider$/ do
+	create_profile_for_payable_provider
+end
+
 Given /^there is a search area tag named "(.*?)"$/ do |tag|
 	FactoryGirl.create(:search_area_tag, name: tag)
 end
@@ -527,6 +536,10 @@ end
 
 When /^I visit the published profile page$/ do
 	visit profile_path(@published_profile)
+end
+
+When /^I visit the payable provider's profile page$/ do
+	visit profile_path(@profile_for_payable_provider)
 end
 
 When /^I click on the link for an unclaimed profile$/ do

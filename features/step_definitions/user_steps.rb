@@ -64,6 +64,13 @@ def create_payable_provider
 	@user = FactoryGirl.create :payable_provider, @payable_provider
 end
 
+def create_client_of_payable_provider
+	user = create_client_user
+	customer = FactoryGirl.create :customer_with_card, user: user
+	FactoryGirl.create :customer_file, customer: customer
+	user
+end
+
 def delete_user
   @user ||= User.where(:email => @visitor[:email]).first
   @user.destroy unless @user.nil?
@@ -146,6 +153,11 @@ Given /^I am logged in as (an administrator|a profile editor)$/ do |role|
 		create_profile_editor
 		sign_in
 	end
+end
+
+Given /^I am a client of a payable provider$/ do
+	client = create_client_of_payable_provider
+	@profile_for_payable_provider = client.as_customer.customer_files.first.provider.profile
 end
 
 Given /^I am on my account edit page$/ do

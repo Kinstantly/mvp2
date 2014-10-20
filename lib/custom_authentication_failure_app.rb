@@ -69,6 +69,6 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 	
 	# If we are a new customer, we need to register or sign in as a member.
 	def new_customer?
-		params[:controller] == 'customers' && ['new', 'create'].include?(params[:action])
+		params[:controller] == 'customers' && ['new', 'create', 'authorize_payment'].include?(params[:action])
 	end
 end
