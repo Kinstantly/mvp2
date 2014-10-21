@@ -106,6 +106,11 @@ module Mvp2
     config.middleware.insert_before Rack::ConditionalGet, Rack::Deflater
 
     config.cloudfront_domain_name = ENV['CLOUDFRONT_DOMAIN_NAME'].presence || 'd3nqozpn39ttwm.cloudfront.net'
+
+    # Wrapper for MailChimp API
+    Gibbon::API.api_key = ENV['MAILCHIMP_API_KEY'].presence || 'd2d86fa72c30091991e5fd461b499f3d-us9'
+    Gibbon::API.timeout = ENV['MAILCHIMP_API_TIMEOUT'].presence || 20
+    config.mailchimp_list_id = ENV['MAILCHIMP_LIST_ID'].presence || '3eab1f1e96'
   end
 end
 
