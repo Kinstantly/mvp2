@@ -6,7 +6,7 @@ namespace :mailchimp do
 		batch = []
 		puts "Starting MailChimp batch-subscribe to the list# #{list_id}. Batch size: #{subscribers.size}"
 		subscribers.each do |subscriber|
-			next if !(subscriber.client? || subscriber.expert?)
+			next if !(subscriber.client? || subscriber.expert?) or !subscriber.confirmed? or subscriber.contact_is_blocked?
 			merge_vars = {groupings: []}
 			first_name = subscriber.username.presence || subscriber.email.presence
 			last_name  = ''
