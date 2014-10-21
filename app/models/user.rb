@@ -318,7 +318,7 @@ class User < ActiveRecord::Base
 	
 	# True if this user is a client of the given provider.
 	def is_client_of?(provider)
-		as_customer ? as_customer.customer_files.for_provider(provider).present? : false
+		as_customer && provider ? as_customer.customer_files.for_provider(provider).present? : false
 	end
 
 	# Public class methods.

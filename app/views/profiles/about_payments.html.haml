@@ -1,6 +1,6 @@
 - @body_class = 'interior about'
 - @page_title = "#{company_name} - Learn more about payments"
-- cache ['about_payments', @profile] do
+- cache ['about_payments', @profile, user_signed_in?] do
 	%section#content
 		%header#about_payments.payments
 			%h1 Kinstantly gives families and providers a better way to handle payments and invoicing.

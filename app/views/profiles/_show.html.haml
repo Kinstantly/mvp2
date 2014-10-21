@@ -87,7 +87,8 @@
 				%h3= Profile.human_attribute_name :year_started
 				%p= @profile.year_started
 %section.profile.right
-	- cache ['profile_map_promo', @profile] do
+	- current_user_is_client_of_provider = current_user.try(:is_client_of?, @profile.payable_provider).present?
+	- cache ['profile_map_promo', @profile, current_user_is_client_of_provider] do
 		%section.map
 			.map-embed
 				= render partial: 'profiles/locations_map', locals: {profile: @profile, context: :profile_show}
@@ -115,7 +116,7 @@
 		- if @profile.payable_provider
 			%section.payment_promo
 				= t 'views.profile.view.payment_promo'
-				- if current_user.try(:is_client_of?, @profile.payable_provider)
+				- if current_user_is_client_of_provider
 					= link_to t('views.profile.view.payment_authorization_link'), authorize_payment_path(@profile)
 				- else
 					= link_to t('views.profile.view.payment_info_link'), about_payments_profile_path(@profile)
