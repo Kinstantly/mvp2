@@ -10,6 +10,7 @@
 		%meta{property: 'og:description', content: og_description}
 	%meta{property: 'og:site_name', content: t('company.name')}
 	%meta{property: 'og:updated_time', content: display_profile_date(@profile.updated_at)}
+	%meta{name: "thumbnail", content: @profile.profile_photo.url(:original)}
 - show_and_edit = can?(:manage_my_profile, @profile) || can?(:edit, @profile)
 - if show_and_edit
 	= javascript_include_tag 'profile_edit'

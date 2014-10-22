@@ -1,5 +1,7 @@
 - provider_score_title = provider_rating_average_score profile
 %span{class: "reviews #{provider_rating_stars_css_class profile}", title: provider_score_title}
+	%meta{itemprop: "ratingValue", content: provider_score_title}
+	%meta{itemprop: "reviewCount", content: "#{profile.reviews.size}"}
 	- Rating::SCORES.reverse_each do |i|
 		%span{class: "star star#{i}"}
 .review-num
