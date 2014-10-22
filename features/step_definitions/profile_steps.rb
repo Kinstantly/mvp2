@@ -840,7 +840,7 @@ Then /^the display name should be dynamically shown as "(.*?)"$/ do |display_nam
 end
 
 Then /^I should see profile data for that user$/ do
-	within('.url[itemprop="url"]') do
+	within('.links .url') do
 		page.should have_content MyHelpers.strip_url(@profile_data[:url])
 	end
 end
