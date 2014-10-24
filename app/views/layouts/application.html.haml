@@ -67,7 +67,7 @@
 			- if alert.present? and !@suppress_header_alert
 				.alert= alert
 		= yield :body_before_main_content
-		%article#content{class: "container" + (@content_class ? " #{@content_class}" : "")}
+		%article#content{class: ["container", @content_class]}
 			- if @body_class.try :match, /\binterior\b/
 				- unless @content_class.try :include?, 'no-upper-hr'
 					%hr/

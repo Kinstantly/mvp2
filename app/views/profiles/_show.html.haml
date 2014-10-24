@@ -8,220 +8,226 @@
 		- unless @profile.claimed?
 			-# %br/
 			= claim_profile_link
-#claim_profile
-	.popover.generic_form
-%section.profile.left
-	%header#content-header.header{itemscope: '', itemtype: 'http://schema.org/Person'}
-		- cache ['profile_header_sans_rating', @profile] do
-			- if @profile.company_name.present? && @profile.display_name_presentable?
-				%h2{itemprop: 'affiliation'}= @profile.company_name
-			%h1{itemprop: 'name'}= @profile.display_name_otherwise_company
-			%h3{itemprop: 'jobTitle'}= @profile.headline
-			.ratings-section
-				%h5.ratings-header= t 'views.profile.view.average_rating'
-				= render partial: 'profiles/rating_score', locals: {profile: @profile}
-		-# Do not try to cache the user's rating and review info because it is unique to each user.
-		- unless @profile == current_user.try(:profile)
-			.ratings-section
-				%h5.ratings-header= t 'rating.prompt_for_score'
-				= render partial: 'profiles/rate', locals: {profile: @profile}
-				.review-num.add-review= profile_review_link @profile
-	- cache ['profile_links_description', @profile] do
-		%section.links
-			.profile-photos
-				= image_tag @profile.profile_photo.url(:original), alt: "#{@profile.display_name_or_company}", border: '0', itemprop: 'image', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(@profile)
-				-# .photos-nav
-				-# 	%a.prev{:href => "#"} &lt;
-				-# 	%a.next{:href => "#"} &gt;
-			%aside.links
-				%ul
-					- if @profile.url.present?
-						%li.url{itemprop: 'url'}
-							%span.short.url_icon= profile_linked_website @profile, strip_url(@profile.url), 24
-							%span.long.url_icon= profile_linked_website @profile, strip_url(@profile.url), 40
-					- if @profile.email.present?
-						%li.email{itemprop: 'email'}
-							%span.email_icon= profile_captcha_email @profile
-							%span.info.tooltip{:href => "#"}
-								
-								.help_popover= t 'views.profile.view.email_help'
-					-# %li.videos{itemprop: 'videos'}
-					-# 	%a{:href => "#"} 3 videos
-					%li#likes{itemprop: 'facebook'}
-						.fb-like{"data-action" => "like", "data-href" => "#{profile_url @profile}", "data-layout" => "button_count", "data-share" => "true", "data-show-faces" => "false"}
-		%section.description
-			- if @profile.summary.present?
-				%h3= Profile.human_attribute_name :summary
-				.show-more
-					%p.text_area= profile_display_text @profile.summary, preserve: true, links: true
-			- if @profile.specialties.present?
-				%h3= Profile.human_attribute_name :specialties
-				%ul
-					- @profile.specialties.each do |specialty|
-						%li= specialty.name
-			- if @profile.hours.present?
-				%h3= Profile.human_attribute_name :hours
-				%p.text_area= profile_display_text @profile.hours, preserve: true, links: true
-			- if @profile.availability_service_area_note.present?
-				%h3= Profile.human_attribute_name :availability_service_area_note
-				%p.text_area= profile_display_text @profile.availability_service_area_note, preserve: true, links: true
-			- if @profile.ages_stages_note.present?
-				%h3= Profile.human_attribute_name :ages_stages
-				%p.text_area= profile_display_text @profile.ages_stages_note, preserve: true
-			- if @profile.pricing.present?
-				%h3= Profile.human_attribute_name :pricing
-				%p.text_area= profile_display_text @profile.pricing, preserve: true, links: true
-			- if @profile.insurance_accepted.present?
-				%h3= Profile.human_attribute_name :insurance_accepted
-				%p= profile_display_text @profile.insurance_accepted, serialize: true, links: true
-			- if @profile.languages.present?
-				%h3= Profile.human_attribute_name :languages
-				%p= profile_display_text @profile.languages, serialize: true
-			- if @profile.certifications.present?
-				%h3= Profile.human_attribute_name :certifications
-				%p= profile_display_text @profile.certifications, serialize: true, links: true
-			- if @profile.education.present?
-				%h3= Profile.human_attribute_name :education
-				%p.text_area= profile_display_text @profile.education, preserve: true, links: true
-			- if @profile.year_started.present?
-				%h3= Profile.human_attribute_name :year_started
-				%p= @profile.year_started
-%section.profile.right
-	- current_user_is_client_of_provider = current_user.try(:is_client_of?, @profile.payable_provider).present?
-	- cache ['profile_map_promo', @profile, current_user_is_client_of_provider] do
-		%section.map
-			.map-embed
-				= render partial: 'profiles/locations_map', locals: {profile: @profile, context: :profile_show}
-			- (locations = @profile.sorted_locations).each_with_index do |location, i|
-				.location_block{'data-i' => "#{i}"}
-					- if location.display_address.present?
-						%aside.address.location
-							%span{itemprop: 'street-address', class: 'nonlinked_address'}
-								%span= location.address1
-								%span= location.address2
-								%span= location.display_city_region_postal_code
-							%a{itemprop: 'street-address', 'data-latitude' => location.latitude, 'data-longitude' => location.longitude}
-								%span= location.address1
-								%span= location.address2
-								%span= location.display_city_region_postal_code
-					- if location.phone.present?
-						%aside.telephone.location
-							%span{itemprop: 'telephone'}= location_linked_phone location
-					%aside.information.location
-						- if location.note.present?
-							%span= location.note
-						- if i == 0 && locations.size > 1
-							= link_to t('views.profile.view.more_locations'), '#', class: 'more'
-							= link_to t('views.profile.view.hide_locations'), '#', class: 'less'
-		- if @profile.payable_provider
-			%section.payment_promo
-				= t 'views.profile.view.payment_promo'
-				- if current_user_is_client_of_provider
-					= link_to t('views.profile.view.payment_authorization_link'), authorize_payment_path(@profile)
-				- else
-					= link_to t('views.profile.view.payment_info_link'), about_payments_profile_path(@profile)
-		%section.promo
-			- if @profile.widget_code.present?
-				-# .ui-helper-clearfix
-				.promo_container= raw @profile.widget_code
-	-# Cache the entire reviews section so we do not have to read nested reviewer caches unless necessary.
-	- ordered_reviews = @profile.reviews.order_by_descending_created_at
-	- cache ['profile_reviews', @profile]+ordered_reviews.map(&:reviewer).uniq do
-		%section#reviews.reviews-list
-			%ol
-				- reviewer_i = 0
-				- ordered_reviews.group_by(&:reviewer_email).each do |reviewer_email, reviews|
-					- reviewer = reviews.first.reviewer
-					- rating = @profile.rating_by(reviewer)
-					- cache ['profile_reviewer', reviewer, rating]+reviews do
-						%li.review{id: "review#{reviewer_i += 1}"}
-							- reviews.each_with_index do |review, i|
-								%header.author.vcard
-									- if i == 0
-										-# %img.avatar{:alt => "avatar", :src => "http://placehold.it/60x60"}/
-										-# = user_profile_link reviewer, class: 'name'
-										- user_display_name = user_display_name reviewer
-										%span.name{title: user_display_name}= user_display_name
-										%span.meta= user_review_count reviewer
-									- else
-										&nbsp;
-								%article.review
-									%footer.meta
+#profile_content{itemscope: '', itemtype: 'http://schema.org/LocalBusiness'}
+	#claim_profile
+		.popover.generic_form
+	%section.profile.left
+		%header#content-header.header
+			- cache ['profile_header_sans_rating', @profile] do
+				- if @profile.company_name.present? && @profile.display_name_presentable?
+					%h2= @profile.company_name
+				%h1{itemprop: 'name'}= @profile.display_name_otherwise_company
+				%h3= @profile.headline
+				.ratings-section{itemprop: "aggregateRating", itemscope: "", itemtype: "http://schema.org/AggregateRating"}
+					%h5.ratings-header= t 'views.profile.view.average_rating'
+					= render partial: 'profiles/rating_score', locals: {profile: @profile}
+			-# Do not try to cache the user's rating and review info because it is unique to each user.
+			- unless @profile == current_user.try(:profile)
+				.ratings-section
+					%h5.ratings-header= t 'rating.prompt_for_score'
+					= render partial: 'profiles/rate', locals: {profile: @profile}
+					.review-num.add-review= profile_review_link @profile
+		- cache ['profile_links_description', @profile] do
+			%section.links
+				.profile-photos
+					= image_tag @profile.profile_photo.url(:original), alt: "#{@profile.display_name_or_company}", border: '0', itemprop: 'logo', onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'", longdesc: profile_path(@profile)
+					-# .photos-nav
+					-# 	%a.prev{:href => "#"} &lt;
+					-# 	%a.next{:href => "#"} &gt;
+				%aside.links
+					%ul
+						- if @profile.url.present?
+							%li.url
+								%span.short.url_icon= profile_linked_website @profile, strip_url(@profile.url), 24
+								%span.long.url_icon= profile_linked_website @profile, strip_url(@profile.url), 40
+						- if @profile.email.present?
+							%li.email
+								%span.email_icon= profile_captcha_email @profile
+								%span.info.tooltip{:href => "#"}
+									
+									.help_popover= t 'views.profile.view.email_help'
+						-# %li.videos{itemprop: 'videos'}
+						-# 	%a{:href => "#"} 3 videos
+						%li#likes
+							.fb-like{"data-action" => "like", "data-href" => "#{profile_url @profile}", "data-layout" => "button_count", "data-share" => "true", "data-show-faces" => "false"}
+			%section.description
+				- if @profile.summary.present?
+					%h3= Profile.human_attribute_name :summary
+					%meta{itemprop: "description", content: profile_display_text(@profile.summary)}
+					.show-more
+						%p.text_area= profile_display_text @profile.summary, preserve: true, links: true
+				- if @profile.specialties.present?
+					%h3= Profile.human_attribute_name :specialties
+					%ul
+						- @profile.specialties.each do |specialty|
+							%li= specialty.name
+				- if @profile.hours.present?
+					%h3= Profile.human_attribute_name :hours
+					%p.text_area= profile_display_text @profile.hours, preserve: true, links: true
+				- if @profile.availability_service_area_note.present?
+					%h3= Profile.human_attribute_name :availability_service_area_note
+					%p.text_area= profile_display_text @profile.availability_service_area_note, preserve: true, links: true
+				- if @profile.ages_stages_note.present?
+					%h3= Profile.human_attribute_name :ages_stages
+					%p.text_area= profile_display_text @profile.ages_stages_note, preserve: true
+				- if @profile.pricing.present?
+					%h3= Profile.human_attribute_name :pricing
+					%p.text_area= profile_display_text @profile.pricing, preserve: true, links: true
+				- if @profile.insurance_accepted.present?
+					%h3= Profile.human_attribute_name :insurance_accepted
+					%p= profile_display_text @profile.insurance_accepted, serialize: true, links: true
+				- if @profile.languages.present?
+					%h3= Profile.human_attribute_name :languages
+					%p= profile_display_text @profile.languages, serialize: true
+				- if @profile.certifications.present?
+					%h3= Profile.human_attribute_name :certifications
+					%p= profile_display_text @profile.certifications, serialize: true, links: true
+				- if @profile.education.present?
+					%h3= Profile.human_attribute_name :education
+					%p.text_area= profile_display_text @profile.education, preserve: true, links: true
+				- if @profile.year_started.present?
+					%h3= Profile.human_attribute_name :year_started
+					%p= @profile.year_started
+	%section.profile.right
+		- current_user_is_client_of_provider = current_user.try(:is_client_of?, @profile.payable_provider).present?
+		- cache ['profile_map_promo', @profile, current_user_is_client_of_provider] do
+			%section.map
+				.map-embed
+					= render partial: 'profiles/locations_map', locals: {profile: @profile, context: :profile_show}
+				- (locations = @profile.sorted_locations).each_with_index do |location, i|
+					.location_block{'data-i' => "#{i}"}
+						- if location.display_address.present?
+							%aside.address.location{itemprop: "address", itemscope: "", itemtype: "http://schema.org/PostalAddress"}
+								%span{itemprop: 'streetAddress', class: 'nonlinked_address'}
+									%span= location.address1
+									%span= location.address2
+									%span= location.display_city_region_postal_code
+								%a{'data-latitude' => location.latitude, 'data-longitude' => location.longitude}
+									%span= location.address1
+									%span= location.address2
+									%span= location.display_city_region_postal_code
+							%div{itemprop: "geo", itemscope: "", itemtype: "http://schema.org/GeoCoordinates"}
+								%meta{itemprop: "latitude", content:"#{location.latitude}"}
+								%meta{itemprop: "longitude", content:"#{location.longitude}"}
+						- if location.phone.present?
+							%aside.telephone.location
+								%span{itemprop: 'telephone'}= location_linked_phone location
+						%aside.information.location
+							- if location.note.present?
+								%span= location.note
+							- if i == 0 && locations.size > 1
+								= link_to t('views.profile.view.more_locations'), '#', class: 'more'
+								= link_to t('views.profile.view.hide_locations'), '#', class: 'less'
+			- if @profile.payable_provider
+				%section.payment_promo
+					= t 'views.profile.view.payment_promo'
+					- if current_user_is_client_of_provider
+						= link_to t('views.profile.view.payment_authorization_link'), authorize_payment_path(@profile)
+					- else
+						= link_to t('views.profile.view.payment_info_link'), about_payments_profile_path(@profile)
+			%section.promo
+				- if @profile.widget_code.present?
+					-# .ui-helper-clearfix
+					.promo_container= raw @profile.widget_code
+		-# Cache the entire reviews section so we do not have to read nested reviewer caches unless necessary.
+		- ordered_reviews = @profile.reviews.order_by_descending_created_at
+		- cache ['profile_reviews', @profile]+ordered_reviews.map(&:reviewer).uniq do
+			%section#reviews.reviews-list
+				%ol
+					- reviewer_i = 0
+					- ordered_reviews.group_by(&:reviewer_email).each do |reviewer_email, reviews|
+						- reviewer = reviews.first.reviewer
+						- rating = @profile.rating_by(reviewer)
+						- cache ['profile_reviewer', reviewer, rating]+reviews do
+							%li.review{id: "review#{reviewer_i += 1}"}
+								- user_display_name = user_display_name reviewer
+								- reviews.each_with_index do |review, i|
+									%header.author
 										- if i == 0
-											= render partial: 'single_rating_score', locals: {rating: rating}
-										%span.date= display_profile_date review.created_at
-										%h4= review.title
-									.review-text
-										%p= profile_display_text review.body, preserve: true
-									-if review.good_to_know.present?
-										%aside.tip
-											%strong= t 'views.review.view.good_to_know_heading'
-											= review.good_to_know
-							-# .review-bottom &nbsp;
-							%hr/
+											-# %img.avatar{:alt => "avatar", :src => "http://placehold.it/60x60"}/
+											-# = user_profile_link reviewer, class: 'name'
+											%span.name{title: user_display_name}= user_display_name
+											%span.meta= user_review_count reviewer
+										- else
+											&nbsp;
+									%article.review{itemprop: "review",itemscope: "", itemtype: "http://schema.org/Review", itemref: "profile_content"}
+										%footer.meta{itemprop: "author", content: "#{user_display_name}"}
+											- if i == 0
+												= render partial: 'single_rating_score', locals: {rating: rating}
+											%span.date= display_profile_date review.created_at
+											%meta{itemprop: "datePublished", content: review.created_at.strftime("%Y-%m-%d")}
+											%h4{itemprop: "name"}= review.title
+										.review-text
+											%p{itemprop: "reviewBody"}= profile_display_text review.body, preserve: true
+										-if review.good_to_know.present?
+											%aside.tip
+												%strong= t 'views.review.view.good_to_know_heading'
+												= review.good_to_know
+								-# .review-bottom &nbsp;
+								%hr/
 
--# For editors and administrators only.
-- if can? :manage, Profile
-	.editor_info
-		.show_stripe_connect_state
-			= @profile.show_stripe_connect ? t('views.profile.view.showing_stripe_connect') : t('views.profile.view.not_showing_stripe_connect')
-		.stripe_info
-			= profile_stripe_info @profile
-		.public_on_private_site_state
-			= @profile.public_on_private_site ? t('views.profile.view.profile_is_public_on_private_site') : t('views.profile.view.profile_is_not_public_on_private_site')
-		.publish_state
-			= @profile.is_published ? t('views.profile.view.profile_is_published') : t('views.profile.view.profile_is_not_published')
-		.user_state
-			= @profile.owned? ? t('views.profile.view.profile_is_owned_by', owner: @profile.user.email) : t('views.profile.view.profile_is_not_owned')
-		.invitation_state
-			- if (profile_invitation_info = profile_invitation_info @profile)
-				%ul
-					- profile_invitation_info.each do |info|
-						%li= info
-					- @profile.contact_blockers.each do |contact_blocker|
-						%li
-							= t('models.profile.invitation_email.contact_blocked_for', email: contact_blocker.email)
-							- if can? :manage, contact_blocker
-								= link_to t('views.click_to_view'), contact_blocker
-		.registration_special_code
-			- if (registration_special_code = @profile.user.try :registration_special_code)
-				= "#{Profile.human_attribute_name :user_registration_special_code}: #{registration_special_code}"
-	.admin_info
-		- if @profile.admin_notes.present?
-			.admin_notes
-				%span.label= "#{Profile.human_attribute_name(:admin_notes)}:"
-				%br
-				.value.text_area= preserve_profile_text @profile.admin_notes
-		- if @profile.lead_generator.present?
-			.lead_generator
-				= "#{Profile.human_attribute_name(:lead_generator)}:"
-				= @profile.lead_generator
-	.search_info
-		#categories_info
-			= "#{Profile.human_attribute_name :categories}:"
-			.value
-				%span.attribute_display= profile_wrap_item_names @profile.categories
-		#subcategories_info
-			= "#{Profile.human_attribute_name :subcategories}:"
-			.value
-				%span.attribute_display= profile_wrap_item_names @profile.subcategories
-		#services_info
-			= "#{Profile.human_attribute_name :services}:"
-			.value
-				%span.attribute_display= profile_wrap_item_names @profile.services
-		#specialty_search_terms_info
-			%span.label= t 'views.profile.view.specialty_search_terms'
-			%br
-			.value
-				- @profile.specialty_search_terms_map.each_pair do |specialty_name, search_terms|
-					%b= "#{specialty_name}:"
-					%span.attribute_display= display_wrapped_names search_terms
+	-# For editors and administrators only.
+	- if can? :manage, Profile
+		.editor_info
+			.show_stripe_connect_state
+				= @profile.show_stripe_connect ? t('views.profile.view.showing_stripe_connect') : t('views.profile.view.not_showing_stripe_connect')
+			.stripe_info
+				= profile_stripe_info @profile
+			.public_on_private_site_state
+				= @profile.public_on_private_site ? t('views.profile.view.profile_is_public_on_private_site') : t('views.profile.view.profile_is_not_public_on_private_site')
+			.publish_state
+				= @profile.is_published ? t('views.profile.view.profile_is_published') : t('views.profile.view.profile_is_not_published')
+			.user_state
+				= @profile.owned? ? t('views.profile.view.profile_is_owned_by', owner: @profile.user.email) : t('views.profile.view.profile_is_not_owned')
+			.invitation_state
+				- if (profile_invitation_info = profile_invitation_info @profile)
+					%ul
+						- profile_invitation_info.each do |info|
+							%li= info
+						- @profile.contact_blockers.each do |contact_blocker|
+							%li
+								= t('models.profile.invitation_email.contact_blocked_for', email: contact_blocker.email)
+								- if can? :manage, contact_blocker
+									= link_to t('views.click_to_view'), contact_blocker
+			.registration_special_code
+				- if (registration_special_code = @profile.user.try :registration_special_code)
+					= "#{Profile.human_attribute_name :user_registration_special_code}: #{registration_special_code}"
+		.admin_info
+			- if @profile.admin_notes.present?
+				.admin_notes
+					%span.label= "#{Profile.human_attribute_name(:admin_notes)}:"
 					%br
-		#search_terms_info
-			%span.label= t 'views.profile.view.search_terms'
-			%br
-			.value
-				%span.attribute_display= display_wrapped_names @profile.search_terms_array
+					.value.text_area= preserve_profile_text @profile.admin_notes
+			- if @profile.lead_generator.present?
+				.lead_generator
+					= "#{Profile.human_attribute_name(:lead_generator)}:"
+					= @profile.lead_generator
+		.search_info
+			#categories_info
+				= "#{Profile.human_attribute_name :categories}:"
+				.value
+					%span.attribute_display= profile_wrap_item_names @profile.categories
+			#subcategories_info
+				= "#{Profile.human_attribute_name :subcategories}:"
+				.value
+					%span.attribute_display= profile_wrap_item_names @profile.subcategories
+			#services_info
+				= "#{Profile.human_attribute_name :services}:"
+				.value
+					%span.attribute_display= profile_wrap_item_names @profile.services
+			#specialty_search_terms_info
+				%span.label= t 'views.profile.view.specialty_search_terms'
+				%br
+				.value
+					- @profile.specialty_search_terms_map.each_pair do |specialty_name, search_terms|
+						%b= "#{specialty_name}:"
+						%span.attribute_display= display_wrapped_names search_terms
+						%br
+			#search_terms_info
+				%span.label= t 'views.profile.view.search_terms'
+				%br
+				.value
+					%span.attribute_display= display_wrapped_names @profile.search_terms_array
 
 :javascript
 	my_vars.profile_claim_form_url = '#{new_claim_for_profile_path @profile}';
