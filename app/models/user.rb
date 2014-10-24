@@ -243,8 +243,10 @@ class User < ActiveRecord::Base
 			end
 		end
 		if expert?
-			first_name = profile.first_name if profile.first_name.present?
-			last_name  = profile.last_name if profile.last_name.present?
+			if profile.first_name.present?
+				first_name = profile.first_name
+				last_name  = profile.last_name if profile.last_name.present?
+			end
 			groups = []
 			groups << 'marketing_emails' if provider_marketing_emails
 			groups << 'newsletters' if provider_newsletters
@@ -274,13 +276,14 @@ class User < ActiveRecord::Base
 					merge_vars: merge_vars,
 					double_optin: false,
 					update_existing: true
-
-				update_column(:subscriber_euid, r['euid'])
-				update_column(:subscriber_leid, r['leid'])
+				if r.present?
+					update_column(:subscriber_euid, r['euid'])
+					update_column(:subscriber_leid, r['leid'])
+				end
 			rescue Gibbon::MailChimpError => e
 				logger.error "MailChimp error while subscribing user #{id} to #{merge_vars}: #{e.message}, error code: #{e.code}" if logger
-  				raise e
-  			end
+				raise e
+			end
 		end
 	end
 

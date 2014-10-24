@@ -380,5 +380,198 @@ describe User do
 			parent.parent_marketing_emails.should be_false
 			parent.parent_newsletters.should be_false
 		end
+
+		context "unconfirmed user", mailchimp: true do
+			let(:user) { FactoryGirl.create :client_user, require_confirmation: true, parent_marketing_emails: true, parent_newsletters: true }
+				
+			it "should not be added to mailing list before confirmation" do
+				user.subscriber_euid.should be_false
+				user.subscriber_euid.should be_false
+			end
+
+			it "should be added to mailing list after confirmation" do
+				user.confirm!
+				user.save
+				user.reload
+				user.subscriber_euid.should_not be_nil
+				user.subscriber_euid.should_not be_nil
+			end
+		end
+
+		context "parent", mailchimp: true do
+			it "should set mailchimp subscriber name to username" do
+				parent.parent_marketing_emails = true
+				parent.parent_newsletters = true
+				merge_vars = {groupings: [name: 'parent', groups: ['marketing_emails', 'newsletters']],
+						FNAME: parent.username,
+						LNAME: ""}
+				opts = {
+					email: {euid: parent.subscriber_euid, leid: parent.subscriber_leid, email: parent.email},
+					id: Rails.configuration.mailchimp_list_id,
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+				}
+				gb_obj = Gibbon::API.new.lists.class
+				gb_obj.any_instance.should_receive(:subscribe).with(opts).once
+				parent.subscribe_to_mailing_list
+			end
+
+			it "should set mailchimp subscriber name to email if username is empty" do
+				parent.parent_marketing_emails = true
+				parent.parent_newsletters = true
+				parent.username = nil
+				merge_vars = {groupings: [name: 'parent', groups: ['marketing_emails', 'newsletters']],
+						FNAME: parent.email,
+						LNAME: ""}
+				opts = {
+					email: {euid: parent.subscriber_euid, leid: parent.subscriber_leid, email: parent.email},
+					id: Rails.configuration.mailchimp_list_id,
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+				}
+				gb_obj = Gibbon::API.new.lists.class
+				gb_obj.any_instance.should_receive(:subscribe).with(opts).once
+				parent.subscribe_to_mailing_list
+			end
+
+			it "should be subscribed to a correct group" do
+				parent.parent_marketing_emails = true
+				merge_vars = {groupings: [name: 'parent', groups: ['marketing_emails']],
+						FNAME: parent.username,
+						LNAME: ""}
+				opts = {
+					email: {euid: parent.subscriber_euid, leid: parent.subscriber_leid, email: parent.email},
+					id: Rails.configuration.mailchimp_list_id,
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+				}
+				gb_obj = Gibbon::API.new.lists.class
+				gb_obj.any_instance.should_receive(:subscribe).with(opts).once
+				parent.subscribe_to_mailing_list
+			end
+
+			it "should notify mailchimp to update existing subscription if user subscribed" do
+				parent.parent_marketing_emails = true
+				parent.parent_newsletters = true
+				parent.subscriber_euid = "123"
+				parent.subscriber_leid = "123"
+				merge_vars = {groupings: [name: 'parent', groups: ['marketing_emails', 'newsletters']],
+						FNAME: parent.username,
+						LNAME: "",
+						'new-email' => parent.email}
+				opts = {
+					id: Rails.configuration.mailchimp_list_id,
+					email: {euid: parent.subscriber_euid, leid: parent.subscriber_leid},
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+				}
+				gb_obj = Gibbon::API.new.lists.class
+				gb_obj.any_instance.should_receive(:subscribe).with(opts).once
+				parent.subscribe_to_mailing_list
+			end
+		end
+
+		context "provider", mailchimp: true do
+			let(:provider) { FactoryGirl.create :provider_with_username }
+		
+			it "should set mailchimp subscriber name to profile first and last name" do
+				provider.provider_marketing_emails = true
+				provider.provider_newsletters = true
+				merge_vars = {groupings: [name: 'provider', groups: ['marketing_emails', 'newsletters']],
+						FNAME: provider.profile.first_name,
+						LNAME: provider.profile.last_name}
+				opts = {
+					id: Rails.configuration.mailchimp_list_id,
+					email: {euid: provider.subscriber_euid, leid: provider.subscriber_leid, email: provider.email},
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+				}
+				gb_obj = Gibbon::API.new.lists.class
+				gb_obj.any_instance.should_receive(:subscribe).with(opts).once
+				provider.subscribe_to_mailing_list
+			end
+
+			it "should set mailchimp subscriber name to username if profile first is empty" do
+				provider.provider_marketing_emails = true
+				provider.provider_newsletters = true
+				provider.profile.first_name = ''
+				merge_vars = {groupings: [name: 'provider', groups: ['marketing_emails', 'newsletters']],
+						FNAME: provider.username,
+						LNAME: ""}
+				opts = {
+					id: Rails.configuration.mailchimp_list_id,
+					email: {euid: provider.subscriber_euid, leid: provider.subscriber_leid, email: provider.email},
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+				}
+				gb_obj = Gibbon::API.new.lists.class
+				gb_obj.any_instance.should_receive(:subscribe).with(opts).once
+				provider.subscribe_to_mailing_list
+			end
+
+			it "should set mailchimp subscriber name to email if profile first name and username are empty" do
+				provider.provider_marketing_emails = true
+				provider.provider_newsletters = true
+				provider.profile.first_name = ''
+				provider.username = nil
+				merge_vars = {groupings: [name: 'provider', groups: ['marketing_emails', 'newsletters']],
+						FNAME: provider.email,
+						LNAME: ''}
+				opts = {
+					id: Rails.configuration.mailchimp_list_id,
+					email: {euid: provider.subscriber_euid, leid: provider.subscriber_leid, email: provider.email},
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+				}
+				gb_obj = Gibbon::API.new.lists.class
+				gb_obj.any_instance.should_receive(:subscribe).with(opts).once
+				provider.subscribe_to_mailing_list
+			end
+
+			it "should be subscribed to a correct group" do
+				provider.provider_marketing_emails = true
+				merge_vars = {groupings: [name: 'provider', groups: ['marketing_emails']],
+						FNAME: provider.profile.first_name,
+						LNAME: provider.profile.last_name}
+				opts = {
+					id: Rails.configuration.mailchimp_list_id,
+					email: {euid: provider.subscriber_euid, leid: provider.subscriber_leid, email: provider.email},
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+				}
+				gb_obj = Gibbon::API.new.lists.class
+				gb_obj.any_instance.should_receive(:subscribe).with(opts).once
+				provider.subscribe_to_mailing_list
+			end
+
+			it "should notify mailchimp to update existing subscription if user subscribed" do
+				provider.provider_marketing_emails = true
+				provider.provider_newsletters = true
+				provider.subscriber_euid = "123"
+				provider.subscriber_leid = "123"
+				merge_vars = {groupings: [name: 'provider', groups: ['marketing_emails', 'newsletters']],
+						FNAME: provider.profile.first_name,
+						LNAME: provider.profile.last_name,
+						'new-email' => provider.email}
+				opts = {
+					id: Rails.configuration.mailchimp_list_id,
+					email: {euid: provider.subscriber_euid, leid: provider.subscriber_leid},
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+				}
+				gb_obj = Gibbon::API.new.lists.class
+				gb_obj.any_instance.should_receive(:subscribe).with(opts).once
+				provider.subscribe_to_mailing_list
+			end
+		end
 	end
 end
