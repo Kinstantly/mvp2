@@ -1,9 +1,10 @@
 %html
 	%body
 		%table{border: '0', cellspacing: '0', cellpadding: '0', style: 'font-family:Helvetica,Arial,sans-serif;border-style:none;'}
-			%tr
-				%td{align: 'center'}
-					= image_tag mailer_image_url('logo-web-red-type-260x62.png'), alt: mailer_logo_alt
+			- if @show_logo
+				%tr
+					%td{align: 'center'}
+						= image_tag mailer_image_url('logo-web-red-type-260x62.png'), alt: mailer_logo_alt
 			%tr
 				%td
 					= yield
