@@ -40,12 +40,12 @@ Feature: Sign up
 	
 		Scenario: Newly registered user receives confirmation email
 			When I sign up with email "asleep@thewheel.wv.us"
-			Then "asleep@thewheel.wv.us" should receive an email with subject "Confirmation instructions"
+			Then "asleep@thewheel.wv.us" should receive an email with subject "Confirm your Kinstantly account"
 	
 		@private_site
 		Scenario: Newly registered user receives no confirmation email when running as private site
 			When I sign up with email "asleep@thewheel.wv.us"
-			Then "asleep@thewheel.wv.us" should receive no email with subject "Confirmation instructions"
+			Then "asleep@thewheel.wv.us" should receive no email with subject "Confirm your Kinstantly account"
 	
 		@private_site
 		Scenario: Newly registered user receives confirmation email after admin approves when running as private site
@@ -53,23 +53,23 @@ Feature: Sign up
 			When I am logged in as an administrator
 				And I visit the edit account page for "asleep@thewheel.wv.us"
 				And I click on "Send confirmation instructions"
-			Then "asleep@thewheel.wv.us" should receive an email with subject "Confirmation instructions"
+			Then "asleep@thewheel.wv.us" should receive an email with subject "Confirm your Kinstantly account"
 		
 		Scenario: Newly registered user must confirm
 			When I sign up with valid user data
-				And I open the email with subject "Confirmation instructions"
+				And I open the email with subject "Confirm your Kinstantly account"
 			 	And I follow "confirm" in the email
 			Then I see a confirmed account message
 
 		Scenario: Newly registered and confirmed expert receives a welcome email
 			When I sign up with valid user data
-				And I open the email with subject "Confirmation instructions"
+				And I open the email with subject "Confirm your Kinstantly account"
 			 	And I follow "confirm" in the email
 			Then I should receive a welcome email
 
 		Scenario: Newly registered and confirmed non-expert should NOT receive a welcome email
 			When I sign up as a non-expert with valid user data
-			And I open the email with subject "Confirmation instructions"
+			And I open the email with subject "Confirm your Kinstantly account"
 			 	And I follow "confirm" in the email
 			Then I should receive no welcome email
 

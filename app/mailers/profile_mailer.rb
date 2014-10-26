@@ -8,6 +8,7 @@ class ProfileMailer < ActionMailer::Base
 	def default_invite(profile)
 		@profile = profile
 		sendgrid_unique_args :profile_id => @profile.id
+		@show_logo = true
 		mail to: profile.invitation_email, from: 'Jim Scott <jscott@kinstantly.com>', subject: subject
 	end
 
@@ -19,6 +20,7 @@ class ProfileMailer < ActionMailer::Base
 		elsif profile.invitation_tracking_category.present?
 			sendgrid_category profile.invitation_tracking_category
 		end
+		@show_logo = true
 		mail to: email, from: 'Jim Scott <jscott@kinstantly.com>', subject: subject
 	end
 end

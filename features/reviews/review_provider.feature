@@ -34,6 +34,6 @@ Feature: Review provider
 		When I visit the published profile page
 			And I click on the review link
 			And I sign up as a non-expert with valid user data
-			And I open the email with subject "Confirmation instructions"
+			And I open the email with subject "Confirm your Kinstantly account"
 			And I follow "confirm" in the email
 		Then I should land on the review form of the profile
