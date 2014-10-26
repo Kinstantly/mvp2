@@ -105,7 +105,7 @@ end
 
 DEFAULT_REGION = 'CA'
 DEFAULT_COUNTRY_CODE = 'US'
-MAILER_DEFAULT_FROM = 'Kinstantly <support@kinstantly.com>'
+MAILER_DEFAULT_FROM = 'Jim Scott <jscott@kinstantly.com>'
 MAILER_DEFAULT_REPLY_TO = 'Kinstantly <support@kinstantly.com>'
 MAILER_DEFAULT_BCC = 'monitor@kinstantly.com'
 Phonie::Phone.default_country_code = '1'
