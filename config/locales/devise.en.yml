@@ -79,9 +79,9 @@ en:
       failure: 'Could not authenticate you from %{kind} because "%{reason}".'
     mailer:
       confirmation_instructions:
-        subject: 'Confirmation instructions'
+        subject: 'Welcome to Kinstantly'
       on_create_confirmation_instructions:
-        subject: 'Confirmation instructions'
+        subject: 'Welcome to Kinstantly'
       on_create_provider_confirmation_instructions:
         subject: 'Confirmation instructions'
       on_create_welcome:
