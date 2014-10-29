@@ -28,6 +28,10 @@ class Customer < ActiveRecord::Base
 		end
 	end
 	
+	def card_for_provider(provider)
+		customer_files.for_provider(provider).try(:stripe_card)
+	end
+	
 	def save_with_authorization(options={})
 		self.user ||= options[:user] if options[:user]
 		
@@ -50,17 +54,26 @@ class Customer < ActiveRecord::Base
 				livemode: customer.livemode
 			)
 
+			card = customer.cards.retrieve customer.default_card
 			stripe_card = stripe_customer.stripe_cards.build(
-				api_card_id: customer.default_card,
+				api_card_id: card.id,
+				brand: card.brand,
+				funding: card.funding,
+				exp_month: card.exp_month,
+				exp_year: card.exp_year,
 				livemode: customer.livemode
 			)
 
 		elsif options[:stripe_token].present? # Adding a new card.
-			customer = Stripe::Customer.retrieve stripe_customer.api_customer_id
+			customer = stripe_customer.retrieve
 			card = customer.cards.create card: options[:stripe_token]
 
 			stripe_card = stripe_customer.stripe_cards.create(
 				api_card_id: card.id,
+				brand: card.brand,
+				funding: card.funding,
+				exp_month: card.exp_month,
+				exp_year: card.exp_year,
 				livemode: stripe_customer.livemode
 			)
 		end

@@ -2,13 +2,14 @@
 #content
 	#customer.payments
 		%h1= t 'views.customer.view.customer_title'
-		%p= t 'views.customer.view.provider_list_description_html', button_text: t('views.customer.view.add_to_authorized_amount')
+		%p= t 'views.customer.view.provider_list_description_html', button_text: t('views.customer.view.modify_authorized_amount')
 		%table.tablesorter#provider_list
 			%thead
 				%tr
 					%th= t 'views.customer.view.provider_name'
 					%th= t 'views.customer.view.authorized_amount'
-					%th= t 'views.customer.view.add_to_authorize_amount_buttons'
+					%th= t 'views.customer.view.modify_authorized_amount_buttons'
+					%th= t 'views.customer.view.card_info'
 					%th= t 'views.customer.view.change_card_buttons'
 			%tbody
 				- @customer_files.each do |customer_file|
@@ -16,7 +17,8 @@
 					%tr
 						%td= link_to profile.company_otherwise_display_name, profile
 						%td= display_currency_amount customer_file.authorized_amount
-						%td= link_to t('views.customer.view.add_to_authorized_amount'), authorize_payment_path(profile), class: 'button'
+						%td= link_to t('views.customer.view.modify_authorized_amount'), authorize_payment_path(profile), class: 'button'
+						%td= display_payment_card_summary customer_file.stripe_card
 						%td= render partial: 'change_card_button', locals: {customer: @customer, profile: profile}
 		%h2= t 'views.customer.view.charge_history'
 		%table.tablesorter#charge_history
@@ -25,6 +27,7 @@
 					%th= t 'views.customer.view.charge_history_date'
 					%th= t 'views.customer.view.charge_history_amount'
 					%th= t 'views.customer.view.charge_history_provider'
+					%th= t 'views.customer.view.card_info'
 					%th= t 'views.customer.view.charge_history_statement_description'
 			%tbody
 				- @customer_files.each do |customer_file|
@@ -35,11 +38,12 @@
 							%td= display_transaction_date charge.created_at
 							%td= display_currency_amount charge.amount_usd
 							%td= link_to provider_name, profile
+							%td= display_payment_card_summary charge.stripe_card
 							%td= charge.statement_description
 		.buttons
 			= link_to t('views.customer.view.cancel'), edit_user_registration_path, class: 'cancel'
 
 :coffeescript
 	$ ->
-		$('#provider_list').tablesorter({sortList: [[0,0]], headers: {2: {sorter: false}, 3: {sorter: false}}})
+		$('#provider_list').tablesorter({sortList: [[0,0]], headers: {2: {sorter: false}, 4: {sorter: false}}})
 		$('#charge_history').tablesorter({sortList: [[0,1]]})

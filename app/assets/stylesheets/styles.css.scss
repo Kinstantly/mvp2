@@ -257,6 +257,9 @@
 				min-width: 4em;
 			}
 		}
+		.card_summary {
+			font-weight: 600;
+		}
 	}
 	#about_payments {
 		h2, p {
@@ -279,8 +282,16 @@
 	#customer, #customer_files {
 		.button {
 			@include default-button-style;
+			width: 4em;
 			&:hover {
 				@include default-button-hover-style;
+				width: 4em;
+			}
+			@media (min-width: $break-5) {
+				width: 7em;
+				&:hover {
+					width: 7em;
+				}
 			}
 			@media (min-width: $break-7) {
 				width: 14em;

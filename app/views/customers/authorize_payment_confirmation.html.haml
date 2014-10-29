@@ -5,7 +5,9 @@
 				- if params[:created]
 					Congrats! You're all set up for Kinstantly Pre-Auth with
 				- elsif params[:card_changed]
-					Your card has been changed for Kinstantly Pre-Auth with
+					Your card has been changed to
+					%span.card_summary= display_payment_card_summary @customer.card_for_provider(@profile.user)
+					for Kinstantly Pre-Auth with
 				- else
 					You're set up for Kinstantly Pre-Auth with
 				= link_to @profile.company_otherwise_display_name, @profile

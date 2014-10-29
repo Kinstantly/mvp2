@@ -329,10 +329,11 @@ en:
         submit: 'Authorize'
         submit_disable: 'Authorizing...'
       view:
-        add_to_authorized_amount: 'add to authorized amount'
-        add_to_authorize_amount_buttons: ' '
+        modify_authorized_amount: 'Change amount'
+        modify_authorized_amount_buttons: ' '
         authorized_amount: 'Authorized amount'
         cancel: 'Settings'
+        card_info: 'Card'
         change_card_buttons: ' '
         charge_history: 'Transaction history'
         charge_history_amount: 'Amount charged'
