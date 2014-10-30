@@ -107,10 +107,9 @@ module Mvp2
 
     config.cloudfront_domain_name = ENV['CLOUDFRONT_DOMAIN_NAME'].presence || 'd3nqozpn39ttwm.cloudfront.net'
 
-    # Wrapper for MailChimp API
-    Gibbon::API.api_key = ENV['MAILCHIMP_API_KEY'].presence || 'd2d86fa72c30091991e5fd461b499f3d-us9'
+    # Wrapper for MailChimp API.
+    # API key and list ID settings are in the development, test, and production configuration files.
     Gibbon::API.timeout = ENV['MAILCHIMP_API_TIMEOUT'].presence || 20
-    config.mailchimp_list_id = ENV['MAILCHIMP_LIST_ID'].presence || '3eab1f1e96'
   end
 end
 

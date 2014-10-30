@@ -117,6 +117,10 @@ Mvp2::Application.configure do
       :secret_access_key => ENV['PAPERCLIP_AWS_SECRET_ACCESS_KEY']
     }
   }
+
+  # Wrapper for MailChimp API
+  Gibbon::API.api_key = ENV['MAILCHIMP_API_KEY']
+  config.mailchimp_list_id = ENV['MAILCHIMP_LIST_ID']
 end
 
 REINDEX_PROFILES_IN_BACKGROUND = true

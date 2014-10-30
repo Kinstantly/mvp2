@@ -43,6 +43,10 @@ Mvp2::Application.configure do
     :url => '/:attachment/:id/:filename'
     #:path => ':rails_root/public:url' #default paperclip path
   }
+
+  # Wrapper for MailChimp API
+  Gibbon::API.api_key = '1c6c41452463d27bc7b25aeb37de5133-us9'
+  config.mailchimp_list_id = '96b4018f42'
 end
 
 REINDEX_PROFILES_IN_BACKGROUND = false

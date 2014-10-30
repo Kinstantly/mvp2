@@ -86,6 +86,10 @@ Mvp2::Application.configure do
       :secret_access_key => 'Z10HmDhmfj2+gO4kwn4szzpVhYZjROK1x4zNpj5H'
     }
   }
+
+  # Wrapper for MailChimp API
+  Gibbon::API.api_key = '924cc5a82c5f67ecc397bd1d4fcb7236-us9'
+  config.mailchimp_list_id = '240b02592e'
 end
 
 REINDEX_PROFILES_IN_BACKGROUND = true
