@@ -301,9 +301,9 @@ describe User do
 				@kelly.should have(1).error_on(:username)
 			end
 	
-			it "should require a username if a client" do
+			it "should not require a username if a client" do
 				@kelly.username = nil
-				@kelly.should have(1).error_on(:username)
+				@kelly.should have(:no).errors_on(:username)
 			end
 			
 			it "should require a unique username" do

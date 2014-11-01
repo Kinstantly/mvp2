@@ -184,6 +184,12 @@ When /^I sign up with valid user data$/ do
   sign_up
 end
 
+When /^I sign up without a username$/ do
+  create_visitor
+  @visitor = @visitor.merge(:username => "")
+  sign_up
+end
+
 When /^I sign up as a (?:non\-expert|parent) with valid user data$/ do
   create_visitor
   @visitor = @visitor.merge(:username => "hoffman")

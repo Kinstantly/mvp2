@@ -34,9 +34,13 @@ Feature: Sign up
 			When I sign up as a non-expert with valid user data
 			Then I should be a client
 
-		Scenario: Newly registered non-expert is a client
+		Scenario: Username is optional for parents
 			When I sign up as a non-expert without a username
-			Then I should see a missing username message
+			Then I see an unconfirmed account message
+
+		Scenario: Username is optional for providers
+			When I sign up without a username
+			Then I see an unconfirmed account message
 	
 		Scenario: Newly registered user receives confirmation email
 			When I sign up with email "asleep@thewheel.wv.us"
