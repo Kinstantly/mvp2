@@ -36,6 +36,10 @@ module Mvp2
     # Sitemap generator configuration.
     config.sitemap_default_host = "http://#{config.default_host}/"
     config.sitemap_sitemaps_path = 'sitemaps_dev/'
+		
+		# Blog location.
+		config.blog_host = 'blog.kinstantly.com'
+		config.blog_url = "http://#{config.blog_host}/"
 
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/lib)

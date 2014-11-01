@@ -19,8 +19,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		else
 			flash[:marketing_emails_and_newsletters] = false
 		end
-   		super
-  	end
+		super
+	end
 
 	protected
 
@@ -33,6 +33,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		# During private alpha, registrants are screened. Don't send them the confirmation link until they've pass screening.
 		# The exception is someone we've invited to claim their profile.
 		resource.skip_confirmation_notification! if running_as_private_site? && !resource.profile_to_claim
+		
+		# If the blog parameter is present, set resource.signed_up_from_blog to true, otherwise preserve its current value.
+		if params[:blog].present?
+			resource.signed_up_from_blog = true
+			session[:signed_up_from_blog] = true
+		end
+		# Flag that tells the views whether this registration is primarily a newsletter sign-up from the user's perspective.
+		@signing_up_for_newsletter = resource.signed_up_from_blog || params[:signing_up_for_newsletter].present?
 	end
 
 	private

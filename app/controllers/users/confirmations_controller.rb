@@ -16,7 +16,13 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
 
 	# The path used after confirmation.
 	def after_confirmation_path_for(resource_name, resource)
-		resource.try(:is_provider?) ? edit_my_profile_path : super
+		if resource.try(:signed_up_from_blog)
+			blog_url
+		elsif resource.try(:is_provider?)
+			edit_my_profile_path
+		else
+			super
+		end
 	end
 	
 	private

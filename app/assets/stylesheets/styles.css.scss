@@ -291,6 +291,15 @@
 		}
 	}
 	
+	#awaiting_confirmation{
+		span.emphasized {
+			font-weight: 600;
+		}
+		span.title {
+			font-style: italic;
+		}
+	}
+	
 	.profile {
 		@extend %span1of2;
 		clear: right;
@@ -2050,6 +2059,18 @@ ul.links-list > li{
 				}
 			}
 			
+			h2.newsletter_sign_up {
+				text-align: center;
+				text-indent: 0;
+			}
+			p.newsletter_sign_up {
+				margin-top: 1em;
+				margin-left: 2em;
+				@media (max-width: $break-6-2) {
+					margin-left: 0;
+				}
+			}
+			
 			.alpha_note{
 				@include scale(font-size, 18);
 				padding: 20px 10px 0 10px;
@@ -2154,7 +2175,7 @@ ul.links-list > li{
 					}
 				}
 			}
-			
+
 			.generic_form{
 				margin:0;
 				width: 100%;
@@ -2189,6 +2210,11 @@ ul.links-list > li{
 					}
 					@media (max-width: $break-5) {
 						@include scale(font-size, 16);
+					}
+					@media (max-width: $break-3) {
+						&.newsletter_sign_up {
+							@include scale(font-size, 11);
+						}
 					}
 				}
 			}

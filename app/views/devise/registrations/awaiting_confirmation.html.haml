@@ -1,22 +1,7 @@
 - @hide_search_providers = true
 #content
 	#awaiting_confirmation.wider_form
-		- unless running_as_private_site?
-			%p
-				We want to make sure reviews are written by real people &mdash; and profiles are filled out by real service providers &mdash; not by RoboDad or Dr. Bot.
-			%br
-			%p
-				To verify that you're a real person, please check your email and click on the confirmation link we just sent you.
-				%strong If you don't see the email in your Inbox within a few minutes, please check your spam folder &mdash; and mark the email as &quot;Not spam.&quot;
-			%br
-			%p
-				That will complete your registration and let you get straight to rating, reviewing, or filling out your profile.
-			%br
-			%p
-				Thanks very much!
-		
-			= render "devise/shared/links"
-		- else
+		- if running_as_private_site?
 			%p Thanks for your interest in Kinstantly.
 			%br
 			%p We'll review your request within 48 hours (usually much sooner). If everything looks fine, we'll send an email with login information to the address you provided.
@@ -28,3 +13,35 @@
 					<a href="mailto:#{info_email_address}">#{info_email_address}</a>.
 			%br
 			%p Thanks!
+		- elsif session[:signed_up_from_blog]
+			%p
+				Thanks for subscribing to our weekly newsletter. To complete your registration, check your email and click on the confirmation link we just sent you.
+			%br
+			%p
+				%span.emphasized If you don't see the email in your Inbox within a few minutes, please check your spam folder &mdash; and mark the email as &quot;Not spam.&quot;
+			%br
+			%p
+				:plain
+					That will complete your registration, and we'll send you back to our <span class="title">Today on Kinstantly</span> blog.
+			%br
+			%p
+				Thanks very much!
+			%br
+			= render "devise/shared/links"
+		- else # Default sign-up.
+			%p
+				Thanks for joining Kinstantly. To complete your registration, check your email and click on the confirmation link we just sent you.
+			%br
+			%p
+				%span.emphasized If you don't see the email in your Inbox within a few minutes, please check your spam folder &mdash; and mark the email as &quot;Not spam.&quot;
+			%br
+			%p
+				Once you've confirmed your registration, you'll be able to post ratings and reviews, self-schedule appointments with providers, and more.
+			%br
+			%p
+				Thanks very much!
+			%br
+			%p
+				The Kinstantly team
+			%br
+			= render "devise/shared/links"

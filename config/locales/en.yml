@@ -239,6 +239,7 @@ en:
         email: 'Email address'
         password_confirmation: 'Retype password'
         phone: 'Phone number we use to contact you'
+        postal_code: 'Zip code'
         admin_confirmation_sent_at: ''
         registration_special_code: 'Special code'
         parent_newsletters: 'Send me occasional newsletters with parenting tips from our experts, recommendations for local activities, and other helpful suggestions.'
@@ -676,6 +677,10 @@ en:
     sign_up:
       label: 'Sign up'
       member_title: 'Become a member'
+      newsletter_sign_up_explanation: 'Fill in the form below to sign up for our newsletter.'
+      newsletter_sign_up_log_in: "(If you're already a member, just click \"Log in\" to change your email preferences.)"
+      newsletter_sign_up_label: 'Send me Kinstantly news'
+      postal_code_inline_tip: 'So you can receive the local edition of your newsletter'
       provider_label: 'Join us!'
       provider_link: "Provider? Join us. It's FREE"
       provider_prompt: 'Provider?'
@@ -686,7 +691,7 @@ en:
       username_inline_tip: 'Your username will show up next to any reviews or posts you write'
       username_tip: "This will display next to any reviews you write and must contain at least four characters - letters and numerals only, no spaces. Examples: Mama2000, DadEO" 
       password_tip: 'Your password must contain at least %{minimum} characters'
-      parent_tag: "I'm a parent (or planning a family)"
+      parent_tag: "I'm a parent or planning a family"
       provider_tag: "I provide services to families"
       parent_provider_tag: "I'm both a parent and a provider"
       registration_special_code_tip: 'Have a promotional code? Enter it here.'
@@ -732,6 +737,7 @@ en:
         customer_link: 'View authorizations and payments to your providers'
         customer_list_link: 'View clients and charge credit cards'
         payments_scheduling_header: 'Payments and scheduling settings'
+        postal_code_note: "If you're receiving our newsletter, you'll get the local edition."
         stripe_connect_prompt: 'Make online payments easy by connecting your Kinstantly account to Stripe.'
         stripe_connected: 'Your Kinstantly account is connected to Stripe.'
         newsletters_and_marketing_emails_label: 'Send me Kinstantly news'

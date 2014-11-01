@@ -5,14 +5,19 @@ class UserAccountMailer < Devise::Mailer
 	helper :mailer # Access to MailerHelper methods in this mailer's views.
 	sendgrid_category :use_subject_lines # Set sendgrid category to email subject
 
-	# Send on non-provider account creation, i.e., welcome email which also performs email address confirmation.
+	# Send on non-provider account creation. Performs email address confirmation.
 	def on_create_confirmation_instructions(record, opts={})
 		devise_mail(record, :on_create_confirmation_instructions, opts)
 	end
 	
-	# Send on provider account creation, i.e., welcome email which also performs email address confirmation.
+	# Send on provider account creation. Performs email address confirmation.
 	def on_create_provider_confirmation_instructions(record, opts={})
 		devise_mail(record, :on_create_provider_confirmation_instructions, opts)
+	end
+	
+	# Send on account creation when signing up for the newsletter. Performs email address confirmation.
+	def on_create_newsletter_confirmation_instructions(record, opts={})
+		devise_mail(record, :on_create_newsletter_confirmation_instructions, opts)
 	end
 	
 	# Send on user creation when claiming a profile, i.e., simple welcome email.

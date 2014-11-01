@@ -15,10 +15,11 @@ class User < ActiveRecord::Base
 	# Setup accessible (or protected) attributes for your model
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
 		:profile_attributes, :phone, :is_provider, :username, :registration_special_code, :profile_help,
-		:parent_marketing_emails, :parent_newsletters, :provider_marketing_emails, :provider_newsletters
+		:parent_marketing_emails, :parent_newsletters, :provider_marketing_emails, :provider_newsletters,
+		:signed_up_from_blog, :postal_code
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
-	auto_strip_attributes :email, :phone, :username
+	auto_strip_attributes :email, :phone, :username, :postal_code
 
 	has_one :profile # If we do "dependent: :destroy", it will be hard to detach or move the profile.
 	accepts_nested_attributes_for :profile
@@ -50,16 +51,20 @@ class User < ActiveRecord::Base
 		password: Devise.password_length.end,
 		phone: PhoneNumberValidator::MAX_LENGTH,
 		registration_special_code: 250,
+		postal_code: 20,
 		username: UsernameValidator::MAX_LENGTH
 	}
 	
 	# Email format and password length are checked by Devise.
 	# Username and phone lengths are checked by their own validators.
+	# Note: Order of validation will determine display order of error messages.
 	validates :email, length: {maximum: MAX_LENGTHS[:email]}
-	validates :username, username: true, if: :validate_username?
-	validates :username, uniqueness: { case_sensitive: false }, if: 'username.present?'
+	validates :username, username: true, allow_blank: true
+	validates :username, uniqueness: { case_sensitive: false }, allow_blank: true
 	validates :phone, phone_number: true, allow_blank: true
-	validates :registration_special_code, length: {maximum: MAX_LENGTHS[:registration_special_code]}
+	[:postal_code, :registration_special_code].each do |attribute|
+		validates attribute, length: { maximum: MAX_LENGTHS[attribute] }, allow_blank: true
+	end
 	validates :parent_marketing_emails, :parent_newsletters, :provider_marketing_emails, :provider_newsletters, email_subscription: true
 	
 	scope :order_by_id, order('id')
@@ -99,10 +104,6 @@ class User < ActiveRecord::Base
 	# searchable do
 	# 	text :email, :display_phone
 	# end
-	
-	def validate_username?
-		client? or username.present?
-	end
 	
 	def username_or_email
 		username.presence or email
@@ -402,7 +403,9 @@ class User < ActiveRecord::Base
 	# A callback method used to deliver confirmation instructions on creation.
 	# This overrides the Devise method to allow us to define our own email.
 	def send_on_create_confirmation_instructions
-		if is_provider?
+		if signed_up_from_blog
+			send_devise_notification :on_create_newsletter_confirmation_instructions
+		elsif is_provider?
 			send_devise_notification :on_create_provider_confirmation_instructions
 		else
 			send_devise_notification :on_create_confirmation_instructions
@@ -425,4 +428,8 @@ class User < ActiveRecord::Base
 			update_column :welcome_sent_at, Time.now.utc
 		end
 	end
+	
+	# def validate_username?
+	# 	new_record? or username_changed?
+	# end
 end

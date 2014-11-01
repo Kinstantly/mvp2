@@ -82,6 +82,8 @@ en:
         subject: 'Confirm your Kinstantly account'
       on_create_confirmation_instructions:
         subject: 'Confirm your Kinstantly account'
+      on_create_newsletter_confirmation_instructions:
+        subject: 'Confirm your Kinstantly newsletter subscription'
       on_create_provider_confirmation_instructions:
         subject: 'Confirm your Kinstantly account'
       on_create_welcome:

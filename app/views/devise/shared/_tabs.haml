@@ -7,7 +7,11 @@
 #login_pannel
 	.container.positioner
 		.company_desc
-			%h2= short_company_description
+			- if @signing_up_for_newsletter
+				%h2.newsletter_sign_up= t 'views.sign_up.newsletter_sign_up_explanation'
+				%p.newsletter_sign_up= t 'views.sign_up.newsletter_sign_up_log_in'
+			- else
+				%h2= short_company_description
 			-if is_private_alpha
 				%p.alpha_note= alpha_note
 		#tabs.ui-tabs.ui-widget.ui-widget-content.ui-corner-all

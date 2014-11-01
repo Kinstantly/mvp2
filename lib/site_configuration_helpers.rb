@@ -15,6 +15,10 @@ module SiteConfigurationHelpers
 		def cloudfront_domain_name
 			Rails.configuration.cloudfront_domain_name
 		end
+		
+		def blog_url
+			Rails.configuration.blog_url
+		end
 	end
 	
 	module InstanceMethods
@@ -32,6 +36,10 @@ module SiteConfigurationHelpers
 		
 		def cloudfront_domain_name
 			Rails.configuration.cloudfront_domain_name
+		end
+		
+		def blog_url
+			Rails.configuration.blog_url
 		end
 	end
 	

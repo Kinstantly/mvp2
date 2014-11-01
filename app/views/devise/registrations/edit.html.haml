@@ -16,8 +16,12 @@
 				= f.label :password_confirmation
 				= f.password_field :password_confirmation, autocomplete: 'off'
 			.username.text_field
-				= f.label :username, class: 'required'
+				= f.label :username #, class: 'required'
 				= f.text_field :username
+			.postal_code.text_field
+				= f.label :postal_code
+				= f.text_field :postal_code
+				%span.note= t 'views.user.edit.postal_code_note'
 			- if resource.is_provider?
 				.phone.text_field
 					= f.label :phone

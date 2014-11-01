@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141003093948) do
+ActiveRecord::Schema.define(:version => 20141031003137) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -479,6 +479,8 @@ ActiveRecord::Schema.define(:version => 20141003093948) do
     t.boolean  "profile_help",                  :default => true
     t.string   "subscriber_euid"
     t.string   "subscriber_leid"
+    t.boolean  "signed_up_from_blog",           :default => false
+    t.string   "postal_code"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

@@ -14,6 +14,9 @@
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
 	= devise_error_messages!
 	= hidden_field_tag :is_private_alpha, params[:is_private_alpha]
+	= f.hidden_field :signed_up_from_blog
+	- if @signing_up_for_newsletter
+		= hidden_field_tag :signing_up_for_newsletter, 't'
 	
 	.email.text_field
 		= f.label :email
@@ -23,14 +26,21 @@
 			.help_popover
 				%p.tip.grey_text= email_tip
 
-	.username.text_field
-		= f.label :username
-		%br
-		= f.text_field :username
-		%span.help_icon
-			.help_popover
-				%p.tip.grey_text= username_tip
-		%p.v_tip.grey_text= username_inline_tip
+	- if @signing_up_for_newsletter
+		.postal_code.text_field
+			= f.label :postal_code
+			%br
+			= f.text_field :postal_code
+			%p.v_tip.grey_text= t "views.sign_up.postal_code_inline_tip"
+	- else 
+		.username.text_field
+			= f.label :username
+			%br
+			= f.text_field :username
+			%span.help_icon
+				.help_popover
+					%p.tip.grey_text= username_tip
+			%p.v_tip.grey_text= username_inline_tip
 
 	.password.text_field
 		= f.label :password
@@ -45,16 +55,21 @@
 		%br
 		= f.password_field :password_confirmation, autocomplete: 'off'
 
-	.registration_special_code.text_field
-		= f.label :registration_special_code
-		%br
-		= f.text_field :registration_special_code
-		%span.help_icon
-			.help_popover
-				%p.tip.grey_text= registration_special_code_tip
+	- unless @signing_up_for_newsletter
+		.registration_special_code.text_field
+			= f.label :registration_special_code
+			%br
+			= f.text_field :registration_special_code
+			%span.help_icon
+				.help_popover
+					%p.tip.grey_text= registration_special_code_tip
 
 	- if claiming_profile
+		-# A provider account is required to claim a profile.
 		= f.hidden_field :is_provider, :value => '1'
+	- elsif @signing_up_for_newsletter
+		-# Keep it simple and sign them up as a parent.
+		= f.hidden_field :is_provider, value: ''
 	- else
 		.radio_buttons
 			%label
@@ -71,8 +86,16 @@
 			%label
 				= f.radio_button :is_provider, '2'
 				= parent_provider_tag
-	.checkbox
-		=check_box_tag :marketing_emails_and_newsletters, 1, (:checked unless flash[:marketing_emails_and_newsletters] == false)
-		=label_tag :marketing_emails_and_newsletters, (t 'views.user.edit.newsletters_and_marketing_emails_label')
+
+	- if @signing_up_for_newsletter
+		= hidden_field_tag :marketing_emails_and_newsletters, 1
+	- else
+		.checkbox
+			=check_box_tag :marketing_emails_and_newsletters, 1, (:checked unless flash[:marketing_emails_and_newsletters] == false)
+			=label_tag :marketing_emails_and_newsletters, (t 'views.user.edit.newsletters_and_marketing_emails_label')
+
 	.buttons
-		= f.submit t((is_provider ? :provider_label : :label), scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'
+		- if @signing_up_for_newsletter
+			= f.submit t(:newsletter_sign_up_label, scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default newsletter_sign_up', id: 'sign_up_button'
+		- else
+			= f.submit t((is_provider ? :provider_label : :label), scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'
