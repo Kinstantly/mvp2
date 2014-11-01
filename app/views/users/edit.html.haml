@@ -15,6 +15,10 @@
 	%span.cell= @user.email
 	%br
 	%label.strong.cell
+		= "#{User.human_attribute_name :postal_code}:"
+	%span.cell= @user.postal_code
+	%br
+	%label.strong.cell
 		= "#{User.human_attribute_name :registration_special_code}:"
 	%span.cell= @user.registration_special_code
 	%br
@@ -22,6 +26,9 @@
 		%label.strong.cell
 			= "#{User.human_attribute_name :profile}:"
 		%span.cell= link_to 'click here to view', profile_path(@user.profile)
+		%br
+	- if @user.signed_up_from_blog
+		%span.cell Registration originated at the blog.
 		%br
 	%label.strong.cell
 		Confirmation instructions sent:
