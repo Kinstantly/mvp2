@@ -8,7 +8,7 @@ describe ReviewsController do
 	}
 	let(:review_by_parent) { FactoryGirl.create :review_by_parent }
 	let(:parent) { review_by_parent.reviewer }
-	let(:provider) { FactoryGirl.create :provider }
+	let(:provider) { FactoryGirl.create :provider, username: 'ProviderWhoReviews' }
 	let(:provider_with_published_profile) { FactoryGirl.create :provider, profile: published_profile }
 	
 	context "as a non-administrator attempting to access admin actions" do

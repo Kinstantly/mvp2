@@ -1,0 +1,8 @@
+- attribute_aliases ||= {}
+- if f.object.errors.present?
+	#errorExplanation.errorExplanation
+		%ul
+			- f.object.errors.each do |attribute, errors_array|
+				- attribute_name = f.object.class.human_attribute_name(attribute_aliases[attribute].presence || attribute)
+				- [errors_array].flatten.each do |message|
+					%li= "#{attribute_name} #{message}"

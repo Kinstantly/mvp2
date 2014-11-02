@@ -1,4 +1,4 @@
-= f.error_messages
+= render partial: 'reviews/admin_error_messages', locals: {f: f, attribute_aliases: {reviewer_username: :reviewer_username_admin}}
 = f.hidden_field :profile_id
 - rating_score_id = "rating_score_#{review.id.presence || 'new'}"
 - rating_score = review.rating.try(:score)
@@ -25,7 +25,7 @@
 	.label_area= f.label :reviewer_email
 	= f.text_field :reviewer_email
 .reviewer_username
-	.label_area= f.label :reviewer_username
+	.label_area= f.label :reviewer_username, Review.human_attribute_name(:reviewer_username_admin)
 	= f.text_field :reviewer_username
 .buttons
 	= f.submit 'Save', disable_with: 'Saving...', class: 'save'

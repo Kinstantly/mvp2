@@ -330,17 +330,17 @@ describe Profile do
 	
 	context "reviews" do
 		it "has multiple reviews" do
-			@profile.reviews.build(body: 'This provider is fantastic!')
+			@profile.reviews.build(body: 'This provider is fantastic!', reviewer_username: 'reviewer1234')
 			@profile.should have(:no).errors_on(:reviews)
 			@profile.reviews.first.should have(:no).errors_on(:body)
-			@profile.reviews.build(body: 'This provider is adequate.')
+			@profile.reviews.build(body: 'This provider is adequate.', reviewer_username: 'reviewer1234')
 			@profile.should have(:no).errors_on(:reviews)
 			@profile.reviews.last.should have(:no).errors_on(:body)
 		end
 		
 		it "should update the reviews count cache even when the review has been created first" do
 			profile = FactoryGirl.create :profile
-			profile.reviews << FactoryGirl.create(:review)
+			profile.reviews << FactoryGirl.create(:review, reviewer_username: 'reviewer1234')
 			profile.reload
 			# The count method on the association always does a database query,
 			# so it's a reliable count of the associated review records.

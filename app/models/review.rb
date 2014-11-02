@@ -33,6 +33,7 @@ class Review < ActiveRecord::Base
 	[:title, :good_to_know].each do |attribute|
 			validates attribute, allow_blank: true, length: {maximum: MAX_LENGTHS[attribute]}
 	end
+	validates :reviewer_username, username: true
 	
 	scope :order_by_descending_updated_at, order('updated_at DESC')
 	scope :order_by_descending_created_at, order('created_at DESC')

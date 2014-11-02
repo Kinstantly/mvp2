@@ -29,6 +29,12 @@
 					%br
 					= f.text_area :good_to_know, size: '80x2', placeholder: good_to_know_placeholder
 
+				- if @review.reviewer.try(:username).blank?
+					.text_field
+						= f.label :reviewer_username, t('views.field_label', name: Review.human_attribute_name(:reviewer_username))
+						%br
+						= f.text_field :reviewer_username, placeholder: t('review.reviewer_username_placeholder')
+
 				.buttons
 					= f.submit t('views.review.edit.submit'), disable_with: t('views.review.edit.submit_disable'), class: 'default'
 					= link_to t('views.review.edit.skip'), profile_path(@review.profile),  class: 'cancel_link'

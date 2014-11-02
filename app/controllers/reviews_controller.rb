@@ -28,8 +28,13 @@ class ReviewsController < ApplicationController
 		redirect_to profile_path(@review.profile)
 	end
 
+	def new
+		@review.reviewer = current_user
+		respond_with @review
+	end
+
 	def create
- 		@review.reviewer = @current_user
+		@review.reviewer = current_user
 		success = @review.save_with_reviewer
 		if success
 			ReviewMailer.notify_moderator(@review).deliver

@@ -230,6 +230,8 @@ en:
         body: 'Review'
         good_to_know: 'Tip'
         rating_score: 'Provider rating (not a review rating!)'
+        reviewer_username: 'Your username'
+        reviewer_username_admin: 'Reviewer username'
       service:
         is_predefined: 'Can be assigned to a category'
       specialty:
@@ -786,7 +788,7 @@ en:
     review_header: 'Currently reviewing %{name}'
     body_placeholder: 'Share what was best about your experience with this provider - and what, if anything, could have been better.'
     good_to_know_placeholder: 'Share the inside scoop that helped you with this provider. Example: "Open two Saturdays a month" or "Office is on 2nd floor - no elevators!"'
-
+    reviewer_username_placeholder: 'Your username will show up by your reviews.'
   pagination:
     order_by: 'order by'
     per_page_button: 'per page'

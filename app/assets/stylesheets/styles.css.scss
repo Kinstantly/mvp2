@@ -1720,6 +1720,9 @@ div.popover {
 		font-style: italic;
 		float: left;
 	}
+	.text_field input {
+		font-size: 13px;
+	}
 	
 	@media screen and (max-width: $break-7) {
 		width: 100%;
@@ -1732,7 +1735,7 @@ div.popover {
 			margin-bottom: 12px;
 		}
 		.text_field {
-			textarea {
+			textarea, input {
 				width: 90%;
 			}
 		}

@@ -22,7 +22,7 @@ When /^I enter "(.*?)"(?: as the )?(reviewer email|reviewer username|title|good-
 	when 'reviewer email'
 		:reviewer_email
 	when 'reviewer username'
-		:reviewer_username
+		:reviewer_username_admin
 	when 'title'
 		:title
 	when 'good-to-know'
