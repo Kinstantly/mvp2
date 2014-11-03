@@ -151,6 +151,10 @@ Mvp2::Application.routes.draw do
 	# Stripe web hooks
 	post 'magenta/:provider_id' => 'stripe#webhook'
 	mount StripeEvent::Engine => '/cyan'
+
+	# MailChimp webhook
+	post 'hooks/a11d83adba52b483798f5e7de90c3e57' => 'mailchimp_webhook#process_notification'
+
 	
 	# Customers of a provider.
 	resources :customers

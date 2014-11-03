@@ -267,8 +267,9 @@ class User < ActiveRecord::Base
 		else
 			email_struct[:email] = email
 		end
-
 		if merge_vars[:groupings].any?
+			logger.info "merging groups " + merge_vars[:groupings].inspect
+		
 			begin
 				gb = Gibbon::API.new
 				r = gb.lists.subscribe id: list_id, 
@@ -307,6 +308,18 @@ class User < ActiveRecord::Base
 			logger.error "MailChimp error while unsubscribing user #{id}: #{e.message}, error code: #{e.code}" if logger
 			raise e
 		end
+	end
+
+	# Subscription terminated externally through MailChimp interface.
+	# Update user subscriptions to match external modifications.
+	def remove_email_subscriptions_locally
+		return unless subscribed_to_mailing_list?
+		update_column(:subscriber_euid, nil)
+		update_column(:subscriber_leid, nil)
+		update_column(:parent_marketing_emails, false)
+		update_column(:parent_newsletters, false)
+		update_column(:provider_marketing_emails, false)
+		update_column(:provider_newsletters, false)
 	end
 	
 	# Ensure that this user is not subscribed to any of our emails.

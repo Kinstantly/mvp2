@@ -110,6 +110,8 @@ module Mvp2
     # Wrapper for MailChimp API.
     # API key and list ID settings are in the development, test, and production configuration files.
     Gibbon::API.timeout = ENV['MAILCHIMP_API_TIMEOUT'].presence || 20
+    config.mailchimp_webhook_security_token = '115654367fbf29d8358a58d98850c666'
+
   end
 end
 
