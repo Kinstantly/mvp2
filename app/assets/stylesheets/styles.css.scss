@@ -2214,11 +2214,6 @@ ul.links-list > li{
 					@media (max-width: $break-5) {
 						@include scale(font-size, 16);
 					}
-					@media (max-width: $break-3) {
-						&.newsletter_sign_up {
-							@include scale(font-size, 11);
-						}
-					}
 				}
 			}
 		}

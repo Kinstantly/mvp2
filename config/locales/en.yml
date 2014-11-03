@@ -679,9 +679,9 @@ en:
     sign_up:
       label: 'Sign up'
       member_title: 'Become a member'
-      newsletter_sign_up_explanation: 'Fill in the form below to sign up for our newsletter.'
+      newsletter_sign_up_explanation: 'Get the best of Kinstantly delivered to you every week.'
       newsletter_sign_up_log_in: "(If you're already a member, just click \"Log in\" to change your email preferences.)"
-      newsletter_sign_up_label: 'Send me Kinstantly news'
+      newsletter_sign_up_label: 'Subscribe'
       postal_code_inline_tip: 'So you can receive the local edition of your newsletter'
       provider_label: 'Join us!'
       provider_link: "Provider? Join us. It's FREE"
