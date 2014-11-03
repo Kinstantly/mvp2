@@ -31,14 +31,14 @@
 				= f.password_field :current_password, autocomplete: 'off'
 				%span.note= t 'views.user.edit.current_password_note'
 			- if resource.is_provider?
-				.checkbox.newsletters_and_marketing_emails
+				#contact_preferences.checkbox.newsletters_and_marketing_emails
 					= f.check_box :provider_marketing_emails, id: 'user_provider_marketing_emails'
 					= f.label :provider_marketing_emails
 				.checkbox.newsletters_and_marketing_emails
 					= f.check_box :provider_newsletters, id: 'user_provider_newsletters'
 					= f.label :provider_newsletters
 			- else
-				.checkbox.newsletters_and_marketing_emails
+				#contact_preferences.checkbox.newsletters_and_marketing_emails
 					= f.check_box :parent_marketing_emails, id: 'user_parent_marketing_emails'
 					= f.label :parent_marketing_emails
 				.checkbox.newsletters_and_marketing_emails
