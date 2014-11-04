@@ -21,6 +21,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		end
 		super
 	end
+	
+	def edit
+		if params[:contact_preferences].present?
+			# The fragment ID is not preserved across a sign-in, so fake it with a query parameter.  :(
+			redirect_to(edit_user_registration_url + '#contact_preferences')
+		else
+			super
+		end
+	end
 
 	protected
 
