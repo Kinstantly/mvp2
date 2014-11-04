@@ -267,9 +267,8 @@ class User < ActiveRecord::Base
 		else
 			email_struct[:email] = email
 		end
-		if merge_vars[:groupings].any?
-			logger.info "merging groups " + merge_vars[:groupings].inspect
 		
+		if merge_vars[:groupings].any?
 			begin
 				gb = Gibbon::API.new
 				r = gb.lists.subscribe id: list_id, 
