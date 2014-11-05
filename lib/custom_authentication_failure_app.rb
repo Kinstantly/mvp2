@@ -13,6 +13,8 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 			super(:reviewing_provider)
 		elsif new_customer?
 			super(:new_customer)
+		elsif editing_contact_preferences?
+			super(:editing_contact_preferences)
 		elsif running_as_private_site?
 			super(:running_as_private_site)
 		else
@@ -70,5 +72,10 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 	# If we are a new customer, we need to register or sign in as a member.
 	def new_customer?
 		params[:controller] == 'customers' && ['new', 'create', 'authorize_payment'].include?(params[:action])
+	end
+	
+	# If we want to edit our contact preferences, we need to be logged in.
+	def editing_contact_preferences?
+		params[:controller] == 'users/registrations' && params[:action] == 'edit' && params[:contact_preferences].present?
 	end
 end

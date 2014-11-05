@@ -160,8 +160,12 @@ Given /^I am a client of a payable provider$/ do
 	@profile_for_payable_provider = client.as_customer.customer_files.first.provider.profile
 end
 
-Given /^I am on my account edit page$/ do
+Given /^I (?:visit|am on) my account edit page$/ do
 	visit edit_user_registration_path
+end
+
+Given /^I (?:visit|am on) my contact preferences edit page$/ do
+	visit edit_user_registration_path(contact_preferences: 't')
 end
 
 Given /^chose to hide profile help by default$/ do

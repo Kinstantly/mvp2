@@ -75,3 +75,13 @@ Feature: Edit account
 		Given I am logged in as a client user
 			And I am on my account edit page
 		Then I should not see "Add a button" on the page
+
+	Scenario: Editing my account settings requires me to log in
+		Given I exist as a user
+			And I visit my account edit page
+		Then I should see "You might need to log in" on the page
+
+	Scenario: Editing my contact preferences requires me to log in
+		Given I exist as a user
+			And I visit my contact preferences edit page
+		Then I should see "please log in" on the page
