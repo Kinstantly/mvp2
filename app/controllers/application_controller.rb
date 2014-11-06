@@ -47,6 +47,7 @@ class ApplicationController < ActionController::Base
 	#   otherwise go to the home page.
 	# If we want to go to a different page after sign-up, put that logic in here.
 	def after_sign_in_path_for(resource)
+		session.delete(:after_sign_in_path_override) ||
 		stored_referrer ||
 		stored_location_for(resource) ||
 			if resource.is_a?(User)

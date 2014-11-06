@@ -50,6 +50,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		end
 		# Flag that tells the views whether this registration is primarily a newsletter sign-up from the user's perspective.
 		@signing_up_for_newsletter = resource.signed_up_from_blog || params[:signing_up_for_newsletter].present?
+		session[:after_sign_in_path_override] = edit_user_registration_path + '#contact_preferences' if @signing_up_for_newsletter
 	end
 
 	private
