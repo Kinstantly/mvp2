@@ -20,7 +20,7 @@
 				= f.error_messages
 				
 				.text_field
-					= f.label :body, t('views.field_label', name: Review.human_attribute_name(:body))
+					= f.label :body, t('views.field_label', name: Review.human_attribute_name(:body)), class: 'required'
 					%br
 					= f.text_area :body, size: '80x5', placeholder: body_placeholder
 
@@ -31,7 +31,7 @@
 
 				- if @review.reviewer.try(:username).blank?
 					.text_field
-						= f.label :reviewer_username, t('views.field_label', name: Review.human_attribute_name(:reviewer_username))
+						= f.label :reviewer_username, t('views.field_label', name: Review.human_attribute_name(:reviewer_username)), class: 'required'
 						%br
 						= f.text_field :reviewer_username, placeholder: t('review.reviewer_username_placeholder')
 
