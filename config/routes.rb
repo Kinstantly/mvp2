@@ -40,7 +40,7 @@ Mvp2::Application.routes.draw do
 	
 	# Admin can list all and edit/update individual profiles.
 	# User can update profile_help attribute.
-	resources :users, only: [:index, :edit, :update] do
+	resources :users, only: [:index, :show, :edit, :update] do
 		member do
 			put 'update_profile_help'
 		end 

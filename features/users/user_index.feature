@@ -1,4 +1,3 @@
-@javascript
 Feature: View existing users
 	In order to view all users
 	As an administrator
@@ -29,6 +28,7 @@ Feature: View existing users
 		When I visit the user index page
 		Then I should not see user data
 
+	@javascript
 	Scenario: View a user's profile
 		Given a user with a profile exists
 			And I am logged in as an administrator
@@ -40,5 +40,5 @@ Feature: View existing users
 		Given there are multiple users with profiles in the system
 			And I am logged in as an administrator
 		When I visit the user index page
-			And I click on an edit account link
-		Then I should land on edit account page
+			And I click on a user account link
+		Then I should land on the account page

@@ -23,8 +23,9 @@
 					%th.small
 			%tbody
 				- @provider_suggestions.each do |provider_suggestion|
+					- suggester = provider_suggestion.suggester
 					%tr
-						%td= provider_suggestion.suggester.try :username_or_email
+						%td= link_to_if suggester, suggester.try(:username_or_email), suggester, target: '_blank'
 						%td= provider_suggestion.suggester_name
 						%td= provider_suggestion.suggester_email
 						%td= provider_suggestion.provider_name

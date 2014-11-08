@@ -155,6 +155,14 @@
 .cell{
 	display: inline-block;
 	padding: 5px 3px;
+	vertical-align: top;
+	ul {
+		margin-top: 0;
+		list-style: none;
+		li {
+			margin-bottom: 0.5em;
+		}
+	}
 }
 .provider_invite input[type=text], .provider_invite textarea{
 	padding: 5px 6px 4px 6px;

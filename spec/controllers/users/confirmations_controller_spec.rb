@@ -45,15 +45,15 @@ describe Users::ConfirmationsController do
 		end
 		
 		describe "POST confirmation" do
-			it "redirects back to the user edit page after confirmation" do
+			it "redirects back to the user account page after confirmation" do
 				post :create, user: {email: mimi.email}
-				response.should redirect_to edit_user_path mimi
+				response.should redirect_to user_path mimi
 			end
 
 			context "when running as a private site", private_site: true do
-				it "redirects back to the user edit page after confirmation" do
+				it "redirects back to the user account page after confirmation" do
 					post :create, user: {email: mimi.email}
-					response.should redirect_to edit_user_path mimi
+					response.should redirect_to user_path mimi
 				end
 			end
 		end

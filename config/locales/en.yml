@@ -151,6 +151,8 @@ en:
       contact_blocker:
         email: 'Email address'
         email_delivery: 'Email delivered'
+      customer:
+        customer_files: 'Paid providers'
       customer_file:
         authorized_amount_increment: 'Amount to add'
         charge_amount_usd: 'Amount to charge'
@@ -235,6 +237,7 @@ en:
       specialty:
         is_predefined: 'Can be assigned to a service'
       user:
+        customer_files: 'Paying customers'
         username: 'Public username'
         email: 'Email address'
         password_confirmation: 'Retype password'

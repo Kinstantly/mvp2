@@ -293,20 +293,20 @@ When /^I save the account settings$/ do
 	click_button 'Save'
 end
 
-When /^I visit the edit account page for (?:a|an) (confirmed|unconfirmed) user$/ do |user_type|
+When /^I visit the account page for (?:a|an) (confirmed|unconfirmed) user$/ do |user_type|
   create_user_2
   if user_type == 'unconfirmed'
     @user_2.confirmed_at = nil
     @user_2.save
   end
-  visit edit_user_path @user_2
+  visit user_path @user_2
 end
 
-When /^I visit the edit account page for "([^"]+)"$/ do |email|
-  visit edit_user_path User.find_by_email email
+When /^I visit the account page for "([^"]+)"$/ do |email|
+  visit user_path User.find_by_email email
 end
 
-When /^I click on an edit account link$/ do
+When /^I click on a user account link$/ do
   click_link @user_2.email
 end
 
@@ -418,10 +418,10 @@ Then /^I should (not )?see confirmation instructions form$/ do |no|
   end
 end
 
-Then /^I should (not )?land on edit account page$/ do |no|
+Then /^I should (not )?land on the account page$/ do |no|
   if no.present?
-    current_path.should_not eq edit_user_path @user_2
+    current_path.should_not eq user_path @user_2
   else
-    current_path.should eq edit_user_path @user_2
+    current_path.should eq user_path @user_2
   end
 end

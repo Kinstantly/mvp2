@@ -14,6 +14,8 @@
 					%th= "#{User.human_attribute_name :profile} (#{t 'views.click_to_view'})"
 					%th= User.human_attribute_name :roles
 					%th= User.human_attribute_name :registration_special_code
+					%th= Customer.human_attribute_name :customer_files
+					%th= User.human_attribute_name :customer_files
 					%th= User.human_attribute_name :current_sign_in_at
 					%th= User.human_attribute_name :last_sign_in_at
 					%th= User.human_attribute_name :sign_in_count
@@ -24,12 +26,14 @@
 			%tbody
 				- @users.each do |u|
 					%tr
-						%td= link_to u.email, edit_user_path(u)
+						%td= link_to u.email, u
 						%td= u.username
 						%td= profile_display_name u.profile if u.is_provider?
 						%td= user_list_profile_link u.profile if u.is_provider?
-						%td= u.roles.join(', ')
+						%td= user_roles(u, '<br />').html_safe
 						%td= u.registration_special_code
+						%td= Customer.human_attribute_name :customer_files if u.has_paid_providers?
+						%td= User.human_attribute_name :customer_files if u.has_paying_customers?
 						%td= u.current_sign_in_at
 						%td= u.last_sign_in_at
 						%td= u.sign_in_count

@@ -51,7 +51,7 @@ Feature: Sign up
 		Scenario: Newly registered user receives confirmation email after admin approves when running as private site
 			Given I sign up with email "asleep@thewheel.wv.us"
 			When I am logged in as an administrator
-				And I visit the edit account page for "asleep@thewheel.wv.us"
+				And I visit the account page for "asleep@thewheel.wv.us"
 				And I click on "Send confirmation instructions"
 			Then "asleep@thewheel.wv.us" should receive an email with subject "Confirm your Kinstantly account"
 		
@@ -60,6 +60,13 @@ Feature: Sign up
 				And I open the email with subject "Confirm your Kinstantly account"
 			 	And I follow "confirm" in the email
 			Then I see a confirmed account message
+
+		Scenario: Newly registered user receives another confirmation email when re-sent by admin
+			Given I sign up with email "asleep@thewheel.wv.us"
+			When I am logged in as an administrator
+				And I visit the account page for "asleep@thewheel.wv.us"
+				And I click on "Send confirmation instructions"
+			Then "asleep@thewheel.wv.us" should receive 2 emails with subject "Confirm your Kinstantly account"
 
 		Scenario: Newly registered and confirmed expert receives a welcome email
 			When I sign up with valid user data

@@ -46,4 +46,13 @@ module UsersHelper
 			user.confirmation_sent_at
 		end
 	end
+	
+	def user_roles(user, separator=', ')
+		roles = []
+		roles << 'admin' if user.admin?
+		roles << 'profile editor' if user.profile_editor?
+		roles << 'provider' if user.is_provider?
+		roles << 'client' if user.client?
+		roles.join separator
+	end
 end

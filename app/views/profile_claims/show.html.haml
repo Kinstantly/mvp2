@@ -8,7 +8,7 @@
 			%td= link_to_if @profile_claim.profile, profile_name, @profile_claim.profile, target: "_blank"
 		%tr
 			%td= ProfileClaim.human_attribute_name :claimant
-			%td= link_to_if @profile_claim.claimant, claimant_name, hash_for_edit_user_path(id: @profile_claim.claimant), target: "_blank"
+			%td= link_to_if @profile_claim.claimant, claimant_name, @profile_claim.claimant, target: "_blank"
 		%tr
 			%td= ProfileClaim.human_attribute_name :claimant_email
 			%td= @profile_claim.claimant_email
