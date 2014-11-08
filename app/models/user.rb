@@ -68,31 +68,8 @@ class User < ActiveRecord::Base
 
 	after_save do
 		# Create new or update/delete existing subscription.
-		new_subscription = !subscribed_to_mailing_list?
-		subscription_attr = changes.slice :email, 
-								:username, 
-								:parent_marketing_emails, 
-								:parent_newsletters, 
-								:provider_marketing_emails, 
-								:provider_newsletters
-		# Proceed only if no subscription exists or subscription exists and least one subscription-related attr changed.
-		if errors.empty? && (new_subscription || subscription_attr.any?)
-			# Find and update/delete subscription groups related to user current role(s).
-			subscription_groups = []
-			if client?
-				subscription_groups << 'parent_marketing_emails' if parent_marketing_emails
-				subscription_groups << 'parent_newsletters' if parent_newsletters
-			end
-			if expert?
-				subscription_groups << 'provider_marketing_emails' if provider_marketing_emails
-				subscription_groups << 'provider_newsletters' if provider_newsletters
-			end
-			if Rails.env.production?
-				subscription_groups.any? ? delay.subscribe_to_mailing_list : delay.unsubscribe_from_mailing_list
-			else
-				subscription_groups.any? ? subscribe_to_mailing_list : unsubscribe_from_mailing_list
-			end
-		end
+		subscription_attr_updated = (changes.slice :email, :username)
+		sync_subscription_preferenses(subscription_attr_updated)
 	end
 	
 	# Solr search configuration.
@@ -218,107 +195,65 @@ class User < ActiveRecord::Base
 	def contact_is_blocked?
 		email.present? and ContactBlocker.find_by_email(email).present?
 	end
-	
+
+	# List names with corresponding list-email ids (leid).
+	# Leids are used by MailChimp to identify user on a mailing list.
+	def leids
+		{ parent_marketing_emails: parent_marketing_emails_leid,
+			parent_newsletters: parent_newsletters_leid,
+			provider_marketing_emails: provider_marketing_emails_leid,
+			provider_newsletters: provider_newsletters_leid }
+	end
+
 	# True if this user is currently subscribed to a mailing list.
-	def subscribed_to_mailing_list?
-		subscriber_euid.present? || subscriber_leid.present?
+	def subscribed_to_mailing_list?(list_name)
+		leids[list_name].present?
 	end
 
-	#Sync subscription info (create new or update) with MailChimp mailing list.
-	def subscribe_to_mailing_list
-		# Do nothing if this user is not confirmed or we are not allowed to contact them.
-		return false if !confirmed? or contact_is_blocked?
+	#Sync subscriptions (create/update/delete) with MailChimp.
+	def sync_subscription_preferenses(updated_attrs=[])
+		old_values = {
+			parent_marketing_emails: subscribed_to_mailing_list?(:parent_marketing_emails),
+			parent_newsletters: subscribed_to_mailing_list?(:parent_newsletters),
+			provider_marketing_emails: subscribed_to_mailing_list?(:provider_marketing_emails),
+			provider_newsletters: subscribed_to_mailing_list?(:provider_newsletters)
+		}
+		new_values = {
+			parent_marketing_emails: parent_marketing_emails,
+			parent_newsletters: parent_newsletters,
+			provider_marketing_emails: provider_marketing_emails,
+			provider_newsletters: provider_newsletters
+		}
+		
+		subscriptions_to_update = old_values.merge(new_values){|key, ov, nv| ((!ov && nv) || (ov && nv && updated_attrs.any?))}.select {|k,v| v}.keys
+		subscriptions_to_remove = old_values.merge(new_values){|key, ov, nv| (ov && !nv)}.select {|k,v| v}.keys
 
-		list_id = Rails.configuration.mailchimp_list_id
-		email_struct = {euid: subscriber_euid, leid: subscriber_leid}
-		merge_vars = {groupings: []}
-		first_name = username.presence || email.presence
-		last_name  = ''
-		if client?
-			groups = []
-			groups << 'marketing_emails' if parent_marketing_emails
-			groups << 'newsletters' if parent_newsletters
-			if groups.any?
-				merge_vars[:groupings] << {name: 'parent', groups: groups}
-			end
-		end
-		if expert?
-			if profile.first_name.present?
-				first_name = profile.first_name
-				last_name  = profile.last_name if profile.last_name.present?
-			end
-			groups = []
-			groups << 'marketing_emails' if provider_marketing_emails
-			groups << 'newsletters' if provider_newsletters
-			if groups.any?
-				merge_vars[:groupings] << {name: 'provider', groups: groups}
-			end
-		end
-
-		merge_vars[:FNAME] = first_name 
-		merge_vars[:LNAME] = last_name 
-
-		if subscriber_euid && subscriber_leid
-			# User is subscribed, but probably changed their email or name.
-			# The email attribute have been updated at this time.
-			# Do not use new email as user identifier in email_struct,
-			# instruct MailChimp to update the email.
-			merge_vars['new-email'] = email
+		if Rails.env.production?
+			delay.subscribe_to_mailing_lists(subscriptions_to_update, updated_attrs[:email].present?)
+			delay.unsubscribe_from_mailing_lists(subscriptions_to_remove)
 		else
-			email_struct[:email] = email
-		end
-		
-		if merge_vars[:groupings].any?
-			begin
-				gb = Gibbon::API.new
-				r = gb.lists.subscribe id: list_id, 
-					email: email_struct,
-					merge_vars: merge_vars,
-					double_optin: false,
-					update_existing: true
-				if r.present?
-					update_column(:subscriber_euid, r['euid'])
-					update_column(:subscriber_leid, r['leid'])
-				end
-			rescue Gibbon::MailChimpError => e
-				logger.error "MailChimp error while subscribing user #{id} to #{merge_vars}: #{e.message}, error code: #{e.code}" if logger
-				raise e
-			end
+			subscribe_to_mailing_lists(subscriptions_to_update, updated_attrs[:email].present?)
+			unsubscribe_from_mailing_lists(subscriptions_to_remove)
 		end
 	end
-
-	# Remove subscription from MailChimp mailing list
-	def unsubscribe_from_mailing_list
-		return unless subscribed_to_mailing_list? # Gibbon complains if user is not already subscribed.
-		
-		list_id = Rails.configuration.mailchimp_list_id
-		email_struct = {email: email, euid: subscriber_euid, leid: subscriber_leid}
-		begin
-			gb = Gibbon::API.new
-			r = gb.lists.unsubscribe id: list_id, 
-				email: email_struct,
-				delete_member: true,
-				send_goodbye: false,
-				send_notify: false
-
-			update_column(:subscriber_euid, nil)
-			update_column(:subscriber_leid, nil)
-		rescue Gibbon::MailChimpError => e
-			logger.error "MailChimp error while unsubscribing user #{id}: #{e.message}, error code: #{e.code}" if logger
-			raise e
-		end
-	end
-
+	
 	# Subscription terminated externally through MailChimp interface.
-	# Update user subscriptions to match external modifications.
-	def remove_email_subscriptions_locally
-		return unless subscribed_to_mailing_list?
-		update_column(:subscriber_euid, nil)
-		update_column(:subscriber_leid, nil)
-		update_column(:parent_marketing_emails, false)
-		update_column(:parent_newsletters, false)
-		update_column(:provider_marketing_emails, false)
-		update_column(:provider_newsletters, false)
+	# Updates user subscriptions to match external modifications.
+	def process_unsubscribe_event(list_name)
+		# List name is valid?
+		return unless User.mailing_list_name_valid?(list_name)
+		update_column("#{list_name}_leid", nil)
+		update_column(list_name, false)
+	end
+
+	# Subscription created externally (through rake task).
+	# Persists new leid.
+	def process_subscribe_event(list_name, leid)
+		# List name is valid?
+		return unless User.mailing_list_name_valid?(list_name)
+		if read_attribute list_name
+			update_column("#{list_name}_leid", leid)
+		end
 	end
 	
 	# Ensure that this user is not subscribed to any of our emails.
@@ -406,6 +341,11 @@ class User < ActiveRecord::Base
 			end
 		end
 		
+		# True if list name is one of predefined list names.
+		def mailing_list_name_valid?(list_name)
+			Rails.configuration.mailchimp_list_id.has_key?(list_name)
+		end
+
 	end
 	# End of public class methods.
 	
@@ -435,6 +375,72 @@ class User < ActiveRecord::Base
 		unless welcome_sent_at
 			send_devise_notification :on_create_welcome
 			update_column :welcome_sent_at, Time.now.utc
+		end
+	end
+	
+	# Creates new or updates existing subscriptions on MailChimp.
+	def subscribe_to_mailing_lists(list_names=[], new_email=false)
+		# Do nothing if this user is not confirmed or we are not allowed to contact them.
+		return false if !confirmed? or contact_is_blocked?
+
+		first_name = username.presence || email.presence
+		last_name  = ''
+		if expert?
+			if profile.first_name.present?
+				first_name = profile.first_name
+				last_name  = profile.last_name if profile.last_name.present?
+			end
+		end
+		merge_vars = { FNAME: first_name, LNAME: last_name }
+		
+		list_names.each do |list_name|
+			next if !User.mailing_list_name_valid?(list_name)
+
+			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			subscriber_leid = leids[list_name]
+			email_struct = { leid: subscriber_leid }
+			if new_email && subscriber_leid.present?
+				# User changed their email; email attribute have been updated at this time.
+				# Do not use email as an id, but instruct MailChimp to update the email.
+				merge_vars['new-email'] = email
+			else
+				email_struct[:email] = email
+			end
+			begin
+				gb = Gibbon::API.new
+				r = gb.lists.subscribe id: list_id, 
+					email: email_struct,
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+				if r.present?
+					update_column("#{list_name}_leid", r['leid'])
+				end
+			rescue Gibbon::MailChimpError => e
+				logger.error "MailChimp error while subscribing user #{id} to #{merge_vars}: #{e.message}, error code: #{e.code}" if logger
+			end
+		end
+	end
+
+	# Removes user from specified mailing lists on MailChimp.
+	def unsubscribe_from_mailing_lists(list_names=[])
+		list_names.each do |list_name|
+			next if !User.mailing_list_name_valid?(list_name)
+			
+			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			subscriber_leid = leids[list_name]
+			email_struct = {email: email, leid: subscriber_leid}
+			begin
+				gb = Gibbon::API.new
+				r = gb.lists.unsubscribe id: list_id, 
+					email: email_struct,
+					delete_member: true,
+					send_goodbye: false,
+					send_notify: false
+				update_column("#{list_name}_leid", nil)
+			rescue Gibbon::MailChimpError => e
+				logger.error "MailChimp error while unsubscribing user #{id}: #{e.message}, error code: #{e.code}" if logger
+			end
 		end
 	end
 end

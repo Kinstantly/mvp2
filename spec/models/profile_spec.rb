@@ -751,4 +751,25 @@ describe Profile do
 			Profile.find_claimable(profile.invitation_token).should be_nil
 		end
 	end
+
+	context "AFTER save", mailchimp: true do
+		it "should notify MailChimp, if first name changed" do
+			list_id = Rails.configuration.mailchimp_list_id[:provider_marketing_emails]
+			@profile.user = FactoryGirl.create(:expert_user, provider_marketing_emails: true)
+			@profile.save
+			@profile.reload
+			@profile.first_name = "Bob"
+			merge_vars = { FNAME: @profile.first_name, LNAME: @profile.last_name }
+			opts = {
+				email: { email: @profile.user.email, leid: @profile.user.provider_marketing_emails_leid },
+				id: list_id,
+				merge_vars: merge_vars,
+				double_optin: false,
+				update_existing: true
+			}
+			gb_obj = Gibbon::API.new.lists.class
+			gb_obj.any_instance.should_receive(:subscribe).with(opts).once
+			@profile.save
+		end
+	end
 end

@@ -25,12 +25,12 @@ class MailchimpWebhookController < ApplicationController
 	private
 
 	def on_unsubscribe(data)
-		system_list_id = Rails.configuration.mailchimp_list_id
 		incoming_list_id = data['list_id']
 		subscriber_email = data['email']
+		list_name = Rails.configuration.mailchimp_list_id.key(incoming_list_id)
 
-		if incoming_list_id != system_list_id
-			logger.info "MailChimp Webhook unsubscribe verification failed: incoming_list_id \'#{incoming_list_id}\' does not match system_list_id \'#{system_list_id}\'." if logger
+		if !User.mailing_list_name_valid?(list_name)
+			logger.info "MailChimp Webhook unsubscribe verification failed: incoming_list_id \'#{incoming_list_id}\' is not valid. List name: #{list_name}." if logger
 			return
 		end
 		if User.exists?(email: subscriber_email)
@@ -39,20 +39,22 @@ class MailchimpWebhookController < ApplicationController
 			logger.error "MailChimp Webhook unsubscribe verification failed: user with email #{subscriber_email} is not found." if logger
 			return
 		end
-		
 		if data['reason'] == 'abuse'
 			logger.info "MailChimp Webhook: user \'id##{user.id}\' reported abuse." if logger
 		end
-
-		emails = [{email: user.email, euid: user.subscriber_euid, leid: user.subscriber_leid}]
+		
+		emails = [{email: user.email, leid: user.leids[list_name]}]
 		begin
 			gb = Gibbon::API.new
-			r = gb.lists.member_info id: incoming_list_id, 
-				emails: emails
-			if r.present? && r['error_count'] == 1
-				user.remove_email_subscriptions_locally
-			else
-				logger.info "MailChimp Webhook unsubscribe verification failed: requested user \'id##{user.id}\' has not been unsubscribed from the list \'id##{incoming_list_id}\'." if logger
+			r = gb.lists.member_info id: incoming_list_id, emails: emails
+			if r.present?
+				user_unsubscribed = (r['success_count'] == 1 && r['data'][0]['status'] == 'unsubscribed')
+				user_deleted = r['error_count'] == 1
+				if user_unsubscribed || user_deleted
+					user.process_unsubscribe_event(list_name)
+				else
+					logger.info "MailChimp Webhook unsubscribe verification failed. MailChimp response: #{r}" if logger
+				end
 			end
 		rescue Gibbon::MailChimpError => e
 			logger.error "MailChimp Webhook error while processing notification: #{e.message}, error code: #{e.code}." if logger

@@ -89,7 +89,13 @@ Mvp2::Application.configure do
 
   # Wrapper for MailChimp API
   Gibbon::API.api_key = '924cc5a82c5f67ecc397bd1d4fcb7236-us9'
-  config.mailchimp_list_id = '240b02592e'
+  config.mailchimp_list_id = {
+    :parent_marketing_emails => '46eeff8675',
+    :parent_newsletters => '7030e9d15b',
+    :provider_marketing_emails => '17cb397f2a',
+    :provider_newsletters => 'ef9518f95a'
+  }
+  Delayed::Worker.logger = Rails.logger
 end
 
 REINDEX_PROFILES_IN_BACKGROUND = true
