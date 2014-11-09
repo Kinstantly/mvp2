@@ -6,4 +6,9 @@ class StripeCustomer < ActiveRecord::Base
 	belongs_to :stripe_info
 	belongs_to :customer
 	has_many :stripe_cards
+	
+	# Retrieve customer data from Stripe.
+	def retrieve
+		Stripe::Customer.retrieve(api_customer_id) if api_customer_id.present?
+	end
 end

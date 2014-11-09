@@ -271,6 +271,28 @@ class User < ActiveRecord::Base
 	def is_client_of?(provider)
 		as_customer && provider ? as_customer.customer_files.for_provider(provider).present? : false
 	end
+	
+	# True if this user is a customer of one or more paid providers.
+	def has_paid_providers?
+		as_customer.try(:customer_files).present?
+	end
+	
+	def paid_providers
+		as_customer.try(:customer_files).try(:map, &:provider).try(:compact).presence || []
+	end
+	
+	# True if this user has one or more paying customers.
+	def has_paying_customers?
+		customer_files.present?
+	end
+	
+	def paying_customers
+		customer_files.map(&:customer).compact
+	end
+	
+	def paying_users
+		paying_customers.map(&:user).compact
+	end
 
 	# Public class methods.
 	#

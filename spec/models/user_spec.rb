@@ -480,4 +480,32 @@ describe User do
 			end
 		end
 	end
+	
+	context "Payment" do
+		context "As a customer" do
+			let(:parent) { FactoryGirl.create :parent }
+			let(:paying_parent) { FactoryGirl.create(:customer_file).customer.user }
+			
+			it "should indicate that this user has no paid providers" do
+				parent.should_not have_paid_providers
+			end
+			
+			it "should indicate that this user has paid providers" do
+				paying_parent.should have_paid_providers
+			end
+		end
+		
+		context "As a provider" do
+			let(:provider) { FactoryGirl.create :provider }
+			let(:paid_provider) { FactoryGirl.create(:customer_file).provider }
+			
+			it "should indicate that this provider has no paying customers" do
+				provider.should_not have_paying_customers
+			end
+			
+			it "should indicate that this provider has paying customers" do
+				paid_provider.should have_paying_customers
+			end
+		end
+	end
 end

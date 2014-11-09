@@ -384,6 +384,10 @@ ActiveRecord::Schema.define(:version => 20141106191515) do
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
     t.boolean  "livemode"
+    t.string   "brand"
+    t.string   "funding"
+    t.integer  "exp_month"
+    t.integer  "exp_year"
   end
 
   add_index "stripe_cards", ["stripe_customer_id"], :name => "index_stripe_cards_on_stripe_customer_id"

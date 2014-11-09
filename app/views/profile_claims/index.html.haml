@@ -24,8 +24,8 @@
 					- claimant_name = profile_claim.claimant.try :username_or_email
 					%tr
 						%td= link_to_if profile_claim.profile, profile_name, profile_claim.profile, target: "_blank"
-						- # Because path evaluated before link_to_if condition, we need hash to prevent nil error for when claimant does not exist 
-						%td= link_to_if profile_claim.claimant, claimant_name, hash_for_edit_user_path(id: profile_claim.claimant), target: "_blank"
+						-# If you change the following to link to the edit page, use hash_for_edit_user_path in case claimant is nil.
+						%td= link_to_if profile_claim.claimant, claimant_name, profile_claim.claimant, target: "_blank"
 						%td= profile_claim.claimant_email
 						%td= profile_claim.claimant_phone
 						%td.large= profile_claim.admin_notes

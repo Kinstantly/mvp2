@@ -19,6 +19,6 @@
 					zip code:
 					= @user.postal_code
 				%p This registration originated at the blog (a newsletter sign-up).
-			%p= mailer_edit_user_link @user
+			%p= mailer_user_link @user
 		- else
 			%p Oops, can't find the parent's record.

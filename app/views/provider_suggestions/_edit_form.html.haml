@@ -1,6 +1,7 @@
+- suggester = @provider_suggestion.suggester
 %p
 	= "#{ProviderSuggestion.human_attribute_name :suggester}:"
-	= @provider_suggestion.suggester.try :username_or_email
+	= link_to_if suggester, suggester.try(:username_or_email), suggester, target: '_blank'
 = simple_form_for @provider_suggestion do |f|
 	= f.input :suggester_name, label: t('views.provider_suggestion.admin.suggester_name')
 	= f.input :suggester_email, label: t('views.provider_suggestion.admin.suggester_email')

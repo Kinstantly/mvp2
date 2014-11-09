@@ -1,9 +1,10 @@
+- suggester = @provider_suggestion.suggester
 .show
 	%p#notice= notice
 	%table
 		%tr
 			%td= ProviderSuggestion.human_attribute_name :suggester
-			%td= @provider_suggestion.suggester.try :username_or_email
+			%td= link_to_if suggester, suggester.try(:username_or_email), suggester, target: '_blank'
 		%tr
 			%td= t 'views.provider_suggestion.admin.suggester_name'
 			%td= @provider_suggestion.suggester_name

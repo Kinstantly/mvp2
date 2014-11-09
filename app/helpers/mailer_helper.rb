@@ -22,7 +22,7 @@ module MailerHelper
 		time_with_zone.localtime.strftime('%a, %b %d, %Y %l:%M %p %Z')
 	end
 	
-	def mailer_edit_user_link(user)
-		link_to (running_as_private_site? ? 'Confirm new account' : 'Edit account'), edit_user_url(user)
+	def mailer_user_link(user)
+		link_to (running_as_private_site? ? 'Confirm new account' : 'View account'), user_url(user)
 	end
 end

@@ -38,6 +38,10 @@ describe AdminMailer do
 		it "should contain a link to edit profile view" do
 			email.should have_body_text(edit_plain_profile_url profile)
 		end
+	
+		it "should contain a link to view the provider's account" do
+			email.should have_body_text(user_url provider)
+		end
 	end
 	
 	context "parent registration alert" do
@@ -52,8 +56,8 @@ describe AdminMailer do
 			email.should have_subject(/#{parent.email}/)
 		end
 	
-		it "should contain a link to edit the parent's account" do
-			email.should have_body_text(edit_user_url parent)
+		it "should contain a link to view the parent's account" do
+			email.should have_body_text(user_url parent)
 		end
 	end
 	

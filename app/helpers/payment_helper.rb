@@ -15,4 +15,8 @@ module PaymentHelper
 	def display_transaction_date(time_with_zone)
 		time_with_zone.localtime.strftime('%b %-d, %Y')
 	end
+	
+	def display_payment_card_summary(card)
+		"#{card.brand} #{card.funding} #{[card.exp_month, card.exp_year].compact.join('/')}" if card
+	end
 end
