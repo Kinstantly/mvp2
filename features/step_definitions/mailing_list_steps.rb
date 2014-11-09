@@ -37,8 +37,10 @@ Then /^I should not be subscribed to any mailing lists$/ do
 	@user.parent_newsletters.should be_false
 	@user.provider_marketing_emails.should be_false
 	@user.provider_newsletters.should be_false
-	@user.subscriber_euid.should be_nil
-	@user.subscriber_leid.should be_nil
+	@user.parent_marketing_emails_leid.should be_nil
+	@user.parent_newsletters_leid.should be_nil
+	@user.provider_marketing_emails_leid.should be_nil
+	@user.provider_newsletters_leid.should be_nil
 end
 
 Then /^I should be subscribed to the provider mailing lists$/ do

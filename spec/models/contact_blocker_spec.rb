@@ -76,8 +76,10 @@ describe ContactBlocker do
 				user.parent_newsletters.should be_true
 				user.provider_marketing_emails.should be_true
 				user.provider_newsletters.should be_true
-				user.subscriber_euid.should_not be_nil
-				user.subscriber_leid.should_not be_nil
+				user.parent_marketing_emails_leid.should_not be_nil
+				user.parent_newsletters_leid.should_not be_nil
+				user.provider_marketing_emails_leid.should_not be_nil
+				user.provider_newsletters_leid.should_not be_nil
 			end
 			
 			context "after the contact blocker for the user's email address is saved" do
@@ -92,8 +94,10 @@ describe ContactBlocker do
 					user.parent_newsletters.should be_false
 					user.provider_marketing_emails.should be_false
 					user.provider_newsletters.should be_false
-					user.subscriber_euid.should be_nil
-					user.subscriber_leid.should be_nil
+					user.parent_marketing_emails_leid.should be_nil
+					user.parent_newsletters_leid.should be_nil
+					user.provider_marketing_emails_leid.should be_nil
+					user.provider_newsletters_leid.should be_nil
 				end
 			end
 		end
