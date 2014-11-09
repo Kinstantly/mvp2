@@ -386,7 +386,7 @@ class User < ActiveRecord::Base
 		first_name = username.presence || email.presence
 		last_name  = ''
 		if expert?
-			if profile.first_name.present?
+			if profile.try(:first_name).present?
 				first_name = profile.first_name
 				last_name  = profile.last_name if profile.last_name.present?
 			end
