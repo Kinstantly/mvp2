@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
 	devise :database_authenticatable, :registerable, :confirmable,
 		:recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable
 	
+	before_validation :set_marketing_emails_and_newsletters
+	
 	before_create :skip_confirmation!, if: :claiming_profile?
 	after_create :send_welcome_email, if: :claiming_profile?
 	
@@ -16,7 +18,7 @@ class User < ActiveRecord::Base
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
 		:profile_attributes, :phone, :is_provider, :username, :registration_special_code, :profile_help,
 		:parent_marketing_emails, :parent_newsletters, :provider_marketing_emails, :provider_newsletters,
-		:signed_up_from_blog, :postal_code
+		:marketing_emails_and_newsletters, :signed_up_from_blog, :postal_code
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :email, :phone, :username, :postal_code
@@ -133,6 +135,17 @@ class User < ActiveRecord::Base
 	
 	def is_provider
 		@is_provider
+	end
+	
+	# If set, this attribute is used just before validation to set the appropriate mailing list subscriptions.
+	# See set_marketing_emails_and_newsletters.
+	def marketing_emails_and_newsletters=(value)
+		@marketing_emails_and_newsletters = value
+	end
+
+	# Default value is '1'.
+	def marketing_emails_and_newsletters
+		@marketing_emails_and_newsletters || '1'
 	end
 	
 	alias :is_provider? :expert?
@@ -406,6 +419,19 @@ class User < ActiveRecord::Base
 	# def validate_username?
 	# 	new_record? or username_changed?
 	# end
+
+	# If @marketing_emails_and_newsletters has been set, use its value to set the appropriate subscription flags.
+	# Ensure that we are not subscribing to parent lists if we are a provider and vice versa.
+	def set_marketing_emails_and_newsletters
+		unless @marketing_emails_and_newsletters.nil?
+			boolean_value = @marketing_emails_and_newsletters == '1'
+			self.parent_marketing_emails = boolean_value && !is_provider?
+			self.parent_newsletters = boolean_value && !is_provider?
+			self.provider_marketing_emails = boolean_value && is_provider?
+			self.provider_newsletters = boolean_value && is_provider?
+		end
+		true # Keep going no matter what happened here.
+	end
 
 	# Creates new or updates existing subscriptions on MailChimp.
 	def subscribe_to_mailing_lists(list_names=[], new_email=false)

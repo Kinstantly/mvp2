@@ -43,6 +43,54 @@ Then /^I should not be subscribed to any mailing lists$/ do
 	@user.provider_newsletters_leid.should be_nil
 end
 
+Then /^I should be subscribed only to the provider mailing lists but not yet synced to the list server$/ do
+	@user.reload
+	@user.parent_marketing_emails.should be_false
+	@user.parent_newsletters.should be_false
+	@user.provider_marketing_emails.should be_true
+	@user.provider_newsletters.should be_true
+	@user.parent_marketing_emails_leid.should be_nil
+	@user.parent_newsletters_leid.should be_nil
+	@user.provider_marketing_emails_leid.should be_nil
+	@user.provider_newsletters_leid.should be_nil
+end
+
+Then /^I should be subscribed only to the provider mailing lists and synced to the list server$/ do
+	@user.reload
+	@user.parent_marketing_emails.should be_false
+	@user.parent_newsletters.should be_false
+	@user.provider_marketing_emails.should be_true
+	@user.provider_newsletters.should be_true
+	@user.parent_marketing_emails_leid.should be_nil
+	@user.parent_newsletters_leid.should be_nil
+	@user.provider_marketing_emails_leid.should_not be_nil
+	@user.provider_newsletters_leid.should_not be_nil
+end
+
+Then /^I should be subscribed to only the parent mailing lists but not yet synced to the list server$/ do
+	@user.reload
+	@user.parent_marketing_emails.should be_true
+	@user.parent_newsletters.should be_true
+	@user.provider_marketing_emails.should be_false
+	@user.provider_newsletters.should be_false
+	@user.parent_marketing_emails_leid.should be_nil
+	@user.parent_newsletters_leid.should be_nil
+	@user.provider_marketing_emails_leid.should be_nil
+	@user.provider_newsletters_leid.should be_nil
+end
+
+Then /^I should be subscribed to only the parent mailing lists and synced to the list server$/ do
+	@user.reload
+	@user.parent_marketing_emails.should be_true
+	@user.parent_newsletters.should be_true
+	@user.provider_marketing_emails.should be_false
+	@user.provider_newsletters.should be_false
+	@user.parent_marketing_emails_leid.should_not be_nil
+	@user.parent_newsletters_leid.should_not be_nil
+	@user.provider_marketing_emails_leid.should be_nil
+	@user.provider_newsletters_leid.should be_nil
+end
+
 Then /^I should be subscribed to the provider mailing lists$/ do
 	@user.reload
 	@user.provider_marketing_emails.should be_true

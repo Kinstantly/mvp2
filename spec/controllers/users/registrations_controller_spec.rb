@@ -12,30 +12,36 @@ describe Users::RegistrationsController do
 	context "as a non-provider member" do
 		describe "POST create" do
 			context "new user signs up" do
-				it "marketing_emails_and_newsletters is true" do
+				it "subscribes to the parent mailing lists" do
 					post :create, user: {
 						email: email,
 						password: new_password,
 						password_confirmation: new_password,
-						username: username
-					}, marketing_emails_and_newsletters: true
+						username: username,
+						marketing_emails_and_newsletters: '1'
+					}
 
 					user = assigns[:user].reload
 					user.parent_marketing_emails.should be_true
 					user.parent_newsletters.should be_true
+					user.provider_marketing_emails.should be_false
+					user.provider_newsletters.should be_false
 				end
 
-				it "marketing_emails_and_newsletters is false" do
+				it "does not subscribe to the mailing lists" do
 					post :create, user: {
 						email: email,
 						password: new_password,
 						password_confirmation: new_password,
-						username: username
-					}, marketing_emails_and_newsletters: false
+						username: username,
+						marketing_emails_and_newsletters: '0'
+					}
 
 					user = assigns[:user].reload
 					user.parent_marketing_emails.should be_false
 					user.parent_newsletters.should be_false
+					user.provider_marketing_emails.should be_false
+					user.provider_newsletters.should be_false
 				end
 			end
 		end
@@ -93,32 +99,60 @@ describe Users::RegistrationsController do
 	context "as a provider" do
 		describe "POST create" do
 			context "new provider signs up" do			
-				it "marketing_emails_and_newsletters is true" do
+				it "subscribes to the provider mailing lists" do
 					post :create, user: {
 						is_provider: '1',
 						email: email,
 						password: new_password,
 						password_confirmation: new_password,
-						username: username
-					}, marketing_emails_and_newsletters: true
+						username: username,
+						marketing_emails_and_newsletters: '1'
+					}
 
 					user = assigns[:user].reload
 					user.provider_marketing_emails.should be_true
 					user.provider_newsletters.should be_true
+					user.parent_marketing_emails.should be_false
+					user.parent_newsletters.should be_false
 				end
 
-				it "marketing_emails_and_newsletters is false" do
+				it "does not subscribe to the mailing lists" do
 					post :create, user: {
 						is_provider: '1',
 						email: email,
 						password: new_password,
 						password_confirmation: new_password,
-						username: username
-					}, marketing_emails_and_newsletters: false
+						username: username,
+						marketing_emails_and_newsletters: '0'
+					}
 
 					user = assigns[:user].reload
 					user.provider_marketing_emails.should be_false
 					user.provider_newsletters.should be_false
+					user.parent_marketing_emails.should be_false
+					user.parent_newsletters.should be_false
+				end
+				
+				context "while claiming a profile" do
+					it "subscribes the provider to the provider mailing lists" do
+						profile = FactoryGirl.create :claimable_profile
+						session[:claiming_profile] = profile.invitation_token
+					
+						post :create, user: {
+							is_provider: '1',
+							email: email,
+							password: new_password,
+							password_confirmation: new_password,
+							username: username,
+							marketing_emails_and_newsletters: '1'
+						}
+
+						user = assigns[:user].reload
+						user.provider_marketing_emails.should be_true
+						user.provider_newsletters.should be_true
+						user.parent_marketing_emails.should be_false
+						user.parent_newsletters.should be_false
+					end
 				end
 			end
 

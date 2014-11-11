@@ -9,19 +9,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 	layout :registrations_layout
 
-	def create
-		if (params[:marketing_emails_and_newsletters])
-			params[:user].merge!(:parent_marketing_emails => true, 
-								:parent_newsletters => true, 
-								:provider_marketing_emails => true, 
-								:provider_newsletters => true)
-			flash[:marketing_emails_and_newsletters] = true
-		else
-			flash[:marketing_emails_and_newsletters] = false
-		end
-		super
-	end
-	
 	def edit
 		if params[:contact_preferences].present?
 			# The fragment ID is not preserved across a sign-in, so fake it with a query parameter.  :(

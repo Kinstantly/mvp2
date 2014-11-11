@@ -88,11 +88,11 @@
 				= parent_provider_tag
 
 	- if @signing_up_for_newsletter
-		= hidden_field_tag :marketing_emails_and_newsletters, 1
+		= f.hidden_field :marketing_emails_and_newsletters, value: '1'
 	- else
 		.checkbox
-			=check_box_tag :marketing_emails_and_newsletters, 1, (:checked unless flash[:marketing_emails_and_newsletters] == false)
-			=label_tag :marketing_emails_and_newsletters, (t 'views.user.edit.newsletters_and_marketing_emails_label')
+			= f.check_box :marketing_emails_and_newsletters
+			= f.label :marketing_emails_and_newsletters, (t 'views.user.edit.newsletters_and_marketing_emails_label')
 
 	.buttons
 		- if @signing_up_for_newsletter
