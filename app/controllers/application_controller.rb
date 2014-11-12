@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 	protect_from_forgery
 	layout 'interior'
 	
-	http_basic_authenticate_with name: ENV['BASIC_AUTH_NAME'], password: ENV['BASIC_AUTH_PASSWORD'], except: :webhook, unless: 'controller_name == "omniauth_callbacks"' if ENV['BASIC_AUTH_NAME'].present?
+	http_basic_authenticate_with name: ENV['BASIC_AUTH_NAME'], password: ENV['BASIC_AUTH_PASSWORD'], except: :webhook, unless: '["omniauth_callbacks", "mailchimp_webhook"].include?(controller_name)' if ENV['BASIC_AUTH_NAME'].present?
 	
 	# Store referrer for use after sign-in or sign-up if so directed.
 	before_filter :store_referrer, only: :new

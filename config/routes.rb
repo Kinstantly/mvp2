@@ -153,7 +153,8 @@ Mvp2::Application.routes.draw do
 	mount StripeEvent::Engine => '/cyan'
 
 	# MailChimp webhook
-	post 'hooks/a11d83adba52b483798f5e7de90c3e57' => 'mailchimp_webhook#process_notification'
+	# Their validator uses GET, so allow both POST and GET.  Yuck.
+	match 'hooks/a11d83adba52b483798f5e7de90c3e57' => 'mailchimp_webhook#process_notification'
 
 	
 	# Customers of a provider.
