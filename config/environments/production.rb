@@ -120,7 +120,12 @@ Mvp2::Application.configure do
 
   # Wrapper for MailChimp API
   Gibbon::API.api_key = ENV['MAILCHIMP_API_KEY']
-  config.mailchimp_list_id = ENV['MAILCHIMP_LIST_ID']
+  config.mailchimp_list_id = {
+    :parent_marketing_emails => ENV['PARENT_MARKETING_EMAILS_LIST_ID'],
+    :parent_newsletters => ENV['PARENT_NEWSLETTERS_LIST_ID'],
+    :provider_marketing_emails => ENV['PROVIDER_MARKETING_EMAILS_LIST_ID'],
+    :provider_newsletters => ENV['PROVIDER_NEWSLETTERS_LIST_ID']
+  }
 end
 
 REINDEX_PROFILES_IN_BACKGROUND = true
