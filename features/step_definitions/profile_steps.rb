@@ -130,6 +130,10 @@ Given /^I want a published profile|a published profile exists$/ do
 	create_published_profile
 end
 
+Given /^a published profile exists with company name "(.*?)"$/ do |company_name|
+	create_published_profile company_name: company_name
+end
+
 Given /^a user with a profile exists$/ do
 	create_profile
 end

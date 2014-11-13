@@ -37,3 +37,14 @@ Feature: Review provider
 			And I open the email with subject "Confirm your Kinstantly account"
 			And I follow "confirm" in the email
 		Then I should land on the review form of the profile
+
+	Scenario: Admin notified when a provider is reviewed
+		Given a published profile exists with company name "Car Wheels on a Gravel Road"
+			And I am logged in as a client user
+		When I visit the published profile page
+			And I click on the review link
+			And I enter "Lucinda Williams is the best!" in the new review on the review page
+			And I click "Submit" in the new review on the review page
+		Then "admin@kinstantly.com" should receive an email with subject "New Review for Car Wheels on a Gravel Road"
+			And they open the email
+			And they should see "Lucinda Williams is the best!" in the email body
