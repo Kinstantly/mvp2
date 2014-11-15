@@ -17,8 +17,8 @@ describe ProfileMailer do
 		end
 
 		it "should contain profile name and reviewer username" do
-			@email.should have_subject(/#{@review.profile.display_name_or_company} by #{@review.reviewer_username}/)
-			@email.should have_body_text(/#{@review.profile.display_name_or_company} by #{@review.reviewer_username}/)
+			@email.should have_subject(/#{@review.profile.company_otherwise_display_name} by #{@review.reviewer_username}/)
+			@email.should have_body_text(/#{@review.profile.company_otherwise_display_name} by #{@review.reviewer_username}/)
 
 		end
 
