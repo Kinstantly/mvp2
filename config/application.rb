@@ -116,6 +116,9 @@ module Mvp2
     Gibbon::API.timeout = ENV['MAILCHIMP_API_TIMEOUT'].presence || 20
     config.mailchimp_webhook_security_token = '115654367fbf29d8358a58d98850c666'
 
+    config.to_prepare do
+        DeviseController.respond_to :html, :json
+    end
   end
 end
 
