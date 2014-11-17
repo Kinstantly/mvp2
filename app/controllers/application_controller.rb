@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 	protect_from_forgery
 	layout 'interior'
 	
-	http_basic_authenticate_with name: ENV['BASIC_AUTH_NAME'], password: ENV['BASIC_AUTH_PASSWORD'], except: :webhook, unless: '["omniauth_callbacks", "mailchimp_webhook"].include?(controller_name)' if ENV['BASIC_AUTH_NAME'].present?
+	http_basic_authenticate_with name: ENV['BASIC_AUTH_NAME'], password: ENV['BASIC_AUTH_PASSWORD'], unless: :skip_http_basic_authentication if ENV['BASIC_AUTH_NAME'].present?
 	
 	# Store referrer for use after sign-in or sign-up if so directed.
 	before_filter :store_referrer, only: :new
@@ -146,5 +146,12 @@ class ApplicationController < ActionController::Base
 	
 	def authenticate_user_on_private_site
 		authenticate_user! if running_as_private_site?
+	end
+	
+	# If this site is using HTTP basic authentication and this method returns true, skip HTTP basic authentication.
+	def skip_http_basic_authentication
+		action_name == 'webhook' ||
+		['omniauth_callbacks', 'mailchimp_webhook'].include?(controller_name) ||
+		(controller_name == 'sessions' && action_name == 'create' && request.format.json?)
 	end
 end
