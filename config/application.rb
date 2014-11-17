@@ -116,6 +116,8 @@ module Mvp2
     Gibbon::API.timeout = ENV['MAILCHIMP_API_TIMEOUT'].presence || 20
     config.mailchimp_webhook_security_token = ENV['MAILCHIMP_WEBHOOK_SECURITY_TOKEN'].presence || '115654367fbf29d8358a58d98850c666'
 
+    # Token used to authorize a JSON sign-in attempt.
+    config.sign_in_auth_token = '7d04d7c4baa559fc49c03fe5fd8dd3c5'
   end
 end
 
