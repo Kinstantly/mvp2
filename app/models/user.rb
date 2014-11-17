@@ -77,6 +77,12 @@ class User < ActiveRecord::Base
 		sync_subscription_preferenses(subscription_attr_updated)
 	end
 	
+	# Only used by single sign-on, so return as little information as possible.
+	def as_json(options={})
+		{}
+		# super only: :email
+	end
+	
 	# Solr search configuration.
 	# searchable do
 	# 	text :email, :display_phone

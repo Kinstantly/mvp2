@@ -1,5 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
 	layout :sessions_layout
+
+	respond_to :json, only: :create
 	before_filter :verify_auth_token, :only => :create, if: -> { request.format.json? }
 
 	private
@@ -9,7 +11,7 @@ class Users::SessionsController < Devise::SessionsController
 	end
 
 	def verify_auth_token
-		if params[:auth_token].blank? || params[:auth_token] != '7d04d7c4baa559fc49c03fe5fd8dd3c5'
+		if params[:auth_token].blank? || params[:auth_token] != Rails.configuration.sign_in_auth_token
 			render nothing: true, status: 401
 			return
 		end
