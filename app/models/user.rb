@@ -81,8 +81,11 @@ class User < ActiveRecord::Base
 	
 	# Only used by single sign-on, so return as little information as possible.
 	def as_json(options={})
-		{}
-		# super only: :email
+		{
+			email: email,
+			first_name: (username.presence || I18n.t('views.user.view.no_name')),
+			last_name: ''
+		}
 	end
 	
 	# Solr search configuration.
