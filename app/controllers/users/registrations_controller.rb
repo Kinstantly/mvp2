@@ -39,6 +39,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		@signing_up_for_newsletter = resource.signed_up_from_blog || params[:signing_up_for_newsletter].present?
 		session[:after_sign_in_path_override] = edit_user_registration_path + '#contact_preferences' if @signing_up_for_newsletter
 	end
+	
+	# Called if we're already signed in and thus no registration is required.
+	# If we were trying to get to newsletter sign-up, go to contact preferences instead.
+	def require_no_authentication
+		session[:after_sign_in_path_override] = edit_user_registration_path + '#contact_preferences' if params[:nlsub].present?
+		super
+	end
 
 	private
 

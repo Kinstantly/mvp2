@@ -35,6 +35,16 @@ describe "User registration and editing" do
 			get edit_user_registration_url(contact_preferences: 't')
 			response.should redirect_to(edit_user_registration_url + '#contact_preferences')
 		end
+		
+		it "redirects to the home page if requesting the registration page" do
+			get new_user_registration_path
+			response.should redirect_to root_url
+		end
+		
+		it "redirects to the contact preferences page if requesting the newsletter sign-up page" do
+			get new_user_registration_path(nlsub: 't')
+			response.should redirect_to(edit_user_registration_url + '#contact_preferences')
+		end
 	end
 	
 	context "registering as a provider" do
@@ -56,6 +66,30 @@ describe "User registration and editing" do
 				post user_registration_path, user: provider_sign_up_attributes
 				response.should redirect_to member_awaiting_confirmation_url
 			end
+		end
+	end
+	
+	context "logged in as a provider" do
+		let(:provider) { FactoryGirl.create :provider }
+		
+		before (:each) do
+			# sign in as a provider
+			post user_session_path, user: { email: provider.email, password: provider.password }
+		end
+		
+		it "redirects using the needed fragment identifier when requesting contact preferences editing" do
+			get edit_user_registration_url(contact_preferences: 't')
+			response.should redirect_to(edit_user_registration_url + '#contact_preferences')
+		end
+		
+		it "redirects to my profile edit page if requesting the registration page" do
+			get new_user_registration_path
+			response.should redirect_to edit_my_profile_url
+		end
+		
+		it "redirects to the contact preferences page if requesting the newsletter sign-up page" do
+			get new_user_registration_path(nlsub: 't')
+			response.should redirect_to(edit_user_registration_url + '#contact_preferences')
 		end
 	end
 end
