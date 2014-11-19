@@ -1,0 +1,16 @@
+= "Hi #{@resource.username.presence || 'there'},"
+%br
+%br
+Please confirm the Kinstantly account you recently created by clicking this link:
+%br
+%br
+Confirm
+= link_to 'my account', confirmation_url(@resource, confirmation_token: @resource.confirmation_token)
+%br
+%br
+Once confirmed, you'll have full access to all of Kinstantly's features and you'll be able to comment on our blog postings.
+%br
+%br
+Welcome to Kinstantly!
+%br
+&ndash; The Kinstantly Team

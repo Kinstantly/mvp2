@@ -31,12 +31,24 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		resource.skip_confirmation_notification! if running_as_private_site? && !resource.profile_to_claim
 		
 		# If the blog parameter is present, set resource.signed_up_from_blog to true, otherwise preserve its current value.
-		if params[:blog].present?
+		if params[:blog].present? && resource.new_record?
 			resource.signed_up_from_blog = true
-			session[:signed_up_from_blog] = true
+			session[:signed_up_from_blog] = true # Needed for pre-confirmation phase because we're not signed in.
+			if params[:rp].present?
+				clean_path = params[:rp].sub(%r|https?://[^/]+/|, '').sub(%r|[/?].*|, '')
+				session[:after_confirmation_url] = blog_url + clean_path
+			else
+				session[:after_confirmation_url] = blog_url
+			end
 		end
-		# Flag that tells the views whether this registration is primarily a newsletter sign-up from the user's perspective.
-		@signing_up_for_newsletter = resource.signed_up_from_blog || params[:signing_up_for_newsletter].present?
+		# If the newsletter subscription parameter is present, set resource.signed_up_for_mailing_lists to true, otherwise preserve its current value.
+		if params[:nlsub].present? && resource.new_record?
+			resource.signed_up_for_mailing_lists = true
+			session[:signed_up_for_mailing_lists] = true # Needed for pre-confirmation phase because we're not signed in.
+		end
+		# Flags that tell the views whether this registration is primarily a newsletter or blog sign-up from the user's perspective.
+		@signing_up_from_blog = resource.signed_up_from_blog
+		@signing_up_for_newsletter = resource.signed_up_for_mailing_lists
 		session[:after_sign_in_path_override] = edit_user_registration_path + '#contact_preferences' if @signing_up_for_newsletter
 	end
 	
@@ -86,7 +98,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	end
 
 	def after_inactive_sign_up_path_for(resource)
-	  	member_awaiting_confirmation_path
+		member_awaiting_confirmation_path
 	end
 	
 	def registrations_layout

@@ -35,6 +35,9 @@
 			= "#{User.human_attribute_name :profile}:"
 		%span.cell= link_to 'click here to view', profile_path(@user.profile)
 		%br
+	- if @user.signed_up_for_mailing_lists
+		%span.cell Registration was a newsletter sign-up.
+		%br
 	- if @user.signed_up_from_blog
 		%span.cell Registration originated at the blog.
 		%br

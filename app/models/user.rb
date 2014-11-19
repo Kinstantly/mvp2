@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
 		:profile_attributes, :phone, :is_provider, :username, :registration_special_code, :profile_help,
 		:parent_marketing_emails, :parent_newsletters, :provider_marketing_emails, :provider_newsletters,
-		:marketing_emails_and_newsletters, :signed_up_from_blog, :postal_code
+		:marketing_emails_and_newsletters, :signed_up_from_blog, :signed_up_for_mailing_lists, :postal_code
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :email, :phone, :username, :postal_code
@@ -399,8 +399,10 @@ class User < ActiveRecord::Base
 	# A callback method used to deliver confirmation instructions on creation.
 	# This overrides the Devise method to allow us to define our own email.
 	def send_on_create_confirmation_instructions
-		if signed_up_from_blog
+		if signed_up_for_mailing_lists
 			send_devise_notification :on_create_newsletter_confirmation_instructions
+		elsif signed_up_from_blog
+			send_devise_notification :on_create_blog_confirmation_instructions
 		elsif is_provider?
 			send_devise_notification :on_create_provider_confirmation_instructions
 		else

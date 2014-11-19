@@ -20,6 +20,11 @@ class UserAccountMailer < Devise::Mailer
 		devise_mail(record, :on_create_newsletter_confirmation_instructions, opts)
 	end
 	
+	# Send on account creation when signing up from the blog. Performs email address confirmation.
+	def on_create_blog_confirmation_instructions(record, opts={})
+		devise_mail(record, :on_create_blog_confirmation_instructions, opts)
+	end
+	
 	# Send on user creation when claiming a profile, i.e., simple welcome email.
 	def on_create_welcome(record, opts={})
 		@show_logo = true

@@ -81,6 +81,8 @@ en:
     mailer:
       confirmation_instructions:
         subject: 'Confirm your Kinstantly account'
+      on_create_blog_confirmation_instructions:
+        subject: 'Confirm your Kinstantly account'
       on_create_confirmation_instructions:
         subject: 'Confirm your Kinstantly account'
       on_create_newsletter_confirmation_instructions:

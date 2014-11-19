@@ -14,11 +14,13 @@
 				%p
 					%b The parent entered this special code:
 					= @user.registration_special_code
-			- if @user.signed_up_from_blog
+			- if @user.signed_up_for_mailing_lists
 				%p
 					zip code:
 					= @user.postal_code
-				%p This registration originated at the blog (a newsletter sign-up).
+				%p This registration was a newsletter sign-up.
+			- if @user.signed_up_from_blog
+				%p This registration originated at the blog.
 			%p= mailer_user_link @user
 		- else
 			%p Oops, can't find the parent's record.
