@@ -26,10 +26,6 @@
 				.phone.text_field
 					= f.label :phone
 					= f.text_field :phone
-			.current_password.text_field
-				= f.label :current_password, class: 'required'
-				= f.password_field :current_password, autocomplete: 'off'
-				%span.note= t 'views.user.edit.current_password_note'
 			- if resource.is_provider?
 				#contact_preferences.checkbox.newsletters_and_marketing_emails
 					= f.check_box :provider_marketing_emails, id: 'user_provider_marketing_emails'
@@ -44,6 +40,11 @@
 				.checkbox.newsletters_and_marketing_emails
 					= f.check_box :parent_newsletters, id: 'user_parent_newsletters'
 					= f.label :parent_newsletters
+			.current_password.text_field
+				= f.label :current_password, class: 'required'
+				= f.password_field :current_password, autocomplete: 'off'
+				%span.note= t 'views.user.edit.current_password_note'
+			%br
 			.buttons
 				= f.submit t('views.user.edit.submit'), disable_with: t('views.user.edit.submit_disable'), class: 'default'
 				= link_to t('views.user.edit.cancel'), user_home_page, class: 'cancel_link'
