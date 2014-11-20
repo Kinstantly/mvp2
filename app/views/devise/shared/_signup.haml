@@ -100,7 +100,7 @@
 			= f.submit t((is_provider ? :provider_label : :label), scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'
 
 :javascript
-	$('#marketing_emails_and_newsletters').on('click', function() {
+	$('#user_marketing_emails_and_newsletters').on('click', function() {
 		if(this.checked)
 			ga('send', 'event', 'checkbox', 'click', 'false-news-checkbox');
 	});
