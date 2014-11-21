@@ -20,9 +20,14 @@
 			%p
 				%span.emphasized If you don't see the email in your Inbox within a few minutes, please check your spam folder &mdash; and mark the email as &quot;Not spam.&quot;
 			%br
-			%p
-				:plain
-					That will complete your registration, and we'll send you back to our <span class="title">Today on Kinstantly</span> blog.
+			- if session[:signed_up_from_blog]
+				%p
+					:plain
+						That will complete your registration, and we'll send you back to our <span class="title">Today on Kinstantly</span> blog.
+			- else
+				%p Once you've confirmed your registration, you'll begin to receive our weekly newsletter with the next edition.
+				%br
+				%p You'll also be able to post ratings and reviews, self-schedule appointments with providers, and more.
 			%br
 			%p
 				Thanks very much!

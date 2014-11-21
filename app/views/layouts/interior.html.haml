@@ -17,6 +17,8 @@
 				= contact_link wrapper: {tag: :li}
 				= terms_link wrapper: {tag: :li}
 				= privacy_link wrapper: {tag: :li}
+				= blog_link wrapper: {tag: :li}
+				= newsletter_sign_up_link wrapper: {tag: :li}
 		- unless @hide_search_providers
 			#findProvider.search
 				= form_tag search_providers_path, method: :get, id: 'providerSearch' do

@@ -45,6 +45,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		if params[:nlsub].present? && resource.new_record?
 			resource.signed_up_for_mailing_lists = true
 			session[:signed_up_for_mailing_lists] = true # Needed for pre-confirmation phase because we're not signed in.
+			session[:after_confirmation_url] ||= root_path
 		end
 		# Flags that tell the views whether this registration is primarily a newsletter or blog sign-up from the user's perspective.
 		@signing_up_from_blog = resource.signed_up_from_blog

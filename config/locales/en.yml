@@ -381,6 +381,7 @@ en:
     home:
       view:
         about: 'About us'
+        blog: 'Kinstantly blog'
         browse_title: 'Browse by category'
         contact: 'Contact us'
         faq: 'FAQ'
@@ -390,6 +391,7 @@ en:
         marketing_message_line1_html: 'Find the best family services'
         marketing_message_line2_html: '&mdash; from child care to college admissions advisors'
         more_services: 'more...'
+        newsletter_sign_up: 'Kinstantly newsletter'
         privacy: 'Privacy policy'
         search_title: "I'm looking for..."
         see_all_categories: 'See all'

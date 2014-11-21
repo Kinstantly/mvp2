@@ -203,6 +203,16 @@ module ApplicationHelper
 		path = privacy_path
 		link_wrapper link_to(t('views.home.view.privacy'), path), options if show_link?(path)
 	end
+
+	def blog_link(options={})
+		url = 'http://blog.kinstantly.com/'
+		link_wrapper link_to(t('views.home.view.blog'), url), options
+	end
+
+	def newsletter_sign_up_link(options={})
+		path = new_user_registration_path nlsub: 't'
+		link_wrapper link_to(t('views.home.view.newsletter_sign_up'), path), options unless user_signed_in?
+	end
 	
 	def become_expert_link
 		path = become_expert_path
