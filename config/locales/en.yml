@@ -154,6 +154,7 @@ en:
       customer:
         customer_files: 'Paid providers'
       customer_file:
+        authorized_amount: 'Authorized amount'
         authorized_amount_increment: 'Amount to add'
         charge_amount_usd: 'Amount to charge'
         charge_description: 'Description'
@@ -326,7 +327,9 @@ en:
         authorization_agreement_html: 'I authorize <strong>%{provider}</strong> to charge my credit card for services, including answering phone calls, emails, or video sessions that I initiate outside of regular appointments up to the amount of'
         authorization_button: 'Authorize with card'
         authorization_title: 'Charge authorization'
+        authorized_amount: 'I authorize payment up to a total of:'
         authorized_amount_increment_title_html: 'Add to your authorized amount of %{authorized_amount} for payment to <strong>%{provider}</strong>'
+        authorized_amount_title_html: 'Change your authorized amount of up to %{authorized_amount} for payment to <strong>%{provider}</strong>'
         authorized_amount_placeholder: 'Amount, in dollars'
         cancel: 'Cancel'
         change_card_button: 'Change card'
