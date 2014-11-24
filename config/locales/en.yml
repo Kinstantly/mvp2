@@ -748,6 +748,7 @@ en:
         cancel_account_prompt: 'Unhappy?'
         customer_header: 'Payments to your providers'
         customer_link: 'View authorizations and payments to your providers'
+        customer_link_for_menu: 'Payments'
         customer_list_link: 'View clients and charge credit cards'
         payments_scheduling_header: 'Payments and scheduling settings'
         postal_code_note: "If you're receiving our newsletter, you'll get the local edition."

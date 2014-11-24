@@ -46,6 +46,9 @@
 							%ul.account-menu
 								%li
 									= account_settings_link
+								- if current_user.as_customer
+									%li
+										= link_to t('views.user.edit.customer_link_for_menu'), current_user.as_customer
 								- if current_user.is_provider?
 									%li
 										= edit_my_profile_link
