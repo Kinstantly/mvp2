@@ -27,4 +27,4 @@ Feature: About payments
 			And I am logged in
 		When I visit the payable provider's profile page
 			And I click on "Authorize payment"
-		Then I should see "Add to your authorized amount" on the page
+		Then I should see "Change your authorized amount" on the page
