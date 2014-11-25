@@ -13,14 +13,15 @@
 			%tbody
 				- @customer_files.each do |customer_file|
 					%tr
-						%td= link_to customer_file.customer_username, customer_file_path(customer_file)
+						- customer_username = customer_file.customer_username
+						%td= link_to customer_username, customer_file if customer_username.present?
 						%td= mail_to customer_file.customer_email
 						- if customer_file.authorized
 							%td= display_currency_amount customer_file.authorized_amount_usd
-							%td= link_to t('views.customer_file.view.charge_or_view'), customer_file_path(customer_file), class: 'button'
+							%td= link_to t('views.customer_file.view.charge_or_view'), customer_file, class: 'button'
 						- else
 							%td= t 'views.customer_file.view.not_authorized'
-							%td= link_to t('views.customer_file.view.view_customer'), customer_file_path(customer_file), class: 'button'
+							%td= link_to t('views.customer_file.view.view_customer'), customer_file, class: 'button'
 		.buttons
 			= link_to t('views.customer_file.view.customer_list_cancel'), edit_user_registration_path, class: 'default'
 
