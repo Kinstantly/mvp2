@@ -3,11 +3,16 @@
 	#customer_file.payments
 		- customer_name = @customer_file.customer_name
 		%h1= customer_name
-		%div= t 'views.customer_file.view.authorized_amount', amount: display_currency_amount(@customer_file.authorized_amount)
-		%div= link_to t('views.customer_file.view.reminder_prompt', user: customer_name), '#'
+		- if @customer_file.authorized
+			%div= t 'views.customer_file.view.authorized_amount', amount: display_currency_amount(@customer_file.authorized_amount)
+			%div= link_to t('views.customer_file.view.reminder_prompt', user: customer_name), '#'
+		- else
+			%div= t 'views.customer_file.view.not_authorized_explanation'
+			%div= link_to t('views.customer_file.view.request_reauthorization_prompt', user: customer_name), '#'
 		.buttons
-			= link_to t('views.customer_file.view.new_charge'), new_charge_customer_file_path(@customer_file), class: 'default'
-			= link_to t('views.customer_file.view.cancel'), customer_files_path, class: 'cancel'
+			- if @customer_file.authorized
+				= link_to t('views.customer_file.view.new_charge'), new_charge_customer_file_path(@customer_file), class: 'default'
+			= link_to t('views.customer_file.view.cancel'), customer_files_path, class: 'default'
 		%h2= t 'views.customer_file.view.contact_information'
 		%table
 			%tr

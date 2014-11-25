@@ -241,6 +241,11 @@
 					@include cancel-button-hover-style;
 				}
 			}
+			input, a {
+				&.wide, &.wide:hover {
+					width: 16em;
+				}
+			}
 		}
 		button {
 			text-transform: lowercase;

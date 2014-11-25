@@ -13,6 +13,7 @@ class CustomersController < ApplicationController
 	def authorize_payment
 		@customer = current_user.as_customer || Customer.new
 		@profile = @customer.provider_for_profile(params[:profile_id]).profile
+		@authorized = @customer.authorized_for_profile params[:profile_id]
 		@authorized_amount = @customer.authorized_amount_for_profile params[:profile_id]
 		respond_with @customer
 	rescue Payment::ChargeAuthorizationError => error
@@ -25,6 +26,7 @@ class CustomersController < ApplicationController
 	def authorize_payment_confirmation
 		@customer = current_user.as_customer
 		@profile = @customer.provider_for_profile(params[:profile_id]).profile
+		@authorized = @customer.authorized_for_profile params[:profile_id]
 		@authorized_amount = @customer.authorized_amount_for_profile params[:profile_id]
 		respond_with @customer
 	rescue Payment::ChargeAuthorizationError => error
@@ -59,10 +61,12 @@ class CustomersController < ApplicationController
 	
 	def update
 		@profile = @customer.provider_for_profile(params[:profile_id]).profile
+		@authorized = @customer.authorized_for_profile params[:profile_id]
 		@authorized_amount = @customer.authorized_amount_for_profile params[:profile_id]
 		success = @customer.save_with_authorization(
 			profile_id:       params[:profile_id],
 			stripe_token:     params[:stripeToken],
+			authorized:       params[:authorized],
 			amount:           params[:authorized_amount],
 			amount_increment: params[:authorized_amount_increment]
 		)
@@ -70,10 +74,14 @@ class CustomersController < ApplicationController
 		success_path = authorize_payment_confirmation_path params[:profile_id], card_changed: params[:card_changed]
 		
 		respond_with @customer, location: success_path do |format|
-			if success and params[:card_changed]
-				set_flash_message :notice, :card_changed
-			elsif success
-				set_flash_message :notice, :payment_authorized
+			if success
+				if params[:card_changed]
+					set_flash_message :notice, :card_changed
+				elsif @customer.authorized_for_profile params[:profile_id]
+					set_flash_message :notice, :payment_authorized
+				else
+					set_flash_message :notice, :payment_authorization_revoked
+				end
 			else
 				format.html { render :authorize_payment }
 			end

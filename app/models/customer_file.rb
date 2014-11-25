@@ -30,7 +30,7 @@ class CustomerFile < ActiveRecord::Base
 	
 	def create_charge(attribute_values)
 		assign_attributes attribute_values
-		return false unless charge_amount_is_valid?
+		return false unless charge_is_allowed?
 		
 		application_fee = (charge_amount.to_i * 2 / 100).to_i
 		
@@ -114,11 +114,14 @@ class CustomerFile < ActiveRecord::Base
 	
 	private
 	
-	def charge_amount_is_valid?
-		if valid? and charge_amount.present? and authorized_amount and charge_amount.to_i <= authorized_amount
+	def charge_is_allowed?
+		if not authorized
+			errors.add :base, I18n.t('views.customer_file.new_charge.you_are_not_authorized')
+			false
+		elsif valid? and charge_amount.present? and authorized_amount and charge_amount.to_i <= authorized_amount
 			true
 		else
-			errors.add :charge_amount, "is invalid: #{charge_amount_usd}" if errors.empty?
+			errors.add :charge_amount, I18n.t('views.customer_file.new_charge.invalid', amount: charge_amount_usd) if errors.empty?
 			false
 		end
 	end

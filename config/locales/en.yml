@@ -50,6 +50,7 @@ en:
       authorize_payment_error: 'The was a problem with authorizing payment.'
       card_changed: 'Your card has been changed.'
       payment_authorized: 'Payment has been authorized.'
+      payment_authorization_revoked: 'Payment permission has been revoked.'
     customer_files:
       created_charge: 'Charge was completed.'
     users:
@@ -335,6 +336,11 @@ en:
         change_card_button: 'Change card'
         change_card_title: 'Enter card details'
         credit_card_button: 'Authorize'
+        revoke_authorization: 'Revoke payment authorization'
+        revoke_authorization_confirm: 'This provider will not be allowed to collect payments from you. Are you sure you want to revoke payment authorization?'
+        revoke_authorization_disable: 'Revoking...'
+        revoke_authorization_instructions_html: 'If you no longer want <strong>%{provider}</strong> to charge your card, press the button below.'
+        reauthorize_amount_title_html: 'Fill in an amount to authorize payments to <strong>%{provider}</strong>'
         submit: 'Authorize'
         submit_disable: 'Authorizing...'
       view:
@@ -351,15 +357,19 @@ en:
         charge_history_statement_description: "Description on your statement"
         customer_button: 'Payment information'
         customer_title: 'Payment information'
+        not_authorized: 'Not authorized'
         provider_list_description_html: "You have authorized the providers listed below to charge you for services up to the amount listed.  To increase the amount, click on the provider's &quot;<strong>%{button_text}</strong>&quot; button."
         provider_name: 'Provider'
+        reauthorize_amount: 'Reauthorize payment'
     customer_file:
       new_charge:
         authorized_amount: 'Authorized amount remaining: %{amount}'
         cancel: 'Cancel'
+        invalid: 'of %{amount} is invalid'
         submit: 'Charge card'
         submit_disable: 'Charging...'
         title: 'Add new payment for %{customer}'
+        you_are_not_authorized: 'You are not allowed to charge this client.'
       view:
         authorized_amount: 'Authorized amount remaining: %{amount}'
         cancel: 'Client list'
@@ -380,7 +390,11 @@ en:
         customer_username: 'Username'
         email: 'Email address:'
         new_charge: 'Charge card'
+        not_authorized: 'Not authorized'
+        not_authorized_explanation: 'You are no longer authorized to charge this client.'
         reminder_prompt: 'Click here to remind %{user} to increase their authorized amount.'
+        request_reauthorization_prompt: 'Click here to request reauthorization.'
+        view_customer: 'View'
     home:
       view:
         about: 'About us'
@@ -750,6 +764,7 @@ en:
         customer_link: 'View authorizations and payments to your providers'
         customer_link_for_menu: 'Payments'
         customer_list_link: 'View clients and charge credit cards'
+        customer_list_link_for_menu: 'Client list'
         payments_scheduling_header: 'Payments and scheduling settings'
         postal_code_note: "If you're receiving our newsletter, you'll get the local edition."
         stripe_connect_prompt: 'Make online payments easy by connecting your Kinstantly account to Stripe.'

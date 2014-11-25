@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141119034716) do
+ActiveRecord::Schema.define(:version => 20141124065605) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -101,9 +101,10 @@ ActiveRecord::Schema.define(:version => 20141119034716) do
     t.integer  "customer_id"
     t.integer  "user_id"
     t.integer  "authorized_amount"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.integer  "stripe_card_id"
+    t.boolean  "authorized",        :default => true
   end
 
   add_index "customer_files", ["customer_id"], :name => "index_customer_files_on_customer_id"

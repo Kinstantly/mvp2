@@ -1,6 +1,11 @@
 #content
 	#authorize_payment_confirmation.payments
-		- if @profile and @authorized_amount
+		- if @profile and not @authorized
+			%p
+				= link_to @profile.company_otherwise_display_name, @profile
+				no longer has permission to charge your card.
+			%p To restore permission for this provider, simply authorize a new amount.
+		- elsif @profile and @authorized_amount
 			%p
 				- if params[:created]
 					Congrats! You're all set up for Kinstantly Pre-Auth with
@@ -21,4 +26,4 @@
 			= mail_to SUPPORT_EMAIL
 			and we'll get back to you right away.
 		.buttons
-			= link_to t('views.customer.view.customer_button'), @customer, class: 'default'
+			= link_to t('views.customer.view.customer_button'), @customer, class: 'default wide'

@@ -20,6 +20,14 @@ class Customer < ActiveRecord::Base
 			raise(Payment::ChargeAuthorizationError, I18n.t('payment.provider_not_allowed_charge_authorizations'))
 	end
 	
+	def authorized_for_profile(id)
+		if persisted?
+			customer_files.for_provider(provider_for_profile(id)).try(:authorized)
+		else
+			false
+		end
+	end
+	
 	def authorized_amount_for_profile(id)
 		if persisted?
 			customer_files.for_provider(provider_for_profile(id)).try(:authorized_amount_usd)
@@ -84,6 +92,7 @@ class Customer < ActiveRecord::Base
 		# Note: customer_file was created by save because provider was added via the 'has_many through' association.
 		customer_file = customer_files.for_provider(provider)
 		customer_file.stripe_card = stripe_card if stripe_card
+		customer_file.authorized = options[:authorized] if options[:authorized].present?
 		customer_file.authorized_amount_usd = options[:amount] if options[:amount].present?
 		customer_file.authorized_amount_increment_usd = options[:amount_increment] if options[:amount_increment].present?
 		customer_file.save!
