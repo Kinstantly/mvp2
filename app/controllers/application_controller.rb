@@ -151,7 +151,7 @@ class ApplicationController < ActionController::Base
 	# If this site is using HTTP basic authentication and this method returns true, skip HTTP basic authentication.
 	def skip_http_basic_authentication
 		action_name == 'webhook' ||
-		['omniauth_callbacks', 'mailchimp_webhook'].include?(controller_name) ||
+		['omniauth_callbacks', 'mailchimp_webhook', 'registrations'].include?(controller_name) ||
 		(controller_name == 'sessions' && action_name == 'create' && request.format.json?)
 	end
 end

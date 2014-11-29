@@ -105,4 +105,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	def registrations_layout
 		['new', 'create'].include?(action_name) ? 'interior' : 'interior'
 	end
+	
+	# Set exceptions to default values of the security-related HTTP headers in the response.
+	# See https://www.owasp.org/index.php/List_of_useful_HTTP_headers
+	def set_default_response_headers
+		super
+		response.headers.merge!({
+			'X-Frame-Options' => "ALLOW-FROM: #{blog_url}"
+		}) if response
+	end
 end
