@@ -108,10 +108,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	
 	# Set exceptions to default values of the security-related HTTP headers in the response.
 	# See https://www.owasp.org/index.php/List_of_useful_HTTP_headers
+	# http://tools.ietf.org/html/rfc7034
+	# http://www.w3.org/TR/CSP/#frame-src
 	def set_default_response_headers
 		super
-		response.headers.merge!({
-			'X-Frame-Options' => "ALLOW-FROM: #{blog_url}"
-		}) if response
+		# Embed only on the blog site.
+		allowed_url = blog_url
+		if response && request && request.headers['Referer'] == allowed_url
+			existing_csp = response.headers['Content-Security-Policy']
+			new_csp = "frame-src #{allowed_url}"
+			response.headers.merge!({
+				'Content-Security-Policy' => [existing_csp, new_csp].compact.join('; '),
+				'X-Frame-Options' => "ALLOW-FROM #{allowed_url}"
+			})
+		end
 	end
 end
