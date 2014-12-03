@@ -382,6 +382,8 @@ en:
         charge_or_view: 'charge or view'
         charge_or_view_buttons: ' '
         contact_information: 'Contact information'
+        customer_account_deleted: "Account deleted"
+        customer_account_deleted_explanation: "This customer's account has been deleted."
         customer_authorized_amount: 'Authorized amount'
         customer_email: 'Email address'
         customer_list_cancel: 'Settings'

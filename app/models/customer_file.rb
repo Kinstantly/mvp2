@@ -100,22 +100,41 @@ class CustomerFile < ActiveRecord::Base
 		false
 	end
 	
+	def customer_user
+		customer.try(:user)
+	end
+	
 	def customer_email
-		customer.try(:user).try(:email)
+		customer_user.try(:email)
 	end
 	
 	def customer_username
-		customer.try(:user).try(:username)
+		customer_user.try(:username)
 	end
 	
 	def customer_name
 		customer_username.presence or customer_email
 	end
 	
+	def has_customer_account?
+		customer_user.present?
+	end
+	
+	# Use this boolean method to determine whether this customer_file can be used to collect a payment.
+	# Checks all of the following:
+	# * The "authorized" flag is true.
+	# * There is a minimum authorized amount.
+	# * Customer and user records are attached, i.e., neither has been deleted.
+	def customer_has_authorized_payment?
+		authorized and authorized_amount.try(:>, 0) and has_customer_account?
+	end
+	
 	private
 	
+	# Use this boolean method to determine whether the charge_amount can be collected.
+	# Also ensures that the customer still exists and has authorized payment to this provider.
 	def charge_is_allowed?
-		if not authorized
+		if not customer_has_authorized_payment?
 			errors.add :base, I18n.t('views.customer_file.new_charge.you_are_not_authorized')
 			false
 		elsif valid? and charge_amount.present? and authorized_amount and charge_amount.to_i <= authorized_amount

@@ -15,8 +15,11 @@
 					%tr
 						- customer_username = customer_file.customer_username
 						%td= link_to customer_username, customer_file if customer_username.present?
-						%td= mail_to customer_file.customer_email
-						- if customer_file.authorized
+						- if customer_file.has_customer_account?
+							%td= mail_to customer_file.customer_email
+						- else
+							%td= t 'views.customer_file.view.customer_account_deleted'
+						- if customer_file.customer_has_authorized_payment?
 							%td= display_currency_amount customer_file.authorized_amount_usd
 							%td= link_to t('views.customer_file.view.charge_or_view'), customer_file, class: 'button'
 						- else

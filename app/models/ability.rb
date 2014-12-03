@@ -59,7 +59,9 @@ class Ability
 		alias_action :new_charge, to: :create_charge
 		if user.is_provider?
 			can :read, CustomerFile, user_id: user.id
-			can :create_charge, CustomerFile, user_id: user.id
+			can :create_charge, CustomerFile do |customer_file|
+				customer_file.provider == user && customer_file.customer_has_authorized_payment?
+			end
 		end
 
 		# Providers should only be able to edit the profile attached to their user account.
