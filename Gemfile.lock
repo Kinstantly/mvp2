@@ -324,7 +324,7 @@ GEM
     sendgrid (1.2.0)
       json
     sexp_processor (4.2.1)
-    simple_form (2.1.1)
+    simple_form (2.1.2)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
     sitemap_generator (5.0.4)
