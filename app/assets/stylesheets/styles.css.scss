@@ -1720,6 +1720,68 @@ div.popover {
 	}
 }
 
+/*Used in iframe signup form on the blog site*/
+.smaller_form{
+	@extend .generic_form;
+	width: $generic_form_width * 0.55;
+	.text_field input {
+		width: $generic_form_width * 0.4;
+	}
+	input[type="radio"], input[type="checkbox"] {
+		margin: 0.5em 0.2em;
+	}
+	#error_explanation, .errorExplanation {
+		width: $generic_form_width * 0.4;
+	}
+	.buttons .default{
+		width: $generic_form_width * 0.4 !important;
+		padding: 10px 14px !important;
+		box-sizing: content-box;
+	}
+	.help_icon {
+		@include help_icon;
+		margin-bottom: -4px;
+		background-image: url('help_24_blue.png');
+		width:24px;
+		height:24px;
+		
+		.help_popover {
+			right: -48px;
+			top: 35px;
+			width: 240px;
+			font-size: 13px;
+			padding: 7px;
+			color: #222;
+			background-color: rgba(255, 255, 255, 0.85);
+			border: #7F7F7F solid 1px;
+			@include button-corner-style;
+		}
+		.help_popover:after {
+			content: '';
+			position: absolute;
+			border-style: solid;
+			border-width: 0 15px 15px;
+			border-color: #FFFFFF transparent;
+			display: block;
+			width: 0;
+			z-index: 1;
+			top: -14px;
+			right: 44px;
+		}
+		.help_popover:before {
+			content: '';
+			position: absolute;
+			border-style: solid;
+			border-width: 0 15px 15px;
+			border-color: #7F7F7F transparent;
+			display: block;
+			width: 0;
+			z-index: 0;
+			top: -15px;
+			right: 44px;
+		}
+	}
+}
 .new_review_div {
 	@extend .wider_form;
 	

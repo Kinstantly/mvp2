@@ -1,0 +1,7 @@
+#sign_up.sign_up.smaller_form
+	- if user_signed_in?
+		- path = edit_user_registration_path(anchor: 'contact_preferences')
+		=link_to t('views.user.view.subscription_preferences_link'), path, target: "_blank"
+		to make sure you're signed up for our weekly newsletters.
+	-else
+		= render partial: "devise/shared/signup", locals:{ embedded_in: true, is_private_alpha: false }

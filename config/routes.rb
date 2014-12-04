@@ -26,6 +26,8 @@ Mvp2::Application.routes.draw do
 		get '/member/awaiting_confirmation', to: 'users/registrations#awaiting_confirmation'
 		get '/member/sign_in_return', to: 'devise/sessions#new', store_referrer: true
 		get '/alpha/sign_up', to: 'users/registrations#new', is_private_alpha: true
+		get '/in_blog/sign_up', to: 'users/registrations#in_blog_new', blog: true, nlsub: true, in_blog: true
+		get '/in_blog/awaiting_confirmation', to: 'users/registrations#in_blog_awaiting_confirmation', in_blog: true
 	end
 	
 	# When profile is accessed via user.
