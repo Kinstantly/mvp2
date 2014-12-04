@@ -1,0 +1,10 @@
+!!! XML
+!!!
+%html
+	%head
+		%title= @page_title.presence || company_name
+		= stylesheet_link_tag "interior", media: "screen, handheld, print"
+		= javascript_include_tag "application"
+		= csrf_meta_tags
+	%body
+		= yield

@@ -14,6 +14,7 @@
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
 	= devise_error_messages!
 	= hidden_field_tag :is_private_alpha, params[:is_private_alpha]
+	= hidden_field_tag :in_blog, params[:in_blog] if  params[:in_blog].present?
 	= f.hidden_field :signed_up_from_blog
 	= f.hidden_field :signed_up_for_mailing_lists
 	
@@ -101,6 +102,6 @@
 
 :javascript
 	$('#user_marketing_emails_and_newsletters').on('click', function() {
-		if(this.checked)
+		if(!this.checked)
 			ga('send', 'event', 'checkbox', 'click', 'false-news-checkbox');
 	});
