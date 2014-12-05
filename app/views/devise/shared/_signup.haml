@@ -9,6 +9,7 @@
 - parent_tag = t "views.sign_up.parent_tag"
 - provider_tag = t "views.sign_up.provider_tag"
 - parent_provider_tag = t "views.sign_up.parent_provider_tag"
+- inline_tip ||= false
 
 %h1= t "views.sign_up.#{whoami}_title" unless embedded_in
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
@@ -22,9 +23,10 @@
 		= f.label :email
 		%br
 		= f.email_field :email
-		%span.help_icon
-			.help_popover
-				%p.tip.grey_text= email_tip
+		- unless inline_tip
+			%span.help_icon
+				.help_popover
+					%p.tip.grey_text= email_tip
 
 	- if @signing_up_for_newsletter
 		.postal_code.text_field
@@ -37,18 +39,22 @@
 			= f.label :username
 			%br
 			= f.text_field :username
-			%span.help_icon
-				.help_popover
-					%p.tip.grey_text= username_tip
+			- unless inline_tip
+				%span.help_icon
+					.help_popover
+						%p.tip.grey_text= username_tip
 			%p.v_tip.grey_text= username_inline_tip
 
 	.password.text_field
 		= f.label :password
 		%br
 		= f.password_field :password, autocomplete: 'off'
-		%span.help_icon
-			.help_popover
-				%p.tip.grey_text= password_tip
+		- if inline_tip
+			%p.tip.grey_text= password_tip
+		- else
+			%span.help_icon
+				.help_popover
+					%p.tip.grey_text= password_tip
 
 	.password_confirmation.text_field
 		= f.label :password_confirmation
@@ -60,9 +66,10 @@
 			= f.label :registration_special_code
 			%br
 			= f.text_field :registration_special_code
-			%span.help_icon
-				.help_popover
-					%p.tip.grey_text= registration_special_code_tip
+			- unless inline_tip
+				%span.help_icon
+					.help_popover
+						%p.tip.grey_text= registration_special_code_tip
 
 	- if claiming_profile
 		-# A provider account is required to claim a profile.
