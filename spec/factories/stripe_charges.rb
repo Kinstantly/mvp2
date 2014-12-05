@@ -27,5 +27,9 @@ FactoryGirl.define do
 			paid true
 			captured false
 		end
+		
+		factory :stripe_charge_with_customer do
+			customer_file
+		end
 	end
 end

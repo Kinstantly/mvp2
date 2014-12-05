@@ -5,9 +5,10 @@ def create_customer_file(attributes={})
 end
 
 def create_customer_file_for_client(attributes)
+	customer_file_attributes = attributes.delete(:customer_file) || {}
 	client = FactoryGirl.create :client_user, attributes
 	customer = FactoryGirl.create :customer_with_card, user: client
-	create_customer_file customer: customer
+	create_customer_file({customer: customer}.merge(customer_file_attributes))
 end
 
 ### GIVEN ###
@@ -31,6 +32,10 @@ end
 
 Given /^I have a client with authorized amount "(.*?)"$/ do |amount|
 	create_customer_file authorized_amount_usd: amount
+end
+
+Given /^I have a client with each of username "(.*?)",? email "(.*?)",? and authorized amount "(.*?)"$/ do |username, email, amount|
+	create_customer_file_for_client username: username, email: email, customer_file: {authorized_amount_usd: amount}
 end
 
 ### WHEN ###

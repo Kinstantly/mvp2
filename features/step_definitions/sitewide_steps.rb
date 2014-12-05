@@ -31,6 +31,10 @@ When /^I check "(.*?)"$/ do |field|
 	check field
 end
 
+When /^I (?:enter|type|fill) "(.*?)" in the "(.*?)" field$/ do |text, field|
+	fill_in field, with: text
+end
+
 Then /^I should land on the home page$/ do
 	current_path.should eq root_path
 end

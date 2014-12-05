@@ -689,10 +689,6 @@ When /^I click on the profile edit tab$/ do
 	click_link I18n.t('views.profile.edit.edit_tab')
 end
 
-When /^I enter "(.*?)" in the "(.*?)" field$/ do |text, field|
-	fill_in field, with: text
-end
-
 ### THEN ###
 
 Then /^I should see my profile information$/ do
