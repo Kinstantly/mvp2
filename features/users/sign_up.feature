@@ -105,3 +105,29 @@ Feature: Sign up
 			When I sign up as a parent with a special code of "IamaSpecialParent"
 				And "admin@kinstantly.com" opens the email with subject /Parent.*has registered/
 			Then they should see "IamaSpecialParent" in the email body
+
+		@in_blog_signup
+		Scenario: User visits in-blog sign-up page while logged-in
+			Given I exist as a user
+				And I am logged in
+			When I am on the in-blog signup page
+			Then I should not see html element "header#header"
+			Then I should see "views.user.view.subscription_preferences_link" translated link to contact_preferences section of my account settings page
+
+		@in_blog_signup
+		Scenario: User visits in-blog sign-up page while NOT logged-in
+			When I am on the in-blog signup page
+			Then I should not see html element "header#header"
+			Then I should see "Click here" link to contact_preferences section of my account settings page
+
+		@in_blog_signup
+		Scenario: User signs up via iframe on the blog site with valid data
+			When I sign up on the blog site with valid data
+			Then I should not see html element "header#header"
+			Then I should see "Thanks for subscribing to our newsletter!" on the page
+
+		@in_blog_signup
+		Scenario: User signs up via iframe on the blog site with invalid data
+			When I sign up on the blog site with invalid data
+			Then I should not see html element "header#header"
+			Then I should see "Click here" link to contact_preferences section of my account settings page
