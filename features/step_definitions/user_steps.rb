@@ -453,6 +453,6 @@ end
 
 Then /^I should see "(.*?)" (translated )?link to contact_preferences section of my account settings page$/ do |selector, tr|
   link_selector = tr.present? ? I18n.t(selector) : selector
-  path = edit_user_registration_url(anchor: 'contact_preferences')
+  path = edit_user_registration_url(contact_preferences: 't')
   page.has_link?(link_selector, href: path).should == true
 end
