@@ -21,6 +21,19 @@ describe "User registration and editing" do
 				response.should redirect_to member_awaiting_confirmation_url
 			end
 		end
+
+		context "in-blog sign-up", in_blog: true do
+			it "renders the view" do
+				get in_blog_sign_up_path
+				response.should be_success
+				response.should render_template('in_blog_new')
+			end
+			it "redirects to in-blog confirmation page" do
+				get in_blog_sign_up_path
+				post user_registration_path, in_blog: true, user: parent_sign_up_attributes
+				response.should redirect_to in_blog_awaiting_confirmation_url
+			end
+		end
 	end
 	
 	context "logged in as a parent" do

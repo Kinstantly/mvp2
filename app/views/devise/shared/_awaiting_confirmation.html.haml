@@ -1,4 +1,5 @@
 - embedded_in ||= false
+- info_email = "#{t('contact.emails.info.value')}@#{t('email_domain')}"
 - if running_as_private_site?
 	%p Thanks for your interest in Kinstantly.
 	%br
@@ -11,6 +12,20 @@
 			<a href="mailto:#{info_email_address}">#{info_email_address}</a>.
 	%br
 	%p Thanks!
+- elsif params[:in_blog].present?
+	%p Thanks for subscribing to our newsletter!
+	%br
+	%p To keep your inbox safe and spam-free, we use double-opt in, meaning we need you to take a quick moment to check your email and click on the confirmation link we just sent you.
+	%br
+	%p If you don't see the email in your Inbox within a few minutes, please check your spam folder—and mark the email as "Not spam."
+	%br
+	%p 
+		Questions? Concerns? Just want to say hi? Email us at
+		= succeed '.' do
+			= mail_to info_email
+	%br
+	%p Thanks very much!
+	%br
 - elsif session[:signed_up_for_mailing_lists]
 	%p
 		Thanks for subscribing to our weekly newsletter. To complete your registration, check your email and click on the confirmation link we just sent you.

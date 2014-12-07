@@ -44,3 +44,12 @@ Then /^I should see a "(.*?)" link button on the page$/ do |label|
 		page.should have_content label
 	end
 end
+
+Then /^I should (not )?see html element "(.*?)"$/ do |no, selector|
+  if no.present?
+    page.assert_no_selector(selector)
+  else
+    page.assert_selector(selector)
+  end
+end
+

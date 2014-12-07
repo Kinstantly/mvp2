@@ -248,6 +248,17 @@ When /^I sign up as a (?:non\-expert|parent) with a special code of "(.*?)"$/ do
   sign_up_member
 end
 
+When /^I sign up on the blog site with valid data$/ do
+  create_visitor
+  sign_up 'in_blog/sign_up'
+end
+
+When /^I sign up on the blog site with invalid data$/ do
+  create_visitor
+  @visitor = @visitor.merge(:password => "")
+  sign_up 'in_blog/sign_up'
+end
+
 When /^I return to the site$/ do
   visit '/'
 end
@@ -318,6 +329,10 @@ end
 
 When /^I click on a user account link$/ do
   click_link @user_2.email
+end
+
+When /^I (?:visit|am on) the in-blog signup page$/ do
+  visit in_blog_sign_up_path
 end
 
 ### THEN ###
@@ -434,4 +449,10 @@ Then /^I should (not )?land on the account page$/ do |no|
   else
     current_path.should eq user_path @user_2
   end
+end
+
+Then /^I should see "(.*?)" (translated )?link to contact_preferences section of my account settings page$/ do |selector, tr|
+  link_selector = tr.present? ? I18n.t(selector) : selector
+  path = edit_user_registration_url(anchor: 'contact_preferences')
+  page.has_link?(link_selector, href: path).should == true
 end

@@ -1738,6 +1738,20 @@ div.popover {
 		padding: 10px 14px !important;
 		box-sizing: content-box;
 	}
+	p{
+		font-size: .91em;
+	}
+	.tip{
+		max-width: $generic_form_width * 0.4 + 30;
+		@include scale(font-size, 13);
+		margin-top: -8px;
+		
+		@media (max-width: $break-5) {
+			@include scale(font-size, 12);
+			max-width: 100%;
+		}
+	}
+
 	.help_icon {
 		@include help_icon;
 		margin-bottom: -4px;

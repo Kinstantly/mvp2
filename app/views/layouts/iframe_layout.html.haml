@@ -3,8 +3,7 @@
 %html
 	%head
 		%title= @page_title.presence || company_name
-		= stylesheet_link_tag "interior", media: "screen, handheld, print"
-		= javascript_include_tag "application"
+		= stylesheet_link_tag "interior", media: "all"
 		= csrf_meta_tags
 	%body
 		= yield
