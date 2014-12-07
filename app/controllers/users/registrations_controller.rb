@@ -142,10 +142,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		end
 	end
 
+	# True if the request is for a sign-up that is embedded on the blog.
+	# Checks for the in_blog the parameter (i.e. unsuccessful create action with in-blog signup).
+	def request_in_blog?
+		params[:in_blog].present? || ['in_blog_new', 'in_blog_awaiting_confirmation'].include?(action_name)
+	end
+	
 	def registrations_layout
 		# Use iframe_layout if in_blog present (i.e. unsuccessful create action with in-blog signup)
-		return 'iframe_layout' if params[:in_blog].present?
-		['in_blog_new', 'in_blog_awaiting_confirmation'].include?(action_name) ? 'iframe_layout' : 'interior'
+		request_in_blog? ? 'iframe_layout' : 'interior'
 	end
 	
 	# Set exceptions to default values of the security-related HTTP headers in the response.
@@ -154,15 +159,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	# http://www.w3.org/TR/CSP/#frame-src
 	def set_default_response_headers
 		super
-		# Embed only on the blog site.
-		allowed_url = blog_url
-		if response && request && request.headers['Referer'] == allowed_url
-			existing_csp = response.headers['Content-Security-Policy']
-			new_csp = "frame-src #{allowed_url}"
-			response.headers.merge!({
-				'Content-Security-Policy' => [existing_csp, new_csp].compact.join('; '),
-				'X-Frame-Options' => "ALLOW-FROM #{allowed_url}"
-			})
+		if response && request && request_in_blog?
+			# Embed only on the blog site.
+			allowed_url = blog_url
+			referrer = request.headers['Referer']
+			if referrer && (referrer.start_with?(allowed_url) || referrer.start_with?(root_url))
+				existing_csp = response.headers['Content-Security-Policy']
+				new_csp = "frame-src #{allowed_url}"
+				response.headers.merge!({
+					'Content-Security-Policy' => [existing_csp, new_csp].compact.join('; '),
+					'X-Frame-Options' => "ALLOW-FROM #{allowed_url}"
+				})
+			end
 		end
 	end
 end
