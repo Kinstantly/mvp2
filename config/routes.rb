@@ -158,7 +158,6 @@ Mvp2::Application.routes.draw do
 	# Their validator uses GET, so allow both POST and GET.  Yuck.
 	match 'hooks/a11d83adba52b483798f5e7de90c3e57' => 'mailchimp_webhook#process_notification'
 
-	
 	# Customers of a provider.
 	resources :customers
 	get 'authorize_payment/:profile_id' => 'customers#authorize_payment', as: :authorize_payment
@@ -167,6 +166,13 @@ Mvp2::Application.routes.draw do
 		member do
 			get :new_charge
 			put :create_charge
+		end
+	end
+	
+	# Charges made to a customer by a provider.
+	resources :stripe_charges, only: :show do
+		member do
+			put :create_refund
 		end
 	end
 	

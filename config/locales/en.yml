@@ -372,13 +372,17 @@ en:
         you_are_not_authorized: 'You are not allowed to charge this client.'
       view:
         authorized_amount: 'Authorized amount remaining: %{amount}'
-        cancel: 'Client list'
+        cancel: 'Back to client list'
+        charge_details_button: 'Details'
         charge_history: 'Transaction history'
         charge_history_amount: 'Amount charged'
+        charge_history_amount_refunded: 'Amount refunded'
+        charge_history_application_fee: "Kinstantly's fee"
         charge_history_date: 'Date'
         charge_history_description: 'Description'
         charge_history_fee: 'Fee'
         charge_history_statement_description: "Description on customer's statement"
+        charge_history_stripe_fee: "Stripe's fee"
         charge_or_view: 'charge or view'
         charge_or_view_buttons: ' '
         contact_information: 'Contact information'
@@ -738,6 +742,10 @@ en:
       view:
         find_by_name: 'Specialty name'
         not_browsable: '(grayed-out not assigned to a browsable service)'
+    stripe_charge:
+      view:
+        cancel: 'Back to customer details'
+        title: 'Charge to %{customer_name}'
     subcategory:
       name: 'Subcategory'
       edit:

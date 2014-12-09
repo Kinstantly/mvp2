@@ -9,7 +9,12 @@ class StripeCharge < ActiveRecord::Base
 	belongs_to :stripe_card
 	belongs_to :customer_file
 	
+	scope :all_for_provider, lambda { |provider| joins(:customer_file).where(customer_files: {user_id: provider.id}) }
+	
 	monetize :amount, as: 'amount_usd', allow_nil: true
+	monetize :amount_refunded, as: 'amount_refunded_usd', allow_nil: true
+	monetize :stripe_fee, as: 'stripe_fee_usd', allow_nil: true
+	monetize :application_fee, as: 'application_fee_usd', allow_nil: true
 	
 	# Define maximum length of each string or text attribute in a publicly accessible way.
 	# This allows them to be used by other models or at the view layer for character counts.

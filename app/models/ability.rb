@@ -63,6 +63,14 @@ class Ability
 				customer_file.provider == user && customer_file.customer_has_authorized_payment?
 			end
 		end
+		
+		# Provider can view details and do a refund only on a charge they created.
+		alias_action :show, :create_refund, to: :manage_charge
+		if user.is_provider?
+			can :manage_charge, StripeCharge, StripeCharge.all_for_provider(user) do |stripe_charge|
+				stripe_charge.customer_file.try(:provider) == user
+			end
+		end
 
 		# Providers should only be able to edit the profile attached to their user account.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.

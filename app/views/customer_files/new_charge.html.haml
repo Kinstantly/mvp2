@@ -1,6 +1,6 @@
 = javascript_include_tag 'payment'
 #content
-	#customer_file.payments
+	#new_charge.payments
 		%h1= t 'views.customer_file.new_charge.title', customer: @customer_file.customer_name
 		%div= t 'views.customer_file.new_charge.authorized_amount', amount: display_currency_amount(@customer_file.authorized_amount_usd)
 		.generic_form

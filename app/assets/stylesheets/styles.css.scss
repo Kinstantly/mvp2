@@ -242,6 +242,10 @@
 				}
 			}
 			input, a {
+				margin-bottom: 1em;
+				&.medium, &.medium:hover {
+					width: 12em;
+				}
 				&.wide, &.wide:hover {
 					width: 16em;
 				}
@@ -253,8 +257,11 @@
 		th, td {
 			@include scale(padding-top, 12);
 		}
-		th {
-			width: 50%;
+		.attributes {
+				th {
+				width: 50%;
+				@include scale(padding-right, 12);
+			}
 		}
 		.tablesorter {
 			th {
@@ -284,7 +291,7 @@
 			@include scale(margin-top, 24);
 		}
 	}
-	#customer, #customer_files {
+	#customer, #customer_files, #customer_file {
 		.button {
 			@include default-button-style;
 			width: 4em;

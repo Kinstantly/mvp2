@@ -20,6 +20,10 @@ FactoryGirl.define do
 				amount_refunded 50
 				refunded false
 			end
+		
+			factory :captured_stripe_charge_with_customer do
+				customer_file
+			end
 		end
 		
 		factory :uncaptured_stripe_charge do
