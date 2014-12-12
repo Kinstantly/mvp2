@@ -29,7 +29,7 @@
 			%thead
 				%tr
 					%th= t 'views.customer.view.charge_history_date'
-					%th= t 'views.customer.view.charge_history_amount'
+					%th= t 'views.customer.view.charge_history_amount_collected'
 					%th= t 'views.customer.view.charge_history_provider'
 					%th= t 'views.customer.view.card_info'
 					%th= t 'views.customer.view.charge_history_statement_description'
@@ -40,7 +40,7 @@
 					- customer_file.stripe_charges.each do |charge|
 						%tr
 							%td= display_transaction_date charge.created_at
-							%td= display_currency_amount charge.amount_usd
+							%td= display_currency_amount charge.amount_collected_usd
 							%td= link_to provider_name, profile
 							%td= display_payment_card_summary charge.stripe_card
 							%td= charge.statement_description

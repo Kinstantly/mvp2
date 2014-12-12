@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141124065605) do
+ActiveRecord::Schema.define(:version => 20141211200839) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -398,12 +398,12 @@ ActiveRecord::Schema.define(:version => 20141124065605) do
     t.string   "api_charge_id"
     t.integer  "amount"
     t.integer  "amount_refunded"
-    t.boolean  "paid",                  :default => false
-    t.boolean  "refunded",              :default => false
-    t.boolean  "captured",              :default => false
-    t.boolean  "deleted",               :default => false
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.boolean  "paid",                     :default => false
+    t.boolean  "refunded",                 :default => false
+    t.boolean  "captured",                 :default => false
+    t.boolean  "deleted",                  :default => false
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
     t.boolean  "livemode"
     t.integer  "customer_file_id"
     t.string   "balance_transaction"
@@ -412,6 +412,9 @@ ActiveRecord::Schema.define(:version => 20141124065605) do
     t.integer  "application_fee"
     t.string   "description"
     t.string   "statement_description"
+    t.integer  "fee_refunded"
+    t.integer  "stripe_fee_refunded"
+    t.integer  "application_fee_refunded"
   end
 
   add_index "stripe_charges", ["customer_file_id"], :name => "index_stripe_charges_on_customer_file_id"

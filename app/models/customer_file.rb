@@ -100,6 +100,10 @@ class CustomerFile < ActiveRecord::Base
 		false
 	end
 	
+	def stripe_info
+		provider.try :stripe_info
+	end
+	
 	def customer_user
 		customer.try(:user)
 	end

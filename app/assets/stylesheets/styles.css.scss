@@ -313,6 +313,12 @@
 			}
 		}
 	}
+	#charge {
+		.generic_form {
+			float: left;
+			margin-left: auto;
+		}
+	}
 	
 	#awaiting_confirmation{
 		span.emphasized {

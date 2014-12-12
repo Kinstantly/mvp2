@@ -18,7 +18,7 @@ Feature: Refund a customer
 
 	Scenario: Full refund of the selected charge
 		When I click on the "Details or refund" button
-			And I check "Full refund"
+			And I enter "$39.50" in the "Refund amount" field
 			And I click on the "Refund" button
-		Then I should see "Authorized amount remaining: $100.00" on the page
-			And I should see "$0.00" on the page
+		Then I should see "$0.00" on the page
+			And I should see "Authorized amount remaining: $100.00" on the page
