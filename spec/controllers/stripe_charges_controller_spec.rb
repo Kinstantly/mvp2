@@ -66,10 +66,21 @@ describe StripeChargesController do
 				charge.stub(:amount_refunded) { @amount_refunded }
 				charge
 			}
+			let(:api_application_fee_list) {
+				list = double('Stripe::ListObject').as_null_object
+				list.stub data: []
+				list
+			}
 		
 			before(:each) do
 				Stripe::Charge.stub(:retrieve).with(any_args) do
 					api_charge
+				end
+				Stripe::BalanceTransaction.stub(:retrieve).with(any_args) do
+					api_balance_transaction
+				end
+				Stripe::ApplicationFee.stub(:all).with(any_args) do
+					api_application_fee_list
 				end
 				
 				charge.amount_usd = charge_amount_usd

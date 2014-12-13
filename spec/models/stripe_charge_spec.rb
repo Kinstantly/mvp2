@@ -81,17 +81,30 @@ describe StripeCharge do
 			charge.stub(:amount_refunded) { @amount_refunded }
 			charge
 		}
+		let(:api_application_fee_list) {
+			list = double('Stripe::ListObject').as_null_object
+			list.stub data: []
+			list
+		}
 		
 		before(:each) do
 			Stripe::Charge.stub(:retrieve).with(any_args) do
 				api_charge
+			end
+			Stripe::BalanceTransaction.stub(:retrieve).with(any_args) do
+				api_balance_transaction
+			end
+			Stripe::ApplicationFee.stub(:all).with(any_args) do
+				api_application_fee_list
 			end
 		end
 		
 		context "perform refunds" do
 			let(:refund_amount_usd) { '25.00' }
 			let(:refund_amount_cents) { (refund_amount_usd.to_f * 100).to_i }
-			let(:charge_for_refund) { FactoryGirl.create :stripe_charge, amount_usd: charge_amount_usd }
+			let(:charge_for_refund) {
+				FactoryGirl.create :captured_stripe_charge_with_customer, amount_usd: charge_amount_usd
+			}
 		
 			it "should perform a partial refund" do
 				charge_for_refund.create_refund(refund_amount_usd: refund_amount_usd).should be_true

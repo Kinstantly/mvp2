@@ -66,8 +66,7 @@ class StripeCharge < ActiveRecord::Base
 		
 		refund_arguments = {
 			amount:                 refund_amount,
-			refund_application_fee: true,
-			expand:                 ['balance_transaction']  # We cannot expand 'charge', unfortunately.
+			refund_application_fee: true
 		}
 		refund_arguments.merge! reason: refund_reason if refund_reason.present?
 		access_token = customer_file.try(:stripe_info).try(:access_token)
@@ -76,24 +75,42 @@ class StripeCharge < ActiveRecord::Base
 		charge = Stripe::Charge.retrieve api_charge_id, access_token
 		refund = charge.refunds.create refund_arguments, access_token
 		
-		# Get the change in fees.
-		balance_transaction = refund.balance_transaction
-		fee_details = balance_transaction.fee_details.inject({}) { |detail_hash, detail|
-			detail_hash[detail.type] = detail.amount
-			detail_hash
-		}
-		
 		# Get the new charge values.
 		charge = Stripe::Charge.retrieve api_charge_id, access_token
 		
+		# Get sums of the fee refunds.
+		refunds = {fee: 0, stripe_fee: 0, application_fee: 0}
+		# Assume there are no more than 10 refunds for this charge (see the API documentation).
+		charge.refunds.data.each { |refund|
+			balance_transaction = Stripe::BalanceTransaction.retrieve refund.balance_transaction, access_token
+			refunds[:fee] -= balance_transaction.fee # Returned fee value is negative.
+			balance_transaction.fee_details.each { |detail|
+				refunds[:stripe_fee] -= detail.amount if detail.type == 'stripe_fee'
+			}
+		}
+		
+		# Need this to get the application fee refunds.  Yuck.
+		application_fee_list = Stripe::ApplicationFee.all charge: api_charge_id
+		application_fee_refunds = application_fee_list.data.map(&:refunds).flatten
+		refunds[:application_fee] = application_fee_refunds.inject(0) { |sum, item|
+			item.object == 'fee_refund' ? (sum += item.amount) : sum
+		}
+		
 		# Update this record with the new values.
-		update_attributes(
+		if update_attributes(
 			refunded:                 charge.refunded,
 			amount_refunded:          charge.amount_refunded,
-			fee_refunded:             increment_refund_value(fee_refunded, balance_transaction.fee),
-			stripe_fee_refunded:      increment_refund_value(stripe_fee_refunded, fee_details['stripe_fee']),
-			application_fee_refunded: increment_refund_value(application_fee_refunded, fee_details['application_fee'])
+			fee_refunded:             refunds[:fee],
+			stripe_fee_refunded:      refunds[:stripe_fee],
+			application_fee_refunded: refunds[:application_fee]
 		)
+			customer_file.authorized_amount += refund_amount
+			customer_file.save!
+			true
+		else
+			false
+		end
+		
 	rescue Stripe::CardError, Payment::ChargeAuthorizationError, Stripe::InvalidRequestError => error
 		errors.add :base, error.message
 		false

@@ -378,7 +378,8 @@ en:
       view:
         authorized_amount: 'Authorized amount remaining: %{amount}'
         cancel: 'Back to client list'
-        charge_details_button: 'Details or refund'
+        charge_details_button: 'Details'
+        charge_details_refund_button: 'Details or refund'
         charge_history: 'Transaction history'
         charge_history_amount: 'Amount charged'
         charge_history_amount_collected: 'Amount collected'
@@ -387,6 +388,7 @@ en:
         charge_history_date: 'Date'
         charge_history_description: 'Description'
         charge_history_fee: 'Fee'
+        charge_history_refunded: 'Refunded'
         charge_history_statement_description: "Description on customer's statement"
         charge_history_stripe_fee: "Stripe's fee"
         charge_or_view: 'charge or view'
