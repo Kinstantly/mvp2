@@ -18,6 +18,6 @@ Feature: Charge details
 
 	Scenario: View details of the selected charge
 		When I click on the "Details" button
-		Then I should see "$39.50" on the page
+		Then I should see "$39.50" in the "Amount collected" field
 			And I should see "Office visit fee" on the page
-			And I should see "Voice coach" on the page
+			And I should see "Voice coach" in the "Description on customer's statement" field
