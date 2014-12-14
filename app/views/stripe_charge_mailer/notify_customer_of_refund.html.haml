@@ -1,0 +1,35 @@
+= "Hi #{@user.username.presence || 'there'},"
+%br
+%br
+= link_to @provider_profile.company_otherwise_display_name, profile_url(@provider_profile)
+has refunded
+= display_currency_amount @stripe_charge.amount_refunded_usd
+to the following card.
+%br
+%br
+= display_payment_card_summary @stripe_charge.stripe_card
+%br
+%br
+The refund was made on a charge described as:
+%br
+= @stripe_charge.description
+%br
+%br
+The original charge was identified on your statement as:
+%br
+= @stripe_charge.statement_description
+%br
+%br
+= link_to 'Click here', customer_url(@user.as_customer)
+to view your refund details.
+%br
+%br
+If you have questions, please contact your provider directly.
+- if @provider_profile.email.present?
+	We have the following email address for your provider:
+	= mail_to @provider_profile.email
+%br
+%br
+Thank you.
+%br
+&ndash; The Kinstantly Team

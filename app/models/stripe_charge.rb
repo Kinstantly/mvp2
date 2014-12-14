@@ -106,6 +106,9 @@ class StripeCharge < ActiveRecord::Base
 		)
 			customer_file.authorized_amount += refund_amount
 			customer_file.save!
+			
+			notify_customer_of_refund
+			
 			true
 		else
 			false
@@ -150,5 +153,10 @@ class StripeCharge < ActiveRecord::Base
 	# If there is a customer, notify them of the new charge.
 	def notify_customer
 		StripeChargeMailer.notify_customer(self).deliver if customer_file.try(:has_customer_account?)
+	end
+	
+	# If there is a customer, notify them of the refund.
+	def notify_customer_of_refund
+		StripeChargeMailer.notify_customer_of_refund(self).deliver if customer_file.try(:has_customer_account?)
 	end
 end
