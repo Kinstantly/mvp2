@@ -362,7 +362,9 @@ en:
         charge_history_statement_description: "Description on your statement"
         customer_button: 'Payment information'
         customer_title: 'Payment information'
+        fully_refunded: 'Fully refunded'
         not_authorized: 'Not authorized'
+        partially_refunded: '%{amount} refunded'
         provider_list_description_html: "You have authorized the providers listed below to charge you for services up to the amount listed.  To increase the amount, click on the provider's &quot;<strong>%{button_text}</strong>&quot; button."
         provider_name: 'Provider'
         reauthorize_amount: 'Reauthorize payment'
