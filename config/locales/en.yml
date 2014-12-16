@@ -107,6 +107,8 @@ en:
       not_found_by_name: "Specialty '%{name}' was not found."
       updated: "Specialty '%{name}' was updated."
       update_error: 'There was a problem updating the specialty.'
+    stripe_charges:
+      created_refund: 'The refund was successfully applied.'
     subcategories:
       add_service_error: "Could not add service '%{name}'"
       add_service_success: "Added service '%{name}'."
@@ -240,6 +242,8 @@ en:
         is_predefined: 'Can be assigned to a category'
       specialty:
         is_predefined: 'Can be assigned to a service'
+      stripe_charge:
+        refund_amount_usd: 'Refund amount'
       user:
         customer_files: 'Paying customers'
         username: 'Public username'
@@ -352,12 +356,15 @@ en:
         change_card_buttons: ' '
         charge_history: 'Transaction history'
         charge_history_amount: 'Amount charged'
+        charge_history_amount_collected: 'Amount charged'
         charge_history_date: 'Date'
         charge_history_provider: 'Provider'
         charge_history_statement_description: "Description on your statement"
         customer_button: 'Payment information'
         customer_title: 'Payment information'
+        fully_refunded: 'Fully refunded'
         not_authorized: 'Not authorized'
+        partially_refunded: '%{amount} refunded'
         provider_list_description_html: "You have authorized the providers listed below to charge you for services up to the amount listed.  To increase the amount, click on the provider's &quot;<strong>%{button_text}</strong>&quot; button."
         provider_name: 'Provider'
         reauthorize_amount: 'Reauthorize payment'
@@ -374,13 +381,16 @@ en:
         authorized_amount: 'Authorized amount remaining: %{amount}'
         cancel: 'Back to client list'
         charge_details_button: 'Details'
+        charge_details_refund_button: 'Details or refund'
         charge_history: 'Transaction history'
         charge_history_amount: 'Amount charged'
+        charge_history_amount_collected: 'Amount collected'
         charge_history_amount_refunded: 'Amount refunded'
         charge_history_application_fee: "Kinstantly's fee"
         charge_history_date: 'Date'
         charge_history_description: 'Description'
         charge_history_fee: 'Fee'
+        charge_history_refunded: 'Refunded'
         charge_history_statement_description: "Description on customer's statement"
         charge_history_stripe_fee: "Stripe's fee"
         charge_or_view: 'charge or view'
@@ -743,6 +753,14 @@ en:
         find_by_name: 'Specialty name'
         not_browsable: '(grayed-out not assigned to a browsable service)'
     stripe_charge:
+      refund:
+        reason:
+          duplicate: 'Duplicate charge'
+          fraudulent: 'Fraudulent charge'
+          requested_by_customer: 'Requested by client'
+        title: 'Use the form below to give a full or partial refund to %{customer_name}'
+        submit: 'Refund'
+        submit_disable: 'Refunding...'
       view:
         cancel: 'Back to customer details'
         title: 'Charge to %{customer_name}'

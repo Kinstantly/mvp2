@@ -19,15 +19,15 @@ Feature: Create charge
 		Then "lprice@kinstantly.com" should receive an email
 
 	Scenario: Notification to the client contains the charged amount
-		When "lprice@kinstantly.com" open the email
+		When "lprice@kinstantly.com" opens the email
 		Then they should see "$39.50" in the email body
 
 	Scenario: Notification to the client contains the charge description
-		When "lprice@kinstantly.com" open the email
+		When "lprice@kinstantly.com" opens the email
 		Then they should see "Office visit fee" in the email body
 
 	Scenario: Notification to the client contains the statement description
-		When "lprice@kinstantly.com" open the email
+		When "lprice@kinstantly.com" opens the email
 		Then they should see "Voice coach" in the email body
 
 	Scenario: Confirmation page shows charged amount

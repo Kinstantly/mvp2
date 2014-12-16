@@ -9,11 +9,22 @@ class StripeChargeMailer < ActionMailer::Base
 	def notify_customer(stripe_charge)
 		@stripe_charge = stripe_charge
 		@customer_file = @stripe_charge.customer_file
-		@user = @customer_file.customer.user
+		@user = @customer_file.customer_user
 		@provider_profile = @customer_file.provider.profile
 		sendgrid_category :customer_charge_notification
 		@show_logo = true
 		subject = "Kinstantly Provider Charge Notification"
+		mail to: @user.email, subject: subject
+	end
+	
+	def notify_customer_of_refund(stripe_charge)
+		@stripe_charge = stripe_charge
+		@customer_file = @stripe_charge.customer_file
+		@user = @customer_file.customer_user
+		@provider_profile = @customer_file.provider.profile
+		sendgrid_category :customer_refund_notification
+		@show_logo = true
+		subject = "Kinstantly Provider Refund Notification"
 		mail to: @user.email, subject: subject
 	end
 end

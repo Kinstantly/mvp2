@@ -50,4 +50,79 @@ describe StripeCharge do
 		StripeChargeMailer.should_not_receive(:notify_customer)
 		new_stripe_charge.save
 	end
+	
+	context "using the Stripe API" do
+		let(:charge_amount_usd) { '200.00' }
+		let(:charge_amount_cents) { (charge_amount_usd.to_f * 100).to_i }
+		let(:charge_fee_cents) { (charge_amount_cents * 0.05).to_i }
+		
+		let(:api_balance_transaction) {
+			transaction = double('Stripe::BalanceTransaction').as_null_object
+			transaction.stub fee: charge_fee_cents, fee_details: []
+			transaction
+		}
+		let(:api_refund) {
+			refund = double('Stripe::Refund').as_null_object
+			refund.stub balance_transaction: api_balance_transaction
+			refund
+		}
+		let(:api_refunds) {
+			Struct.new 'StripeRefunds' unless defined? Struct::StripeRefunds
+			refunds = double('Struct::StripeRefunds').as_null_object
+			refunds.stub(:create) do |refund_arguments, access_token|
+				@amount_refunded = refund_arguments[:amount]
+				api_refund
+			end
+			refunds
+		}
+		let(:api_charge) { 
+			charge = double('Stripe::Charge').as_null_object
+			charge.stub refunds: api_refunds
+			charge.stub(:amount_refunded) { @amount_refunded }
+			charge
+		}
+		let(:api_application_fee_list) {
+			list = double('Stripe::ListObject').as_null_object
+			list.stub data: []
+			list
+		}
+		
+		before(:each) do
+			Stripe::Charge.stub(:retrieve).with(any_args) do
+				api_charge
+			end
+			Stripe::BalanceTransaction.stub(:retrieve).with(any_args) do
+				api_balance_transaction
+			end
+			Stripe::ApplicationFee.stub(:all).with(any_args) do
+				api_application_fee_list
+			end
+		end
+		
+		context "perform refunds" do
+			let(:refund_amount_usd) { '25.00' }
+			let(:refund_amount_cents) { (refund_amount_usd.to_f * 100).to_i }
+			let(:charge_for_refund) {
+				FactoryGirl.create :captured_stripe_charge_with_customer, amount_usd: charge_amount_usd
+			}
+		
+			it "should perform a partial refund" do
+				charge_for_refund.create_refund(refund_amount_usd: refund_amount_usd).should be_true
+				charge_for_refund.reload
+				charge_for_refund.amount_refunded.should == refund_amount_cents
+			end
+		
+			it "should perform a full refund" do
+				charge_for_refund.create_refund(refund_amount_usd: charge_amount_usd).should be_true
+				charge_for_refund.reload
+				charge_for_refund.amount_refunded.should == charge_amount_cents
+			end
+		
+			it "should not refund more than the charge amount" do
+				charge_for_refund.create_refund(refund_amount_usd: '400.00').should be_false
+				charge_for_refund.reload
+				charge_for_refund.amount_refunded.should be_nil
+			end
+		end
+	end
 end

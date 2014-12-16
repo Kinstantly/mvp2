@@ -40,7 +40,14 @@
 					- customer_file.stripe_charges.each do |charge|
 						%tr
 							%td= display_transaction_date charge.created_at
-							%td= display_currency_amount charge.amount_usd
+							%td
+								= display_currency_amount charge.amount_usd
+								- if charge.amount_refunded.try(:>, 0)
+									%br
+									- if charge.refunded
+										= t 'views.customer.view.fully_refunded'
+									- else
+										= t 'views.customer.view.partially_refunded', amount: display_currency_amount(charge.amount_refunded_usd)
 							%td= link_to provider_name, profile
 							%td= display_payment_card_summary charge.stripe_card
 							%td= charge.statement_description

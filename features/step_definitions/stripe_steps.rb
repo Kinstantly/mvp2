@@ -20,6 +20,10 @@ def charge_statement_description
 	@charge_statement_description
 end
 
+def charge_amount_refunded
+	@charge_amount_refunded
+end
+
 def api_token
 	double('Stripe::Token').as_null_object
 end
@@ -31,8 +35,10 @@ def api_charge
 		amount:                charge_amount_cents,
 		description:           charge_description,
 		statement_description: charge_statement_description,
-		balance_transaction:   '1234567890'
+		balance_transaction:   '1234567890',
+		refunds: api_refunds
 	)
+	charge.stub(:amount_refunded) { charge_amount_refunded }
 	charge
 end
 
@@ -42,6 +48,28 @@ def api_balance_transaction
 	transaction
 end
 
+def api_refund
+	refund = double('Stripe::Refund').as_null_object
+	refund.stub balance_transaction: api_balance_transaction
+	refund
+end
+
+def api_refunds
+	Struct.new 'StripeRefunds' unless defined? Struct::StripeRefunds
+	refunds = double('Struct::StripeRefunds').as_null_object
+	refunds.stub(:create) do |refund_arguments, access_token|
+		@charge_amount_refunded = refund_arguments[:amount]
+		api_refund
+	end
+	refunds
+end
+
+def api_application_fee_list
+	list = double('Stripe::ListObject').as_null_object
+	list.stub data: []
+	list
+end
+
 def stripe_setup
 	Stripe::Token.stub(:create).with(any_args) do
 		api_token
@@ -49,8 +77,14 @@ def stripe_setup
 	Stripe::Charge.stub(:create).with(any_args) do
 		api_charge
 	end
+	Stripe::Charge.stub(:retrieve).with(any_args) do
+		api_charge
+	end
 	Stripe::BalanceTransaction.stub(:retrieve).with(any_args) do
 		api_balance_transaction
+	end
+	Stripe::ApplicationFee.stub(:all).with(any_args) do
+		api_application_fee_list
 	end
 end
 

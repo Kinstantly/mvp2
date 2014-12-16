@@ -26,16 +26,20 @@
 			%thead
 				%tr
 					%th= t 'views.customer_file.view.charge_history_date'
-					%th= t 'views.customer_file.view.charge_history_amount'
+					%th= t 'views.customer_file.view.charge_history_amount_collected'
 					%th= t 'views.customer_file.view.charge_history_description'
 					%th
 			%tbody
 				- @customer_file.stripe_charges.each do |charge|
 					%tr
 						%td= display_transaction_date charge.created_at
-						%td= display_currency_amount charge.amount_usd
+						%td
+							- if charge.refunded
+								= t 'views.customer_file.view.charge_history_refunded'
+							- else
+								= display_currency_amount charge.amount_collected_usd
 						%td= charge.description
-						%td= link_to t('views.customer_file.view.charge_details_button'), charge, class: 'button'
+						%td= link_to t((charge.refunded ? 'charge_details_button' : 'charge_details_refund_button'), scope: 'views.customer_file.view'), charge, class: 'button'
 
 		-# .tablesorterPager#charge_history_pager
 		-# 	%form

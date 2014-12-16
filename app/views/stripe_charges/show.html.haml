@@ -8,17 +8,17 @@
 				%th= "#{t 'views.customer_file.view.charge_history_date'}:"
 				%td= display_transaction_date @stripe_charge.created_at
 			%tr
-				%th= "#{t 'views.customer_file.view.charge_history_amount'}:"
-				%td= display_currency_amount @stripe_charge.amount_usd
-			%tr
-				%th= "#{t 'views.customer_file.view.charge_history_stripe_fee'}:"
-				%td= display_currency_amount @stripe_charge.stripe_fee_usd
-			%tr
-				%th= "#{t 'views.customer_file.view.charge_history_application_fee'}:"
-				%td= display_currency_amount @stripe_charge.application_fee_usd
+				%th= "#{t 'views.customer_file.view.charge_history_amount_collected'}:"
+				%td= display_currency_amount @stripe_charge.amount_collected_usd
 			%tr
 				%th= "#{t 'views.customer_file.view.charge_history_amount_refunded'}:"
 				%td= display_currency_amount @stripe_charge.amount_refunded_usd
+			%tr
+				%th= "#{t 'views.customer_file.view.charge_history_stripe_fee'}:"
+				%td= display_currency_amount @stripe_charge.stripe_fee_collected_usd
+			%tr
+				%th= "#{t 'views.customer_file.view.charge_history_application_fee'}:"
+				%td= display_currency_amount @stripe_charge.application_fee_collected_usd
 			%tr
 				%th= "#{t 'views.customer_file.view.charge_history_description'}:"
 				%td= @stripe_charge.description
@@ -27,3 +27,17 @@
 				%td= @stripe_charge.statement_description
 		.buttons
 			= link_to t('views.stripe_charge.view.cancel'), @stripe_charge.customer_file, class: 'default wide'
+		- unless @stripe_charge.refunded
+			%div= t 'views.stripe_charge.refund.title', customer_name: customer_name
+			.generic_form
+				= form_for @stripe_charge, url: {action: :create_refund}, method: :put do |f|
+					= f.error_messages
+					.required_tip= t 'views.required'
+					.text_field
+						= f.label :refund_amount_usd, class: 'required'
+						= f.text_field :refund_amount_usd
+					.text_field#refund_reason_field
+						= f.label :refund_reason
+						= f.select :refund_reason, StripeCharge::REFUND_REASONS.map{|reason| [t(reason, scope: 'views.stripe_charge.refund.reason'), reason]}, {include_blank: true}
+					.buttons
+						= f.submit t('views.stripe_charge.refund.submit'), disable_with: t('views.stripe_charge.refund.submit_disable'), class: 'save'
