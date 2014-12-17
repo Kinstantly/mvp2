@@ -95,6 +95,8 @@ class StripeCharge < ActiveRecord::Base
 		refunds[:application_fee] = application_fee_refunds.inject(0) { |sum, item|
 			item.object == 'fee_refund' ? (sum += item.amount) : sum
 		}
+		# Add in the application fee portion to the total.
+		refunds[:fee] += refunds[:application_fee]
 		
 		# Update this record with the new values.
 		if update_attributes(
