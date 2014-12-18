@@ -33,8 +33,7 @@
 					%th= t 'views.customer.view.charge_history_date'
 					%th= t 'views.customer.view.charge_history_amount'
 					%th= t 'views.customer.view.charge_history_provider'
-					%th= t 'views.customer.view.card_info'
-					%th= t 'views.customer.view.charge_history_statement_description'
+					%th
 			%tbody
 				- @customer_files.each do |customer_file|
 					- profile = customer_file.provider.profile
@@ -51,10 +50,9 @@
 									- else
 										= t 'views.customer.view.partially_refunded', amount: display_currency_amount(charge.amount_refunded_usd)
 							%td= link_to provider_name, profile
-							%td= display_payment_card_summary charge.stripe_card
-							%td= charge.statement_description
+							%td= link_to t('views.customer.view.charge_details_button'), show_to_client_stripe_charge_path(charge), class: 'button'
 
 :coffeescript
 	$ ->
 		$('#provider_list').tablesorter({sortList: [[0,0]], headers: {2: {sorter: false}, 4: {sorter: false}}})
-		$('#charge_history').tablesorter({sortList: [[0,1]]})
+		$('#charge_history').tablesorter({sortList: [[0,1]], headers: {3: {sorter: false}}})

@@ -173,6 +173,7 @@ Mvp2::Application.routes.draw do
 	resources :stripe_charges, only: :show do
 		member do
 			put :create_refund
+			get :show_to_client
 		end
 	end
 	

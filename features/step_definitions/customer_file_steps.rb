@@ -6,9 +6,18 @@ end
 
 def create_customer_file_for_client(attributes)
 	customer_file_attributes = attributes.delete(:customer_file) || {}
-	client = FactoryGirl.create :client_user, attributes
+	@customer_file_client_attributes = {password: 'a1@2a1@2', password_confirmation: 'a1@2a1@2'}.merge(attributes)
+	client = FactoryGirl.create :client_user, customer_file_client_attributes
 	customer = FactoryGirl.create :customer_with_card, user: client
-	create_customer_file({customer: customer}.merge(customer_file_attributes))
+	@customer_file_for_client = create_customer_file({customer: customer}.merge(customer_file_attributes))
+end
+
+def customer_file_client_attributes
+	@customer_file_client_attributes
+end
+
+def customer_file_for_client
+	@customer_file_for_client
 end
 
 ### GIVEN ###
@@ -42,6 +51,14 @@ end
 
 When /^I visit the client list page$/ do
 	visit '/customer_files'
+end
+
+When /^I sign in as the charged client$/ do
+	sign_in customer_file_client_attributes
+end
+
+When /^I visit my payments page$/ do
+	visit customer_path customer_file_for_client.customer
 end
 
 ### THEN ###

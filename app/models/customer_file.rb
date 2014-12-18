@@ -133,6 +133,10 @@ class CustomerFile < ActiveRecord::Base
 		authorized and authorized_amount.try(:>, 0) and has_customer_account?
 	end
 	
+	def provider_name
+		provider.try(:profile).try(:company_otherwise_display_name)
+	end
+	
 	private
 	
 	# Use this boolean method to determine whether the charge_amount can be collected.

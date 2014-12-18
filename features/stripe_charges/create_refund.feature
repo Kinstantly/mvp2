@@ -67,3 +67,25 @@ Feature: Refund a customer
 		When "lprice@kinstantly.com" opens the email with subject "Kinstantly Provider Refund Notification"
 		Then they should see "Office visit fee" in the email body
 			And they should see "Voice coach" in the email body
+
+	Scenario: Full refund of the selected charge as viewed by my client
+		When I click on the "Details or refund" button
+			And I enter "$39.50" in the "Refund amount" field
+			And I click on the "Refund" button
+			And I sign out
+			And I sign in as the charged client
+			And I visit my payments page
+		Then I should see "Fully refunded" on the page
+		When I click on the "Details" button
+		Then I should see "$39.50" in the "Amount refunded" field
+
+	Scenario: Partial refund of the selected charge as viewed by my client
+		When I click on the "Details or refund" button
+			And I enter "$15.25" in the "Refund amount" field
+			And I click on the "Refund" button
+			And I sign out
+			And I sign in as the charged client
+			And I visit my payments page
+		Then I should see "$15.25 refunded" on the page
+		When I click on the "Details" button
+		Then I should see "$15.25" in the "Amount refunded" field

@@ -39,6 +39,7 @@ def api_charge
 		refunds: api_refunds
 	)
 	charge.stub(:amount_refunded) { charge_amount_refunded }
+	charge.stub(:refunded) { charge_amount_refunded == charge_amount_cents }
 	charge
 end
 

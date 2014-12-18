@@ -354,10 +354,13 @@ en:
         cancel: 'Your account settings'
         card_info: 'Card'
         change_card_buttons: ' '
+        charge_details_button: 'Details'
         charge_history: 'Transaction history'
         charge_history_amount: 'Amount charged'
         charge_history_amount_collected: 'Amount charged'
+        charge_history_amount_refunded: 'Amount refunded'
         charge_history_date: 'Date'
+        charge_history_description: 'Description'
         charge_history_provider: 'Provider'
         charge_history_statement_description: "Description on your statement"
         customer_button: 'Payment information'
@@ -763,6 +766,8 @@ en:
         submit_disable: 'Refunding...'
       view:
         cancel: 'Back to customer details'
+        client_cancel: 'Back to payments'
+        client_title: 'Charge by %{provider_name}'
         title: 'Charge to %{customer_name}'
     subcategory:
       name: 'Subcategory'

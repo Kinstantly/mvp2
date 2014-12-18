@@ -71,6 +71,12 @@ class Ability
 				stripe_charge.customer_file.try(:provider) == user
 			end
 		end
+		# Client can view charges made to them (this client could also be a provider, so we need a separate statement).
+		if user.confirmed?
+			can :show_to_client, StripeCharge do |stripe_charge|
+				stripe_charge.customer_file.try(:customer_user) == user
+			end
+		end
 
 		# Providers should only be able to edit the profile attached to their user account.
 		# This makes it safer to allow other roles to manage profiles directly via the profiles_controller.
