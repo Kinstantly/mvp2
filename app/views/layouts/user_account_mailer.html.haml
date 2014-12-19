@@ -4,7 +4,8 @@
 			- if @show_logo
 				%tr
 					%td{align: 'center'}
-						= image_tag mailer_image_url('logo-web-red-type-260x62.png'), alt: mailer_logo_alt
+						= link_to root_url do
+							= image_tag mailer_image_url('logo-web-red-type-260x62.png'), alt: mailer_logo_alt
 			%tr
 				%td
 					= yield

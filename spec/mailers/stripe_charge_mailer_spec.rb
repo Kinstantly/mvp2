@@ -33,7 +33,7 @@ describe StripeChargeMailer do
 		end
 		
 		it "should have a link to charge details" do
-			email.should have_body_text customer_url customer_file.customer
+			email.should have_body_text show_to_client_stripe_charge_url new_stripe_charge
 		end
 		
 		it "should have a link to the provider's profile" do
@@ -79,7 +79,7 @@ describe StripeChargeMailer do
 		end
 		
 		it "should have a link to refund details" do
-			email.should have_body_text customer_url customer_file.customer
+			email.should have_body_text show_to_client_stripe_charge_url refunded_stripe_charge
 		end
 		
 		it "should have a link to the provider's profile" do

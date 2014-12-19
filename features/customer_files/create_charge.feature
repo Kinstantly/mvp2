@@ -16,7 +16,7 @@ Feature: Create charge
 			And I click on the "Charge card" button
 
 	Scenario: Notification is sent to the client when I charge them
-		Then "lprice@kinstantly.com" should receive an email
+		Then "lprice@kinstantly.com" should receive an email with subject "Kinstantly Provider Charge Notification"
 
 	Scenario: Notification to the client contains the charged amount
 		When "lprice@kinstantly.com" opens the email
@@ -29,6 +29,13 @@ Feature: Create charge
 	Scenario: Notification to the client contains the statement description
 		When "lprice@kinstantly.com" opens the email
 		Then they should see "Voice coach" in the email body
+
+	Scenario: Notification to the client contains a link to the charge details page
+		When "lprice@kinstantly.com" opens the email with subject "Kinstantly Provider Charge Notification"
+			And I sign out
+			And I sign in as the charged client
+			And I follow "here" in the email
+		Then I should see "$39.50" in the "Amount charged" field
 
 	Scenario: Confirmation page shows charged amount
 		Then I should see "$39.50" on the page
