@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CustomersController do
+describe CustomersController, payments: true do
 	let(:parent) { FactoryGirl.create :parent }
 	let(:email) { 'parent@example.com' }
 	let(:provider) { FactoryGirl.create :payable_provider }

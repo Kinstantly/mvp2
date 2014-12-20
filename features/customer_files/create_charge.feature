@@ -1,3 +1,4 @@
+@payments
 Feature: Create charge
 	In order to collect payments from my clients
 	As a provider

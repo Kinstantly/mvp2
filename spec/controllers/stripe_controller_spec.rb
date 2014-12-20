@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe StripeController do
+describe StripeController, payments: true do
 	describe "GET webhook" do
 		around(:each) do |example|
 			original_logger = StripeController.logger

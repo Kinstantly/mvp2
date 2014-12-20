@@ -359,8 +359,9 @@ en:
         charge_history_amount: 'Amount charged'
         charge_history_amount_collected: 'Amount charged'
         charge_history_amount_refunded: 'Amount refunded'
-        charge_history_date: 'Date'
+        charge_history_date: 'Charge date'
         charge_history_description: 'Description'
+        charge_history_last_refunded_date: 'Refund date'
         charge_history_provider: 'Provider'
         charge_history_statement_description: "Description on your statement"
         customer_button: 'Payment information'
@@ -390,9 +391,10 @@ en:
         charge_history_amount_collected: 'Amount collected'
         charge_history_amount_refunded: 'Amount refunded'
         charge_history_application_fee: "Kinstantly's fee"
-        charge_history_date: 'Date'
+        charge_history_date: 'Charge date'
         charge_history_description: 'Description'
         charge_history_fee: 'Fee'
+        charge_history_last_refunded_date: 'Refund date'
         charge_history_refunded: 'Refunded'
         charge_history_statement_description: "Description on customer's statement"
         charge_history_stripe_fee: "Stripe's fee"

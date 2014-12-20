@@ -6,7 +6,7 @@ class StripeCharge < ActiveRecord::Base
 	attr_accessor :refund_amount, :refund_reason
 	attr_accessible :api_charge_id, :amount, :amount_refunded, :paid, :refunded, :captured, :deleted, :livemode,
 		:balance_transaction, :fee, :stripe_fee, :application_fee, :description, :statement_description,
-		:refund_amount_usd, :fee_refunded, :stripe_fee_refunded, :application_fee_refunded
+		:refund_amount_usd, :fee_refunded, :stripe_fee_refunded, :application_fee_refunded, :last_refunded_at
 	
 	belongs_to :stripe_card
 	belongs_to :customer_file
@@ -73,7 +73,8 @@ class StripeCharge < ActiveRecord::Base
 		
 		# Attempt the refund.
 		charge = Stripe::Charge.retrieve api_charge_id, access_token
-		refund = charge.refunds.create refund_arguments, access_token
+		created_refund = charge.refunds.create refund_arguments, access_token
+		refunded_at = created_refund.created ? Time.zone.at(created_refund.created) : nil
 		
 		# Get the new charge values.
 		charge = Stripe::Charge.retrieve api_charge_id, access_token
@@ -100,6 +101,7 @@ class StripeCharge < ActiveRecord::Base
 		
 		# Update this record with the new values.
 		if update_attributes(
+			last_refunded_at:         refunded_at,
 			refunded:                 charge.refunded,
 			amount_refunded:          charge.amount_refunded,
 			fee_refunded:             refunds[:fee],

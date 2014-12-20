@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe StripeChargeMailer do
+describe StripeChargeMailer, payments: true do
 	include EmailSpec::Helpers
 	include EmailSpec::Matchers
 	include Rails.application.routes.url_helpers
@@ -74,7 +74,7 @@ describe StripeChargeMailer do
 		end
 		
 		it "should show the refund amount" do
-			refunded_amount = display_currency_amount refunded_stripe_charge.amount_refunded_usd
+			refunded_amount = display_currency_amount refunded_stripe_charge.refund_amount_usd
 			email.should have_body_text Regexp.new('refunded\s+' + Regexp.escape(refunded_amount))
 		end
 		
@@ -106,7 +106,7 @@ describe StripeChargeMailer do
 		let(:email) { StripeChargeMailer.notify_customer_of_refund refunded_stripe_charge }
 		
 		it "should show the partial-refund amount" do
-			refunded_amount = display_currency_amount refunded_stripe_charge.amount_refunded_usd
+			refunded_amount = display_currency_amount refunded_stripe_charge.refund_amount_usd
 			email.should have_body_text Regexp.new('refunded\s+' + Regexp.escape(refunded_amount))
 		end
 	end

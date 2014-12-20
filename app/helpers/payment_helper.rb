@@ -17,7 +17,7 @@ module PaymentHelper
 	# https://github.com/scottwater/jquery.detect_timezone
 	# https://bitbucket.org/pellepim/jstimezonedetect
 	def display_transaction_date(time_with_zone)
-		time_with_zone.in_time_zone('America/Los_Angeles').strftime('%b %-d, %Y')
+		time_with_zone.in_time_zone('America/Los_Angeles').strftime('%b %-d, %Y') if time_with_zone
 	end
 	
 	def display_payment_card_summary(card)

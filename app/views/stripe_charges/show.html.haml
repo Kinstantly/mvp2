@@ -8,11 +8,18 @@
 				%th= "#{t 'views.customer_file.view.charge_history_date'}:"
 				%td= display_transaction_date @stripe_charge.created_at
 			%tr
-				%th= "#{t 'views.customer_file.view.charge_history_amount_collected'}:"
-				%td= display_currency_amount @stripe_charge.amount_collected_usd
-			%tr
-				%th= "#{t 'views.customer_file.view.charge_history_amount_refunded'}:"
-				%td= display_currency_amount @stripe_charge.amount_refunded_usd
+				%th= "#{t 'views.customer_file.view.charge_history_amount'}:"
+				%td= display_currency_amount @stripe_charge.amount_usd
+			- if @stripe_charge.amount_refunded.try(:>, 0)
+				%tr
+					%th= "#{t 'views.customer_file.view.charge_history_last_refunded_date'}:"
+					%td= display_transaction_date @stripe_charge.last_refunded_at
+				%tr
+					%th= "#{t 'views.customer_file.view.charge_history_amount_refunded'}:"
+					%td= display_currency_amount @stripe_charge.amount_refunded_usd
+				%tr
+					%th= "#{t 'views.customer_file.view.charge_history_amount_collected'}:"
+					%td= display_currency_amount @stripe_charge.amount_collected_usd
 			%tr
 				%th= "#{t 'views.customer_file.view.charge_history_stripe_fee'}:"
 				%td= display_currency_amount @stripe_charge.stripe_fee_collected_usd

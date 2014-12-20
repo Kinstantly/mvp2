@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Customer do
+describe Customer, payments: true do
 	let(:customer) { FactoryGirl.create :customer }
 	let(:parent) { FactoryGirl.create :parent }
 	let(:provider) { FactoryGirl.create :payable_provider }

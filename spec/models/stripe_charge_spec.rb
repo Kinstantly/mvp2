@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe StripeCharge do
+describe StripeCharge, payments: true do
 	let(:new_stripe_charge) { FactoryGirl.build :stripe_charge }
 	let(:new_stripe_charge_with_customer) { FactoryGirl.build :stripe_charge_with_customer }
 	let(:stripe_charge) { FactoryGirl.create :stripe_charge }
@@ -63,7 +63,7 @@ describe StripeCharge do
 		}
 		let(:api_refund) {
 			refund = double('Stripe::Refund').as_null_object
-			refund.stub balance_transaction: api_balance_transaction
+			refund.stub balance_transaction: api_balance_transaction, created: 1419075210
 			refund
 		}
 		let(:api_refunds) {

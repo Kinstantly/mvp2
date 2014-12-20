@@ -11,6 +11,9 @@
 				%td= display_currency_amount @stripe_charge.amount_usd
 			- if @stripe_charge.amount_refunded.try(:>, 0)
 				%tr
+					%th= "#{t 'views.customer.view.charge_history_last_refunded_date'}:"
+					%td= display_transaction_date @stripe_charge.last_refunded_at
+				%tr
 					%th= "#{t 'views.customer.view.charge_history_amount_refunded'}:"
 					%td= display_currency_amount @stripe_charge.amount_refunded_usd
 			%tr

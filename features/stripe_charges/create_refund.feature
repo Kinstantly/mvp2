@@ -1,3 +1,4 @@
+@payments
 Feature: Refund a customer
 	In order to correct a mischarge to one of my clients
 	As a provider
@@ -36,7 +37,7 @@ Feature: Refund a customer
 		When I click on the "Details or refund" button
 			And I enter "$40.00" in the "Refund amount" field
 			And I click on the "Refund" button
-		Then I should see "$0.00" in the "Amount refunded" field
+		Then I should not see "Amount refunded" on the page
 			And I click on the "Back to customer details" button
 			And I should see "Authorized amount remaining: $60.50" on the page
 

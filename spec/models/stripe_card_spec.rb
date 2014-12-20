@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe StripeCard do
+describe StripeCard, payments: true do
 	let(:stripe_card) { FactoryGirl.create :stripe_card }
 	let(:stripe_card_with_no_customer) { FactoryGirl.create :stripe_card_with_no_customer }
 	let(:stripe_customer_with_card) { FactoryGirl.create :stripe_customer_with_cards, card_count: 1 }

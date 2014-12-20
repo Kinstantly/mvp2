@@ -2,7 +2,7 @@
 %br
 %br
 = link_to @provider_profile.company_otherwise_display_name, profile_url(@provider_profile)
-%b= "has refunded #{display_currency_amount @stripe_charge.amount_refunded_usd} to the following card:"
+%b= "has refunded #{display_currency_amount @stripe_charge.refund_amount_usd} to the following card:"
 %br
 = display_payment_card_summary @stripe_charge.stripe_card
 %br

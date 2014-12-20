@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "customer_files/new_charge" do
+describe "customer_files/new_charge", payments: true do
 	let(:customer_file) { FactoryGirl.create :customer_file }
 	let(:provider) { customer_file.provider }
 	

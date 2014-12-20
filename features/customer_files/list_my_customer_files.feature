@@ -1,3 +1,4 @@
+@payments
 Feature: List my customer files, i.e., show my list of clients
 	In order to manage charges to my clients
 	As a provider who does online charges

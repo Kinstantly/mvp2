@@ -1,3 +1,4 @@
+@payments
 Feature: Charge details
 	In order to examine a particular charge in more detail
 	As a provider or parent
@@ -18,7 +19,7 @@ Feature: Charge details
 
 	Scenario: View details of the selected charge as the provider
 		When I click on the "Details" button
-		Then I should see "$39.50" in the "Amount collected" field
+		Then I should see "$39.50" in the "Amount charged" field
 			And I should see "Office visit fee" on the page
 			And I should see "Voice coach" in the "Description on customer's statement" field
 

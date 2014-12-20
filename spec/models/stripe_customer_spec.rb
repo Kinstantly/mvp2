@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe StripeCustomer do
+describe StripeCustomer, payments: true do
 	let(:stripe_customer) { FactoryGirl.create :stripe_customer }
 	let(:api_customer) { double 'Stripe::Customer' }
 	

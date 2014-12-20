@@ -51,7 +51,7 @@ end
 
 def api_refund
 	refund = double('Stripe::Refund').as_null_object
-	refund.stub balance_transaction: api_balance_transaction
+	refund.stub balance_transaction: api_balance_transaction, created: 1419075210
 	refund
 end
 

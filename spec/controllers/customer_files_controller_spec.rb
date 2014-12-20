@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CustomerFilesController do
+describe CustomerFilesController, payments: true do
 	let(:authorized_amount_cents) { 10000 }
 	let(:charge_amount_usd) { '25.00' }
 	let(:charge_amount_cents) { (charge_amount_usd.to_f * 100).to_i }

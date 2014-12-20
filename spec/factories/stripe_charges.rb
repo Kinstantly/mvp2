@@ -13,6 +13,7 @@ FactoryGirl.define do
 		
 			factory :refunded_stripe_charge do
 				amount_refunded 100
+				refund_amount_usd '$1.00'
 				refunded true
 				
 				factory :refunded_stripe_charge_with_customer do
@@ -22,6 +23,7 @@ FactoryGirl.define do
 		
 			factory :partially_refunded_stripe_charge do
 				amount_refunded 50
+				refund_amount_usd '$0.50'
 				refunded false
 				
 				factory :partially_refunded_stripe_charge_with_customer do
