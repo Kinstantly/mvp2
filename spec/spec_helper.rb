@@ -65,6 +65,10 @@ Spork.prefork do
     
     config.include Paperclip::Shoulda::Matchers
 
+    # Examples that we don't want to run by default should have this tag.
+    # To run them, use "--no-drb --tag excluded_by_default" on the command line.
+    config.filter_run_excluding excluded_by_default: true
+
     # To reset your application database to a pristine state during testing.
     config.before(:suite) do
       DatabaseCleaner.strategy = :truncation

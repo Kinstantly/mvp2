@@ -35,15 +35,6 @@ describe Customer, payments: true do
 	let(:invalid_profile_id) { invalid_profile.id.to_s }
 	let(:invalid_authorization) { authorization.merge profile_id: invalid_profile_id }
 	
-	before(:each) do
-		Stripe::Customer.stub(:create).with(any_args) do
-			api_customer
-		end
-		Stripe::Customer.stub(:retrieve).with(any_args) do
-			api_customer
-		end
-	end
-	
 	it "should be associated with a user, e.g., a parent" do
 		customer.user = parent
 		customer.should have(:no).errors_on :user
@@ -79,6 +70,9 @@ describe Customer, payments: true do
 	context "new customer" do
 		before(:each) do
 			Stripe::Customer.should_receive(:create).and_return(api_customer)
+			Stripe::Customer.stub(:retrieve).with(any_args) do
+				api_customer
+			end
 		end
 		
 		it "should return the authorized amount for the given authorized provider" do
@@ -106,6 +100,24 @@ describe Customer, payments: true do
 		it "should attach the new card record" do
 			customer.save_with_authorization authorization
 			customer.stripe_customer.should have_at_least(1).stripe_card
+		end
+	end
+	
+	# Run the following manually with "--no-drb --tag excluded_by_default".
+	# We don't want to hit the Stripe API too often with an invalid key at the risk of getting blocked.
+	context "Without valid Stripe API keys", excluded_by_default: true do
+		around(:each) do |example|
+			saved_api_key = Stripe.api_key
+			Stripe.api_key = 'TestInvalidAPIKey'
+			example.run
+			Stripe.api_key = saved_api_key
+		end
+		
+		it "should not be able to create a stripe_customer record" do
+			expect {
+				customer.save_with_authorization authorization
+			}.to change(StripeCustomer, :count).by(0)
+			customer.errors.should_not be_empty
 		end
 	end
 end

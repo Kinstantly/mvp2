@@ -121,9 +121,9 @@ class StripeCharge < ActiveRecord::Base
 	rescue Stripe::CardError, Payment::ChargeAuthorizationError, Stripe::InvalidRequestError => error
 		errors.add :base, error.message
 		false
-	rescue ActiveRecord::RecordInvalid => error
+	rescue ActiveRecord::RecordInvalid, Stripe::AuthenticationError => error
+		Rails.logger.error "#{self.class} Error: #{error}"
 		if errors.empty?
-			Rails.logger.error "#{self.class} Error: #{error}"
 			errors.add :base, I18n.t('payment.contact_support')
 		end
 		false

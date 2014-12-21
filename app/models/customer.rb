@@ -107,9 +107,9 @@ class Customer < ActiveRecord::Base
 		end
 		# errors.add :base, error.message if errors.empty?
 		false
-	rescue Stripe::InvalidRequestError => error
+	rescue Stripe::InvalidRequestError, Stripe::AuthenticationError => error
+		Rails.logger.error "#{self.class} Error: #{error}"
 		if errors.empty?
-			Rails.logger.error "#{self.class} Error: #{error}"
 			errors.add :base, I18n.t('payment.contact_support')
 		end
 		false
