@@ -2640,3 +2640,15 @@ ul.links-list > li{
 		color: $kinstantly_blue;
 	}
 }
+
+#announcements.formlet{
+	.date_field input{
+		width: 30%;
+	}
+	.position_field input{
+		width: 90px;
+	}
+	.remove_nested_fields{
+		@include default-button-style;
+	}
+}

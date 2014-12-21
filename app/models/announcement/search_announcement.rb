@@ -1,0 +1,3 @@
+class SearchAnnouncement < Announcement
+	
+end
