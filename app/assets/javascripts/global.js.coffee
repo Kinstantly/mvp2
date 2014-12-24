@@ -81,7 +81,7 @@ my_vars.f.close_formlets = (e) ->
 # Close open formlets if clicked outside open formlet.
 my_vars.f.outer_close_formlets = (e) ->
 	clicked = $(e.target)
-	if clicked.closest('.popover', '.formlet.active').length == 0 && clicked.closest('.ui-autocomplete').length == 0
+	if clicked.closest('.popover', '.formlet.active').length == 0 && clicked.closest('.ui-autocomplete').length == 0 && clicked.closest('[class^="ui-datepicker"]').length == 0
 		my_vars.f.close_formlets e
 
 # Open the formlet unless already activated or we clicked on a 'dont_popover' element.
