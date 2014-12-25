@@ -43,7 +43,7 @@ For example:
 
 === Database
 
-I'm running PostgreSQL 9.2.4 for my development instance.  Installation and aliases:
+I'm running PostgreSQL 9.4.0 for my development instance.  Installation (on Mac OS X) and aliases:
 
  brew install postgresql
  alias pgstart='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
