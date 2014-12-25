@@ -126,13 +126,17 @@ describe StripeCharge, payments: true do
 		end
 	end
 	
-	# Run the following manually with "--no-drb --tag excluded_by_default".
-	# We don't want to hit the Stripe API too often with an invalid key at the risk of getting blocked.
-	context "Without valid Stripe API keys", excluded_by_default: true do
+	context "Without valid Stripe API keys" do
 		let(:charge_amount_usd) { '200.00' }
 		let(:charge_for_refund) {
 			FactoryGirl.create :captured_stripe_charge_with_customer, amount_usd: charge_amount_usd
 		}
+		
+		before(:each) do
+			Stripe::Charge.stub(:retrieve).and_raise(Stripe::AuthenticationError)
+			Stripe::BalanceTransaction.stub(:retrieve).and_raise(Stripe::AuthenticationError)
+			Stripe::ApplicationFee.stub(:all).and_raise(Stripe::AuthenticationError)
+		end
 		
 		it "should not be able to perform a refund" do
 			charge_for_refund.create_refund(refund_amount_usd: charge_amount_usd).should be_false

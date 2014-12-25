@@ -81,9 +81,13 @@ describe CustomerFile, payments: true do
 		end
 	end
 	
-	# Run the following manually with "--no-drb --tag excluded_by_default".
-	# We don't want to hit the Stripe API too often with an invalid key at the risk of getting blocked.
-	context "Without valid Stripe API keys", excluded_by_default: true do
+	context "Without valid Stripe API keys" do
+		before(:each) do
+			Stripe::Token.stub(:create).and_raise(Stripe::AuthenticationError)
+			Stripe::Charge.stub(:create).and_raise(Stripe::AuthenticationError)
+			Stripe::BalanceTransaction.stub(:retrieve).and_raise(Stripe::AuthenticationError)
+		end
+		
 		it "should not be able to create a charge" do
 			expect {
 				customer_file.create_charge charge_params

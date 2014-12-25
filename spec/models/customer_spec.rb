@@ -103,14 +103,10 @@ describe Customer, payments: true do
 		end
 	end
 	
-	# Run the following manually with "--no-drb --tag excluded_by_default".
-	# We don't want to hit the Stripe API too often with an invalid key at the risk of getting blocked.
-	context "Without valid Stripe API keys", excluded_by_default: true do
-		around(:each) do |example|
-			saved_api_key = Stripe.api_key
-			Stripe.api_key = 'TestInvalidAPIKey'
-			example.run
-			Stripe.api_key = saved_api_key
+	context "Without valid Stripe API keys" do
+		before(:each) do
+			Stripe::Customer.stub(:create).and_raise(Stripe::AuthenticationError)
+			Stripe::Customer.stub(:retrieve).and_raise(Stripe::AuthenticationError)
 		end
 		
 		it "should not be able to create a stripe_customer record" do
