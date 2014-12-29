@@ -611,13 +611,13 @@ end
 
 When /^I invite "(.*?)" to claim the profile$/ do |email|
 	click_link I18n.t('views.profile.view.invitation_to_claim_link'), match: :first
-	fill_in 'invitation_email', with: email
+	fill_in 'Email', with: email
 	click_button 'send_invitation_profile'
 end
 
 When /^I preview the invitation to "(.*?)" to claim the profile$/ do |email|
 	click_link I18n.t('views.profile.view.invitation_to_claim_link'), match: :first
-	fill_in 'invitation_email', with: email
+	fill_in 'Email', with: email
 	click_button 'test_invitation_profile'
 end
 

@@ -37,8 +37,7 @@ class ProviderSuggestionsController < ApplicationController
 	
 	# PUT /provider_suggestions/1
 	def update
-		role = current_user.try(:admin?) ? :admin : :default
-		if @provider_suggestion.update_attributes params[:provider_suggestion], as: role
+		if @provider_suggestion.update_attributes params[:provider_suggestion], as: updater_role
 			set_flash_message :notice, :updated
 			respond_with @provider_suggestion
 		else

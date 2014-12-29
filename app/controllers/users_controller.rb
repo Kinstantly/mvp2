@@ -5,7 +5,6 @@ class UsersController < ApplicationController
 	before_filter :authenticate_user!
 	before_filter :set_up_user, only: [:view_profile, :update_profile, :edit_profile]
 	load_and_authorize_resource
-	before_filter :process_profile_admin_params, only: [:update_profile]
 	
 	# *After* profile is loaded, ensure it has at least one location.
 	before_filter :require_location_in_profile, only: [:edit_profile]
@@ -24,7 +23,7 @@ class UsersController < ApplicationController
 	end
 
 	def update_profile
-		if @user.update_attributes(params[:user])
+		if @user.update_attributes(params[:user], as: updater_role)
 			set_flash_message :notice, :profile_updated
 			redirect_to action: :view_profile
 		else

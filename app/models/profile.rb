@@ -12,7 +12,8 @@ class Profile < ActiveRecord::Base
 	
 	attr_writer :specialty_names, :custom_service_names, :custom_specialty_names # readers defined below
 	
-	attr_accessible :first_name, :last_name, :middle_name, :credentials, :email, 
+	DEFAULT_ACCESSIBLE_ATTRIBUTES = [
+		:first_name, :last_name, :middle_name, :credentials, :email, 
 		:company_name, :url, :locations_attributes, :reviews_attributes, 
 		:headline, :education, :certifications, :year_started, 
 		:languages, :insurance_accepted, :summary, 
@@ -28,11 +29,29 @@ class Profile < ActiveRecord::Base
 		:consult_remotely, # provider offers most or all services remotely
 		:search_terms
 		# :adoption_stage, :preconception_stage, :pregnancy_stage, :ages, # superseded by age_ranges and ages_stages_note
+	]
+	EDITOR_ACCESSIBLE_ATTRIBUTES = [
+		*DEFAULT_ACCESSIBLE_ATTRIBUTES,
+		:is_published,
+		:public_on_private_site,
+		:show_stripe_connect,
+		:allow_charge_authorizations,
+		:admin_notes,
+		:lead_generator,
+		:widget_code,
+		:search_widget_code,
+		:invitation_email,
+		:invitation_tracking_category
+	]
+	attr_accessible *DEFAULT_ACCESSIBLE_ATTRIBUTES
+	attr_accessible *EDITOR_ACCESSIBLE_ATTRIBUTES, as: :profile_editor
+	attr_accessible *EDITOR_ACCESSIBLE_ATTRIBUTES, as: :admin
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :first_name, :last_name, :middle_name, :credentials, :email, :company_name, :url,
 		:headline, :year_started, :invitation_email, :photo_source_url, :availability_service_area_note,
-		:ages_stages_note
+		:ages_stages_note, :admin_notes, :lead_generator, :widget_code, :search_widget_code,
+		:invitation_tracking_category
 	
 	belongs_to :user
 	

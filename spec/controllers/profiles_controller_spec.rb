@@ -855,7 +855,14 @@ describe ProfilesController do
 		let(:recipient) { 'la@stupenda.com' }
 		let(:subject) { 'Claim your profile' }
 		let(:body) { 'We are inviting you to claim your profile.' }
-		let(:parameters) { {id: profile.id, invitation_email: recipient, subject: subject, body: body} }
+		let(:parameters) { 
+			{
+				id: profile.id,
+				subject: subject,
+				body: body,
+				profile: {invitation_email: recipient}
+			}
+		}
 		
 		context "as an admin user" do
 			before (:each) do
@@ -874,8 +881,9 @@ describe ProfilesController do
 				end
 				
 				it "should render the invitation page if failed" do
-					put :send_invitation, parameters.merge(invitation_email: 'nonsense')
+					put :send_invitation, parameters.merge(profile: {invitation_email: 'nonsense'})
 					response.should render_template('new_invitation')
+					assigns[:profile].should have(1).error_on :invitation_email
 				end
 			end
 		end

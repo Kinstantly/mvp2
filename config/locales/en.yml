@@ -470,6 +470,7 @@ en:
       view:
         accepting_new_clients: 'Accepting new clients/customers'
         ages_stages: 'ages/stages:'
+        allowing_charge_authorizations: 'Allowing charge authorizations'
         availability_service_area_html: 'Availability/<br/>service area'
         average_rating: 'Average rating:'
         claim_profile_link: 'Is this your business?'
@@ -497,6 +498,7 @@ en:
         no_services: 'Profiles with no services'
         my_profile_link: 'View your profile'
         not_accepting_new_clients: 'Not accepting new clients/customers at this time'
+        not_allowing_charge_authorizations: 'Not allowing charge authorizations'
         not_claimed: 'Not owned'
         not_owned: 'Not owned'
         not_published: 'Not published'

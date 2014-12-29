@@ -42,8 +42,7 @@ class ProfileClaimsController < ApplicationController
 	
 	# PUT /profile_claims/1
 	def update
-		role = current_user.try(:admin?) ? :admin : :default
-		if @profile_claim.update_attributes params[:profile_claim], as: role
+		if @profile_claim.update_attributes params[:profile_claim], as: updater_role
 			set_flash_message :notice, :updated
 			respond_with @profile_claim
 		else

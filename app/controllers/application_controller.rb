@@ -92,24 +92,6 @@ class ApplicationController < ActionController::Base
 		@profile.require_location
 	end
 	
-	# If current user is a profile editor, can save this profile, and
-	#   * the is_published param was used, use it to set the publish state of @profile,
-	#   * the public_on_private_site param was used, use it to make @profile public when running as a private site,
-	#   * if any of the other params referenced below are used, set the corresponding profile attribute.
-	def process_profile_admin_params
-		if current_user.profile_editor? && can?(:save, @profile)
-			@profile.assign_boolean_param_if_used :is_published, params[:is_published]
-			@profile.assign_boolean_param_if_used :public_on_private_site, params[:public_on_private_site]
-			@profile.assign_boolean_param_if_used :show_stripe_connect, params[:show_stripe_connect]
-			@profile.assign_text_param_if_used :admin_notes, params[:admin_notes]
-			@profile.assign_text_param_if_used :lead_generator, params[:lead_generator]
-			@profile.assign_text_param_if_used :widget_code, params[:widget_code]
-			@profile.assign_text_param_if_used :search_widget_code, params[:search_widget_code]
-			@profile.assign_text_param_if_used :invitation_email, params[:invitation_email]
-			@profile.assign_text_param_if_used :invitation_tracking_category, params[:invitation_tracking_category]
-		end
-	end
-	
 	def store_referrer
 		session[:stored_referrer] ||= request.headers['Referer'] if params[:store_referrer]
 	end
@@ -153,5 +135,16 @@ class ApplicationController < ActionController::Base
 		action_name == 'webhook' ||
 		['omniauth_callbacks', 'mailchimp_webhook', 'registrations'].include?(controller_name) ||
 		(controller_name == 'sessions' && action_name == 'create' && request.format.json?)
+	end
+	
+	# Returns the role value of the current_user that can be used to update attributes.
+	def updater_role
+		if current_user.try(:admin?)
+			:admin
+		elsif current_user.try(:profile_editor?)
+			:profile_editor
+		else
+			:default
+		end
 	end
 end

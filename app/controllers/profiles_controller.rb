@@ -18,11 +18,9 @@ class ProfilesController < ApplicationController
 	
 	# *After* profile is loaded:
 	#   ensure it has at least one location
-	#   set publish state based on parameter
 	#   set SEO keywords for profile show page
 	#   ensure there is a new review for the admin profile edit page
 	before_filter :require_location_in_profile, only: [:new, :edit, :edit_tab, :edit_my_profile, :edit_plain]
-	before_filter :process_profile_admin_params, only: [:create, :update, :send_invitation]
 	before_filter :seo_keywords, only: :show
 	before_filter :require_new_review, only: :edit_plain
 	
@@ -102,7 +100,7 @@ class ProfilesController < ApplicationController
 	end
 	
 	def update
-		if @profile.update_attributes(params[:profile])
+		if @profile.update_attributes(params[:profile], as: updater_role)
 			set_flash_message :notice, :updated
 			redirect_to profile_url @profile
 		else
@@ -227,7 +225,7 @@ class ProfilesController < ApplicationController
 		@subject, @body = params[:subject], params[:body]
 		test_invitation = (params[:commit] == t('views.profile.edit.invitation_preview_button'))
 		email = test_invitation.present? ? current_user.email : nil
-		if @profile.update_attributes(params[:profile]) && @profile.invite(@subject, @body, sender: current_user, preview_email: email)
+		if @profile.update_attributes(params[:profile], as: updater_role) && @profile.invite(@subject, @body, sender: current_user, preview_email: email)
 			set_flash_message :notice, :invitation_sent, recipient: (email.presence || @profile.invitation_email)
 			if test_invitation.present?
 				render action: :new_invitation, layout: 'plain'
