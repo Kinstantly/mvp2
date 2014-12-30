@@ -38,7 +38,7 @@
 				- @customer_files.each do |customer_file|
 					- profile = customer_file.provider.profile
 					- provider_name = profile.company_otherwise_display_name
-					- customer_file.stripe_charges.each do |charge|
+					- customer_file.stripe_charges.most_recent_first.each do |charge|
 						%tr
 							%td= display_transaction_date charge.created_at
 							%td
