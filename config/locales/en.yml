@@ -284,6 +284,16 @@ en:
           attributes:
             profile:
               blank: 'cannot be found. It may have been removed recently.'
+        stripe_charge:
+          already_refunded: 'Charge has already been fully refunded'
+          attributes:
+            amount:
+              blank: 'must be specified'
+            refund_amount:
+              blank: 'must be specified'
+              greater_than: 'must not be greater than the remaining charge amount of %{count}'
+            refund_reason:
+              inclusion: 'supplied is not valid'
   views:
     or: 'or'
     accessibility: 'Skip to content'

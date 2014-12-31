@@ -51,6 +51,18 @@ describe StripeCharge, payments: true do
 		new_stripe_charge.save
 	end
 	
+	it "should generate an error if the refund amount is too large" do
+		charge = FactoryGirl.build :stripe_charge, amount_usd: '10.00', refund_amount_usd: '20.00'
+		charge.valid?(:create_refund).should be_false
+		charge.errors[:refund_amount].should be_present
+	end
+	
+	it "should generate an error if the refund reason is not valid" do
+		charge = FactoryGirl.build :stripe_charge, amount_usd: '40.00', refund_amount_usd: '20.00', refund_reason: 'whatever'
+		charge.valid?(:create_refund).should be_false
+		charge.errors[:refund_reason].should be_present
+	end
+	
 	context "using the Stripe API" do
 		let(:charge_amount_usd) { '200.00' }
 		let(:charge_amount_cents) { (charge_amount_usd.to_f * 100).to_i }
@@ -102,6 +114,7 @@ describe StripeCharge, payments: true do
 		context "perform refunds" do
 			let(:refund_amount_usd) { '25.00' }
 			let(:refund_amount_cents) { (refund_amount_usd.to_f * 100).to_i }
+			let(:excessive_refund_amount_usd) { '400.00' }
 			let(:charge_for_refund) {
 				FactoryGirl.create :captured_stripe_charge_with_customer, amount_usd: charge_amount_usd
 			}
@@ -119,9 +132,35 @@ describe StripeCharge, payments: true do
 			end
 		
 			it "should not refund more than the charge amount" do
-				charge_for_refund.create_refund(refund_amount_usd: '400.00').should be_false
+				charge_for_refund.create_refund(refund_amount_usd: excessive_refund_amount_usd).should be_false
 				charge_for_refund.reload
 				charge_for_refund.amount_refunded.should be_nil
+			end
+		
+			it "should generate an error if attempting to refund more than the charge amount" do
+				charge_for_refund.create_refund(refund_amount_usd: excessive_refund_amount_usd).should be_false
+				charge_for_refund.errors[:refund_amount].should be_present
+			end
+		
+			it "should generate an error if refund amount is not specified" do
+				charge_for_refund.create_refund(refund_amount_usd: nil).should be_false
+				charge_for_refund.errors[:refund_amount].should be_present
+			end
+			
+			it "should not allow a new refund on a fully refunded charge" do
+				refunded_stripe_charge.create_refund(refund_amount_usd: refund_amount_usd).should be_false
+				refunded_stripe_charge.errors.should_not be_empty
+			end
+			
+			it "should allow multiple refunds on the same charge record" do
+				charge_for_refund.create_refund(refund_amount_usd: refund_amount_usd).should be_true
+				charge_for_refund.create_refund(refund_amount_usd: refund_amount_usd).should be_true
+			end
+			
+			it "should not allow a refund greater that the remaining charge amount" do
+				charge_for_refund.create_refund(refund_amount_usd: refund_amount_usd).should be_true
+				charge_for_refund.create_refund(refund_amount_usd: charge_amount_usd).should be_false
+				charge_for_refund.errors[:refund_amount].should be_present
 			end
 		end
 	end

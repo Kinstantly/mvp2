@@ -43,6 +43,9 @@ class StripeCharge < ActiveRecord::Base
 		'fraudulent'
 	]
 	
+	validates :refund_amount, create_refund: true, on: :create_refund
+	validates :refund_reason, inclusion: { in: REFUND_REASONS }, allow_blank: true, on: :create_refund
+	
 	def amount_collected
 		collected_value_of :amount
 	end
@@ -134,7 +137,8 @@ class StripeCharge < ActiveRecord::Base
 	
 	# Return true if a refund is allowed on this charge.
 	def refund_is_allowed?
-		not refunded and api_charge_id.present? and amount and refund_amount and refund_amount <= amount and (refund_reason.blank? or REFUND_REASONS.include?(refund_reason))
+		errors.add :base, I18n.t('payment.contact_support') if api_charge_id.blank?
+		valid?(:create_refund) and errors.empty?
 	end
 	
 	# Increment value by the negative of the given increment (increment is assumed to be a negative value).

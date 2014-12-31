@@ -57,7 +57,8 @@ describe StripeChargesController, payments: true do
 				Struct.new 'StripeRefunds' unless defined? Struct::StripeRefunds
 				refunds = double('Struct::StripeRefunds').as_null_object
 				refunds.stub(:create) do |refund_arguments, access_token|
-					@amount_refunded = refund_arguments[:amount]
+					@amount_refunded ||= 0
+					@amount_refunded += refund_arguments[:amount]
 					api_refund
 				end
 				refunds
@@ -99,11 +100,24 @@ describe StripeChargesController, payments: true do
 					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: charge_amount_usd}
 					assigns(:stripe_charge).amount_refunded_usd.cents.should == charge_amount_cents
 				end
+				
+				it "applies multiple refunds" do
+					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
+					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
+					assigns(:stripe_charge).amount_refunded_usd.cents.should == (2 * refund_amount_cents)
+				end
 			
 				it "cannot refund more than the charge" do
 					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: '$400.00'}
 					response.should render_template :show
 					assigns(:stripe_charge).amount_refunded_usd.should be_nil
+				end
+			
+				it "cannot do multiple refunds totalling more than the charge" do
+					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
+					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: charge_amount_usd}
+					response.should render_template :show
+					assigns(:stripe_charge).amount_refunded_usd.should == refund_amount_usd
 				end
 			end
 		end
