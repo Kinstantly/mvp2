@@ -291,7 +291,7 @@ en:
               blank: 'must be specified'
             refund_amount:
               blank: 'must be specified'
-              greater_than: 'must not be greater than the remaining charge amount of %{count}'
+              greater_than: 'must not be greater than the unrefunded amount of %{count}'
             refund_reason:
               inclusion: 'supplied is not valid'
   views:
