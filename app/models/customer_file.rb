@@ -56,7 +56,7 @@ class CustomerFile < ActiveRecord::Base
 				amount:                charge_amount.to_i,
 				currency:              'usd',
 				description:           charge_description,
-				statement_description: charge_statement_description,
+				statement_descriptor:  charge_statement_description, # API attribute is now named statement_descriptor
 				application_fee:       application_fee
 			},
 			access_token
@@ -77,7 +77,7 @@ class CustomerFile < ActiveRecord::Base
 			captured:              charge.captured,
 			livemode:              charge.livemode,
 			description:           charge.description,
-			statement_description: charge.statement_description,
+			statement_description: charge.statement_descriptor, # API attribute is now named statement_descriptor
 			balance_transaction:   charge.balance_transaction,
 			fee:                   balance_transaction.fee,
 			stripe_fee:            fee_details['stripe_fee'],

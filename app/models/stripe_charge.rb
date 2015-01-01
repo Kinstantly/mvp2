@@ -30,7 +30,7 @@ class StripeCharge < ActiveRecord::Base
 	# This allows them to be used by other models or at the view layer for character counts.
 	MAX_LENGTHS = {
 		description: 250,
-		statement_description: 15 # See https://stripe.com/docs/api#create_charge
+		statement_description: 22 # See statement_descriptor at https://stripe.com/docs/api#create_charge
 	}
 	
 	[:description, :statement_description].each do |attribute|

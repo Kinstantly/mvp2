@@ -34,7 +34,7 @@ def api_charge
 		id:                    '1234567890',
 		amount:                charge_amount_cents,
 		description:           charge_description,
-		statement_description: charge_statement_description,
+		statement_descriptor:  charge_statement_description, # API attribute is now named statement_descriptor
 		balance_transaction:   '1234567890',
 		refunds: api_refunds
 	)
