@@ -85,7 +85,7 @@
 						= link_to t('views.user.edit.customer_list_link'), customer_files_path, class: 'dont_popover'
 					- else
 						%br
-						= link_to user_omniauth_authorize_path(:stripe_connect), class: "stripe-connect" do
+						= link_to user_omniauth_authorize_path(:stripe_connect, redirect_uri: user_omniauth_callback_url(:stripe_connect)), class: "stripe-connect" do
 							%span Connect with Stripe
 			- if resource.is_provider?
 				%br
