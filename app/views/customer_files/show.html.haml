@@ -5,7 +5,7 @@
 		%h1= customer_name
 		- if @customer_file.customer_has_authorized_payment?
 			%div= t 'views.customer_file.view.authorized_amount', amount: display_currency_amount(@customer_file.authorized_amount)
-			%div= link_to t('views.customer_file.view.reminder_prompt', user: customer_name), '#'
+			-# %div= link_to t('views.customer_file.view.reminder_prompt', user: customer_name), '#'
 		- else
 			%div= t 'views.customer_file.view.not_authorized_explanation'
 			- if @customer_file.has_customer_account?
