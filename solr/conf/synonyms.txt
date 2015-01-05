@@ -34,3 +34,6 @@
 counselor,counsel,counseling
 # this will make counsel(ing) as a query term match counselor(s) in the text
 counsel,counselor,counselors
+
+couple\'s,couples
+couples,couple\'s
