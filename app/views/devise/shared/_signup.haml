@@ -61,15 +61,15 @@
 		%br
 		= f.password_field :password_confirmation, autocomplete: 'off'
 
-	- unless @signing_up_for_newsletter
-		.registration_special_code.text_field
-			= f.label :registration_special_code
-			%br
-			= f.text_field :registration_special_code
-			- unless inline_tip
-				%span.help_icon
-					.help_popover
-						%p.tip.grey_text= registration_special_code_tip
+	-# - unless @signing_up_for_newsletter
+	-# 	.registration_special_code.text_field
+	-# 		= f.label :registration_special_code
+	-# 		%br
+	-# 		= f.text_field :registration_special_code
+	-# 		- unless inline_tip
+	-# 			%span.help_icon
+	-# 				.help_popover
+	-# 					%p.tip.grey_text= registration_special_code_tip
 
 	- if claiming_profile
 		-# A provider account is required to claim a profile.

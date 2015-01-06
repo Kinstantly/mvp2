@@ -24,8 +24,10 @@
 			- if @user.claiming_profile?
 				%p The provider is in the process of claiming a profile.
 				- if (profile = @user.profile_to_claim)
+					%p= link_to 'View profile they are claiming', profile_url(profile)
 					%p= link_to 'Edit profile they are claiming', edit_plain_profile_url(profile)
 			- else
+				%p= link_to 'View provider profile', profile_url(@profile)
 				%p= link_to 'Edit provider profile', edit_plain_profile_url(@profile)
 			%p= mailer_user_link @user
 		- else

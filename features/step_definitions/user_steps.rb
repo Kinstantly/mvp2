@@ -237,12 +237,14 @@ When /^I sign up with a mismatched password confirmation$/ do
 end
 
 When /^I sign up with a special code of "(.*?)"$/ do |code|
+	pending 'restoration of the registration_special_code input on the sign-up form'
   create_visitor
   @visitor = @visitor.merge(:registration_special_code => code)
   sign_up
 end
 
 When /^I sign up as a (?:non\-expert|parent) with a special code of "(.*?)"$/ do |code|
+	pending 'restoration of the registration_special_code input on the sign-up form'
   create_visitor
   @visitor = @visitor.merge(:username => "hoffman", :registration_special_code => code)
   sign_up_member
