@@ -19,11 +19,13 @@
 			%tr
 				%th= "#{t 'views.customer.view.card_info'}:"
 				%td= display_payment_card_summary @stripe_charge.stripe_card
-			%tr
-				%th= "#{t 'views.customer.view.charge_history_description'}:"
-				%td= @stripe_charge.description
-			%tr
-				%th= "#{t 'views.customer.view.charge_history_statement_description'}:"
-				%td= @stripe_charge.statement_description
+			- if @stripe_charge.description.present?
+				%tr
+					%th= "#{t 'views.customer.view.charge_history_description'}:"
+					%td= @stripe_charge.description
+			- if @stripe_charge.statement_description.present?
+				%tr
+					%th= "#{t 'views.customer.view.charge_history_statement_description'}:"
+					%td= @stripe_charge.statement_description
 		.buttons
 			= link_to t('views.stripe_charge.view.client_cancel'), @stripe_charge.customer_file.customer, class: 'default wide'

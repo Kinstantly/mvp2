@@ -26,12 +26,14 @@
 			%tr
 				%th= "#{t 'views.customer_file.view.charge_history_application_fee'}:"
 				%td= display_currency_amount @stripe_charge.application_fee_collected_usd
-			%tr
-				%th= "#{t 'views.customer_file.view.charge_history_description'}:"
-				%td= @stripe_charge.description
-			%tr
-				%th= "#{t 'views.customer_file.view.charge_history_statement_description'}:"
-				%td= @stripe_charge.statement_description
+			- if @stripe_charge.description.present?
+				%tr
+					%th= "#{t 'views.customer_file.view.charge_history_description'}:"
+					%td= @stripe_charge.description
+			- if @stripe_charge.statement_description.present?
+				%tr
+					%th= "#{t 'views.customer_file.view.charge_history_statement_description'}:"
+					%td= @stripe_charge.statement_description
 		.buttons
 			= link_to t('views.stripe_charge.view.cancel'), @stripe_charge.customer_file, class: 'default wide'
 		- unless @stripe_charge.refunded

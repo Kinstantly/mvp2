@@ -5,16 +5,18 @@
 %b= "has refunded #{display_currency_amount @stripe_charge.refund_amount_usd} to the following card:"
 %br
 = display_payment_card_summary @stripe_charge.stripe_card
-%br
-%br
-%b The refund was made on a charge described as:
-%br
-= @stripe_charge.description
-%br
-%br
-%b The original charge was identified on your statement as:
-%br
-= @stripe_charge.statement_description
+- if @stripe_charge.description.present?
+	%br
+	%br
+	%b The refund was made on a charge described as:
+	%br
+	= @stripe_charge.description
+- if @stripe_charge.statement_description.present?
+	%br
+	%br
+	%b The original charge was identified on your statement as:
+	%br
+	= @stripe_charge.statement_description
 %br
 %br
 :plain

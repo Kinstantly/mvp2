@@ -50,17 +50,16 @@ class CustomerFile < ActiveRecord::Base
 		)
 		
 		# Do the charge using the single-use token and the provider's access token.
-		charge = Stripe::Charge.create(
-			{
-				card:                  card_token.id,
-				amount:                charge_amount.to_i,
-				currency:              'usd',
-				description:           charge_description,
-				statement_descriptor:  charge_statement_description, # API attribute is now named statement_descriptor
-				application_fee:       application_fee
-			},
-			access_token
-		)
+		charge_parameters = {
+			card:                  card_token.id,
+			amount:                charge_amount.to_i,
+			currency:              'usd',
+			application_fee:       application_fee
+		}
+		charge_parameters[:description] = charge_description if charge_description.present?
+		# Use the statement_descriptor API attribute. It should only be set if we have a value.
+		charge_parameters[:statement_descriptor] = charge_statement_description if charge_statement_description.present?
+		charge = Stripe::Charge.create(charge_parameters, access_token)
 		
 		# Get the fees.
 		balance_transaction = Stripe::BalanceTransaction.retrieve charge.balance_transaction, access_token
