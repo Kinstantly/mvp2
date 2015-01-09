@@ -15,13 +15,13 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 		if stripe_info.save!
 			render 'success'
 		else
-			logger.error "Stripe Connect failed for user #{current_user.id}. Omniauth Params: #{auth}"
+			logger.error "Stripe Connect error for user #{current_user.id}. stripe_info.errors => #{stripe_info.errors.full_messages}. Omniauth Params => #{auth}"
 			render 'error'
 		end
-  	end
+	end
 
-  	def failure
-  		logger.error "Stripe Connect failed: #{params}"
-  		render 'error'
-  	end
+	def failure
+		logger.error "Stripe Connect error: #{params}"
+		render 'error'
+	end
 end

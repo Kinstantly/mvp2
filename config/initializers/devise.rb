@@ -241,6 +241,6 @@ Devise.setup do |config|
     Rails.configuration.stripe[:connect_client_id],
     Rails.configuration.stripe[:secret_key], 
     :scope => 'read_write', # or :scope => 'read_only'
-    :stripe_landing => 'login' #'register' # Determines whether to show a login screen by default. Set to stripe_landing=login, if users already have existing Stripe accounts. 
+    :stripe_landing => 'register' # Show registration screen because most users will not already have a Stripe account.
 
 end

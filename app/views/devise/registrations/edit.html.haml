@@ -85,7 +85,7 @@
 						= link_to t('views.user.edit.customer_list_link'), customer_files_path, class: 'dont_popover'
 					- else
 						%br
-						= link_to user_omniauth_authorize_path(:stripe_connect, redirect_uri: user_omniauth_callback_url(:stripe_connect)), class: "stripe-connect" do
+						= link_to stripe_connect_path_for(resource), class: "stripe-connect" do
 							%span Connect with Stripe
 			- if resource.is_provider?
 				%br
@@ -142,16 +142,16 @@
 :coffeescript
 	# Opens a modal window
 	my_vars.f.win_popup = (url, w, h, name) ->
-		left = (screen.width/2)-(w/2)
-		top = (screen.height/2)-(h/2)
-		window.open(url, name, "menubar=no,toolbar=no,status=no,width=" + w + ",height=" + h + ",toolbar=no,left=" +left + ",top=" + top);
+		left = (screen.width / 2) - (w / 2)
+		top = (screen.height / 2) - (h / 2)
+		window.open(url, name, 'toolbar=yes,menubar=no,status=no,width=' + w + ',height=' + h + ',left=' +left + ',top=' + top);
 
 	$ ->
 		# Strip Connect opens a new win.
 		$('a.stripe-connect').on 'click', (e) ->
 			e.preventDefault()
 			url = $(@).attr("href")
-			my_vars.f.win_popup(url, 380, 600, 'Stripe Connect')
+			my_vars.f.win_popup(url, 530, 600, 'Stripe Connect')
 			false
 	
 		$('.formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet

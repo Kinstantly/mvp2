@@ -35,6 +35,11 @@ class Location < ActiveRecord::Base
 	geocoded_by :geocodable_address # can also be an IP address
 	before_save :geocode_address    # auto-fetch coordinates
 	
+	# Address without city, region, postal code, and country.
+	def street_address
+		join_present_attrs ', ', :address1, :address2
+	end
+	
 	def display_city_region
 		join_present_attrs ', ', :city, :region
 	end
