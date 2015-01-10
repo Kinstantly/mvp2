@@ -33,13 +33,18 @@ module Mvp2
       live_mode:          ENV['STRIPE_LIVE_MODE'].present?
     }
     
+    # Payment configuration that is not gateway dependent.
+    config.payment = {
+      application_fee_percentage: ENV['PAYMENT_APPLICATION_FEE_PERCENTAGE'].presence.try(:to_f)
+    }
+    
     # Sitemap generator configuration.
     config.sitemap_default_host = "http://#{config.default_host}/"
     config.sitemap_sitemaps_path = 'sitemaps_dev/'
-		
-		# Blog location.
-		config.blog_host = 'blog.kinstantly.com'
-		config.blog_url = "http://#{config.blog_host}/"
+    
+    # Blog location.
+    config.blog_host = 'blog.kinstantly.com'
+    config.blog_url = "http://#{config.blog_host}/"
 
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/lib)

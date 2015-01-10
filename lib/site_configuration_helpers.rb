@@ -19,6 +19,10 @@ module SiteConfigurationHelpers
 		def blog_url
 			Rails.configuration.blog_url
 		end
+		
+		def payment_application_fee_percentage
+			Rails.configuration.payment[:application_fee_percentage]
+		end
 	end
 	
 	module InstanceMethods
@@ -40,6 +44,10 @@ module SiteConfigurationHelpers
 		
 		def blog_url
 			Rails.configuration.blog_url
+		end
+		
+		def payment_application_fee_percentage
+			Rails.configuration.payment[:application_fee_percentage]
 		end
 	end
 	

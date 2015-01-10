@@ -32,7 +32,11 @@ class CustomerFile < ActiveRecord::Base
 		assign_attributes attribute_values
 		return false unless charge_is_allowed?
 		
-		application_fee = (charge_amount.to_i * 2 / 100).to_i
+		application_fee = if payment_application_fee_percentage
+			(charge_amount.to_i * payment_application_fee_percentage / 100).to_i
+		else
+			nil
+		end
 		
 		stripe_customer = customer.stripe_customer
 		access_token = provider.stripe_info.access_token

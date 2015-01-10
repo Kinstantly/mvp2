@@ -70,7 +70,7 @@ class StripeCharge < ActiveRecord::Base
 		
 		refund_arguments = {
 			amount:                 refund_amount,
-			refund_application_fee: true
+			refund_application_fee: application_fee.try(:>, 0).present?
 		}
 		refund_arguments.merge! reason: refund_reason if refund_reason.present?
 		access_token = customer_file.try(:stripe_info).try(:access_token)
