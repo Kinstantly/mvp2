@@ -37,6 +37,22 @@ ActiveRecord::Schema.define(:version => 20141220094951) do
 
   add_index "age_ranges_profiles", ["profile_id"], :name => "index_age_ranges_profiles_on_profile_id"
 
+  create_table "announcements", :force => true do |t|
+    t.integer  "profile_id"
+    t.string   "type"
+    t.integer  "position"
+    t.integer  "icon"
+    t.string   "headline"
+    t.string   "body"
+    t.string   "button_or_link_text"
+    t.string   "button_or_link_url"
+    t.date     "date_start"
+    t.date     "date_end"
+    t.boolean  "active",              :default => false, :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+  end
+
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.datetime "created_at",                          :null => false
@@ -253,6 +269,7 @@ ActiveRecord::Schema.define(:version => 20141220094951) do
     t.text     "search_widget_code"
     t.boolean  "show_stripe_connect",            :default => false
     t.boolean  "allow_charge_authorizations",    :default => false
+    t.integer  "announcements_count",            :default => 0,         :null => false
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"

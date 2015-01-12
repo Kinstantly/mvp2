@@ -1,0 +1,72 @@
+- formlet_index ||= i
+- formlet = "announcement_#{formlet_index}"
+- announcement ||= display_announcement
+
+.formlet{id: "#{formlet}"}
+	%aside.editable
+		- if display_announcement.new_record?
+			Create a new announcement on your profile
+		- else
+			.ui-widget.ui-widget-content.ui-corner-all{style: 'padding:5px;margin:10px 10px 10px 0'}
+				%h3{style: 'line-height: 28px;font-weight:bold'}
+					%span.ui-state-default{style: 'padding:5px;margin-right:8px'}
+						= "Icon #{display_announcement.icon}"
+					= display_announcement.headline
+				%p{style: 'padding:3px 10px'}= display_announcement.body
+				%button.ui-button.ui-widget.ui-state-default.ui-button-text-only.ui-corner-all{style: 'display:block;margin:10px auto 3px'}
+					%span.ui-button-text
+						= link_to display_announcement.button_or_link_text, display_announcement.button_or_link_url, target: '_blank'
+		.edit.popover
+			= nested_form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+				%h3.form_section Promotional space
+				- if announcement.changed? && announcement.errors.any?
+					= f.error_messages
+				= hidden_field_tag 'formlet', "announcements"
+				= hidden_field_tag 'child_formlet', formlet
+				= f.fields_for "profile_announcements_attributes[#{i}]", announcement do |af|
+					= af.hidden_field :id
+					.position_field.text_field
+						= af.label :position
+						= af.select :position, announcement_positions(announcements_total, i)
+					.radio_button_set{id: "radio_button_set_#{i}"}
+						= af.label :icon
+						%br
+						= af.radio_button :icon, '1', id: "icon_1_#{i}"
+						= label_tag "icon_1_#{i}", "Icon 1"
+						
+						= af.radio_button :icon, '2', id: "icon_2_#{i}"
+						= label_tag "icon_2_#{i}", "Icon 2"
+						
+						= af.radio_button :icon, '3', id: "icon_3_#{i}"
+						= label_tag "icon_3_#{i}", "Icon 3"
+						
+						= af.radio_button :icon, '4', id: "icon_4_#{i}"
+						= label_tag "icon_4_#{i}", "Icon 4"
+						
+					.text_field.countable{'data-i' => "headline"}
+						%span.char_count
+						= af.label :headline
+						= af.text_field :headline
+					.text_field.countable{'data-i' => "body"}
+						%span.char_count
+						= af.label :body
+						= af.text_area :body, size: '45x5', class: 'attr'
+					.text_field.countable{'data-i' => "button_or_link_text"}
+						%span.char_count
+						= af.label :button_or_link_text
+						= af.text_field :button_or_link_text
+					.text_field
+						= af.label :button_or_link_url
+						= af.text_field :button_or_link_url
+					.date_field
+						%label Date range
+						%br
+						= af.label :date_start
+						= af.text_field :date_start, placeholder: announcement_date_start_default()
+						= af.label :date_end
+						= af.text_field :date_end, placeholder: announcement_date_end_default()
+					
+					= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+					= af.link_to_remove t('views.announcenemts.edit.remove')
+					= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
+

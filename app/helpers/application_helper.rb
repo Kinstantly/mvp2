@@ -297,9 +297,13 @@ module ApplicationHelper
 
 		if btn_image && btn_title
 			content_tag :a, :href => profile_path, :target => '_blank' do
-	    		image_tag url, size: "170x81", alt: btn_title, title: btn_title
-    		end
-    	end
+				image_tag url, size: "170x81", alt: btn_title, title: btn_title
+			end
+		end
+	end
+	
+	def allowed_for_prerelease?
+		Rails.env != 'production' || current_user.try(:profile_editor?)
 	end
 	
 end

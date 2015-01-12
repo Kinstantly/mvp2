@@ -14,5 +14,11 @@
 		formlet = $('##{@formlet}').html('#{escape_javascript(render partial: @formlet+'_formlet')}');
 		my_vars.f.place_formlet(formlet);
 		my_vars.f.configure_formlet(formlet);
+		- if @child_formlet && !@update_succeeded
+			-# Re-open child formlet if update failed
+			child_formlet = formlet.find('##{@child_formlet}')
+			child_formlet.addClass('active');
+			my_vars.f.place_formlet(child_formlet);
+			
 	-# Fix text field placeholders for IE if any.
 	my_vars.f.text_field_placeholders($('##{@formlet}'));

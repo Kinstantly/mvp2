@@ -1,0 +1,42 @@
+- new_announcement_to_display = ProfileAnnouncement.new
+- saved_announcements = @profile.errorfree.profile_announcements.order(:position, :updated_at)
+- saved_announcements_total = saved_announcements.length
+- unsaved_announcements_total = @profile.profile_announcements.length
+- new_announcement_to_edit = (unsaved_announcements_total == saved_announcements_total) ? new_announcement_to_display : @profile.profile_announcements.try(:[], saved_announcements_total)
+
+- # Create new announcement
+= render partial: 'announcements_form', locals: {display_announcement: new_announcement_to_display, announcement: new_announcement_to_edit, announcements_total: saved_announcements_total, formlet_index: 'new', i: saved_announcements_total}
+
+- # Loop through existing announcements
+- saved_announcements.each_with_index do |display_announcement, i|
+	- announcement = @profile.find_profile_announcement(display_announcement.id)
+	= render partial: 'announcements_form', locals: {display_announcement: display_announcement, announcement: announcement, announcements_total: saved_announcements_total, i: i} if announcement
+
+:javascript
+	my_vars.edit_announcement = my_vars.edit_announcemet || {};
+	my_vars.edit_announcement.max_lengths = #{ProfileAnnouncement::MAX_LENGTHS.to_json};
+
+:coffeescript
+	$.datepicker.setDefaults({dateFormat: 'yy-mm-dd'});
+	$('.remove_nested_fields').on 'click', () ->
+		ac_delete = window.confirm("Are you sure you want to remove this announcement?")
+		if(ac_delete)
+			$(this).prev('[id$=_destroy]').val(true);
+			$(this).parent('form').submit();		
+			true
+		else
+			false
+
+	# Show character count while filling in field.
+	setup_note_counter = (field) ->
+		field.find('input, textarea').simplyCountable({
+			counter: field.find('.char_count'),
+			maxCount: my_vars.edit_announcement.max_lengths[field.attr('data-i')]
+		})
+	
+	$ ->
+		$('.date_field input').datepicker();
+
+		$('[id^=radio_button_set_]').buttonset();
+
+		$('.countable').each -> setup_note_counter $(this)

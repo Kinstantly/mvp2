@@ -14,7 +14,7 @@ class Profile < ActiveRecord::Base
 	
 	DEFAULT_ACCESSIBLE_ATTRIBUTES = [
 		:first_name, :last_name, :middle_name, :credentials, :email, 
-		:company_name, :url, :locations_attributes, :reviews_attributes, 
+		:company_name, :url, :locations_attributes, :reviews_attributes, :profile_announcements_attributes, 
 		:headline, :education, :certifications, :year_started, 
 		:languages, :insurance_accepted, :summary, 
 		:category_ids, :subcategory_ids, :service_ids, :specialty_ids, :specialty_names,
@@ -73,6 +73,10 @@ class Profile < ActiveRecord::Base
 	
 	has_many :email_deliveries
 	has_many :contact_blockers, through: :email_deliveries
+
+	has_many :announcements
+	has_many :profile_announcements, dependent: :destroy
+	accepts_nested_attributes_for :profile_announcements, allow_destroy: true, limit: 100
 
 	has_attached_file :profile_photo,
 					:styles => {
@@ -408,7 +412,7 @@ class Profile < ActiveRecord::Base
 	def require_location
 		locations.build if locations.blank?
 	end
-	
+
 	def display_name
 		name = join_present_attrs ' ', :first_name, :middle_name, :last_name
 		name += ", #{credentials}" if credentials.present?
@@ -596,6 +600,10 @@ class Profile < ActiveRecord::Base
 	# Return this profile's provider (user) if the provider is configured to accept payments.
 	def payable_provider
 		user.try(:is_payable?) ? user : nil
+	end
+
+	def find_profile_announcement(id)
+		profile_announcements.detect{|a| a.id == id}
 	end
 	
 	private

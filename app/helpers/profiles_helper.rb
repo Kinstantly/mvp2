@@ -710,4 +710,25 @@ Founder and CEO
 	def claim_profile_link
 		link_to t('views.profile.view.claim_profile_link'), '#', id: 'claim_profile_link', class: 'claim_profile_link'
 	end
+
+	def announcement_positions(current_announcements_total=0, announcement_index=0)
+		adding_new_announcement = current_announcements_total == announcement_index
+		min = 1
+		max = adding_new_announcement ? current_announcements_total + 1 : current_announcements_total
+		positions = min..max
+		if announcement_index.blank?
+			positions.map { |i| [i.ordinalize, i] }
+		else
+			options_for_select(positions.map { |i| [i.ordinalize, i] }, announcement_index + 1)
+		end
+	end
+	
+	def announcement_date_start_default()
+		Date.today
+	end
+	
+	def announcement_date_end_default()
+		(Date.today + 2.weeks).to_date
+	end
+
 end

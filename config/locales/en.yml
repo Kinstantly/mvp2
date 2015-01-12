@@ -257,6 +257,17 @@ en:
         parent_marketing_emails: 'Send me occasional deals and offers from Kinstantly and Kinstantly partners.'
         provider_newsletters: 'Send me occasional newsletters with tips for growing my business, marketing my skills, and connecting with parents in the smartest, easiest ways.'
         provider_marketing_emails: 'Send me occasional deals and offers from Kinstantly and Kinstantly partners.'
+      announcement:
+        icon: "Select an icon"
+        headline: "Headline"
+        body: "Text area"
+        date_start: "From"
+        date_end: "To"
+      profile_announcement:
+        button_or_link_text: "Button text"
+        button_or_link_url: "Button URL"
+      search_announcement:
+        button_or_link_text: "Search results link text"
     errors:
       messages:
         invalid_phone_number: '^Phone number must be valid and properly formatted, e.g., "800-555-0199 x47"'
@@ -309,6 +320,9 @@ en:
     removing: 'Removing'
     save: 'Save'
     saving: 'Saving'
+    announcenemts:
+      edit:
+        remove: 'Remove'
     category:
       name: 'Category'
       edit:

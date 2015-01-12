@@ -116,6 +116,7 @@ class ProfilesController < ApplicationController
 			set_flash_message :alert, :update_error
 		else
 			@refresh_formlets = params[:refresh_formlets]
+			@child_formlet = params[:child_formlet]
 			@update_succeeded = @profile.update_attributes(params[:profile])
 		end
 		respond_with @profile, layout: false
