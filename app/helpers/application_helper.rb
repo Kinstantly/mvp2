@@ -303,7 +303,7 @@ module ApplicationHelper
 	end
 	
 	def allowed_for_prerelease?
-		Rails.env != 'production' || current_user.try(:profile_editor?)
+		Rails.env != 'production' || current_user.try(:profile_editor?).present?
 	end
 	
 end

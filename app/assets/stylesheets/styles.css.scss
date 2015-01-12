@@ -723,6 +723,9 @@
 				@include scale(margin, 13 0, 12);
 			}
 		}
+		section.announcements {
+			@include scale(margin-bottom, 30, 14);
+		}
 		.reviews-list {
 			font-size: 0.875em;
 			line-height: 1.5em;
