@@ -569,6 +569,13 @@ class Profile < ActiveRecord::Base
 	def displayable_sorted_locations
 		sorted_locations.select { |location| location.display_address.present? }
 	end
+	
+	alias :sorted_locations_with_addresses :displayable_sorted_locations
+	
+	# Return all of the sorted locations that have a phone number.
+	def sorted_locations_with_phones
+		sorted_locations.select { |location| location.phone.present? }
+	end
 
 	# Returns an array with the map of all predefined categories and this profiles categories to their associated services, followed by a hash of ID to name of the same services.
 	def categories_services_info

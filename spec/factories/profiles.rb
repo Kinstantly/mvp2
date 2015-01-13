@@ -40,6 +40,10 @@ FactoryGirl.define do
 			factory :profile_allowed_charge_authorizations do
 				allow_charge_authorizations true
 			end
+			
+			factory :profile_showing_stripe_connect do
+				show_stripe_connect true
+			end
 		end
 		
 		factory :unpublished_profile do

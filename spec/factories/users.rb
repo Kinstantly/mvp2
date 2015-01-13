@@ -53,6 +53,10 @@ FactoryGirl.define do
 					email 'FactoryEmailSecondPayableProvider@example.com'
 				end
 			end
+			
+			factory :provider_before_payment_setup do
+				association :profile, factory: :profile_showing_stripe_connect
+			end
 		end
 		
 		factory :admin_user do

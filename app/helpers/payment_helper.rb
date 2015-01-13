@@ -44,18 +44,23 @@ module PaymentHelper
 				parameters['stripe_user[business_name]'] = profile.company_name if profile.company_name.present?
 				parameters['stripe_user[first_name]'] = profile.first_name if profile.first_name.present?
 				parameters['stripe_user[last_name]'] = profile.last_name if profile.last_name.present?
-				if (location = profile.locations.first)
+				if (location = profile.sorted_locations_with_addresses.first)
 					parameters['stripe_user[street_address]'] = location.street_address if location.street_address.present?
 					parameters['stripe_user[city]'] = location.city if location.city.present?
 					parameters['stripe_user[state]'] = location.region if location.region.present?
 					parameters['stripe_user[zip]'] = location.postal_code if location.postal_code.present?
 					parameters['stripe_user[country]'] = location.country if location.country.present?
-					if (phone = location.phone.presence) && (parsed_phone = Phonie::Phone.parse(phone))
-						parameters['stripe_user[phone_number]'] = parsed_phone.format('%a%f%l')
-					end
+				end
+				phone = profile.sorted_locations_with_phones.first.try(:phone)
+				if phone.present? && (parsed_phone = Phonie::Phone.parse(phone))
+					parameters['stripe_user[phone_number]'] = parsed_phone.format('%a%f%l')
 				end
 			end
 		end
 		user_omniauth_authorize_path :stripe_connect, parameters
+	end
+	
+	def stripe_dashboard_url
+		'https://dashboard.stripe.com/'
 	end
 end

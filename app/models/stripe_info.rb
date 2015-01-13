@@ -14,7 +14,12 @@ class StripeInfo < ActiveRecord::Base
 		self.stripe_user_id = auth_values.try(:[], :uid)
 		self.access_token = auth_values.try(:[], :credentials).try(:[], :token)
 		self.publishable_key = auth_values.try(:[], :extra).try(:[], :raw_info).try(:[], :stripe_publishable_key)
-		save
+		if save
+			welcome_provider
+			true
+		else
+			false
+		end
 	end
 	
 	private
@@ -22,5 +27,10 @@ class StripeInfo < ActiveRecord::Base
 	# Touch profile to invalidate fragment cache(s) in case we need to update payment info on the profile page.
 	def touch_profile
 		user.try(:profile).try(:touch)
+	end
+	
+	# Welcome the newly connected provider.
+	def welcome_provider
+		StripeConnectMailer.welcome_provider(user).deliver
 	end
 end
