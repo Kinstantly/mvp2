@@ -26,4 +26,37 @@ describe StripeInfo, payments: true do
 		StripeConnectMailer.should_receive(:welcome_provider).and_return(double('Mail::Message').as_null_object)
 		stripe_info.configure_authorization(omniauth_values)
 	end
+	
+	context "using the Stripe API" do
+		let(:stripe_account) {
+			{
+				details_submitted: true,
+				transfer_enabled:  true,
+				charge_enabled:    true
+			}
+		}
+		let(:stripe_account_pending_verification) {
+			{
+				details_submitted: false,
+				transfer_enabled:  false,
+				charge_enabled:    false
+			}
+		}
+	
+		it "needs more verification" do
+			Stripe::Account.stub(:retrieve).with(any_args) do
+				stripe_account_pending_verification
+			end
+			
+			stripe_info.should_not be_fully_enabled
+		end
+	
+		it "is fully enabled" do
+			Stripe::Account.stub(:retrieve).with(any_args) do
+				stripe_account
+			end
+			
+			stripe_info.should be_fully_enabled
+		end
+	end
 end

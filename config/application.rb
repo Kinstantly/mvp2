@@ -30,7 +30,8 @@ module Mvp2
       publishable_key:    ENV['STRIPE_PUBLISHABLE_KEY'].presence || 'pk_test_9m9Wy7Yc81OU2NZxELrPVbch',
       secret_key:         ENV['STRIPE_SECRET_KEY'].presence || 'sk_test_AAv7llm8N32E7HErvRqgvjm6',
       connect_client_id:  ENV['STRIPE_CONNECT_CLIENT_ID'].presence || 'ca_4aJhcyjprTFSJzhMA0NmuzWUIJiznZAb',
-      live_mode:          ENV['STRIPE_LIVE_MODE'].present?
+      live_mode:          ENV['STRIPE_LIVE_MODE'].present?,
+      dashboard_url:      'https://dashboard.stripe.com/'
     }
     
     # Payment configuration that is not gateway dependent.

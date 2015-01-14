@@ -59,8 +59,4 @@ module PaymentHelper
 		end
 		user_omniauth_authorize_path :stripe_connect, parameters
 	end
-	
-	def stripe_dashboard_url
-		'https://dashboard.stripe.com/'
-	end
 end

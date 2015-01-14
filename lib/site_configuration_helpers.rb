@@ -11,6 +11,10 @@ module SiteConfigurationHelpers
 		def stripe_live_mode?
 			Rails.configuration.stripe[:live_mode]
 		end
+	
+		def stripe_dashboard_url
+			Rails.configuration.stripe[:dashboard_url]
+		end
 		
 		def cloudfront_domain_name
 			Rails.configuration.cloudfront_domain_name
@@ -36,6 +40,10 @@ module SiteConfigurationHelpers
 		
 		def stripe_live_mode?
 			Rails.configuration.stripe[:live_mode]
+		end
+	
+		def stripe_dashboard_url
+			Rails.configuration.stripe[:dashboard_url]
 		end
 		
 		def cloudfront_domain_name

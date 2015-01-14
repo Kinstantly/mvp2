@@ -14,12 +14,28 @@ class StripeInfo < ActiveRecord::Base
 		self.stripe_user_id = auth_values.try(:[], :uid)
 		self.access_token = auth_values.try(:[], :credentials).try(:[], :token)
 		self.publishable_key = auth_values.try(:[], :extra).try(:[], :raw_info).try(:[], :stripe_publishable_key)
+		@stripe_account = nil
 		if save
 			welcome_provider
 			true
 		else
 			false
 		end
+	end
+	
+	# Returns true if the associated Stripe account is fully enabled.
+	# The account should only be fully enabled if no further verification is required.
+	def fully_enabled?
+		if stripe_account
+			@stripe_account[:details_submitted] && @stripe_account[:transfer_enabled] && @stripe_account[:charge_enabled]
+		else
+			false
+		end
+	end
+	
+	# Returns the associated Stripe::Account object.
+	def stripe_account
+		@stripe_account ||= Stripe::Account.retrieve access_token
 	end
 	
 	private
