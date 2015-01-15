@@ -97,6 +97,9 @@ class Customer < ActiveRecord::Base
 		customer_file.authorized_amount_increment_usd = options[:amount_increment] if options[:amount_increment].present?
 		customer_file.save!
 		
+		# Notify the customer.
+		customer_file.confirm_authorized_amount if customer_file.authorized
+		
 		true
 	rescue Stripe::CardError, Payment::ChargeAuthorizationError => error
 		errors.add :base, error.message

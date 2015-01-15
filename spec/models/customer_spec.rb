@@ -101,6 +101,13 @@ describe Customer, payments: true do
 			customer.save_with_authorization authorization
 			customer.stripe_customer.should have_at_least(1).stripe_card
 		end
+		
+		it "should send confirmation to the new customer" do
+			message = double('Mail::Message')
+			message.should_receive :deliver
+			CustomerMailer.should_receive(:confirm_authorized_amount).and_return(message)
+			customer.save_with_authorization authorization
+		end
 	end
 	
 	context "Without valid Stripe API keys" do

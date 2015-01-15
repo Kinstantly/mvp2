@@ -1,0 +1,34 @@
+= "Hi #{@user.username.presence || 'there'},"
+%br
+%br
+%b You have authorized payments to
+= link_to @provider_profile.company_otherwise_display_name, profile_url(@provider_profile)
+%b= "not to exceed a total of #{display_currency_amount @customer_file.authorized_amount_usd}."
+%br
+%br
+%b Charges will be made to the following card:
+%br
+= display_payment_card_summary @customer_file.stripe_card
+%br
+%br
+= link_to 'Click here', authorize_payment_url(@provider_profile)
+= "to modify your total authorized amount for #{@provider_profile.company_otherwise_display_name}."
+%br
+%br
+= link_to 'Click here', customer_url(@customer_file.customer)
+to manage your payments.
+%br
+%br
+If you have questions about particular charges, please contact your provider directly.
+- if @provider_profile.email.present?
+	%b We have the following email address for your provider:
+	= mail_to @provider_profile.email
+%br
+%br
+Please don't hesitate to shoot us an email if you need help or have any other questions. Just reply to this email.
+%br
+%br
+Thank you.
+%br
+%br
+&ndash; The Kinstantly Team

@@ -140,6 +140,10 @@ class CustomerFile < ActiveRecord::Base
 		provider.try(:profile).try(:company_otherwise_display_name)
 	end
 	
+	def confirm_authorized_amount
+		CustomerMailer.confirm_authorized_amount(self).deliver
+	end
+	
 	private
 	
 	# Use this boolean method to determine whether the charge_amount can be collected.

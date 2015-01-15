@@ -23,7 +23,9 @@ describe StripeInfo, payments: true do
 	end
 	
 	it "sends a welcome email to a newly connected provider" do
-		StripeConnectMailer.should_receive(:welcome_provider).and_return(double('Mail::Message').as_null_object)
+		message = double('Mail::Message')
+		message.should_receive :deliver
+		StripeConnectMailer.should_receive(:welcome_provider).and_return(message)
 		stripe_info.configure_authorization(omniauth_values)
 	end
 	
