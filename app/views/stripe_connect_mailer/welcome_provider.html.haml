@@ -1,17 +1,17 @@
 = "Hi #{@profile.first_name.presence || 'there'},"
 %br
 %br
-%b You can invite your clients to pay you online by sending them the following link:
-%br
-= link_to about_payments_profile_url(@profile), about_payments_profile_url(@profile)
-%br
-%br
 :plain
 	<b>After at least one of your clients signs up for online payments, you can initiate payments </b><a href="#{customer_files_url}">here</a>.
 %br
 %br
 :plain
 	You should be able to do all you need for payments <a href="#{customer_files_url}">here</a>, but in case you can't, <a href="#{stripe_dashboard_url}">click here</a> to access your Stripe account.
+%br
+%br
+%b You can invite your clients to pay you online by copying and pasting the following link into an email:
+%br
+= link_to about_payments_profile_url(@profile), about_payments_profile_url(@profile)
 %br
 %br
 Please don't hesitate to shoot us an email if you need help or have questions. Just reply to this email.
