@@ -49,4 +49,42 @@ describe CustomerMailer, payments: true do
 		end
 	end
 	
+	context "email confirmation for a revoked authorization by a parent" do
+		let(:customer_file) { FactoryGirl.create :second_customer_file, authorized: false }
+		let(:customer) { customer_file.customer }
+		let(:user) { customer.user }
+		let(:provider) { customer_file.provider }
+		let(:provider_email) { provider.email }
+		let(:provider_profile) { provider.profile }
+		
+		let(:email) { CustomerMailer.confirm_revoked_authorization customer_file }
+		
+		it "should be delivered to the customer" do
+			email.should deliver_to user.email
+		end
+		
+		it "should identify the provider" do
+			email.should have_body_text provider_profile.company_otherwise_display_name
+		end
+		
+		it "should have a link to the provider's profile" do
+			email.should have_body_text profile_url provider_profile
+		end
+		
+		it "should have a link to the payments page" do
+			email.should have_body_text customer_url customer
+		end
+		
+		it "should have a link to the authorization page" do
+			email.should have_body_text authorize_payment_url provider_profile
+		end
+		
+		it "should mention revocation in the subject" do
+			email.should have_subject /revoked/
+		end
+		
+		it "should mention revocation in the message body" do
+			email.should have_body_text "no longer has permission to charge your card"
+		end
+	end
 end

@@ -14,14 +14,14 @@ FactoryGirl.define do
 			customer_file.authorized_amount_usd = evaluator.authorized_amount_usd if evaluator.authorized_amount_usd.present?
 		end
 		
-		factory :second_customer_file do
-			association :provider, factory: :second_payable_provider
-			association :customer, factory: :second_customer_with_card
-		end
-		
 		after(:create) do |customer_file|
 			customer_file.stripe_card = customer_file.customer.stripe_customer.stripe_cards.first
 			customer_file.save
+		end
+		
+		factory :second_customer_file do
+			association :provider, factory: :second_payable_provider
+			association :customer, factory: :second_customer_with_card
 		end
 	end
 end

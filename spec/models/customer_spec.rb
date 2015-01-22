@@ -110,6 +110,33 @@ describe Customer, payments: true do
 		end
 	end
 	
+	context "revoke authorization" do
+		let(:customer_file_with_authorization) {
+			FactoryGirl.create :second_customer_file, authorized_amount: authorized_amount
+		}
+		let(:customer_with_authorization) { customer_file_with_authorization.customer }
+		let(:authorized_provider) { customer_file_with_authorization.provider }
+		let(:revocation) {
+			{
+				profile_id: authorized_provider.profile.id,
+				authorized: false
+			}
+		}
+		
+		it "should revoke authorization for the provider" do
+			expect {
+				customer_with_authorization.save_with_authorization revocation
+			}.to change{ customer_file_with_authorization.reload.authorized }.from(true).to(false)
+		end
+		
+		it "should send confirmation of the revoked authorization" do
+			message = double('Mail::Message')
+			message.should_receive :deliver
+			CustomerMailer.should_receive(:confirm_revoked_authorization).and_return(message)
+			customer_with_authorization.save_with_authorization revocation
+		end
+	end
+	
 	context "Without valid Stripe API keys" do
 		before(:each) do
 			Stripe::Customer.stub(:create).and_raise(Stripe::AuthenticationError)

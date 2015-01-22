@@ -92,13 +92,17 @@ class Customer < ActiveRecord::Base
 		# Note: customer_file was created by save because provider was added via the 'has_many through' association.
 		customer_file = customer_files.for_provider(provider)
 		customer_file.stripe_card = stripe_card if stripe_card
-		customer_file.authorized = options[:authorized] if options[:authorized].present?
+		customer_file.authorized = options[:authorized] unless options[:authorized].nil? # Boolean value.
 		customer_file.authorized_amount_usd = options[:amount] if options[:amount].present?
 		customer_file.authorized_amount_increment_usd = options[:amount_increment] if options[:amount_increment].present?
 		customer_file.save!
 		
 		# Notify the customer.
-		customer_file.confirm_authorized_amount if customer_file.authorized
+		if customer_file.authorized
+			customer_file.confirm_authorized_amount
+		elsif not options[:authorized].nil?
+			customer_file.confirm_revoked_authorization
+		end
 		
 		true
 	rescue Stripe::CardError, Payment::ChargeAuthorizationError => error

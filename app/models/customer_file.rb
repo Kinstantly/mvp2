@@ -144,6 +144,10 @@ class CustomerFile < ActiveRecord::Base
 		CustomerMailer.confirm_authorized_amount(self).deliver
 	end
 	
+	def confirm_revoked_authorization
+		CustomerMailer.confirm_revoked_authorization(self).deliver
+	end
+	
 	private
 	
 	# Use this boolean method to determine whether the charge_amount can be collected.

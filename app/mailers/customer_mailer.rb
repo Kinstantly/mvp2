@@ -15,4 +15,14 @@ class CustomerMailer < ActionMailer::Base
 		subject = "You have authorized payments via Kinstantly"
 		mail to: @user.email, subject: subject
 	end
+	
+	def confirm_revoked_authorization(customer_file)
+		@customer_file = customer_file
+		@user = customer_file.customer.user
+		@provider_profile = customer_file.provider.profile
+		sendgrid_category :confirm_revoked_authorization
+		@show_logo = true
+		subject = "You have revoked authorization of payments"
+		mail to: @user.email, subject: subject
+	end
 end
