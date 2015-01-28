@@ -58,16 +58,20 @@
 		position = $("select#position_to_preview_" + i_num).val()
 		if(position == '0')
 			announcement = $('#preview-area-' + i_num + ' section.announcements a')
-			if(position_changed)
+			if position_changed
 				second_announcement = $('#preview-area-' + i_num + ' aside.more.announcements')
-				second_announcement.attr('class', announcement.attr('class') + " more announcements")
+				second_announcement.attr('class', icon + " more announcements")
 				second_announcement.find('a').text(announcement.text())
+				if announcement.text().trim() == ''
+					second_announcement.hide()
 			announcement.text(link_text).attr('class', icon)
 		else
 			announcement = $('#preview-area-' + i_num + ' aside.more.announcements')
-			if(position_changed)
+			if position_changed
 				second_announcement = $('#preview-area-' + i_num + ' section.announcements a')
-				second_announcement.text(announcement.text()).attr('class', announcement.attr('class'))
+				second_announcement.text(announcement.text()).attr('class', icon)
+				if announcement.text().trim() == ''
+					second_announcement.hide()
 			announcement.attr('class', icon + ' more announcements')
 			announcement.find('a').text(link_text)
 

@@ -42,7 +42,7 @@ class Announcement < ActiveRecord::Base
 
 	def set_active_status
 	    now = DateTime.now
-	    self.active = (now <= end_at && now > start_at) unless start_at.blank? || end_at.blank?
+	    self.active = (start_at <= now && end_at >= now) unless start_at.blank? || end_at.blank?
 	    true
 	end
 

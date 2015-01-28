@@ -3,7 +3,7 @@ namespace :announcements do
 	task :update_active_status => :environment do
 		Announcement.all.each do |announcement|
 			now = DateTime.now
-			if announcement.start_at.present? && announcement.start_at <= now && announcement.end_at.present? && announcement.end_at > now
+			if announcement.start_at.present? && announcement.start_at <= now && announcement.end_at.present? && announcement.end_at >= now
 				announcement.active = true
 			else
 				announcement.active = false

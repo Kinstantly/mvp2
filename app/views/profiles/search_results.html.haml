@@ -25,8 +25,8 @@
 
 				- first_announcement = profile.profile_announcements.search_results_to_display.first
 				- second_announcement = profile.profile_announcements.search_results_to_display.second
-				- center_announcement = first_announcement.try(:search_result_position) == 1 ?  second_announcement : first_announcement
-				- upper_right_announcement = first_announcement.try(:search_result_position) == 1 ? first_announcement : second_announcement
+				- center_announcement = get_center_announcement(first_announcement, second_announcement)
+				- upper_right_announcement = get_upper_right_announcement(first_announcement, second_announcement)
 
 				- cache ['search_result', profile] do
 					%li.result{id: "result#{profile_id}", "data-profile-id" => profile_id}

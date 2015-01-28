@@ -723,15 +723,31 @@ Founder and CEO
 		end
 	end
 
-	def search_result_positions(first_announcement_position=0, is_first_announcement=false)
+	def search_result_positions(first_announcement_position=0, is_first_announcement=true)
 		positions = [['center', 0] , ['upper right', 1]]
 		selected_position = 0
-		if(is_first_announcement)
+		if is_first_announcement
 			selected_position = first_announcement_position
 		else
 			selected_position = (first_announcement_position == 1) ? 0 : 1
 		end
 		options_for_select(positions, selected_position)
+	end
+
+	def get_center_announcement(display_announcement, second_display_announcement, order_changed=false)
+		if order_changed && second_display_announcement.present?
+			second_display_announcement.search_result_position == 1 ? display_announcement : second_display_announcement
+		elsif display_announcement.present? 
+			display_announcement.search_result_position == 1 ? second_display_announcement : display_announcement
+		end
+	end
+
+	def get_upper_right_announcement(display_announcement, second_display_announcement, order_changed=false)
+		if order_changed && second_display_announcement.present?
+			second_display_announcement.search_result_position == 1 ? second_display_announcement : display_announcement
+		elsif display_announcement.present? 
+			display_announcement.search_result_position == 1 ? display_announcement : second_display_announcement
+		end
 	end
 	
 	def announcement_button(button_text, button_url)
