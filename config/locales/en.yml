@@ -147,6 +147,9 @@ en:
       specialty_names:
         too_long: '^The name of each specialty must have no more than %{max} characters.'
       claimed: 'is already claimed. You cannot send an invitation.'
+    announcement:
+      end_at:
+        end_before_start_error: "is invalid. End date before start date?"
   activerecord:
     attributes:
       category:
@@ -261,13 +264,20 @@ en:
         icon: "Select an icon"
         headline: "Headline"
         body: "Text area"
-        date_start: "From"
-        date_end: "To"
+        button_text: "Button text"
+        button_url: "Button URL"
+        start_at: "From"
+        end_at: "To"
       profile_announcement:
-        button_or_link_text: "Button text"
-        button_or_link_url: "Button URL"
-      search_announcement:
-        button_or_link_text: "Search results link text"
+        search_result_position: "Position"
+      profile_announcements:
+        icon: "Icon"
+        headline: "Headline"
+        body: "Announcement Text"
+        button_text: "Button text"
+        button_url: "Button URL"
+        start_at: "Start date"
+        end_at: "End date"
     errors:
       messages:
         invalid_phone_number: '^Phone number must be valid and properly formatted, e.g., "800-555-0199 x47"'

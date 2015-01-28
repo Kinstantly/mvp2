@@ -129,6 +129,12 @@
 				- if @profile.widget_code.present?
 					-# .ui-helper-clearfix
 					.promo_container= raw @profile.widget_code
+			- profile_announcements = @profile.profile_announcements.active.order(:position, "updated_at DESC")
+			- profile_announcements.each do |announcement|
+				%section.announcement-area{class: "#{announcement_icon_class(announcement.icon)}"}
+					%h3.announcement-title= announcement.headline
+					%p= announcement.body
+					= announcement_button announcement.button_text, announcement.button_url
 		-# Cache the entire reviews section so we do not have to read nested reviewer caches unless necessary.
 		- ordered_reviews = @profile.reviews.order_by_descending_created_at
 		- cache ['profile_reviews', @profile]+ordered_reviews.map(&:reviewer).uniq do

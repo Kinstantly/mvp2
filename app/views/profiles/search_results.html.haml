@@ -22,43 +22,56 @@
 				- displayable_locations = profile.displayable_sorted_locations
 				- locations_array[profile_id]['locations'] = displayable_locations
 				- locations_count += displayable_locations.count
+
+				- first_announcement = profile.profile_announcements.search_results_to_display.first
+				- second_announcement = profile.profile_announcements.search_results_to_display.second
+				- center_announcement = first_announcement.try(:search_result_position) == 1 ?  second_announcement : first_announcement
+				- upper_right_announcement = first_announcement.try(:search_result_position) == 1 ? first_announcement : second_announcement
+
 				- cache ['search_result', profile] do
 					%li.result{id: "result#{profile_id}", "data-profile-id" => profile_id}
 						%aside.photo
 							= image_tag profile.profile_photo.url(:medium), onclick: "document.location='#{profile_path(profile)}'", alt: "#{profile.company_otherwise_display_name}", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
 							.fb-like{"data-action" => "like", "data-href" => "#{profile_url profile}", "data-layout" => "box_count", "data-share" => "true", "data-show-faces" => "false"}
-						%header.result-title
-							%h2
-								= profile_company_otherwise_display_name_link profile
-							%aside.more
-								= link_to t('views.search_results.more'), profile_path(profile)
-							.ratings-section
-								= render partial: 'profiles/rating_score', locals: {profile: profile}
-						%section.description
-							- if profile.display_name_presentable? && profile.company_name.present?
-								%h3=profile.display_name
-							- if profile.headline.present?
-								%h4= profile.headline
-							%p
-								- if profile.ages_stages_note.present?
-									%span.meta.ages
-										%strong Ages:
-										= profile_display_truncated profile.ages_stages_note, length: 150
-								%span.meta.specialties
-									%strong Specialties:
-									= search_result_specialties_truncated profile, length: 700
-							- if (location_count = displayable_locations.count) > 0
-								%p.address
-									- first_location = displayable_locations.first
-									= link_to first_location.display_address, "javascript:void(0)", class: "location", "data-latitude" => first_location.latitude, "data-longitude" => first_location.longitude, target: "_blank"
-									- if location_count > 1
-										= link_to t('views.location.view.more.how_many', count: (location_count - 1)), "javascript:void(0)", class: "more", onclick: "my_vars.f.toggle_more_locations(this)"
-										%span.other-locations-slider{style: "display:none"}
-											- displayable_locations.each_with_index do |location, n|
-												-if location != first_location
-													= link_to location.try(:display_address), "javascript:void(0)", class: "location", "data-latitude" => location.latitude, "data-longitude" => location.longitude, target: "_blank"
-							- if profile.search_widget_code.present?
-								= raw profile.search_widget_code
+						%article.result-profile
+							%header.result-title
+								%h2
+									= profile_company_otherwise_display_name_link profile
+								%aside.more
+									= link_to t('views.search_results.more'), profile_path(profile)
+								- if upper_right_announcement.present?
+									%aside.more{class: "#{announcement_icon_class(upper_right_announcement.icon)}"}
+										= link_to upper_right_announcement.search_result_link_text, profile_path(profile)
+								.ratings-section
+									= render partial: 'profiles/rating_score', locals: {profile: profile}
+							%section.description
+								- if profile.display_name_presentable? && profile.company_name.present?
+									%h3=profile.display_name
+								- if profile.headline.present?
+									%h4= profile.headline
+								%p
+									- if profile.ages_stages_note.present?
+										%span.meta.ages
+											%strong Ages:
+											= profile_display_truncated profile.ages_stages_note, length: 150
+									%span.meta.specialties
+										%strong Specialties:
+										= search_result_specialties_truncated profile, length: 700
+								- if (location_count = displayable_locations.count) > 0
+									%p.address
+										- first_location = displayable_locations.first
+										= link_to first_location.display_address, "javascript:void(0)", class: "location", "data-latitude" => first_location.latitude, "data-longitude" => first_location.longitude, target: "_blank"
+										- if location_count > 1
+											= link_to t('views.location.view.more.how_many', count: (location_count - 1)), "javascript:void(0)", class: "more", onclick: "my_vars.f.toggle_more_locations(this)"
+											%span.other-locations-slider{style: "display:none"}
+												- displayable_locations.each_with_index do |location, n|
+													-if location != first_location
+														= link_to location.try(:display_address), "javascript:void(0)", class: "location", "data-latitude" => location.latitude, "data-longitude" => location.longitude, target: "_blank"
+								- if profile.search_widget_code.present?
+									= raw profile.search_widget_code
+							- if center_announcement.present?
+								%section.announcements
+									= link_to center_announcement.search_result_link_text, profile_path(profile), {class: "#{announcement_icon_class(center_announcement.icon)}"}
 - if locations_count > 0
 	%section.results-map.right
 		.map-embed
