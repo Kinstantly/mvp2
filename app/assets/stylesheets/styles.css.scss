@@ -502,7 +502,7 @@
 			}
 		}
 		
-		.description {
+		.description:not(.search-result-preview-description) {
 			border-top: 1px solid $medium-gray;
 			@include scale(font-size, 14,16);
 			line-height: 1.5em;
@@ -541,7 +541,7 @@
 			line-height: 1.2em;
 			font-family: 'Myriad', Helvetica, Arial, sans-serif;
 			@extend %clearfix;
-			@include scale(margin-bottom, 26, 14);
+			@include scale(margin-bottom, 24, 14);
 			
 			&.no-map-box {
 				border-style: none;
@@ -680,51 +680,155 @@
 			@include scale(padding, 30 0, 14);
 			text-align: center;
 		}
-		.promo {
+		/* Updated 12/23 */
+		.announcement-area {
 			border: 1px solid $medium-gray;
-			@extend %clearfix;
-			@include scale(margin-bottom, 30, 14);
-		}
-		.schedule {
-			background: $light-gray;
-			border: 1px solid $medium-gray;
-			font-size: 0.75em;
-			@include scale(padding, 16,12);
+			font-size: 0.875em;
+			@include scale(padding, 16,14);
 			@extend %clearfix;
 			line-height: 1.5em;
 			@include scale(margin-bottom, 30, 14);
 			
-			.date-picker {
-				float: left;
-				margin-right: 4.6189376%;
-				width: 48.0369515%;
-				
-				@media (max-width: $break-8) {
-					width: 100%;
-					float: none;
-				}
-					img {
-						max-width: 100%;
-						
-						@media (max-width: $break-8) {
-							@include scale(margin-bottom, 16,14);
-						}
-					}
+			&:before {
+				content: "";
 			}
-			
-			h3 {
+			h3.section-header{
 				font-family: $header-font-stack;
-				@include scale(font-size, 18,12);
+				@include scale(font-size, 18,14);
+				@include scale(margin-bottom, 13,18)
+			}		
+			h3.announcement-title {
+				font-family: $header-font-stack;
+				@include scale(font-size, 18,14);
 				color: $blue;
 				@include scale(margin-bottom, 13,18);
 				font-weight: 700;
 			}
-			p {
-				@include scale(margin, 13 0, 12);
+			h3.announcement-title:before {
+				font-family: $icon-font-stack;
+				font-weight: normal;
+				color: $kinstantly_pink;
+				margin-right: .5em;
+				@include scale(font-size, 21,18);
+				-webkit-font-smoothing: antialiased !important;
 			}
-		}
-		section.announcements {
-			@include scale(margin-bottom, 30, 14);
+			p {
+				@include scale(margin, 13 0, 14);
+			}
+			.button {
+				@include default-button-style;
+				background: $kinstantly_pink;
+				@include scale(padding, 6,14);
+				width: auto;
+				float: right;
+				margin-right: 0;
+				&:hover {
+					background: lighten($kinstantly_pink, 10%);
+				}
+				
+			}
+			&.schedule h3.announcement-title:before {
+				content: "\f073";
+			}
+			&.deal h3.announcement-title:before {
+				content: "\f155";
+			}
+			&.video h3.announcement-title:before {
+				content: "\f03d";
+			}
+			&.announcement h3.announcement-title:before {
+				content: "\f0a1";
+			}
+			&.blog h3.announcement-title:before {
+				content: "\f0f6";
+			}
+			.editable {
+				margin-left: 0;
+			}
+			.radio_button_set.ui-buttonset label.icon {
+				width: calc(20% - 2px);
+				padding: 6px 0px 7px;
+				* {
+					display: none;
+				}
+				&:before {
+					font-family: $icon-font-stack;
+					font-weight: normal;
+					margin-right: .5em;
+					@include scale(font-size, 21,18);
+					-webkit-font-smoothing: antialiased !important;
+				}
+				&.schedule:before {
+					content: "\f073";
+				}
+				&.deal:before {
+					content: "\f155";
+				}
+				&.video:before {
+					content: "\f03d";
+				}
+				&.announcement:before {
+					content: "\f0a1";
+				}
+				&.blog:before {
+					content: "\f0f6";
+				}
+			}
+			.date_field input{
+				max-width: 8em;
+				overflow: hidden;
+				margin-left: .4em;
+				margin-right: 2em;
+				padding: 0.4em;
+				border: 1px solid #ccc;
+				box-shadow: inset 4px 4px 10px #E5E5E5;
+				text-align: center;
+
+				&:hover{
+					cursor: pointer;
+				}
+			}
+			.search-result-announcement-area{
+				@extend .ui-corner-all;
+				border: 1px solid #ccc;
+				background-color: #efefef;
+				margin-top: 2.15em;
+				padding: 1em;
+				
+				input{
+					max-width: 100%;
+					box-sizing: border-box;
+				}
+				> h4{
+					font-weight: bold;
+					line-height: 140%;
+				}
+				.text_field{
+					margin: 12px 0px 13px 0px;
+				}
+				.preview-area{
+					width: 100% !important;
+					@include box-sizing;
+					padding: 0.76em;
+					background-color: #fff;
+					.result .result-profile .result-title .more{
+						width: 25%;
+					}
+					li.result{
+						border: 0;
+						padding: 0;
+						margin: 0;
+					}
+				}
+			}
+			select{
+				max-width: 8.8em;
+				padding: .4em;
+				margin-left: .9em;
+			}
+			.save{
+				padding: 0.42857em;
+			}
 		}
 		.reviews-list {
 			font-size: 0.875em;
@@ -895,87 +999,157 @@
 					@include scale(margin-top, 3,14);
 				}
 			}
-			.result-title {
+			.result-profile {
 				width: 81.3380282%;
 				float: right;
+				@include scale(padding-bottom, 11,14);
 				
-				h2 {
-					font-family: $header-font-stack;
-					@include scale(font-size, 18,14);
-					color: $blue;
-					font-weight: 500;
-					line-height: 1.3em;
-					display: inline;
-				}
-				.more {
-					@include scale(font-size, 12,14);
-					display: block;
-					float: right;
-					@include scale(padding-top, 4,12);
-					@include scale(padding-left, 16,14);
+				.result-title {
+					@include scale(padding-bottom, 8,14);
 					
-					@media (max-width: $break-8) {
-						float: none;
-						padding-left: 0;
+					h2 {
+						font-family: $header-font-stack;
+						@include scale(font-size, 18,14);
+						color: $blue;
+						font-weight: 500;
+						line-height: 1.3em;
+						display: inline;
 					}
-				}
-				.ratings-section {
-					@include scale(font-size, 14,14);
-					@include scale(margin, 6 0 12 0, 14);
-					
-					.review-num {
-						@include scale(margin-top, -6,14);
-					}
-				}
-			}
-			.description {
-				width: 81.3380282%;
-				float: right;
-				
-				h3, h4 {
-					@include scale(font-size, 14,14);
-					line-height: 1.3em;
-				}
-				p {
-					@include scale(font-size, 12, 14);
-					line-height: 1.4em;
-					@include scale(margin, 5 0 9 0,12);
-					
-					> span {
-						display: block;
+					.more {
+						@include scale(font-size, 11,14);
+						@include scale(line-height, 11,11);
+						display: table;
+						float: right;
+						clear: right;
+						width: 19%;
+						@include scale(padding-top, 4,11);
+						@include scale(padding-bottom, 5,11);
 						
+						@media (max-width: $break-8) {
+							float: none;
+							padding-left: 0;
+							width: 100%;
+						}
+						
+						&:before {
+							font-family: $icon-font-stack;
+							display: table-cell;
+							float: left;
+							color: $kinstantly_pink_light;
+							@include scale(margin-right, 5,11);
+							vertical-align: top;
+						}
+						&.view {
+							
+							&:before {
+								content: "\f0da";
+								@include scale(font-size, 18,11);
+								@include scale(margin-right, 5,18);
+								@include scale(margin-left, 1,11);
+							}
+						}
+						&.schedule:before {
+							content: "\f073";
+						}
+						&.deal:before {
+							content: "\f155";
+						}
+						&.video:before {
+							content: "\f03d";
+						}
+						&.announcement:before {
+							content: "\f0a1";
+						}
+						&.blog:before {
+							content: "\f0f6";
+						}
 						a {
-							text-decoration: underline;
+							display: table-cell;
+							vertical-align: top;
+							
+							@media (max-width: $break-8) {
+								display: block;
+							}
 						}
 					}
-					a.more {
-						display: block;
+					.ratings-section {
+						@include scale(font-size, 14,14);
+						@include scale(margin, 6 0 5 0, 14);
+						
+						.review-num {
+							@include scale(margin-top, -6,14);
+						}
 					}
 				}
-				p.address {
-					a.location{
-						display: block;
-						color: $default_color;
-						text-decoration: none;
-					}
-				}
-				.note {
-					font-style: normal;
-					font-weight: normal;
+				.description, .announcements {
 					
-					&:before {
-						content: "\f0a1";
-						width: 20px;
-						display: inline-block;
-						font-family: $icon-font-stack;
-						color: $icon_blue;
-						@include scale(font-size, 14,12);
+					h3, h4 {
+						@include scale(font-size, 14,14);
+						line-height: 1.3em;
+						@include scale(margin, 0 0 5 0,14);
+					}
+					p {
+						@include scale(font-size, 12, 14);
+						line-height: 1.4em;
+						@include scale(margin, 0 0 9 0,12);
+						
+						> span {
+							display: block;
+							
+							a {
+								text-decoration: underline;
+							}
+						}
+						a.more {
+							display: block;
+						}
+					}
+					p.address {
+						a.location{
+							display: block;
+							color: $default_color;
+							text-decoration: none;
+						}
+					}
+					.note {
+						font-style: normal;
+						font-weight: normal;
+						
+						&:before {
+							content: "\f0a1";
+							width: 20px;
+							display: inline-block;
+							font-family: $icon-font-stack;
+							color: $icon_blue;
+							@include scale(font-size, 14,12);
+						}
+					}
+					.schedule:before {
+						content: "\f073";
 					}
 				}
-				.schedule:before {
-					content: "\f073";
+				.announcements {
+					@include scale(font-size, 12,14);
+					
+					a:before {
+						font-family: $icon-font-stack;
+						display: block;
+						float: left;
+						color: $kinstantly_pink_light;
+						@include scale(margin-right, 5,12);
+						@include scale(margin-top, 1,12);
+						/*@include scale(width, 12,12);*/
+					}
 				}
 			}
+		}
+		.review-excerpt {
+				@include scale(font-size, 12,14);
+				line-height: 1.3em;
+				clear: both;
+				color: $secondary-color;
+				background: url(#{$image-path}/quote-mark.png) no-repeat left top;
+				@include scale(padding-left, 36,12);
 		}
 		.search_results_prompt {
 			color: $text_light_color;
@@ -1073,6 +1247,25 @@
 				}
 			}
 		}
+	}
+}
+
+/*  Profile icons -------------------------------------------------------------------------- */
+.announcements{
+	.schedule:before {
+		content: "\f073";
+	}
+	.deal:before {
+		content: "\f155";
+	}
+	.video:before {
+		content: "\f03d";
+	}
+	.announcement:before {
+		content: "\f0a1";
+	}
+	.blog:before {
+		content: "\f0f6";
 	}
 }
 
@@ -2647,17 +2840,5 @@ ul.links-list > li{
 	}
 	p.blue{
 		color: $kinstantly_blue;
-	}
-}
-
-#announcements.formlet{
-	.date_field input{
-		width: 30%;
-	}
-	.position_field input{
-		width: 90px;
-	}
-	.remove_nested_fields{
-		@include default-button-style;
 	}
 }

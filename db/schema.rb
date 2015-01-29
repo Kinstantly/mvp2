@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141220094951) do
+ActiveRecord::Schema.define(:version => 20150119193113) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -43,14 +43,16 @@ ActiveRecord::Schema.define(:version => 20141220094951) do
     t.integer  "position"
     t.integer  "icon"
     t.string   "headline"
-    t.string   "body"
-    t.string   "button_or_link_text"
-    t.string   "button_or_link_url"
-    t.date     "date_start"
-    t.date     "date_end"
-    t.boolean  "active",              :default => false, :null => false
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.text     "body"
+    t.string   "button_text"
+    t.string   "button_url"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.boolean  "active",                  :default => false, :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.integer  "search_result_position"
+    t.string   "search_result_link_text"
   end
 
   create_table "categories", :force => true do |t|

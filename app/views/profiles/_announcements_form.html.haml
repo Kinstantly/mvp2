@@ -2,23 +2,17 @@
 - formlet = "announcement_#{formlet_index}"
 - announcement ||= display_announcement
 
-.formlet{id: "#{formlet}"}
-	%aside.editable
+%section.announcement-area{class: "#{announcement_icon_class(display_announcement.icon)}"}
+	.formlet{id: "#{formlet}"}
 		- if display_announcement.new_record?
-			Create a new announcement on your profile
+			%a.editable Create a new announcement on your profile
 		- else
-			.ui-widget.ui-widget-content.ui-corner-all{style: 'padding:5px;margin:10px 10px 10px 0'}
-				%h3{style: 'line-height: 28px;font-weight:bold'}
-					%span.ui-state-default{style: 'padding:5px;margin-right:8px'}
-						= "Icon #{display_announcement.icon}"
-					= display_announcement.headline
-				%p{style: 'padding:3px 10px'}= display_announcement.body
-				%button.ui-button.ui-widget.ui-state-default.ui-button-text-only.ui-corner-all{style: 'display:block;margin:10px auto 3px'}
-					%span.ui-button-text
-						= link_to display_announcement.button_or_link_text, display_announcement.button_or_link_url, target: '_blank'
+			%h3.announcement-title.editable= display_announcement.headline
+			%p= display_announcement.body
+			= announcement_button display_announcement.button_text, display_announcement.button_url
 		.edit.popover
 			= nested_form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
-				%h3.form_section Promotional space
+				%h3.section-header Promotional space
 				- if announcement.changed? && announcement.errors.any?
 					= f.error_messages
 				= hidden_field_tag 'formlet', "announcements"
@@ -28,21 +22,12 @@
 					.position_field.text_field
 						= af.label :position
 						= af.select :position, announcement_positions(announcements_total, i)
-					.radio_button_set{id: "radio_button_set_#{i}"}
+					.radio_button_set{id: "radio_button_set_announcement_#{i}"}
 						= af.label :icon
 						%br
-						= af.radio_button :icon, '1', id: "icon_1_#{i}"
-						= label_tag "icon_1_#{i}", "Icon 1"
-						
-						= af.radio_button :icon, '2', id: "icon_2_#{i}"
-						= label_tag "icon_2_#{i}", "Icon 2"
-						
-						= af.radio_button :icon, '3', id: "icon_3_#{i}"
-						= label_tag "icon_3_#{i}", "Icon 3"
-						
-						= af.radio_button :icon, '4', id: "icon_4_#{i}"
-						= label_tag "icon_4_#{i}", "Icon 4"
-						
+						- announcement_icons.each_with_index do |icon, icon_index|
+							= af.radio_button :icon, "#{icon_index}", id: "icon_#{icon_index}_#{i}"
+							= label_tag "icon_#{icon_index}_#{i}", "", {class: "icon #{icon}"}
 					.text_field.countable{'data-i' => "headline"}
 						%span.char_count
 						= af.label :headline
@@ -53,20 +38,80 @@
 						= af.text_area :body, size: '45x5', class: 'attr'
 					.text_field.countable{'data-i' => "button_or_link_text"}
 						%span.char_count
-						= af.label :button_or_link_text
-						= af.text_field :button_or_link_text
+						= af.label :button_text
+						= af.text_field :button_text
 					.text_field
-						= af.label :button_or_link_url
-						= af.text_field :button_or_link_url
+						= af.label :button_url
+						= af.text_field :button_url
 					.date_field
 						%label Date range
 						%br
-						= af.label :date_start
-						= af.text_field :date_start, placeholder: announcement_date_start_default()
-						= af.label :date_end
-						= af.text_field :date_end, placeholder: announcement_date_end_default()
-					
-					= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
-					= af.link_to_remove t('views.announcenemts.edit.remove')
-					= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
+						= af.label :start_at
+						= af.text_field :start_at, value: af.object.start_at_date, placeholder: 'start date'
+						= af.label :end_at
+						= af.text_field :end_at, value: af.object.end_at_date, placeholder: 'end date'
+					.search-result-announcement-area
+						- displayable_locations = @profile.displayable_sorted_locations
+						- first_announcement = @profile.profile_announcements.search_results_to_display.first
+						- second_announcement = @profile.profile_announcements.search_results_to_display.second
+						- second_display_announcement = display_announcement == first_announcement ? second_announcement : first_announcement
+						- center_announcement = get_center_announcement(display_announcement, second_display_announcement, first_announcement != display_announcement)
+						- upper_right_announcement = get_upper_right_announcement(display_announcement, second_display_announcement, first_announcement != display_announcement)
+						%h4
+							Optional: Search result promotional space - this will NOT show up on the profile, only on the search results page.
+						.position_field.text_field
+							= af.label :search_result_position
+							= af.select :search_result_position, search_result_positions(first_announcement.try(:search_result_position), af.object == first_announcement), {}, {id: "position_to_preview_#{i}"}
+						.text_field.countable{'data-i' => "search_result_link_text"}
+							%span.char_count
+							= af.label :search_result_link_text
+							= af.text_field :search_result_link_text, {id: "link_to_preview_#{i}"}
+						%h3.section-header Search result PREVIEW
+						.preview-area.search{id: "preview-area-#{i}"}
+							%ol
+								%li.result
+									%aside.photo
+										= image_tag @profile.profile_photo.url(:medium), alt: "#{@profile.company_otherwise_display_name}", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"
+									%article.result-profile
+										%header.result-title
+											%h2
+												= profile_company_otherwise_display_name_link @profile
+											%aside.more
+												= link_to t('views.search_results.more'), profile_path(@profile)
+											%aside.more.announcements{class: "#{announcement_icon_class(upper_right_announcement.try(:icon))}"}
+												= link_to upper_right_announcement.try(:search_result_link_text) || "", profile_path(@profile)
+											.ratings-section
+												= render partial: 'profiles/rating_score', locals: {profile: @profile}
+										%section.description.search-result-preview-description
+											- if @profile.display_name_presentable? && @profile.company_name.present?
+												%h3=@profile.display_name
+											- if @profile.headline.present?
+												%h4= @profile.headline
+											%p
+												- if @profile.ages_stages_note.present?
+													%span.meta.ages
+														%strong Ages:
+														= profile_display_truncated @profile.ages_stages_note, length: 150
+												%span.meta.specialties
+													%strong Specialties:
+													= search_result_specialties_truncated @profile, length: 700
+											- if (location_count = displayable_locations.count) > 0
+												%p.address
+													- first_location = displayable_locations.first
+													= link_to first_location.display_address, "javascript:void(0)", class: "location", "data-latitude" => first_location.latitude, "data-longitude" => first_location.longitude, target: "_blank"
+													- if location_count > 1
+														= link_to t('views.location.view.more.how_many', count: (location_count - 1)), "javascript:void(0)", class: "more", onclick: "my_vars.f.toggle_more_locations(this)"
+											- if @profile.search_widget_code.present?
+												= raw @profile.search_widget_code
+										%section.announcements
+											= link_to center_announcement.try(:search_result_link_text) || "", profile_path(@profile), {class: "#{announcement_icon_class(center_announcement.try(:icon))}"}
 
+					= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+					= af.link_to_remove t('views.announcenemts.edit.remove') unless display_announcement.new_record?
+					= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
+:coffeescript
+	$ ->
+		if($("#preview-area-#{i} section.announcements a").text() == "")
+			$("#preview-area-#{i} section.announcements a").hide()
+		if($("#preview-area-#{i} aside.more.announcements a").text() == "")
+			$("#preview-area-#{i} aside.more.announcements").hide()

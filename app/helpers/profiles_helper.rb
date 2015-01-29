@@ -711,10 +711,10 @@ Founder and CEO
 		link_to t('views.profile.view.claim_profile_link'), '#', id: 'claim_profile_link', class: 'claim_profile_link'
 	end
 
-	def announcement_positions(current_announcements_total=0, announcement_index=0)
-		adding_new_announcement = current_announcements_total == announcement_index
+	def announcement_positions(announcements_total=0, announcement_index=0)
+		adding_new_announcement = announcements_total == announcement_index
 		min = 1
-		max = adding_new_announcement ? current_announcements_total + 1 : current_announcements_total
+		max = adding_new_announcement ? announcements_total + 1 : announcements_total
 		positions = min..max
 		if announcement_index.blank?
 			positions.map { |i| [i.ordinalize, i] }
@@ -722,13 +722,57 @@ Founder and CEO
 			options_for_select(positions.map { |i| [i.ordinalize, i] }, announcement_index + 1)
 		end
 	end
-	
-	def announcement_date_start_default()
-		Date.today
+
+	def search_result_positions(first_announcement_position=0, is_first_announcement=true)
+		positions = [['center', 0] , ['upper right', 1]]
+		selected_position = 0
+		if is_first_announcement
+			selected_position = first_announcement_position
+		else
+			selected_position = (first_announcement_position == 1) ? 0 : 1
+		end
+		options_for_select(positions, selected_position)
+	end
+
+	def get_center_announcement(display_announcement, second_display_announcement, order_changed=false)
+		if order_changed && second_display_announcement.present?
+			second_display_announcement.search_result_position == 1 ? display_announcement : second_display_announcement
+		elsif display_announcement.present? 
+			display_announcement.search_result_position == 1 ? second_display_announcement : display_announcement
+		end
+	end
+
+	def get_upper_right_announcement(display_announcement, second_display_announcement, order_changed=false)
+		if order_changed && second_display_announcement.present?
+			second_display_announcement.search_result_position == 1 ? second_display_announcement : display_announcement
+		elsif display_announcement.present? 
+			display_announcement.search_result_position == 1 ? display_announcement : second_display_announcement
+		end
 	end
 	
-	def announcement_date_end_default()
-		(Date.today + 2.weeks).to_date
+	def announcement_button(button_text, button_url)
+		if button_url.present? && button_text.present?
+			auto_link "http://#{strip_url button_url}", link: :urls, html: { target: '_blank', title: button_text.try(:html_escape), class: "button" } do |text|
+				button_text.try(:html_escape)
+			end
+		end
+	end
+	
+	def announcement_icons
+		icons = []
+		icons << 'schedule'
+		icons << 'deal'
+		icons << 'video'
+		icons << 'announcement'
+		icons << 'blog'
+		icons
+	end
+
+	def announcement_icon_class(int_value)
+		if int_value.present?
+			return announcement_icons[int_value] unless announcement_icons[int_value].blank?
+		end
+		'announcement'
 	end
 
 end

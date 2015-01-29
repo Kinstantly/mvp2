@@ -1,16 +1,15 @@
 class ProfileAnnouncement < Announcement
-	attr_accessible :body, :headline, :button_or_link_url
+	attr_accessible :search_result_position, :search_result_link_text
 
-	# Strip leading and trailing whitespace from input intended for these attributes.
-	auto_strip_attributes :body, :headline, :button_or_link_url
+	auto_strip_attributes :search_result_link_text
 
-	MAX_LENGTHS[:headline] = 50
-	MAX_LENGTHS[:body] =  150
+	MAX_LENGTHS[:search_result_link_text] = 50
 
-	[:headline, :body].each do |attribute|
-		validates attribute, presence: true, length: {maximum: MAX_LENGTHS[attribute]}
-	end
+	validates :search_result_link_text, length: { maximum: MAX_LENGTHS[:search_result_link_text] }
 
-	validates :button_or_link_url, presence: true
-	validates_format_of :button_or_link_url, with: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i
+	scope :search_result, -> { where("active is true and search_result_position is not null and search_result_link_text is not null") }
+
+	def self.search_results_to_display
+    	search_result.order("updated_at DESC").first(2)
+    end
 end

@@ -1,10 +1,10 @@
 - new_announcement_to_display = ProfileAnnouncement.new
-- saved_announcements = @profile.errorfree.profile_announcements.order(:position, :updated_at)
+- saved_announcements = @profile.errorfree.profile_announcements.order("active DESC", :position, "updated_at DESC")
 - saved_announcements_total = saved_announcements.length
 - unsaved_announcements_total = @profile.profile_announcements.length
 - new_announcement_to_edit = (unsaved_announcements_total == saved_announcements_total) ? new_announcement_to_display : @profile.profile_announcements.try(:[], saved_announcements_total)
 
-- # Create new announcement
+- # Create new profile announcement
 = render partial: 'announcements_form', locals: {display_announcement: new_announcement_to_display, announcement: new_announcement_to_edit, announcements_total: saved_announcements_total, formlet_index: 'new', i: saved_announcements_total}
 
 - # Loop through existing announcements
@@ -13,11 +13,19 @@
 	= render partial: 'announcements_form', locals: {display_announcement: display_announcement, announcement: announcement, announcements_total: saved_announcements_total, i: i} if announcement
 
 :javascript
-	my_vars.edit_announcement = my_vars.edit_announcemet || {};
+	my_vars.edit_announcement = my_vars.edit_announcement || {};
 	my_vars.edit_announcement.max_lengths = #{ProfileAnnouncement::MAX_LENGTHS.to_json};
+	my_vars.edit_announcement.date_format = "#{ProfileAnnouncement::DATEFORMAT}";
+	my_vars.edit_announcement.icons_set = #{announcement_icons().to_json};
 
 :coffeescript
-	$.datepicker.setDefaults({dateFormat: 'yy-mm-dd'});
+	js_dateformat = (internal_dateformat) ->
+		switch internal_dateformat
+			when "%Y-%m-%d" then "yy-mm-dd"
+			else "mm-dd-yy"
+
+	$.datepicker.setDefaults({dateFormat: js_dateformat(my_vars.edit_announcement.date_format)});
+
 	$('.remove_nested_fields').on 'click', () ->
 		ac_delete = window.confirm("Are you sure you want to remove this announcement?")
 		if(ac_delete)
@@ -33,6 +41,45 @@
 			counter: field.find('.char_count'),
 			maxCount: my_vars.edit_announcement.max_lengths[field.attr('data-i')]
 		})
+
+	update_preview = (i_num, position_changed) ->
+		position_changed ||= false
+		classes = $("#radio_button_set_announcement_" + i_num + " :radio:checked + label").attr('class')
+		icon = 'announcement'
+
+		if classes
+			# Find announcement icon class. filter out other classes.
+			preview_classes = classes.split(/\s+/).filter (el) ->
+				my_vars.edit_announcement.icons_set.indexOf(el) >= 0
+			icon = preview_classes[0] if preview_classes.length > 0
+
+		link_text = $('.search-result-announcement-area input#link_to_preview_' + i_num).val().trim().substring(0, 50).trim()
+
+		position = $("select#position_to_preview_" + i_num).val()
+		if(position == '0')
+			announcement = $('#preview-area-' + i_num + ' section.announcements a')
+			if position_changed
+				second_announcement = $('#preview-area-' + i_num + ' aside.more.announcements')
+				second_announcement.attr('class', icon + " more announcements")
+				second_announcement.find('a').text(announcement.text())
+				if announcement.text().trim() == ''
+					second_announcement.hide()
+			announcement.text(link_text).attr('class', icon)
+		else
+			announcement = $('#preview-area-' + i_num + ' aside.more.announcements')
+			if position_changed
+				second_announcement = $('#preview-area-' + i_num + ' section.announcements a')
+				second_announcement.text(announcement.text()).attr('class', icon)
+				if announcement.text().trim() == ''
+					second_announcement.hide()
+			announcement.attr('class', icon + ' more announcements')
+			announcement.find('a').text(link_text)
+
+		if link_text != ''
+			announcement.show();
+		else
+			announcement.hide()
+
 	
 	$ ->
 		$('.date_field input').datepicker();
@@ -40,3 +87,11 @@
 		$('[id^=radio_button_set_]').buttonset();
 
 		$('.countable').each -> setup_note_counter $(this)
+
+		$("input[id^='link_to_preview_']").on 'keyup', () ->
+			i_num = $(@).attr('id').replace('link_to_preview_', '').trim();
+			update_preview(i_num)
+
+		$("select[id^='position_to_preview_']").on 'change', (e) ->
+			i_num = $(@).attr('id').replace('position_to_preview_', '').trim();
+			update_preview(i_num, true)
