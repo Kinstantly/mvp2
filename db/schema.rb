@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150119193113) do
+ActiveRecord::Schema.define(:version => 20150201060829) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -408,6 +408,7 @@ ActiveRecord::Schema.define(:version => 20150119193113) do
     t.string   "funding"
     t.integer  "exp_month"
     t.integer  "exp_year"
+    t.string   "last4"
   end
 
   add_index "stripe_cards", ["stripe_customer_id"], :name => "index_stripe_cards_on_stripe_customer_id"

@@ -41,7 +41,7 @@ describe CustomerMailer, payments: true do
 		end
 		
 		it "should show the card information" do
-			email.should have_body_text display_payment_card_summary customer_file.stripe_card
+			email.should have_body_text display_payment_card_in_email customer_file.stripe_card
 		end
 		
 		it "should mention authorization in the subject" do

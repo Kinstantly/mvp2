@@ -7,6 +7,7 @@ FactoryGirl.define do
 		livemode true
 		brand 'FactoryBrand'
 		funding 'FactoryFunding'
+		last4 '1234'
 		
 		after(:build) do |stripe_card|
 			exp_date = Time.zone.now + 1.year

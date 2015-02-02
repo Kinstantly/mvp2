@@ -69,6 +69,7 @@ class Customer < ActiveRecord::Base
 				funding: card.funding,
 				exp_month: card.exp_month,
 				exp_year: card.exp_year,
+				last4: card.last4,
 				livemode: customer.livemode
 			)
 
@@ -82,6 +83,7 @@ class Customer < ActiveRecord::Base
 				funding: card.funding,
 				exp_month: card.exp_month,
 				exp_year: card.exp_year,
+				last4: card.last4,
 				livemode: stripe_customer.livemode
 			)
 		end

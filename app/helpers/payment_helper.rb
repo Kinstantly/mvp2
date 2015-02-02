@@ -20,8 +20,16 @@ module PaymentHelper
 		time_with_zone.in_time_zone('America/Los_Angeles').strftime('%b %-d, %Y') if time_with_zone
 	end
 	
-	def display_payment_card_summary(card)
+	# Card brand, type, and expiration date.
+	# Don't show the last four digits in email.
+	def display_payment_card_in_email(card)
 		"#{card.brand} #{card.funding} #{[card.exp_month, card.exp_year].compact.join('/')}" if card
+	end
+	
+	# Card brand, last four digits, and expiration date.
+	def display_payment_card_summary(card)
+		which_card = card.last4.present? ? "#{t 'views.customer.view.card_last4'} #{card.last4}" : card.funding
+		"#{card.brand} #{which_card}, #{t 'views.customer.view.card_exp'} #{[card.exp_month, card.exp_year].compact.join('/')}" if card
 	end
 	
 	# Returns the path for the Stripe Connect button that the specified user can click to authorize payments to themselves.

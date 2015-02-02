@@ -1,7 +1,7 @@
 class StripeCard < ActiveRecord::Base
 	has_paper_trail # Track changes to each Stripe credit card record.
 	
-	attr_accessible :api_card_id, :deleted, :livemode, :brand, :funding, :exp_month, :exp_year
+	attr_accessible :api_card_id, :deleted, :livemode, :brand, :funding, :exp_month, :exp_year, :last4
 	
 	belongs_to :stripe_customer
 	has_many :stripe_charges

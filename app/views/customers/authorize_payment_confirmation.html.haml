@@ -7,16 +7,20 @@
 			%p To restore permission for this provider, simply authorize a new amount.
 		- elsif @profile and @authorized_amount
 			%p
-				- if params[:created]
-					Congrats! You're all set up for Kinstantly Pre-Auth with
-				- elsif params[:card_changed]
-					Your card has been changed to
+				- if params[:card_changed]
+					= "Your card has been changed to the following for Kinstantly Pre-Auth up to #{display_currency_amount(@authorized_amount)} with"
+					= succeed '.' do
+						= link_to @profile.company_otherwise_display_name, @profile
+					%br
+					%br
 					%span.card_summary= display_payment_card_summary @customer.card_for_provider(@profile.user)
-					for Kinstantly Pre-Auth with
 				- else
-					You're set up for Kinstantly Pre-Auth with
-				= link_to @profile.company_otherwise_display_name, @profile
-				= "up to #{display_currency_amount(@authorized_amount)}."
+					- if params[:created]
+						Congrats! You're all set up for Kinstantly Pre-Auth with
+					- else
+						You're set up for Kinstantly Pre-Auth with
+					= link_to @profile.company_otherwise_display_name, @profile
+					= "up to #{display_currency_amount(@authorized_amount)}."
 			%p
 				Questions? Concerns? Please email
 				= mail_to SUPPORT_EMAIL

@@ -41,7 +41,7 @@ describe StripeChargeMailer, payments: true do
 		end
 		
 		it "should show the card description" do
-			email.should have_body_text display_payment_card_summary new_stripe_charge.stripe_card
+			email.should have_body_text display_payment_card_in_email new_stripe_charge.stripe_card
 		end
 		
 		it "should show the charge description" do
@@ -87,7 +87,7 @@ describe StripeChargeMailer, payments: true do
 		end
 		
 		it "should show the card description" do
-			email.should have_body_text display_payment_card_summary refunded_stripe_charge.stripe_card
+			email.should have_body_text display_payment_card_in_email refunded_stripe_charge.stripe_card
 		end
 		
 		it "should show the original charge description" do
