@@ -2,14 +2,15 @@
 #content
 	#customer_file.payments
 		- customer_name = @customer_file.customer_name
+		- customer_email = @customer_file.customer_email
 		%h1= customer_name
 		- if @customer_file.customer_has_authorized_payment?
 			%div= t 'views.customer_file.view.authorized_amount', amount: display_currency_amount(@customer_file.authorized_amount)
-			-# %div= link_to t('views.customer_file.view.reminder_prompt', user: customer_name), '#'
+			%div= mail_to customer_email, t('views.customer_file.view.reminder_prompt', user: customer_name)
 		- else
 			%div= t 'views.customer_file.view.not_authorized_explanation'
 			- if @customer_file.has_customer_account?
-				%div= link_to t('views.customer_file.view.request_reauthorization_prompt', user: customer_name), '#'
+				%div= mail_to customer_email, t('views.customer_file.view.request_reauthorization_prompt', user: customer_name)
 			- else
 				%div= t 'views.customer_file.view.customer_account_deleted_explanation'
 		.buttons
@@ -20,7 +21,7 @@
 		%table.attributes
 			%tr
 				%th= t 'views.customer_file.view.email'
-				%td= mail_to @customer_file.customer_email
+				%td= mail_to customer_email
 		%h2= t 'views.customer_file.view.charge_history'
 		%table.tablesorter#charge_history
 			%thead

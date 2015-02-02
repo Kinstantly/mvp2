@@ -25,6 +25,12 @@ Feature: Authorize charges
 			And I open the email with subject "You have authorized payments via Kinstantly"
 		Then I should see "not to exceed a total of $42.47" in the email body
 
+	Scenario: Notify provider of authorization by their client
+		When I enter "$42.47" in the "I authorize payment" field
+			And I click on the "Authorize" button
+			And the payable provider opens the email with subject "Your client has authorized payments to you"
+		Then they should see "not to exceed a total of $42.47" in the email body
+
 	Scenario: Revoke authorization
 		When I click on the "Revoke payment authorization" button
 		Then I should see "no longer has permission to charge your card" on the page
@@ -35,3 +41,8 @@ Feature: Authorize charges
 		When I click on the "Revoke payment authorization" button
 			And I open the email with subject "You have revoked authorization of payments"
 		Then I should see "no longer has permission to charge your card" in the email body
+
+	Scenario: Notify provider of revocation
+		When I click on the "Revoke payment authorization" button
+			And the payable provider opens the email with subject "Your client has revoked authorization of payments"
+		Then they should see "You no longer have permission to charge their card" in the email body

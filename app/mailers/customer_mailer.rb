@@ -25,4 +25,24 @@ class CustomerMailer < ActionMailer::Base
 		subject = "You have revoked authorization of payments"
 		mail to: @user.email, subject: subject
 	end
+	
+	def notify_provider_of_payment_authorization(customer_file)
+		@customer_file = customer_file
+		@provider = customer_file.provider
+		@provider_name = @provider.try(:profile).try(:first_name)
+		sendgrid_category :notify_provider_of_payment_authorization
+		@show_logo = true
+		subject = "Your client has authorized payments to you"
+		mail to: @provider.email, subject: subject
+	end
+	
+	def notify_provider_of_revoked_authorization(customer_file)
+		@customer_file = customer_file
+		@provider = customer_file.provider
+		@provider_name = @provider.try(:profile).try(:first_name)
+		sendgrid_category :notify_provider_of_revoked_authorization
+		@show_logo = true
+		subject = "Your client has revoked authorization of payments"
+		mail to: @provider.email, subject: subject
+	end
 end

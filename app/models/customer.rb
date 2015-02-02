@@ -99,11 +99,13 @@ class Customer < ActiveRecord::Base
 		customer_file.authorized_amount_increment_usd = options[:amount_increment] if options[:amount_increment].present?
 		customer_file.save!
 		
-		# Notify the customer.
+		# Notify the customer and provider.
 		if customer_file.authorized
 			customer_file.confirm_authorized_amount
+			customer_file.notify_provider_of_payment_authorization
 		elsif not options[:authorized].nil?
 			customer_file.confirm_revoked_authorization
+			customer_file.notify_provider_of_revoked_authorization
 		end
 		
 		true

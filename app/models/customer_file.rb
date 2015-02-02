@@ -144,8 +144,16 @@ class CustomerFile < ActiveRecord::Base
 		CustomerMailer.confirm_authorized_amount(self).deliver
 	end
 	
+	def notify_provider_of_payment_authorization
+		CustomerMailer.notify_provider_of_payment_authorization(self).deliver
+	end
+	
 	def confirm_revoked_authorization
 		CustomerMailer.confirm_revoked_authorization(self).deliver
+	end
+	
+	def notify_provider_of_revoked_authorization
+		CustomerMailer.notify_provider_of_revoked_authorization(self).deliver
 	end
 	
 	private

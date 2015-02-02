@@ -337,6 +337,10 @@ When /^I (?:visit|am on) the in-blog signup page$/ do
   visit in_blog_sign_up_path
 end
 
+When /^the payable provider opens the email with subject "(.*?)"$/ do |subject|
+	step "\"#{@profile_for_payable_provider.user.email}\" opens the email with subject \"#{subject}\""
+end
+
 ### THEN ###
 Then /^I should be signed in$/ do
   page.should have_content I18n.t('views.sign_out.label').upcase
