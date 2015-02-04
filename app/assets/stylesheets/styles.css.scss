@@ -712,8 +712,12 @@
 				@include scale(font-size, 21,18);
 				-webkit-font-smoothing: antialiased !important;
 			}
-			p {
-				@include scale(margin, 13 0, 14);
+			.announcement-start-end-date{
+				color: $text_light_color;
+				display: inline-block;
+				float: left;
+				padding: .6em 0 .8em 0;
+				line-height: 100%;
 			}
 			.button {
 				@include default-button-style;
@@ -725,7 +729,6 @@
 				&:hover {
 					background: lighten($kinstantly_pink, 10%);
 				}
-				
 			}
 			&.schedule h3.announcement-title:before {
 				content: "\f073";
@@ -774,37 +777,56 @@
 					content: "\f0f6";
 				}
 			}
-			.date_field input{
-				max-width: 8em;
-				overflow: hidden;
-				margin-left: .4em;
-				margin-right: 2em;
-				padding: 0.4em;
-				border: 1px solid #ccc;
-				box-shadow: inset 4px 4px 10px #E5E5E5;
-				text-align: center;
+			.text_field input, .text_field textarea, .date_field input, .icon-buttonset{
+				margin-top: .23em;
+			}
+			.date_field {
+				input {
+					max-width: 8em;
+					overflow: hidden;
+					margin-left: .4em;
+					margin-right: .9em;
+					padding: 0.4em;
+					border: 1px solid #ccc;
+					box-shadow: inset 4px 4px 10px #E5E5E5;
+					text-align: center;
 
-				&:hover{
-					cursor: pointer;
+					&:hover{
+						cursor: pointer;
+					}
 				}
+				div {
+					display: inline-block;
+					max-width: 50%;
+					vertical-align: top;
+
+					p.note{
+						margin-bottom: 0;
+						padding-left: 1.8em;
+					}
+				}
+			}
+			h4{
+				font-weight: bold;
+				line-height: 140%;
+				margin-top: 1.3em;
 			}
 			.search-result-announcement-area{
 				@extend .ui-corner-all;
 				border: 1px solid #ccc;
 				background-color: #efefef;
-				margin-top: 2.15em;
-				padding: 1em;
+				margin-top: .35em;
+				padding: .1em 1em 1em;
 				
 				input{
 					max-width: 100%;
 					box-sizing: border-box;
 				}
-				> h4{
-					font-weight: bold;
-					line-height: 140%;
-				}
 				.text_field{
 					margin: 12px 0px 13px 0px;
+				}
+				hr{
+					margin-bottom: .8em;
 				}
 				.preview-area{
 					width: 100% !important;
@@ -825,6 +847,7 @@
 				max-width: 8.8em;
 				padding: .4em;
 				margin-left: .9em;
+				display: inline;
 			}
 			.save{
 				padding: 0.42857em;
