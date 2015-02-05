@@ -369,6 +369,19 @@ Given /^I visit a published unclaimed profile?$/ do
 	create_unattached_profile({is_published: true})
 	visit profile_path(@unattached_profile)
 end
+
+Given /^my profile is published$/ do
+	find_user_profile
+	@profile.is_published = true
+	@profile.save
+end
+
+Given /^I have an announcement with "(.*?)" headline in my profile$/ do |headline_text|
+	announcement_data = {profile: @user.profile, headline: headline_text}
+	@user.profile.profile_announcements = [FactoryGirl.create(:profile_announcement, announcement_data)]
+	@user.profile.save
+end
+
 ### WHEN ###
 
 When /^I view my profile$/ do
@@ -689,6 +702,26 @@ When /^I click on the profile edit tab$/ do
 	click_link I18n.t('views.profile.edit.edit_tab')
 end
 
+When /^I enter a (valid|past) start date and (?:a)? (past|future|no) end date in the Date range section of the "(.*?)" formlet$/ do |start_date_when, end_date_when, formlet|
+	if start_date_when == 'valid'
+		start_date = DateTime.now
+	else
+		start_date = DateTime.now - 2.weeks
+	end
+	end_date = DateTime.now + 1.weeks if end_date_when == 'future'
+	end_date = DateTime.now - 1.weeks if end_date_when == 'past'
+	within("##{formlet_id formlet}") do
+		fill_in "From", with: start_date.strftime("%Y-%m-%d")
+		fill_in "to", with: end_date.strftime("%Y-%m-%d") if end_date.present?
+	end
+end
+
+When /^I search for my profile$/ do
+	find_user_profile
+	query = @profile.display_name_or_company
+	visit search_providers_path query: query
+end
+
 ### THEN ###
 
 Then /^I should see my profile information$/ do
@@ -937,5 +970,11 @@ Then /^I should see the photo editor$/ do
 	pending 'figure out why Capybara does not recognize the visible state of the Aviary photo editor'
 	using_wait_time 3 do
 		page.should have_css('#avpw_controls')
+	end
+end
+
+Then /^I should see "(.*?)" in the search results list$/ do |arg1|
+	within('.search-results') do
+		page.should have_content arg1
 	end
 end

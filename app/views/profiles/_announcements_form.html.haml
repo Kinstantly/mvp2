@@ -5,14 +5,21 @@
 %section.announcement-area{class: "#{announcement_icon_class(display_announcement.icon)}"}
 	.formlet{id: "#{formlet}"}
 		- if display_announcement.new_record?
-			%a.editable Create a new announcement on your profile
+			%a.editable= t 'views.announcement.edit.new_announcement_prompt'
 		- else
 			%h3.announcement-title.editable= display_announcement.headline
 			%p= display_announcement.body
+			.announcement-start-end-date
+				Active from
+				%span= display_announcement.start_at_date
+				- if display_announcement.end_at_date.present?
+					%span
+						to
+						= display_announcement.end_at_date
 			= announcement_button display_announcement.button_text, display_announcement.button_url
 		.edit.popover
-			= nested_form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
-				%h3.section-header Promotional space
+			= nested_form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}", "data-i" => i} do |f|
+				%h3.section-header Announcement
 				- if announcement.changed? && announcement.errors.any?
 					= f.error_messages
 				= hidden_field_tag 'formlet', "announcements"
@@ -24,32 +31,43 @@
 						= af.select :position, announcement_positions(announcements_total, i)
 					.radio_button_set{id: "radio_button_set_announcement_#{i}"}
 						= af.label :icon
-						%br
-						- announcement_icons.each_with_index do |icon, icon_index|
-							= af.radio_button :icon, "#{icon_index}", id: "icon_#{icon_index}_#{i}"
-							= label_tag "icon_#{icon_index}_#{i}", "", {class: "icon #{icon}"}
+						.icon-buttonset
+							- announcement_icons.each_with_index do |icon, icon_index|
+							- icon_class = icon[:class]
+							- icon_title = icon[:title]
+								= af.radio_button :icon, "#{icon_index}", id: "icon_#{icon_index}_#{i}"
+								= label_tag "icon_#{icon_index}_#{i}", "", {class: "icon #{icon_class}", title: "#{icon_title}"}
 					.text_field.countable{'data-i' => "headline"}
 						%span.char_count
 						= af.label :headline
 						= af.text_field :headline
+						%p.note= t 'views.announcement.edit.headline_example'
 					.text_field.countable{'data-i' => "body"}
 						%span.char_count
 						= af.label :body
 						= af.text_area :body, size: '45x5', class: 'attr'
-					.text_field.countable{'data-i' => "button_or_link_text"}
+						%p.note= t 'views.announcement.edit.body_example'
+					.text_field.countable{'data-i' => "button_text"}
 						%span.char_count
 						= af.label :button_text
 						= af.text_field :button_text
+						%p.note= t 'views.announcement.edit.button_text_example'
 					.text_field
 						= af.label :button_url
 						= af.text_field :button_url
+						%p.note= t 'views.announcement.edit.button_url_example'
 					.date_field
 						%label Date range
-						%br
-						= af.label :start_at
-						= af.text_field :start_at, value: af.object.start_at_date, placeholder: 'start date'
-						= af.label :end_at
-						= af.text_field :end_at, value: af.object.end_at_date, placeholder: 'end date'
+						%p.note= t 'views.announcement.edit.date_range_explanation'
+						%div
+							= af.label :start_at
+							= af.text_field :start_at, value: af.object.start_at_date, placeholder: 'start date'
+						%div
+							= af.label :end_at
+							= af.text_field :end_at, value: af.object.end_at_date, placeholder: 'end date'
+							%p.note= t 'views.announcement.edit.end_date_hint'
+
+					%h4= t 'views.announcement.edit.search_result_area_explanation'
 					.search-result-announcement-area
 						- displayable_locations = @profile.displayable_sorted_locations
 						- first_announcement = @profile.profile_announcements.search_results_to_display.first
@@ -57,15 +75,17 @@
 						- second_display_announcement = display_announcement == first_announcement ? second_announcement : first_announcement
 						- center_announcement = get_center_announcement(display_announcement, second_display_announcement, first_announcement != display_announcement)
 						- upper_right_announcement = get_upper_right_announcement(display_announcement, second_display_announcement, first_announcement != display_announcement)
-						%h4
-							Optional: Search result promotional space - this will NOT show up on the profile, only on the search results page.
+
+						.text_field.countable{'data-i' => "search_result_link_text"}
+							%span.char_count
+							= af.label :search_result_link_text, {for: "link_to_preview_#{i}"}
+							= af.text_field :search_result_link_text, {id: "link_to_preview_#{i}"}
+							%p.note= t 'views.announcement.edit.search_result_link_text_example'
 						.position_field.text_field
 							= af.label :search_result_position
 							= af.select :search_result_position, search_result_positions(first_announcement.try(:search_result_position), af.object == first_announcement), {}, {id: "position_to_preview_#{i}"}
-						.text_field.countable{'data-i' => "search_result_link_text"}
-							%span.char_count
-							= af.label :search_result_link_text
-							= af.text_field :search_result_link_text, {id: "link_to_preview_#{i}"}
+							%p= t 'views.announcement.edit.search_result_position_explanation'
+						%hr
 						%h3.section-header Search result PREVIEW
 						.preview-area.search{id: "preview-area-#{i}"}
 							%ol
@@ -107,7 +127,7 @@
 											= link_to center_announcement.try(:search_result_link_text) || "", profile_path(@profile), {class: "#{announcement_icon_class(center_announcement.try(:icon))}"}
 
 					= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
-					= af.link_to_remove t('views.announcenemts.edit.remove') unless display_announcement.new_record?
+					= af.link_to_remove t('views.announcement.edit.remove') unless display_announcement.new_record?
 					= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 :coffeescript
 	$ ->

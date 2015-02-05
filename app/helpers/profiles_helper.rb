@@ -760,17 +760,17 @@ Founder and CEO
 	
 	def announcement_icons
 		icons = []
-		icons << 'schedule'
-		icons << 'deal'
-		icons << 'video'
-		icons << 'announcement'
-		icons << 'blog'
+		icons << {class: 'announcement', title: 'Good for any general announcement'}
+		icons << {class: 'schedule', title:'Best for calendar-based events, such as workshops'}
+		icons << {class: 'deal', title: 'Best used to let customers know you accept online payments through Kinstantly or to announce special deals'}
+		icons << {class: 'video', title: 'Best to link to a video'}
+		icons << {class: 'blog', title: ' Best to link to an article or blog post'}
 		icons
 	end
 
 	def announcement_icon_class(int_value)
 		if int_value.present?
-			return announcement_icons[int_value] unless announcement_icons[int_value].blank?
+			return announcement_icons[int_value][:class] unless announcement_icons[int_value].blank?
 		end
 		'announcement'
 	end

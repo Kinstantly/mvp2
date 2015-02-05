@@ -35,6 +35,10 @@ When /^I (?:enter|type|fill) "(.*?)" in the "(.*?)" field$/ do |text, field|
 	fill_in field, with: text
 end
 
+When /^I confirm alert$/ do
+	page.evaluate_script('window.confirm = function() { return true; }')
+end
+
 Then /^I should see "(.*?)" in the "(.*?)" field$/ do |text, field|
 	within(:xpath, "//*[contains(text(), \"#{field}\")]/..") do
 		page.should have_content text
@@ -49,6 +53,10 @@ Then /^I should see a "(.*?)" link button on the page$/ do |label|
 	within('a.button') do
 		page.should have_content label
 	end
+end
+
+Then /^I should see a "(.*?)" button linked to "(.*?)" on the page$/ do |label, url|
+	should have_link(label, href: url)
 end
 
 Then /^I should (not )?see html element "(.*?)"$/ do |no, selector|

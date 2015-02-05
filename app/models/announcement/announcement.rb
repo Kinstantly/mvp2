@@ -18,11 +18,12 @@ class Announcement < ActiveRecord::Base
 		validates attribute, length: {maximum: MAX_LENGTHS[attribute]}
 	end
 
-	validates :body, :headline, :icon, :button_text, :button_url, :start_at, :end_at, presence: true
+	validates :profile, :body, :headline, :icon, :button_text, :button_url, :start_at, presence: true
 	validate :validate_date_range
 	#validates_format_of :button_or_link_url, with: URI::regexp
 
 	before_save :set_active_status
+	after_initialize :defaults
 
 	scope :active, -> { where(active: true) }
 
@@ -40,9 +41,13 @@ class Announcement < ActiveRecord::Base
 
 	private
 
+	def defaults
+		self.icon ||= 0
+    end
+
 	def set_active_status
 	    now = DateTime.now
-	    self.active = (start_at <= now && end_at >= now) unless start_at.blank? || end_at.blank?
+	    self.active = (start_at <= now && (end_at.blank? || end_at >= now)) unless start_at.blank?
 	    true
 	end
 

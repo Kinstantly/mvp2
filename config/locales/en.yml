@@ -261,23 +261,25 @@ en:
         provider_newsletters: 'Send me occasional newsletters with tips for growing my business, marketing my skills, and connecting with parents in the smartest, easiest ways.'
         provider_marketing_emails: 'Send me occasional deals and offers from Kinstantly and Kinstantly partners.'
       announcement:
-        icon: "Select an icon"
+        icon: "Choose an icon"
         headline: "Headline"
         body: "Text area"
         button_text: "Button text"
-        button_url: "Button URL"
+        button_url: "Button link"
         start_at: "From"
-        end_at: "To"
+        end_at: "to"
+        search_result_link_text: "Announcement text (to appear in search results)"
       profile_announcement:
         search_result_position: "Position"
       profile_announcements:
         icon: "Icon"
         headline: "Headline"
-        body: "Announcement Text"
+        body: "Announcement text"
         button_text: "Button text"
-        button_url: "Button URL"
+        button_url: "Button link"
         start_at: "Start date"
         end_at: "End date"
+        search_result_link_text: "Announcement text"
     errors:
       messages:
         invalid_phone_number: '^Phone number must be valid and properly formatted, e.g., "800-555-0199 x47"'
@@ -330,9 +332,19 @@ en:
     removing: 'Removing'
     save: 'Save'
     saving: 'Saving'
-    announcenemts:
+    announcement:
       edit:
+        new_announcement_prompt: 'Create a new announcement on your profile'
         remove: 'Remove'
+        headline_example: 'Example: Register now for Summer Camp!'
+        body_example: 'Example: Camps fill up quickly, so register early. Note that full payment is required with registration.'
+        button_text_example: 'Example: Register NOW!'
+        button_url_example: 'Copy and paste the URL of the page you want the button to link to.'
+        date_range_explanation: 'Add start and end dates, so your announcement appears and goes away when it should.'
+        end_date_hint: 'Leave blank for no end date.'
+        search_result_area_explanation: 'Create a short version of your announcement to appear in search results (recommended).'
+        search_result_position_explanation: 'See the two options in the PREVIEW, below.'
+        search_result_link_text_example: 'Example: Register now for summer camp!'
     category:
       name: 'Category'
       edit:

@@ -16,7 +16,7 @@
 	my_vars.edit_announcement = my_vars.edit_announcement || {};
 	my_vars.edit_announcement.max_lengths = #{ProfileAnnouncement::MAX_LENGTHS.to_json};
 	my_vars.edit_announcement.date_format = "#{ProfileAnnouncement::DATEFORMAT}";
-	my_vars.edit_announcement.icons_set = #{announcement_icons().to_json};
+	my_vars.edit_announcement.icons_set = #{announcement_icons().map { |a| a[:class] }.to_json};
 
 :coffeescript
 	js_dateformat = (internal_dateformat) ->
@@ -48,7 +48,7 @@
 		icon = 'announcement'
 
 		if classes
-			# Find announcement icon class. filter out other classes.
+			# Find announcement icon classes. Filter out other classes.
 			preview_classes = classes.split(/\s+/).filter (el) ->
 				my_vars.edit_announcement.icons_set.indexOf(el) >= 0
 			icon = preview_classes[0] if preview_classes.length > 0
@@ -56,20 +56,24 @@
 		link_text = $('.search-result-announcement-area input#link_to_preview_' + i_num).val().trim().substring(0, 50).trim()
 
 		position = $("select#position_to_preview_" + i_num).val()
+		# Announcement moved to center
 		if(position == '0')
 			announcement = $('#preview-area-' + i_num + ' section.announcements a')
 			if position_changed
 				second_announcement = $('#preview-area-' + i_num + ' aside.more.announcements')
-				second_announcement.attr('class', icon + " more announcements")
+				second_announcement_class = announcement.attr('class') + " more announcements"
+				second_announcement.attr('class', second_announcement_class)
 				second_announcement.find('a').text(announcement.text())
 				if announcement.text().trim() == ''
 					second_announcement.hide()
 			announcement.text(link_text).attr('class', icon)
+		# Announcement moved to upper right
 		else
 			announcement = $('#preview-area-' + i_num + ' aside.more.announcements')
 			if position_changed
 				second_announcement = $('#preview-area-' + i_num + ' section.announcements a')
-				second_announcement.text(announcement.text()).attr('class', icon)
+				second_announcement_class = announcement.attr('class').replace("more announcements", "").trim()
+				second_announcement.text(announcement.text()).attr('class', second_announcement_class)
 				if announcement.text().trim() == ''
 					second_announcement.hide()
 			announcement.attr('class', icon + ' more announcements')
@@ -80,7 +84,6 @@
 		else
 			announcement.hide()
 
-	
 	$ ->
 		$('.date_field input').datepicker();
 
@@ -88,10 +91,17 @@
 
 		$('.countable').each -> setup_note_counter $(this)
 
+		# Update Preview, when "Search result link text" is updated
 		$("input[id^='link_to_preview_']").on 'keyup', () ->
-			i_num = $(@).attr('id').replace('link_to_preview_', '').trim();
+			i_num = $(@).closest('form').attr('data-i').trim();
 			update_preview(i_num)
 
+		# Update Preview, when "Position" is updated
 		$("select[id^='position_to_preview_']").on 'change', (e) ->
-			i_num = $(@).attr('id').replace('position_to_preview_', '').trim();
+			i_num = $(@).closest('form').attr('data-i').trim();
 			update_preview(i_num, true)
+
+		# Update Preview, when "Icon" is updated
+		$(".radio_button_set :radio").on 'change', (e) ->
+			i_num = $(@).closest('form').attr('data-i').trim();
+			update_preview(i_num)
