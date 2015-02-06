@@ -972,9 +972,3 @@ Then /^I should see the photo editor$/ do
 		page.should have_css('#avpw_controls')
 	end
 end
-
-Then /^I should see "(.*?)" in the search results list$/ do |arg1|
-	within('.search-results') do
-		page.should have_content arg1
-	end
-end
