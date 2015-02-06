@@ -111,13 +111,6 @@
 		if my_vars.edit_profile.profile_help
 			my_vars.f.open_formlet.apply $('#profile_help'), [e ={}]
 
-		# Announcenemts fromlet uses nested formlets. Open formlet event is lost when formlet content replaced after formlet update.
-		# Re-bind formlet open event.
-		$('#announcements').on 'DOMSubtreeModified', (event) =>
-			$('#announcements .formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
-		
-			$('#announcements .formlet').each -> my_vars.f.configure_formlet this
-
 -# Do not cache this.  It must process for each request to catch changes to shared specialties.
 .hidden.render
 	#specialties.formlet= render partial: 'specialties_formlet'

@@ -105,3 +105,8 @@
 		$(".radio_button_set :radio").on 'change', (e) ->
 			i_num = $(@).closest('form').attr('data-i').trim();
 			update_preview(i_num)
+
+		# Announcements formlet uses nested formlets. Open formlet event is lost when formlet content replaced after formlet update.
+		# Re-bind formlet open event.
+		$('#announcements .formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
+		$('#announcements .formlet').each -> my_vars.f.configure_formlet this

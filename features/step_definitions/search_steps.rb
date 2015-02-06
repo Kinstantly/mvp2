@@ -31,7 +31,13 @@ Then /^I should see profile data in the search results list$/ do
 	end
 end
 
-Then /^I should see "(.*?)" and "(.*?)" in the search results list$/ do |arg1, arg2|
+Then /^I should see "([^\"]+)" in the search results list$/ do |arg1|
+	within('.search-results') do
+		page.should have_content arg1
+	end
+end
+
+Then /^I should see "([^\"]+)" and "([^\"]+)" in the search results list$/ do |arg1, arg2|
 	within('.search-results') do
 		page.should have_content arg1
 		page.should have_content arg2
