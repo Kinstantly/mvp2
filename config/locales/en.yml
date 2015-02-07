@@ -785,12 +785,12 @@ en:
       provider_title: 'Create your profile'
       submit_disable: 'Signing up...'
       claiming_profile_title: 'Claim your profile'
-      email_tip: "So we can contact you - we'll never give your email address out, and we won't display it publicly."
+      email_tip: "In case we have to contact you — we'll never give your email address out, and we won't display it publicly."
       username_inline_blog_tip: 'Your username will show up next to your blog comments'
       username_blog_tip: "This will display next to your blog comments and must contain at least four characters - letters and numerals only, no spaces. Examples: Mama2000, DadEO" 
-      username_inline_tip: 'Your username will show up next to any reviews or posts you write'
+      username_inline_tip: 'It will display next to any reviews you write and must contain at least four characters — letters and numerals only, no spaces. Examples: Mama2000, DadEO.'
       username_tip: "This will display next to any reviews you write and must contain at least four characters - letters and numerals only, no spaces. Examples: Mama2000, DadEO" 
-      password_tip: 'Your password must contain at least %{minimum} characters'
+      password_tip: 'It must contain at least  %{minimum} characters.'
       parent_tag: "I'm a parent or planning a family"
       provider_tag: "I provide services to families"
       parent_provider_tag: "I'm both a parent and a provider"

@@ -9,7 +9,7 @@
 - parent_tag = t "views.sign_up.parent_tag"
 - provider_tag = t "views.sign_up.provider_tag"
 - parent_provider_tag = t "views.sign_up.parent_provider_tag"
-- inline_tip ||= false
+- inline_tip ||= true
 
 %h1= t "views.sign_up.#{whoami}_title" unless embedded_in
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
@@ -27,6 +27,7 @@
 			%span.help_icon
 				.help_popover
 					%p.tip.grey_text= email_tip
+		%p.note.grey_text= email_tip
 
 	- if @signing_up_for_newsletter
 		.postal_code.text_field
@@ -43,14 +44,14 @@
 				%span.help_icon
 					.help_popover
 						%p.tip.grey_text= username_tip
-			%p.v_tip.grey_text= username_inline_tip
+			%p.note.grey_text= username_inline_tip
 
 	.password.text_field
 		= f.label :password
 		%br
 		= f.password_field :password, autocomplete: 'off'
 		- if inline_tip
-			%p.tip.grey_text= password_tip
+			%p.note.grey_text= password_tip
 		- else
 			%span.help_icon
 				.help_popover
