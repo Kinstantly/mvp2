@@ -110,3 +110,6 @@
 		# Re-bind formlet open event.
 		$('#announcements .formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
 		$('#announcements .formlet').each -> my_vars.f.configure_formlet this
+
+		$('.announcement-area .show-more').shorten({showChars: 300})
+		$('.announcement-area a.morelink').addClass('dont_popover')

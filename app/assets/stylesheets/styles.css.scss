@@ -852,6 +852,12 @@
 			.save{
 				padding: 0.42857em;
 			}
+			.show-more{
+				p {margin-bottom: 1.5em}
+				a.morelink {
+					text-transform: capitalize;
+				}
+			}
 		}
 		.reviews-list {
 			font-size: 0.875em;

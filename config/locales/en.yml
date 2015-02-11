@@ -148,8 +148,8 @@ en:
         too_long: '^The name of each specialty must have no more than %{max} characters.'
       claimed: 'is already claimed. You cannot send an invitation.'
     announcement:
-      end_at:
-        end_before_start_error: "is invalid. End date before start date?"
+      end_before_start_error: "is invalid. End date before start date?"
+      invalid_date: "must be a valid date"
   activerecord:
     attributes:
       category:
@@ -261,7 +261,7 @@ en:
         provider_newsletters: 'Send me occasional newsletters with tips for growing my business, marketing my skills, and connecting with parents in the smartest, easiest ways.'
         provider_marketing_emails: 'Send me occasional deals and offers from Kinstantly and Kinstantly partners.'
       announcement:
-        icon: "Choose an icon"
+        icon: "Choose an icon (to appear with headline)"
         headline: "Headline"
         body: "Text area"
         button_text: "Button text"
@@ -941,3 +941,11 @@ en:
       profile_claim:
         claimant_email: Email address
         claimant_phone: Phone number
+  date:
+    formats:
+      db: "%Y-%m-%d"
+      display: "%m-%d-%Y"
+  time:
+    formats:
+      db: "%Y-%m-%d %H:%M:%S"
+      display: "%m-%d-%Y %H:%M:%S"
