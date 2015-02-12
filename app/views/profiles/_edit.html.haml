@@ -62,8 +62,7 @@
 			-# Displaying the widget in the edit tab is too hard given we cannot predict what is in it.
 			-# - if @profile.widget_code.present?
 			-# 	.promo_container= raw @profile.widget_code
-		- if allowed_for_prerelease? # Until released to providers.
-			#announcements.formlet= render partial: 'announcements_formlet'
+		#announcements.formlet= render partial: 'announcements_formlet'
 	-# Cache the entire reviews section so we do not have to read nested reviewer caches unless necessary.
 	-# Use the same cache keys as the show view because there is no editing of the reviews here.
 	- ordered_reviews = @profile.reviews.order_by_descending_created_at
