@@ -133,7 +133,8 @@
 			- profile_announcements.each do |announcement|
 				%section.announcement-area{class: "#{announcement_icon_class(announcement.icon)}"}
 					%h3.announcement-title= announcement.headline
-					%p= announcement.body
+					.show-more
+						%p.text_area= profile_display_text announcement.body, preserve: true, links: true
 					= announcement_button announcement.button_text, announcement.button_url
 		-# Cache the entire reviews section so we do not have to read nested reviewer caches unless necessary.
 		- ordered_reviews = @profile.reviews.order_by_descending_created_at
@@ -255,7 +256,8 @@
 			$('.location_block + .location_block').css 'display', 'none'
 			false
 			
-		$('.show-more').shorten({showChars: 420})
+		$('.description .show-more').shorten({showChars: 420})
+		$('.announcement-area .show-more').shorten({showChars: 300})
 		
 		link_addresses_to_map $('.address.location > a')
 

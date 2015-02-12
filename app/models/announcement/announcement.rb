@@ -28,11 +28,11 @@ class Announcement < ActiveRecord::Base
 	scope :active, -> { where(active: true) }
 
 	def start_at_date
-		start_at.strftime(DATEFORMAT) unless start_at.blank?
+		start_at.utc.strftime(DATEFORMAT) unless start_at.blank?
 	end
 
 	def end_at_date
-		end_at.strftime(DATEFORMAT) unless end_at.blank?
+		end_at.utc.strftime(DATEFORMAT) unless end_at.blank?
 	end
 
 	def start_at=(input_date)
