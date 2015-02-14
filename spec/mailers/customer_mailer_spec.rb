@@ -29,9 +29,9 @@ describe CustomerMailer, payments: true do
 				email.should have_body_text profile_url provider_profile
 			end
 		
-			it "should have a link to the payments page" do
-				email.should have_body_text customer_url customer
-			end
+			# it "should have a link to the payments page" do
+			# 	email.should have_body_text customer_url customer
+			# end
 		
 			it "should have a link to the authorization page" do
 				email.should have_body_text authorize_payment_url provider_profile
@@ -41,9 +41,9 @@ describe CustomerMailer, payments: true do
 				email.should have_body_text display_currency_amount customer_file.authorized_amount_usd
 			end
 		
-			it "should show the card information" do
-				email.should have_body_text display_payment_card_in_email customer_file.stripe_card
-			end
+			# it "should show the card information" do
+			# 	email.should have_body_text display_payment_card_in_email customer_file.stripe_card
+			# end
 		
 			it "should mention authorization in the subject" do
 				email.should have_subject /auth/
@@ -65,9 +65,9 @@ describe CustomerMailer, payments: true do
 				email.should have_body_text customer_file_url customer_file
 			end
 		
-			it "should show the authorized amount" do
-				email.should have_body_text display_currency_amount customer_file.authorized_amount_usd
-			end
+			# it "should show the authorized amount" do
+			# 	email.should have_body_text display_currency_amount customer_file.authorized_amount_usd
+			# end
 		
 			it "should mention authorization in the subject" do
 				email.should have_subject /auth/
@@ -135,7 +135,7 @@ describe CustomerMailer, payments: true do
 			end
 		
 			it "should mention revocation in the message body" do
-				email.should have_body_text "no longer have permission to charge their card"
+				email.should have_body_text "has revoked payment authorization"
 			end
 		end
 	end

@@ -10,14 +10,14 @@ Feature: Create charge
 			And I have a client with each of username "leontyne", email "lprice@kinstantly.com", and authorized amount "$100"
 		When I visit the client list page
 			And I click on the "leontyne" link
-			And I click on the "Charge card" button
+			And I click on the "Charge customer's card" button
 			And I want to charge "$39.50"
 			And I want the charge description to be "Office visit fee"
 			And I want the description on the charge statement to be "Voice coach"
 			And I click on the "Charge card" button
 
 	Scenario: Notification is sent to the client when I charge them
-		Then "lprice@kinstantly.com" should receive an email with subject "Kinstantly Provider Charge Notification"
+		Then "lprice@kinstantly.com" should receive an email with subject "has charged your card"
 
 	Scenario: Notification to the client contains the charged amount
 		When "lprice@kinstantly.com" opens the email
@@ -32,7 +32,7 @@ Feature: Create charge
 		Then they should see "Voice coach" in the email body
 
 	Scenario: Notification to the client contains a link to the charge details page
-		When "lprice@kinstantly.com" opens the email with subject "Kinstantly Provider Charge Notification"
+		When "lprice@kinstantly.com" opens the email with subject "has charged your card"
 			And I sign out
 			And I sign in as the charged client
 			And I follow "here" in the email

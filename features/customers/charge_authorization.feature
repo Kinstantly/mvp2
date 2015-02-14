@@ -14,35 +14,35 @@ Feature: Authorize charges
 	Scenario: Authorize a total amount
 		When I enter "$42.47" in the "I authorize payment" field
 			And I click on the "Authorize" button
-		Then I should see "You're set up for Kinstantly Pre-Auth" on the page
+		Then I should see "You're all set up for online payments on Kinstantly" on the page
 			And I should see "up to $42.47" on the page
-		When I click on the "Payment information" button
+		When I click on the "here" link
 		Then I should see "$42.47" on the page
 
 	Scenario: Receive authorization confirmation
 		When I enter "$42.47" in the "I authorize payment" field
 			And I click on the "Authorize" button
-			And I open the email with subject "You have authorized payments via Kinstantly"
-		Then I should see "not to exceed a total of $42.47" in the email body
+			And I open the email with subject "You've authorized payments via Kinstantly"
+		Then I should see "not to exceed $42.47" in the email body
 
 	Scenario: Notify provider of authorization by their client
 		When I enter "$42.47" in the "I authorize payment" field
 			And I click on the "Authorize" button
-			And the payable provider opens the email with subject "Your client has authorized payments to you"
-		Then they should see "not to exceed a total of $42.47" in the email body
+			And the payable provider opens the email with subject "A customer has authorized payments to you"
+		Then they should see "has authorized online payments to you" in the email body
 
 	Scenario: Revoke authorization
 		When I click on the "Revoke payment authorization" button
 		Then I should see "no longer has permission to charge your card" on the page
-		When I click on the "Payment information" button
+		When I click on the "here" link
 		Then I should see "Not authorized" on the page
 
 	Scenario: Receive revocation confirmation
 		When I click on the "Revoke payment authorization" button
-			And I open the email with subject "You have revoked authorization of payments"
+			And I open the email with subject "You've revoked payment authorization"
 		Then I should see "no longer has permission to charge your card" in the email body
 
 	Scenario: Notify provider of revocation
 		When I click on the "Revoke payment authorization" button
-			And the payable provider opens the email with subject "Your client has revoked authorization of payments"
-		Then they should see "You no longer have permission to charge their card" in the email body
+			And the payable provider opens the email with subject "A customer has revoked payment authorization"
+		Then they should see "has revoked payment authorization" in the email body

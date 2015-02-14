@@ -24,9 +24,9 @@ describe StripeConnectMailer, payments: true do
 			email.should have_body_text customer_files_url
 		end
 		
-		it "should have a link to the Stripe dashboard" do
-			email.should have_body_text stripe_dashboard_url
-		end
+		# it "should have a link to the Stripe dashboard" do
+		# 	email.should have_body_text stripe_dashboard_url
+		# end
 		
 		it "should have a link to the provider's payment introduction" do
 			email.should have_body_text about_payments_profile_url provider_profile
