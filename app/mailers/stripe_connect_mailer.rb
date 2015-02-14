@@ -11,7 +11,7 @@ class StripeConnectMailer < ActionMailer::Base
 		@profile = user.profile
 		sendgrid_category :stripe_connect_welcome_provider
 		@show_logo = true
-		subject = "You're set up for payments via Kinstantly"
+		subject = "You're all set to accept online payments on Kinstantly"
 		mail to: user.email, subject: subject
 	end
 end

@@ -1,17 +1,19 @@
 = "Hi #{@provider_name.presence || 'there'},"
 %br
 %br
-%b= "#{@customer_file.customer_name} has authorized payments to you not to exceed a total of #{display_currency_amount @customer_file.authorized_amount_usd}."
+= "#{@customer_file.customer_name} has authorized online payments to you."
 %br
 %br
-= link_to 'Click here', customer_file_url(@customer_file)
-to view your client's details and initiate charges.
+To view details and initiate charges,
+= link_to 'click here.', customer_file_url(@customer_file)
 %br
 %br
-Please don't hesitate to shoot us an email if you need help or have any other questions. Just reply to this email.
+Need help? Just reply to this email, and we'll get back to you right away.
 %br
 %br
-Thank you.
+Thanks!
 %br
 %br
-&ndash; The Kinstantly Team
+&ndash; Jim Scott and Edward Simpson
+%br
+Founders

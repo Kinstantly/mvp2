@@ -13,7 +13,7 @@ class StripeChargeMailer < ActionMailer::Base
 		@provider_profile = @customer_file.provider.profile
 		sendgrid_category :customer_charge_notification
 		@show_logo = true
-		subject = "Kinstantly Provider Charge Notification"
+		subject = "#{@provider_profile.company_otherwise_display_name} has charged your card"
 		mail to: @user.email, subject: subject
 	end
 	
@@ -24,7 +24,7 @@ class StripeChargeMailer < ActionMailer::Base
 		@provider_profile = @customer_file.provider.profile
 		sendgrid_category :customer_refund_notification
 		@show_logo = true
-		subject = "Kinstantly Provider Refund Notification"
+		subject = "#{@provider_profile.company_otherwise_display_name} has issued a refund"
 		mail to: @user.email, subject: subject
 	end
 end

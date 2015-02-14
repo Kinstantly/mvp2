@@ -2,7 +2,7 @@
 #content
 	#customer.payments
 		%h1= t 'views.customer.view.customer_title'
-		%p= t 'views.customer.view.provider_list_description_html', button_text: t('views.customer.view.modify_authorized_amount')
+		%p= t 'views.customer.view.provider_list_description'
 		%table.tablesorter#provider_list
 			%thead
 				%tr
@@ -24,8 +24,6 @@
 							%td= link_to t('views.customer.view.reauthorize_amount'), authorize_payment_path(profile), class: 'button'
 						%td= display_payment_card_summary customer_file.stripe_card
 						%td= render partial: 'change_card_button', locals: {customer: @customer, profile: profile}
-		.buttons
-			= link_to t('views.customer.view.cancel'), edit_user_registration_path, class: 'default wide'
 		%h2= t 'views.customer.view.charge_history'
 		%table.tablesorter#charge_history
 			%thead

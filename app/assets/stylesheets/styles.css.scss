@@ -225,6 +225,9 @@
 			@include scale(margin-top, 18);
 			border-top: 1px solid $medium-gray;
 		}
+		form h2 {
+			border-top: none;
+		}
 		div, p {
 			@include scale(margin-top, 12);
 		}

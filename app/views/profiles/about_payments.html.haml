@@ -3,13 +3,12 @@
 - cache ['about_payments', @profile, user_signed_in?] do
 	%section#content
 		%header#about_payments.payments
-			%h1 Kinstantly gives families and providers a better way to handle payments and invoicing.
-			%h2 Kinstantly Pre-Authorized Payments lets you
+			%h2 Kinstantly gives you a better way to pay your favorite providers, like music teachers, preschools, tutors, and therapists.
 			%ul
-				%li Enter your credit card details securely
-				%li Enter an upper limit for what the provider can charge you
-				%li Not have to worry about paying for each appointment, as long as you haven't exceeded your limit
-				%li Unlock the ability to pay for shorter periods of time with your provider, like a ten-minute phone call or five-minute video chat when you need answers most
+				%li Enter your credit card info just once to pay any provider on Kinstantly
+				%li No more forgetting to take a check to all those weekly appointments
+				%li Get automatic reminders and receipts
+				%li Pay for quick consults with your provider&mdash;like a 10-minute phone call or 5-minute video chat&mdash;when you need answers fast
 			%p
 				Ready to get started?
 				= link_to 'Just click here', authorize_payment_path(@profile)

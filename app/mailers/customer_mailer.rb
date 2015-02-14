@@ -12,7 +12,7 @@ class CustomerMailer < ActionMailer::Base
 		@provider_profile = customer_file.provider.profile
 		sendgrid_category :confirm_authorized_amount
 		@show_logo = true
-		subject = "You have authorized payments via Kinstantly"
+		subject = "You've authorized payments via Kinstantly"
 		mail to: @user.email, subject: subject
 	end
 	
@@ -22,7 +22,7 @@ class CustomerMailer < ActionMailer::Base
 		@provider_profile = customer_file.provider.profile
 		sendgrid_category :confirm_revoked_authorization
 		@show_logo = true
-		subject = "You have revoked authorization of payments"
+		subject = "You've revoked payment authorization"
 		mail to: @user.email, subject: subject
 	end
 	
@@ -32,7 +32,7 @@ class CustomerMailer < ActionMailer::Base
 		@provider_name = @provider.try(:profile).try(:first_name)
 		sendgrid_category :notify_provider_of_payment_authorization
 		@show_logo = true
-		subject = "Your client has authorized payments to you"
+		subject = "A customer has authorized payments to you"
 		mail to: @provider.email, subject: subject
 	end
 	
@@ -42,7 +42,7 @@ class CustomerMailer < ActionMailer::Base
 		@provider_name = @provider.try(:profile).try(:first_name)
 		sendgrid_category :notify_provider_of_revoked_authorization
 		@show_logo = true
-		subject = "Your client has revoked authorization of payments"
+		subject = "A customer has revoked payment authorization"
 		mail to: @provider.email, subject: subject
 	end
 end

@@ -5,29 +5,41 @@
 				= link_to @profile.company_otherwise_display_name, @profile
 				no longer has permission to charge your card.
 			%p To restore permission for this provider, simply authorize a new amount.
+			%p
+				View your payment details
+				= succeed '.' do
+					= link_to 'here', @customer
+			%p
+				Questions? Email us, at
+				= succeed ',' do
+					= mail_to SUPPORT_EMAIL
+				and we'll get right back to you.
 		- elsif @profile and @authorized_amount
 			%p
 				- if params[:card_changed]
-					= "Your card has been changed to the following for Kinstantly Pre-Auth up to #{display_currency_amount(@authorized_amount)} with"
-					= succeed '.' do
-						= link_to @profile.company_otherwise_display_name, @profile
+					Your card has been changed to the following for online payments to this provider.
 					%br
 					%br
 					%span.card_summary= display_payment_card_summary @customer.card_for_provider(@profile.user)
+				- elsif params[:created]
+					Congrats! You're all set up for online payments on Kinstantly.
 				- else
-					- if params[:created]
-						Congrats! You're all set up for Kinstantly Pre-Auth with
-					- else
-						You're set up for Kinstantly Pre-Auth with
-					= link_to @profile.company_otherwise_display_name, @profile
-					= "up to #{display_currency_amount(@authorized_amount)}."
+					Congrats! You're all set up for online payments on Kinstantly.
 			%p
-				Questions? Concerns? Please email
-				= mail_to SUPPORT_EMAIL
-				at any time, and we'll get back to you right away.
+				= link_to @profile.company_otherwise_display_name, @profile
+				= "can charge your card for any services you approve, up to #{display_currency_amount(@authorized_amount)}."
+			%p
+				View your payment details
+				= succeed '.' do
+					= link_to 'here', @customer
+			%p
+				Questions? Email us, at
+				= succeed ',' do
+					= mail_to SUPPORT_EMAIL
+				and we'll get right back to you.
 		- else
 			There was a problem.  Please email
 			= mail_to SUPPORT_EMAIL
 			and we'll get back to you right away.
-		.buttons
-			= link_to t('views.customer.view.customer_button'), @customer, class: 'default wide'
+		-# .buttons
+		-# 	= link_to t('views.customer.view.customer_button'), @customer, class: 'default wide'

@@ -375,12 +375,12 @@ en:
       edit:
         add_card: 'Add card'
         add_new_card: 'Add new card'
-        authorization_agreement_html: 'I authorize <strong>%{provider}</strong> to charge my credit card for services, including answering phone calls, emails, or video sessions that I initiate outside of regular appointments up to the amount of'
-        authorization_button: 'Authorize with card'
+        authorization_agreement_html: "I authorize <strong>%{provider}</strong> to charge my credit card for any services provided to me, up to the amount I've indicated below."
+        authorization_button: 'Enter credit card'
         authorization_title: 'Charge authorization'
-        authorized_amount: 'I authorize payment up to a total of:'
+        authorized_amount: 'I authorize payment up to:'
         authorized_amount_increment_title_html: 'Add to your authorized amount of %{authorized_amount} for payment to <strong>%{provider}</strong>'
-        authorized_amount_title_html: 'Change your authorized amount of up to %{authorized_amount} for payment to <strong>%{provider}</strong>'
+        authorized_amount_title_html: 'Change your authorized amount for <strong>%{provider}</strong>'
         authorized_amount_placeholder: 'Amount, in dollars'
         cancel: 'Cancel'
         change_card_button: 'Change card'
@@ -389,14 +389,14 @@ en:
         revoke_authorization: 'Revoke payment authorization'
         revoke_authorization_confirm: 'This provider will not be allowed to collect payments from you. Are you sure you want to revoke payment authorization?'
         revoke_authorization_disable: 'Revoking...'
-        revoke_authorization_instructions_html: 'If you no longer want <strong>%{provider}</strong> to charge your card, press the button below.'
+        revoke_authorization_instructions_html: 'No longer want <strong>%{provider}</strong> to charge your card? Click this button:'
         reauthorize_amount_title_html: 'Fill in an amount to authorize payments to <strong>%{provider}</strong>'
         submit: 'Authorize'
         submit_disable: 'Authorizing...'
       view:
         modify_authorized_amount: 'Change amount'
         modify_authorized_amount_buttons: ' '
-        authorized_amount: 'Authorized amount'
+        authorized_amount: 'Authorized limit, if any'
         cancel: 'Your account settings'
         card_exp: 'exp. date'
         card_info: 'Card'
@@ -417,7 +417,7 @@ en:
         fully_refunded: 'Fully refunded'
         not_authorized: 'Not authorized'
         partially_refunded: '%{amount} refunded'
-        provider_list_description_html: "You have authorized the providers listed below to charge you for services up to the amount listed.  To increase the amount, click on the provider's &quot;<strong>%{button_text}</strong>&quot; button."
+        provider_list_description: "You've authorized the providers listed below to charge your credit card for services."
         provider_name: 'Provider'
         reauthorize_amount: 'Reauthorize payment'
     customer_file:
@@ -431,7 +431,7 @@ en:
         you_are_not_authorized: 'You are not allowed to charge this client.'
       view:
         authorized_amount: 'Authorized amount remaining: %{amount}'
-        cancel: 'Back to client list'
+        cancel: 'Back to customer list'
         charge_details_button: 'Details'
         charge_details_refund_button: 'Details or refund'
         charge_history: 'Transaction history'
@@ -456,15 +456,24 @@ en:
         customer_authorized_amount: 'Authorized amount'
         customer_email: 'Email address'
         customer_list_cancel: 'Your account settings'
-        customer_list_description_html: "Click on a client's &quot;<strong>%{button_text}</strong>&quot; button to charge their card or view their transaction history."
-        customer_list_title: 'Client list'
+        customer_list_description_html: "Click on the &quot;<strong>%{button_text}</strong>&quot; button for any customer in the list below to charge their card or view their transaction history."
+        customer_list_title: 'Customer list'
         customer_username: 'Username'
         email: 'Email address:'
-        new_charge: 'Charge card'
+        new_charge: "Charge customer's card"
         not_authorized: 'Not authorized'
-        not_authorized_explanation: 'You are no longer authorized to charge this client.'
-        reminder_prompt: 'Click here to remind %{user} to increase their authorized amount.'
-        request_reauthorization_prompt: 'Click here to request reauthorization.'
+        not_authorized_explanation: "You're no longer authorized to charge this customer's credit card."
+        reminder_prompt:
+          before_link: 'Or click'
+          link: 'here'
+          after_link: 'to remind %{user} to increase the authorized amount.'
+        request_reauthorization_email:
+          body: "Hi %{user}.\n\nThis is just a quick note to remind you that in order for me to accept online payments from you, you'll need to reauthorize payments on Kinstantly.\n\nYou'll just need to click the following link--and follow the instructions.\n\n%{link}\n\nThanks!"
+          subject: 'Payment authorization request'
+        request_reauthorization_prompt:
+          before_link: 'If you think this might be a mistake, click'
+          link: 'here'
+          after_link: 'to request reauthorization.'
         view_customer: 'View'
     home:
       view:
@@ -850,12 +859,13 @@ en:
         customer_header: 'Payments to your providers'
         customer_link: 'View authorizations and payments to your providers'
         customer_link_for_menu: 'Payments'
-        customer_list_link: 'View clients and charge credit cards'
-        customer_list_link_for_menu: 'Client list'
-        payments_scheduling_header: 'Payments and scheduling settings'
+        customer_list_link: 'View customers and charge credit cards'
+        customer_list_link_for_menu: 'Customer list'
+        payments_header: 'Online Payments'
         postal_code_note: "If you're receiving our newsletter, you'll get the local edition."
-        stripe_connect_prompt: 'Make online payments easy by connecting your Kinstantly account to Stripe.'
-        stripe_connected: 'Your Kinstantly account is connected to Stripe.'
+        stripe_connect_prompt: 'To begin accepting online payments from your customers, connect your Kinstantly profile to Stripe.'
+        stripe_connect_info_link: 'Learn more.'
+        stripe_connected: 'Your Kinstantly profile is connected to Stripe.'
         newsletters_and_marketing_emails_label: 'Send me Kinstantly news'
         add_button_header: 'Profile extras'
         add_button_prompt: 'Send people to your Kinstantly profile by adding a button to your personal website.'

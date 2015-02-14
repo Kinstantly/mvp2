@@ -2,27 +2,28 @@
 %br
 %br
 = link_to @provider_profile.company_otherwise_display_name, profile_url(@provider_profile)
-%b no longer has permission to charge your card.
+no longer has permission to charge your card.
 %br
 %br
-= link_to 'Click here', authorize_payment_url(@provider_profile)
+Click
+= link_to 'here', authorize_payment_url(@provider_profile)
 = "to reauthorize payments to #{@provider_profile.company_otherwise_display_name}."
 %br
 %br
-= link_to 'Click here', customer_url(@customer_file.customer)
+Click
+= link_to 'here', customer_url(@customer_file.customer)
 to view past charge details.
 %br
 %br
 If you have questions about particular charges, please contact your provider directly.
 - if @provider_profile.email.present?
-	%b We have the following email address for your provider:
+	We have the following email address for your provider:
 	= mail_to @provider_profile.email
 %br
 %br
-Please don't hesitate to shoot us an email if you need help or have any other questions. Just reply to this email.
+Need help? Just reply to this email, and we'll get back to you right away.
 %br
 %br
-Thank you.
-%br
+Thanks!
 %br
 &ndash; The Kinstantly Team
