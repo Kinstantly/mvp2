@@ -855,6 +855,18 @@
 			.save{
 				padding: 0.42857em;
 			}
+			.show-more{
+				p {margin-bottom: 1.5em}
+				a.morelink {
+					text-transform: capitalize;
+				}
+				div.shortcontent{
+					display: inline;
+					p {
+						display: inline;
+					}
+				}
+			}
 		}
 		.reviews-list {
 			font-size: 0.875em;

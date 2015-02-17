@@ -8,7 +8,8 @@
 			%a.editable= t 'views.announcement.edit.new_announcement_prompt'
 		- else
 			%h3.announcement-title.editable= display_announcement.headline
-			%p= display_announcement.body
+			.show-more
+				%p.text_area= profile_display_text display_announcement.body, preserve: true, links: true
 			.announcement-start-end-date
 				Active from
 				%span= display_announcement.start_at_date
@@ -26,9 +27,6 @@
 				= hidden_field_tag 'child_formlet', formlet
 				= f.fields_for "profile_announcements_attributes[#{i}]", announcement do |af|
 					= af.hidden_field :id
-					.position_field.text_field
-						= af.label :position
-						= af.select :position, announcement_positions(announcements_total, i)
 					.radio_button_set{id: "radio_button_set_announcement_#{i}"}
 						= af.label :icon
 						.icon-buttonset
@@ -56,6 +54,9 @@
 						= af.label :button_url
 						= af.text_field :button_url
 						%p.note= t 'views.announcement.edit.button_url_example'
+					.position_field.text_field
+						= af.label :position
+						= af.select :position, announcement_positions(announcements_total, i)
 					.date_field
 						%label Date range
 						%p.note= t 'views.announcement.edit.date_range_explanation'
@@ -70,8 +71,8 @@
 					%h4= t 'views.announcement.edit.search_result_area_explanation'
 					.search-result-announcement-area
 						- displayable_locations = @profile.displayable_sorted_locations
-						- first_announcement = @profile.profile_announcements.search_results_to_display.first
-						- second_announcement = @profile.profile_announcements.search_results_to_display.second
+						- first_announcement = @profile.profile_announcements.all_search_results.first
+						- second_announcement = @profile.profile_announcements.all_search_results.second
 						- second_display_announcement = display_announcement == first_announcement ? second_announcement : first_announcement
 						- center_announcement = get_center_announcement(display_announcement, second_display_announcement, first_announcement != display_announcement)
 						- upper_right_announcement = get_upper_right_announcement(display_announcement, second_display_announcement, first_announcement != display_announcement)
@@ -83,7 +84,7 @@
 							%p.note= t 'views.announcement.edit.search_result_link_text_example'
 						.position_field.text_field
 							= af.label :search_result_position
-							= af.select :search_result_position, search_result_positions(first_announcement.try(:search_result_position), af.object == first_announcement), {}, {id: "position_to_preview_#{i}"}
+							= af.select :search_result_position, search_result_positions(first_announcement.try(:search_result_position), af.object == first_announcement || af.object.new_record?), {}, {id: "position_to_preview_#{i}"}
 							%p= t 'views.announcement.edit.search_result_position_explanation'
 						%hr
 						%h3.section-header Search result PREVIEW
@@ -135,3 +136,4 @@
 			$("#preview-area-#{i} section.announcements a").hide()
 		if($("#preview-area-#{i} aside.more.announcements a").text() == "")
 			$("#preview-area-#{i} aside.more.announcements").hide()
+

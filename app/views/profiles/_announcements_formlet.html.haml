@@ -39,7 +39,8 @@
 	setup_note_counter = (field) ->
 		field.find('input, textarea').simplyCountable({
 			counter: field.find('.char_count'),
-			maxCount: my_vars.edit_announcement.max_lengths[field.attr('data-i')]
+			maxCount: my_vars.edit_announcement.max_lengths[field.attr('data-i')],
+			valueLength: my_vars.edit_profile.text_area_value_length
 		})
 
 	update_preview = (i_num, position_changed) ->
@@ -110,3 +111,6 @@
 		# Re-bind formlet open event.
 		$('#announcements .formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
 		$('#announcements .formlet').each -> my_vars.f.configure_formlet this
+
+		$('#announcements .show-more').shorten({showChars: 300})
+		$('#announcements a.morelink').addClass('dont_popover')

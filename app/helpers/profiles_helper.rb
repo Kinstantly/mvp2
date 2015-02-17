@@ -724,11 +724,9 @@ Founder and CEO
 	end
 
 	def search_result_positions(first_announcement_position=0, is_first_announcement=true)
+		selected_position = first_announcement_position ||= 0
 		positions = [['center', 0] , ['upper right', 1]]
-		selected_position = 0
-		if is_first_announcement
-			selected_position = first_announcement_position
-		else
+		if is_first_announcement == false
 			selected_position = (first_announcement_position == 1) ? 0 : 1
 		end
 		options_for_select(positions, selected_position)
