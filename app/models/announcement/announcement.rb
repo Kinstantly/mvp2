@@ -67,7 +67,7 @@ class Announcement < ActiveRecord::Base
 
 	def convert_to_datetime(date_str)
 		begin
-			Time.strptime(date_str, DATEFORMAT).utc unless date_str.blank?
+			Time.strptime(date_str, DATEFORMAT) unless date_str.blank?
 		rescue
 			date_str
 		end
