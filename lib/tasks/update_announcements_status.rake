@@ -2,7 +2,7 @@ namespace :announcements do
 	desc "Determine announcement active status based on their date range and update their status accordingly"
 	task :update_active_status => :environment do
 		Announcement.find_each do |announcement|
-			now = DateTime.now
+			now = Time.zone.now
 			active_start_date =  announcement.start_at.present? && announcement.start_at <= now
 			active_end_date = announcement.end_at.blank? || announcement.end_at >= now
 			if active_start_date && active_end_date

@@ -8,7 +8,7 @@ FactoryGirl.define do
 		body "Factoryody"
 		button_text "FactoryButtonText"
 		button_url "FactoryButtonURL"
-		start_at DateTime.now
+		start_at Time.zone.now
 	end
 
 	factory :profile_announcement do
@@ -18,7 +18,7 @@ FactoryGirl.define do
 		body "Factoryody"
 		button_text "FactoryButtonText"
 		button_url "FactoryButtonURL"
-		start_at DateTime.now
+		start_at Time.zone.now
 		search_result_position 0
 	end
 end

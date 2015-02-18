@@ -54,7 +54,7 @@ class Announcement < ActiveRecord::Base
 	end
 
 	def set_active_status
-		now = DateTime.now
+		now = Time.zone.now
 		self.active = (start_at <= now && (end_at.blank? || end_at >= now)) unless start_at.blank?
 		true
 	end

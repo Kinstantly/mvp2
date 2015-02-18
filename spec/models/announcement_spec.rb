@@ -12,8 +12,8 @@ describe Announcement do
 		announcement.position = 0
 		announcement.button_text = 'Register NOW!'
 		announcement.button_url = 'http://example.com'
-		announcement.start_at = DateTime.now
-		announcement.end_at = DateTime.now + 1.month
+		announcement.start_at = Time.zone.now
+		announcement.end_at = Time.zone.now + 1.month
 		announcement.should have(:no).errors_on(:body)
 		announcement.should have(:no).errors_on(:headline)
 		announcement.should have(:no).errors_on(:icon)
@@ -68,8 +68,8 @@ describe Announcement do
 	end
 
 	it "should fail if announcement end date comes before start date" do
-		announcement.start_at = DateTime.now
-		announcement.end_at = DateTime.now - 2.weeks
+		announcement.start_at = Time.zone.now
+		announcement.end_at = Time.zone.now - 2.weeks
 		announcement.should have(1).errors_on(:end_at)
 	end
 

@@ -704,15 +704,15 @@ end
 
 When /^I enter a (valid|past) start date and (?:a)? (past|future|no) end date in the Date range section of the "(.*?)" formlet$/ do |start_date_when, end_date_when, formlet|
 	if start_date_when == 'valid'
-		start_date = DateTime.now
+		start_date = Time.zone.now
 	else
-		start_date = DateTime.now - 2.weeks
+		start_date = Time.zone.now - 2.weeks
 	end
-	end_date = DateTime.now + 1.weeks if end_date_when == 'future'
-	end_date = DateTime.now - 1.weeks if end_date_when == 'past'
+	end_date = Time.zone.now + 1.weeks if end_date_when == 'future'
+	end_date = Time.zone.now - 1.weeks if end_date_when == 'past'
 	within("##{formlet_id formlet}") do
-		fill_in "From", with: start_date.strftime("%Y-%m-%d")
-		fill_in "to", with: end_date.strftime("%Y-%m-%d") if end_date.present?
+		fill_in "From", with: start_date.strftime(Announcement::DATEFORMAT)
+		fill_in "to", with: end_date.strftime(Announcement::DATEFORMAT) if end_date.present?
 	end
 end
 
