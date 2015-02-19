@@ -118,13 +118,13 @@
 							- if i == 0 && locations.size > 1
 								= link_to t('views.profile.view.more_locations'), '#', class: 'more'
 								= link_to t('views.profile.view.hide_locations'), '#', class: 'less'
-			- if @profile.payable_provider
-				%section.payment_promo
-					= t 'views.profile.view.payment_promo'
-					- if current_user_is_client_of_provider
-						= link_to t('views.profile.view.payment_authorization_link'), authorize_payment_path(@profile)
-					- else
-						= link_to t('views.profile.view.payment_info_link'), about_payments_profile_path(@profile)
+			-# - if @profile.payable_provider
+			-# 	%section.payment_promo
+			-# 		= t 'views.profile.view.payment_promo'
+			-# 		- if current_user_is_client_of_provider
+			-# 			= link_to t('views.profile.view.payment_authorization_link'), authorize_payment_path(@profile)
+			-# 		- else
+			-# 			= link_to t('views.profile.view.payment_info_link'), about_payments_profile_path(@profile)
 			%section.promo
 				- if @profile.widget_code.present?
 					-# .ui-helper-clearfix

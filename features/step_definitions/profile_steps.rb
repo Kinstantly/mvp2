@@ -559,6 +559,14 @@ When /^I visit the payable provider's profile page$/ do
 	visit profile_path(@profile_for_payable_provider)
 end
 
+When /^I visit the payable provider's authorization page$/ do
+	visit authorize_payment_path(@profile_for_payable_provider)
+end
+
+When /^I visit the payable provider's payment information page$/ do
+	visit about_payments_profile_path(@profile_for_payable_provider)
+end
+
 When /^I click on the link for an unclaimed profile$/ do
 	click_link "#{@unattached_profile_data[:first_name]} #{@unattached_profile_data[:middle_name]} #{@unattached_profile_data[:last_name]}"
 end

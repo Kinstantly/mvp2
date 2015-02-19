@@ -7,8 +7,7 @@ Feature: Authorize charges
 	Background:
 		Given I am a client of a payable provider
 			And I am logged in
-		When I visit the payable provider's profile page
-			And I click on "Authorize payment"
+		When I visit the payable provider's authorization page
 		Then I should see "Change your authorized amount" on the page
 
 	Scenario: Authorize a total amount
