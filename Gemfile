@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '1.9.3'
+ruby '2.0.0'
 
 gem 'rails', '3.2.21'
 
@@ -166,7 +166,8 @@ gem 'dalli'
 gem 'cache_digests'
 
 # To use debugger
-gem 'debugger', group: :development
+# Ruby version 2.2.0 is not supported as of 19-Feb-2015.
+#gem 'debugger', group: :development
 
 # Makes running your Rails app easier. Based on the ideas behind 12factor.net
 # https://github.com/heroku/rails_12factor
