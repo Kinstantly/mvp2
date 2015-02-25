@@ -56,7 +56,7 @@ gem 'ruby-prof'
 gem 'devise'
 
 # Authorization library.
-gem 'cancan'
+gem 'cancancan'
 
 # Sitemap generation and search engine pinging.
 # Can upload sitemaps to AWS S3 (see below).
