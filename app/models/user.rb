@@ -14,11 +14,14 @@ class User < ActiveRecord::Base
 	# But ignore common events like sign-in to minimize versions data.
 	has_paper_trail ignore: [:last_sign_in_at, :current_sign_in_at, :last_sign_in_ip, :current_sign_in_ip, :sign_in_count]
 	
-	# Setup accessible (or protected) attributes for your model
-	attr_accessible :email, :password, :password_confirmation, :remember_me, 
+	# Accessible attributes.
+	DEFAULT_ACCESSIBLE_ATTRIBUTES = [
+		:email, :password, :password_confirmation, :current_password, :remember_me, 
 		:profile_attributes, :phone, :is_provider, :username, :registration_special_code, :profile_help,
 		:parent_marketing_emails, :parent_newsletters, :provider_marketing_emails, :provider_newsletters,
 		:marketing_emails_and_newsletters, :signed_up_from_blog, :signed_up_for_mailing_lists, :postal_code
+	]
+	attr_accessible *DEFAULT_ACCESSIBLE_ATTRIBUTES
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :email, :phone, :username, :postal_code
@@ -341,7 +344,7 @@ class User < ActiveRecord::Base
 		end
 		
 		def send_confirmation_instructions(attributes={})
-			user = if running_as_private_site? && !attributes[:admin_mode]
+			user = if running_as_private_site? && !attributes[:admin_confirmation_sent_by_id]
 				admin_approval_required(find_or_initialize_with_errors(confirmation_keys, attributes, :not_found)) do
 					super
 				end

@@ -56,7 +56,7 @@ describe Users::RegistrationsController do
 			it "updates email address for confirmation" do
 				put :update, user: {email: email, current_password: mimi.password}
 				response.should redirect_to '/'
-				flash[:notice].should_not be_nil
+				flash[:notice].should have_content 'confirmation'
 			end
 		
 			it "fails to update email address with double quote" do

@@ -56,6 +56,7 @@ gem 'ruby-prof'
 gem 'devise'
 
 # Authorization library.
+# https://github.com/CanCanCommunity/cancancan
 gem 'cancancan'
 
 # Sitemap generation and search engine pinging.
@@ -193,3 +194,8 @@ gem 'money-rails'
 
 # Mailchimp API wrapper
 gem "gibbon"
+
+# Prep for migration to Rails 4.
+# Remove this when migrated to Rails 4 because it is built in.
+# https://github.com/rails/strong_parameters
+gem 'strong_parameters'
