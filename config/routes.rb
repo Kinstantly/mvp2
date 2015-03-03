@@ -9,6 +9,7 @@ Mvp2::Application.routes.draw do
 	match 'privacy' => 'home#privacy'
 	match 'admin' => 'home#admin'
 	match 'show_all_categories' => 'home#show_all_categories'
+	get 'recent_newsletters' => 'home#recent_newsletters'
 	
 	# User model on which Devise authentication is based.
 	devise_for :users, controllers: { 

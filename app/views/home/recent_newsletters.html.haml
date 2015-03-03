@@ -1,0 +1,20 @@
+- @body_class = 'interior about'
+- @page_title_prefix = 'Recent Newsletters'
+- cache 'newsletter_archive' do
+	%section.content-section.privacy
+		%header.section-header
+			%h1 Recent Newsletters
+			%h2 Here are our most recent newsletters.  Click on a title to see the full newsletter.
+		%aside.illustration.left.rounded
+			= image_tag "terms_of_use_photo.png", alt: "Our Newsletters", itemprop: 'image', border: "0", width: "100%"
+			%span.photo-credit
+				= link_to '&copy; Slava Basovich'.html_safe, profile_path(1509)
+		%section.right.col4
+			:plain
+				<style type="text/css">
+				<!--
+				.display_archive {font-family: arial,verdana; font-size: 1.25em;}
+				.campaign {line-height: 125%; margin: 5px;}
+				//-->
+				</style>
+				<script language="javascript" src="http://us9.campaign-archive2.com/generate-js/?u=9da2f83266d2dfd9641ba63f6&fid=9661&show=10" type="text/javascript"></script>
