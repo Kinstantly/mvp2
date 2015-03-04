@@ -205,6 +205,7 @@ en:
         pregnancy_stage: 'pregnancy'
         pricing: 'Fees'
         rating_average_score: 'Average rating'
+        resources: 'Resources'
         services: 'Services'
         specialties: 'Specialties'
         specialties_description: 'My specialties'
@@ -633,6 +634,8 @@ en:
         new_review: 'Create a review'
         pricing_example_html: 'Examples: $100/hour <span class="label_highlight">or</span> See details: www.allkidstutoring.com/fees <span class="label_highlight">or</span> Free initial 30-minute phone consultation'
         pricing_tip: 'Tip: Keep it short and scan-able; link to more detailed information.'
+        resources_prompt: 'Enter resources you recommend, such as other providers, websites, and services'
+        resources_tip: "Tip: It's best to organize resources by category (PROVIDERS, WEBSITES, SERVICES, etc.)"
         search_area_tag_other: 'Other'
         service_area_example: 'Example: Greater Bay Area for office visits, nationwide by Skype or phone'
         services_blank: 'No services'

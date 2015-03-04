@@ -35,6 +35,7 @@
 					%th.large= Profile.human_attribute_name(:ages_stages)
 					%th= t 'views.profile.view.consultation_modes'
 					%th.large= Profile.human_attribute_name(:education)
+					%th.large= Profile.human_attribute_name(:resources)
 					%th= Profile.human_attribute_name(:certifications)
 					%th= Profile.human_attribute_name(:languages)
 					%th.large= Profile.human_attribute_name(:insurance_accepted)
@@ -71,6 +72,7 @@
 							.text_area= preserve_profile_text p.ages_stages_note
 						%td= profile_display_consultation_modes p
 						%td.text_area= preserve_profile_text p.education
+						%td.text_area= preserve_profile_text p.resources
 						%td.text_area= preserve_profile_text p.certifications
 						%td.text_area= preserve_profile_text p.languages
 						%td.text_area= preserve_profile_text p.insurance_accepted

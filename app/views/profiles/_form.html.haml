@@ -180,6 +180,14 @@
 			%span.note= t 'views.profile.edit.education_tip'
 			%br
 			%span.note= t 'views.profile.edit.education_example_html'
+		.resources
+			.label_area
+				= f.label :resources
+			= f.text_area :resources, size: '50x8'
+			%br
+			%span.note= t 'views.profile.edit.resources_prompt'
+			%br
+			%span.note= t 'views.profile.edit.resources_tip'
 		.certifications
 			.label_area
 				= f.label :certifications

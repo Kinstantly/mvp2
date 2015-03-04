@@ -85,6 +85,10 @@
 				- if @profile.education.present?
 					%h3= Profile.human_attribute_name :education
 					%p.text_area= profile_display_text @profile.education, preserve: true, links: true
+				- if @profile.resources.present?
+					%h3= Profile.human_attribute_name :resources
+					.show-more
+						%p.text_area= profile_display_text @profile.resources, preserve: true, links: true
 				- if @profile.year_started.present?
 					%h3= Profile.human_attribute_name :year_started
 					%p= @profile.year_started

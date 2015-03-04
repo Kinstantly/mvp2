@@ -126,6 +126,10 @@
 			%span.label= "#{Profile.human_attribute_name(:education)}:"
 			%br
 			.value.text_area= preserve_profile_text profile.education
+		.resources
+			%span.label= "#{Profile.human_attribute_name(:resources)}:"
+			%br
+			.value.text_area= preserve_profile_text profile.resources
 		.certifications
 			%span.label= "#{Profile.human_attribute_name(:certifications)}:"
 			%br

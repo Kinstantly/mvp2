@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150201060829) do
+ActiveRecord::Schema.define(:version => 20150304021609) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -272,6 +272,7 @@ ActiveRecord::Schema.define(:version => 20150201060829) do
     t.boolean  "show_stripe_connect",            :default => false
     t.boolean  "allow_charge_authorizations",    :default => false
     t.integer  "announcements_count",            :default => 0,         :null => false
+    t.text     "resources"
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"

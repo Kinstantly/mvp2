@@ -16,7 +16,7 @@ class Profile < ActiveRecord::Base
 		:first_name, :last_name, :middle_name, :credentials, :email, 
 		:company_name, :url, :locations_attributes, :reviews_attributes, :profile_announcements_attributes,
 		:headline, :education, :certifications, :year_started, 
-		:languages, :insurance_accepted, :summary, 
+		:languages, :insurance_accepted, :summary, :resources,
 		:category_ids, :subcategory_ids, :service_ids, :specialty_ids, :specialty_names,
 		:custom_service_names, :custom_specialty_names, 
 		:consult_in_person, :consult_in_group, :consult_by_email, :consult_by_phone, :consult_by_video, 
@@ -118,6 +118,7 @@ class Profile < ActiveRecord::Base
 		insurance_accepted: 750,
 		pricing: 750,
 		summary: 2100,
+		resources: 2100,
 		service_area: 750,
 		availability_service_area_note: 750,
 		hours: 750,
@@ -131,7 +132,7 @@ class Profile < ActiveRecord::Base
 	# Note: lengths of the email and invitation_email attributes are checked by the email validator.
 	[:first_name, :middle_name, :last_name, :credentials, :company_name, :url, :headline, :certifications,
 		:languages, :lead_generator, :photo_source_url, :ages_stages_note, :year_started, :education,
-		:insurance_accepted, :pricing, :summary, :service_area, :hours, :admin_notes,
+		:insurance_accepted, :pricing, :summary, :resources, :service_area, :hours, :admin_notes,
 		:availability_service_area_note].each do |attribute|
 			validates attribute, allow_blank: true, length: {maximum: MAX_LENGTHS[attribute]}
 		end

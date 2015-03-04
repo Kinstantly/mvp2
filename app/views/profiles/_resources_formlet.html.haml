@@ -1,0 +1,24 @@
+- formlet = 'resources'
+%h3.editable= Profile.human_attribute_name :resources
+.show-more
+	%p.text_area.attribute_display= profile_display_text @profile.errorfree.resources, preserve: true, links: true
+.edit.popover
+	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+		= f.error_messages
+		= hidden_field_tag 'formlet', formlet
+		.text_field#resources_field
+			%span.char_count
+			= f.label :resources
+			= f.text_area :resources, size: '45x5', class: 'attr'
+			%p.note= t 'views.profile.edit.resources_prompt'
+			%p.note= t 'views.profile.edit.resources_tip'
+		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
+
+:coffeescript
+	# Show character count while filling in field.
+	$('#resources_field textarea').simplyCountable({counter: '#resources_field .char_count', maxCount: my_vars.edit_profile.max_lengths.resources, valueLength: my_vars.edit_profile.text_area_value_length})
+	# Add more/less link for long content.
+	$('#resources .show-more').shorten({showChars: 420})
+	# Don't activate the pop-over formlet when clicking more/less.
+	$('#resources a.morelink').addClass('dont_popover')

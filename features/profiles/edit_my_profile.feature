@@ -23,6 +23,26 @@ Feature: Edit my expert profile
 			And I click on the "Save" button of the "insurance" formlet
 		Then my profile edit page should show "en.wikipedia.org" displayed as a link in the "insurance" area
 	
+	Scenario: Enter summary with an embedded link
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I open the "summary" formlet
+			And I enter "Ecce homo qui est faba.\nhttp://www.youtube.com/watch?v=9PgXtnPbURc" in the "About" field of the "summary" formlet
+			And I click on the "Save" button of the "summary" formlet
+		Then my profile edit page should show "Ecce homo qui est faba" displayed in the "summary" area
+			And my profile edit page should show "www.youtube.com/watch?v=9PgXtnPbURc" displayed as a link in the "summary" area
+	
+	Scenario: Enter recommended resources with an embedded link
+		Given I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I open the "resources" formlet
+			And I enter "PROVIDERS\nHolly Herndon: http://www.hollyherndon.com" in the "Resources" field of the "resources" formlet
+			And I click on the "Save" button of the "resources" formlet
+		Then my profile edit page should show "Holly Herndon" displayed in the "resources" area
+			And my profile edit page should show "www.hollyherndon.com" displayed as a link in the "resources" area
+	
 	Scenario: Remain on edit page while editing
 		Given I exist as a user
 			And I am logged in

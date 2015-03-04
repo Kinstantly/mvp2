@@ -518,7 +518,7 @@ describe Profile do
 		it "limits the number of input characters for attributes stored as string or text records" do
 			[:first_name, :last_name, :middle_name, :credentials, :company_name, :url, :headline,
 				:certifications, :languages, :lead_generator, :photo_source_url, :ages_stages_note, :year_started,
-				:education, :insurance_accepted, :pricing, :summary, :service_area,
+				:education, :insurance_accepted, :pricing, :resources, :summary, :service_area,
 				:hours, :admin_notes, :availability_service_area_note].each do |attr|
 				s = 'a' * Profile::MAX_LENGTHS[attr]
 				@profile.send "#{attr}=", s
