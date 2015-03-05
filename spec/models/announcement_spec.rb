@@ -53,13 +53,19 @@ describe Announcement do
 			announcement.icon = nil
 			announcement.should have(1).error_on :icon
 		end
-		it "must have button_text" do
+		it "must have button_text if button_url provided" do
 			announcement.button_text = nil
 			announcement.should have(1).error_on :button_text
 		end
-		it "must have button_url" do
+		it "must have button_url if button_text provided" do
 			announcement.button_url = nil
 			announcement.should have(1).error_on :button_url
+		end
+		it "button_url and button_text are optional if neither provided" do
+			announcement.button_text = nil
+			announcement.button_url = nil
+			announcement.should have(:no).error_on :button_text
+			announcement.should have(:no).error_on :button_url
 		end
 		it "must have start_at" do
 			announcement.start_at = nil
