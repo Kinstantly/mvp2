@@ -210,7 +210,7 @@ module ApplicationHelper
 	end
 
 	def newsletter_sign_up_link(options={})
-		path = new_user_registration_path nlsub: 't'
+		path = newsletter_signup_path
 		link_wrapper link_to(t('views.home.view.newsletter_sign_up'), path), options unless user_signed_in?
 	end
 	
