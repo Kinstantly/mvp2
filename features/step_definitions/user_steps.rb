@@ -90,6 +90,23 @@ def sign_up(sign_up_path='/provider/sign_up')
   find_user
 end
 
+def sign_up_and_subscribe(sign_up_path='/provider/sign_up', mailing_lists=[])
+  delete_user
+  visit sign_up_path
+  within('#sign_up') do
+    fill_in "user_email", :with => @visitor[:email]
+    fill_in "user_password", :with => @visitor[:password]
+    fill_in "user_password_confirmation", :with => @visitor[:password_confirmation]
+    fill_in "user_username", :with => @visitor[:username] if @visitor[:username]
+    fill_in "user_password_registration_special_code", :with => @visitor[:registration_special_code] if @visitor[:registration_special_code]
+    mailing_lists.each do |list|
+      check "user_#{list}"
+    end
+    click_button 'sign_up_button'
+  end
+  find_user
+end
+
 def sign_up_member
   sign_up '/member/sign_up'
 end
@@ -313,7 +330,7 @@ When /^I visit the user index page$/ do
 end
 
 When /^I save the account settings$/ do
-	click_button 'Save'
+	click_button 'Submit'
 end
 
 When /^I visit the account page for (?:a|an) (confirmed|unconfirmed) user$/ do |user_type|
@@ -339,6 +356,19 @@ end
 
 When /^the payable provider opens the email with subject "(.*?)"$/ do |subject|
 	step "\"#{@profile_for_payable_provider.user.email}\" opens the email with subject \"#{subject}\""
+end
+
+When /^I sign up as (?:a) (parent|provider) on the (blog|regular) site and subscribe to "(.*?)" mailing lists$/ do |user_type, page_origin, mailing_lists|
+  create_visitor
+  mailing_list_array = mailing_lists.split(", ")
+  path = '/provider/sign_up'
+  if user_type == 'parent'
+    path = 'member/sign_up'
+  end
+  if page_origin == 'blog'
+    path = 'in_blog/sign_up'
+  end
+  sign_up_and_subscribe path, mailing_list_array
 end
 
 ### THEN ###

@@ -1,156 +1,185 @@
 - info_email = "#{t('contact.emails.support.value')}@#{t('email_domain')}"
+- subscription_preferences = params[:subscription_preferences].present?
 #content
-	.edit_account.generic_form
-		%h1= t 'views.user.edit.header'
-		= form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put } do |f|
-			= devise_error_messages!
-			.email.text_field
-				= f.label :email, class: 'required'
-				= f.email_field :email
-				%span.note= t 'views.user.edit.email_note'
-			.password.text_field
-				= f.label :password, t('devise.passwords.edit_password_label')
-				= f.password_field :password, autocomplete: 'off'
-				%span.note= t 'views.user.edit.password_note', minimum: User::MIN_LENGTHS[:password]
-			.password_confirmation.text_field
-				= f.label :password_confirmation
-				= f.password_field :password_confirmation, autocomplete: 'off'
-			.username.text_field
-				= f.label :username #, class: 'required'
-				= f.text_field :username
-			.postal_code.text_field
-				= f.label :postal_code
-				= f.text_field :postal_code
-				%span.note= t 'views.user.edit.postal_code_note'
-			- if resource.is_provider?
-				.phone.text_field
-					= f.label :phone
-					= f.text_field :phone
-			- if resource.is_provider?
-				#contact_preferences.checkbox.newsletters_and_marketing_emails
-					= f.check_box :provider_marketing_emails, id: 'user_provider_marketing_emails'
-					= f.label :provider_marketing_emails
-				.checkbox.newsletters_and_marketing_emails
-					= f.check_box :provider_newsletters, id: 'user_provider_newsletters'
-					= f.label :provider_newsletters
-			- else
-				#contact_preferences.checkbox.newsletters_and_marketing_emails
-					= f.check_box :parent_marketing_emails, id: 'user_parent_marketing_emails'
-					= f.label :parent_marketing_emails
-				.checkbox.newsletters_and_marketing_emails
-					= f.check_box :parent_newsletters, id: 'user_parent_newsletters'
-					= f.label :parent_newsletters
-			.current_password.text_field
-				= f.label :current_password, class: 'required'
-				= f.password_field :current_password, autocomplete: 'off'
-				%span.note= t 'views.user.edit.current_password_note'
+	- if subscription_preferences
+		.edit_subscriptions.generic_form
+			%h3
+				Go to your 
+				= link_to (t 'views.user.edit.settings_page_link'), edit_user_registration_path, class: 'link'
+				to make other changes to your account.
 			%br
-			.buttons
-				= f.submit t('views.user.edit.submit'), disable_with: t('views.user.edit.submit_disable'), class: 'default'
-				= link_to t('views.user.edit.cancel'), user_home_page, class: 'cancel_link'
-			- if resource.is_provider? and resource.profile.try(:show_stripe_connect)
+			%br
+			%h1= t 'views.user.edit.subscriptions_form_header'
+			%h2= t 'views.user.edit.subscriptions_note'
+			= form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put } do |f|
+				= devise_error_messages!
+				= hidden_field_tag :subscription_preferences, subscription_preferences
+				= f.check_box :parent_newsletters_stage1
+				= f.label :parent_newsletters_stage1
 				%br
-				%h1= t 'views.user.edit.payments_header'
-				#payments_setup.formlet.info-popover
-					%h3
-						- if resource.is_payable? # Already connected
-							= t 'views.user.edit.stripe_connected'
-						-else
-							= t 'views.user.edit.stripe_connect_prompt'
-						= link_to (t 'views.user.edit.stripe_connect_info_link'), '#', id: 'stripe_more', class: 'link'
-					.edit.popover
-						- if resource.is_payable? # Already connected
-							%h2
-								Your Kinstantly profile is connected to Stripe
-						-else
-							%h2
-								Connecting your Kinstantly profile to Stripe
+				= f.check_box :parent_newsletters_stage2
+				= f.label :parent_newsletters_stage2
+				%br
+				= f.check_box :parent_newsletters_stage3
+				= f.label :parent_newsletters_stage3
+				%br
+				- if resource.is_provider?
+					= f.check_box :provider_newsletters
+					= f.label :provider_newsletters, checked: true
+				%br
+				.current_password.text_field
+					= f.label :current_password, class: 'required bold'
+					= f.password_field :current_password, autocomplete: 'off'
+					%span.note= t 'views.user.edit.current_password_note'
+				%br
+				.buttons
+					= f.submit t('views.user.edit.submit'), disable_with: t('views.user.edit.submit_disable'), class: 'highlight'
+	- else
+		.edit_account.generic_form
+			%h1= t 'views.user.edit.header'
+			= form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put } do |f|
+				= devise_error_messages!
+				.email.text_field
+					= f.label :email, class: 'required'
+					= f.email_field :email
+					%span.note= t 'views.user.edit.email_note'
+				.password.text_field
+					= f.label :password, t('devise.passwords.edit_password_label')
+					= f.password_field :password, autocomplete: 'off'
+					%span.note= t 'views.user.edit.password_note', minimum: User::MIN_LENGTHS[:password]
+				.password_confirmation.text_field
+					= f.label :password_confirmation
+					= f.password_field :password_confirmation, autocomplete: 'off'
+				.username.text_field
+					= f.label :username #, class: 'required'
+					= f.text_field :username
+				.postal_code.text_field
+					= f.label :postal_code
+					= f.text_field :postal_code
+					%span.note= t 'views.user.edit.postal_code_note'
+				- if resource.is_provider?
+					.phone.text_field
+						= f.label :phone
+						= f.text_field :phone
+				%br
+				.current_password
+					.text_field
+						= f.label :current_password, class: 'required'
+						= f.password_field :current_password, autocomplete: 'off'
+						%span.note= t 'views.user.edit.current_password_note'
+					%br
+					.buttons
+						= f.submit t('views.user.edit.submit'), disable_with: t('views.user.edit.submit_disable'), class: 'highlight'
+						-#= link_to t('views.user.edit.cancel'), user_home_page, class: 'cancel_link'		
+				%br
+				%h1= t 'views.user.edit.subscriptions_header'
+				%h3
+					Manage your
+					= succeed '.' do
+						= link_to (t 'views.user.edit.subscriptions_page_link'), edit_subscriptions_path, class: 'link'
+				- if resource.is_provider? and resource.profile.try(:show_stripe_connect)
+					%br
+					%h1= t 'views.user.edit.payments_header'
+					#payments_setup.formlet.info-popover
+						%h3
+							- if resource.is_payable? # Already connected
+								= t 'views.user.edit.stripe_connected'
+							-else
+								= t 'views.user.edit.stripe_connect_prompt'
+							= link_to (t 'views.user.edit.stripe_connect_info_link'), '#', id: 'stripe_more', class: 'link'
+						.edit.popover
+							- if resource.is_payable? # Already connected
+								%h2
+									Your Kinstantly profile is connected to Stripe
+							-else
+								%h2
+									Connecting your Kinstantly profile to Stripe
+								%p
+									Connecting your Kinstantly profile to Stripe makes online payments for you and your customers simple, easy, and safe.
 							%p
-								Connecting your Kinstantly profile to Stripe makes online payments for you and your customers simple, easy, and safe.
-						%p
-							All sensitive information, such as bank account and credit card numbers, is stored by Stripe, used by more than 17,000 websites around the world. To read more about Stripe's security, see
-							= succeed '.' do
-								%a{href: "http://stripe.com/help/security", target: '_blank'} stripe.com/help/security
-						%p 
-							Stripe processing fees&mdash;2.9% plus 30 cents per successful charge&mdash;apply. For details, see
-							= succeed '.' do
-								%a{href: "http://stripe.com/us/pricing", target: '_blank'} stripe.com/us/pricing
-						%p 
-							Questions? Email us:
-							= mail_to info_email
-					- if resource.is_payable? # Already connected
-						= link_to t('views.user.edit.customer_list_link'), customer_files_path, class: 'dont_popover'
-					- else
-						%br
-						= link_to stripe_connect_path_for(resource), class: "stripe-connect" do
-							%span Connect with Stripe
-			- if resource.is_provider?
-				%br
-				%h1= t 'views.user.edit.add_button_header'
-				#add_button.formlet.info-popover
-					%h3
-						= t 'views.user.edit.add_button_prompt'
-					= link_to 'Add a button', '#', class: 'link'
-					.edit.popover
-						%h2
-							Add a Kinstantly button to...
-						%ul
-							%li
-								showcase positive customer ratings and attract new reviews
-							%li
-								generate more customer leads
-							%li
-								make it easy for customers to schedule your services
-						%p
-							Choose a button below. Then copy the code and paste it into the HTML of your website.
-						%textarea.ui-corner-all.ui-widget-content{onclick: "$(this).select()"}
-							=raw profile_button_image profile_url(@user.profile), :reviews
-						.preview
-							%label
-								Preview:
-							=profile_button_image profile_url(@user.profile), :reviews
-						%hr/
-						%textarea.ui-corner-all.ui-widget-content{onclick: "$(this).select()"}
-							=raw profile_button_image profile_url(@user.profile), :schedule
-						.preview
-							%label
-								Preview:
-							=profile_button_image profile_url(@user.profile), :schedule
-						%hr/
-						%textarea.ui-corner-all.ui-widget-content{onclick: "$(this).select()"}
-							=raw profile_button_image profile_url(@user.profile), :like
-						.preview
-							%label
-								Preview:
-							=profile_button_image profile_url(@user.profile), :like	
-						%p.note 
-							Need help? Email us at
-							= succeed '.' do
+								All sensitive information, such as bank account and credit card numbers, is stored by Stripe, used by more than 17,000 websites around the world. To read more about Stripe's security, see
+								= succeed '.' do
+									%a{href: "http://stripe.com/help/security", target: '_blank'} stripe.com/help/security
+							%p 
+								Stripe processing fees&mdash;2.9% plus 30 cents per successful charge&mdash;apply. For details, see
+								= succeed '.' do
+									%a{href: "http://stripe.com/us/pricing", target: '_blank'} stripe.com/us/pricing
+							%p 
+								Questions? Email us:
 								= mail_to info_email
-			- if resource.as_customer
-				%h1= t 'views.user.edit.customer_header'
-				%br
-				%p= link_to t('views.user.edit.customer_link'), resource.as_customer
-	-#
-		.cancel_account.generic_form
-			= t('views.user.edit.cancel_account_prompt')
-			= link_to t('views.user.edit.cancel_account'), registration_path(resource_name), data: { confirm: t('views.user.edit.cancel_account_confirmation') }, method: :delete
+						- if resource.is_payable? # Already connected
+							= link_to t('views.user.edit.customer_list_link'), customer_files_path, class: 'dont_popover'
+						- else
+							%br
+							= link_to stripe_connect_path_for(resource), class: "stripe-connect" do
+								%span Connect with Stripe
+				- if resource.is_provider?
+					%br
+					%h1= t 'views.user.edit.add_button_header'
+					#add_button.formlet.info-popover
+						%h3
+							= t 'views.user.edit.add_button_prompt'
+						= link_to 'Add a button', '#', class: 'link'
+						.edit.popover
+							%h2
+								Add a Kinstantly button to...
+							%ul
+								%li
+									showcase positive customer ratings and attract new reviews
+								%li
+									generate more customer leads
+								%li
+									make it easy for customers to schedule your services
+							%p
+								Choose a button below. Then copy the code and paste it into the HTML of your website.
+							%textarea.ui-corner-all.ui-widget-content{onclick: "$(this).select()"}
+								=raw profile_button_image profile_url(@user.profile), :reviews
+							.preview
+								%label
+									Preview:
+								=profile_button_image profile_url(@user.profile), :reviews
+							%hr/
+							%textarea.ui-corner-all.ui-widget-content{onclick: "$(this).select()"}
+								=raw profile_button_image profile_url(@user.profile), :schedule
+							.preview
+								%label
+									Preview:
+								=profile_button_image profile_url(@user.profile), :schedule
+							%hr/
+							%textarea.ui-corner-all.ui-widget-content{onclick: "$(this).select()"}
+								=raw profile_button_image profile_url(@user.profile), :like
+							.preview
+								%label
+									Preview:
+								=profile_button_image profile_url(@user.profile), :like	
+							%p.note 
+								Need help? Email us at
+								= succeed '.' do
+									= mail_to info_email
+				- if resource.as_customer
+					%h1= t 'views.user.edit.customer_header'
+					%br
+					%p= link_to t('views.user.edit.customer_link'), resource.as_customer
+		-#
+			.cancel_account.generic_form
+				= t('views.user.edit.cancel_account_prompt')
+				= link_to t('views.user.edit.cancel_account'), registration_path(resource_name), data: { confirm: t('views.user.edit.cancel_account_confirmation') }, method: :delete
 
-:coffeescript
-	# Opens a modal window
-	my_vars.f.win_popup = (url, w, h, name) ->
-		left = (screen.width / 2) - (w / 2)
-		top = (screen.height / 2) - (h / 2)
-		window.open(url, name, 'toolbar=yes,menubar=no,status=no,width=' + w + ',height=' + h + ',left=' +left + ',top=' + top);
+		:coffeescript
+			# Opens a modal window
+			my_vars.f.win_popup = (url, w, h, name) ->
+				left = (screen.width / 2) - (w / 2)
+				top = (screen.height / 2) - (h / 2)
+				window.open(url, name, 'toolbar=yes,menubar=no,status=no,width=' + w + ',height=' + h + ',left=' +left + ',top=' + top);
 
-	$ ->
-		# Strip Connect opens a new win.
-		$('a.stripe-connect').on 'click', (e) ->
-			e.preventDefault()
-			url = $(@).attr("href")
-			my_vars.f.win_popup(url, 530, 600, 'Stripe Connect')
-			false
-	
-		$('.formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
-		
-		$('.formlet').each -> my_vars.f.configure_formlet this
+			$ ->
+				# Strip Connect opens a new win.
+				$('a.stripe-connect').on 'click', (e) ->
+					e.preventDefault()
+					url = $(@).attr("href")
+					my_vars.f.win_popup(url, 530, 600, 'Stripe Connect')
+					false
+			
+				$('.formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
+				
+				$('.formlet').each -> my_vars.f.configure_formlet this

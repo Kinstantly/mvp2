@@ -372,51 +372,58 @@ describe User do
 		end
 
 		it "can subscribe to mailing lists" do
-			parent.parent_marketing_emails = true
-			parent.parent_newsletters = true
+			parent.parent_newsletters_stage1 = true
+			parent.parent_newsletters_stage2 = true
+			parent.parent_newsletters_stage3 = true
 			parent.save
 			parent.reload
-			parent.parent_marketing_emails.should be_true
-			parent.parent_newsletters.should be_true
+			parent.parent_newsletters_stage1.should be_true
+			parent.parent_newsletters_stage2.should be_true
+			parent.parent_newsletters_stage3.should be_true
 		end
 		
 		it "cannot subscribe to mailing lists if previously blocked" do
 			FactoryGirl.create :contact_blocker, email: parent.email
-			parent.parent_marketing_emails = true
-			parent.parent_newsletters = true
+			parent.parent_newsletters_stage1 = true
+			parent.parent_newsletters_stage2 = true
+			parent.parent_newsletters_stage3 = true
 			parent.save
 			parent.reload
-			parent.parent_marketing_emails.should be_false
-			parent.parent_newsletters.should be_false
+			parent.parent_newsletters_stage1.should be_false
+			parent.parent_newsletters_stage2.should be_false
+			parent.parent_newsletters_stage3.should be_false
 		end
 
 		context "unconfirmed user" do
-			let(:user) { FactoryGirl.create :client_user, require_confirmation: true, parent_marketing_emails: true, parent_newsletters: true }
+			let(:user) { FactoryGirl.create :client_user, require_confirmation: true, parent_newsletters_stage1: true, parent_newsletters_stage2: true, parent_newsletters_stage3: true }
 				
 			it "should not be added to mailing list before confirmation" do
-				user.parent_marketing_emails_leid.should be_false
-				user.parent_newsletters_leid.should be_false
+				user.parent_newsletters_stage1_leid.should be_false
+				user.parent_newsletters_stage2_leid.should be_false
+				user.parent_newsletters_stage3_leid.should be_false
 			end
 
 			it "should be added to mailing list after confirmation" do
 				user.confirm!
 				user.save
 				user.reload
-				user.parent_marketing_emails_leid.should_not be_nil
-				user.parent_newsletters_leid.should_not be_nil
+				user.parent_newsletters_stage1_leid.should_not be_nil
+				user.parent_newsletters_stage2_leid.should_not be_nil
+				user.parent_newsletters_stage3_leid.should_not be_nil
 			end
 		end
 
 		context "parent" do
-			let(:parent_marketing_emails_list_id) { Rails.configuration.mailchimp_list_id[:parent_marketing_emails] }			
-			let(:parent_newsletters_list_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters] }
+			let(:parent_newsletters_stage1_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage1] }		
+			let(:parent_newsletters_stage2_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage2] }
+			let(:parent_newsletters_stage3_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage3] }
 			
 			it "should set mailchimp subscriber name to username" do
-				parent.parent_marketing_emails = true
+				parent.parent_newsletters_stage1 = true
 				merge_vars = { FNAME: parent.username, LNAME: "" }
 				opts = {
-					email: { leid: parent.parent_marketing_emails_leid, email: parent.email },
-					id: parent_marketing_emails_list_id,
+					email: { leid: parent.parent_newsletters_stage1_leid, email: parent.email },
+					id: parent_newsletters_stage1_id,
 					merge_vars: merge_vars,
 					double_optin: false,
 					update_existing: true
@@ -427,12 +434,12 @@ describe User do
 			end
 
 			it "should set mailchimp subscriber name to email if username is empty" do
-				parent.parent_newsletters = true
+				parent.parent_newsletters_stage2 = true
 				parent.username = "updated_username"
 				merge_vars = { FNAME: parent.username, LNAME: "" }
 				opts = {
-					email: { leid: parent.parent_newsletters_leid, email: parent.email },
-					id: parent_newsletters_list_id,
+					email: { leid: parent.parent_newsletters_stage2_leid, email: parent.email },
+					id: parent_newsletters_stage2_id,
 					merge_vars: merge_vars,
 					double_optin: false,
 					update_existing: true
@@ -445,15 +452,14 @@ describe User do
 
 		context "provider" do
 			let(:provider) { FactoryGirl.create :provider_with_username }
-			let(:provider_marketing_emails_list_id) { Rails.configuration.mailchimp_list_id[:provider_marketing_emails] }			
 			let(:provider_newsletters_list_id) { Rails.configuration.mailchimp_list_id[:provider_newsletters] }
 			
 			it "should set mailchimp subscriber name to profile first and last name" do
-				provider.provider_marketing_emails = true
+				provider.provider_newsletters = true
 				merge_vars = { FNAME: provider.profile.first_name, LNAME: provider.profile.last_name }
 				opts = {
-					id: provider_marketing_emails_list_id,
-					email: { leid: provider.provider_marketing_emails_leid, email: provider.email },
+					id: provider_newsletters_list_id,
+					email: { leid: provider.provider_newsletters_leid, email: provider.email },
 					merge_vars: merge_vars,
 					double_optin: false,
 					update_existing: true

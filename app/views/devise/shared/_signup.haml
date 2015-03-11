@@ -9,7 +9,10 @@
 - parent_tag = t "views.sign_up.parent_tag"
 - provider_tag = t "views.sign_up.provider_tag"
 - parent_provider_tag = t "views.sign_up.parent_provider_tag"
-- inline_tip ||= true
+- parent_newsletters_prompt	= t "views.sign_up.parent_newsletters_prompt"
+- parent_newsletters_hint	= t "views.sign_up.parent_newsletters_hint"
+- provider_newsletters_prompt	= t "views.sign_up.provider_newsletters_prompt"
+- inline_tip = inline_tip === false ? inline_tip : true
 
 %h1= t "views.sign_up.#{whoami}_title" unless embedded_in
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
@@ -19,48 +22,47 @@
 	= f.hidden_field :signed_up_from_blog
 	= f.hidden_field :signed_up_for_mailing_lists
 	
-	.email.text_field
-		= f.label :email
+	- if @signing_up_from_blog
+		= f.check_box :parent_newsletters_stage1
+		= f.label :parent_newsletters_stage1
 		%br
-		= f.email_field :email
-		- unless inline_tip
-			%span.help_icon
-				.help_popover
-					%p.tip.grey_text= email_tip
-		%p.note.grey_text= email_tip
-
-	- if @signing_up_for_newsletter
+		= f.check_box :parent_newsletters_stage2
+		= f.label :parent_newsletters_stage2
+		%br
+		= f.check_box :parent_newsletters_stage3
+		= f.label :parent_newsletters_stage3
+		%br
 		.postal_code.text_field
-			= f.label :postal_code
-			%br
-			= f.text_field :postal_code
+			= f.text_field :postal_code, placeholder: 'Enter your ZIP code'
 			-# %p.v_tip.grey_text= t "views.sign_up.postal_code_inline_tip"
-	- else 
+	.email.text_field
+		- unless @signing_up_from_blog 
+			= f.label :email
+			%br
+		= f.email_field :email, placeholder: ('Enter your email' if @signing_up_from_blog)
+		- if inline_tip
+			%p.note.grey_text= email_tip
+			
+	- unless @signing_up_from_blog  
 		.username.text_field
 			= f.label :username
 			%br
 			= f.text_field :username
-			- unless inline_tip
-				%span.help_icon
-					.help_popover
-						%p.tip.grey_text= username_tip
-			%p.note.grey_text= username_inline_tip
-
+			- if inline_tip
+				%p.note.grey_text= username_inline_tip
 	.password.text_field
-		= f.label :password
-		%br
-		= f.password_field :password, autocomplete: 'off'
+		- unless @signing_up_from_blog 
+			= f.label :password
+			%br
+		= f.password_field :password, autocomplete: 'off', placeholder: ('Enter your password' if @signing_up_from_blog)
 		- if inline_tip
 			%p.note.grey_text= password_tip
-		- else
-			%span.help_icon
-				.help_popover
-					%p.tip.grey_text= password_tip
 
 	.password_confirmation.text_field
-		= f.label :password_confirmation
-		%br
-		= f.password_field :password_confirmation, autocomplete: 'off'
+		- unless @signing_up_from_blog 
+			= f.label :password_confirmation
+			%br
+		= f.password_field :password_confirmation, autocomplete: 'off', placeholder: ('Retype your password' if @signing_up_from_blog)
 
 	-# - unless @signing_up_for_newsletter
 	-# 	.registration_special_code.text_field
@@ -95,21 +97,46 @@
 				= f.radio_button :is_provider, '2'
 				= parent_provider_tag
 
-	- if @signing_up_for_newsletter
-		= f.hidden_field :marketing_emails_and_newsletters, value: '1'
-	- else
-		.checkbox
-			= f.check_box :marketing_emails_and_newsletters
-			= f.label :marketing_emails_and_newsletters, (t 'views.user.edit.newsletters_and_marketing_emails_label')
-
+	- unless @signing_up_from_blog
+		.newsletters-signup
+			%h2= parent_newsletters_prompt
+			.checkbox
+				%p= parent_newsletters_hint
+				= f.check_box :parent_newsletters_stage1
+				= f.label :parent_newsletters_stage1
+				%br
+				= f.check_box :parent_newsletters_stage2
+				= f.label :parent_newsletters_stage2
+				%br
+				= f.check_box :parent_newsletters_stage3
+				= f.label :parent_newsletters_stage3
+				%br
+			#provider-newsletters-signup{:class => ("hidden" unless (is_provider || claiming_profile))}
+				%h2= provider_newsletters_prompt
+				.checkbox
+					= f.check_box :provider_newsletters
+					= f.label :provider_newsletters, checked: true
 	.buttons
 		- if @signing_up_for_newsletter
 			= f.submit t(:newsletter_sign_up_label, scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default newsletter_sign_up', id: 'sign_up_button'
 		- else
 			= f.submit t((is_provider ? :provider_label : :label), scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'
+	- if @signing_up_from_blog
+		%p
+			See a sample:
+			%a{href: " http://us9.campaign-archive1.com/?u=9da2f83266d2dfd9641ba63f6&id=6d7f820f78", target: '_blank'} 0-4
+			|
+			%a{href: " http://us9.campaign-archive1.com/?u=9da2f83266d2dfd9641ba63f6&id=2d58b8e01a", target: '_blank'} 5-12
+			|
+			%a{href: " http://us9.campaign-archive1.com/?u=9da2f83266d2dfd9641ba63f6&id=272d9c40d2", target: '_blank'} Teens
+		%br
 
-:javascript
-	$('#user_marketing_emails_and_newsletters').on('click', function() {
-		if(!this.checked)
-			ga('send', 'event', 'checkbox', 'click', 'false-news-checkbox');
-	});
+- unless @signing_up_from_blog
+	:javascript
+		$(':radio[name="user[is_provider]"]').on('change', function() {
+			selected_val = $(this).filter(":checked").val()
+			if(selected_val == 0)
+				$('#provider-newsletters-signup').slideUp(200);
+			else
+				$('#provider-newsletters-signup').slideDown(200);
+		});

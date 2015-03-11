@@ -49,6 +49,9 @@ Mvp2::Application.configure do
   config.mailchimp_list_id = {
     :parent_marketing_emails => '24517534db',
     :parent_newsletters => '1575880c9b',
+    :parent_newsletters_stage1 => '5b35d2d5db',
+    :parent_newsletters_stage2 => '3142e58c78',
+    :parent_newsletters_stage3 => '38d9a88031',
     :provider_marketing_emails => 'acc03566ad',
     :provider_newsletters => '64efed04f6'
   }

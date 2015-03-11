@@ -1884,12 +1884,6 @@ div.popover {
 	.text_field input {
 		font-size: 16px;
 	}
-	.checkbox.newsletters_and_marketing_emails{
-		padding: 5px 0;
-		label{
-			font-weight: normal;
-		}
-	}
 	.buttons {
 		input, a {
 			margin-right: 1em;
@@ -1911,6 +1905,16 @@ div.popover {
 			@include cancel-button-hover-style;
 			text-decoration: none;
 		}
+		.highlight{
+			@include button-style;
+			background-color: $kinstantly_pink;
+		}
+		.highlight:hover {
+			background-color: lighten($kinstantly_pink, 10%);
+		}
+		.highlight:disabled {
+			background-color: $kinstantly_gray;
+		}
 	}
 	.devise_shared_links {
 		clear: both;
@@ -1919,6 +1923,13 @@ div.popover {
 	}
 	.grey_text{
 		color: #807F7F;
+	}
+	.newsletters-signup{
+		margin: 36px 0 42px;
+		h2{ font-size: 14px; font-weight: bold; margin: 16px 0 10px}
+		label{ font-weight: normal; }
+		p{ font-size: 14px; margin-bottom: 8px}
+		.checkbox{ padding: 0 0 0 20px;}
 	}
 }
 
@@ -2879,4 +2890,19 @@ ul.links-list > li{
 	p.blue{
 		color: $kinstantly_blue;
 	}
+}
+
+.edit_account{
+	.current_password{
+		padding: 20px;
+		background-color: $kinstantly_light_gray;
+		input[type=password]{
+			width: calc(100% - 40px);
+		}
+	}
+}
+.edit_subscriptions{
+	h2{ font-size: 14px; font-weight: bold; margin: 16px 0 10px}
+	label{ display: inline-block; font-weight: normal; margin-bottom: 4px;}
+	.bold{ font-weight: bold;}
 }
