@@ -133,7 +133,8 @@
 				- if @profile.widget_code.present?
 					-# .ui-helper-clearfix
 					.promo_container= raw @profile.widget_code
-			- profile_announcements = @profile.profile_announcements.active.order(:position, "updated_at DESC")
+			-# To ensure that we include subtypes of ProfileAnnouncement, use the announcements association.
+			- profile_announcements = @profile.announcements.active.order(:position, "updated_at DESC")
 			- profile_announcements.each do |announcement|
 				%section.announcement-area{class: "#{announcement_icon_class(announcement.icon)}"}
 					%h3.announcement-title= announcement.headline

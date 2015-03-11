@@ -1,8 +1,9 @@
 - new_announcement_to_display = ProfileAnnouncement.new
-- saved_announcements = @profile.errorfree.profile_announcements.order("active DESC", :position, "updated_at DESC")
+-# To ensure that we include subtypes of ProfileAnnouncement, use the announcements association first.
+- saved_announcements = @profile.errorfree.announcements.order("active DESC", :position, "updated_at DESC")
 - saved_announcements_total = saved_announcements.length
-- unsaved_announcements_total = @profile.profile_announcements.length
-- new_announcement_to_edit = (unsaved_announcements_total == saved_announcements_total) ? new_announcement_to_display : @profile.profile_announcements.try(:[], saved_announcements_total)
+- new_announcement_to_edit = @profile.profile_announcements.select{|announcement| announcement.new_record?}.first
+- new_announcement_to_edit ||= new_announcement_to_display
 
 - # Create new profile announcement
 = render partial: 'announcements_form', locals: {display_announcement: new_announcement_to_display, announcement: new_announcement_to_edit, announcements_total: saved_announcements_total, formlet_index: 'new', i: saved_announcements_total}

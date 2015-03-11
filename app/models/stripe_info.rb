@@ -16,6 +16,7 @@ class StripeInfo < ActiveRecord::Base
 		self.publishable_key = auth_values.try(:[], :extra).try(:[], :raw_info).try(:[], :stripe_publishable_key)
 		@stripe_account = nil
 		if save
+			create_announcement
 			welcome_provider
 			true
 		else
@@ -43,6 +44,16 @@ class StripeInfo < ActiveRecord::Base
 	# Touch profile to invalidate fragment cache(s) in case we need to update payment info on the profile page.
 	def touch_profile
 		user.try(:profile).try(:touch)
+	end
+	
+	# Create a payment announcement if not already done.
+	def create_announcement
+		if (profile = user.profile) and profile.payment_profile_announcements.blank?
+			profile.payment_profile_announcements.create(PaymentProfileAnnouncement::INITIAL_ATTRIBUTE_VALUES.merge({
+				button_url: Rails.application.routes.url_helpers.about_payments_profile_url(profile, host: default_host),
+				start_at: Time.zone.now
+			}))
+		end
 	end
 	
 	# Welcome the newly connected provider.

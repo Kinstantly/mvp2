@@ -29,6 +29,11 @@ describe StripeInfo, payments: true do
 		stripe_info.configure_authorization(omniauth_values)
 	end
 	
+	it "creates a payment announcement" do
+		stripe_info.configure_authorization(omniauth_values)
+		provider.profile.should have(1).payment_profile_announcement
+	end
+	
 	context "using the Stripe API" do
 		let(:stripe_account) {
 			{

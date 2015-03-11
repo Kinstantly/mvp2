@@ -5,7 +5,7 @@ FactoryGirl.define do
 		profile
 		icon 0
 		headline "FactoryHeadline"
-		body "Factoryody"
+		body "FactoryBody"
 		button_text "FactoryButtonText"
 		button_url "FactoryButtonURL"
 		start_at Time.zone.now
@@ -15,7 +15,18 @@ FactoryGirl.define do
 		profile
 		icon 0
 		headline "FactoryHeadline"
-		body "Factoryody"
+		body "FactoryBody"
+		button_text "FactoryButtonText"
+		button_url "FactoryButtonURL"
+		start_at Time.zone.now
+		search_result_position 0
+	end
+
+	factory :payment_profile_announcement do
+		profile
+		icon 0
+		headline "FactoryHeadline"
+		body "FactoryBody"
 		button_text "FactoryButtonText"
 		button_url "FactoryButtonURL"
 		start_at Time.zone.now

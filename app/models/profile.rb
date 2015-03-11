@@ -77,6 +77,7 @@ class Profile < ActiveRecord::Base
 	has_many :announcements #Used by counter_cache
 	has_many :profile_announcements, dependent: :destroy
 	accepts_nested_attributes_for :profile_announcements, allow_destroy: true, limit: 100
+	has_many :payment_profile_announcements, dependent: :destroy
 
 	has_attached_file :profile_photo,
 					:styles => {

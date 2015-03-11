@@ -52,6 +52,7 @@ Feature: Edit Announcements
 			And I confirm alert
 		Then I should not see "Register now for Summer Camp!" on the page
 
+	@search
 	Scenario: Create an active search result announcement
 		Given I exist as a user
 			And I am logged in
@@ -67,6 +68,3 @@ Feature: Edit Announcements
 			And I click on the "Save" button of the "announcement_new" formlet
 			And I search for my profile
 		Then I should see "Register now for Summer Camp!" in the search results list
-
-
-	

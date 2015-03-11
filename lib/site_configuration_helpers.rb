@@ -27,6 +27,10 @@ module SiteConfigurationHelpers
 		def payment_application_fee_percentage
 			Rails.configuration.payment[:application_fee_percentage]
 		end
+		
+		def default_host
+			Rails.configuration.default_host
+		end
 	end
 	
 	module InstanceMethods
@@ -56,6 +60,10 @@ module SiteConfigurationHelpers
 		
 		def payment_application_fee_percentage
 			Rails.configuration.payment[:application_fee_percentage]
+		end
+		
+		def default_host
+			Rails.configuration.default_host
 		end
 	end
 	

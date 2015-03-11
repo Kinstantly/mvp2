@@ -117,3 +117,11 @@ describe ProfileAnnouncement do
 		profile_announcement.search_result_link_text.should == s
 	end
 end
+
+describe PaymentProfileAnnouncement, payments: true do
+	let(:payment_profile_announcement) { FactoryGirl.create :payment_profile_announcement }
+	
+	it "is a type of ProfileAnnouncement" do
+		payment_profile_announcement.should be_kind_of ProfileAnnouncement
+	end
+end

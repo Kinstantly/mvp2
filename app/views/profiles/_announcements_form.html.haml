@@ -49,11 +49,13 @@
 						%span.char_count
 						= af.label :button_text
 						= af.text_field :button_text
-						%p.note= t 'views.announcement.edit.button_text_example'
-					.text_field
-						= af.label :button_url
-						= af.text_field :button_url
-						%p.note= t 'views.announcement.edit.button_url_example'
+						- unless announcement.is_a? PaymentProfileAnnouncement
+							%p.note= t 'views.announcement.edit.button_text_example'
+					- unless announcement.is_a? PaymentProfileAnnouncement
+						.text_field
+							= af.label :button_url
+							= af.text_field :button_url
+							%p.note= t 'views.announcement.edit.button_url_example'
 					.position_field.text_field
 						= af.label :position
 						= af.select :position, announcement_positions(announcements_total, i)
