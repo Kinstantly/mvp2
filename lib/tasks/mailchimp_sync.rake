@@ -27,7 +27,7 @@ namespace :mailchimp do
 				  	parent = User.find_by_email(row[1])
 				  	next if parent.blank?
 				  	case file
-					when 'SUBSCRIPTIONLISAGEST0-4'
+					when 'SUBSCRIPTIONLISTAGES0-4'
 						parent.parent_newsletters_stage1 = true
 					when 'SUBSCRIPTIONLISTAGES5-12'
 						parent.parent_newsletters_stage2 = true

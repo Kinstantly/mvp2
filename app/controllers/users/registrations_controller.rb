@@ -15,8 +15,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 	def edit
 		if params[:contact_preferences].present?
-			# The fragment ID is not preserved across a sign-in, so fake it with a query parameter.  :(
-			redirect_to(edit_user_registration_url(anchor: :contact_preferences))
+			# Send to email subscription preferences.
+			redirect_to(edit_subscriptions_url)
 		else
 			super
 		end
@@ -77,13 +77,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		# Flags that tell the views whether this registration is primarily a newsletter or blog sign-up from the user's perspective.
 		@signing_up_from_blog = resource.signed_up_from_blog
 		@signing_up_for_newsletter = resource.signed_up_for_mailing_lists
-		flash[:after_sign_in_path_override] = edit_user_registration_path(anchor: :contact_preferences) if @signing_up_for_newsletter
+		flash[:after_sign_in_path_override] = edit_subscriptions_path if @signing_up_for_newsletter
 	end
 	
 	# Called if we're already signed in and thus no registration is required.
 	# If we were trying to get to newsletter sign-up, go to contact preferences instead.
 	def require_no_authentication
-		flash[:after_sign_in_path_override] = edit_user_registration_path(anchor: :contact_preferences) if params[:nlsub].present?
+		flash[:after_sign_in_path_override] = edit_subscriptions_path if params[:nlsub].present?
 		super
 	end
 
