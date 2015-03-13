@@ -326,6 +326,7 @@ en:
     field_label: '%{name}:'
     optional_field_label: '%{name} (optional):'
     find_button: 'Find'
+    label_optional: '%{name} (Optional)'
     not_browsable: '(grayed-out not browsable)'
     form_is_modified: 'You have changes that have not been saved.'
     required: 'Required'
@@ -339,7 +340,7 @@ en:
         remove: 'Remove'
         headline_example: 'Example: Register now for Summer Camp!'
         body_example: 'Example: Camps fill up quickly, so register early. Note that full payment is required with registration.'
-        button_text_example: 'Example: Register NOW!'
+        button_text_example_html: "Example: register now!<br/>(Leave blank if you're not adding a link, below.)"
         button_url_example: 'Copy and paste the URL of the page you want the button to link to.'
         date_range_explanation: 'Add start and end dates, so your announcement appears and goes away when it should.'
         end_date_hint: 'Leave blank for no end date.'

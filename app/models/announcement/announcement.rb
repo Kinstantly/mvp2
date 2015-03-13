@@ -18,7 +18,7 @@ class Announcement < ActiveRecord::Base
 		validates attribute, length: {maximum: MAX_LENGTHS[attribute]}
 	end
 
-	validates :profile, :body, :headline, :icon, :start_at, presence: true
+	validates :profile, :icon, :headline, :body, :start_at, presence: true
 	validates_presence_of :button_text, :if => :button_url?
 	validates_presence_of :button_url, :if => :button_text?
 	validate :validate_date_range

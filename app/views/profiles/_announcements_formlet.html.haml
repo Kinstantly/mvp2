@@ -2,7 +2,7 @@
 -# To ensure that we include subtypes of ProfileAnnouncement, use the announcements association first.
 - saved_announcements = @profile.errorfree.announcements.order("active DESC", :position, "updated_at DESC")
 - saved_announcements_total = saved_announcements.length
-- new_announcement_to_edit = @profile.profile_announcements.select{|announcement| announcement.new_record?}.first
+- new_announcement_to_edit = @profile.profile_announcements.select(&:new_record?).first
 - new_announcement_to_edit ||= new_announcement_to_display
 
 - # Create new profile announcement

@@ -47,13 +47,16 @@
 						%p.note= t 'views.announcement.edit.body_example'
 					.text_field.countable{'data-i' => "button_text"}
 						%span.char_count
-						= af.label :button_text
-						= af.text_field :button_text
-						- unless announcement.is_a? PaymentProfileAnnouncement
-							%p.note= t 'views.announcement.edit.button_text_example'
+						- if announcement.is_a? PaymentProfileAnnouncement
+							= af.label :button_text
+							= af.text_field :button_text
+						- else
+							= af.label :button_text, t('views.label_optional', name: Announcement.human_attribute_name(:button_text))
+							= af.text_field :button_text
+							%p.note= t 'views.announcement.edit.button_text_example_html'
 					- unless announcement.is_a? PaymentProfileAnnouncement
 						.text_field
-							= af.label :button_url
+							= af.label :button_url, t('views.label_optional', name: Announcement.human_attribute_name(:button_url))
 							= af.text_field :button_url
 							%p.note= t 'views.announcement.edit.button_url_example'
 					.position_field.text_field
