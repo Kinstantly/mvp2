@@ -18,13 +18,15 @@ describe Users::RegistrationsController do
 						password: new_password,
 						password_confirmation: new_password,
 						username: username,
-						marketing_emails_and_newsletters: '1'
+						parent_newsletters_stage1: true,
+						parent_newsletters_stage2: true,
+						parent_newsletters_stage3: true
 					}
 
 					user = assigns[:user].reload
-					user.parent_marketing_emails.should be_true
-					user.parent_newsletters.should be_true
-					user.provider_marketing_emails.should be_false
+					user.parent_newsletters_stage1.should be_true
+					user.parent_newsletters_stage2.should be_true
+					user.parent_newsletters_stage3.should be_true
 					user.provider_newsletters.should be_false
 				end
 
@@ -34,13 +36,15 @@ describe Users::RegistrationsController do
 						password: new_password,
 						password_confirmation: new_password,
 						username: username,
-						marketing_emails_and_newsletters: '0'
+						parent_newsletters_stage1: false,
+						parent_newsletters_stage2: false,
+						parent_newsletters_stage3: false
 					}
 
 					user = assigns[:user].reload
-					user.parent_marketing_emails.should be_false
-					user.parent_newsletters.should be_false
-					user.provider_marketing_emails.should be_false
+					user.parent_newsletters_stage1.should be_false
+					user.parent_newsletters_stage2.should be_false
+					user.parent_newsletters_stage3.should be_false
 					user.provider_newsletters.should be_false
 				end
 			end
@@ -71,27 +75,31 @@ describe Users::RegistrationsController do
 			
 			it "can subscribe to mailing lists" do
 				put :update, user: {
-					parent_marketing_emails: true,
-					parent_newsletters: true,
+					parent_newsletters_stage1: true,
+					parent_newsletters_stage2: true,
+					parent_newsletters_stage3: true,
 					current_password: mimi.password
 				}
 				
 				user = assigns[:user].reload
-				user.parent_marketing_emails.should be_true
-				user.parent_newsletters.should be_true
+				user.parent_newsletters_stage1.should be_true
+				user.parent_newsletters_stage2.should be_true
+				user.parent_newsletters_stage3.should be_true
 			end
 			
 			it "cannot subscribe to mailing lists if previously blocked" do
 				FactoryGirl.create :contact_blocker, email: mimi.email
 				put :update, user: {
-					parent_marketing_emails: true,
-					parent_newsletters: true,
+					parent_newsletters_stage1: true,
+					parent_newsletters_stage2: true,
+					parent_newsletters_stage3: true,
 					current_password: mimi.password
 				}
 				
 				user = assigns[:user].reload
-				user.parent_marketing_emails.should be_false
-				user.parent_newsletters.should be_false
+				user.parent_newsletters_stage1.should be_false
+				user.parent_newsletters_stage2.should be_false
+				user.parent_newsletters_stage3.should be_false
 			end
 		end
 	end
@@ -106,14 +114,17 @@ describe Users::RegistrationsController do
 						password: new_password,
 						password_confirmation: new_password,
 						username: username,
-						marketing_emails_and_newsletters: '1'
+						parent_newsletters_stage1: true,
+						parent_newsletters_stage2: true,
+						parent_newsletters_stage3: true,
+						provider_newsletters: true
 					}
 
 					user = assigns[:user].reload
-					user.provider_marketing_emails.should be_true
+					user.parent_newsletters_stage1.should be_true
+					user.parent_newsletters_stage2.should be_true
+					user.parent_newsletters_stage3.should be_true
 					user.provider_newsletters.should be_true
-					user.parent_marketing_emails.should be_false
-					user.parent_newsletters.should be_false
 				end
 
 				it "does not subscribe to the mailing lists" do
@@ -123,14 +134,17 @@ describe Users::RegistrationsController do
 						password: new_password,
 						password_confirmation: new_password,
 						username: username,
-						marketing_emails_and_newsletters: '0'
+						parent_newsletters_stage1: false,
+						parent_newsletters_stage2: false,
+						parent_newsletters_stage3: false,
+						provider_newsletters: false
 					}
 
 					user = assigns[:user].reload
-					user.provider_marketing_emails.should be_false
+					user.parent_newsletters_stage1.should be_false
+					user.parent_newsletters_stage2.should be_false
+					user.parent_newsletters_stage3.should be_false
 					user.provider_newsletters.should be_false
-					user.parent_marketing_emails.should be_false
-					user.parent_newsletters.should be_false
 				end
 				
 				context "while claiming a profile" do
@@ -144,14 +158,17 @@ describe Users::RegistrationsController do
 							password: new_password,
 							password_confirmation: new_password,
 							username: username,
-							marketing_emails_and_newsletters: '1'
+							parent_newsletters_stage1: true,
+							parent_newsletters_stage2: true,
+							parent_newsletters_stage3: true,
+							provider_newsletters: true
 						}
 
 						user = assigns[:user].reload
-						user.provider_marketing_emails.should be_true
+						user.parent_newsletters_stage1.should be_true
+						user.parent_newsletters_stage2.should be_true
+						user.parent_newsletters_stage3.should be_true
 						user.provider_newsletters.should be_true
-						user.parent_marketing_emails.should be_false
-						user.parent_newsletters.should be_false
 					end
 				end
 			end
