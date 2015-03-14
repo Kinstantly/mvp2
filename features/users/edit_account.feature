@@ -48,18 +48,21 @@ Feature: Edit account
 
 	Scenario: Change news settings as a client
 		Given I am logged in as a client user
-			And I am on my account edit page
-		When I check "user_parent_marketing_emails"
-			And I check "user_parent_newsletters"
+			And I am on my contact preferences edit page
+		When I check "user_parent_newsletters_stage1"
+			And I check "user_parent_newsletters_stage2"
+			And I check "user_parent_newsletters_stage3"
 			And I enter my current password
 			And I save the account settings
 		Then I should see an account edited message
 
 	Scenario: Change news settings as a provider
 		Given I am logged in as a provider
-			And I am on my account edit page
-		When I check "user_provider_marketing_emails"
-			And I check "user_provider_newsletters"
+			And I am on my contact preferences edit page
+		When I check "user_provider_newsletters"
+			And I check "user_parent_newsletters_stage1"
+			And I check "user_parent_newsletters_stage2"
+			And I check "user_parent_newsletters_stage3"
 			And I enter my current password
 			And I save the account settings
 		Then I should see an account edited message

@@ -80,11 +80,11 @@ def sign_up(sign_up_path='/provider/sign_up')
   delete_user
   visit sign_up_path
   within('#sign_up') do
-    fill_in User.human_attribute_name(:email), :with => @visitor[:email]
-    fill_in User.human_attribute_name(:password), :with => @visitor[:password]
-    fill_in User.human_attribute_name(:password_confirmation), :with => @visitor[:password_confirmation]
-    fill_in User.human_attribute_name(:username), :with => @visitor[:username] if @visitor[:username]
-    fill_in User.human_attribute_name(:registration_special_code), :with => @visitor[:registration_special_code] if @visitor[:registration_special_code]
+    fill_in "user_email", :with => @visitor[:email]
+    fill_in "user_password", :with => @visitor[:password]
+    fill_in "user_password_confirmation", :with => @visitor[:password_confirmation]
+    fill_in "user_username", :with => @visitor[:username] if @visitor[:username]
+    fill_in "user_password_registration_special_code", :with => @visitor[:registration_special_code] if @visitor[:registration_special_code]
     click_button 'sign_up_button'
   end
   find_user
@@ -489,6 +489,6 @@ end
 
 Then /^I should see "(.*?)" (translated )?link to contact_preferences section of my account settings page$/ do |selector, tr|
   link_selector = tr.present? ? I18n.t(selector) : selector
-  path = edit_user_registration_url(contact_preferences: 't')
+  path = edit_subscriptions_url
   page.has_link?(link_selector, href: path).should == true
 end
