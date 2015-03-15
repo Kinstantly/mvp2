@@ -11,7 +11,7 @@ class Announcement < ActiveRecord::Base
 
 	# Define maximum length of each string or text attribute in a publicly accessible way.
 	# This allows them to be used at the view layer for character counts in input and textarea tags.
-	MAX_LENGTHS = {headline: 50, body: 500, button_text: 25}
+	MAX_LENGTHS = {headline: 50, body: 1000, button_text: 25}
 	DATEFORMAT = I18n.t('date.formats.display')
 
 	[:headline, :body, :button_text].each do |attribute|
