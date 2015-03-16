@@ -44,9 +44,9 @@ describe "User registration and editing" do
 			post user_session_path, user: { email: parent.email, password: parent.password }
 		end
 		
-		it "redirects using the needed fragment identifier when requesting contact preferences editing" do
+		it "redirects to the subscriptions edit page when requesting contact preferences editing" do
 			get edit_user_registration_url(contact_preferences: 't')
-			response.should redirect_to(edit_user_registration_url + '#contact_preferences')
+			response.should redirect_to edit_subscriptions_url
 		end
 		
 		it "redirects to the home page if requesting the registration page" do
@@ -54,9 +54,9 @@ describe "User registration and editing" do
 			response.should redirect_to root_url
 		end
 		
-		it "redirects to the contact preferences page if requesting the newsletter sign-up page" do
+		it "redirects to the subscriptions edit page if requesting the newsletter sign-up page" do
 			get new_user_registration_path(nlsub: 't')
-			response.should redirect_to(edit_user_registration_url + '#contact_preferences')
+			response.should redirect_to edit_subscriptions_url
 		end
 	end
 	
@@ -90,9 +90,9 @@ describe "User registration and editing" do
 			post user_session_path, user: { email: provider.email, password: provider.password }
 		end
 		
-		it "redirects using the needed fragment identifier when requesting contact preferences editing" do
+		it "redirects to the subscriptions edit page when requesting contact preferences editing" do
 			get edit_user_registration_url(contact_preferences: 't')
-			response.should redirect_to(edit_user_registration_url + '#contact_preferences')
+			response.should redirect_to edit_subscriptions_url
 		end
 		
 		it "redirects to my profile edit page if requesting the registration page" do
@@ -100,9 +100,9 @@ describe "User registration and editing" do
 			response.should redirect_to edit_my_profile_url
 		end
 		
-		it "redirects to the contact preferences page if requesting the newsletter sign-up page" do
+		it "redirects to the subscriptions edit page if requesting the newsletter sign-up page" do
 			get new_user_registration_path(nlsub: 't')
-			response.should redirect_to(edit_user_registration_url + '#contact_preferences')
+			response.should redirect_to edit_subscriptions_url
 		end
 	end
 end

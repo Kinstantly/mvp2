@@ -43,7 +43,7 @@ Then /^I should only be subscribed to "(.*?)" mailing lists(?: and| but)( not)? 
 			if not_synced.present?
 				@user["#{list}_leid"].should be_nil
 			else
-				@user["#{list}_leid"].should_not be_nil
+				@user["#{list}_leid"].should be_present
 			end
 		else
 			@user[list].should be_false
@@ -52,3 +52,18 @@ Then /^I should only be subscribed to "(.*?)" mailing lists(?: and| but)( not)? 
 	end
 end
 
+Then /^I should be subscribed to all mailing lists$/ do
+	@user.reload
+	mailing_lists.each do |list|
+		@user[list].should be_true
+		@user["#{list}_leid"].should be_present
+	end
+end
+
+Then /^I should not be subscribed to any mailing lists$/ do
+	@user.reload
+	mailing_lists.each do |list|
+		@user[list].should be_false
+		@user["#{list}_leid"].should be_nil
+	end
+end
