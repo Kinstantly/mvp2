@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150304021609) do
+ActiveRecord::Schema.define(:version => 20150315035939) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -269,8 +269,8 @@ ActiveRecord::Schema.define(:version => 20150304021609) do
     t.string   "invitation_tracking_category"
     t.text     "search_terms"
     t.text     "search_widget_code"
-    t.boolean  "show_stripe_connect",            :default => false
-    t.boolean  "allow_charge_authorizations",    :default => false
+    t.boolean  "show_stripe_connect",            :default => true
+    t.boolean  "allow_charge_authorizations",    :default => true
     t.integer  "announcements_count",            :default => 0,         :null => false
     t.text     "resources"
   end
