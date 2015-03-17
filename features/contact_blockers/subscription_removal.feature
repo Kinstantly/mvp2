@@ -3,6 +3,11 @@ Feature: Subscription removal upon blocking
 	As an email recipient or administrator
 	I want to ensure that the recipient is removed from all mailing lists
 
+	Scenario: Should be subscribable to all mailing lists
+		Given I exist as a user
+			And I am subscribed to all mailing lists
+		Then I should be subscribed to all mailing lists
+
 	Scenario: Unsubscription by recipient triggers removal from all mailing lists
 		Given I exist as a user
 			And I am subscribed to all mailing lists

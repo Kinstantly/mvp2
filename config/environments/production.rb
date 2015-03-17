@@ -123,6 +123,9 @@ Mvp2::Application.configure do
   config.mailchimp_list_id = {
     :parent_marketing_emails => ENV['PARENT_MARKETING_EMAILS_LIST_ID'],
     :parent_newsletters => ENV['PARENT_NEWSLETTERS_LIST_ID'],
+    :parent_newsletters_stage1 => ENV['PARENT_NEWSLETTERS_STAGE1_ID'],
+    :parent_newsletters_stage2 => ENV['PARENT_NEWSLETTERS_STAGE2_ID'],
+    :parent_newsletters_stage3 => ENV['PARENT_NEWSLETTERS_STAGE3_ID'],
     :provider_marketing_emails => ENV['PROVIDER_MARKETING_EMAILS_LIST_ID'],
     :provider_newsletters => ENV['PROVIDER_NEWSLETTERS_LIST_ID']
   }

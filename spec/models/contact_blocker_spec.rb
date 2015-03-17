@@ -63,22 +63,22 @@ describe ContactBlocker do
 		
 		context "after creating subscriptions" do
 			before(:each) do
-				user.parent_marketing_emails = true
-				user.parent_newsletters = true
-				user.provider_marketing_emails = true
+				user.parent_newsletters_stage1 = true
+				user.parent_newsletters_stage2 = true
+				user.parent_newsletters_stage3 = true
 				user.provider_newsletters = true
 				user.save
 			end
 			
 			it "has created subscriptions for testing purposes" do
 				user.reload
-				user.parent_marketing_emails.should be_true
-				user.parent_newsletters.should be_true
-				user.provider_marketing_emails.should be_true
+				user.parent_newsletters_stage1.should be_true
+				user.parent_newsletters_stage2.should be_true
+				user.parent_newsletters_stage3.should be_true
 				user.provider_newsletters.should be_true
-				user.parent_marketing_emails_leid.should_not be_nil
-				user.parent_newsletters_leid.should_not be_nil
-				user.provider_marketing_emails_leid.should_not be_nil
+				user.parent_newsletters_stage1_leid.should_not be_nil
+				user.parent_newsletters_stage2_leid.should_not be_nil
+				user.parent_newsletters_stage3_leid.should_not be_nil
 				user.provider_newsletters_leid.should_not be_nil
 			end
 			
@@ -90,13 +90,13 @@ describe ContactBlocker do
 				
 				it "has removed existing subscriptions" do
 					user.reload
-					user.parent_marketing_emails.should be_false
-					user.parent_newsletters.should be_false
-					user.provider_marketing_emails.should be_false
+					user.parent_newsletters_stage1.should be_false
+					user.parent_newsletters_stage2.should be_false
+					user.parent_newsletters_stage3.should be_false
 					user.provider_newsletters.should be_false
-					user.parent_marketing_emails_leid.should be_nil
-					user.parent_newsletters_leid.should be_nil
-					user.provider_marketing_emails_leid.should be_nil
+					user.parent_newsletters_stage1_leid.should be_nil
+					user.parent_newsletters_stage2_leid.should be_nil
+					user.parent_newsletters_stage3_leid.should be_nil
 					user.provider_newsletters_leid.should be_nil
 				end
 			end

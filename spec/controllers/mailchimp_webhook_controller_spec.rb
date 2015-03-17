@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe MailchimpWebhookController do
 	let(:token) { Rails.configuration.mailchimp_webhook_security_token }
-	let(:list_id) { Rails.configuration.mailchimp_list_id[:parent_marketing_emails]}	
+	let(:list_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage1]}	
 	let(:user) { FactoryGirl.create(:client_user) }
 	let(:params) { {type: "unsubscribe", token: token, data: {list_id: list_id, email: user.email}} }
 	
@@ -15,9 +15,9 @@ describe MailchimpWebhookController do
 
 		context "user unsubscribed remotely, but still subscribed locally" do
 			before(:each) do
-				user.parent_marketing_emails = true
+				user.parent_newsletters_stage1 = true
 				user.save!
-				@parent_marketing_emails_leid = user.parent_marketing_emails_leid
+				@parent_newsletters_stage1_leid = user.parent_newsletters_stage1_leid
 	
 				# Unsubscribe without deleting user from the list
 				gb = Gibbon::API.new
@@ -31,23 +31,23 @@ describe MailchimpWebhookController do
 				params[:token] = "none"
 				post :process_notification, params
 				user.reload
-				user.parent_marketing_emails.should == true
-				user.parent_marketing_emails_leid.should == @parent_marketing_emails_leid
+				user.parent_newsletters_stage1.should == true
+				user.parent_newsletters_stage1_leid.should == @parent_newsletters_stage1_leid
 			end
 
 			it "should not process notification with invalid request params" do
 				params.delete(:type)
 				post :process_notification, params
 				user.reload
-				user.parent_marketing_emails.should == true
-				user.parent_marketing_emails_leid.should == @parent_marketing_emails_leid
+				user.parent_newsletters_stage1.should == true
+				user.parent_newsletters_stage1_leid.should == @parent_newsletters_stage1_leid
 			end
 			
 			it "removes subscription when valid unsubscribe notification received" do
 				post :process_notification, params
 				user.reload
-				user.parent_marketing_emails.should == false
-				user.parent_marketing_emails_leid.should == nil
+				user.parent_newsletters_stage1.should == false
+				user.parent_newsletters_stage1_leid.should == nil
 			end
 		end
 
@@ -57,21 +57,21 @@ describe MailchimpWebhookController do
 				user.send(:unsubscribe_from_mailing_lists, Rails.configuration.mailchimp_list_id.keys)
 			end
 			it "should not remove subscription" do
-				user.parent_marketing_emails = true
-				user.parent_newsletters = true
-				user.provider_marketing_emails = true
+				user.parent_newsletters_stage1 = true
+				user.parent_newsletters_stage2 = true
+				user.parent_newsletters_stage3 = true
 				user.provider_newsletters = true
 				user.save!
 
 				post :process_notification, params
 				user.reload
-				user.parent_marketing_emails.should == true
-				user.parent_newsletters.should == true
-				user.provider_marketing_emails.should == true
+				user.parent_newsletters_stage1.should == true
+				user.parent_newsletters_stage2.should == true
+				user.parent_newsletters_stage3.should == true
 				user.provider_newsletters.should == true
-				user.parent_marketing_emails_leid.should_not == nil
-				user.parent_newsletters_leid.should_not == nil
-				user.provider_marketing_emails_leid.should_not == nil
+				user.parent_newsletters_stage1_leid.should_not == nil
+				user.parent_newsletters_stage2_leid.should_not == nil
+				user.parent_newsletters_stage3_leid.should_not == nil
 				user.provider_newsletters_leid.should_not == nil
 			end
 		end

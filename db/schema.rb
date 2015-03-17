@@ -514,6 +514,12 @@ ActiveRecord::Schema.define(:version => 20150315035939) do
     t.string   "provider_marketing_emails_leid"
     t.string   "provider_newsletters_leid"
     t.boolean  "signed_up_for_mailing_lists",    :default => false
+    t.string   "parent_newsletters_stage1_leid"
+    t.boolean  "parent_newsletters_stage1",      :default => false
+    t.string   "parent_newsletters_stage2_leid"
+    t.boolean  "parent_newsletters_stage2",      :default => false
+    t.string   "parent_newsletters_stage3_leid"
+    t.boolean  "parent_newsletters_stage3",      :default => false
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

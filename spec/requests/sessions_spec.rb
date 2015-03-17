@@ -13,11 +13,11 @@ describe "User sign-in and sign-out" do
 		end
 		
 		context "starting at newsletter sign-up form" do
-			it "redirects to the contact preferences edit page after signing in" do
+			it "redirects to the subscriptions edit page after signing in" do
 				get new_user_registration_path(blog: 't', nlsub: 't')
 				# sign in as a parent
 				post user_session_path, user: parent_credentials
-				response.should redirect_to(edit_user_registration_url + '#contact_preferences')
+				response.should redirect_to edit_subscriptions_url
 			end
 		end
 	

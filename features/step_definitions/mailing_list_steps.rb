@@ -2,11 +2,14 @@
 
 ### UTILITY METHODS ###
 
+def mailing_lists
+	['parent_newsletters_stage1', 'parent_newsletters_stage2', 'parent_newsletters_stage3', 'provider_newsletters']
+end
+
 def subscribed_to_all_mailing_lists_for(user=@user)
-	user.parent_marketing_emails = true
-	user.parent_newsletters = true
-	user.provider_marketing_emails = true
-	user.provider_newsletters = true
+	mailing_lists.each do |list|
+		user[list] = true
+	end
 	user.save
 end
 
@@ -31,74 +34,36 @@ end
 
 ### THEN ###
 
+Then /^I should only be subscribed to "(.*?)" mailing lists(?: and| but)( not)? synced to the list server$/ do |lists, not_synced|
+	@user.reload
+	subscribed_mailing_lists = lists.split(", ")
+	mailing_lists.each do |list|
+		if subscribed_mailing_lists.include?(list) 
+			@user[list].should be_true
+			if not_synced.present?
+				@user["#{list}_leid"].should be_nil
+			else
+				@user["#{list}_leid"].should be_present
+			end
+		else
+			@user[list].should be_false
+			@user["#{list}_leid"].should be_nil
+		end
+	end
+end
+
+Then /^I should be subscribed to all mailing lists$/ do
+	@user.reload
+	mailing_lists.each do |list|
+		@user[list].should be_true
+		@user["#{list}_leid"].should be_present
+	end
+end
+
 Then /^I should not be subscribed to any mailing lists$/ do
 	@user.reload
-	@user.parent_marketing_emails.should be_false
-	@user.parent_newsletters.should be_false
-	@user.provider_marketing_emails.should be_false
-	@user.provider_newsletters.should be_false
-	@user.parent_marketing_emails_leid.should be_nil
-	@user.parent_newsletters_leid.should be_nil
-	@user.provider_marketing_emails_leid.should be_nil
-	@user.provider_newsletters_leid.should be_nil
-end
-
-Then /^I should be subscribed only to the provider mailing lists but not yet synced to the list server$/ do
-	@user.reload
-	@user.parent_marketing_emails.should be_false
-	@user.parent_newsletters.should be_false
-	@user.provider_marketing_emails.should be_true
-	@user.provider_newsletters.should be_true
-	@user.parent_marketing_emails_leid.should be_nil
-	@user.parent_newsletters_leid.should be_nil
-	@user.provider_marketing_emails_leid.should be_nil
-	@user.provider_newsletters_leid.should be_nil
-end
-
-Then /^I should be subscribed only to the provider mailing lists and synced to the list server$/ do
-	@user.reload
-	@user.parent_marketing_emails.should be_false
-	@user.parent_newsletters.should be_false
-	@user.provider_marketing_emails.should be_true
-	@user.provider_newsletters.should be_true
-	@user.parent_marketing_emails_leid.should be_nil
-	@user.parent_newsletters_leid.should be_nil
-	@user.provider_marketing_emails_leid.should_not be_nil
-	@user.provider_newsletters_leid.should_not be_nil
-end
-
-Then /^I should be subscribed to only the parent mailing lists but not yet synced to the list server$/ do
-	@user.reload
-	@user.parent_marketing_emails.should be_true
-	@user.parent_newsletters.should be_true
-	@user.provider_marketing_emails.should be_false
-	@user.provider_newsletters.should be_false
-	@user.parent_marketing_emails_leid.should be_nil
-	@user.parent_newsletters_leid.should be_nil
-	@user.provider_marketing_emails_leid.should be_nil
-	@user.provider_newsletters_leid.should be_nil
-end
-
-Then /^I should be subscribed to only the parent mailing lists and synced to the list server$/ do
-	@user.reload
-	@user.parent_marketing_emails.should be_true
-	@user.parent_newsletters.should be_true
-	@user.provider_marketing_emails.should be_false
-	@user.provider_newsletters.should be_false
-	@user.parent_marketing_emails_leid.should_not be_nil
-	@user.parent_newsletters_leid.should_not be_nil
-	@user.provider_marketing_emails_leid.should be_nil
-	@user.provider_newsletters_leid.should be_nil
-end
-
-Then /^I should be subscribed to the provider mailing lists$/ do
-	@user.reload
-	@user.provider_marketing_emails.should be_true
-	@user.provider_newsletters.should be_true
-end
-
-Then /^I should not be subscribed to the provider mailing lists$/ do
-	@user.reload
-	@user.provider_marketing_emails.should be_false
-	@user.provider_newsletters.should be_false
+	mailing_lists.each do |list|
+		@user[list].should be_false
+		@user["#{list}_leid"].should be_nil
+	end
 end

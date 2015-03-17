@@ -4,9 +4,7 @@ class User < ActiveRecord::Base
 	# :timeoutable and :omniauthable
 	devise :database_authenticatable, :registerable, :confirmable,
 		:recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable
-	
-	before_validation :set_marketing_emails_and_newsletters
-	
+		
 	before_create :skip_confirmation!, if: :claiming_profile?
 	after_create :send_welcome_email, if: :claiming_profile?
 	
@@ -17,8 +15,8 @@ class User < ActiveRecord::Base
 	# Setup accessible (or protected) attributes for your model
 	attr_accessible :email, :password, :password_confirmation, :remember_me, 
 		:profile_attributes, :phone, :is_provider, :username, :registration_special_code, :profile_help,
-		:parent_marketing_emails, :parent_newsletters, :provider_marketing_emails, :provider_newsletters,
-		:marketing_emails_and_newsletters, :signed_up_from_blog, :signed_up_for_mailing_lists, :postal_code
+		:provider_marketing_emails, :parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3,
+		:provider_newsletters, :signed_up_from_blog, :signed_up_for_mailing_lists, :postal_code
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :email, :phone, :username, :postal_code
@@ -60,6 +58,7 @@ class User < ActiveRecord::Base
 	# Email format and password length are checked by Devise.
 	# Username and phone lengths are checked by their own validators.
 	# Note: Order of validation will determine display order of error messages.
+	before_validation :validate_newsletter_subscription, if: Proc.new { |user| user.new_record? and user.signed_up_for_mailing_lists }
 	validates :email, length: {maximum: MAX_LENGTHS[:email]}
 	validates :username, username: true, allow_blank: true
 	validates :username, uniqueness: { case_sensitive: false }, allow_blank: true
@@ -67,7 +66,7 @@ class User < ActiveRecord::Base
 	[:postal_code, :registration_special_code].each do |attribute|
 		validates attribute, length: { maximum: MAX_LENGTHS[attribute] }, allow_blank: true
 	end
-	validates :parent_marketing_emails, :parent_newsletters, :provider_marketing_emails, :provider_newsletters, email_subscription: true
+	validates :parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3, :provider_newsletters, email_subscription: true
 	
 	scope :order_by_id, order('id')
 	scope :order_by_descending_id, order('id DESC')
@@ -146,17 +145,6 @@ class User < ActiveRecord::Base
 		@is_provider
 	end
 	
-	# If set, this attribute is used just before validation to set the appropriate mailing list subscriptions.
-	# See set_marketing_emails_and_newsletters.
-	def marketing_emails_and_newsletters=(value)
-		@marketing_emails_and_newsletters = value
-	end
-
-	# Default value is '1'.
-	def marketing_emails_and_newsletters
-		@marketing_emails_and_newsletters || '1'
-	end
-	
 	alias :is_provider? :expert?
 	
 	# If this user is a provider, ensure that they have a published profile.
@@ -222,9 +210,9 @@ class User < ActiveRecord::Base
 	# List names with corresponding list-email ids (leid).
 	# Leids are used by MailChimp to identify user on a mailing list.
 	def leids
-		{ parent_marketing_emails: parent_marketing_emails_leid,
-			parent_newsletters: parent_newsletters_leid,
-			provider_marketing_emails: provider_marketing_emails_leid,
+		{ parent_newsletters_stage1: parent_newsletters_stage1_leid,
+			parent_newsletters_stage2: parent_newsletters_stage2_leid,
+			parent_newsletters_stage3: parent_newsletters_stage3_leid,
 			provider_newsletters: provider_newsletters_leid }
 	end
 
@@ -233,18 +221,18 @@ class User < ActiveRecord::Base
 		leids[list_name].present?
 	end
 
-	#Sync subscriptions (create/update/delete) with MailChimp.
+	#Sync local subscriptions changes (create/update/delete) with MailChimp.
 	def sync_subscription_preferenses(updated_attrs=[])
 		old_values = {
-			parent_marketing_emails: subscribed_to_mailing_list?(:parent_marketing_emails),
-			parent_newsletters: subscribed_to_mailing_list?(:parent_newsletters),
-			provider_marketing_emails: subscribed_to_mailing_list?(:provider_marketing_emails),
+			parent_newsletters_stage1: subscribed_to_mailing_list?(:parent_newsletters_stage1),
+			parent_newsletters_stage2: subscribed_to_mailing_list?(:parent_newsletters_stage2),
+			parent_newsletters_stage3: subscribed_to_mailing_list?(:parent_newsletters_stage3),
 			provider_newsletters: subscribed_to_mailing_list?(:provider_newsletters)
 		}
 		new_values = {
-			parent_marketing_emails: parent_marketing_emails,
-			parent_newsletters: parent_newsletters,
-			provider_marketing_emails: provider_marketing_emails,
+			parent_newsletters_stage1: parent_newsletters_stage1,
+			parent_newsletters_stage2: parent_newsletters_stage2,
+			parent_newsletters_stage3: parent_newsletters_stage3,
 			provider_newsletters: provider_newsletters
 		}
 		
@@ -282,9 +270,9 @@ class User < ActiveRecord::Base
 	# Ensure that this user is not subscribed to any of our emails.
 	# Assumes that the user will be unsubscribed from external mailing lists via callback(s).
 	def remove_email_subscriptions
-		self.parent_marketing_emails = false
-		self.parent_newsletters = false
-		self.provider_marketing_emails = false
+		self.parent_newsletters_stage1 = false
+		self.parent_newsletters_stage2 = false
+		self.parent_newsletters_stage3 = false
 		self.provider_newsletters = false
 		save!
 	end
@@ -427,22 +415,16 @@ class User < ActiveRecord::Base
 		end
 	end
 	
+	# Do validation required by a registration event that is mainly for subscribing to our newsletter.
+	def validate_newsletter_subscription
+		unless parent_newsletters_stage1 or parent_newsletters_stage2 or parent_newsletters_stage3
+			errors.add :base, :newsletter_edition_not_selected
+		end
+	end
+	
 	# def validate_username?
 	# 	new_record? or username_changed?
 	# end
-
-	# If @marketing_emails_and_newsletters has been set, use its value to set the appropriate subscription flags.
-	# Ensure that we are not subscribing to parent lists if we are a provider and vice versa.
-	def set_marketing_emails_and_newsletters
-		unless @marketing_emails_and_newsletters.nil?
-			boolean_value = @marketing_emails_and_newsletters == '1'
-			self.parent_marketing_emails = boolean_value && !is_provider?
-			self.parent_newsletters = boolean_value && !is_provider?
-			self.provider_marketing_emails = boolean_value && is_provider?
-			self.provider_newsletters = boolean_value && is_provider?
-		end
-		true # Keep going no matter what happened here.
-	end
 
 	# Creates new or updates existing subscriptions on MailChimp.
 	def subscribe_to_mailing_lists(list_names=[], new_email=false)
