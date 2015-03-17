@@ -58,6 +58,7 @@ class User < ActiveRecord::Base
 	# Email format and password length are checked by Devise.
 	# Username and phone lengths are checked by their own validators.
 	# Note: Order of validation will determine display order of error messages.
+	before_validation :validate_newsletter_subscription, if: Proc.new { |user| user.new_record? and user.signed_up_for_mailing_lists }
 	validates :email, length: {maximum: MAX_LENGTHS[:email]}
 	validates :username, username: true, allow_blank: true
 	validates :username, uniqueness: { case_sensitive: false }, allow_blank: true
@@ -411,6 +412,13 @@ class User < ActiveRecord::Base
 		unless welcome_sent_at
 			send_devise_notification :on_create_welcome
 			update_column :welcome_sent_at, Time.now.utc
+		end
+	end
+	
+	# Do validation required by a registration event that is mainly for subscribing to our newsletter.
+	def validate_newsletter_subscription
+		unless parent_newsletters_stage1 or parent_newsletters_stage2 or parent_newsletters_stage3
+			errors.add :base, :newsletter_edition_not_selected
 		end
 	end
 	

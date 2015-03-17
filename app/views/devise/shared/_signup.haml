@@ -23,6 +23,7 @@
 	= f.hidden_field :signed_up_for_mailing_lists
 	
 	- if @signing_up_from_blog
+		%p= parent_newsletters_hint
 		= f.check_box :parent_newsletters_stage1
 		= f.label :parent_newsletters_stage1
 		%br

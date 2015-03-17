@@ -361,6 +361,7 @@ describe User do
 	
 	context "email subscriptions", mailchimp: true do
 		let(:parent) { FactoryGirl.create :parent }
+		let(:new_parent) { FactoryGirl.build :parent }
 		
 		it "can request MailChimp and mailing lists exist in MailChimp account" do
 			system_list_ids = Rails.configuration.mailchimp_list_id.values
@@ -392,6 +393,14 @@ describe User do
 			parent.parent_newsletters_stage1.should be_false
 			parent.parent_newsletters_stage2.should be_false
 			parent.parent_newsletters_stage3.should be_false
+		end
+		
+		it "requires a subscription to at least one edition if signing up for the newsletter" do
+			new_parent.signed_up_for_mailing_lists = true
+			new_parent.parent_newsletters_stage1 = false
+			new_parent.parent_newsletters_stage2 = false
+			new_parent.parent_newsletters_stage3 = false
+			new_parent.should have(1).error_on(:base)
 		end
 
 		context "unconfirmed user" do
