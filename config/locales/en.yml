@@ -53,12 +53,6 @@ en:
       payment_authorization_revoked: 'Payment permission has been revoked.'
     customer_files:
       created_charge: 'Charge was completed.'
-    users:
-      profile_updated: 'Your profile changes were saved.'
-      profile_update_error: 'There was a problem saving your profile.'
-      profile_claimed: 'You have claimed your profile.'
-      profile_claim_error: 'There was a problem claiming your profile.'
-      already_has_profile: 'You have an existing profile.'
     profiles:
       created: 'The profile was created.'
       create_error: 'There was a problem creating the profile.'
@@ -123,6 +117,14 @@ en:
       update_service_success: "Updated service '%{name}'."
       updated: "Subcategory '%{name}' was updated."
       update_error: 'There was a problem updating the subcategory.'
+    users:
+      already_has_profile: 'You have an existing profile.'
+      profile_claimed: 'You have claimed your profile.'
+      profile_claim_error: 'There was a problem claiming your profile.'
+      profile_updated: 'Your profile changes were saved.'
+      profile_update_error: 'There was a problem saving your profile.'
+      subscriptions_updated: 'You have updated your subscriptions successfully.'
+      subscriptions_update_error: 'There was a problem updating your subscriptions.'
   profile_mailer:
     invite:
       subject: 'Introducing Kinstantly (with a bonus for you)'
@@ -257,10 +259,10 @@ en:
         postal_code: 'Zip code'
         admin_confirmation_sent_at: ''
         registration_special_code: 'Special code'
-        provider_newsletters: 'Provider newsletter'
-        parent_newsletters_stage1: 'Ages 0-4'
-        parent_newsletters_stage2: 'Ages 5-12'
-        parent_newsletters_stage3: 'Teens'
+        provider_newsletters: 'Provider marketing tips (monthly)'
+        parent_newsletters_stage1: 'Ages 0-4 (weekly)'
+        parent_newsletters_stage2: 'Ages 5-12 (weekly)'
+        parent_newsletters_stage3: 'Teens (weekly)'
       announcement:
         icon: "Choose an icon (to appear with headline)"
         headline: "Headline"
@@ -882,7 +884,8 @@ en:
         subscriptions_header: 'Email preferences'
         subscriptions_page_link: 'newsletter subscriptions'
         subscriptions_form_header: 'Manage your subscriptions'
-        subscriptions_note: 'To choose the emails you want to get from us, just check the boxes, enter your password, and click submit.'
+        subscriptions_note: 'To choose the emails you want to get from us, just check the boxes and click submit.'
+        settings_page_go_to_html: 'Go to your %{settings_page_link} to make other changes to your account.'
         settings_page_link: 'Settings Page'
       view:
         edit_user_profile: 'Edit your profile'
@@ -891,6 +894,7 @@ en:
         no_name: 'Anonymous'
         stripe_info_created_at: 'Connected to Stripe at %{created_at}'
         view_user_profile: 'View your profile'
+        edit_subscriptions_link: 'Subscriptions'
         subscription_preferences_link: 'See or change your subscription preferences'
   payment:
     contact_support: 'There was a problem.  Please contact support@kinstantly.com'

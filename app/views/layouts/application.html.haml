@@ -46,6 +46,8 @@
 							%ul.account-menu
 								%li
 									= account_settings_link
+								%li
+									= edit_subscriptions_link
 								- if current_user.is_payable? # Provider that can accept payments.
 									%li
 										= link_to t('views.user.edit.customer_list_link_for_menu'), customer_files_path

@@ -1,0 +1,25 @@
+#content
+	.edit_subscriptions.generic_form
+		%h3
+			= t 'views.user.edit.settings_page_go_to_html', settings_page_link: link_to(t('views.user.edit.settings_page_link'), edit_user_registration_path, class: 'link')
+		%br
+		%br
+		%h1= t 'views.user.edit.subscriptions_form_header'
+		%h2= t 'views.user.edit.subscriptions_note'
+		= form_for @user, url: update_subscriptions_path, html: { method: :put } do |f|
+			= f.error_messages
+			= f.check_box :parent_newsletters_stage1
+			= f.label :parent_newsletters_stage1
+			%br
+			= f.check_box :parent_newsletters_stage2
+			= f.label :parent_newsletters_stage2
+			%br
+			= f.check_box :parent_newsletters_stage3
+			= f.label :parent_newsletters_stage3
+			%br
+			- if @user.is_provider?
+				= f.check_box :provider_newsletters
+				= f.label :provider_newsletters, checked: true
+			%br
+			.buttons
+				= f.submit t('views.user.edit.submit'), disable_with: t('views.user.edit.submit_disable'), class: 'highlight'

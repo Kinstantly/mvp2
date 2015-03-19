@@ -1,171 +1,173 @@
 require 'spec_helper'
 
 describe User do
-	context "expert" do
-		before(:each) do
-			@kelly = User.new
-			@kelly.add_role :expert
-		end
-	
+	context "provider" do
+		let(:provider) { FactoryGirl.build :provider, password_confirmation: nil, profile: nil }
+		
 		context "email address" do
 			it "should not allow an email address with no @ character" do
-				@kelly.email = 'kelly'
-				@kelly.should have(1).error_on(:email)
+				provider.email = 'kelly'
+				provider.should have(1).error_on(:email)
 			end
 	
 			it "should be happy if we set an email address that includes an @ character" do
-				@kelly.email = 'kelly@example.com'
-				@kelly.should have(:no).errors_on(:email)
+				provider.email = 'kelly@example.com'
+				provider.should have(:no).errors_on(:email)
 			end
 	
 			it "should require an email address" do
-				@kelly.email = nil
-				@kelly.should have(1).error_on(:email)
+				provider.email = nil
+				provider.should have(1).error_on(:email)
 			end
 			
 			it "should reject an email input field that is too long" do
 				email = 'example@example.com'
-				@kelly.email = ('a' * (User::MAX_LENGTHS[:email] - email.length)) + email
-				@kelly.should have(:no).errors_on(:email)
-				@kelly.email = 'a' + @kelly.email
-				@kelly.should have(1).error_on(:email)
+				provider.email = ('a' * (User::MAX_LENGTHS[:email] - email.length)) + email
+				provider.should have(:no).errors_on(:email)
+				provider.email = 'a' + provider.email
+				provider.should have(1).error_on(:email)
 			end
 		end
 	
 		context "password" do
 			it "should require a password" do
-				@kelly.password = nil
-				@kelly.should have(1).error_on(:password)
+				provider.password = nil
+				provider.should have(1).error_on(:password)
 			end
 			
 			it "should not allow a password that is too short" do
-				@kelly.password = 'a' * (User::MIN_LENGTHS[:password] - 1)
-				@kelly.should have(1).error_on(:password)
-				@kelly.password += 'a'
-				@kelly.should have(:no).errors_on(:password)
+				provider.password = 'a' * (User::MIN_LENGTHS[:password] - 1)
+				provider.should have(1).error_on(:password)
+				provider.password += 'a'
+				provider.should have(:no).errors_on(:password)
 			end
 			
 			it "should not allow a password that is too long" do
-				@kelly.password = 'a' * User::MAX_LENGTHS[:password]
-				@kelly.should have(:no).errors_on(:password)
-				@kelly.password += 'a'
-				@kelly.should have(1).error_on(:password)
+				provider.password = 'a' * User::MAX_LENGTHS[:password]
+				provider.should have(:no).errors_on(:password)
+				provider.password += 'a'
+				provider.should have(1).error_on(:password)
 			end
 		end
 	
 		it "should succeed if saved with both an email address and a password" do
-			@kelly.email = 'kelly@example.com'
-			@kelly.password = '1Two&Tres'
-			@kelly.save.should be_true
+			provider.email = 'kelly@example.com'
+			provider.password = '1Two&Tres'
+			provider.save.should be_true
 		end
 		
 		context "phone number" do
 			it "is happy with a valid US phone number and extension" do
-				@kelly.phone = '(800) 555-1234 x56'
-				@kelly.should have(:no).errors_on(:phone)
+				provider.phone = '(800) 555-1234 x56'
+				provider.should have(:no).errors_on(:phone)
 			end
 			
 			it "should fail with an invalid US phone number" do
-				@kelly.phone = '(111) 555-1234'
-				@kelly.should have(1).error_on(:phone)
+				provider.phone = '(111) 555-1234'
+				provider.should have(1).error_on(:phone)
 			end
 			
 			it "should reject a phone input field that is too long" do
 				phone = '(800) 555-1234 x56'
-				@kelly.phone = phone + ('0' * (User::MAX_LENGTHS[:phone] - phone.length))
-				@kelly.should have(:no).errors_on(:phone)
-				@kelly.phone += '0'
-				@kelly.should have(1).error_on(:phone)
+				provider.phone = phone + ('0' * (User::MAX_LENGTHS[:phone] - phone.length))
+				provider.should have(:no).errors_on(:phone)
+				provider.phone += '0'
+				provider.should have(1).error_on(:phone)
 			end
 		end
 		
 		context "registration special code" do
 			it "should allow a blank code" do
-				@kelly.registration_special_code = ''
-				@kelly.should have(:no).errors_on(:registration_special_code)
+				provider.registration_special_code = ''
+				provider.should have(:no).errors_on(:registration_special_code)
 			end
 			
 			it "should not allow a code that is too long" do
-				@kelly.registration_special_code = 'a' * User::MAX_LENGTHS[:registration_special_code]
-				@kelly.should have(:no).errors_on(:registration_special_code)
-				@kelly.registration_special_code += 'a'
-				@kelly.should have(1).error_on(:registration_special_code)
+				provider.registration_special_code = 'a' * User::MAX_LENGTHS[:registration_special_code]
+				provider.should have(:no).errors_on(:registration_special_code)
+				provider.registration_special_code += 'a'
+				provider.should have(1).error_on(:registration_special_code)
 			end
 		end
 	
 		context "profile" do
 			it "should have no profile if new" do
-				@kelly.profile.should be_nil
+				provider.profile.should be_nil
 			end
 	
 			it "should have a profile if profile is built" do
-				@kelly.build_profile
-				@kelly.profile.should_not be_nil
+				provider.build_profile
+				provider.profile.should_not be_nil
 			end
 			
 			it "should not have a persisted profile if new" do
-				@kelly.has_persisted_profile?.should_not be_true
+				provider.has_persisted_profile?.should_not be_true
 			end
 			
 			it "should not have a persisted profile if merely built" do
-				@kelly.build_profile
-				@kelly.has_persisted_profile?.should_not be_true
+				provider.build_profile
+				provider.has_persisted_profile?.should_not be_true
 			end
 			
 			it "should have a persisted profile if it was created" do
-				@kelly.create_profile
-				@kelly.has_persisted_profile?.should be_true
+				provider.create_profile
+				provider.has_persisted_profile?.should be_true
 			end
 			
 			it "should load a profile" do
-				@kelly.load_profile
-				@kelly.profile.should_not be_nil
+				provider.load_profile
+				provider.profile.should_not be_nil
 			end
 			
 			it "should have a published profile" do
-				@kelly.load_profile
-				@kelly.profile.is_published.should be_true
+				provider.load_profile
+				provider.profile.is_published.should be_true
 			end
 		
 			context "claiming" do
+				let(:token) { '2857251c-64e2-11e2-93ca-00264afffe0a' }
+				let(:profile_to_claim) {
+					FactoryGirl.create :profile, invitation_email: 'Ralph@VaughanWilliams.com', invitation_token: token
+				}
+				let(:ralph) { FactoryGirl.create :provider, email: 'Ralph@VaughanWilliams.com' }
+				
 				before(:each) do
-					@token = '2857251c-64e2-11e2-93ca-00264afffe0a'
-					@profile_to_claim = FactoryGirl.create(:profile, invitation_email: 'Ralph@VaughanWilliams.com', invitation_token: @token)
-					@ralph = FactoryGirl.create(:expert_user, email: 'Ralph@VaughanWilliams.com')
+					profile_to_claim.reload.user = nil
+					profile_to_claim.save
 				end
 			
 				it "should fail if this user already has a persistent profile" do
-					@ralph.claim_profile(@token).should_not be_true
+					ralph.claim_profile(token).should_not be_true
 				end
 				
 				it "should succeed if we force a claim of the profile even if the user already has an existing profile" do
-					@ralph.claim_profile(@token, true).should be_true
+					ralph.claim_profile(token, true).should be_true
 				end
 			
 				context "this user does not already have a persistent profile" do
 					before(:each) do
-						@ralph.profile = nil
-						@ralph.save
+						ralph.profile = nil
+						ralph.save
 					end
 				
 					it "should claim the profile specified by the given token" do
-						@ralph.claim_profile(@token).should be_true
+						ralph.claim_profile(token).should be_true
 					end
 				
 					it "should fail if the token does not match a profile" do
-						@ralph.claim_profile('nonsense').should_not be_true
+						ralph.claim_profile('nonsense').should_not be_true
 					end
 				
 					it "should fail if the profile is already claimed" do
-						@ralph.claim_profile(@token).should be_true
-						@ralph.claim_profile(@token).should_not be_true
+						ralph.claim_profile(token).should be_true
+						ralph.claim_profile(token).should_not be_true
 					end
 				end
 				
 				it "should declare that this user is in the process of claiming their profile" do
-					@ralph.claiming_profile! @token
-					@ralph.should be_claiming_profile
-					@ralph.profile_to_claim.should == @profile_to_claim
+					ralph.claiming_profile! token
+					ralph.should be_claiming_profile
+					ralph.profile_to_claim.should == profile_to_claim
 				end
 			end
 		end
@@ -275,79 +277,108 @@ describe User do
 		end
 	end
 	
-	context "non-expert" do
-		before(:each) do
-			@kelly = User.new
-			@kelly.add_role :client
-		end
+	context "parent" do
+		let(:parent) { FactoryGirl.build :parent, password_confirmation: nil }
 		
 		context "username" do
 			it "should not allow a username that is too short" do
-				@kelly.username = 'a' * (User::MIN_LENGTHS[:username] - 1)
-				@kelly.should have(1).error_on(:username)
-				@kelly.username += 'a'
-				@kelly.should have(:no).errors_on(:username)
+				parent.username = 'a' * (User::MIN_LENGTHS[:username] - 1)
+				parent.should have(1).error_on(:username)
+				parent.username += 'a'
+				parent.should have(:no).errors_on(:username)
 			end
 			
 			it "should not allow a username that is too long" do
-				@kelly.username = 'a' * User::MAX_LENGTHS[:username]
-				@kelly.should have(:no).errors_on(:username)
-				@kelly.username += 'a'
-				@kelly.should have(1).error_on(:username)
+				parent.username = 'a' * User::MAX_LENGTHS[:username]
+				parent.should have(:no).errors_on(:username)
+				parent.username += 'a'
+				parent.should have(1).error_on(:username)
 			end
 			
 			it "should allow only alphanumeric and underscore characters in the username" do
-				@kelly.username = 'kel&ly'
-				@kelly.should have(1).error_on(:username)
+				parent.username = 'kel&ly'
+				parent.should have(1).error_on(:username)
 			end
 	
 			it "should not require a username if a client" do
-				@kelly.username = nil
-				@kelly.should have(:no).errors_on(:username)
+				parent.username = nil
+				parent.should have(:no).errors_on(:username)
 			end
 			
 			it "should require a unique username" do
 				username = 'gotta_be_me'
 				FactoryGirl.create(:client_user, username: username)
-				@kelly.username = username
-				@kelly.should have(1).error_on(:username)
+				parent.username = username
+				parent.should have(1).error_on(:username)
 			end
 		end
 	end
 	
 	context "roles" do
-		before(:each) do
-			@kelly = User.new
-		end
-		
+		let(:user) { User.new }
+
 		it "should have no roles if new" do
-			@kelly.roles.should be_empty
+			user.roles.should be_empty
 		end
 		
 		it "should be an admin if the admin role is added" do
-			@kelly.add_role 'admin'
-			@kelly.should be_admin
+			user.add_role 'admin'
+			user.should be_admin
 		end
 		
 		it "should not be an admin if the admin role is removed" do
-			@kelly.add_role 'admin'
-			@kelly.remove_role 'admin'
-			@kelly.should_not be_admin
+			user.add_role 'admin'
+			user.remove_role 'admin'
+			user.should_not be_admin
 		end
 		
 		it "should be an expert if the expert role is added" do
-			@kelly.add_role 'expert'
-			@kelly.should be_expert
+			user.add_role 'expert'
+			user.should be_expert
 		end
 		
 		it "should be a client if the client role is added" do
-			@kelly.add_role 'client'
-			@kelly.should be_client
+			user.add_role 'client'
+			user.should be_client
 		end
 		
 		it "should be a profile editor if the profile_editor role is added" do
-			@kelly.add_role 'profile_editor'
-			@kelly.should be_profile_editor
+			user.add_role 'profile_editor'
+			user.should be_profile_editor
+		end
+	end
+	
+	context "updating attributes" do
+		let(:user) { FactoryGirl.create :user, profile: nil }
+		let(:newsletter_subscriptions) {
+			{
+				provider_newsletters: '1',
+				parent_newsletters_stage1: '1', 
+				parent_newsletters_stage2: '1',
+				parent_newsletters_stage3: '1'
+			}
+		}
+		
+		it "does not require the current password to update newsletter subscriptions" do
+			user.update_attributes(newsletter_subscriptions, as: :passwordless).should be_true
+		end
+		
+		it "requires the current password to update the email address" do
+			expect {
+				user.update_attributes({email: 'leontyne@example.org'}, as: :passwordless)
+			}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+		end
+		
+		it "requires the current password to update the password" do
+			expect {
+				user.update_attributes({password: 'ju4&8gswopl3'}, as: :passwordless)
+			}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+		end
+		
+		it "does not update an attribute that is not accessible at all" do
+			expect {
+				user.update_attributes({failed_attempts: 0})
+			}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
 		end
 	end
 	

@@ -76,6 +76,7 @@ class CustomAuthenticationFailureApp < Devise::FailureApp
 	
 	# If we want to edit our contact preferences, we need to be logged in.
 	def editing_contact_preferences?
-		params[:controller] == 'users/registrations' && params[:action] == 'edit' && (params[:contact_preferences].present? || params[:subscription_preferences].present?)
+		(params[:controller] == 'users' && params[:action] == 'edit_subscriptions') ||
+			(params[:controller] == 'users/registrations' && params[:action] == 'edit' && (params[:contact_preferences].present? || params[:subscription_preferences].present?))
 	end
 end

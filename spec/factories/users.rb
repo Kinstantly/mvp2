@@ -74,6 +74,7 @@ FactoryGirl.define do
 			email 'FactoryEmailParent@kinstantly.com'
 			roles [:client]
 			username 'FactoryUsernameParent'
+			profile nil
 			
 			factory :second_parent do
 				email 'FactoryEmailSecondParent@kinstantly.com'

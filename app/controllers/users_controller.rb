@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 	respond_to :js, only: :update_profile_help
 
 	before_filter :authenticate_user!
-	before_filter :set_up_user, only: [:view_profile, :update_profile, :edit_profile]
+	before_filter :set_up_user, only: [:edit_subscriptions, :update_subscriptions, :view_profile, :update_profile, :edit_profile]
 	load_and_authorize_resource
 	
 	# *After* profile is loaded, ensure it has at least one location.
@@ -20,6 +20,20 @@ class UsersController < ApplicationController
 			@users = @users.order_by_id
 		end
 		@users = @users.page(params[:page]).per(params[:per_page])
+	end
+
+	def edit_subscriptions
+		render layout: 'interior'
+	end
+	
+	def update_subscriptions
+		if @user.update_attributes(params[:user], as: :passwordless)
+			set_flash_message :notice, :subscriptions_updated
+			redirect_to action: :edit_subscriptions
+		else
+			set_flash_message :alert, :subscriptions_update_error
+			render action: :edit_subscriptions
+		end
 	end
 
 	def update_profile

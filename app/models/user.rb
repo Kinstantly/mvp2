@@ -13,10 +13,18 @@ class User < ActiveRecord::Base
 	has_paper_trail ignore: [:last_sign_in_at, :current_sign_in_at, :last_sign_in_ip, :current_sign_in_ip, :sign_in_count]
 	
 	# Setup accessible (or protected) attributes for your model
-	attr_accessible :email, :password, :password_confirmation, :remember_me, 
+	PASSWORDLESS_ACCESSIBLE_ATTRIBUTES = [
+		:provider_marketing_emails, :provider_newsletters,
+		:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3
+	]
+	PASSWORD_ACCESSIBLE_ATTRIBUTES = [
+		*PASSWORDLESS_ACCESSIBLE_ATTRIBUTES,
+		:email, :password, :password_confirmation, :remember_me, 
 		:profile_attributes, :phone, :is_provider, :username, :registration_special_code, :profile_help,
-		:provider_marketing_emails, :parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3,
-		:provider_newsletters, :signed_up_from_blog, :signed_up_for_mailing_lists, :postal_code
+		:signed_up_from_blog, :signed_up_for_mailing_lists, :postal_code
+	]
+	attr_accessible *PASSWORDLESS_ACCESSIBLE_ATTRIBUTES, as: :passwordless
+	attr_accessible *PASSWORD_ACCESSIBLE_ATTRIBUTES
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :email, :phone, :username, :postal_code

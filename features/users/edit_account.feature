@@ -49,23 +49,21 @@ Feature: Edit account
 	Scenario: Change news settings as a client
 		Given I am logged in as a client user
 			And I am on my contact preferences edit page
-		When I check "user_parent_newsletters_stage1"
-			And I check "user_parent_newsletters_stage2"
-			And I check "user_parent_newsletters_stage3"
-			And I enter my current password
+		When I check "Ages 0-4"
+			And I check "Ages 5-12"
+			And I check "Teens"
 			And I save the account settings
-		Then I should see an account edited message
+		Then I should see a subscriptions edited message
 
 	Scenario: Change news settings as a provider
 		Given I am logged in as a provider
 			And I am on my contact preferences edit page
-		When I check "user_provider_newsletters"
-			And I check "user_parent_newsletters_stage1"
-			And I check "user_parent_newsletters_stage2"
-			And I check "user_parent_newsletters_stage3"
-			And I enter my current password
+		When I check "Provider marketing tips"
+			And I check "Ages 0-4"
+			And I check "Ages 5-12"
+			And I check "Teens"
 			And I save the account settings
-		Then I should see an account edited message
+		Then I should see a subscriptions edited message
 
 	@javascript
 	Scenario: Provider can see html code for buttons for his personal website

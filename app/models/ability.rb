@@ -24,6 +24,10 @@ class Ability
 		can :rate, Profile, is_published: true if user.confirmed?
 		cannot :rate, Profile, user_id: user.id
 		
+		# Users can edit their own subscriptions.
+		alias_action :update_subscriptions, to: :edit_subscriptions
+		can :edit_subscriptions, User, id: user.id
+		
 		# Profiles for providers that are set up to receive payments.
 		can :about_payments, Profile do |profile|
 			profile.payable_provider.present? and profile.is_published

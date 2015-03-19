@@ -430,6 +430,10 @@ Then /^I should see an account edited message$/ do
   page.should have_content I18n.t('devise.registrations.updated')
 end
 
+Then /^I should see a subscriptions edited message$/ do
+  page.should have_content I18n.t('controllers.users.subscriptions_updated')
+end
+
 Then /^I should be an expert$/ do
   @user.should be_expert
 end

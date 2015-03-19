@@ -73,6 +73,11 @@ module ApplicationHelper
 		link_to t('views.user.view.link'), path, options if user_signed_in? && show_link?(path)
 	end
 	
+	def edit_subscriptions_link
+		path = edit_subscriptions_path
+		link_to t('views.user.view.edit_subscriptions_link'), path if user_signed_in? && show_link?(path)
+	end
+	
 	def view_user_profile_link
 		path = view_user_profile_path
 		link_to t('views.user.view.view_user_profile'), path if show_link?(path) && can?(:show, User)

@@ -8,8 +8,7 @@ Feature: Blocked email address cannot be subscribed to any mailing list
 			And I am logged in
 			And I am on my contact preferences edit page
 		When I check "Ages 0-4"
-			And I check "Provider newsletter"
-			And I enter my current password
+			And I check "Provider marketing tips"
 			And I save the account settings
 		Then I should only be subscribed to "parent_newsletters_stage1, provider_newsletters" mailing lists and synced to the list server
 
@@ -19,7 +18,6 @@ Feature: Blocked email address cannot be subscribed to any mailing list
 			And I am logged in
 			And I am on my contact preferences edit page
 		When I check "Ages 0-4"
-			And I check "Provider newsletter"
-			And I enter my current password
+			And I check "Provider marketing tips"
 			And I save the account settings
 		Then I should not be subscribed to any mailing lists

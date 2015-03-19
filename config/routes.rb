@@ -30,8 +30,12 @@ Mvp2::Application.routes.draw do
 		get '/newsletter', to: 'users/registrations#new', nlsub: 't', as: :newsletter_signup
 		get '/in_blog/sign_up', to: 'users/registrations#in_blog_new', blog: true, nlsub: true, in_blog: true
 		get '/in_blog/awaiting_confirmation', to: 'users/registrations#in_blog_awaiting_confirmation', in_blog: true
-		get '/users/subscriptions/edit', to: 'users/registrations#edit', as: 'edit_subscriptions', subscription_preferences: true
+		# get '/users/subscriptions/edit', to: 'users/registrations#edit', as: 'edit_subscriptions', subscription_preferences: true
 	end
+	
+	# User can edit their subscriptions without entering their password, i.e., bypass Devise.
+	get 'edit_subscriptions' => 'users#edit_subscriptions', as: 'edit_subscriptions'
+	put 'update_subscriptions' => 'users#update_subscriptions'
 	
 	# When profile is accessed via user.
 	# Only current_user should have access to the profile.
@@ -48,7 +52,7 @@ Mvp2::Application.routes.draw do
 	resources :users, only: [:index, :show, :edit, :update] do
 		member do
 			put 'update_profile_help'
-		end 
+		end
 	end
 	
 	resources :profiles do
