@@ -47,15 +47,13 @@ class Ability
 		alias_action :new_from_email_delivery, to: :create_from_email_delivery
 		can :create_from_email_delivery, ContactBlocker
 		
-		# Any confirmed user can become a customer...
-		# ...and they can read their own customer files.
+		# Any confirmed user can become a customer.
 		if user.confirmed?
 			alias_action :authorize_payment_confirmation, to: :authorize_payment
 			can :authorize_payment, Customer
 			can :create, Customer unless user.as_customer
 			can :show, Customer, user_id: user.id
 			can :update, Customer, user_id: user.id
-			can :read, CustomerFile, customer_id: user.as_customer.id if user.as_customer
 		end
 		
 		# Provider can read the files of their customers to do charges.

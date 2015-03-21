@@ -10,6 +10,9 @@ describe CustomerFilesController, payments: true do
 	let(:customer_file_2) { FactoryGirl.create :second_customer_file, provider: provider }
 	let(:customer_1) { customer_file_1.customer }
 	let(:parent_1) { customer_1.user }
+	
+	let(:another_provider) { FactoryGirl.create :payable_provider, email: 'another_provider@example.org' }
+	let(:another_customer_file) { FactoryGirl.create :customer_file, provider: another_provider, customer: customer_1 }
 
 	let(:api_token) { double('Stripe::Token').as_null_object }
 	let(:api_charge) { 
@@ -39,7 +42,7 @@ describe CustomerFilesController, payments: true do
 	end
 		
 	context "customer or provider is not signed in" do
-		describe "GET new" do
+		describe "GET index" do
 			it "is prevented from viewing a list of customer files" do
 				get :index
 				response.status.should == 302 # Redirect.
@@ -61,10 +64,10 @@ describe CustomerFilesController, payments: true do
 			sign_in parent_1
 		end
 		
-		describe "GET new" do
-			it "assigns a list of the customer's files" do
+		describe "GET index" do
+			it "does not list the customer's file" do
 				get :index
-				assigns(:customer_files).include?(customer_file_1).should be_true
+				assigns(:customer_files).include?(customer_file_1).should be_false
 			end
 			
 			it "does not list another customer's file" do
@@ -74,9 +77,9 @@ describe CustomerFilesController, payments: true do
 		end
 
 		describe "GET show" do
-			it "assigns the customer's file" do
+			it "does not show the customer's file" do
 				get :show, id: customer_file_1.id
-				assigns(:customer_file).should == customer_file_1
+				response.status.should == 302 # Redirect.
 			end
 
 			it "does not show another customer's file" do
@@ -91,11 +94,16 @@ describe CustomerFilesController, payments: true do
 			sign_in provider
 		end
 		
-		describe "GET new" do
+		describe "GET index" do
 			it "assigns a list of the provider's customer files" do
 				get :index
 				assigns(:customer_files).include?(customer_file_1).should be_true
 				assigns(:customer_files).include?(customer_file_2).should be_true
+			end
+			
+			it "does not list another provider's customer file" do
+				get :index
+				assigns(:customer_files).include?(another_customer_file).should be_false
 			end
 		end
 
