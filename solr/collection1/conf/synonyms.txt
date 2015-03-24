@@ -37,3 +37,17 @@ counsel,counselor,counselors
 
 couple\'s,couples
 couples,couple\'s
+childcare,care
+hematologist,hematology,haematology,haematologist
+hematology,hematologist,haematology,haematologist
+haematology,hematologist,hematology,haematologist
+haematologist,hematologist,hematology,haematology
+orthopedics,orthopaedics
+orthopaedics,orthopedics
+diarrhea,diarea
+diarea,diarrhea
+center,centre
+centre,center
+theater,theatre
+theatre,theater
+ahdh,adhd
