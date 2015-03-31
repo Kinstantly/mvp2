@@ -2369,6 +2369,14 @@ ul.links-list > li{
 	font-family: $font-stack;
 	overflow: visible;
 	
+	img.banner{
+		display: block;
+		margin: 0 auto;
+		max-width: 600px;
+		width: 100%;
+		height:auto;
+		margin-top: .6em;
+	}
 	.positioner {
 		height: 100%;
 		width: 100%;
@@ -2399,6 +2407,19 @@ ul.links-list > li{
 				letter-spacing: 0.03em;
 				line-height: 1.2em;
 				color: $default_color;
+
+				&.newsletter_sign_up {
+					text-align: center;
+					text-indent: 0;
+					font-size: 2em;
+					@media (max-width: 48em) {
+						@include scale(font-size, 20);
+					}
+
+					@media (max-width: 36em) {
+						@include scale(font-size, 18);
+					}
+				}
 				
 				@media (max-width: 48em) {
 					text-align: center;
@@ -2412,18 +2433,6 @@ ul.links-list > li{
 				}
 			}
 			
-			h2.newsletter_sign_up {
-				text-align: center;
-				text-indent: 0;
-			}
-			p.newsletter_sign_up {
-				margin-top: 1em;
-				margin-left: 2em;
-				@media (max-width: $break-6-2) {
-					margin-left: 0;
-				}
-			}
-			
 			.alpha_note{
 				@include scale(font-size, 18);
 				padding: 20px 10px 0 10px;
@@ -2432,7 +2441,7 @@ ul.links-list > li{
 
 		#tabs{
 			max-width: 27.5em;
-			margin-top: 1.95em;
+			margin-top: .7em;
 			margin-right: auto;
 			margin-left: auto;
 
@@ -2567,7 +2576,12 @@ ul.links-list > li{
 				}
 			}
 		}
-	}	
+	}
+	.signup-for-newsletters{
+		p {font-size: 14px; padding-bottom: 10px;}
+		.checkbox {margin-left: 30px;}
+		.newsletter-sample{ padding-top: 20px; }
+	}
 }
 
 /* Claim profile pop-over */

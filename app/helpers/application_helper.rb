@@ -310,5 +310,30 @@ module ApplicationHelper
 	def allowed_for_prerelease?
 		Rails.env != 'production' || current_user.try(:profile_editor?).present?
 	end
+
+	def newsletter_urls
+		gb = Gibbon::API.new
+		gb.timeout = 5
+		gb.throws_exceptions = false
+		list_urls = {
+			parent_newsletters_stage1: "http://us9.campaign-archive1.com/?u=9da2f83266d2dfd9641ba63f6&id=6d7f820f78",
+			parent_newsletters_stage2: "http://us9.campaign-archive1.com/?u=9da2f83266d2dfd9641ba63f6&id=2d58b8e01a",
+			parent_newsletters_stage3: "http://us9.campaign-archive1.com/?u=9da2f83266d2dfd9641ba63f6&id=272d9c40d2"
+		}
+		begin
+			list_urls.keys.each do |list_name|
+				list_id = Rails.configuration.mailchimp_list_id[list_name]
+				filters = { list_id: list_id, status: 'sent' }
+				r = gb.campaigns.list filters: filters, sort_field: 'send_time', limit: 1
+				if r.present? && r.try(:[], 'total').present? && r['total'] > 0
+					list_urls[list_name] = r.try(:[], 'data').try(:[], 0).try(:[], 'archive_url')
+				end
+			end
+		rescue Exception => e
+			logger.info "Error while retrieving MailChimp newsletter urls: #{e.message}" if logger
+		ensure
+			return list_urls
+		end
+	end
 	
 end

@@ -8,8 +8,8 @@
 	.container.positioner
 		.company_desc
 			- if @signing_up_for_newsletter
-				%h2.newsletter_sign_up= t 'views.sign_up.newsletter_sign_up_explanation'
-				%p.newsletter_sign_up= t 'views.sign_up.newsletter_sign_up_log_in'
+				%h2.newsletter_sign_up= t 'views.sign_up.parent_newsletters_prompt'
+				= image_tag "newsletter_banner.jpg", alt: short_company_description, itemprop: 'image', class: "banner"
 			- else
 				%h2= short_company_description
 			-if is_private_alpha

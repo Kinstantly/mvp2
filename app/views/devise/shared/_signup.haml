@@ -13,6 +13,10 @@
 - parent_newsletters_hint	= t "views.sign_up.parent_newsletters_hint"
 - provider_newsletters_prompt	= t "views.sign_up.provider_newsletters_prompt"
 - inline_tip = inline_tip === false ? inline_tip : true
+- newsletter_urls = newsletter_urls()
+- stage1_newsletter_url = newsletter_urls[:parent_newsletters_stage1];
+- stage2_newsletter_url = newsletter_urls[:parent_newsletters_stage2];
+- stage3_newsletter_url = newsletter_urls[:parent_newsletters_stage3];
 
 %h1= t "views.sign_up.#{whoami}_title" unless embedded_in
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
@@ -22,29 +26,37 @@
 	= f.hidden_field :signed_up_from_blog
 	= f.hidden_field :signed_up_for_mailing_lists
 	
-	- if @signing_up_from_blog
-		%p= parent_newsletters_hint
-		= f.check_box :parent_newsletters_stage1
-		= f.label :parent_newsletters_stage1
-		%br
-		= f.check_box :parent_newsletters_stage2
-		= f.label :parent_newsletters_stage2
-		%br
-		= f.check_box :parent_newsletters_stage3
-		= f.label :parent_newsletters_stage3
-		%br
+	- if @signing_up_for_newsletter
+		.signup-for-newsletters
+			%p= parent_newsletters_hint
+			.checkbox
+				= f.check_box :parent_newsletters_stage1
+				= f.label :parent_newsletters_stage1
+				%br
+				= f.check_box :parent_newsletters_stage2
+				= f.label :parent_newsletters_stage2
+				%br
+				= f.check_box :parent_newsletters_stage3
+				= f.label :parent_newsletters_stage3
+			%p.newsletter-sample{ style: ('padding-top:10px;' if @signing_up_from_blog)}
+				See a sample:
+				%a{href: stage1_newsletter_url, target: '_blank'} 0-4
+				|
+				%a{href: stage2_newsletter_url, target: '_blank'} 5-12
+				|
+				%a{href: stage3_newsletter_url, target: '_blank'} Teens
+	.email.text_field
+		- unless @signing_up_for_newsletter
+			= f.label :email
+			%br
+		= f.email_field :email, placeholder: ('Enter your email' if @signing_up_for_newsletter)
+		- if inline_tip && !@signing_up_for_newsletter
+			%p.note.grey_text= email_tip
+	- if @signing_up_for_newsletter
 		.postal_code.text_field
 			= f.text_field :postal_code, placeholder: 'Enter your ZIP code'
 			-# %p.v_tip.grey_text= t "views.sign_up.postal_code_inline_tip"
-	.email.text_field
-		- unless @signing_up_from_blog 
-			= f.label :email
-			%br
-		= f.email_field :email, placeholder: ('Enter your email' if @signing_up_from_blog)
-		- if inline_tip
-			%p.note.grey_text= email_tip
-			
-	- unless @signing_up_from_blog  
+	- unless @signing_up_for_newsletter
 		.username.text_field
 			= f.label :username
 			%br
@@ -52,18 +64,18 @@
 			- if inline_tip
 				%p.note.grey_text= username_inline_tip
 	.password.text_field
-		- unless @signing_up_from_blog 
+		- unless @signing_up_for_newsletter
 			= f.label :password
 			%br
-		= f.password_field :password, autocomplete: 'off', placeholder: ('Enter your password' if @signing_up_from_blog)
+		= f.password_field :password, autocomplete: 'off', placeholder: ('Enter your password' if @signing_up_for_newsletter)
 		- if inline_tip
 			%p.note.grey_text= password_tip
 
 	.password_confirmation.text_field
-		- unless @signing_up_from_blog 
+		- unless @signing_up_for_newsletter
 			= f.label :password_confirmation
 			%br
-		= f.password_field :password_confirmation, autocomplete: 'off', placeholder: ('Retype your password' if @signing_up_from_blog)
+		= f.password_field :password_confirmation, autocomplete: 'off', placeholder: ('Retype your password' if @signing_up_for_newsletter)
 
 	-# - unless @signing_up_for_newsletter
 	-# 	.registration_special_code.text_field
@@ -98,7 +110,7 @@
 				= f.radio_button :is_provider, '2'
 				= parent_provider_tag
 
-	- unless @signing_up_from_blog
+	- unless @signing_up_for_newsletter
 		.newsletters-signup
 			%h2= parent_newsletters_prompt
 			.checkbox
@@ -122,17 +134,8 @@
 			= f.submit t(:newsletter_sign_up_label, scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default newsletter_sign_up', id: 'sign_up_button'
 		- else
 			= f.submit t((is_provider ? :provider_label : :label), scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'
-	- if @signing_up_from_blog
-		%p
-			See a sample:
-			%a{href: " http://us9.campaign-archive1.com/?u=9da2f83266d2dfd9641ba63f6&id=6d7f820f78", target: '_blank'} 0-4
-			|
-			%a{href: " http://us9.campaign-archive1.com/?u=9da2f83266d2dfd9641ba63f6&id=2d58b8e01a", target: '_blank'} 5-12
-			|
-			%a{href: " http://us9.campaign-archive1.com/?u=9da2f83266d2dfd9641ba63f6&id=272d9c40d2", target: '_blank'} Teens
-		%br
 
-- unless @signing_up_from_blog
+- unless @signing_up_for_newsletter
 	:javascript
 		$(':radio[name="user[is_provider]"]').on('change', function() {
 			selected_val = $(this).filter(":checked").val()
