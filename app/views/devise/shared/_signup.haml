@@ -49,12 +49,12 @@
 		- unless @signing_up_for_newsletter
 			= f.label :email
 			%br
-		= f.email_field :email, placeholder: ('Enter your email' if @signing_up_for_newsletter)
+		= f.email_field :email, placeholder: ('Enter email address' if @signing_up_for_newsletter)
 		- if inline_tip && !@signing_up_for_newsletter
 			%p.note.grey_text= email_tip
 	- if @signing_up_for_newsletter
 		.postal_code.text_field
-			= f.text_field :postal_code, placeholder: 'Enter your ZIP code'
+			= f.text_field :postal_code, placeholder: 'Enter ZIP code'
 			-# %p.v_tip.grey_text= t "views.sign_up.postal_code_inline_tip"
 	- unless @signing_up_for_newsletter
 		.username.text_field
@@ -67,7 +67,7 @@
 		- unless @signing_up_for_newsletter
 			= f.label :password
 			%br
-		= f.password_field :password, autocomplete: 'off', placeholder: ('Enter your password' if @signing_up_for_newsletter)
+		= f.password_field :password, autocomplete: 'off', placeholder: ('Enter password' if @signing_up_for_newsletter)
 		- if inline_tip
 			%p.note.grey_text= password_tip
 
@@ -75,7 +75,7 @@
 		- unless @signing_up_for_newsletter
 			= f.label :password_confirmation
 			%br
-		= f.password_field :password_confirmation, autocomplete: 'off', placeholder: ('Retype your password' if @signing_up_for_newsletter)
+		= f.password_field :password_confirmation, autocomplete: 'off', placeholder: ('Retype password' if @signing_up_for_newsletter)
 
 	-# - unless @signing_up_for_newsletter
 	-# 	.registration_special_code.text_field
