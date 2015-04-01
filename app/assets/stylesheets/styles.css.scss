@@ -677,11 +677,17 @@
 				}
 			}
 		}
-		.payment_promo {
-			border-top: 1px solid $medium-gray;
+		#payments_setup {
+			border: 1px solid $medium-gray;
 			@extend %clearfix;
-			@include scale(padding, 30 0, 14);
-			text-align: center;
+			@include scale(padding, 16, 14);
+			@include scale(margin-bottom, 30, 14);
+			
+			#payments_promo {
+				font-size: 0.875em;
+				line-height: 1.5em;
+				margin-bottom: 0;
+			}
 		}
 		/* Updated 12/23 */
 		.announcement-area {
@@ -2880,15 +2886,23 @@ ul.links-list > li{
 	}
 }
 
-.confirmation_panel, .error_panel {
+.confirmation_panel, .error_panel, .access_denied_panel {
 	width: 100%;
 	padding: 0;
 	text-align: center;
 	p {
-		margin: 4em 0 1em 0;
+		margin: 2em 0 1em 0;
 	}
 	p.blue{
 		color: $kinstantly_blue;
+	}
+	a.button {
+		@include default-button-style;
+		width: auto;
+		&:hover {
+			@include default-button-hover-style;
+			width: auto;
+		}
 	}
 }
 

@@ -1,0 +1,53 @@
+- info_email ||= "#{t('contact.emails.support.value')}@#{t('email_domain')}"
+- return_path ||= nil
+#payments_setup.formlet.info-popover
+	%h3#payments_promo
+		- if user.is_payable? # Already connected
+			= t 'views.user.edit.stripe_connected'
+		-else
+			= t 'views.user.edit.stripe_connect_prompt'
+		= link_to (t 'views.user.edit.stripe_connect_info_link'), '#', id: 'stripe_more', class: 'link'
+	.edit.popover
+		- if user.is_payable? # Already connected
+			%h2
+				Your Kinstantly profile is connected to Stripe
+		-else
+			%h2
+				Connecting your Kinstantly profile to Stripe
+			%p
+				Connecting your Kinstantly profile to Stripe makes online payments for you and your customers simple, easy, and safe.
+		%p
+			All sensitive information, such as bank account and credit card numbers, is stored by Stripe, used by more than 17,000 websites around the world. To read more about Stripe's security, see
+			= succeed '.' do
+				%a{href: "http://stripe.com/help/security", target: '_blank'} stripe.com/help/security
+		%p 
+			Stripe processing fees&mdash;2.9% plus 30 cents per successful charge&mdash;apply. For details, see
+			= succeed '.' do
+				%a{href: "http://stripe.com/us/pricing", target: '_blank'} stripe.com/us/pricing
+		%p 
+			Questions? Email us:
+			= mail_to info_email
+	- if user.is_payable? # Already connected
+		= link_to t('views.user.edit.customer_list_link'), customer_files_path, class: 'dont_popover'
+	- else
+		%br
+		= link_to stripe_connect_path_for(user, return_path: return_path), class: "stripe-connect" do
+			%span.dont_popover Connect with Stripe
+
+- unless user.is_payable? or return_path
+	:coffeescript
+		# Opens a modal window
+		my_vars.f.win_popup = (url, w, h, name) ->
+			left = (screen.width / 2) - (w / 2)
+			top = (screen.height / 2) - (h / 2)
+			window.open(url, name, 'toolbar=yes,menubar=no,status=no,width=' + w + ',height=' + h + ',left=' +left + ',top=' + top);
+		$ ->
+			# Strip Connect opens a new win.
+			$('a.stripe-connect').on 'click', (e) ->
+				url = $(@).attr("href")
+				my_vars.f.win_popup(url, 530, 600, 'Stripe Connect')
+				false
+
+:coffeescript
+	$ ->
+		$('#payments_setup').not('open-formlet-popover').addClass('open-formlet-popover').on('click', my_vars.f.open_formlet).each -> my_vars.f.configure_formlet this

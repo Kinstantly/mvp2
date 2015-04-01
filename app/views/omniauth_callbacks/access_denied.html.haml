@@ -1,6 +1,6 @@
-.confirmation_panel
-	%p.blue
-		Thanks for connecting your Kinstantly profile to Stripe. Now let your customers know!
+.access_denied_panel
+	%p
+		Stripe Connect sign-up has been cancelled.
 	- if @after_stripe_connect_path
 		%p= link_to 'Click here to continue', @after_stripe_connect_path, class: 'button'
 	- else
@@ -10,7 +10,7 @@
 				window.close()
 				false
 			# setTimeout close_window, 5000
-			$('.confirmation_panel .close_button').on 'click', close_window
+			$('.access_denied_panel .close_button').on 'click', close_window
 	%p 
 		Questions? Concerns? Just want to say hi? Email us at
 		= succeed '.' do

@@ -1,7 +1,9 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 	
-	layout 'popup'
+	layout :layout
 	before_filter :authenticate_user!
+	
+	before_filter :after_stripe_connect_set_up, only: [:stripe_connect, :failure]
 
 	def stripe_connect
 		auth = request.env["omniauth.auth"]
@@ -21,7 +23,28 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 	end
 
 	def failure
-		logger.error "Stripe Connect error: #{params}"
-		render 'error'
+		if params[:error] == 'access_denied'
+			logger.info "Stripe Connect: #{params}"
+			render 'access_denied'
+			# if @after_stripe_connect_path
+			# 	redirect_to @after_stripe_connect_path, notice: 'Stripe Connect cancelled'
+			# else
+			# 	render 'access_denied'
+			# end
+		else
+			logger.error "Stripe Connect error: #{params}"
+			render 'error'
+		end
+	end
+	
+	private
+	
+	def after_stripe_connect_set_up
+		@after_stripe_connect_path = session[:after_stripe_connect_path].presence
+		# session[:after_stripe_connect_path] = nil
+	end
+	
+	def layout
+		@after_stripe_connect_path ? 'interior' : 'popup'
 	end
 end
