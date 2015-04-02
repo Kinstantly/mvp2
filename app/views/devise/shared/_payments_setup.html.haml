@@ -1,7 +1,7 @@
 - info_email ||= "#{t('contact.emails.support.value')}@#{t('email_domain')}"
 - return_path ||= nil
-#payments_setup.formlet.info-popover
-	%h3#payments_promo
+.payments_setup.formlet.info-popover
+	%h3.payments_promo
 		- if user.is_payable? # Already connected
 			= t 'views.user.edit.stripe_connected'
 		-else
@@ -50,4 +50,4 @@
 
 :coffeescript
 	$ ->
-		$('#payments_setup').not('open-formlet-popover').addClass('open-formlet-popover').on('click', my_vars.f.open_formlet).each -> my_vars.f.configure_formlet this
+		$('.payments_setup').not('open-formlet-popover').addClass('open-formlet-popover').on('click', my_vars.f.open_formlet).each -> my_vars.f.configure_formlet this

@@ -677,13 +677,13 @@
 				}
 			}
 		}
-		#payments_setup {
+		.payments_setup {
 			border: 1px solid $medium-gray;
 			@extend %clearfix;
 			@include scale(padding, 16, 14);
 			@include scale(margin-bottom, 30, 14);
 			
-			#payments_promo {
+			.payments_promo {
 				font-size: 0.875em;
 				line-height: 1.5em;
 				margin-bottom: 0;
@@ -2746,7 +2746,7 @@ ul.links-list > li{
 	}
 }
 
-#payments_setup{
+.payments_setup{
 	h2 {
 		margin-bottom: 0.8em;
 	}

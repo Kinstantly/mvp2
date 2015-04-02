@@ -59,10 +59,8 @@
 			.map-embed
 				= render partial: 'profiles/locations_map', locals: {profile: @profile, context: :profile_edit}
 			#locations.formlet= render partial: 'locations_formlet'
-		-# Show Stripe Connect if profile is owned by the current user and is not already set up for payments.
-		- if @profile.show_stripe_connect and @profile.user == current_user and not @profile.user.is_payable?
-			%section
-				= render partial: 'devise/shared/payments_setup', locals: {user: @profile.user, return_path: edit_my_profile_path}
+		%section#payments_setup
+			= render partial: 'payments_setup'
 		%section.promo
 			-# Displaying the widget in the edit tab is too hard given we cannot predict what is in it.
 			-# - if @profile.widget_code.present?

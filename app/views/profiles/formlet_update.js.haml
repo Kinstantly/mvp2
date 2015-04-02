@@ -5,20 +5,19 @@
 	- if @update_succeeded
 		my_vars.f.close_formlets();
 		-# $('##{@formlet}').removeClass('active');
-	- if @refresh_formlets
-		- @refresh_formlets.split.each do |f|
-			formlet = $('##{f}').html('#{escape_javascript(render partial: f+'_formlet')}');
-			my_vars.f.place_formlet(formlet);
-			my_vars.f.configure_formlet(formlet);
-	- else
-		formlet = $('##{@formlet}').html('#{escape_javascript(render partial: @formlet+'_formlet')}');
+	- formlet_list = escape_javascript "#{@formlet} #{@refresh_formlets}".strip
+	- formlet_list.split.each do |f|
+		formlet = $('##{f}').html('#{escape_javascript(render partial: f+'_formlet')}');
 		my_vars.f.place_formlet(formlet);
 		my_vars.f.configure_formlet(formlet);
-		- if @child_formlet && !@update_succeeded
-			-# Re-open child formlet if update failed
-			child_formlet = formlet.find('##{@child_formlet}')
-			child_formlet.addClass('active');
-			my_vars.f.place_formlet(child_formlet);
-			
+	- if @refresh_partials.present?
+		- escape_javascript(@refresh_partials.strip).split.each do |partial|
+			$('##{partial}').html('#{escape_javascript(render partial: partial)}');
+	- if @child_formlet && !@update_succeeded
+		-# Re-open child formlet if update failed
+		var child_formlet = formlet.find('##{escape_javascript @child_formlet}');
+		child_formlet.addClass('active');
+		my_vars.f.place_formlet(child_formlet);
+		
 	-# Fix text field placeholders for IE if any.
 	my_vars.f.text_field_placeholders($('##{@formlet}'));

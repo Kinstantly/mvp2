@@ -34,6 +34,7 @@
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
 		= hidden_field_tag 'reload_map', 't'
+		= hidden_field_tag 'refresh_partials', 'payments_setup'
 		= f.fields_for :locations, locations do |lf|
 			.text_field
 				= lf.label :address1
