@@ -313,7 +313,7 @@ module ApplicationHelper
 
 	def newsletter_urls
 		gb = Gibbon::API.new
-		gb.timeout = 5
+		gb.timeout = 2 # second(s)
 		gb.throws_exceptions = false
 		list_urls = {
 			parent_newsletters_stage1: "http://us9.campaign-archive1.com/?u=9da2f83266d2dfd9641ba63f6&id=6d7f820f78",
