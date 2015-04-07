@@ -13,10 +13,6 @@
 - parent_newsletters_hint	= t "views.sign_up.parent_newsletters_hint"
 - provider_newsletters_prompt	= t "views.sign_up.provider_newsletters_prompt"
 - inline_tip = inline_tip === false ? inline_tip : true
-- newsletter_urls = newsletter_urls()
-- stage1_newsletter_url = newsletter_urls[:parent_newsletters_stage1];
-- stage2_newsletter_url = newsletter_urls[:parent_newsletters_stage2];
-- stage3_newsletter_url = newsletter_urls[:parent_newsletters_stage3];
 
 %h1= t "views.sign_up.#{whoami}_title" unless embedded_in
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
@@ -40,11 +36,11 @@
 				= f.label :parent_newsletters_stage3
 			%p.newsletter-sample{ style: ('padding-top:10px;' if @signing_up_from_blog)}
 				See a sample:
-				%a{href: stage1_newsletter_url, target: '_blank'} 0-4
+				=link_to '0-4', latest_newsletter_path(:parent_newsletters_stage1), {target: '_blank'} 
 				|
-				%a{href: stage2_newsletter_url, target: '_blank'} 5-12
+				=link_to '5-12', latest_newsletter_path(:parent_newsletters_stage2), {target: '_blank'} 
 				|
-				%a{href: stage3_newsletter_url, target: '_blank'} Teens
+				=link_to 'Teens', latest_newsletter_path(:parent_newsletters_stage3), {target: '_blank'} 
 	.email.text_field
 		- unless @signing_up_for_newsletter
 			= f.label :email
