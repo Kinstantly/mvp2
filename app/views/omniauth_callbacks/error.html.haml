@@ -1,14 +1,17 @@
 .error_panel
 	%p
 		Something went wrong.
-		%br
-		Please close this window and try again.
-	%p= link_to 'Close', '#', class: 'close_button'
-:coffeescript
-	close_window = ->  
-		window.close()
-		false
-	
-	# setTimeout close_window, 5000
-
-	$('.error_panel .close_button').on 'click', close_window
+	- if @after_stripe_connect_path
+		%p= link_to 'Click here to continue and try again', @after_stripe_connect_path, class: 'button'
+	- else
+		%p= link_to 'Click here to continue and try again', '#', class: 'close_button button'
+		:coffeescript
+			close_window = ->  
+				window.close()
+				false
+			# setTimeout close_window, 5000
+			$('.error_panel .close_button').on 'click', close_window
+	%p 
+		Need help? Email us at
+		= succeed '.' do
+			= mail_to "#{t('contact.emails.info.value')}@#{t('email_domain')}"

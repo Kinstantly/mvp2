@@ -7,6 +7,7 @@
 	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
+		= hidden_field_tag 'refresh_partials', 'payments_setup'
 		.text_field#first_name_field
 			%span.char_count
 			= f.label :first_name

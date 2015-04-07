@@ -35,7 +35,7 @@ module PaymentHelper
 	# Returns the path for the Stripe Connect button that the specified user can click to authorize payments to themselves.
 	# Uses the redirect_uri parameter, so be sure to specify the callback URLs for each of the development/test, staging, and production environments.  They are specified via the Stripe web interface for the account that owns our app.
 	# The default value of the stripe_landing parameter is configured in config/initializers/devise.rb.
-	def stripe_connect_path_for(user)
+	def stripe_connect_path_for(user, options={})
 		parameters = {
 			redirect_uri: user_omniauth_callback_url(:stripe_connect)
 		}
@@ -65,6 +65,7 @@ module PaymentHelper
 				end
 			end
 		end
+		session[:after_stripe_connect_path] = options[:return_path]
 		user_omniauth_authorize_path :stripe_connect, parameters
 	end
 end

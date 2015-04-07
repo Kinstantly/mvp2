@@ -1,0 +1,4 @@
+-# Show Stripe Connect if this profile is owned by the current user and is not already set up for payments.
+-# (Put this conditional logic in here because some formlets always render this partial.)
+- if @profile.show_stripe_connect and @profile.user == current_user and not @profile.user.is_payable?
+	= render partial: 'devise/shared/payments_setup', locals: {user: @profile.user, return_path: edit_my_profile_path}

@@ -59,6 +59,8 @@
 			.map-embed
 				= render partial: 'profiles/locations_map', locals: {profile: @profile, context: :profile_edit}
 			#locations.formlet= render partial: 'locations_formlet'
+		%section#payments_setup
+			= render partial: 'payments_setup'
 		%section.promo
 			-# Displaying the widget in the edit tab is too hard given we cannot predict what is in it.
 			-# - if @profile.widget_code.present?
