@@ -5,13 +5,14 @@
 	- if @update_succeeded
 		my_vars.f.close_formlets();
 		-# $('##{@formlet}').removeClass('active');
-	- formlet_list = escape_javascript "#{@formlet} #{@refresh_formlets}".strip
+	- formlet_list = escape_javascript "#{@formlet} #{@refresh_formlets}".strip.gsub(/[.\/]/, '')
 	- formlet_list.split.each do |f|
 		formlet = $('##{f}').html('#{escape_javascript(render partial: f+'_formlet')}');
 		my_vars.f.place_formlet(formlet);
 		my_vars.f.configure_formlet(formlet);
 	- if @refresh_partials.present?
-		- escape_javascript(@refresh_partials.strip).split.each do |partial|
+		- partials_list = escape_javascript @refresh_partials.strip.gsub(/[.\/]/, '')
+		- partials_list.split.each do |partial|
 			$('##{partial}').html('#{escape_javascript(render partial: partial)}');
 	- if @child_formlet && !@update_succeeded
 		-# Re-open child formlet if update failed
