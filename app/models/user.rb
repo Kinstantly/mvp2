@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
 	]
 	PASSWORD_ACCESSIBLE_ATTRIBUTES = [
 		*PASSWORDLESS_ACCESSIBLE_ATTRIBUTES,
-		:email, :password, :password_confirmation, :remember_me, 
+		:email, :password, :password_confirmation, :current_password, :remember_me,
 		:profile_attributes, :phone, :is_provider, :username, :registration_special_code, :profile_help,
 		:signed_up_from_blog, :signed_up_for_mailing_lists, :postal_code
 	]
@@ -337,7 +337,7 @@ class User < ActiveRecord::Base
 		end
 		
 		def send_confirmation_instructions(attributes={})
-			user = if running_as_private_site? && !attributes[:admin_mode]
+			user = if running_as_private_site? && !attributes[:admin_confirmation_sent_by_id]
 				admin_approval_required(find_or_initialize_with_errors(confirmation_keys, attributes, :not_found)) do
 					super
 				end

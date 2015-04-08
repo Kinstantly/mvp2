@@ -30,7 +30,9 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
 	private
 	
 	def set_admin_mode
-		resource_params[:admin_mode] = current_user.try :admin? if running_as_private_site?
+		if current_user.try :admin?
+			resource_params.permit :email, :admin_confirmation_sent_by_id
+		end
 	end
 	
 end

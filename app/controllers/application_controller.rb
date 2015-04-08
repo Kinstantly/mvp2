@@ -10,6 +10,9 @@ class ApplicationController < ActionController::Base
 	# Store referrer for use after sign-in or sign-up if so directed.
 	before_filter :store_referrer, only: :new
 	
+	# Tell Devise which parameters can be updated in the User model.
+	before_filter :configure_permitted_devise_parameters, if: :devise_controller?
+	
 	# Set security-related HTTP headers for all responses.
 	# (For Rails 4, instead use config.action_dispatch.default_headers in config/application.rb.)
 	after_filter :set_default_response_headers
@@ -146,5 +149,10 @@ class ApplicationController < ActionController::Base
 		else
 			:default
 		end
+	end
+	
+	def configure_permitted_devise_parameters
+		devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(*User::PASSWORD_ACCESSIBLE_ATTRIBUTES) }
+		devise_parameter_sanitizer.for(:account_update) { |u| u.permit(*User::PASSWORD_ACCESSIBLE_ATTRIBUTES) }
 	end
 end

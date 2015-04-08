@@ -16,7 +16,7 @@ describe Users::ConfirmationsController do
 			it "redirects to sign in page after confirmation" do
 				post :create, user: {email: mimi.email}
 				response.should redirect_to '/users/sign_in'
-				flash[:notice].should_not be_nil
+				flash[:notice].should have_content 'confirm'
 			end
 
 			context "when running as a private site", private_site: true do
@@ -31,7 +31,7 @@ describe Users::ConfirmationsController do
 					mimi.save
 					post :create, user: {email: mimi.email}
 					response.should redirect_to '/users/sign_in'
-					flash[:notice].should_not be_nil
+					flash[:notice].should have_content 'confirm'
 				end
 			end
 		end
@@ -46,13 +46,13 @@ describe Users::ConfirmationsController do
 		
 		describe "POST confirmation" do
 			it "redirects back to the user account page after confirmation" do
-				post :create, user: {email: mimi.email}
+				post :create, user: {email: mimi.email, admin_confirmation_sent_by_id: bossy.id}
 				response.should redirect_to user_path mimi
 			end
 
 			context "when running as a private site", private_site: true do
 				it "redirects back to the user account page after confirmation" do
-					post :create, user: {email: mimi.email}
+					post :create, user: {email: mimi.email, admin_confirmation_sent_by_id: bossy.id}
 					response.should redirect_to user_path mimi
 				end
 			end

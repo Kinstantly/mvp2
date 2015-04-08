@@ -202,7 +202,7 @@ describe User do
 			
 			context "when running as a private site", private_site: true do
 				it "admin should be able to send confirmation instructions" do
-					result = User.send_confirmation_instructions email: provider.email, admin_mode: true
+					result = User.send_confirmation_instructions email: provider.email, admin_confirmation_sent_by_id: admin.id
 					result.errors[:email].should_not be_present
 					result.errors[:admin_confirmation_sent_at].should_not be_present
 				end
