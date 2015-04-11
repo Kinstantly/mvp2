@@ -2,9 +2,9 @@
 	%p
 		Something went wrong.
 	- if @after_stripe_connect_path
-		%p= link_to 'Click here to continue and try again', @after_stripe_connect_path, class: 'button'
+		%p= link_to 'Click to try again', @after_stripe_connect_path, class: 'button'
 	- else
-		%p= link_to 'Click here to continue and try again', '#', class: 'close_button button'
+		%p= link_to 'Click to try again', '#', class: 'close_button button'
 		:coffeescript
 			close_window = ->  
 				window.close()
@@ -12,6 +12,5 @@
 			# setTimeout close_window, 5000
 			$('.error_panel .close_button').on 'click', close_window
 	%p 
-		Need help? Email us at
-		= succeed '.' do
-			= mail_to "#{t('contact.emails.info.value')}@#{t('email_domain')}"
+		Questions? Email us at
+		= mail_to "#{t('contact.emails.info.value')}@#{t('email_domain')}"
