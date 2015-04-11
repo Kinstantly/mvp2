@@ -2,7 +2,8 @@
 	%p
 		Thanks for connecting your Kinstantly profile to Stripe. You've just made it easy for your customers to pay you online.
 	- if @after_stripe_connect_path
-		%p= link_to 'Click to continue', @after_stripe_connect_path, class: 'button'
+		-# Take them to the profile edit tab no matter where they started.
+		%p= link_to 'Click to continue', edit_my_profile_path, class: 'button'
 	- else
 		%p= link_to 'Click to continue', '#', class: 'close_button button'
 		:coffeescript

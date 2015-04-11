@@ -312,6 +312,9 @@ em, i {
 		weight: lighter;
 		size: small;
 	}
+	&.highlight {
+		color: $kinstantly_pink;
+	}
 }
 
 .blank_attr {

@@ -44,5 +44,5 @@ Feature: Administrator maintains parent reviews of providers
 		Given I am logged in as an administrator
 			And I visit the admin edit page for an unclaimed profile with one review
 		When I click "Delete" in the first review on the admin profile edit page
-			And I wait a bit
+			And I confirm alert
 		Then the profile should have no reviews

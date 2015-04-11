@@ -116,13 +116,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	end
 
 	# The URL to be used after updating a resource.
-	# If I'm a provider, go to my profile page, otherwise go to the home page.
+	# Go to the account settings page.
 	def after_update_path_for(resource)
-		if resource.is_provider? && can?(:view_my_profile, resource.profile)
-			my_profile_path
-		else
-			signed_in_root_path resource
-		end
+		edit_user_registration_path
 	end
 
 	def after_inactive_sign_up_path_for(resource)

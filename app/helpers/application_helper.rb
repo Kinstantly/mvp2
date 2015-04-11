@@ -70,12 +70,12 @@ module ApplicationHelper
 
 	def account_settings_link(options={})
 		path = edit_user_registration_path
-		link_to t('views.user.view.link'), path, options if user_signed_in? && show_link?(path)
+		link_to t('views.user.view.link'), path, options if user_signed_in?
 	end
 	
 	def edit_subscriptions_link
 		path = edit_subscriptions_path
-		link_to t('views.user.view.edit_subscriptions_link'), path if user_signed_in? && show_link?(path)
+		link_to t('views.user.view.edit_subscriptions_link'), path if user_signed_in?
 	end
 	
 	def view_user_profile_link

@@ -82,9 +82,9 @@ def sign_up(sign_up_path='/provider/sign_up')
   within('#sign_up') do
     fill_in "user_email", :with => @visitor[:email]
     fill_in "user_password", :with => @visitor[:password]
-    fill_in "user_password_confirmation", :with => @visitor[:password_confirmation]
-    fill_in "user_username", :with => @visitor[:username] if @visitor[:username]
-    fill_in "user_password_registration_special_code", :with => @visitor[:registration_special_code] if @visitor[:registration_special_code]
+    # fill_in "user_password_confirmation", :with => @visitor[:password_confirmation]
+    # fill_in "user_username", :with => @visitor[:username] if @visitor[:username]
+    # fill_in "user_password_registration_special_code", :with => @visitor[:registration_special_code] if @visitor[:registration_special_code]
     click_button 'sign_up_button'
   end
   find_user
@@ -96,9 +96,9 @@ def sign_up_and_subscribe(sign_up_path='/provider/sign_up', mailing_lists=[])
   within('#sign_up') do
     fill_in "user_email", :with => @visitor[:email]
     fill_in "user_password", :with => @visitor[:password]
-    fill_in "user_password_confirmation", :with => @visitor[:password_confirmation]
-    fill_in "user_username", :with => @visitor[:username] if @visitor[:username]
-    fill_in "user_password_registration_special_code", :with => @visitor[:registration_special_code] if @visitor[:registration_special_code]
+    # fill_in "user_password_confirmation", :with => @visitor[:password_confirmation]
+    # fill_in "user_username", :with => @visitor[:username] if @visitor[:username]
+    # fill_in "user_password_registration_special_code", :with => @visitor[:registration_special_code] if @visitor[:registration_special_code]
     mailing_lists.each do |list|
       check "user_#{list}"
     end

@@ -59,7 +59,7 @@ describe Users::RegistrationsController do
 
 			it "updates email address for confirmation" do
 				put :update, user: {email: email, current_password: mimi.password}
-				response.should redirect_to '/'
+				response.should redirect_to edit_user_registration_url
 				flash[:notice].should have_content 'confirmation'
 			end
 		

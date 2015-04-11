@@ -866,7 +866,9 @@ en:
         cancel_account_confirmation: 'We will completely remove your account. Are you sure?'
         cancel_account_prompt: 'Unhappy?'
         customer_header: 'Payments to your providers'
-        customer_link: 'View authorizations and payments to your providers'
+        customer_link_before: 'View'
+        customer_link: 'authorizations and payments'
+        customer_link_after: 'to your providers.'
         customer_link_for_menu: 'Payments'
         customer_list_link: 'View customers and charge credit cards'
         customer_list_link_for_menu: 'Customer list'
@@ -887,6 +889,7 @@ en:
         subscriptions_note: 'To choose the emails you want to get from us, just check the boxes and click submit.'
         settings_page_go_to_html: 'Go to your %{settings_page_link} to make other changes to your account.'
         settings_page_link: 'Settings Page'
+        unconfirmed_email_note: 'Please click on the confirmation link in the email we sent to %{email}'
       view:
         edit_user_profile: 'Edit your profile'
         link: 'Settings'

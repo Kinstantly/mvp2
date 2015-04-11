@@ -41,6 +41,9 @@
 				= devise_error_messages!
 				.email.text_field
 					= f.label :email, class: 'required'
+					- if resource.unconfirmed_email
+						%br
+						%span.note.highlight= t 'views.user.edit.unconfirmed_email_note', email: resource.unconfirmed_email
 					= f.email_field :email
 					%span.note= t 'views.user.edit.email_note'
 				.password.text_field
@@ -80,7 +83,7 @@
 				- if resource.is_provider? and resource.profile.try(:show_stripe_connect)
 					%br
 					%h1#payments_header= t 'views.user.edit.payments_header'
-					= render partial: 'devise/shared/payments_setup', locals: {user: resource, return_path: edit_my_profile_path}
+					= render partial: 'devise/shared/payments_setup', locals: {user: resource, return_path: edit_user_registration_path(anchor: 'payments_header')}
 				- if resource.is_provider?
 					%br
 					%h1= t 'views.user.edit.add_button_header'
@@ -125,9 +128,12 @@
 								= succeed '.' do
 									= mail_to info_email
 				- if resource.as_customer
-					%h1= t 'views.user.edit.customer_header'
 					%br
-					%p= link_to t('views.user.edit.customer_link'), resource.as_customer
+					%h1= t 'views.user.edit.customer_header'
+					%h3
+						= t 'views.user.edit.customer_link_before'
+						= link_to t('views.user.edit.customer_link'), resource.as_customer
+						= t 'views.user.edit.customer_link_after'
 		-#
 			.cancel_account.generic_form
 				= t('views.user.edit.cancel_account_prompt')
