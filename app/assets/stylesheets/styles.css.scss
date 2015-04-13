@@ -2570,7 +2570,7 @@ ul.links-list > li{
 					@include scale(padding-bottom, 6);
 					@include scale(font-size, 21);
 					line-height: 130%;
-					text-transform: none;
+					text-transform: lowercase;
 					
 					&:hover {
 						cursor: pointer;
