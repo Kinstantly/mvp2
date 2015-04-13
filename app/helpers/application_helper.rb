@@ -310,4 +310,8 @@ module ApplicationHelper
 	def allowed_for_prerelease?
 		Rails.env != 'production' || current_user.try(:profile_editor?).present?
 	end
+
+	def format_newsletter_date(date)
+		date.to_date.strftime('%B %d, %Y') rescue Time.now.strftime('%B %d, %Y')
+	end
 end

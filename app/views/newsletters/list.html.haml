@@ -1,0 +1,35 @@
+- @hide_search_providers = true
+- @content_class = 'no-upper-hr'
+- short_company_description = t 'company.short_company_description_html'
+
+- cache 'newsletter_archive' do
+	.container.newsletter-archive
+		%p
+			= (link_to "< Back to sign up", newsletter_signup_path, {class: 'back-to-signup-link'}) unless user_signed_in?
+		= image_tag "newsletter_banner.jpg", alt: short_company_description, itemprop: 'image', class: "banner"
+		%h1 Newsletter archive
+		%article.newsletter-list
+			.col.one-third
+				%h3 Ages 0-4
+				%ul
+					- @stage1_newsletters.each do |newsletter|
+						%li
+							=link_to format_newsletter_date(newsletter['send_time']), newsletter['id']
+					- if @stage1_newsletters.empty?
+						%li No recent newsletter
+			.col.one-third
+				%h3 Ages 5-12
+				%ul
+					- @stage2_newsletters.each do |newsletter|
+						%li
+							=link_to format_newsletter_date(newsletter['send_time']), newsletter['id']
+					- if @stage2_newsletters.empty?
+						%li No recent newsletter
+			.col.one-third.last
+				%h3 Teens
+				%ul
+					- @stage3_newsletters.each do |newsletter|
+						%li
+							=link_to format_newsletter_date(newsletter['send_time']), newsletter['id']
+					- if @stage3_newsletters.empty?
+						%li No recent newsletter
