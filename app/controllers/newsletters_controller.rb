@@ -11,6 +11,22 @@ class NewslettersController < ApplicationController
 		
 		redirect_to url
 	end
+
+	# GET /list/:name, where :name is optional
+	def list
+		name = params[:name]
+		list_name = list_name(name)
+		@stage1_newsletters = list_archive(:parent_newsletters_stage1)
+		@stage2_newsletters = list_archive(:parent_newsletters_stage2)
+		@stage3_newsletters = list_archive(:parent_newsletters_stage3)
+	end
+
+	# GET /list/:id
+	def show
+		id = params[:id]
+		@url = archive_url(id)
+		render layout: 'iframe_layout'
+	end
 	
 	private
 
@@ -40,23 +56,44 @@ class NewslettersController < ApplicationController
 		url
 	end
 
+	def archive_url(id)
+		gb = Gibbon::API.new
+		begin
+			r = gb.campaigns.list filters: { id: id }
+			url = r.try(:[], 'data').try(:[], 0).try(:[], 'archive_url') unless r.blank?
+		rescue Exception => e
+			logger.info "Error while retrieving MailChimp newsletter ##{id}: #{e.message}" if logger
+		ensure
+			return url
+		end
+	end
+
 	def latest_archive_url(list_name)
 		gb = Gibbon::API.new
 		gb.timeout = 2 # second(s)
-		gb.throws_exceptions = false
 		begin
 			list_id = Rails.configuration.mailchimp_list_id[list_name]
 			filters = { list_id: list_id, status: 'sent' }
 			r = gb.campaigns.list filters: filters, sort_field: 'send_time', limit: 1
-			if r.present? && r.try(:[], 'total').present? && r['total'] > 0
-				url = r.try(:[], 'data').try(:[], 0).try(:[], 'archive_url')
-			else
-				logger.info "Error while retrieving MailChimp newsletter urls: #{r}" if logger
-			end
+			url = r.try(:[], 'data').try(:[], 0).try(:[], 'archive_url') unless r.blank?
 		rescue Exception => e
 			logger.info "Error while retrieving MailChimp newsletter urls: #{e.message}" if logger
 		ensure
 			return url
+		end
+	end
+
+	def list_archive(list_name)
+		gb = Gibbon::API.new
+		begin
+			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			filters = { list_id: list_id, status: 'sent' }
+			r = gb.campaigns.list filters: filters, sort_field: 'send_time', limit: 100
+			data = r.try(:[], 'data') unless r.blank?
+		rescue Exception => e
+			logger.info "Error while retrieving MailChimp newsletter urls: #{e.message}" if logger
+		ensure
+			return data || []
 		end
 	end
 end
