@@ -1,16 +1,7 @@
 .error_panel
 	%p
 		Something went wrong.
-	- if @after_stripe_connect_path
-		%p= link_to 'Click to try again', @after_stripe_connect_path, class: 'button'
-	- else
-		%p= link_to 'Click to try again', '#', class: 'close_button button'
-		:coffeescript
-			close_window = ->  
-				window.close()
-				false
-			# setTimeout close_window, 5000
-			$('.error_panel .close_button').on 'click', close_window
+	%p= link_to 'Click to try again', (@after_stripe_connect_path || edit_my_profile_path), class: 'button'
 	%p 
 		Questions? Email us at
 		= mail_to "#{t('contact.emails.info.value')}@#{t('email_domain')}"

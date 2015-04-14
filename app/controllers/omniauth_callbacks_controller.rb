@@ -1,6 +1,6 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 	
-	layout :layout
+	layout 'interior'
 	before_filter :authenticate_user!
 	
 	before_filter :after_stripe_connect_set_up, only: [:stripe_connect, :failure]
@@ -42,9 +42,5 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 	def after_stripe_connect_set_up
 		@after_stripe_connect_path = session[:after_stripe_connect_path].presence
 		# session[:after_stripe_connect_path] = nil
-	end
-	
-	def layout
-		@after_stripe_connect_path ? 'interior' : 'popup'
 	end
 end

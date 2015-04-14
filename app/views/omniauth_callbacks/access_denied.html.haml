@@ -1,16 +1,7 @@
 .access_denied_panel
 	%p
 		Stripe Connect sign-up has been cancelled.
-	- if @after_stripe_connect_path
-		%p= link_to 'Click to continue', @after_stripe_connect_path, class: 'button'
-	- else
-		%p= link_to 'Click to continue', '#', class: 'close_button button'
-		:coffeescript
-			close_window = ->  
-				window.close()
-				false
-			# setTimeout close_window, 5000
-			$('.access_denied_panel .close_button').on 'click', close_window
+	%p= link_to 'Click to continue', (@after_stripe_connect_path || edit_my_profile_path), class: 'button'
 	%p 
 		Questions? Email us at
 		= mail_to "#{t('contact.emails.info.value')}@#{t('email_domain')}"

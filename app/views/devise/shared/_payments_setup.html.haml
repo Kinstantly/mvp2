@@ -34,20 +34,6 @@
 		= link_to stripe_connect_path_for(user, return_path: return_path), class: "stripe-connect" do
 			%span.dont_popover Connect with Stripe
 
-- unless user.is_payable? or return_path
-	:coffeescript
-		# Opens a modal window
-		my_vars.f.win_popup = (url, w, h, name) ->
-			left = (screen.width / 2) - (w / 2)
-			top = (screen.height / 2) - (h / 2)
-			window.open(url, name, 'toolbar=yes,menubar=no,status=no,width=' + w + ',height=' + h + ',left=' +left + ',top=' + top);
-		$ ->
-			# Strip Connect opens a new win.
-			$('a.stripe-connect').on 'click', (e) ->
-				url = $(@).attr("href")
-				my_vars.f.win_popup(url, 530, 600, 'Stripe Connect')
-				false
-
 :coffeescript
 	$ ->
 		$('.payments_setup').not('open-formlet-popover').addClass('open-formlet-popover').on('click', my_vars.f.open_formlet).each -> my_vars.f.configure_formlet this
