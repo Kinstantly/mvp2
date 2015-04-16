@@ -4,8 +4,16 @@ describe MailchimpWebhookController do
 	let(:token) { Rails.configuration.mailchimp_webhook_security_token }
 	let(:list_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage1]}	
 	let(:user) { FactoryGirl.create(:client_user) }
-	let(:params) { {type: "unsubscribe", token: token, data: {list_id: list_id, email: user.email}} }
-	
+	let(:params) {{ type: "unsubscribe", token: token, data: {list_id: list_id, email: user.email }}}
+	let(:campaign_params) {
+		{ type: "campaign", 
+			token: token, 
+			data: { id: '123', list_id: list_id, 
+				send_time: DateTime.now, title: 'Latest parenting news', subject: 'THIS WEEKEND: sport events',
+				archive_url: 'http://example.com' 
+			}
+		}
+	}
 	describe "POST process_notification", mailchimp: true do
 		
 		it "returns a status of 200 no matter what" do
@@ -74,6 +82,12 @@ describe MailchimpWebhookController do
 				user.parent_newsletters_stage3_leid.should_not == nil
 				user.provider_newsletters_leid.should_not == nil
 			end
+		end
+
+		it "does not create new record when invalid campaign data provided" do
+			post :process_notification, campaign_params
+			new_newsletter = Newsletter.find_by_cid(campaign_params[:data][:id])
+			new_newsletter.nil?.should be_true
 		end
 	end
 end

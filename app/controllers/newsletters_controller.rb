@@ -16,15 +16,15 @@ class NewslettersController < ApplicationController
 	def list
 		name = params[:name]
 		list_name = list_name(name)
-		@stage1_newsletters = list_archive(:parent_newsletters_stage1)
-		@stage2_newsletters = list_archive(:parent_newsletters_stage2)
-		@stage3_newsletters = list_archive(:parent_newsletters_stage3)
+		@stage1_newsletters = Newsletter.parent_newsletters_stage1.order_by_send_time
+		@stage2_newsletters = Newsletter.parent_newsletters_stage2.order_by_send_time
+		@stage3_newsletters = Newsletter.parent_newsletters_stage3.order_by_send_time
 	end
 
 	# GET /list/:id
 	def show
 		id = params[:id]
-		@url = archive_url(id)
+		@newsletter_html = Newsletter.find_by_cid(id).try(:content)
 		render layout: 'iframe_layout'
 	end
 	

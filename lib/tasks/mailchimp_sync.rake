@@ -1,7 +1,8 @@
 namespace :mailchimp do
+	list_names = [:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3, :provider_newsletters]
+		
 	desc 'Find users who opt-in for emails and send the list to MailChimp in a single batch.'
 	task batch_subscribe: [:environment] do
-		list_names = [:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3, :provider_newsletters]
 		list_names.each do |list_name|
 			batch_subscribe_to_list(list_name)	
 		end
@@ -41,6 +42,26 @@ namespace :mailchimp do
 		list_names = [:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3]
 		list_names.each do |list_name|
 			batch_subscribe_to_list(list_name)	
+		end
+	end
+
+	desc 'Retrieve remote archive and persist in DB.'	
+	task newsletter_archive_import: [:environment] do
+		newsletter_list = list_archive()
+		newsletter_list.each do |newsletter_data|
+			id = newsletter_data['id']
+			newsletter = Newsletter.find_by_cid(id) || Newsletter.new
+			if newsletter.new_record?			
+				newsletter.cid = id
+				newsletter.list_id = newsletter_data['list_id']
+				newsletter.send_time = newsletter_data['send_time'].to_date
+				newsletter.title = newsletter_data['title']
+				newsletter.subject = newsletter_data['subject']
+				newsletter.archive_url = newsletter_data['archive_url']
+				newsletter.content = newsletter_content(id)
+				newsletter.save!
+				puts "Newsletter '#{newsletter.cid}' has beed saved."
+			end
 		end
 	end
 	
@@ -107,6 +128,36 @@ namespace :mailchimp do
 			puts "---------------------------------"
 		rescue Gibbon::MailChimpError => e
 			puts "MailChimp sync failed: #{e.message}, error code: #{e.code}"
+		end
+	end
+
+	def list_archive
+		list_ids = [ Rails.configuration.mailchimp_list_id[:parent_newsletters_stage1],
+			Rails.configuration.mailchimp_list_id[:parent_newsletters_stage2],
+			Rails.configuration.mailchimp_list_id[:parent_newsletters_stage3] ]
+		list_ids_filter = list_ids * ","
+
+		gb = Gibbon::API.new
+		begin
+			filters = { list_id: list_ids_filter, status: 'sent' , exact: false}
+			r = gb.campaigns.list filters: filters, sort_field: 'send_time'
+			data = r.try(:[], 'data') unless r.blank?
+		rescue Exception => e
+			puts "Error while retrieving MailChimp archive list: #{e.message}"
+		ensure
+			return data || []
+		end
+	end
+
+	def newsletter_content(id)
+		gb = Gibbon::API.new
+		begin
+			r = gb.campaigns.content cid: id
+			html = r.try(:[], 'html') unless r.blank?
+		rescue Exception => e
+			puts "Error while retrieving MailChimp newsletter content: #{e.message}"
+		ensure
+			return html
 		end
 	end
 end

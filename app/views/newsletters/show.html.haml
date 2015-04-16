@@ -1,1 +1,5 @@
-%iframe{:src => "#{@url}", class: 'page-size'}
+- if @newsletter_html
+	= raw @newsletter_html
+- else
+	.error_panel
+		%p An unexpected error occurred. Please try again later.

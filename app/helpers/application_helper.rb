@@ -312,6 +312,6 @@ module ApplicationHelper
 	end
 
 	def format_newsletter_date(date)
-		date.to_date.strftime('%B %d, %Y') rescue Time.now.strftime('%B %d, %Y')
+		date.strftime('%B %d, %Y') rescue Time.now.strftime('%B %d, %Y')
 	end
 end

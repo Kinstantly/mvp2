@@ -11,8 +11,8 @@ Mvp2::Application.routes.draw do
 	match 'show_all_categories' => 'home#show_all_categories'
 	get 'recent_newsletters' => 'home#recent_newsletters'
 	get 'newsletter/latest/:name' => 'newsletters#latest', as: :latest_newsletter
-	get 'newsletter/list(/:name)' => 'newsletters#list'
-	get 'newsletter/:id' => 'newsletters#show'
+	get 'newsletter/list(/:name)' => 'newsletters#list', as: :newsletter_list
+	get 'newsletter/:id' => 'newsletters#show',  as: :newsletter
 	
 	# User model on which Devise authentication is based.
 	devise_for :users, controllers: { 

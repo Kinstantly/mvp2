@@ -7,4 +7,18 @@ describe NewslettersController do
 			response.location.should =~ /us9.campaign-archive1.com/
 		end
 	end
+
+	describe "GET newsletter archive page" do
+		it "renders the view" do
+			get :list
+			response.should render_template('list')
+		end
+	end
+
+	describe "GET single newsletter page" do
+		it "renders the view" do
+			get :show, id: :abc
+			response.should render_template('show')
+		end
+	end
 end
