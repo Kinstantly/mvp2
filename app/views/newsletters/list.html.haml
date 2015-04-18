@@ -2,7 +2,7 @@
 - @content_class = 'no-upper-hr'
 - short_company_description = t 'company.short_company_description_html'
 
-- cache 'newsletter_archive' do
+- cache ['newsletter_archive', Newsletter.last_updated] do
 	.container.newsletter-archive
 		%p
 			= (link_to "< Back to sign up", newsletter_signup_path, {class: 'back-to-signup-link'}) unless user_signed_in?

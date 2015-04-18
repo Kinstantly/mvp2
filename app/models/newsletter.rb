@@ -11,4 +11,8 @@ class Newsletter < ActiveRecord::Base
 	def self.order_by_send_time
 		order('send_time desc')
 	end
+	
+	def self.last_updated
+		order(:updated_at).last
+	end
 end
