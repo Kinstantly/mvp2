@@ -37,12 +37,12 @@ body {
 				bottom: 0;
 				right: 0;
 				text-indent: -999em;
-				background: transparent url('#{$image-path}/kinstantly-logo-home.png') no-repeat;
+				background: transparent url('#{$image-path}/kinstantly-logo-homev2.png') no-repeat;
 				@include background-size(contain,center);
 				transform: rotate( .0001deg ); // This is a stupid fix for Firefox making image blurry
 				
 				@media (max-width: 36em) {
-					background: transparent url('#{$image-path}/kinstantly-logo-small.png') no-repeat;
+					background: transparent url('#{$image-path}/kinstantly-logo-small-tag.png') no-repeat;
 					@include background-size(cover,center);
 				}
 			}
@@ -61,10 +61,10 @@ body {
 			}*/
 			
 			.menu {
-				@include scale(width, 32, 11);
-				@include scale(height, 28, 11);
-				background: transparent url(#{$image-path}/menu-button.svg) no-repeat;
-				@include background-size (cover,center);
+				@include scale(width, 86, 11);
+				@include scale(height, 32, 11);
+				@include background-size (auto,right);
+				background: transparent url(#{$image-path}/Kinstantly_menu.png) no-repeat;
 				-ms-behavior: none !important;
 				@include border-radius(0);
 				border: none;
@@ -73,9 +73,11 @@ body {
 				float: right;
 				
 				@media (max-width: 36em) {
-				background: transparent url(#{$image-path}/menu-button-sm.svg) no-repeat;
-				@include background-size (cover,center);
-			}
+					@include scale(width, 32, 11);
+					@include scale(height, 32, 11);
+					background: transparent url(#{$image-path}/menu-button-sm.svg) no-repeat;
+					@include background-size (cover,center);
+				}
 			
 				&:hover {
 					cursor: pointer;
@@ -86,8 +88,8 @@ body {
 				display: none;
 				@include scale(min-width, 170);
 				position: absolute;
-				@include scale(top, 8);
-				@include scale(left, -157);
+				@include scale(top, 32);
+				@include scale(right, 0);
 				border: 1px solid $kinstantly_light_gray;
 				background: $white;
 				z-index: 100; 
@@ -117,8 +119,8 @@ body {
 				}
 			}
 			&:hover ul {
-						display: block;
-					}
+				display: block;
+			}
 		}
 	}
 }
