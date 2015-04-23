@@ -45,3 +45,6 @@
 
 # Ignore rails_footnotes local configuration.
 /.rails_footnotes
+
+# Ignore bundler binstubs.
+/bin
