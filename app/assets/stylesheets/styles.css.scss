@@ -14,7 +14,7 @@
 		h1 {
 			a {
 				display: block;
-				background: transparent url('#{$image-path}/kinstantly-logo.png') no-repeat;
+				background: transparent url('#{$image-path}/logo_tagline_directorypage.png') no-repeat;
 				text-indent: -999em;
 				margin: 0;
 				@include scale(width, 185);
@@ -30,9 +30,9 @@
 			@include border-radius (0.1875em);
 			float: right; 
 			@include scale(padding, 7);
-			margin: 0 5.625%;
+			margin: 0 2.3125%;
 				@media (max-width: 50.375em) {
-					margin: 0 2.8125%;
+					margin-left: 0;
 				}
 				@media (max-width: 48em) {
 					width: 100%;
@@ -96,34 +96,21 @@
 		#menu {
 			float: right;
 			margin: .7em 0;
-			@include scale(width, 32, 11);
+			@include scale(width, 64, 11);
 			@include scale(height, 28, 11);
 			overflow: visible;
 			position: relative;
 			
-			/*@media (max-width: 36em) {
-				position: inherit;
-			}*/
-			
-			&:hover ul {
-						display: block;
-						position: absolute;
-						@include scale(top, 8);
-						@include scale(left, -157);
-						border: 1px solid $kinstantly_light_gray;
-						background: $white;
-						z-index: 100;
-						
-						@media (max-width: 36em) {
-							@include scale(left, -167);
-						}
-					}
+			@media (max-width: 36em) {
+				@include scale(width, 32, 11);
+				//position: inherit;
+			}
 			
 			.menu {
-				@include scale(width, 32, 11);
+				@include scale(width, 86, 11);
 				@include scale(height, 28, 11);
-				background: transparent url(#{$image-path}/menu-button.svg) no-repeat;
-				@include background-size (cover,center);
+				@include background-size (auto,left);
+				background: transparent url(#{$image-path}/Kinstantly_menu.png) no-repeat;
 				@include border-radius(0);
 				border: none;
 				text-indent: -999em;
@@ -131,9 +118,11 @@
 				float: right;
 				
 				@media (max-width: 36em) {
-				background: transparent url(#{$image-path}/menu-button-sm.svg) no-repeat;
-				@include background-size (cover,center);
-			}
+					@include scale(width, 32, 11);
+					@include scale(height, 28, 11);
+					background: transparent url(#{$image-path}/menu-button-sm.svg) no-repeat;
+					@include background-size (cover,center);
+				}
 			
 				&:hover {
 					cursor: pointer;
@@ -144,14 +133,15 @@
 				display: none;
 				@include scale(min-width, 170);
 				position: absolute;
-				@include scale(top, 8);
-				@include scale(left, -157);
+				@include scale(top, 32);
+				@include scale(right, 0);
 				border: 1px solid $kinstantly_light_gray;
 				background: $white;
 				z-index: 100; 
 				
 				@media (max-width: 36em) {
 					max-width: none;
+					@include scale(left, -167);
 					/*min-width: 93.75vw;
 					width: 93.75vw ; 
 					left: 3.125% !important;
@@ -174,8 +164,8 @@
 				}
 			}
 			&:hover ul {
-						display: block;
-					}
+				display: block;
+			}
 
 		}
 
