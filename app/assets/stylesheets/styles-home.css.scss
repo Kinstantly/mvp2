@@ -16,7 +16,7 @@ body {
 			display: block;
 			padding-top: 13.9830508%;
 			
-			@media (max-width: 36em) {
+			@media (max-width: 48em) {
 				padding-top: 27.027027%;
 			}
 		}
@@ -26,7 +26,7 @@ body {
 			@include scale(max-width, 475);
 			position: relative;
 			float: left;
-			@media (max-width: 36em) {
+			@media (max-width: 38em) {
 				@include scale(margin-bottom, 18,16);
 			}
 			
@@ -41,8 +41,11 @@ body {
 				@include background-size(contain,center);
 				transform: rotate( .0001deg ); // This is a stupid fix for Firefox making image blurry
 				
-				@media (max-width: 36em) {
+				@media (max-width: 48em) {
 					background: transparent url('#{$image-path}/kinstantly-logo-small-tag.png') no-repeat;
+					@include background-size(auto,left);
+				}
+				@media (max-width: 38em) {
 					@include background-size(cover,center);
 				}
 			}
