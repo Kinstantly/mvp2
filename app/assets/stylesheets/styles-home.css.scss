@@ -57,7 +57,7 @@ body {
 			@include scale(height, 28, 11);
 			overflow: visible;
 			position: relative;
-			z-index: 100;
+			/*z-index: 100;*/
 			
 			/*@media (max-width: 36em) {
 				position: inherit;
