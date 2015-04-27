@@ -47,7 +47,7 @@ namespace :mailchimp do
 
 	desc 'Retrieve remote archive and persist in DB.'	
 	task newsletter_archive_import: [:environment] do
-		newsletter_list = list_archive()
+		newsletter_list = list_archive(true)
 		newsletter_list.each do |newsletter_data|
 			id = newsletter_data['id']
 			newsletter = Newsletter.find_by_cid(id) || Newsletter.new
@@ -131,15 +131,18 @@ namespace :mailchimp do
 		end
 	end
 
-	def list_archive
+	def list_archive(include_old_editions)
 		list_ids = [ Rails.configuration.mailchimp_list_id[:parent_newsletters_stage1],
 			Rails.configuration.mailchimp_list_id[:parent_newsletters_stage2],
 			Rails.configuration.mailchimp_list_id[:parent_newsletters_stage3] ]
 		list_ids_filter = list_ids * ","
+		if(include_old_editions)
+			list_ids_filter += ", " + Rails.configuration.mailchimp_list_id[:parent_newsletters]
+		end
 
 		gb = Gibbon::API.new
 		begin
-			filters = { list_id: list_ids_filter, status: 'sent' , exact: false}
+			filters = { list_id: list_ids_filter, status: 'sent', exact: false }
 			r = gb.campaigns.list filters: filters, sort_field: 'send_time'
 			data = r.try(:[], 'data') unless r.blank?
 		rescue Exception => e
