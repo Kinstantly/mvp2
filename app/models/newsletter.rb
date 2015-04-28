@@ -27,4 +27,8 @@ class Newsletter < ActiveRecord::Base
 	def self.last_updated
 		order(:updated_at).last
 	end
+
+	def self.last_sent
+		order(:send_time).last
+	end
 end

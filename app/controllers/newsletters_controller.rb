@@ -5,11 +5,15 @@ class NewslettersController < ApplicationController
 	# GET /latest/:name
 	def latest
 		name = params[:name]
-		list_name = list_name(name)
-		url = latest_archive_url(list_name)
-		url ||= default_sample_url(list_name)
-		
-		redirect_to url
+		case name
+		when "parent_newsletters_stage2"
+			@newsletter_html = Newsletter.parent_newsletters_stage2.last_sent.try(:content)
+		when "parent_newsletters_stage3"
+			@newsletter_html = Newsletter.parent_newsletters_stage3.last_sent.try(:content)
+		else
+			@newsletter_html = Newsletter.parent_newsletters_stage1.last_sent.try(:content)
+		end
+		render :show, layout: 'iframe_layout'
 	end
 
 	# GET /list/:name, where :name is optional

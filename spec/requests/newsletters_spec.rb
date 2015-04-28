@@ -5,7 +5,7 @@ describe "Newsletters" do
 	describe "request latest sample url" do
 		it "redirects" do
 			get latest_newsletter_path(:parent_newsletters_stage1)
-			response.status.should eq(302)
+			response.status.should eq(200)
 		end
 	end
 
