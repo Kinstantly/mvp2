@@ -143,7 +143,7 @@ namespace :mailchimp do
 		gb = Gibbon::API.new
 		begin
 			filters = { list_id: list_ids_filter, status: 'sent', exact: false }
-			r = gb.campaigns.list filters: filters, sort_field: 'send_time'
+			r = gb.campaigns.list filters: filters, limit: 1000, sort_field: 'send_time'
 			data = r.try(:[], 'data') unless r.blank?
 		rescue Exception => e
 			puts "Error while retrieving MailChimp archive list: #{e.message}"
