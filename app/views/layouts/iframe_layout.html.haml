@@ -2,7 +2,7 @@
 !!!
 %html
 	%head
-		%title= @page_title.presence || company_name
+		%title= @page_title.presence || "#{company_name} | #{company_tagline}"
 		= stylesheet_link_tag "interior", media: "all"
 		= csrf_meta_tags
 	%body
