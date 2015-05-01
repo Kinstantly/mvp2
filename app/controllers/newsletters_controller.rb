@@ -13,6 +13,7 @@ class NewslettersController < ApplicationController
 		else
 			@newsletter_html = Newsletter.parent_newsletters_stage1.last_sent.try(:content)
 		end
+		@styles = false
 		render :show, layout: 'iframe_layout'
 	end
 
@@ -28,6 +29,7 @@ class NewslettersController < ApplicationController
 	# GET /list/:id
 	def show
 		id = params[:id]
+		@styles = false
 		@newsletter_html = Newsletter.find_by_cid(id).try(:content)
 		render layout: 'iframe_layout'
 	end
