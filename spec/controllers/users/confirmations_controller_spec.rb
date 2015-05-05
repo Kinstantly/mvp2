@@ -1,8 +1,18 @@
 require 'spec_helper'
 
 describe Users::ConfirmationsController do
-	let(:mimi) { FactoryGirl.create :client_user, require_confirmation: true, admin_confirmation_sent_at: nil }
-		
+	let(:mimi) {
+		FactoryGirl.create :client_user,
+		require_confirmation: true,
+		admin_confirmation_sent_at: nil
+	}
+	let(:mimi_subscribed) {
+		FactoryGirl.create :client_user, 
+			require_confirmation: true,
+			parent_newsletters_stage1: true,
+			parent_newsletters_stage2: true
+	}
+	
 	before(:each) do
 		@request.env["devise.mapping"] = Devise.mappings[:user]
 	end
@@ -11,9 +21,25 @@ describe Users::ConfirmationsController do
 		controller.class.superclass.should eq Devise::ConfirmationsController
 	end
 
+	context "as a client pending email confirmation" do
+		describe "GET show" do
+			it "redirects to the home page with tracking parameter" do
+				get :show, confirmation_token: mimi.confirmation_token
+				response.should redirect_to '/?email_confirmed=t'
+				flash[:notice].should have_content 'confirmed'
+			end
+			
+			it "tracking parameters indicate subscriptions" do
+				get :show, confirmation_token: mimi_subscribed.confirmation_token
+				response.should redirect_to '/?email_confirmed=t&parent_newsletters_stage1=t&parent_newsletters_stage2=t'
+				flash[:notice].should have_content 'confirmed'
+			end
+		end
+	end
+
 	context "as a non-admin user requesting confirmation instructions" do
 		describe "POST confirmation" do
-			it "redirects to sign in page after confirmation" do
+			it "redirects to sign in page after request" do
 				post :create, user: {email: mimi.email}
 				response.should redirect_to '/users/sign_in'
 				flash[:notice].should have_content 'confirm'

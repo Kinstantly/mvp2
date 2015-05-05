@@ -27,6 +27,7 @@
 		= javascript_include_tag 'application'
 		= yield :head
 		= csrf_meta_tags
+		= render partial: 'layouts/tracking'
 	%body{class: @body_class}
 		#fb-root
 		-# Point global namespace my_vars to window.my_vars defined in global.js.coffee
@@ -96,7 +97,6 @@
 				%br/
 				= t 'company.copyright_html', year: Date.today.year
 		#line
-		= render partial: 'layouts/tracking'
 		= render partial: 'layouts/g_analytics'
 
 		:javascript

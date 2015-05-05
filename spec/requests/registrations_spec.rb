@@ -11,14 +11,14 @@ describe "User registration and editing" do
 		
 		it "redirects to the sign-up confirmation page" do
 			post user_registration_path, user: parent_sign_up_attributes
-			response.should redirect_to member_awaiting_confirmation_url
+			response.should redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
 		end
 		
 		context "coming from the blog" do
 			it "redirects to the sign-up confirmation page" do
 				get new_user_registration_path(blog: 't')
 				post user_registration_path, user: parent_sign_up_attributes
-				response.should redirect_to member_awaiting_confirmation_url
+				response.should redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
 			end
 		end
 
@@ -31,7 +31,7 @@ describe "User registration and editing" do
 			it "redirects to in-blog confirmation page" do
 				get in_blog_sign_up_path
 				post user_registration_path, in_blog: true, user: parent_sign_up_attributes
-				response.should redirect_to in_blog_awaiting_confirmation_url
+				response.should redirect_to in_blog_awaiting_confirmation_url email_pending_confirmation: 't'
 			end
 		end
 	end
@@ -70,14 +70,14 @@ describe "User registration and editing" do
 		
 		it "redirects to the sign-up confirmation page" do
 			post user_registration_path, user: provider_sign_up_attributes
-			response.should redirect_to member_awaiting_confirmation_url
+			response.should redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
 		end
 		
 		context "coming from the blog" do
 			it "redirects to the sign-up confirmation page" do
 				get new_user_registration_path(blog: 't')
 				post user_registration_path, user: provider_sign_up_attributes
-				response.should redirect_to member_awaiting_confirmation_url
+				response.should redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
 			end
 		end
 	end

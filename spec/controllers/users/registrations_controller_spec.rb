@@ -180,14 +180,15 @@ describe Users::RegistrationsController do
 						email: email,
 						password: new_password,
 						password_confirmation: new_password,
-						username: username
+						username: username,
+						parent_newsletters_stage1: true
 					}
 				end
 			
 				let(:provider) { User.find_by_email email }
 			
-				it "displays confirmation notice" do
-					response.should redirect_to '/member/awaiting_confirmation'
+				it "displays confirmation notice with tracking parameters" do
+					response.should redirect_to '/member/awaiting_confirmation?email_pending_confirmation=t&parent_newsletters_stage1=t'
 				end
 				
 				it "has a profile" do

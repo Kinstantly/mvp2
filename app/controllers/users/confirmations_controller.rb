@@ -16,7 +16,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
 
 	# The path used after confirmation.
 	def after_confirmation_path_for(resource_name, resource)
-		if session[:after_confirmation_url].present?
+		path_or_url = if session[:after_confirmation_url].present?
 			session.delete :after_confirmation_url
 		elsif resource.try(:signed_up_from_blog)
 			blog_url
@@ -25,6 +25,16 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
 		else
 			super
 		end
+		# Add various flags for tracking purposes.
+		path_or_url += (path_or_url.include?(??) ? '&' : '?') + 'email_confirmed=t'
+		if resource
+			path_or_url += '&nlsub=t' if resource.signed_up_for_mailing_lists
+			path_or_url += '&blog=t' if resource.signed_up_from_blog
+			[:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3, :provider_newsletters].each do |list|
+				path_or_url += "&#{list}=t" if resource.send list
+			end
+		end
+		path_or_url
 	end
 	
 	private

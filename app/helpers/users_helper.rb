@@ -55,4 +55,8 @@ module UsersHelper
 		roles << 'client' if user.client?
 		roles.join separator
 	end
+	
+	def current_user_hash
+		current_user.try(:persisted?) ? current_user.hash : nil
+	end
 end

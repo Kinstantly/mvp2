@@ -122,11 +122,21 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	end
 
 	def after_inactive_sign_up_path_for(resource)
-		if params[:in_blog].present?
+		path = if params[:in_blog].present?
 			in_blog_awaiting_confirmation_path
 		else
 			member_awaiting_confirmation_path
 		end
+		# Add various flags for tracking purposes.
+		path += (path.include?(??) ? '&' : '?') + 'email_pending_confirmation=t'
+		if resource
+			path += '&nlsub=t' if resource.signed_up_for_mailing_lists
+			path += '&blog=t' if resource.signed_up_from_blog
+			[:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3, :provider_newsletters].each do |list|
+				path += "&#{list}=t" if resource.send list
+			end
+		end
+		path
 	end
 
 	def after_sign_up_error_path_for(resource)
