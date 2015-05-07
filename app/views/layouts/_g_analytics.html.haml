@@ -8,14 +8,14 @@
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 		
-		ga('create', 'UA-49857002-1', 'kinstantly.com');
+		ga('create', '#{google_analytics_tracking_id}', 'auto');
 		
 		var search_result_num = "#{search_result_num}";
 		var user_role = "#{user_role}";
-		var user_id = "#{current_user_hash.to_s}";
+		var user_id = "#{current_user.try :hexdigest}";
 		
 		if(user_id)
-			ga('set', 'userId', user_id);
+			ga('set', '&uid', user_id);
 		
 		// Set user_role dimension at index 1
 		if(user_role)

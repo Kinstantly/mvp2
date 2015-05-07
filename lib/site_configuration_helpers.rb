@@ -31,6 +31,10 @@ module SiteConfigurationHelpers
 		def default_host
 			Rails.configuration.default_host
 		end
+		
+		def google_analytics_tracking_id
+			Rails.configuration.google_analytics_tracking_id
+		end
 	end
 	
 	module InstanceMethods
@@ -64,6 +68,10 @@ module SiteConfigurationHelpers
 		
 		def default_host
 			Rails.configuration.default_host
+		end
+		
+		def google_analytics_tracking_id
+			Rails.configuration.google_analytics_tracking_id
 		end
 	end
 	

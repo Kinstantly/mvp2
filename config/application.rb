@@ -126,6 +126,9 @@ module Mvp2
 
     # Token used to authorize a JSON sign-in attempt.
     config.sign_in_auth_token = '7d04d7c4baa559fc49c03fe5fd8dd3c5'
+
+    # Google Analytics Tracking ID. Default ID is for development/local.kinstantly.com.
+    config.google_analytics_tracking_id = ENV['GOOGLE_ANALYTICS_TRACKING_ID'].presence || 'UA-49348780-4'
   end
 end
 

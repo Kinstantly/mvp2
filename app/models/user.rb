@@ -311,6 +311,12 @@ class User < ActiveRecord::Base
 	def paying_users
 		paying_customers.map(&:user).compact
 	end
+	
+	def hexdigest(name='SHA224', key='NAFCaaKhrU2crEhU7kHbM7Yh73zntMzH')
+		if persisted?
+			OpenSSL::HMAC.hexdigest name, key, id.to_s
+		end
+	end
 
 	# Public class methods.
 	#
