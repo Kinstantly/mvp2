@@ -28,6 +28,7 @@
 		= yield :head
 		= csrf_meta_tags
 		= render partial: 'layouts/tracking'
+		= render partial: 'layouts/g_analytics'
 	%body{class: @body_class}
 		#fb-root
 		-# Point global namespace my_vars to window.my_vars defined in global.js.coffee
@@ -97,7 +98,6 @@
 				%br/
 				= t 'company.copyright_html', year: Date.today.year
 		#line
-		= render partial: 'layouts/g_analytics'
 
 		:javascript
 			my_vars.google_api_key = "#{GOOGLE_BROWSER_API_KEY}"

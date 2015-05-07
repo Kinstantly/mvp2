@@ -1,4 +1,4 @@
-- search_result_num ||= -1
+- search_result_num = @search_total_to_track || -1
 - user_role =  current_user.try(:admin?) ? 'admin' : (current_user.try(:expert?) ? 'expert' : (current_user.try(:client?) ? 'client' : ''))
 
 - if @ga_module_included.blank?

@@ -8,6 +8,6 @@
 			= stylesheet_link_tag "interior", media: "all"
 		= csrf_meta_tags
 		= render partial: 'layouts/tracking'
+		= render partial: 'layouts/g_analytics'
 	%body
 		= yield
-		= render partial: 'layouts/g_analytics'

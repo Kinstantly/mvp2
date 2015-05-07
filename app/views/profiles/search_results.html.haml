@@ -1,4 +1,5 @@
 - @body_class = 'interior search'
+- @search_total_to_track = @search.total
 - location_remote_only_msg = t "controllers.profiles.location_remote_only"
 - locations_array = {}
 = javascript_include_tag 'profile_search'
@@ -84,7 +85,6 @@
 		.search_result= paginate @search.results
 	- if @search.total > 1
 		%h3.search_results_prompt= t 'views.search_results.suggest_provider_prompt_html', link: suggest_provider_link
-= render partial: 'layouts/g_analytics', locals: {search_result_num: @search.total}
 
 :javascript
 	my_vars.locations_json	= '#{escape_javascript locations_array.to_json}';
