@@ -102,4 +102,23 @@ class NewslettersController < ApplicationController
 			return data || []
 		end
 	end
+	# Set exceptions to default values of the security-related HTTP headers in the response.
+	# See https://www.owasp.org/index.php/List_of_useful_HTTP_headers
+	# http://tools.ietf.org/html/rfc7034
+	# http://www.w3.org/TR/CSP/#frame-src
+	def set_default_response_headers
+		super
+		if response && request
+			Rails.logger.info root_url
+			Rails.logger.info "root_url"
+			allowed_url = root_url
+			referrer = request.headers['Referer']
+			['latest'].include?(action_name)
+			if referrer && (referrer.start_with?(allowed_url) || referrer.start_with?(root_url))
+				response.headers.merge!({
+					'X-Frame-Options' => "ALLOW-FROM #{allowed_url}"
+				})
+			end
+		end
+	end
 end
