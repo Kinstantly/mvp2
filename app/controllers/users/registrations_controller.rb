@@ -161,7 +161,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	# Set exceptions to default values of the security-related HTTP headers in the response.
 	# See https://www.owasp.org/index.php/List_of_useful_HTTP_headers
 	# http://tools.ietf.org/html/rfc7034
-	# http://www.w3.org/TR/CSP/#frame-src
+	# http://www.w3.org/TR/CSP/#directive-frame-ancestors
 	def set_default_response_headers
 		super
 		if response && request && request_in_blog?
@@ -170,7 +170,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 			referrer = request.headers['Referer']
 			if referrer && (referrer.start_with?(allowed_url) || referrer.start_with?(root_url))
 				existing_csp = response.headers['Content-Security-Policy']
-				new_csp = "frame-src #{allowed_url}"
+				new_csp = "frame-ancestors #{allowed_url}"
 				response.headers.merge!({
 					'Content-Security-Policy' => [existing_csp, new_csp].compact.join('; '),
 					'X-Frame-Options' => "ALLOW-FROM #{allowed_url}"
