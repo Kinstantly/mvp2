@@ -21,6 +21,9 @@
 				%p This registration was a newsletter sign-up.
 			- if @user.signed_up_from_blog
 				%p This registration originated at the blog.
+			%p
+				subscriptions:
+				= @user.leids.keys.map{ |list| User.human_attribute_name list if @user.send list }.compact.join(', ')
 			%p= mailer_user_link @user
 		- else
 			%p Oops, can't find the parent's record.

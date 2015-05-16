@@ -81,6 +81,11 @@ Feature: Sign up
 				And "admin@kinstantly.com" opens the email with subject /Provider.*has registered/
 			Then they should see /provider.*registered/ in the email body
 
+		Scenario: Admin receives notification when a parent registers
+			When I sign up as a parent with valid user data
+				And "admin@kinstantly.com" opens the email with subject /Parent.*has registered/
+			Then they should see /parent.*registered/ in the email body
+
 		@private_site
 		Scenario: Admin receives notification when a parent registers when running as a private site
 			When I sign up as a parent with valid user data

@@ -56,6 +56,11 @@
 				= f.hidden_field :admin_confirmation_sent_by_id, value: current_user.try(:id)
 				= f.hidden_field :email
 				= f.submit t('devise.confirmations.create_confirmation_submit'), disable_with: t('devise.confirmations.create_confirmation_submit_disable'), class: 'default auto_width'
+	%br
+	%label.strong.cell
+		Subscriptions:
+	%span.cell
+		= @user.leids.keys.map{ |list| User.human_attribute_name list if @user.send list }.compact.join(', ')
 	- if @user.has_paid_providers?
 		%br
 		%label.strong.cell

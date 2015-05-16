@@ -442,8 +442,8 @@ class User < ActiveRecord::Base
 
 	# Creates new or updates existing subscriptions on MailChimp.
 	def subscribe_to_mailing_lists(list_names=[], new_email=false)
-		# Do nothing if this user is not confirmed or we are not allowed to contact them.
-		return false if !confirmed? or contact_is_blocked?
+		# Do nothing if we are not allowed to contact this user. (It's OK if they are not confirmed yet.)
+		return false if contact_is_blocked?
 
 		first_name = username.presence || email.presence
 		last_name  = ''

@@ -13,37 +13,23 @@
 	%br
 	%p Thanks!
 - elsif params[:in_blog].present?
-	%p Thanks for subscribing to our newsletter!
 	%br
-	%p To keep your inbox safe and spam-free, we use double-opt in, meaning we need you to take a quick moment to check your email and click on the confirmation link we just sent you.
+	%p Thanks&mdash;and welcome to Kinstantly!
 	%br
-	%p If you don't see the email in your Inbox within a few minutes, please check your spam folder—and mark the email as "Not spam."
+	%p You're all signed up for Kinstantly This Week. You should get your first edition within the next few days.
 	%br
-	%p 
-		Questions? Concerns? Just want to say hi? Email us at
-		= succeed '.' do
-			= mail_to info_email
-	%br
-	%p Thanks very much!
+	%p In the meantime, check your email and click on the confirmation link we just sent you. That will complete your registration&mdash;and give you access to all the features on Kinstantly.
 	%br
 - elsif session[:signed_up_for_mailing_lists]
-	%p
-		Thanks for subscribing to our weekly newsletter. To complete your registration, check your email and click on the confirmation link we just sent you.
+	%p.greeting THANK YOU!
 	%br
-	%p
-		%span.emphasized If you don't see the email in your Inbox within a few minutes, please check your spam folder &mdash; and mark the email as &quot;Not spam.&quot;
+	%p You're all signed up for Kinstantly This Week. You should receive your first edition within the next few days.
 	%br
-	- if session[:signed_up_from_blog]
-		%p
-			:plain
-				That will complete your registration, and we'll send you back to our <span class="title">Today on Kinstantly</span> blog.
-	- else
-		%p Once you've confirmed your registration, you'll begin to receive our weekly newsletter with the next edition.
-		%br
-		%p You'll also be able to post ratings and reviews, self-schedule appointments with providers, and more.
+	%p In the meantime, be sure to check your email and click on the confirmation link we just sent you. That will complete your registration&mdash;and give you access to all the features on Kinstantly.
 	%br
-	%p
-		Thanks very much!
+	%p Thanks again! We're a small team of moms and dads trying to make this parenting thing a little easier for everyone, so every new subscriber means a lot to us.
+	%br
+	%p Jim (co-founder, dad, and ceo) and the Kinstantly team
 	%br
 	= render "devise/shared/links" unless embedded_in
 - else # Default sign-up.

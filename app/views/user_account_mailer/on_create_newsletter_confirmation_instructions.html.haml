@@ -1,16 +1,14 @@
 = "Hi #{@resource.username.presence || 'there'},"
 %br
 %br
-Please confirm your Kinstantly newsletter subscription by clicking this link:
+Please complete your registration on Kinstantly by clicking this link: Confirm
+= link_to 'my account.', confirmation_url(@resource, confirmation_token: @resource.confirmation_token)
 %br
 %br
-Confirm
-= link_to 'my subscription', confirmation_url(@resource, confirmation_token: @resource.confirmation_token)
+Once confirmed, you'll have full access to all the features on Kinstantly.
 %br
 %br
-Once confirmed, you'll be all set to receive Kinstantly news.
+Thanks for subscribing to our newsletter&mdash;and welcome to Kinstantly!
 %br
-%br
-Welcome to Kinstantly!
 %br
 &ndash; The Kinstantly Team
