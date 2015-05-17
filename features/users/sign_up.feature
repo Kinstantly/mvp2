@@ -121,7 +121,7 @@ Feature: Sign up
 		Scenario: User signs up via iframe on the blog site with valid data
 			When I sign up on the blog site with valid data
 			Then I should not see html element "header#header"
-			Then I should see "Thanks for subscribing to our newsletter!" on the page
+			Then I should see "welcome to Kinstantly!" on the page
 
 		@in_blog_signup
 		Scenario: User signs up via iframe on the blog site with invalid data

@@ -434,22 +434,22 @@ describe User do
 			new_parent.should have(1).error_on(:base)
 		end
 
-		context "unconfirmed user" do
+		context "confirmation not required for newsletter subscription to take effect" do
 			let(:user) { FactoryGirl.create :client_user, require_confirmation: true, parent_newsletters_stage1: true, parent_newsletters_stage2: true, parent_newsletters_stage3: true }
 				
-			it "should not be added to mailing list before confirmation" do
-				user.parent_newsletters_stage1_leid.should be_false
-				user.parent_newsletters_stage2_leid.should be_false
-				user.parent_newsletters_stage3_leid.should be_false
+			it "should be added to mailing list before confirmation" do
+				user.parent_newsletters_stage1_leid.should be_present
+				user.parent_newsletters_stage2_leid.should be_present
+				user.parent_newsletters_stage3_leid.should be_present
 			end
 
 			it "should be added to mailing list after confirmation" do
 				user.confirm!
 				user.save
 				user.reload
-				user.parent_newsletters_stage1_leid.should_not be_nil
-				user.parent_newsletters_stage2_leid.should_not be_nil
-				user.parent_newsletters_stage3_leid.should_not be_nil
+				user.parent_newsletters_stage1_leid.should be_present
+				user.parent_newsletters_stage2_leid.should be_present
+				user.parent_newsletters_stage3_leid.should be_present
 			end
 		end
 

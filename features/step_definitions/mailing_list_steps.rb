@@ -34,9 +34,9 @@ end
 
 ### THEN ###
 
-Then /^I should only be subscribed to "(.*?)" mailing lists(?: and| but)( not)? synced to the list server$/ do |lists, not_synced|
+Then /^I should only be subscribed to the "(.*?)" mailing lists(?: and| but)( not)? synced to the list server$/ do |lists, not_synced|
 	@user.reload
-	subscribed_mailing_lists = lists.split(", ")
+	subscribed_mailing_lists = lists.split(/,?\s+(?:and\s+)?/)
 	mailing_lists.each do |list|
 		if subscribed_mailing_lists.include?(list) 
 			@user[list].should be_true

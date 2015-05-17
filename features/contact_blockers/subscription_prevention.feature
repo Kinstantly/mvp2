@@ -10,7 +10,7 @@ Feature: Blocked email address cannot be subscribed to any mailing list
 		When I check "Ages 0-4"
 			And I check "Provider marketing tips"
 			And I save the account settings
-		Then I should only be subscribed to "parent_newsletters_stage1, provider_newsletters" mailing lists and synced to the list server
+		Then I should only be subscribed to the "parent_newsletters_stage1 and provider_newsletters" mailing lists and synced to the list server
 
 	Scenario: I cannot subscribe to mailing lists if I am blocked
 		Given I exist as a provider
