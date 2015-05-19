@@ -2595,7 +2595,7 @@ ul.links-list > li{
 			p.checkbox-header{ padding-bottom: 3px; }
 			.checkbox{
 				margin: 0 0 1em 0;
-				li{ display: inline; }
+				li{ display: inline; white-space: nowrap; }
 				input[type=checkbox]{ vertical-align: middle; }
 				label{ font-weight: normal; vertical-align: middle; }
 			}
@@ -2620,7 +2620,18 @@ ul.links-list > li{
 					}
 				}
 			}
-
+			@media screen and (max-width: $break-6-2) {
+				width: 80%;
+				.text_field {
+					width: 100%;
+					input, textarea, select {
+						width: 90%;
+					}
+				}
+				input[type="submit"] {
+					margin-bottom: 8px;
+				}
+			}
 		}
 		.newsletter-sample{ text-align: center; font-size: 15px; padding: 10px 0; }
 		.col2 {
@@ -2630,9 +2641,14 @@ ul.links-list > li{
 			margin-top: 30px;
 			margin-bottom: 30px;
 			box-sizing: border-box;
-			@media screen and (max-width: $break-6-2) { width: 100%; }
 
 			&:first-of-type{ border-right: 1px solid $medium-gray; }
+
+			@media screen and (max-width: $break-6-2) {
+				width: 100%;
+				margin-top: 0;
+				border-right: none !important;
+			}
 		}
 		hr{ margin: 0; }
 
