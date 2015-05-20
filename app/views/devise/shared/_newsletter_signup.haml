@@ -10,7 +10,7 @@
 				= image_tag "newsletter_banner.jpg", alt: short_company_description, itemprop: 'image', class: "banner"
 			%h5
 				Give us two minutes a week (you can clock us), and we'll give you the best parenting news from around the world, insights from amazing experts, and loads of smart, useful, age-relevant ideas. So you can be an even more awesome parent than you already are.
-		.generic_form
+		#sign_up.generic_form
 			= render partial: "devise/shared/signup", locals:{ embedded_in: true, inline_tip: false }
 		- if @signing_up_for_newsletter_onsite
 			%p.newsletter-sample
