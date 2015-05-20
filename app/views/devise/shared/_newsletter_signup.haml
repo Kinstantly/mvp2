@@ -54,7 +54,7 @@
 					= image_tag "googleone.png", alt: "Google Plus", itemprop: 'image', border: "0"
 					Google Plus
 	%hr.clearfix
-	%iframe{:src => "#{latest_newsletter_url(:parent_newsletters_stage1)}", id: 'stage1_sample'}
-	%iframe{:src => "#{latest_newsletter_url(:parent_newsletters_stage2)}", id: 'stage2_sample'}
-	%iframe{:src => "#{latest_newsletter_url(:parent_newsletters_stage3)}", id: 'stage3_sample'}
+	%iframe{:src => "#{latest_newsletter_url(:parent_newsletters_stage1)}", id: 'stage1_sample', width: '100%'}
+	%iframe{:src => "#{latest_newsletter_url(:parent_newsletters_stage2)}", id: 'stage2_sample', width: '100%'}
+	%iframe{:src => "#{latest_newsletter_url(:parent_newsletters_stage3)}", id: 'stage3_sample', width: '100%'}
 	=link_to '^ Back to top', '#login_pannel', {class: 'back-to-top-link right'}
