@@ -102,4 +102,18 @@ class NewslettersController < ApplicationController
 			return data || []
 		end
 	end
+	
+	# Set exceptions to default values of the security-related HTTP headers in the response.
+	# See https://www.owasp.org/index.php/List_of_useful_HTTP_headers
+	# http://tools.ietf.org/html/rfc7034
+	# http://www.w3.org/TR/CSP/#directive-frame-ancestors
+	def set_default_response_headers
+		super
+		if response && ['latest', 'show'].include?(action_name)
+			response.headers.merge!({
+				'Content-Security-Policy' => "frame-ancestors 'self'",
+				'X-Frame-Options' => 'SAMEORIGIN'
+			})
+		end
+	end
 end

@@ -1,4 +1,6 @@
 - copyright_note = "\&copy; Copyright 2013 - #{Date.today.year} Kinstantly, Inc. All Rights Reserved."
+- @hide_follow ||= false
+
 !!! XML
 !!!
 /[if lt IE 7] <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en">
@@ -82,11 +84,12 @@
 				- unless @content_class.try :include?, 'no-upper-hr'
 					%hr/
 			= yield
-			.follow
-				%span Follow us on:
-				%a.fb{:href => "https://www.facebook.com/kinstantly", :target => "_blank"} Facebook
-				%a.tw{:href => "https://twitter.com/Kinstantly", :target => "_blank"} Twitter
-				%a.gp{:href => "https://plus.google.com/+Kinstantly", :target => "_blank"} Google Plus
+			- unless @hide_follow
+				.follow
+					%span Follow us on:
+					%a.fb{href: "https://www.facebook.com/kinstantly", :target => "_blank"} Facebook
+					%a.tw{href: "https://twitter.com/Kinstantly", :target => "_blank"} Twitter
+					%a.gp{href: "https://plus.google.com/+Kinstantly", :target => "_blank"} Google Plus
 		%footer#footer
 			%p#bottom
 				= about_link wrapper: {tag: :span}

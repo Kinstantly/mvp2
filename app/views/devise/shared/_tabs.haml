@@ -7,11 +7,7 @@
 #login_pannel
 	.container.positioner
 		.company_desc
-			- if @signing_up_for_newsletter
-				%h2.newsletter_sign_up= t 'views.sign_up.parent_newsletters_prompt'
-				= image_tag "newsletter_banner.jpg", alt: short_company_description, itemprop: 'image', class: "banner"
-			- else
-				%h2= short_company_description
+			%h2= short_company_description
 			-if is_private_alpha
 				%p.alpha_note= alpha_note
 		#tabs.ui-tabs.ui-widget.ui-widget-content.ui-corner-all

@@ -177,7 +177,8 @@
 #content {
 	font-family: $font-stack;
 	margin-top: 0;
-	
+	&.full-height{ height: 100%; }
+
 	hr {
 		border: 0;
 		height: 1px;
@@ -2503,21 +2504,15 @@ ul.links-list > li{
 			li{
 				@include scale(font-size, 21);
 				
-				a{
-					padding: 0.5em;
-				}
+				a{ padding: 0.5em; }
 
 				@media (max-width: $break-5) {
 					@include scale(font-size, 16);
-					a{
-						padding: 0.5em 0.2em;
-					}			
+					a{ padding: 0.5em 0.2em; }
 				}
 				@media (max-width: $break-4) {
 					white-space: normal;
-					a{
-						padding: 0.5em 1em;
-					}
+					a{ padding: 0.5em 1em; }
 				}
 			}
 			input[type=checkbox], input[type=radio]{
@@ -2525,13 +2520,9 @@ ul.links-list > li{
 			}
 
 			@media (max-width: $break-4) {
-				label{
-					font-size: .75em;
-				}
+				label{ font-size: .75em; }
 				.devise_shared_links, .radio_buttons{
-					a{
-						font-size: .78em;
-					}
+					a{ font-size: .78em; }
 				}
 			}
 
@@ -2578,6 +2569,134 @@ ul.links-list > li{
 		p {font-size: 14px; padding-bottom: 10px;}
 		.checkbox {margin-left: 30px;}
 		.newsletter-sample{ padding-top: 20px; }
+	}
+	&.newsletter-sign-up{
+		height: 100%;
+		.positioner{ height: auto; }
+		h5{
+			text-align: center;
+			font-size: 17px;
+			margin: 0 auto;
+			padding-right: 20px;
+			padding-left: 20px;
+		}
+		.generic_form{
+			background-color: #efefef;
+			padding: 20px 30px;
+			border-radius: 6px;
+			border: 1px solid $medium-gray;
+			margin-top: 1.8em;
+			padding: 6px 20px 10px;
+
+			label{ font-weight: normal; }
+			.text_field {
+				label{ font-size: 16px; }
+				input{ margin-top: 3px; }
+			}
+			p.checkbox-header{ padding-bottom: 3px; }
+			.checkbox{
+				margin: 0 0 1em 0;
+				li{ display: inline; white-space: nowrap; }
+				input[type=checkbox]{ vertical-align: middle; }
+				label{ font-weight: normal; vertical-align: middle; }
+			}
+			.buttons{
+				text-align: center;
+				#sign_up_button{
+					background-color: $kinstantly_pink;
+					width: calc(100% - 4.3em);
+					@include scale(padding-top, 5);
+					@include scale(padding-bottom, 6);
+					@include scale(font-size, 21);
+					line-height: 130%;
+					text-transform: lowercase;
+					margin: 0;
+
+					&:hover {
+						cursor: pointer;
+						background-color: lighten($kinstantly_pink, 5%);
+					}
+					@media (max-width: $break-5) {
+						@include scale(font-size, 16);
+					}
+				}
+			}
+			@media screen and (max-width: $break-6-2) {
+				width: 80%;
+				.text_field {
+					width: 100%;
+					input, textarea, select {
+						width: 90%;
+					}
+				}
+				input[type="submit"] {
+					margin-bottom: 8px;
+				}
+			}
+		}
+		.newsletter-sample{ text-align: center; font-size: 15px; padding: 10px 0; }
+		.col2 {
+			width: 50%;
+			float: left;
+			padding: 0px 38px;
+			margin-top: 30px;
+			margin-bottom: 30px;
+			box-sizing: border-box;
+
+			&:first-of-type{ border-right: 1px solid $medium-gray; }
+
+			@media screen and (max-width: $break-6-2) {
+				width: 100%;
+				margin-top: 0;
+				border-right: none !important;
+			}
+		}
+		hr{ margin: 0; }
+
+		blockquote{
+			padding: 0 10px;
+			font-size: 17px;
+			line-height: 23px;
+			&:first-child{ padding-bottom: 20px; }
+			cite{ font-size: 16px; font-style: italic; display: block; }
+		}
+		.follow{
+			margin: 0 auto;
+			padding: 20px 0;
+			font-weight: bold;
+			text-transform: uppercase;
+
+			h3{
+				font-size: 16px;
+				display: block;
+				color: $kinstantly_blue; 
+				text-align: center;
+				margin: 0 0 20px;
+			}
+			li{
+				display: inline;
+				float: left;
+				a{
+					background: transparent;
+					text-indent: 0;
+					text-align: center;
+					padding: 0;
+					min-width: 105px;
+				}
+				img{ height: 24px; width: 24px; border: 0; display: block; margin: 0 auto 4px; }
+			}
+		}
+		iframe{
+			background-color: transparent;
+		    border: 0px none transparent;
+		    padding: 0px;
+		    margin: 30px auto;
+		    width: 100%;
+		    min-height: 100%;
+		    height: calc(100% + 115px);
+		    overflow: hidden;
+		}
+		.back-to-top-link{ font-size: 14px; margin: 20px 0; }
 	}
 }
 

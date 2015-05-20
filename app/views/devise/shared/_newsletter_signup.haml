@@ -1,0 +1,60 @@
+- @hide_masthead = @signing_up_for_newsletter
+- @hide_follow = @signing_up_for_newsletter
+- @signing_up_for_newsletter_onsite = @signing_up_for_newsletter && !@signing_up_from_blog
+- short_company_description ||= t 'company.short_company_description_html'
+
+#login_pannel.newsletter-sign-up
+	.container.positioner
+		.company_desc
+			%a{title: "#{company_name}", href: root_url}
+				= image_tag "newsletter_banner.jpg", alt: short_company_description, itemprop: 'image', class: "banner"
+			%h5
+				Give us two minutes a week (you can clock us), and we'll give you the best parenting news from around the world, insights from amazing experts, and loads of smart, useful, age-relevant ideas. So you can be an even more awesome parent than you already are.
+		.generic_form
+			= render partial: "devise/shared/signup", locals:{ embedded_in: true, inline_tip: false }
+		- if @signing_up_for_newsletter_onsite
+			%p.newsletter-sample
+				See a sample:
+				=link_to 'Ages 0-4', '#stage1_sample'
+				|
+				=link_to 'Ages 5-12', '#stage2_sample'
+				|
+				=link_to 'Teens', '#stage3_sample'
+				Or check out our 
+				= succeed '.' do
+					= link_to 'archive', newsletter_list_path
+	%section.col2
+		%blockquote
+			"This is my new favorite email. It actually makes me a better mom."
+			%cite—mom of preschooler, now pregnant with #2
+		%blockquote
+			"What I love about the Kinstantly newsletter is that it's filled with info on exactly the topics I wonder/worry/want to know more about, from how much money is a reasonable amount to spend on prom to what the college wait list really means for my daughter—all in a fast, easy read."
+			%cite—mom of two teen girls
+	%section.col2
+		%blockquote
+			"Wow. It really is a great newsletter."
+			%cite—pediatrician and dad of three
+		%blockquote
+			"I love this newsletter. I always find some gem—it's as if you know exactly what I'm going through with my kids."
+			%cite—mom of kids ages 5 and 8
+	%hr.clearfix
+	.follow
+		%h3 Share & Follow Us
+		%ul
+			%li
+				%a.fb{href: "https://www.facebook.com/kinstantly", :target => "_blank"}
+					= image_tag "facebook.png", alt: "Facebook", itemprop: 'image', border: "0"
+					Facebook
+			%li
+				%a.tw{href: "https://twitter.com/Kinstantly", :target => "_blank"}
+					= image_tag "twitter.png", alt: "Twitter", itemprop: 'image', border: "0"
+					Twitter
+			%li
+				%a.gp{href: "https://plus.google.com/+Kinstantly", :target => "_blank"}
+					= image_tag "googleone.png", alt: "Google Plus", itemprop: 'image', border: "0"
+					Google Plus
+	%hr.clearfix
+	%iframe{:src => "#{latest_newsletter_url(:parent_newsletters_stage1)}", id: 'stage1_sample'}
+	%iframe{:src => "#{latest_newsletter_url(:parent_newsletters_stage2)}", id: 'stage2_sample'}
+	%iframe{:src => "#{latest_newsletter_url(:parent_newsletters_stage3)}", id: 'stage3_sample'}
+	=link_to '^ Back to top', '#login_pannel', {class: 'back-to-top-link right'}

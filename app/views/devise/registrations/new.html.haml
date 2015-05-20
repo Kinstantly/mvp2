@@ -1,3 +1,7 @@
 - @hide_search_providers = true
-- @content_class = 'no-upper-hr'
-= render "devise/shared/tabs"
+- @content_class = @signing_up_for_newsletter? 'no-upper-hr full-height' : 'no-upper-hr'
+
+-if @signing_up_for_newsletter
+	= render "devise/shared/newsletter_signup"
+-else
+	= render "devise/shared/tabs"

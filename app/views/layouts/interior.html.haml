@@ -2,32 +2,33 @@
 - content_for :head_before_js do
 	= stylesheet_link_tag "interior", media: "screen, handheld, print"
 - content_for :body_header do
-	#masthead.container
-		%h1
-			= home_link
-		%nav#menu
-			%button.menu Menu
-			%ul
-				= index_link wrapper: {tag: :li}
-				-#%li
-					-#%a{:href => "#"} Browse by Category
-				-#%li
-					-#%a{:href => "#"} Q & A
-				= about_link wrapper: {tag: :li}
-				= contact_link wrapper: {tag: :li}
-				= terms_link wrapper: {tag: :li}
-				= privacy_link wrapper: {tag: :li}
-				= blog_link wrapper: {tag: :li}
-				= newsletter_sign_up_link wrapper: {tag: :li}
-		- unless @hide_search_providers
-			#findProvider.search
-				= form_tag search_providers_path, method: :get, id: 'providerSearch' do
-					= hidden_field_tag :service_id, @search_service.id if @search_service
-					%div
-						%label{:for => "provider"} Find
-						= text_field_tag :query, default_search_query(@search_query, @search_service), id: 'provider_search_query', autocomplete: 'off', placeholder: t('views.search.query_placeholder')
-					%div
-						%label{:for => "location"} Near
-						= text_field_tag :address, @search_address, id: 'provider_search_location', placeholder: t('views.search.address_placeholder')
-					= submit_tag 'Search', disable_with: 'Searching...', class: 'button submit pink', id: 'search'
+	- unless @hide_masthead
+		#masthead.container
+			%h1
+				= home_link
+			%nav#menu
+				%button.menu Menu
+				%ul
+					= index_link wrapper: {tag: :li}
+					-#%li
+						-#%a{:href => "#"} Browse by Category
+					-#%li
+						-#%a{:href => "#"} Q & A
+					= about_link wrapper: {tag: :li}
+					= contact_link wrapper: {tag: :li}
+					= terms_link wrapper: {tag: :li}
+					= privacy_link wrapper: {tag: :li}
+					= blog_link wrapper: {tag: :li}
+					= newsletter_sign_up_link wrapper: {tag: :li}
+			- unless @hide_search_providers
+				#findProvider.search
+					= form_tag search_providers_path, method: :get, id: 'providerSearch' do
+						= hidden_field_tag :service_id, @search_service.id if @search_service
+						%div
+							%label{:for => "provider"} Find
+							= text_field_tag :query, default_search_query(@search_query, @search_service), id: 'provider_search_query', autocomplete: 'off', placeholder: t('views.search.query_placeholder')
+						%div
+							%label{:for => "location"} Near
+							= text_field_tag :address, @search_address, id: 'provider_search_location', placeholder: t('views.search.address_placeholder')
+						= submit_tag 'Search', disable_with: 'Searching...', class: 'button submit pink', id: 'search'
 = render template: 'layouts/application'
