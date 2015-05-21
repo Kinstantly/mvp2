@@ -3,7 +3,7 @@
 - @signing_up_for_newsletter_onsite = @signing_up_for_newsletter && !@signing_up_from_blog
 - short_company_description ||= t 'company.short_company_description_html'
 
-#login_pannel.newsletter-sign-up
+#login_panel.newsletter-sign-up
 	.container.positioner
 		.company_desc
 			%a{title: "#{company_name}", href: root_url}
@@ -54,7 +54,30 @@
 					= image_tag "googleone.png", alt: "Google Plus", itemprop: 'image', border: "0"
 					Google Plus
 	%hr.clearfix
-	%iframe{:src => "#{latest_newsletter_url(:parent_newsletters_stage1)}", id: 'stage1_sample', width: '100%'}
-	%iframe{:src => "#{latest_newsletter_url(:parent_newsletters_stage2)}", id: 'stage2_sample', width: '100%'}
-	%iframe{:src => "#{latest_newsletter_url(:parent_newsletters_stage3)}", id: 'stage3_sample', width: '100%'}
-	=link_to '^ Back to top', '#login_pannel', {class: 'back-to-top-link right'}
+	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage1)}", id: 'stage1_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
+	=link_to '^ Back to top', '#login_panel', {class: 'back-to-top-link right'}
+	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage2)}", id: 'stage2_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
+	=link_to '^ Back to top', '#login_panel', {class: 'back-to-top-link right'}
+	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage3)}", id: 'stage3_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
+	=link_to '^ Back to top', '#login_panel', {class: 'back-to-top-link right'}
+
+-# The following JavaScript sets the height of the iframe to match its document's height so that the regular window scrollbars can be used rather than iframe scrollbars.
+-# Source: http://www.dyn-web.com/tutorials/iframes/height/demo.php
+-# See also: stackoverflow.com/questions/1145850/
+:javascript
+	my_vars.f.getDocHeight = function (doc) {
+		doc = doc || document;
+		var body = doc.body, html = doc.documentElement;
+		var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+		return height;
+	}
+	
+	my_vars.f.setIframeHeight = function (id) {
+			var ifrm = document.getElementById(id);
+			var doc = ifrm.contentDocument? ifrm.contentDocument: ifrm.contentWindow.document;
+			ifrm.style.visibility = 'hidden';
+			ifrm.style.height = "10px"; // reset to minimal height ...
+			// IE opt. for bing/msn needs a bit added or scrollbar appears
+			ifrm.style.height = my_vars.f.getDocHeight(doc) + 4 + "px";
+			ifrm.style.visibility = 'visible';
+	}

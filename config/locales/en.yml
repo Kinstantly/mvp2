@@ -259,10 +259,10 @@ en:
         postal_code: 'Zip code'
         admin_confirmation_sent_at: ''
         registration_special_code: 'Special code'
-        provider_newsletters: 'Provider marketing tips (monthly)'
-        parent_newsletters_stage1: 'Ages 0-4 (weekly)'
-        parent_newsletters_stage2: 'Ages 5-12 (weekly)'
-        parent_newsletters_stage3: 'Teens (weekly)'
+        provider_newsletters: 'Provider marketing tips'
+        parent_newsletters_stage1: 'Ages 0-4'
+        parent_newsletters_stage2: 'Ages 5-12'
+        parent_newsletters_stage3: 'Teens'
       announcement:
         icon: "Choose an icon (to appear with headline)"
         headline: "Headline"
