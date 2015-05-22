@@ -9,17 +9,17 @@
 			%a{title: "#{company_name}", href: root_url}
 				= image_tag "newsletter_banner.jpg", alt: short_company_description, itemprop: 'image', class: "banner"
 			%h5
-				Each week, we scan the parenting world for the surprising ideas and insights that help you grow a great kid. All in a fun, quick read.
+				Each week, we round up the best news, expert insights, and some pretty great hey-we-think-you-should-know-this ideas for every stage of parenting&mdash;right through the teens. All delivered to your inbox!
 		#sign_up.generic_form
 			= render partial: "devise/shared/signup", locals:{ embedded_in: true, inline_tip: false }
 		- if @signing_up_for_newsletter_onsite
 			%p.newsletter-sample
 				See a sample:
-				=link_to 'Ages 0-4', '#stage1_sample'
+				=link_to User.human_attribute_name(:parent_newsletters_stage1), '#stage1_sample_view'
 				|
-				=link_to 'Ages 5-12', '#stage2_sample'
+				=link_to User.human_attribute_name(:parent_newsletters_stage2), '#stage2_sample_view'
 				|
-				=link_to 'Teens', '#stage3_sample'
+				=link_to User.human_attribute_name(:parent_newsletters_stage3), '#stage3_sample_view'
 				Or check out our 
 				= succeed '.' do
 					= link_to 'archive', newsletter_list_path
@@ -54,12 +54,13 @@
 					= image_tag "googleone.png", alt: "Google Plus", itemprop: 'image', border: "0"
 					Google Plus
 	%hr.clearfix
+	=link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right', id: 'stage1_sample_view'}
 	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage1)}", id: 'stage1_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
-	=link_to '^ Back to top', '#login_panel', {class: 'back-to-top-link right'}
+	=link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right', id: 'stage2_sample_view'}
 	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage2)}", id: 'stage2_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
-	=link_to '^ Back to top', '#login_panel', {class: 'back-to-top-link right'}
+	=link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right', id: 'stage3_sample_view'}
 	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage3)}", id: 'stage3_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
-	=link_to '^ Back to top', '#login_panel', {class: 'back-to-top-link right'}
+	=link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right'}
 
 -# The following JavaScript sets the height of the iframe to match its document's height so that the regular window scrollbars can be used rather than iframe scrollbars.
 -# Source: http://www.dyn-web.com/tutorials/iframes/height/demo.php
