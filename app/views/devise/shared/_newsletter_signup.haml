@@ -55,11 +55,11 @@
 					Google Plus
 	%hr.clearfix
 	=link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right', id: 'stage1_sample_view'}
-	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage1)}", id: 'stage1_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
+	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage1, noga: 't')}", id: 'stage1_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
 	=link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right', id: 'stage2_sample_view'}
-	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage2)}", id: 'stage2_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
+	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage2, noga: 't')}", id: 'stage2_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
 	=link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right', id: 'stage3_sample_view'}
-	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage3)}", id: 'stage3_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
+	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage3, noga: 't')}", id: 'stage3_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
 	=link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right'}
 
 -# The following JavaScript sets the height of the iframe to match its document's height so that the regular window scrollbars can be used rather than iframe scrollbars.
