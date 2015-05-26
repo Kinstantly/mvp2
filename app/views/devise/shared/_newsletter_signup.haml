@@ -9,7 +9,8 @@
 			%a{title: "#{company_name}", href: root_url}
 				= image_tag "newsletter_banner.jpg", alt: short_company_description, itemprop: 'image', class: "banner"
 			%h5
-				Each week, we round up the best news, expert insights, and some pretty great hey-we-think-you-should-know-this ideas for every stage of parenting&mdash;right through the teens. All delivered to your inbox!
+				:plain
+					Our weekly newsletter offers uncommon common sense&mdash;an eye-opening roundup of news, research, and expert insights for <em>your</em> stage of parenting.
 		#sign_up.generic_form
 			= render partial: "devise/shared/signup", locals:{ embedded_in: true, inline_tip: false }
 		- if @signing_up_for_newsletter_onsite
