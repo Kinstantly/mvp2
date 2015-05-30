@@ -10,6 +10,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Synonym file format: https://wiki.apache.org/solr/AnalyzersTokenizersTokenFilters#solr.SynonymFilterFactory
+# See also: http://opensourceconnections.com/blog/2013/10/27/why-is-multi-term-synonyms-so-hard-in-solr/
+
 #-----------------------------------------------------------------------
 #some test synonym mappings unlikely to appear in real input text
 # aaa => aaaa
@@ -29,25 +32,17 @@
 # Synonym mappings can be used for spelling correction too
 # pixima => pixma
 
-# counselor(s) doesn't match counsel(ing) and vice versa
-# this will make counselor(s) as a query term match counsel(ing) in the text
-counselor,counsel,counseling
-# this will make counsel(ing) as a query term match counselor(s) in the text
-counsel,counselor,counselors
-
-couple\'s,couples
+# The following assumes solr.SynonymFilterFactory has expand="true" and is used at index time.
+# Therefore the order of terms within each line does not matter.
+counselor,counselors,counsel,counseling
 couples,couple\'s
 childcare,care
-hematologist,hematology,haematology,haematologist
 hematology,hematologist,haematology,haematologist
-haematology,hematologist,hematology,haematologist
-haematologist,hematologist,hematology,haematology
 orthopedics,orthopaedics
-orthopaedics,orthopedics
 diarrhea,diarea
-diarea,diarrhea
 center,centre
-centre,center
 theater,theatre
-theatre,theater
-ahdh,adhd
+adhd,ahdh
+obgyn,ob gyn,obstetrics,gynecology,gynecologist,obstetrist
+psychotherapy,psychotherapist
+babysitter,babysitting,baby sitter,baby sitting
