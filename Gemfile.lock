@@ -320,6 +320,8 @@ GEM
       highline (~> 1.6.1)
       options (~> 2.3.0)
     rack (1.4.5)
+    rack-attack (4.3.0)
+      rack
     rack-cache (1.2)
       rack (>= 0.4)
     rack-raw-upload (1.1.1)
@@ -484,6 +486,7 @@ DEPENDENCIES
   pg
   phonie
   progress_bar
+  rack-attack
   rack-raw-upload
   rack-timeout
   rails (= 3.2.21)

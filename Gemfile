@@ -199,3 +199,7 @@ gem "gibbon"
 # Remove this when migrated to Rails 4 because it is built in.
 # https://github.com/rails/strong_parameters
 gem 'strong_parameters'
+
+# Rack middleware for blocking & throttling abusive requests.
+# https://github.com/kickstarter/rack-attack
+gem 'rack-attack'

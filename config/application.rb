@@ -129,6 +129,9 @@ module Mvp2
 
     # Google Analytics Tracking ID. Default ID is for development/local.kinstantly.com.
     config.google_analytics_tracking_id = ENV['GOOGLE_ANALYTICS_TRACKING_ID'].presence || 'UA-49348780-4'
+    
+    # For blocking & throttling abusive requests. See config/initializers/rack_attack.rb.
+    config.middleware.use Rack::Attack
   end
 end
 
