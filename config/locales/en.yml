@@ -658,6 +658,7 @@ en:
         submit: 'Save'
         submit_disable: 'Saving...'
         summary_tip: 'Tip: A first-person description ("I advise parents on...") is warmer and more approachable.'
+        tab_load_error_message_html: 'Oops. Something went wrong. Click <a href="%{path}">here</a> to reload the page.'
         url_example: 'Example: www.allkidstutoring.com or http://www.allkidstutoring.com'
         year_started_explanation: '(year you began business or practice)'
         year_started_example: 'Examples: 2001; Began practicing in 2000 and started my own company in 2006'
