@@ -2590,7 +2590,7 @@ ul.links-list > li{
 			border-radius: 6px;
 			border: 1px solid $medium-gray;
 			margin-top: 1.8em;
-			padding: 6px 20px 10px;
+			padding: 6px 20px 0;
 
 			label{ font-weight: normal; }
 			.text_field {
@@ -2600,28 +2600,37 @@ ul.links-list > li{
 			p.checkbox-header{ padding-bottom: 3px; }
 			.checkbox{
 				margin: 0 0 1em 0;
-				li{ display: inline; white-space: nowrap; }
+				li{ display: inline; white-space: nowrap; margin-right: 0.75em; }
 				input[type=checkbox]{ vertical-align: middle; }
 				label{ font-weight: normal; vertical-align: middle; }
 			}
 			.buttons{
 				text-align: center;
-				#sign_up_button{
+				#sign_up_button, #sign_up_cancel_button {
 					background-color: $kinstantly_pink;
-					width: calc(100% - 4.3em);
+					width: calc(70% - 4.3em);
 					@include scale(padding-top, 5);
 					@include scale(padding-bottom, 6);
 					@include scale(font-size, 21);
 					line-height: 130%;
 					text-transform: lowercase;
-					margin: 0;
-
+					margin: 0 0 0.5em;
+					
 					&:hover {
 						cursor: pointer;
 						background-color: lighten($kinstantly_pink, 5%);
 					}
+					&.cancel {
+						background-color: darken($kinstantly_gray, 5%);
+					}
+					&.cancel:hover {
+						background-color: $kinstantly_gray;
+					}
 					@media (max-width: $break-5) {
 						@include scale(font-size, 16);
+					}
+					@media (max-width: $break-3) {
+						width: calc(100% - 4.3em);
 					}
 				}
 			}
@@ -2635,6 +2644,9 @@ ul.links-list > li{
 				}
 				input[type="submit"] {
 					margin-bottom: 8px;
+				}
+				.buttons #sign_up_button {
+					margin-bottom: 1em;
 				}
 			}
 		}

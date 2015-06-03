@@ -72,7 +72,7 @@
 			- else
 				= f.label :password
 			%br
-		= f.password_field :password, autocomplete: 'off', placeholder: ( @signing_up_from_blog ? "Enter password" : ("Choose a password that's easy to remember" if @signing_up_for_newsletter))
+		= f.password_field :password, autocomplete: 'off', placeholder: ( @signing_up_from_blog ? "Enter password" : ("Choose a password" if @signing_up_for_newsletter))
 		- if inline_tip
 			%p.note.grey_text= password_tip
 	-#
@@ -137,6 +137,7 @@
 	.buttons
 		- if @signing_up_for_newsletter
 			= f.submit t(:newsletter_sign_up_label, scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default newsletter_sign_up', id: 'sign_up_button'
+			= link_to t(:newsletter_sign_up_cancel, scope: 'views.sign_up'), root_path, class: 'cancel', id: 'sign_up_cancel_button'
 		- else
 			= f.submit t((is_provider ? :provider_label : :label), scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default', id: 'sign_up_button'
 
