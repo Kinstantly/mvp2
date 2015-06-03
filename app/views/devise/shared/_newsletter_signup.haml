@@ -21,9 +21,10 @@
 				=link_to User.human_attribute_name(:parent_newsletters_stage2), '#stage2_sample_view'
 				|
 				=link_to User.human_attribute_name(:parent_newsletters_stage3), '#stage3_sample_view'
-				Or check out our 
-				= succeed '.' do
-					= link_to 'archive', newsletter_list_path
+				%span.left-indent
+					Or check out our 
+					= succeed '.' do
+						= link_to 'archive', newsletter_list_path
 	%section.col2
 		%blockquote
 			"This is my new favorite email. It actually makes me a better mom."

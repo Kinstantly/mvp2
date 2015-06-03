@@ -2650,7 +2650,15 @@ ul.links-list > li{
 				}
 			}
 		}
-		.newsletter-sample{ text-align: center; font-size: 15px; padding: 10px 0; }
+		.newsletter-sample{ 
+			text-align: center; font-size: 15px; padding: 10px 0; 
+			.left-indent{ 
+				padding-left: 1em;
+				@media (max-width: $break-5) {
+					display: block;
+				}
+			}
+		}
 		.col2 {
 			width: 50%;
 			float: left;
