@@ -2606,6 +2606,7 @@ ul.links-list > li{
 			}
 			.buttons{
 				text-align: center;
+				margin-right: 8px;
 				#sign_up_button, #sign_up_cancel_button {
 					background-color: $kinstantly_pink;
 					width: calc(70% - 4.3em);
@@ -2628,9 +2629,8 @@ ul.links-list > li{
 					}
 					@media (max-width: $break-5) {
 						@include scale(font-size, 16);
-					}
-					@media (max-width: $break-3) {
-						width: calc(100% - 4.3em);
+						&#sign_up_cancel_button{ display: none; }
+						width: calc(50% - .8em);
 					}
 				}
 			}
