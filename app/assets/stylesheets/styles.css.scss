@@ -2632,6 +2632,9 @@ ul.links-list > li{
 						&#sign_up_cancel_button{ display: none; }
 						width: calc(50% - .8em);
 					}
+					@media (max-width: $break-3) {
+						width: calc(100% - 4.3em);
+					}
 				}
 			}
 			@media screen and (max-width: $break-6-2) {
