@@ -13,6 +13,9 @@ Mvp2::Application.routes.draw do
 	get 'newsletter/latest/:name' => 'newsletters#latest', as: :latest_newsletter
 	get 'newsletter/list(/:name)' => 'newsletters#list', as: :newsletter_list
 	get 'newsletter/:id' => 'newsletters#show',  as: :newsletter
+	get 'newsletter' => 'newsletters#new'
+	get 'newsletters' => 'newsletters#new'
+	post 'newsletters/subscribe' => 'newsletters#subscribe'
 	
 	# User model on which Devise authentication is based.
 	devise_for :users, controllers: { 

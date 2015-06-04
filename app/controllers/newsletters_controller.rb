@@ -2,6 +2,38 @@ class NewslettersController < ApplicationController
 	
 	respond_to :html
 
+	# GET /newsletter
+	def new
+		render layout: 'interior'
+	end
+
+	def subscribe
+		@errors = []
+		@email = params[:email].presence
+		@parent_newsletters_stage1 = params[:parent_newsletters_stage1].present?
+		@parent_newsletters_stage2 = params[:parent_newsletters_stage2].present?
+		@parent_newsletters_stage3 = params[:parent_newsletters_stage3].present?
+
+		subscribe_lists = { parent_newsletters_stage1: @parent_newsletters_stage1,
+			parent_newsletters_stage2: @parent_newsletters_stage2,
+			parent_newsletters_stage3: @parent_newsletters_stage3 }
+		subscribe_lists = subscribe_lists.select{ |k,v| v }.keys
+
+		@errors << 'Email address is required' if @email.blank?
+		@errors << 'Select at least one edition' if subscribe_lists.blank?
+
+		if @errors.any?
+			render :new
+		else
+			if Rails.env.production?
+				delay.subscribe_to_mailing_lists(subscribe_lists, @email)
+			else
+				subscribe_to_mailing_lists(subscribe_lists, @email)
+			end
+			render :subscribed, layout: 'interior'
+		end
+	end
+
 	# GET /latest/:name
 	def latest
 		name = params[:name]
@@ -100,6 +132,22 @@ class NewslettersController < ApplicationController
 			logger.info "Error while retrieving MailChimp newsletter urls: #{e.message}" if logger
 		ensure
 			return data || []
+		end
+	end
+
+	# Creates new MailChimp subscription.
+	def subscribe_to_mailing_lists(lists=[], email)
+		lists.each do |list_name|
+			next if !User.mailing_list_name_valid?(list_name)
+
+			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			email_struct = { email: email }
+			begin
+				gb = Gibbon::API.new
+				r = gb.lists.subscribe id: list_id, email: email_struct, double_optin: false
+			rescue Gibbon::MailChimpError => e
+				logger.error "MailChimp error while subscribing guest user with email #{email_struct} to #{list_name}: #{e.message}, error code: #{e.code}" if logger
+			end
 		end
 	end
 	
