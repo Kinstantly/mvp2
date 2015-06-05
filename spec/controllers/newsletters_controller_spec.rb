@@ -21,4 +21,26 @@ describe NewslettersController do
 			response.should render_template('show')
 		end
 	end
+
+	describe "GET newsletter sign-up page" do
+		it "renders the view" do
+			get :new
+			response.should render_template('new')
+		end
+	end
+
+	describe "POST subscribe" do
+		it "should render confirmation page after a successful update" do
+			post :subscribe, { parent_newsletters_stage1: 1, email: 'subscriber@example.com' }
+			response.should render_template('subscribed')
+		end
+		it "should re-render sign-up form if no email provided" do
+			post :subscribe, { parent_newsletters_stage1: 1 }
+			response.should render_template('new')
+		end
+		it "should re-render sign-up form if no subscription list selected" do
+			post :subscribe, { email: 'subscriber@example.com' }
+			response.should render_template('new')
+		end
+	end
 end
