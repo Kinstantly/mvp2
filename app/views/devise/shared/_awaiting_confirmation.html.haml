@@ -20,7 +20,7 @@
 	%br
 	%p In the meantime, check your email and click on the confirmation link we just sent you. That will complete your registration&mdash;and give you access to all the features on Kinstantly.
 	%br
-- elsif session[:signed_up_for_mailing_lists]
+- elsif params[:nlsub].present?
 	%p.greeting THANK YOU!
 	%br
 	%p You're all signed up for Kinstantly This Week. You should receive your first edition within the next few days.

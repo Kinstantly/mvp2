@@ -72,7 +72,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		# If the newsletter subscription parameter is present, set resource.signed_up_for_mailing_lists to true, otherwise preserve its current value.
 		if params[:nlsub].present? && resource.new_record?
 			resource.signed_up_for_mailing_lists = true
-			session[:signed_up_for_mailing_lists] = true # Needed for pre-confirmation phase because we're not signed in.
 		end
 		# Flags that tell the views whether this registration is primarily a newsletter or blog sign-up from the user's perspective.
 		@signing_up_from_blog = resource.signed_up_from_blog
