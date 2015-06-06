@@ -127,7 +127,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		else
 			member_awaiting_confirmation_path
 		end
-		# Add various flags for tracking purposes.
+		# Add flags for the confirmation page and for tracking purposes.
 		path += (path.include?(??) ? '&' : '?') + 'email_pending_confirmation=t'
 		if resource
 			path += '&nlsub=t' if resource.signed_up_for_mailing_lists
@@ -135,6 +135,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 			[:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3, :provider_newsletters].each do |list|
 				path += "&#{list}=t" if resource.send list
 			end
+			path += '&provider=t' if resource.is_provider?
 		end
 		path
 	end

@@ -31,22 +31,15 @@
 	%br
 	= render "devise/shared/links" unless embedded_in
 - else # Default sign-up.
-	%p
-		Thanks for joining Kinstantly. To complete your registration, check your email and click on the confirmation link we just sent you.
+	%p.greeting WELCOME TO KINSTANTLY!
 	%br
-	%p
-		%span.emphasized If you don't see the email in your Inbox within a few minutes, please check your spam folder &mdash; and mark the email as &quot;Not spam.&quot;
+	%p To complete your registration, check your email and click on the confirmation link we just sent you.
 	%br
-	- if session[:signed_up_from_blog]
-		%p Once you've confirmed your registration, you'll be able to comment on blog postings.
+	- if params[:provider].present?
+		%p Once you've confirmed your registration, you'll be able to complete your profile&mdash;and we'll get busy helping you grow your business.
 		%br
-		%p You'll also be able to post ratings and reviews, self-schedule appointments with providers, and more.
-	- else
-		%p Once you've confirmed your registration, you'll be able to post ratings and reviews, self-schedule appointments with providers, and more.
-	%br
 	%p
 		Thanks very much!
-	%br
 	%p
 		The Kinstantly team
 	%br
