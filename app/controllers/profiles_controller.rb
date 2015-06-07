@@ -18,10 +18,11 @@ class ProfilesController < ApplicationController
 	
 	# *After* profile is loaded:
 	#   ensure it has at least one location
-	#   set SEO keywords for profile show page
+	#   set SEO description and keywords for profile show and edit pages
 	#   ensure there is a new review for the admin profile edit page
 	before_filter :require_location_in_profile, only: [:new, :edit, :edit_tab, :edit_my_profile, :edit_plain]
-	before_filter :seo_keywords, only: :show
+	before_filter :seo_keywords, only: [:edit, :show, :edit_my_profile, :view_my_profile]
+	before_filter :seo_description, only: [:edit, :show, :edit_my_profile, :view_my_profile]
 	before_filter :require_new_review, only: :edit_plain
 	
 	# Autocomplete service and specialty names.
@@ -290,6 +291,14 @@ class ProfilesController < ApplicationController
 			@profile.subcategories.map(&:lower_case_name),
 			@profile.services.map(&:lower_case_name),
 			@profile.specialties.map(&:lower_case_name)].flatten.compact.uniq.join(', ')
+	end
+	
+	def seo_description
+		@meta_description = [@meta_description,
+			@profile.company_name.presence,
+			@profile.presentable_display_name.presence,
+			@profile.headline.presence
+		].compact.uniq.join(' - ')
 	end
 	
 	# Create a new review of this provider.  Used by the admin edit page.

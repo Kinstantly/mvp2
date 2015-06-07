@@ -1,5 +1,6 @@
-- if @newsletter_html
-	= raw @newsletter_html
+- if @newsletter
+	- @page_title = "#{@newsletter.subject} | #{format_newsletter_date @newsletter.send_time} | #{company_name} | #{company_tagline}"
+	= raw @newsletter.content
 - else
 	.error_panel
-		%p An unexpected error occurred. Please try again later.
+		%p= t 'views.page_load_error_message_html', path: request.fullpath

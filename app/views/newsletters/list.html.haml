@@ -1,5 +1,6 @@
 - @hide_search_providers = true
 - @content_class = 'no-upper-hr'
+- @page_title_prefix = t 'views.newsletter.archive'
 - short_company_description = t 'company.short_company_description_html'
 
 - cache ['newsletter_archive', Newsletter.last_updated] do
@@ -7,37 +8,37 @@
 		%p
 			= (link_to "< Back to sign up", newsletter_signup_path, {class: 'back-to-signup-link'}) unless user_signed_in?
 		= image_tag "newsletter_banner.jpg", alt: short_company_description, itemprop: 'image', class: "banner"
-		%h1 Newsletter archive
+		%h1= t 'views.newsletter.archive'
 		%ul.mobile-nav
 			%li Jump to:
 			%li 
-				%a{ href: '#col-one'} Ages 0-4
+				%a{ href: '#col-one'}= User.human_attribute_name :parent_newsletters_stage1
 			%li 
-				%a{ href: '#col-two'} Ages 5-12
+				%a{ href: '#col-two'}= User.human_attribute_name :parent_newsletters_stage2
 			%li 
-				%a{ href: '#col-three'} Teens
+				%a{ href: '#col-three'}= User.human_attribute_name :parent_newsletters_stage3
 		%article.newsletter-list
 			.col.one-third#col-one
-				%h3 Ages 0-4
+				%h3= User.human_attribute_name :parent_newsletters_stage1
 				%ul
 					- @stage1_newsletters.each do |newsletter|
 						%li
-							=link_to format_newsletter_date(newsletter.send_time), newsletter_path(newsletter.cid), { target: '_blank' }
+							=link_to newsletter_link_text(newsletter), newsletter_path(newsletter.cid), { target: '_blank' }
 					- if @stage1_newsletters.empty?
 						%li No recent newsletter
 			.col.one-third#col-two
-				%h3 Ages 5-12
+				%h3= User.human_attribute_name :parent_newsletters_stage2
 				%ul
 					- @stage2_newsletters.each do |newsletter|
 						%li
-							=link_to format_newsletter_date(newsletter.send_time), newsletter_path(newsletter.cid), { target: '_blank' }
+							=link_to newsletter_link_text(newsletter), newsletter_path(newsletter.cid), { target: '_blank' }
 					- if @stage2_newsletters.empty?
 						%li No recent newsletter
 			.col.one-third.last#col-three
-				%h3 Teens
+				%h3= User.human_attribute_name :parent_newsletters_stage3
 				%ul
 					- @stage3_newsletters.each do |newsletter|
 						%li
-							=link_to format_newsletter_date(newsletter.send_time), newsletter_path(newsletter.cid), { target: '_blank' }
+							=link_to newsletter_link_text(newsletter), newsletter_path(newsletter.cid), { target: '_blank' }
 					- if @stage3_newsletters.empty?
 						%li No recent newsletter

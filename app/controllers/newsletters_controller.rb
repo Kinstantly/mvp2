@@ -5,15 +5,16 @@ class NewslettersController < ApplicationController
 	# GET /latest/:name
 	def latest
 		name = params[:name]
-		case name
-		when "parent_newsletters_stage2"
-			@newsletter_html = Newsletter.parent_newsletters_stage2.last_sent.try(:content)
-		when "parent_newsletters_stage3"
-			@newsletter_html = Newsletter.parent_newsletters_stage3.last_sent.try(:content)
-		else
-			@newsletter_html = Newsletter.parent_newsletters_stage1.last_sent.try(:content)
-		end
+		@newsletter = case name
+			when "parent_newsletters_stage2"
+				Newsletter.parent_newsletters_stage2.last_sent
+			when "parent_newsletters_stage3"
+				Newsletter.parent_newsletters_stage3.last_sent
+			else
+				Newsletter.parent_newsletters_stage1.last_sent
+			end
 		@styles = false
+		set_seo_elements @newsletter
 		render :show, layout: 'iframe_layout'
 	end
 
@@ -24,13 +25,16 @@ class NewslettersController < ApplicationController
 		@stage1_newsletters = Newsletter.parent_newsletters_stage1.order_by_send_time
 		@stage2_newsletters = Newsletter.parent_newsletters_stage2.order_by_send_time
 		@stage3_newsletters = Newsletter.parent_newsletters_stage3.order_by_send_time
+		@meta_description = "#{t 'views.newsletter.archive'} - #{t 'views.newsletter.name'}"
+		@meta_keywords = "#{t 'views.newsletter.archive'} #{t 'views.newsletter.name'}".downcase
 	end
 
 	# GET /list/:id
 	def show
 		id = params[:id]
 		@styles = false
-		@newsletter_html = Newsletter.find_by_cid(id).try(:content)
+		@newsletter = Newsletter.find_by_cid(id)
+		set_seo_elements @newsletter
 		render layout: 'iframe_layout'
 	end
 	
@@ -100,6 +104,14 @@ class NewslettersController < ApplicationController
 			logger.info "Error while retrieving MailChimp newsletter urls: #{e.message}" if logger
 		ensure
 			return data || []
+		end
+	end
+	
+	# Set instance variables used to populate SEO elements, e.g., meta description and keywords.
+	def set_seo_elements(newsletter)
+		if newsletter
+			@meta_description = "#{t 'views.newsletter.name'} - #{newsletter.subject} - Sent #{newsletter.send_time}"
+			@meta_keywords = newsletter.subject.downcase
 		end
 	end
 	

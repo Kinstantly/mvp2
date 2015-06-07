@@ -1,4 +1,7 @@
 - @body_class = 'interior search'
+- @page_title_prefix = @seo_search_query = seo_search_query @search, @search_service
+- @meta_description = seo_search_description @seo_search_query, @search_address
+- @meta_keywords = @seo_search_query.downcase
 - @search_total_to_track = @search.total
 - location_remote_only_msg = t "controllers.profiles.location_remote_only"
 - locations_array = {}

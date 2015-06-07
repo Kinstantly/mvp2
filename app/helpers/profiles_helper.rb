@@ -203,9 +203,28 @@ module ProfilesHelper
 	def profile_company_otherwise_display_name_link(profile, options={})
 		profile_list_view_link profile, profile.company_otherwise_display_name, options
 	end
+	
+	def profile_page_title_prefix(profile)
+		[
+			profile.presentable_display_name.presence,
+			profile.company_name.presence
+		].compact.join(' | ') if profile
+	end
 
 	def profile_page_title(profile=nil)
-		[company_name.presence, profile.try(:display_name_or_company).presence].compact.join(' - ')
+		[
+			profile_page_title_prefix(profile),
+			company_name.presence,
+			company_tagline.presence
+		].compact.join(' | ')
+	end
+	
+	def profile_page_description(profile)
+		[
+			profile.company_name.presence,
+			profile.presentable_display_name.presence,
+			profile.headline.presence
+		].compact.join(', ') if profile
 	end
 
 	def profile_total_count
@@ -603,6 +622,18 @@ module ProfilesHelper
 
 	def default_search_query(query, service)
 		service.try(:name).presence || query
+	end
+	
+	def seo_search_query(search, service)
+		service.try(:name).presence || search_query_string(search)
+	end
+	
+	def seo_search_description(query, address)
+		if address.present?
+			"#{query} #{t 'views.search_results.sorted_by_proximity_to', address: address}"
+		else
+			query
+		end
 	end
 
 	def search_result_name_specialties(profile)

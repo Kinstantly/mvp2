@@ -1,4 +1,6 @@
 - @content_class = 'profile_content'
+- @page_title_prefix = profile_page_title_prefix @profile
+-# Meta description and keywords are set by the profiles controller.
 = javascript_include_tag 'profile_edit'
 - if can?(:manage, Profile)
 	.editor_buttons

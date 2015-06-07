@@ -3089,8 +3089,9 @@ ul.links-list > li{
 	.mobile-nav{ 
 		display: none;
 		margin-top: 20px;
-		margin-bottom: 36px;
+		margin-bottom: 24px;
 		text-align: center;
+		li { padding-bottom: 0.25em; }
 		@media screen and (max-width: $break-6-2) { display: block; }
 	}
 	h1 {
@@ -3111,11 +3112,12 @@ ul.links-list > li{
 	.newsletter-list{
 		margin-top: 4em;
 		@media screen and (max-width: $break-6-2) { margin-top: 1em; }
+		
 		.col{
 			display: inline-block;
 			float: left;
 			min-height: 180px;
-			text-align: center;
+			
 			@media screen and (max-width: $break-6-2) { min-height: 100px; }
 
 			h3{
@@ -3123,6 +3125,7 @@ ul.links-list > li{
 				@include scale(font-size, 18,14);
 				@include scale(margin-bottom, 13,18);
 				font-weight: 700;
+				text-align: center;
 			}
 
 			&.one-third{
@@ -3132,6 +3135,14 @@ ul.links-list > li{
 			&:not(.last){
 				border-right: 2px solid $text_light_color;
 				@media screen and (max-width: $break-6-2) { border: 0;}
+			}
+			
+			ul {
+				@include scale(margin-bottom, 13,18);
+			}
+			li {
+				text-indent: -1em;
+				padding: 0 0.25em 0.25em 2em;
 			}
 		}
 	}

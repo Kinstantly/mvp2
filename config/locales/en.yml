@@ -331,6 +331,7 @@ en:
     label_optional: '%{name} (Optional)'
     not_browsable: '(grayed-out not browsable)'
     form_is_modified: 'You have changes that have not been saved.'
+    page_load_error_message_html: 'Oops. Something went wrong. Click <a href="%{path}">here</a> to reload the page.'
     required: 'Required'
     remove: 'Remove'
     removing: 'Removing'
@@ -520,6 +521,9 @@ en:
         remove_confirm: 'This location will be removed when you click save.'
         remove_confirm_admin: 'This location will be removed when you save the profile.'
         add: 'Fill in a new location'
+    newsletter:
+      archive: 'Newsletter archive'
+      name: 'Kinstantly This Week'
     passwords:
       new_password_submit: 'Send me password instructions'
     profile:

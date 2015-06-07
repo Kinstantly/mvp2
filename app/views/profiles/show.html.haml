@@ -1,4 +1,6 @@
 - @content_class = 'profile_content'
+- @page_title_prefix = profile_page_title_prefix @profile
+-# Meta description and keywords are set by the profiles controller.
 - content_for :head do
 	%meta{property: 'og:url', content: profile_url(@profile)}
 	- if (og_title = @profile.company_otherwise_display_name).present?

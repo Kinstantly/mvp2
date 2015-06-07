@@ -4,6 +4,8 @@
 %html
 	%head
 		%title= @page_title.presence || "#{company_name} | #{company_tagline}"
+		%meta{content: (@meta_keywords.presence || t('meta.keywords')), name: 'keywords'}
+		%meta{content: (@meta_description.presence || t('meta.description')), name: 'description'}
 		- if @styles
 			= stylesheet_link_tag "interior", media: "all"
 		= csrf_meta_tags
