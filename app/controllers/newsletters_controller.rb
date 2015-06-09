@@ -7,6 +7,7 @@ class NewslettersController < ApplicationController
 		render layout: 'interior'
 	end
 
+	# POST /newsletters/subscribe
 	def subscribe
 		@errors = []
 		@email = params[:email].presence
@@ -16,22 +17,27 @@ class NewslettersController < ApplicationController
 
 		subscribe_lists = { parent_newsletters_stage1: @parent_newsletters_stage1,
 			parent_newsletters_stage2: @parent_newsletters_stage2,
-			parent_newsletters_stage3: @parent_newsletters_stage3 }
-		subscribe_lists = subscribe_lists.select{ |k,v| v }.keys
+			parent_newsletters_stage3: @parent_newsletters_stage3}.select{ |k,v| v }
+		subscribe_keys = subscribe_lists.keys
 
 		@errors << 'Email address is required' if @email.blank?
-		@errors << 'Select at least one edition' if subscribe_lists.blank?
+		@errors << 'Select at least one edition' if subscribe_keys.blank?
 
 		if @errors.any?
 			render :new
 		else
 			if Rails.env.production?
-				delay.subscribe_to_mailing_lists(subscribe_lists, @email)
+				Delayed::Job.enqueue NewsletterJob.new(subscribe_keys, @email)
 			else
-				subscribe_to_mailing_lists(subscribe_lists, @email)
+				subscribe_to_mailing_lists(subscribe_keys, @email)
 			end
-			render :subscribed, layout: 'interior'
+			redirect_to newsletters_subscribed_url(subscribe_lists)
 		end
+	end
+
+	# GET /newsletters/subscribed
+	def subscribed
+		render :subscribed, layout: 'interior'
 	end
 
 	# GET /latest/:name
@@ -144,7 +150,7 @@ class NewslettersController < ApplicationController
 			email_struct = { email: email }
 			begin
 				gb = Gibbon::API.new
-				r = gb.lists.subscribe id: list_id, email: email_struct, double_optin: false
+				r = gb.lists.subscribe id: list_id, email: email_struct, double_optin: false, send_welcome: true
 			rescue Gibbon::MailChimpError => e
 				logger.error "MailChimp error while subscribing guest user with email #{email_struct} to #{list_name}: #{e.message}, error code: #{e.code}" if logger
 			end
@@ -164,4 +170,11 @@ class NewslettersController < ApplicationController
 			})
 		end
 	end
+end
+
+
+NewsletterJob = Struct.new(:lists, :email) do
+  def perform
+    NewslettersController.subscribe_to_mailing_lists(lists, email)
+  end
 end

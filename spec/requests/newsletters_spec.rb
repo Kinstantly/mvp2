@@ -28,9 +28,10 @@ describe "Newsletters" do
 			get newsletters_url
 			response.status.should eq(200)
 		end
-		it "renders to the sign-up confirmation page" do
+		it "redirects to the sign-up confirmation page" do
 			post newsletters_subscribe_path, { parent_newsletters_stage1: 1, email: 'subscriber@example.com' }
-			response.should render_template('subscribed')
+			response.status.should eq(302)
+			response.redirect_url.should == newsletters_subscribed_url({ parent_newsletters_stage1: true })
 		end
 	end
 end

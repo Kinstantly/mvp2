@@ -35,6 +35,10 @@ describe NewslettersController do
 			get('/newsletters').should route_to('newsletters#new')
 		end
 
+		it 'routes "/newsletters/subscribed" to #subscribed' do
+			get('/newsletters/subscribed').should route_to('newsletters#subscribed', nlsub: true)
+		end
+
 		it 'routes to #subscribe' do
 			post('newsletters/subscribe').should route_to('newsletters#subscribe')
 		end

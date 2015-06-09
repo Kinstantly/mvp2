@@ -30,9 +30,9 @@ describe NewslettersController do
 	end
 
 	describe "POST subscribe" do
-		it "should render confirmation page after a successful update" do
+		it "should redirect to confirmation page after a successful update" do
 			post :subscribe, { parent_newsletters_stage1: 1, email: 'subscriber@example.com' }
-			response.should render_template('subscribed')
+			response.should redirect_to newsletters_subscribed_url({ parent_newsletters_stage1: true })
 		end
 		it "should re-render sign-up form if no email provided" do
 			post :subscribe, { parent_newsletters_stage1: 1 }
