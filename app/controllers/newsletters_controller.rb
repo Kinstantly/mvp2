@@ -26,12 +26,13 @@ class NewslettersController < ApplicationController
 		if @errors.any?
 			render :new
 		else
-			if Rails.env.production?
-				Delayed::Job.enqueue NewsletterJob.new(subscribe_keys, @email)
+			job = NewsletterSubscriptionJob.new subscribe_keys, @email
+			if update_mailing_lists_in_background?
+				Delayed::Job.enqueue job
 			else
-				subscribe_to_mailing_lists(subscribe_keys, @email)
+				job.perform
 			end
-			redirect_to newsletters_subscribed_url(subscribe_lists)
+			redirect_to newsletters_subscribed_url(subscribe_keys.inject(nlsub: 't'){ |p, list| p.merge list => 't' })
 		end
 	end
 
@@ -70,6 +71,22 @@ class NewslettersController < ApplicationController
 		@styles = false
 		@newsletter_html = Newsletter.find_by_cid(id).try(:content)
 		render layout: 'iframe_layout'
+	end
+
+	# Class method to create a new MailChimp subscription.
+	def self.subscribe_to_mailing_lists(lists=[], email)
+		lists.each do |list_name|
+			next if !User.mailing_list_name_valid?(list_name)
+
+			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			email_struct = { email: email }
+			begin
+				gb = Gibbon::API.new
+				r = gb.lists.subscribe id: list_id, email: email_struct, double_optin: false, send_welcome: send_mailchimp_welcome?
+			rescue Gibbon::MailChimpError => e
+				logger.error "MailChimp error while subscribing guest user with email #{email_struct} to #{list_name}: #{e.message}, error code: #{e.code}" if logger
+			end
+		end
 	end
 	
 	private
@@ -140,22 +157,6 @@ class NewslettersController < ApplicationController
 			return data || []
 		end
 	end
-
-	# Creates new MailChimp subscription.
-	def subscribe_to_mailing_lists(lists=[], email)
-		lists.each do |list_name|
-			next if !User.mailing_list_name_valid?(list_name)
-
-			list_id = Rails.configuration.mailchimp_list_id[list_name]
-			email_struct = { email: email }
-			begin
-				gb = Gibbon::API.new
-				r = gb.lists.subscribe id: list_id, email: email_struct, double_optin: false, send_welcome: true
-			rescue Gibbon::MailChimpError => e
-				logger.error "MailChimp error while subscribing guest user with email #{email_struct} to #{list_name}: #{e.message}, error code: #{e.code}" if logger
-			end
-		end
-	end
 	
 	# Set exceptions to default values of the security-related HTTP headers in the response.
 	# See https://www.owasp.org/index.php/List_of_useful_HTTP_headers
@@ -170,11 +171,4 @@ class NewslettersController < ApplicationController
 			})
 		end
 	end
-end
-
-
-NewsletterJob = Struct.new(:lists, :email) do
-  def perform
-    NewslettersController.subscribe_to_mailing_lists(lists, email)
-  end
 end

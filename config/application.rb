@@ -39,6 +39,12 @@ module Mvp2
       application_fee_percentage: ENV['PAYMENT_APPLICATION_FEE_PERCENTAGE'].presence.try(:to_f)
     }
     
+    # Mailing list management parameters.
+    config.mailing_lists = {
+      update_in_background: ENV['UPDATE_MAILING_LISTS_IN_BACKGROUND'].present?,
+      send_mailchimp_welcome: ENV['SEND_MAILCHIMP_WELCOME'].present?
+    }
+    
     # Sitemap generator configuration.
     config.sitemap_default_host = "http://#{config.default_host}/"
     config.sitemap_sitemaps_path = 'sitemaps_dev/'

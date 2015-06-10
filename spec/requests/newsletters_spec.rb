@@ -31,7 +31,7 @@ describe "Newsletters" do
 		it "redirects to the sign-up confirmation page" do
 			post newsletters_subscribe_path, { parent_newsletters_stage1: 1, email: 'subscriber@example.com' }
 			response.status.should eq(302)
-			response.redirect_url.should == newsletters_subscribed_url({ parent_newsletters_stage1: true })
+			response.redirect_url.should == newsletters_subscribed_url({ nlsub: 't', parent_newsletters_stage1: 't' })
 		end
 	end
 end

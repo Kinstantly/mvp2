@@ -36,7 +36,7 @@ describe NewslettersController do
 		end
 
 		it 'routes "/newsletters/subscribed" to #subscribed' do
-			get('/newsletters/subscribed').should route_to('newsletters#subscribed', nlsub: true)
+			get('/newsletters/subscribed').should route_to('newsletters#subscribed')
 		end
 
 		it 'routes to #subscribe' do

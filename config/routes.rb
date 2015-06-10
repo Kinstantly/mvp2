@@ -15,7 +15,7 @@ Mvp2::Application.routes.draw do
 	get 'newsletter/:id' => 'newsletters#show',  as: :newsletter
 	get 'newsletter' => 'newsletters#new'
 	get 'newsletters' => 'newsletters#new'
-	get 'newsletters/subscribed' => 'newsletters#subscribed', nlsub: true
+	get 'newsletters/subscribed' => 'newsletters#subscribed'
 	post 'newsletters/subscribe' => 'newsletters#subscribe'
 	
 	# User model on which Devise authentication is based.
