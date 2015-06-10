@@ -247,7 +247,7 @@ class User < ActiveRecord::Base
 		subscriptions_to_update = old_values.merge(new_values){|key, ov, nv| ((!ov && nv) || (ov && nv && updated_attrs.any?))}.select {|k,v| v}.keys
 		subscriptions_to_remove = old_values.merge(new_values){|key, ov, nv| (ov && !nv)}.select {|k,v| v}.keys
 
-		if Rails.env.production?
+		if update_mailing_lists_in_background?
 			delay.subscribe_to_mailing_lists(subscriptions_to_update, updated_attrs[:email].present?)
 			delay.unsubscribe_from_mailing_lists(subscriptions_to_remove)
 		else

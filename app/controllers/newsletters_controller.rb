@@ -2,6 +2,45 @@ class NewslettersController < ApplicationController
 	
 	respond_to :html
 
+	# GET /newsletter
+	def new
+		render layout: 'interior'
+	end
+
+	# POST /newsletters/subscribe
+	def subscribe
+		@errors = []
+		@email = params[:email].presence
+		@parent_newsletters_stage1 = params[:parent_newsletters_stage1].present?
+		@parent_newsletters_stage2 = params[:parent_newsletters_stage2].present?
+		@parent_newsletters_stage3 = params[:parent_newsletters_stage3].present?
+
+		subscribe_lists = { parent_newsletters_stage1: @parent_newsletters_stage1,
+			parent_newsletters_stage2: @parent_newsletters_stage2,
+			parent_newsletters_stage3: @parent_newsletters_stage3}.select{ |k,v| v }
+		subscribe_keys = subscribe_lists.keys
+
+		@errors << 'Email address is required' if @email.blank?
+		@errors << 'Select at least one edition' if subscribe_keys.blank?
+
+		if @errors.any?
+			render :new
+		else
+			job = NewsletterSubscriptionJob.new subscribe_keys, @email
+			if update_mailing_lists_in_background?
+				Delayed::Job.enqueue job
+			else
+				job.perform
+			end
+			redirect_to newsletters_subscribed_url(subscribe_keys.inject(nlsub: 't'){ |p, list| p.merge list => 't' })
+		end
+	end
+
+	# GET /newsletters/subscribed
+	def subscribed
+		render :subscribed, layout: 'interior'
+	end
+
 	# GET /latest/:name
 	def latest
 		name = params[:name]
@@ -36,6 +75,22 @@ class NewslettersController < ApplicationController
 		@newsletter = Newsletter.find_by_cid(id)
 		set_seo_elements @newsletter
 		render layout: 'iframe_layout'
+	end
+
+	# Class method to create a new MailChimp subscription.
+	def self.subscribe_to_mailing_lists(lists=[], email)
+		lists.each do |list_name|
+			next if !User.mailing_list_name_valid?(list_name)
+
+			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			email_struct = { email: email }
+			begin
+				gb = Gibbon::API.new
+				r = gb.lists.subscribe id: list_id, email: email_struct, double_optin: false, send_welcome: send_mailchimp_welcome?
+			rescue Gibbon::MailChimpError => e
+				logger.error "MailChimp error while subscribing guest user with email #{email_struct} to #{list_name}: #{e.message}, error code: #{e.code}" if logger
+			end
+		end
 	end
 	
 	private

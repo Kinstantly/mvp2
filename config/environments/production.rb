@@ -129,6 +129,8 @@ Mvp2::Application.configure do
     :provider_marketing_emails => ENV['PROVIDER_MARKETING_EMAILS_LIST_ID'],
     :provider_newsletters => ENV['PROVIDER_NEWSLETTERS_LIST_ID']
   }
+  
+  config.mailing_lists[:update_in_background] = true
 end
 
 REINDEX_PROFILES_IN_BACKGROUND = true

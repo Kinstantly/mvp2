@@ -35,6 +35,14 @@ module SiteConfigurationHelpers
 		def google_analytics_tracking_id
 			Rails.configuration.google_analytics_tracking_id
 		end
+		
+		def update_mailing_lists_in_background?
+			Rails.configuration.mailing_lists[:update_in_background]
+		end
+		
+		def send_mailchimp_welcome?
+			Rails.configuration.mailing_lists[:send_mailchimp_welcome]
+		end
 	end
 	
 	module InstanceMethods
@@ -72,6 +80,14 @@ module SiteConfigurationHelpers
 		
 		def google_analytics_tracking_id
 			Rails.configuration.google_analytics_tracking_id
+		end
+		
+		def update_mailing_lists_in_background?
+			Rails.configuration.mailing_lists[:update_in_background]
+		end
+		
+		def send_mailchimp_welcome?
+			Rails.configuration.mailing_lists[:send_mailchimp_welcome]
 		end
 	end
 	

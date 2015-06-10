@@ -1,0 +1,23 @@
+- @hide_search_providers = true
+- embedded_in ||= false
+- info_email = "#{t('contact.emails.info.value')}@#{t('email_domain')}"
+#content
+	#awaiting_confirmation.wider_form
+		%p.greeting THANK YOU!
+		%br
+		%p
+			You're all signed up for Kinstantly This Week. You should receive your first issue within the next few days.
+		%br
+		%p
+			Welcome to Kinstantly!
+		%br
+		%p
+			The Kinstantly team
+		%br
+		%br
+		%p.nav-links
+			= link_to 'Our Directory', root_path
+			|
+			= link_to 'Our Blog', 'http://blog.kinstantly.com/'
+			|
+			= link_to 'About Us', about_path
