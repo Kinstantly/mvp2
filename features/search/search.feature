@@ -84,3 +84,10 @@ Feature: search the provider directory
 			And I visit the "/about" page
 		When I enter published profile data in the search box
 		Then I should land on the alpha sign-up page
+
+	Scenario: empty search query should give no search results
+		Given a published profile exists
+			And I am not logged in
+			And I visit the "/" page
+		When I enter "" in the search box
+		Then I should see no search results

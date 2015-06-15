@@ -625,7 +625,7 @@ module ProfilesHelper
 	end
 	
 	def seo_search_query(search, service)
-		service.try(:name).presence || search_query_string(search)
+		service.try(:name).presence || search_query_string(search) || ''
 	end
 	
 	def seo_search_description(query, address)

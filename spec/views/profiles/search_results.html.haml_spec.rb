@@ -40,4 +40,24 @@ describe "profiles/search_results" do
 			rendered.should have_content('2 ratings')
 		end
 	end
+	
+	context "fuzzy search" do
+		before(:each) do
+			profile
+			Profile.reindex
+			Sunspot.commit
+		end
+		
+		it "should return no search results when the query is empty" do
+			assign :search, Profile.fuzzy_search('')
+			render
+			rendered.should have_content('No search results')
+		end
+		
+		it "should return the profile when searching on its display name" do
+			assign :search, Profile.fuzzy_search(profile.display_name)
+			render
+			rendered.should have_content(profile.display_name)
+		end
+	end
 end
