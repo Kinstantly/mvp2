@@ -19,6 +19,8 @@ def protects_attached_profile
 end
 
 describe ProfilesController do
+	let(:photo_url) { 'https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png' }
+	
 	context "as site visitor attempting to access a published profile" do
 		before(:each) do
 			@profile = FactoryGirl.create(:published_profile)
@@ -297,8 +299,7 @@ describe ProfilesController do
 
 			it "successfully imports profile photo from url" do
 				id = my_profile_id
-				url = 'http://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png'
-				post :photo_update, id: id, source_url: url
+				post :photo_update, id: id, source_url: photo_url
 				@profile = Profile.find_by_id(id)
 				response.should be_success
 				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
@@ -480,8 +481,7 @@ describe ProfilesController do
 			end
 			it "successfully imports profile photo from url" do
 				id = @profile.id
-				url = 'http://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png'
-				post :photo_update, id: id, source_url: url
+				post :photo_update, id: id, source_url: photo_url
 				@profile = Profile.find_by_id(id)
 				response.should be_success
 				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
@@ -585,8 +585,7 @@ describe ProfilesController do
 			end
 			it "successfully imports profile photo from url" do
 				id = @profile.id
-				url = 'http://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png'
-				post :photo_update, id: id, source_url: url
+				post :photo_update, id: id, source_url: photo_url
 				@profile = Profile.find_by_id(id)
 				response.should be_success
 				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)

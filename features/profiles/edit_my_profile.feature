@@ -268,7 +268,7 @@ Feature: Edit my expert profile
 			And I am on my profile edit page
 		When I open the "profile photo" formlet
 			And I see step "one" of "profile photo" formlet
-			And I import a valid image file from "http://upload.wikimedia.org/wikipedia/commons/5/56/Tux.jpg"
+			And I import a valid image file from "https://upload.wikimedia.org/wikipedia/commons/5/56/Tux.jpg"
 		Then edit my profile page should show "Tux.jpg" image as my profile photo
 
 	@photo_upload
