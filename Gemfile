@@ -43,8 +43,10 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-# Has jquery, jquery_ujs, and jquery-ui.
+# Has jquery and jquery_ujs.
 gem 'jquery-rails'
+# Has jquery-ui (jquery-rails >= 3.0.0 no longer includes jquery-ui).
+gem 'jquery-ui-rails'
 
 # HAML 4 includes coffeescript support.
 # gem 'coffee-filter'
@@ -80,7 +82,9 @@ gem 'progress_bar'
 gem 'uuidtools'
 
 # Rails integration of jQuery UI Autocomplete Widget.
-gem 'rails3-jquery-autocomplete' # , github: 'edsimpson/rails3-jquery-autocomplete'
+# Version 1.0.12 and above is for Rails 4.
+# Don't go above version 1.0.11 unless you are ready to do a lot of work getting it to return a unique list, i.e., no duplicates.
+gem 'rails3-jquery-autocomplete', '1.0.11'
 
 # A repository of geographic regions for Ruby via Rails.
 gem 'carmen-rails', '~> 1.0.0.beta3'

@@ -12,7 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui
+//= require jquery-ui/autocomplete
+//= require jquery-ui/button
+//= require jquery-ui/datepicker
+//= require jquery-ui/tabs
 //= require jquery.shorten
 //= require global.js.coffee
 //= require jquery.MetaData

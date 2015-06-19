@@ -293,6 +293,23 @@ em, i {
 		color: $default_link_color;
 	}
 }
+.ui-autocomplete {
+	&.ui-front {
+		z-index: 1001;
+	}
+	.ui-menu-item {
+		text-decoration: none;
+		padding: 2px auto;
+		text-indent: .4em;
+		line-height: 1.5;
+		min-height: 0;
+		font-weight: normal;
+		&.ui-state-focus {
+			font-weight: normal;
+			margin: -1px;
+		}
+	}
+}
 @media screen and (max-width: $break-3) {
 	.ui-tabs .ui-tabs-nav li {
 		font-size: 80%;

@@ -6,7 +6,7 @@
 - cache ['newsletter_archive', Newsletter.last_updated] do
 	.container.newsletter-archive
 		%p
-			= (link_to "< Back to sign up", newsletter_signup_path, {class: 'back-to-signup-link'}) unless user_signed_in?
+			= (link_to t('views.newsletter.sign_up_link'), newsletter_signup_path, {class: 'back-to-signup-link'}) unless user_signed_in?
 		= image_tag "newsletter_banner.jpg", alt: short_company_description, itemprop: 'image', class: "banner"
 		%h1= t 'views.newsletter.archive'
 		%ul.mobile-nav

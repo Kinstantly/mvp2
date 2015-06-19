@@ -179,3 +179,28 @@
 .search_terms *{
 	vertical-align: top;
 }
+
+/* Override some jQuery UI styles. */
+.ui-widget-content {
+	color: #000;
+	a {
+		color: #366599;
+	}
+}
+.ui-autocomplete {
+	&.ui-front {
+		z-index: 1001;
+	}
+	.ui-menu-item {
+		text-decoration: none;
+		padding: 2px auto;
+		text-indent: .4em;
+		line-height: 1.5;
+		min-height: 0;
+		font-weight: normal;
+		&.ui-state-focus {
+			font-weight: normal;
+			margin: -1px;
+		}
+	}
+}

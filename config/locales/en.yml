@@ -524,6 +524,7 @@ en:
     newsletter:
       archive: 'Newsletter archive'
       name: 'Kinstantly This Week'
+      sign_up_link: '< Sign up for Kinstantly This Week'
     passwords:
       new_password_submit: 'Send me password instructions'
     profile:
