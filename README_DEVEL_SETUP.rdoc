@@ -85,12 +85,14 @@ FYI, in production we are using a cloud-based Solr instance on Websolr.
 
 === Web and background worker processes
 
-I'm using Unicorn to start the web process(es).  In development I usually just run one web process.  The default is to run three.  To run just one, set the WEB_CONCURRENCY variable.
+I'm using Unicorn to start the web process(es).  In development I usually run one web process.  The default is to run three.  To run just one web process, set the WEB_CONCURRENCY variable.
 
  export WEB_CONCURRENCY=1
  alias unicornstart='bundle exec unicorn -p 5000 -c ./config/unicorn.rb'
 
-I'm also running a background worker that runs delayed_job_active_record.  Usually, I don't run it during development.  Currently, you only need it if you're working on part of the admin interface.  To run it, use foreman instead of running unicorn directly.  Foreman will do the same thing as happens on Heroku, i.e., run unicorn and the worker (see Procfile in the mvp2 repo).  The heroku command-line-interface includes foreman, but it's broken.  Instead install the gem yourself:
+I'm also running a background worker that runs delayed_job_active_record.  Usually, I don't run it during development.  However, you will need the background worker if you want to mimic the production environment and you're working on anything involving newsletter subscriptions, the admin interface, or anything else that uses delayed_job.
+
+To run the background worker process, use foreman instead of running unicorn directly.  Foreman will do the same thing as happens on Heroku, i.e., run unicorn and the background worker (see Procfile in the mvp2 repo).  The heroku command-line-interface includes foreman, but it's broken.  Instead, install the gem yourself:
 
  gem install foreman
  foreman start
