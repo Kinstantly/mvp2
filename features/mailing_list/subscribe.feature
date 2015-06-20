@@ -46,6 +46,17 @@ Feature: Subscribe to newsletters and/or marketing emails
 	#	 	And I follow "confirm" in the email
 	#	Then I should only be subscribed to the "parent_newsletters_stage1, parent_newsletters_stage2, and parent_newsletters_stage3" mailing lists and synced to the list server
 
+	Scenario: User subscribes on the newsletter-only sign-up page without confirmation
+		When I visit the newsletter-only sign-up page and subscribe to the "parent_newsletters_stage1, parent_newsletters_stage2, and parent_newsletters_stage3" mailing lists with email "example@kinstantly.com"
+		Then I should see "You're all signed up for Kinstantly This Week" on the page
+
+	Scenario: User can go to the newsletter archive from the newsletter sign-up page and back again
+		When I visit the "/newsletter" page
+			And I click on the "archive" link
+		Then I should see "Newsletter archive" on the page
+			And I click on the "Sign up for Kinstantly This Week" link
+		Then I should see "Check one or more editions" on the page
+
 	Scenario: User subscribes from blog and is fully subscribed before confirmation
 		When I sign up as a parent on the blog site and subscribe to the "parent_newsletters_stage1, parent_newsletters_stage2, and parent_newsletters_stage3" mailing lists
 			And I see an unconfirmed account message

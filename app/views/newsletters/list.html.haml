@@ -3,10 +3,9 @@
 - @page_title_prefix = t 'views.newsletter.archive'
 - short_company_description = t 'company.short_company_description_html'
 
-- cache ['newsletter_archive', Newsletter.last_updated] do
+- cache ['newsletter_archive', Newsletter.last_updated, user_signed_in?] do
 	.container.newsletter-archive
-		%p
-			= (link_to t('views.newsletter.sign_up_link'), newsletter_signup_path, {class: 'back-to-signup-link'}) unless user_signed_in?
+		%p= link_to t('views.newsletter.sign_up_link'), newsletter_signup_path, {class: 'back-to-signup-link'}
 		= image_tag "newsletter_banner.jpg", alt: short_company_description, itemprop: 'image', class: "banner"
 		%h1= t 'views.newsletter.archive'
 		%ul.mobile-nav
