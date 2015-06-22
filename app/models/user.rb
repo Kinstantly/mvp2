@@ -231,6 +231,14 @@ class User < ActiveRecord::Base
 
 	#Sync local subscriptions changes (create/update/delete) with MailChimp.
 	def sync_subscription_preferenses(updated_attrs=[])
+		email_updated = updated_attrs[:email].present?
+		if email_updated
+			if update_mailing_lists_in_background?
+				delay.import_subscriptions
+			else
+				import_subscriptions
+			end
+		end
 		old_values = {
 			parent_newsletters_stage1: subscribed_to_mailing_list?(:parent_newsletters_stage1),
 			parent_newsletters_stage2: subscribed_to_mailing_list?(:parent_newsletters_stage2),
@@ -248,10 +256,10 @@ class User < ActiveRecord::Base
 		subscriptions_to_remove = old_values.merge(new_values){|key, ov, nv| (ov && !nv)}.select {|k,v| v}.keys
 
 		if update_mailing_lists_in_background?
-			delay.subscribe_to_mailing_lists(subscriptions_to_update, updated_attrs[:email].present?)
+			delay.subscribe_to_mailing_lists(subscriptions_to_update, email_updated)
 			delay.unsubscribe_from_mailing_lists(subscriptions_to_remove)
 		else
-			subscribe_to_mailing_lists(subscriptions_to_update, updated_attrs[:email].present?)
+			subscribe_to_mailing_lists(subscriptions_to_update, email_updated)
 			unsubscribe_from_mailing_lists(subscriptions_to_remove)
 		end
 	end
@@ -502,6 +510,24 @@ class User < ActiveRecord::Base
 				update_column("#{list_name}_leid", nil)
 			rescue Gibbon::MailChimpError => e
 				logger.error "MailChimp error while unsubscribing user #{id}: #{e.message}, error code: #{e.code}" if logger
+			end
+		end
+	end
+
+	# Checks for existing subscriptions on MailChimp and updates user subscription preferences accordingly
+	def import_subscriptions
+		[:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3,
+			:provider_newsletters].each do |list_name|
+			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			begin
+				gb = Gibbon::API.new
+				r = gb.lists.member_info id: list_id, emails: [{email: email}]
+				if r.present? && r['success_count'] == 1 && r.try(:[], 'data').try(:[], 0).present?
+					update_column("#{list_name}", true)
+					update_column("#{list_name}_leid", r['data'][0]['leid'])
+				end
+			rescue Gibbon::MailChimpError => e
+				logger.error "MailChimp error while importing mailchimp subscriptions for user #{id} #{email}: #{e.message}, error code: #{e.code}" if logger
 			end
 		end
 	end
