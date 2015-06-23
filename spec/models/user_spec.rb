@@ -403,7 +403,7 @@ describe User do
 			(system_list_ids - mailchimp_list_ids).empty?.should be_true
 		end
 
-		it "can subscribe to mailing lists" do
+		it "can subscribe to mailing lists", empty_mailing_lists: true do
 			parent.parent_newsletters_stage1 = true
 			parent.parent_newsletters_stage2 = true
 			parent.parent_newsletters_stage3 = true
@@ -414,7 +414,7 @@ describe User do
 			parent.parent_newsletters_stage3.should be_true
 		end
 		
-		it "cannot subscribe to mailing lists if previously blocked" do
+		it "cannot subscribe to mailing lists if previously blocked", empty_mailing_lists: true do
 			FactoryGirl.create :contact_blocker, email: parent.email
 			parent.parent_newsletters_stage1 = true
 			parent.parent_newsletters_stage2 = true
@@ -434,7 +434,7 @@ describe User do
 			new_parent.should have(1).error_on(:base)
 		end
 
-		context "confirmation not required for newsletter subscription to take effect" do
+		context "confirmation not required for newsletter subscription to take effect", empty_mailing_lists: true do
 			let(:user) { FactoryGirl.create :client_user, require_confirmation: true, parent_newsletters_stage1: true, parent_newsletters_stage2: true, parent_newsletters_stage3: true }
 				
 			it "should be added to mailing list before confirmation" do
@@ -453,7 +453,7 @@ describe User do
 			end
 		end
 
-		context "parent" do
+		context "parent", empty_mailing_lists: true do
 			let(:parent_newsletters_stage1_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage1] }		
 			let(:parent_newsletters_stage2_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage2] }
 			let(:parent_newsletters_stage3_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage3] }
@@ -490,7 +490,7 @@ describe User do
 			end
 		end
 
-		context "provider" do
+		context "provider", empty_mailing_lists: true do
 			let(:provider) { FactoryGirl.create :provider_with_username }
 			let(:provider_newsletters_list_id) { Rails.configuration.mailchimp_list_id[:provider_newsletters] }
 			

@@ -3,6 +3,9 @@ Feature: Blocked email address cannot be subscribed to any mailing list
 	As a user that has previously unsubscribed from all email
 	I don't want to be subscribed by mistake
 
+	Background:
+		Given there are no existing mailing list subscriptions
+
 	Scenario: I can subscribe to mailing lists
 		Given I exist as a provider
 			And I am logged in

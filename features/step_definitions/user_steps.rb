@@ -358,7 +358,7 @@ When /^the payable provider opens the email with subject "(.*?)"$/ do |subject|
 	step "\"#{@profile_for_payable_provider.user.email}\" opens the email with subject \"#{subject}\""
 end
 
-When /^I sign up as (?:a) (parent|provider) on the (blog|regular) site and subscribe to the "(.*?)" mailing lists$/ do |user_type, page_origin, mailing_lists|
+When /^I sign up as (?:a) (parent|provider) on the (blog|regular) site and subscribe to the "(.*?)" mailing lists?$/ do |user_type, page_origin, mailing_lists|
   create_visitor
   mailing_list_array = mailing_lists.split(/,?\s+(?:and\s+)?/)
   path = '/provider/sign_up'
@@ -371,7 +371,7 @@ When /^I sign up as (?:a) (parent|provider) on the (blog|regular) site and subsc
   sign_up_and_subscribe path, mailing_list_array
 end
 
-When /^I visit the newsletter sign-up page and subscribe to the "(.*?)" mailing lists$/ do |mailing_lists|
+When /^I visit the newsletter sign-up page and subscribe to the "(.*?)" mailing lists?$/ do |mailing_lists|
   create_visitor
   sign_up_and_subscribe '/newsletter', mailing_lists.split(/,?\s+(?:and\s+)?/)
 end

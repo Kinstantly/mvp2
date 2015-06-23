@@ -6,6 +6,20 @@ def mailing_lists
 	['parent_newsletters_stage1', 'parent_newsletters_stage2', 'parent_newsletters_stage3', 'provider_newsletters']
 end
 
+def empty_mailing_lists
+	begin
+		gb = Gibbon::API.new
+		mailing_lists.each do |list_name|
+			list_id = Rails.configuration.mailchimp_list_id[list_name.to_sym]
+			gb.lists.members(id: list_id)['data'].each do |member|
+				gb.lists.unsubscribe id: list_id, email: {email: member['email']}, delete_member: true, send_notify: false
+			end
+		end
+	rescue Gibbon::MailChimpError => e
+		puts "MailChimp error while unsubscribing: #{e.message}, error code: #{e.code}"
+	end
+end
+
 def subscribed_to_all_mailing_lists_for(user=@user)
 	mailing_lists.each do |list|
 		user[list] = true
@@ -14,6 +28,10 @@ def subscribed_to_all_mailing_lists_for(user=@user)
 end
 
 ### GIVEN ###
+
+Given /^there are no existing mailing list subscriptions$/ do
+	empty_mailing_lists
+end
 
 Given /^I am subscribed to all mailing lists$/ do
 	subscribed_to_all_mailing_lists_for @user
@@ -31,7 +49,8 @@ When /^an administrator unsubscribes me from all mailing lists$/ do
 	@user = me
 end
 
-When /^I visit the newsletter-only sign-up page and subscribe to the "(.*?)" mailing lists with email "(.*?)"$/ do |lists, email|
+When /^I visit the newsletter-only sign-up page and subscribe to the "(.*?)" mailing lists?(?: with email "(.*?)")?$/ do |lists, email|
+	email ||= (create_visitor && @visitor[:email])
 	list_names = lists.split(/,?\s+(?:and\s+)?/)
 	visit '/newsletter'
 	within('#sign_up') do
@@ -45,7 +64,7 @@ end
 
 ### THEN ###
 
-Then /^I should only be subscribed to the "(.*?)" mailing lists(?: and| but)( not)? synced to the list server$/ do |lists, not_synced|
+Then /^I should only be subscribed to the "(.*?)" mailing lists?(?: and| but)( not)? synced to the list server$/ do |lists, not_synced|
 	@user.reload
 	subscribed_mailing_lists = lists.split(/,?\s+(?:and\s+)?/)
 	mailing_lists.each do |list|

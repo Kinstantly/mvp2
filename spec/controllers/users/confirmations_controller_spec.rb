@@ -21,7 +21,7 @@ describe Users::ConfirmationsController do
 		controller.class.superclass.should eq Devise::ConfirmationsController
 	end
 
-	context "as a client pending email confirmation" do
+	context "as a client pending email confirmation", empty_mailing_lists: true do
 		describe "GET show" do
 			it "redirects to the home page with tracking parameter" do
 				get :show, confirmation_token: mimi.confirmation_token

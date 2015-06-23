@@ -80,6 +80,14 @@ Spork.prefork do
       DatabaseCleaner.clean
     end
 
+    # Clear out the mailing lists before and after running the example if this tag is set.
+    config.before(:each) do
+      empty_mailing_lists if example.metadata[:empty_mailing_lists]
+    end
+    config.after(:each) do
+      empty_mailing_lists if example.metadata[:empty_mailing_lists]
+    end
+
     # Specs for describing behavior while running as a private site.
     config.around(:each) do |example|
       if example.metadata[:private_site]
