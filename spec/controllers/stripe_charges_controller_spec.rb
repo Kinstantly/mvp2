@@ -43,37 +43,11 @@ describe StripeChargesController, payments: true do
 			let(:refund_amount_usd) { '25.00' }
 			let(:refund_amount_cents) { (refund_amount_usd.to_f * 100).to_i }
 			
-			let(:api_balance_transaction) {
-				transaction = double('Stripe::BalanceTransaction').as_null_object
-				transaction.stub fee: charge_fee_cents, fee_details: []
-				transaction
-			}
-			let(:api_refund) {
-				refund = double('Stripe::Refund').as_null_object
-				refund.stub balance_transaction: api_balance_transaction, created: 1419075210
-				refund
-			}
-			let(:api_refunds) {
-				Struct.new 'StripeRefunds' unless defined? Struct::StripeRefunds
-				refunds = double('Struct::StripeRefunds').as_null_object
-				refunds.stub(:create) do |refund_arguments, access_token|
-					@amount_refunded ||= 0
-					@amount_refunded += refund_arguments[:amount]
-					api_refund
-				end
-				refunds
-			}
-			let(:api_charge) { 
-				charge = double('Stripe::Charge').as_null_object
-				charge.stub refunds: api_refunds
-				charge.stub(:amount_refunded) { @amount_refunded }
-				charge
-			}
-			let(:api_application_fee_list) {
-				list = double('Stripe::ListObject').as_null_object
-				list.stub data: []
-				list
-			}
+			let(:api_balance_transaction) { stripe_balance_transaction_mock fee_cents: charge_fee_cents }
+			let(:api_refund) { stripe_refund_mock balance_transaction: api_balance_transaction }
+			let(:api_refunds) { stripe_charge_refunds_mock refund_mock: api_refund }
+			let(:api_charge) { stripe_charge_mock amount_cents: charge_amount_cents,  refunds: api_refunds }
+			let(:api_application_fee_list) { application_fee_list_mock }
 		
 			before(:each) do
 				Stripe::Charge.stub(:retrieve).with(any_args) do

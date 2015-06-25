@@ -14,17 +14,9 @@ describe CustomerFilesController, payments: true do
 	let(:another_provider) { FactoryGirl.create :payable_provider, email: 'another_provider@example.org' }
 	let(:another_customer_file) { FactoryGirl.create :customer_file, provider: another_provider, customer: customer_1 }
 
-	let(:api_token) { double('Stripe::Token').as_null_object }
-	let(:api_charge) { 
-		charge = double('Stripe::Charge').as_null_object
-		charge.stub amount: charge_amount_cents
-		charge
-	}
-	let(:api_balance_transaction) {
-		transaction = double('Stripe::BalanceTransaction').as_null_object
-		transaction.stub fee: charge_fee_cents, fee_details: []
-		transaction
-	}
+	let(:api_token) { stripe_token_mock }
+	let(:api_charge) { stripe_charge_mock amount_cents: charge_amount_cents }
+	let(:api_balance_transaction) { stripe_balance_transaction_mock fee_cents: charge_fee_cents }
 	
 	before(:each) do
 		customer_file_1

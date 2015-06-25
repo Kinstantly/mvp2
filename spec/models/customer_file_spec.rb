@@ -16,17 +16,9 @@ describe CustomerFile, payments: true do
 		}
 	}
 
-	let(:api_token) { double('Stripe::Token').as_null_object }
-	let(:api_charge) { 
-		charge = double('Stripe::Charge').as_null_object
-		charge.stub amount: charge_amount_cents
-		charge
-	}
-	let(:api_balance_transaction) {
-		transaction = double('Stripe::BalanceTransaction').as_null_object
-		transaction.stub fee: charge_fee_cents, fee_details: []
-		transaction
-	}
+	let(:api_token) { stripe_token_mock }
+	let(:api_charge) { stripe_charge_mock amount_cents: charge_amount_cents }
+	let(:api_balance_transaction) { stripe_balance_transaction_mock fee_cents: charge_fee_cents }
 		
 	it "belongs to a provider" do
 		customer_file.provider.should_not be_nil

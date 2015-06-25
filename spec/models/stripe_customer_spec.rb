@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe StripeCustomer, payments: true do
 	let(:stripe_customer) { FactoryGirl.create :stripe_customer }
-	let(:api_customer) { double 'Stripe::Customer' }
+	let(:api_customer) { stripe_customer_mock }
 	
 	it "has an API ID" do
 		stripe_customer.api_customer_id.should be_present

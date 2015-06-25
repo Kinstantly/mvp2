@@ -4,14 +4,8 @@ describe StripeCard, payments: true do
 	let(:stripe_card) { FactoryGirl.create :stripe_card }
 	let(:stripe_card_with_no_customer) { FactoryGirl.create :stripe_card_with_no_customer }
 	let(:stripe_customer_with_card) { FactoryGirl.create :stripe_customer_with_cards, card_count: 1 }
-	let(:api_card) { card = double 'Stripe::Card' }
-	let(:api_customer) {
-		customer = double 'Stripe::Customer'
-		cards = double 'Hash'
-		cards.stub(:retrieve).with(any_args) { api_card }
-		customer.stub cards: cards
-		customer
-	}
+	let(:api_card) { stripe_card_mock }
+	let(:api_customer) { stripe_customer_mock card: api_card }
 	
 	it "has an API ID" do
 		stripe_card.api_card_id.should be_present

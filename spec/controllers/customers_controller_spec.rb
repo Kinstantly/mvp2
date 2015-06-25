@@ -9,18 +9,8 @@ describe CustomersController, payments: true do
 	let(:stripe_token) { 'tok_14dHeE2wVg10iFMK9gYM2T72' }
 	let(:authorized_amount) { 1000 }
 
-	let(:api_card) {
-		card = double('Stripe::Card').as_null_object
-		card.stub exp_month: 1, exp_year: 2050
-		card
-	}
-	let(:api_customer) {
-		customer = double('Stripe::Customer').as_null_object
-		cards = double('Hash')
-		cards.stub(:retrieve).with(any_args) { api_card }
-		customer.stub cards: cards
-		customer
-	}
+	let(:api_card) { stripe_card_mock }
+	let(:api_customer) { stripe_customer_mock card: api_card }
 	
 	let(:invalid_provider) { FactoryGirl.create :provider_with_published_profile, email: 'invalid_provider@example.org' }
 	let(:invalid_profile) { invalid_provider.profile }

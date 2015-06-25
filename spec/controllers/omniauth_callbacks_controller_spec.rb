@@ -16,20 +16,8 @@ describe OmniauthCallbacksController, payments: true do
 	}
 	
 	context "using the Stripe API" do
-		let(:stripe_account) {
-			{
-				details_submitted: true,
-				transfer_enabled:  true,
-				charge_enabled:    true
-			}
-		}
-		let(:stripe_account_pending_verification) {
-			{
-				details_submitted: false,
-				transfer_enabled:  false,
-				charge_enabled:    false
-			}
-		}
+		let(:stripe_account) { stripe_account_mock }
+		let(:stripe_account_pending_verification) { stripe_account_mock verified: false }
 	
 		before(:each) do
 		  sign_in provider
