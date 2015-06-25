@@ -35,17 +35,11 @@ class MailchimpWebhookController < ApplicationController
 			logger.info "MailChimp Webhook unsubscribe verification failed: incoming_list_id \'#{incoming_list_id}\' is not valid. List name: #{list_name}." if logger
 			return
 		end
-		if User.exists?(email: subscriber_email)
-			user = User.find_by_email(subscriber_email)
-		else
-			logger.error "MailChimp Webhook unsubscribe verification failed: user with email #{subscriber_email} is not found." if logger
-			return
-		end
 		if data['reason'] == 'abuse'
 			logger.info "MailChimp Webhook: user \'id##{user.id}\' reported abuse." if logger
 		end
 		
-		emails = [{email: user.email, leid: user.leids[list_name]}]
+		emails = [{email: subscriber_email}]
 		begin
 			gb = Gibbon::API.new
 			r = gb.lists.member_info id: incoming_list_id, emails: emails
@@ -53,7 +47,11 @@ class MailchimpWebhookController < ApplicationController
 				user_unsubscribed = (r['success_count'] == 1 && r['data'][0]['status'] == 'unsubscribed')
 				user_deleted = r['error_count'] == 1
 				if user_unsubscribed || user_deleted
-					user.process_unsubscribe_event(list_name)
+					if User.exists?(email: subscriber_email)
+						user = User.find_by_email(subscriber_email)
+						user.process_unsubscribe_event(list_name)
+					end
+					AdminMailer.newsletter_unsubscribe_alert(list_name, subscriber_email).deliver
 				else
 					logger.info "MailChimp Webhook unsubscribe verification failed. MailChimp response: #{r}" if logger
 				end

@@ -1,0 +1,7 @@
+%html
+	%body
+		%p
+			User with email #{@email} has subscribed to the following newsletter editions:
+			= succeed '.' do
+				= @subscriptions.map{ |list| User.human_attribute_name list }.join(', ')
+			
