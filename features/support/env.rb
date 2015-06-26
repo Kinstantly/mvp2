@@ -27,6 +27,9 @@ Spork.prefork do
   # RSpec’s supported mocking frameworks (RSpec, Mocha, RR, Flexmock).
   require 'cucumber/rspec/doubles'
 
+  # Mocks of Gibbon, a wrapper for the MailChimp API.
+  require File.expand_path('../../../spec/support/mailing_list_helpers', __FILE__)
+
   # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
   # order to ease the transition to Capybara we set the default here. If you'd
   # prefer to use XPath just remove this line and adjust any selectors in your
@@ -94,6 +97,10 @@ Spork.prefork do
   # Make sure the search index is clean before running a search scenario.
   Before('@search') do
     Sunspot.remove_all!
+  end
+
+  Before do
+    set_up_gibbon_mocks
   end
 
   # Scenarios for describing behavior while running as a private site.

@@ -1,3 +1,6 @@
+# This file is required by features/support/env.rb for Cucumber scenarios.
+# So make sure everything in here is compatible with Cucumber using RSpec mocks.
+
 def set_up_gibbon_mocks
 	set_up_gibbon_lists_api_mock
 	set_up_gibbon_campaigns_api_mock
