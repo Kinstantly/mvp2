@@ -80,12 +80,9 @@ Spork.prefork do
       DatabaseCleaner.clean
     end
 
-    # Clear out the mailing lists before and after running the example if this tag is set.
+    # Mocks for the MailChimp API via Gibbon.
     config.before(:each) do
-      empty_mailing_lists if example.metadata[:empty_mailing_lists]
-    end
-    config.after(:each) do
-      empty_mailing_lists if example.metadata[:empty_mailing_lists]
+      set_up_gibbon_mocks unless example.metadata[:contact_mailchimp]
     end
 
     # Specs for describing behavior while running as a private site.

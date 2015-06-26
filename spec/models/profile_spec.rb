@@ -767,8 +767,8 @@ describe Profile do
 				double_optin: false,
 				update_existing: true
 			}
-			gb_obj = Gibbon::API.new.lists.class
-			gb_obj.any_instance.should_receive(:subscribe).with(opts).once
+			# We can do the following because we are mocking the lists API.
+			Gibbon::API.new.lists.should_receive(:subscribe).with(opts).once
 			@profile.save
 		end
 	end

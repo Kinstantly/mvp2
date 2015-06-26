@@ -60,34 +60,59 @@ describe MailchimpWebhookController do
 		end
 
 		context "user subscribed both locally and remotely" do
-			after(:each) do
-				# Remove user from all mailing lists
-				user.send(:unsubscribe_from_mailing_lists, Rails.configuration.mailchimp_list_id.keys)
-			end
-			it "should not remove subscription" do
+			before(:each) do
 				user.parent_newsletters_stage1 = true
 				user.parent_newsletters_stage2 = true
 				user.parent_newsletters_stage3 = true
 				user.provider_newsletters = true
 				user.save!
-
+			end
+			
+			it "should NOT remove subscriptions" do
 				post :process_notification, params
 				user.reload
-				user.parent_newsletters_stage1.should == true
-				user.parent_newsletters_stage2.should == true
-				user.parent_newsletters_stage3.should == true
-				user.provider_newsletters.should == true
-				user.parent_newsletters_stage1_leid.should_not == nil
-				user.parent_newsletters_stage2_leid.should_not == nil
-				user.parent_newsletters_stage3_leid.should_not == nil
-				user.provider_newsletters_leid.should_not == nil
+				user.parent_newsletters_stage1.should be_true
+				user.parent_newsletters_stage2.should be_true
+				user.parent_newsletters_stage3.should be_true
+				user.provider_newsletters.should be_true
+				user.parent_newsletters_stage1_leid.should be_present
+				user.parent_newsletters_stage2_leid.should be_present
+				user.parent_newsletters_stage3_leid.should be_present
+				user.provider_newsletters_leid.should be_present
+			end
+			
+			it "should remove one subscription" do
+				Gibbon::API.new.lists.unsubscribe id: list_id,
+					email: {email: user.email, leid: user.parent_newsletters_stage1_leid},
+					delete_member: true, send_goodbye: false, send_notify: false
+				
+				post :process_notification, params
+				user.reload
+				user.parent_newsletters_stage1.should_not be_true
+				user.parent_newsletters_stage2.should be_true
+				user.parent_newsletters_stage3.should be_true
+				user.provider_newsletters.should be_true
+				user.parent_newsletters_stage1_leid.should_not be_present
+				user.parent_newsletters_stage2_leid.should be_present
+				user.parent_newsletters_stage3_leid.should be_present
+				user.provider_newsletters_leid.should be_present
 			end
 		end
 
-		it "does not create new record when invalid campaign data provided" do
-			post :process_notification, campaign_params
-			new_newsletter = Newsletter.find_by_cid(campaign_params[:data][:id])
-			new_newsletter.nil?.should be_true
+		context "new campaign sent" do
+			# The following works because we are mocking the campaigns API.
+			it "creates a new record when valid campaign data provided" do
+				post :process_notification, campaign_params
+				new_newsletter = Newsletter.find_by_cid(campaign_params[:data][:id])
+				new_newsletter.should be_present
+				new_newsletter.cid.should == campaign_params[:data][:id]
+			end
+			
+			it "does not create a new record when invalid campaign data provided" do
+				post :process_notification, campaign_params.merge(data: {id: nil})
+				new_newsletter = Newsletter.find_by_cid(campaign_params[:data][:id])
+				new_newsletter.should be_nil
+			end
 		end
 	end
 end

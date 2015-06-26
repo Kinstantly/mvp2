@@ -12,7 +12,7 @@ describe Users::RegistrationsController do
 	context "as a non-provider member" do
 		describe "POST create" do
 			context "new user signs up" do
-				it "subscribes to the parent mailing lists", empty_mailing_lists: true do
+				it "subscribes to the parent mailing lists" do
 					post :create, user: {
 						email: email,
 						password: new_password,
@@ -30,7 +30,7 @@ describe Users::RegistrationsController do
 					user.provider_newsletters.should be_false
 				end
 
-				it "does not subscribe to the mailing lists", empty_mailing_lists: true do
+				it "does not subscribe to the mailing lists" do
 					post :create, user: {
 						email: email,
 						password: new_password,
@@ -74,7 +74,7 @@ describe Users::RegistrationsController do
 			end
 			
 			context "with mailing lists" do
-				it "can subscribe to mailing lists", empty_mailing_lists: true do
+				it "can subscribe to mailing lists" do
 					put :update, user: {
 						parent_newsletters_stage1: true,
 						parent_newsletters_stage2: true,
@@ -88,7 +88,7 @@ describe Users::RegistrationsController do
 					user.parent_newsletters_stage3.should be_true
 				end
 			
-				it "cannot subscribe to mailing lists if previously blocked", empty_mailing_lists: true do
+				it "cannot subscribe to mailing lists if previously blocked" do
 					FactoryGirl.create :contact_blocker, email: mimi.email
 					put :update, user: {
 						parent_newsletters_stage1: true,
@@ -109,7 +109,7 @@ describe Users::RegistrationsController do
 	context "as a provider" do
 		describe "POST create" do
 			context "new provider signs up" do
-				it "subscribes to the provider mailing lists", empty_mailing_lists: true do
+				it "subscribes to the provider mailing lists" do
 					post :create, user: {
 						is_provider: '1',
 						email: email,
@@ -129,7 +129,7 @@ describe Users::RegistrationsController do
 					user.provider_newsletters.should be_true
 				end
 
-				it "does not subscribe to the mailing lists", empty_mailing_lists: true do
+				it "does not subscribe to the mailing lists" do
 					post :create, user: {
 						is_provider: '1',
 						email: email,
@@ -150,7 +150,7 @@ describe Users::RegistrationsController do
 				end
 				
 				context "while claiming a profile" do
-					it "subscribes the provider to the provider mailing lists", empty_mailing_lists: true do
+					it "subscribes the provider to the provider mailing lists" do
 						profile = FactoryGirl.create :claimable_profile
 						session[:claiming_profile] = profile.invitation_token
 					
@@ -189,7 +189,7 @@ describe Users::RegistrationsController do
 			
 				let(:provider) { User.find_by_email email }
 			
-				it "displays confirmation notice with tracking parameters", empty_mailing_lists: true do
+				it "displays confirmation notice with tracking parameters" do
 					response.should redirect_to '/member/awaiting_confirmation?email_pending_confirmation=t&parent_newsletters_stage1=t&provider=t'
 				end
 				
