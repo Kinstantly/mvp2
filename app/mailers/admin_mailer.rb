@@ -27,6 +27,22 @@ class AdminMailer < ActionMailer::Base
 		sendgrid_category 'Parent Registration Alert'
 		mail subject: "Parent \"#{user.email}\" has registered", to: ADMIN_EMAIL
 	end
+
+	# Notify site admin, when user subscribes to newsletters without creating an account.
+	def newsletter_subscribe_alert(subscriptions, email)
+		@subscriptions = subscriptions
+		@email = email
+		sendgrid_category 'Newsletter-only Subscription Alert'
+		mail subject: "New newsletter subscriber: #{email} ", to: ADMIN_EMAIL
+	end
+
+	# Notify site admin, when mailchimp subscriber unsubscribes from newsletters.
+	def newsletter_unsubscribe_alert(subscription, email)
+		@list_name = User.human_attribute_name subscription
+		@email = email
+		sendgrid_category 'Newsletter Unsubscribe Alert'
+		mail subject: "User with email #{email} has unsubscribed from \"#{@list_name}\" newsletters", to: ADMIN_EMAIL
+	end
 	
 	# Notify the profile moderator, when a provider is suggested.
 	def provider_suggestion_notice(provider_suggestion)

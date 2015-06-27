@@ -31,7 +31,7 @@ describe NewslettersController do
 
 	describe "POST subscribe" do
 		it "should redirect to confirmation page after a successful update" do
-			post :subscribe, { parent_newsletters_stage1: 1, email: 'subscriber@example.com' }
+			post :subscribe, { parent_newsletters_stage1: 1, email: 'subscriber@newsletter.com' }
 			response.should redirect_to newsletters_subscribed_url({ nlsub: 't', parent_newsletters_stage1: 't' })
 		end
 		it "should re-render sign-up form if no email provided" do
@@ -39,8 +39,11 @@ describe NewslettersController do
 			response.should render_template('new')
 		end
 		it "should re-render sign-up form if no subscription list selected" do
-			post :subscribe, { email: 'subscriber@example.com' }
+			post :subscribe, { email: 'subscriber@newsletter.com' }
 			response.should render_template('new')
 		end
+	    it "sends a confirmation email" do
+	        expect { post :subscribe, { parent_newsletters_stage1: 1, email: 'subscriber@newsletter.com' } }.to change {ActionMailer::Base.deliveries.count}.by(1)
+	    end
 	end
 end

@@ -43,6 +43,42 @@ describe AdminMailer do
 			email.should have_body_text(user_url provider)
 		end
 	end
+
+	context "newsletter subscribe alert" do
+		let(:subscriber_email)	{'subscriber1@newsletter.com'}
+		let(:subscriptions)		{[:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3]}
+		let(:email) { AdminMailer.newsletter_subscribe_alert(subscriptions, subscriber_email) }
+
+		it "should be set to be delivered to admin" do
+			email.should deliver_to(ADMIN_EMAIL)
+		end
+
+		it "should show the subscriber's email in the subject" do
+			email.should have_subject(/#{subscriber_email}/)
+		end
+
+		it "should list newsletter editions user has subscribed to" do
+			email.should have_body_text(subscriptions.map{ |list| User.human_attribute_name list }.join(', '))
+		end
+	end
+
+	context "newsletter unsubscribe alert" do
+		let(:subscriber_email)	{'subscriber1@newsletter.com'}
+		let(:subscription)		{User.human_attribute_name :parent_newsletters_stage1}
+		let(:email) { AdminMailer.newsletter_unsubscribe_alert(subscription, subscriber_email) }
+
+		it "should be set to be delivered to admin" do
+			email.should deliver_to(ADMIN_EMAIL)
+		end
+
+		it "should show the subscriber's email in the subject" do
+			email.should have_subject(/#{subscriber_email}/)
+		end
+
+		it "should contain newsletter edition user has unsubscribed from" do
+			email.should have_body_text(subscription)
+		end
+	end
 	
 	context "parent registration alert" do
 		let(:parent) { FactoryGirl.create :parent }

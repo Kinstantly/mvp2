@@ -79,6 +79,7 @@ class NewslettersController < ApplicationController
 
 	# Class method to create a new MailChimp subscription.
 	def self.subscribe_to_mailing_lists(lists=[], email)
+		successful_subscribes = []
 		lists.each do |list_name|
 			next if !User.mailing_list_name_valid?(list_name)
 
@@ -87,9 +88,15 @@ class NewslettersController < ApplicationController
 			begin
 				gb = Gibbon::API.new
 				r = gb.lists.subscribe id: list_id, email: email_struct, double_optin: false, send_welcome: send_mailchimp_welcome?
+				if r.try(:[], 'leid').present?
+					successful_subscribes << list_name
+				end
 			rescue Gibbon::MailChimpError => e
 				logger.error "MailChimp error while subscribing guest user with email #{email_struct} to #{list_name}: #{e.message}, error code: #{e.code}" if logger
 			end
+		end
+		if successful_subscribes.any?
+			AdminMailer.newsletter_subscribe_alert(successful_subscribes, email).deliver
 		end
 	end
 	
