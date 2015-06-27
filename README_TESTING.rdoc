@@ -78,10 +78,7 @@ Here are some useful aliases for starting and monitoring the Rspec and Cucumber 
 
 === Restarting Spork
 
-Some of your source files are preloaded by Spork.  If you modify any of these files and your tests depend on them, you will need to restart Spork to pick up the modifications.  You can kill and start the process, or you can send it a USR2 signal, e.g.,
-
- # Replace PID with the process ID of the relevant spork process.
- kill -s USR2 PID
+Some of your source files are preloaded by Spork.  If you modify any of these files and your tests depend on them, you will need to restart Spork to pick up the modifications.  To restart, you should kill and start the affected Spork process.
 
 It helps to know which files are preloaded.  You can discover that with diagnostic mode.  For more information see https://github.com/sporkrb/spork#diagnostic-mode
 
