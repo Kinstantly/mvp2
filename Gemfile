@@ -121,7 +121,7 @@ gem 'paper_trail', '~> 2'
 gem 'auto_strip_attributes'
 
 group :development, :test do
-	gem 'rspec-rails', '~> 2.0'
+	gem 'rspec-rails', '2.99'
 	gem 'cucumber-rails', '~> 1.0', require: false
 	gem 'database_cleaner', '~> 0.8'
 	# gem 'webrat', '~> 0.7'

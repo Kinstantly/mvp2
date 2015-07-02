@@ -63,6 +63,10 @@ Spork.prefork do
     #     --seed 1234
     config.order = "random"
     
+    # rspec-rails 3 no longer automatically infers an example group's spec type from the file location.
+    # Explicitly opt-in to this feature.
+    config.infer_spec_type_from_file_location!
+    
     config.include Paperclip::Shoulda::Matchers
 
     # Examples that we don't want to run by default should have this tag.
@@ -81,7 +85,7 @@ Spork.prefork do
     end
 
     # Mocks for the MailChimp API via Gibbon.
-    config.before(:each) do
+    config.before(:each) do |example|
       set_up_gibbon_mocks unless example.metadata[:contact_mailchimp]
     end
 
