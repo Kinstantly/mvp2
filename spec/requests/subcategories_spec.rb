@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe "Subcategories" do
+describe "Subcategories", :type => :request do
 	context "not logged in" do
 		describe "GET /subcategories" do
 			it "index page should be inaccessible to non-administrators" do
 				get subcategories_path
-				response.status.should be(302)
+				expect(response.status).to be(302)
 			end
 		end
 	end
@@ -21,7 +21,7 @@ describe "Subcategories" do
 		describe "GET /subcategories" do
 			it "has an index page" do
 				get subcategories_path
-				response.status.should be(200)
+				expect(response.status).to be(200)
 			end
 		end
 	end

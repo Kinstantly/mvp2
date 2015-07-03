@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Customer, payments: true do
+describe Customer, type: :model, payments: true do
 	let(:customer) { FactoryGirl.create :customer }
 	let(:parent) { FactoryGirl.create :parent }
 	let(:provider) { FactoryGirl.create :payable_provider }
@@ -26,18 +26,21 @@ describe Customer, payments: true do
 	
 	it "should be associated with a user, e.g., a parent" do
 		customer.user = parent
-		customer.should have(:no).errors_on :user
+		customer.valid?
+		expect(customer.errors[:user].size).to eq 0
 	end
 	
 	it "should be associated with at least one provider" do
 		customer.providers << provider
-		customer.should have(:no).errors_on :providers
+		customer.valid?
+		expect(customer.errors[:providers].size).to eq 0
 	end
 	
 	context "required attributes" do
 		it "must have a user" do
 			customer.user = nil
-			customer.should have(1).error_on :user
+			customer.valid?
+			expect(customer.errors[:user].size).to eq 1
 		end
 	end
 	
@@ -48,25 +51,25 @@ describe Customer, payments: true do
 	end
 	
 	it "should retrieve a payable provider" do
-		customer.provider_for_profile(profile_id).should == provider
+		expect(customer.provider_for_profile(profile_id)).to eq provider
 	end
 		
 	it "should not authorize a provider that is not payable" do
 		customer.save_with_authorization invalid_authorization
-		customer.should have(1).error
+		expect(customer.errors.size).to eq 1
 	end
 	
 	context "new customer" do
 		before(:each) do
-			Stripe::Customer.should_receive(:create).and_return(api_customer)
-			Stripe::Customer.stub(:retrieve).with(any_args) do
+			expect(Stripe::Customer).to receive(:create).and_return(api_customer)
+			allow(Stripe::Customer).to receive(:retrieve).with(any_args) do
 				api_customer
 			end
 		end
 		
 		it "should return the authorized amount for the given authorized provider" do
 			customer.save_with_authorization authorization
-			customer.authorized_amount_for_profile(profile_id).should == authorized_amount
+			expect(customer.authorized_amount_for_profile(profile_id)).to eq authorized_amount
 		end
 		
 	  it "should create a customer record" do
@@ -77,7 +80,7 @@ describe Customer, payments: true do
 		
 		it "should attach the new customer record" do
 			customer.save_with_authorization authorization
-			customer.stripe_customer.should_not be_nil
+			expect(customer.stripe_customer).not_to be_nil
 		end
 		
 	  it "should create a card record" do
@@ -88,13 +91,13 @@ describe Customer, payments: true do
 		
 		it "should attach the new card record" do
 			customer.save_with_authorization authorization
-			customer.stripe_customer.should have_at_least(1).stripe_card
+			expect(customer.stripe_customer.stripe_cards.size).to be >= 1
 		end
 		
 		it "should send confirmation to the new customer" do
 			message = double('Mail::Message')
-			message.should_receive :deliver
-			CustomerMailer.should_receive(:confirm_authorized_amount).and_return(message)
+			expect(message).to receive :deliver
+			expect(CustomerMailer).to receive(:confirm_authorized_amount).and_return(message)
 			customer.save_with_authorization authorization
 		end
 	end
@@ -120,23 +123,23 @@ describe Customer, payments: true do
 		
 		it "should send confirmation of the revoked authorization" do
 			message = double('Mail::Message')
-			message.should_receive :deliver
-			CustomerMailer.should_receive(:confirm_revoked_authorization).and_return(message)
+			expect(message).to receive :deliver
+			expect(CustomerMailer).to receive(:confirm_revoked_authorization).and_return(message)
 			customer_with_authorization.save_with_authorization revocation
 		end
 	end
 	
 	context "Without valid Stripe API keys" do
 		before(:each) do
-			Stripe::Customer.stub(:create).and_raise(Stripe::AuthenticationError)
-			Stripe::Customer.stub(:retrieve).and_raise(Stripe::AuthenticationError)
+			allow(Stripe::Customer).to receive(:create).and_raise(Stripe::AuthenticationError)
+			allow(Stripe::Customer).to receive(:retrieve).and_raise(Stripe::AuthenticationError)
 		end
 		
 		it "should not be able to create a stripe_customer record" do
 			expect {
 				customer.save_with_authorization authorization
 			}.to change(StripeCustomer, :count).by(0)
-			customer.errors.should_not be_empty
+			expect(customer.errors).to be_present
 		end
 	end
 end

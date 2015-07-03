@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Users::RegistrationsController do
+describe Users::RegistrationsController, :type => :routing do
 	describe "routing" do
 
 		# it 'routes "/newsletter" to newsletter sign-up page' do
@@ -12,35 +12,35 @@ describe Users::RegistrationsController do
 		# end
 
 		it 'routes "/newsletter/latest/parent_newsletters_stage1" to most recent parent_newsletters_stage1 campaign' do
-			get('/newsletter/latest/parent_newsletters_stage1').should route_to('newsletters#latest', name: 'parent_newsletters_stage1')
+			expect(get('/newsletter/latest/parent_newsletters_stage1')).to route_to('newsletters#latest', name: 'parent_newsletters_stage1')
 		end
 
 		it 'routes "/newsletter/list" to newsletter archive page' do
-			get('/newsletter/list').should route_to('newsletters#list')
+			expect(get('/newsletter/list')).to route_to('newsletters#list')
 		end
 
 		it 'routes "/newsletter/1234" to newsletter 1234' do
-			get('/newsletter/1234').should route_to('newsletters#show', id: '1234')
+			expect(get('/newsletter/1234')).to route_to('newsletters#show', id: '1234')
 		end
 	end
 end
 
-describe NewslettersController do
+describe NewslettersController, :type => :routing do
 	describe "routing" do
 		it 'routes "/newsletter" to #new' do
-			get('/newsletter').should route_to('newsletters#new')
+			expect(get('/newsletter')).to route_to('newsletters#new')
 		end
 
 		it 'routes "/newsletters" to #new' do
-			get('/newsletters').should route_to('newsletters#new')
+			expect(get('/newsletters')).to route_to('newsletters#new')
 		end
 
 		it 'routes "/newsletters/subscribed" to #subscribed' do
-			get('/newsletters/subscribed').should route_to('newsletters#subscribed')
+			expect(get('/newsletters/subscribed')).to route_to('newsletters#subscribed')
 		end
 
 		it 'routes to #subscribe' do
-			post('newsletters/subscribe').should route_to('newsletters#subscribe')
+			expect(post('newsletters/subscribe')).to route_to('newsletters#subscribe')
 		end
 	end
 end

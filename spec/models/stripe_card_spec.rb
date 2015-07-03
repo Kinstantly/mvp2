@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe StripeCard, payments: true do
+describe StripeCard, type: :model, payments: true do
 	let(:stripe_card) { FactoryGirl.create :stripe_card }
 	let(:stripe_card_with_no_customer) { FactoryGirl.create :stripe_card_with_no_customer }
 	let(:stripe_customer_with_card) { FactoryGirl.create :stripe_customer_with_cards, card_count: 1 }
@@ -8,7 +8,7 @@ describe StripeCard, payments: true do
 	let(:api_customer) { stripe_customer_mock card: api_card }
 	
 	it "has an API ID" do
-		stripe_card.api_card_id.should be_present
+		expect(stripe_card.api_card_id).to be_present
 	end
 	
 	it "can have a charge" do
@@ -26,17 +26,17 @@ describe StripeCard, payments: true do
 	
 	context "remote card information" do
 		before(:each) do
-		  Stripe::Customer.stub(:retrieve).with(any_args) do
+		  allow(Stripe::Customer).to receive(:retrieve).with(any_args) do
 				api_customer
 			end
 		end
 		
 		it "can retrieve remote card information if attached to a stripe customer" do
-			stripe_customer_with_card.stripe_cards.first.retrieve.should == api_card
+			expect(stripe_customer_with_card.stripe_cards.first.retrieve).to eq api_card
 		end
 		
 		it "cannot retrieve remote card information if not attached to a stripe customer" do
-			stripe_card_with_no_customer.retrieve.should be_nil
+			expect(stripe_card_with_no_customer.retrieve).to be_nil
 		end
 	end
 end

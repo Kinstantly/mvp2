@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Users::ConfirmationsController do
+describe Users::ConfirmationsController, :type => :controller do
 	let(:mimi) {
 		FactoryGirl.create :client_user,
 		require_confirmation: true,
@@ -18,21 +18,21 @@ describe Users::ConfirmationsController do
 	end
 
 	it "should be a child of Devise::ConfirmationsController" do
-		controller.class.superclass.should eq Devise::ConfirmationsController
+		expect(controller.class.superclass).to eq Devise::ConfirmationsController
 	end
 
 	context "as a client pending email confirmation" do
 		describe "GET show" do
 			it "redirects to the home page with tracking parameter" do
 				get :show, confirmation_token: mimi.confirmation_token
-				response.should redirect_to '/?email_confirmed=t'
-				flash[:notice].should have_content 'confirmed'
+				expect(response).to redirect_to '/?email_confirmed=t'
+				expect(flash[:notice]).to have_content 'confirmed'
 			end
 			
 			it "tracking parameters indicate subscriptions" do
 				get :show, confirmation_token: mimi_subscribed.confirmation_token
-				response.should redirect_to '/?email_confirmed=t&parent_newsletters_stage1=t&parent_newsletters_stage2=t'
-				flash[:notice].should have_content 'confirmed'
+				expect(response).to redirect_to '/?email_confirmed=t&parent_newsletters_stage1=t&parent_newsletters_stage2=t'
+				expect(flash[:notice]).to have_content 'confirmed'
 			end
 		end
 	end
@@ -41,23 +41,23 @@ describe Users::ConfirmationsController do
 		describe "POST confirmation" do
 			it "redirects to sign in page after request" do
 				post :create, user: {email: mimi.email}
-				response.should redirect_to '/users/sign_in'
-				flash[:notice].should have_content 'confirm'
+				expect(response).to redirect_to '/users/sign_in'
+				expect(flash[:notice]).to have_content 'confirm'
 			end
 
 			context "when running as a private site", private_site: true do
 				it "re-renders the confirmation request page with no success notice BEFORE admin approval" do
 					post :create, user: {email: mimi.email}
-					response.should render_template 'new'
-					flash[:notice].should be_nil
+					expect(response).to render_template 'new'
+					expect(flash[:notice]).to be_nil
 				end
 
 				it "redirects to sign in page AFTER admin approval" do
 					mimi.admin_confirmation_sent_at = Time.now.utc
 					mimi.save
 					post :create, user: {email: mimi.email}
-					response.should redirect_to '/users/sign_in'
-					flash[:notice].should have_content 'confirm'
+					expect(response).to redirect_to '/users/sign_in'
+					expect(flash[:notice]).to have_content 'confirm'
 				end
 			end
 		end
@@ -73,13 +73,13 @@ describe Users::ConfirmationsController do
 		describe "POST confirmation" do
 			it "redirects back to the user account page after confirmation" do
 				post :create, user: {email: mimi.email, admin_confirmation_sent_by_id: bossy.id}
-				response.should redirect_to user_path mimi
+				expect(response).to redirect_to user_path mimi
 			end
 
 			context "when running as a private site", private_site: true do
 				it "redirects back to the user account page after confirmation" do
 					post :create, user: {email: mimi.email, admin_confirmation_sent_by_id: bossy.id}
-					response.should redirect_to user_path mimi
+					expect(response).to redirect_to user_path mimi
 				end
 			end
 		end

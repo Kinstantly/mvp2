@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Service do
+describe Service, :type => :model do
 	# FactoryGirl products don't have callbacks!
 	let(:service) { Service.new name: 'child psychiatrist' }
 	
@@ -8,25 +8,25 @@ describe Service do
 	# so no use testing here for numericality.
 	
 	it "has a name" do
-		service.save.should be_true
+		expect(service.save).to be_truthy
 	end
 	
 	it "strips whitespace from the name" do
 		name = 'music teacher'
 		service.name = " #{name} "
-		service.should have(:no).errors_on(:name)
-		service.name.should == name
+		expect(service).to have(:no).errors_on(:name)
+		expect(service.name).to eq name
 	end
 	
 	it "can be flagged as predefined" do
 		service.is_predefined = true
-		service.save.should be_true
-		Service.predefined.include?(service).should be_true
+		expect(service.save).to be_truthy
+		expect(Service.predefined.include?(service)).to be_truthy
 	end
 	
 	it "can be shown on the home page" do
 		service.show_on_home_page = true
-		service.should have(:no).errors_on(:show_on_home_page)
+		expect(service).to have(:no).errors_on(:show_on_home_page)
 	end
 	
 	context "finding services that belong to a subcategory" do
@@ -37,12 +37,12 @@ describe Service do
 		end
 		
 		it "does not belong to a subcategory" do
-			Service.belongs_to_a_subcategory.include?(service).should be_false
+			expect(Service.belongs_to_a_subcategory.include?(service)).to be_falsey
 		end
 		
 		it "belongs to a subcategory" do
 			subcategory.services << service
-			Service.belongs_to_a_subcategory.include?(service).should be_true
+			expect(Service.belongs_to_a_subcategory.include?(service)).to be_truthy
 		end
 	end
 	
@@ -61,7 +61,7 @@ describe Service do
 		
 		it "it has persistent associated specialties" do
 			specialties.each do |spec|
-				service.specialties.include?(spec).should be_true
+				expect(service.specialties.include?(spec)).to be_truthy
 			end
 		end
 		
@@ -70,10 +70,10 @@ describe Service do
 				FactoryGirl.create(:predefined_specialty, name: 'algebra')]
 			assignable_specialties = service.assignable_specialties
 			service.specialties.each do |spec|
-				assignable_specialties.include?(spec).should be_true
+				expect(assignable_specialties.include?(spec)).to be_truthy
 			end
 			predefined_specialties.each do |spec|
-				assignable_specialties.include?(spec).should be_true
+				expect(assignable_specialties.include?(spec)).to be_truthy
 			end
 		end
 	end
@@ -92,20 +92,20 @@ describe Service do
 		
 		it "after modifying a service, reindexes search for any profiles that contain it" do
 			new_name = 'Social Skills Therapists'
-			Profile.fuzzy_search(new_name).results.include?(profile).should be_false
+			expect(Profile.fuzzy_search(new_name).results.include?(profile)).to be_falsey
 			service.name = new_name
 			service.save
 			Sunspot.commit
-			Profile.fuzzy_search(new_name).results.include?(profile).should be_true
+			expect(Profile.fuzzy_search(new_name).results.include?(profile)).to be_truthy
 		end
 		
 		it "should not be searchable after trashing" do
 			name = service.name
-			Profile.fuzzy_search(name).results.include?(profile).should be_true
+			expect(Profile.fuzzy_search(name).results.include?(profile)).to be_truthy
 			service.trash = true
 			service.save
 			Sunspot.commit
-			Profile.fuzzy_search(name).results.include?(profile).should be_false
+			expect(Profile.fuzzy_search(name).results.include?(profile)).to be_falsey
 		end
 	end
 end

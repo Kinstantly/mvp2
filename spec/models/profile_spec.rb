@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Profile do
+describe Profile, :type => :model do
 	before(:each) do
 		@profile_data ||= {
 			first_name: 'Joe', last_name: 'Black', company_name: 'Coffee is Good',
@@ -15,15 +15,15 @@ describe Profile do
 	
 	context "name" do
 		it "is happy if we set both first and last name" do
-			@profile.should have(:no).errors_on(:first_name)
-			@profile.should have(:no).errors_on(:last_name)
+			expect(@profile.errors_on(:first_name).size).to eq 0
+			expect(@profile.errors_on(:last_name).size).to eq 0
 		end
 		
 		it "is happy if first and last name are NOT set" do
 			@profile.first_name = ''
 			@profile.last_name = ''
-			@profile.should have(:no).errors_on(:first_name)
-			@profile.should have(:no).errors_on(:last_name)
+			expect(@profile.errors_on(:first_name).size).to eq 0
+			expect(@profile.errors_on(:last_name).size).to eq 0
 		end
 	end
 	
@@ -31,27 +31,27 @@ describe Profile do
 		it "contains first, middle, and last name as well as credentials" do
 			@profile.middle_name = 'X'
 			@profile.credentials = 'BA, MA'
-			@profile.display_name.should =~ /#{@profile.first_name}.*#{@profile.middle_name}.*#{@profile.last_name}.*#{@profile.credentials}/
+			expect(@profile.display_name).to match /#{@profile.first_name}.*#{@profile.middle_name}.*#{@profile.last_name}.*#{@profile.credentials}/
 		end
 		
 		context "presentable display name" do
 			it "is presentable if there is a first name" do
 				@profile.last_name = ''
-				@profile.display_name_presentable?.should be_true
-				@profile.presentable_display_name.should be_present
+				expect(@profile.display_name_presentable?).to be_truthy
+				expect(@profile.presentable_display_name).to be_present
 			end
 
 			it "is presentable if there is a last name" do
 				@profile.first_name = ''
-				@profile.display_name_presentable?.should be_true
-				@profile.presentable_display_name.should be_present
+				expect(@profile.display_name_presentable?).to be_truthy
+				expect(@profile.presentable_display_name).to be_present
 			end
 			
 			it "is not presentable if there is no first or last name" do
 				@profile.first_name = ''
 				@profile.last_name = ''
-				@profile.display_name_presentable?.should be_false
-				@profile.presentable_display_name.should_not be_present
+				expect(@profile.display_name_presentable?).to be_falsey
+				expect(@profile.presentable_display_name).not_to be_present
 			end
 		end
 	end
@@ -59,70 +59,70 @@ describe Profile do
 	context "company name if present, otherwise display name" do
 		it "returns company name if present and first name is present" do
 			@profile.last_name = ''
-			@profile.company_otherwise_display_name.should == @profile.company_name
+			expect(@profile.company_otherwise_display_name).to eq @profile.company_name
 		end
 		
 		it "returns company name if present and last name is present" do
 			@profile.first_name = ''
-			@profile.company_otherwise_display_name.should == @profile.company_name
+			expect(@profile.company_otherwise_display_name).to eq @profile.company_name
 		end
 		
 		it "returns display name if company name is not present" do
 			@profile.company_name = ''
-			@profile.company_otherwise_display_name.should == @profile.display_name
+			expect(@profile.company_otherwise_display_name).to eq @profile.display_name
 		end
 		
 		it "returns empty string if none of company, first, and last name are present" do
 			@profile.first_name = ''
 			@profile.last_name = ''
 			@profile.company_name = ''
-			@profile.company_otherwise_display_name.should == ''
+			expect(@profile.company_otherwise_display_name).to eq ''
 		end
 	end
 	
 	context "display name if present, otherwise company name" do
 		it "returns display name if first name is present" do
 			@profile.last_name = ''
-			@profile.display_name_or_company.should == @profile.display_name
+			expect(@profile.display_name_or_company).to eq @profile.display_name
 		end
 		
 		it "returns display name if last name is present" do
 			@profile.first_name = ''
-			@profile.display_name_or_company.should == @profile.display_name
+			expect(@profile.display_name_or_company).to eq @profile.display_name
 		end
 		
 		it "returns company name if neither first name nor last name are present" do
 			@profile.first_name = ''
 			@profile.last_name = ''
-			@profile.display_name_or_company.should == @profile.company_name
+			expect(@profile.display_name_or_company).to eq @profile.company_name
 		end
 	end
 	
 	context "categories" do
 		it "stores a category" do
-			@profile.save.should be_true
-			Profile.find_by_last_name(@profile_data[:last_name]).categories.should == @profile_data[:categories]
+			expect(@profile.save).to be_truthy
+			expect(Profile.find_by_last_name(@profile_data[:last_name]).categories).to eq @profile_data[:categories]
 		end
 		
 		it "does not require a category if not publishing" do
 			@profile.is_published = false
 			@profile.categories = []
-			@profile.should have(:no).errors_on(:categories)
+			expect(@profile.errors_on(:categories).size).to eq 0
 		end
 		
 		it "allows more than one category" do
 			@profile.categories = @profile_data[:categories]
 			@profile.categories << FactoryGirl.create(:category, name: 'MISC.')
-			@profile.should have(:no).errors_on(:categories)
+			expect(@profile.errors_on(:categories).size).to eq 0
 		end
 	end
 	
 	context "services" do
 		it "stores multiple services" do
-			@profile.save.should be_true
+			expect(@profile.save).to be_truthy
 			stored_services = Profile.find_by_last_name(@profile_data[:last_name]).services
 			@profile_data[:services].each do |svc|
-				stored_services.include?(svc).should be_true
+				expect(stored_services.include?(svc)).to be_truthy
 			end
 		end
 		
@@ -130,50 +130,50 @@ describe Profile do
 			it "merges custom services" do
 				custom = [@profile_data[:services].first.name, 'story teller']
 				@profile.custom_service_names = custom
-				@profile.save.should == true
+				expect(@profile.save).to eq true
 				profile = Profile.find_by_last_name(@profile_data[:last_name])
-				profile.should have_exactly(@profile_data[:services].size + 1).services
-				profile.services.collect(&:name).include?(custom.last).should be_true
+				expect(profile.services.size).to eq @profile_data[:services].size + 1
+				expect(profile.services.collect(&:name).include?(custom.last)).to be_truthy
 			end
 			
 			it "limits length of name" do
 				name = 'a' * Profile::MAX_LENGTHS[:custom_service_names]
 				@profile.custom_service_names = [name]
-				@profile.should have(:no).error_on(:custom_service_names)
+				expect(@profile.error_on(:custom_service_names).size).to eq 0
 				@profile.custom_service_names = [name + 'a']
-				@profile.should have(1).error_on(:custom_service_names)
+				expect(@profile.error_on(:custom_service_names).size).to eq 1
 			end
 			
 			it "filters out blanks and strips" do
 				name = 'Theremin Teacher'
 				@profile.custom_service_names = [nil, '', ' ', " #{name} "]
-				@profile.should have(:no).errors_on(:custom_service_names)
-				@profile.should have(1).custom_service_name
-				@profile.custom_service_names.first.should == name
+				expect(@profile.errors_on(:custom_service_names).size).to eq 0
+				expect(@profile.custom_service_names.size).to eq 1
+				expect(@profile.custom_service_names.first).to eq name
 			end
 		end
 	end
 	
 	context "specialties" do
 		it "stores multiple specialties" do
-			@profile.save.should be_true
+			expect(@profile.save).to be_truthy
 			stored_specialties = Profile.find_by_last_name(@profile_data[:last_name]).specialties
 			@profile_data[:specialties].each do |spc|
-				stored_specialties.include?(spc).should be_true
+				expect(stored_specialties.include?(spc)).to be_truthy
 			end
 		end
 		
 		it "does not require a specialty" do
 			@profile.specialties = []
-			@profile.should have(:no).errors_on(:specialties)
+			expect(@profile.errors_on(:specialties).size).to eq 0
 		end
 		
 		it "has a simple array of specialty IDs and names" do
 			ids_names = @profile.specialty_ids_names
 			specialties_data = @profile_data[:specialties]
 			ids_names.each_index do |i|
-				specialties_data[i].id.should == ids_names[i][:id]
-				specialties_data[i].name.should == ids_names[i][:name]
+				expect(specialties_data[i].id).to eq ids_names[i][:id]
+				expect(specialties_data[i].name).to eq ids_names[i][:name]
 			end
 		end
 		
@@ -181,37 +181,37 @@ describe Profile do
 			it "sets specialties by name" do
 				names = ['wonderful children', 'parenting support']
 				@profile.specialty_names = names
-				@profile.save.should == true
+				expect(@profile.save).to eq true
 				@profile.reload
-				@profile.should have_exactly(names.size).specialties
+				expect(@profile.specialties.size).to eq names.size
 				specialty_names = @profile.specialties.collect(&:name)
 				names.each do |name|
-					specialty_names.include?(name).should be_true
+					expect(specialty_names.include?(name)).to be_truthy
 				end
 			end
 			
 			it "does not affect existing specialties if we don't set specialty_names" do
 				specialty_count = @profile.specialties.size
 				@profile.first_name = 'Norma'
-				@profile.save.should == true
+				expect(@profile.save).to eq true
 				@profile.reload
-				@profile.should have_exactly(specialty_count).specialties
+				expect(@profile.specialties.size).to eq specialty_count
 			end
 			
 			it "limits length of name" do
 				name = 'a' * Profile::MAX_LENGTHS[:specialty_names]
 				@profile.specialty_names = [name]
-				@profile.should have(:no).error_on(:specialty_names)
+				expect(@profile.error_on(:specialty_names).size).to eq 0
 				@profile.specialty_names = [name + 'a']
-				@profile.should have(1).error_on(:specialty_names)
+				expect(@profile.error_on(:specialty_names).size).to eq 1
 			end
 			
 			it "filters out blanks and strips" do
 				name = 'theremin instruction'
 				@profile.specialty_names = [nil, '', ' ', " #{name} "]
-				@profile.should have(:no).errors_on(:specialty_names)
-				@profile.should have(1).specialty_name
-				@profile.specialty_names.first.should == name
+				expect(@profile.errors_on(:specialty_names).size).to eq 0
+				expect(@profile.specialty_names.size).to eq 1
+				expect(@profile.specialty_names.first).to eq name
 			end
 		end
 		
@@ -219,32 +219,32 @@ describe Profile do
 			it "merges custom specialties" do
 				custom = [@profile_data[:specialties].first.name, 'parenting support']
 				@profile.custom_specialty_names = custom
-				@profile.save.should == true
+				expect(@profile.save).to eq true
 				profile = Profile.find_by_last_name(@profile_data[:last_name])
-				profile.should have_exactly(@profile_data[:specialties].size + 1).specialties
-				profile.specialties.collect(&:name).include?(custom.last).should be_true
+				expect(profile.specialties.size).to eq (@profile_data[:specialties].size + 1)
+				expect(profile.specialties.collect(&:name).include?(custom.last)).to be_truthy
 			end
 			
 			it "limits length of name" do
 				name = 'a' * Profile::MAX_LENGTHS[:custom_specialty_names]
 				@profile.custom_specialty_names = [name]
-				@profile.should have(:no).error_on(:custom_specialty_names)
+				expect(@profile.error_on(:custom_specialty_names).size).to eq 0
 				@profile.custom_specialty_names = [name + 'a']
-				@profile.should have(1).error_on(:custom_specialty_names)
+				expect(@profile.error_on(:custom_specialty_names).size).to eq 1
 			end
 			
 			it "filters out blanks and strips" do
 				name = 'theremin instruction'
 				@profile.custom_specialty_names = [nil, '', ' ', " #{name} "]
-				@profile.should have(:no).errors_on(:custom_specialty_names)
-				@profile.should have(1).custom_specialty_name
-				@profile.custom_specialty_names.first.should == name
+				expect(@profile.errors_on(:custom_specialty_names).size).to eq 0
+				expect(@profile.custom_specialty_names.size).to eq 1
+				expect(@profile.custom_specialty_names.first).to eq name
 			end
 		end
 		
 		it "stores a text description of specialties" do
 			@profile.specialties_description = 'methods of parenting, parent/child communication, parenting through separation and divorce'
-			@profile.should have(:no).errors_on(:specialties_description)
+			expect(@profile.errors_on(:specialties_description).size).to eq 0
 		end
 	end
 	
@@ -255,59 +255,59 @@ describe Profile do
 			@profile.consult_by_video = false
 			@profile.visit_home = true
 			@profile.visit_school = false
-			@profile.should have(:no).errors_on(:consult_by_email)
-			@profile.should have(:no).errors_on(:consult_by_phone)
-			@profile.should have(:no).errors_on(:consult_by_video)
-			@profile.should have(:no).errors_on(:visit_home)
-			@profile.should have(:no).errors_on(:visit_school)
+			expect(@profile.errors_on(:consult_by_email).size).to eq 0
+			expect(@profile.errors_on(:consult_by_phone).size).to eq 0
+			expect(@profile.errors_on(:consult_by_video).size).to eq 0
+			expect(@profile.errors_on(:visit_home).size).to eq 0
+			expect(@profile.errors_on(:visit_school).size).to eq 0
 		end
 		
 		it "stores consultation option for providers that offer most or all of their services remotely" do
 			@profile.consult_remotely = true
-			@profile.should have(:no).errors_on(:consult_remotely)
+			expect(@profile.errors_on(:consult_remotely).size).to eq 0
 		end
 	end
 	
 	context "hours" do
 		it "stores a description of hours" do
 			@profile.hours = "9:00 AM to 5:00 PM, MWF\n11:00 AM to 3:00 PM, TuTh"
-			@profile.should have(:no).errors_on(:hours)
+			expect(@profile.errors_on(:hours).size).to eq 0
 		end
 		
 		it "has checkable options" do
 			@profile.evening_hours_available = true
 			@profile.weekend_hours_available = true
-			@profile.should have(:no).errors_on(:evening_hours_available)
-			@profile.should have(:no).errors_on(:weekend_hours_available)
+			expect(@profile.errors_on(:evening_hours_available).size).to eq 0
+			expect(@profile.errors_on(:weekend_hours_available).size).to eq 0
 		end
 	end
 	
 	context "pricing" do
 		it "stores a description of pricing" do
 			@profile.pricing = "$1/minute\n$40/15 minutes\n$120/hour"
-			@profile.should have(:no).errors_on(:pricing)
+			expect(@profile.errors_on(:pricing).size).to eq 0
 		end
 		
 		it "has checkable options" do
 			@profile.free_initial_consult = true
 			@profile.sliding_scale_available = true
 			@profile.financial_aid_available = true
-			@profile.should have(:no).errors_on(:free_initial_consult)
-			@profile.should have(:no).errors_on(:sliding_scale_available)
-			@profile.should have(:no).errors_on(:financial_aid_available)
+			expect(@profile.errors_on(:free_initial_consult).size).to eq 0
+			expect(@profile.errors_on(:sliding_scale_available).size).to eq 0
+			expect(@profile.errors_on(:financial_aid_available).size).to eq 0
 		end
 	end
 	
 	context "locations" do
 		it "has multiple locations" do
 			@profile.locations.build(city: 'Albuquerque', region: 'NM')
-			@profile.should have(:no).errors_on(:locations)
-			@profile.locations.first.should have(:no).errors_on(:city)
-			@profile.locations.first.should have(:no).errors_on(:region)
+			expect(@profile.errors_on(:locations).size).to eq 0
+			expect(@profile.locations.first.errors_on(:city).size).to eq 0
+			expect(@profile.locations.first.errors_on(:region).size).to eq 0
 			@profile.locations.build(city: 'Manteca', region: 'CA')
-			@profile.should have(:no).errors_on(:locations)
-			@profile.locations.last.should have(:no).errors_on(:city)
-			@profile.locations.last.should have(:no).errors_on(:region)
+			expect(@profile.errors_on(:locations).size).to eq 0
+			expect(@profile.locations.last.errors_on(:city).size).to eq 0
+			expect(@profile.locations.last.errors_on(:region).size).to eq 0
 		end
 		
 		it "should update the locations count cache even when the location has been created first" do
@@ -316,7 +316,7 @@ describe Profile do
 			profile.reload
 			# The count method on the association always does a database query,
 			# so it's a reliable count of the associated location records.
-			profile.locations_count.should == profile.locations.count
+			expect(profile.locations_count).to eq profile.locations.count
 		end
 		
 		it "should have a list of displayable locations" do
@@ -324,18 +324,18 @@ describe Profile do
 			profile.locations = []
 			profile.locations.build(phone: '1-505-555-1001')
 			profile.locations.build(city: 'Albuquerque', region: 'NM')
-			profile.displayable_sorted_locations.count.should == 1
+			expect(profile.displayable_sorted_locations.count).to eq 1
 		end
 	end
 	
 	context "reviews" do
 		it "has multiple reviews" do
 			@profile.reviews.build(body: 'This provider is fantastic!', reviewer_username: 'reviewer1234')
-			@profile.should have(:no).errors_on(:reviews)
-			@profile.reviews.first.should have(:no).errors_on(:body)
+			expect(@profile.errors_on(:reviews).size).to eq 0
+			expect(@profile.reviews.first.errors_on(:body).size).to eq 0
 			@profile.reviews.build(body: 'This provider is adequate.', reviewer_username: 'reviewer1234')
-			@profile.should have(:no).errors_on(:reviews)
-			@profile.reviews.last.should have(:no).errors_on(:body)
+			expect(@profile.errors_on(:reviews).size).to eq 0
+			expect(@profile.reviews.last.errors_on(:body).size).to eq 0
 		end
 		
 		it "should update the reviews count cache even when the review has been created first" do
@@ -344,7 +344,7 @@ describe Profile do
 			profile.reload
 			# The count method on the association always does a database query,
 			# so it's a reliable count of the associated review records.
-			profile.reviews_count.should == profile.reviews.count
+			expect(profile.reviews_count).to eq profile.reviews.count
 		end
 	end
 	
@@ -357,11 +357,11 @@ describe Profile do
 			end
 		
 			it "does not require an exact match of query terms when searching profiles" do
-				Profile.fuzzy_search('famous Swedish sopranos').results.include?(@profile).should be_true
+				expect(Profile.fuzzy_search('famous Swedish sopranos').results.include?(@profile)).to be_truthy
 			end
 		
 			it "requires at least two query terms to match out of three" do
-				Profile.fuzzy_search('famous Swedish tenors').results.include?(@profile).should be_false
+				expect(Profile.fuzzy_search('famous Swedish tenors').results.include?(@profile)).to be_falsey
 			end
 		end
 		
@@ -377,9 +377,9 @@ describe Profile do
 				Profile.reindex
 				Sunspot.commit
 				results = Profile.fuzzy_search(@summary_1).results
-				results.should have(2).things
-				results.first.should == @profile_1
-				results.second.should == @profile_2
+				expect(results.size).to eq 2
+				expect(results.first).to eq @profile_1
+				expect(results.second).to eq @profile_2
 			end
 		
 			context "geographic", geocoding_api: true, internet: true do
@@ -397,65 +397,65 @@ describe Profile do
 				it "orders results by distance from a given latitude and longitude" do
 					# Order wrt @geocode_2, so expect @profile_2 first.
 					results = Profile.fuzzy_search(@summary_1, order_by_distance: @geocode_2).results
-					results.should have(2).things
-					results.first.should == @profile_2
-					results.second.should == @profile_1
+					expect(results.size).to eq 2
+					expect(results.first).to eq @profile_2
+					expect(results.second).to eq @profile_1
 				end
 				
 				it "orders results by distance from a postal code" do
 					# Order wrt @location_2.postal_code, so expect @profile_2 first.
 					location = Location.new(postal_code: @location_2.postal_code)
 					results = Profile.fuzzy_search(@summary_1, location: location).results
-					results.should have(2).things
-					results.first.should == @profile_2
-					results.second.should == @profile_1
+					expect(results.size).to eq 2
+					expect(results.first).to eq @profile_2
+					expect(results.second).to eq @profile_1
 				end
 				
 				it "orders results by distance from a city" do
 					# Order wrt @location_2 city and state, so expect @profile_2 first.
 					location = Location.new(city: @location_2.city, region: @location_2.region)
 					results = Profile.fuzzy_search(@summary_1, location: location).results
-					results.should have(2).things
-					results.first.should == @profile_2
-					results.second.should == @profile_1
+					expect(results.size).to eq 2
+					expect(results.first).to eq @profile_2
+					expect(results.second).to eq @profile_1
 				end
 				
 				it "excludes results outside of a given radius" do
 					# Assuming @geocode_1 and @geocode_2 are more than 0.5 km apart, we should only see one.
 					results = Profile.fuzzy_search(@summary_1, within_radius: @geocode_1.merge(radius_km: 0.5)).results
-					results.should have(1).thing
-					results.first.should == @profile_1
+					expect(results.size).to eq 1
+					expect(results.first).to eq @profile_1
 				end
 				
 				it "includes results within a given radius" do
 					# Assuming @geocode_1 and @geocode_2 are less than 100 km apart, we should see both.
 					results = Profile.fuzzy_search(@summary_1, within_radius: @geocode_1.merge(radius_km: 100)).results
-					results.should have(2).things
+					expect(results.size).to eq 2
 				end
 				
 				context "using address option" do
 					it "orders results by distance from a postal code" do
 						# Order wrt @location_2.postal_code, so expect @profile_2 first.
 						results = Profile.fuzzy_search(@summary_1, address: @location_2.postal_code).results
-						results.should have(2).things
-						results.first.should == @profile_2
-						results.second.should == @profile_1
+						expect(results.size).to eq 2
+						expect(results.first).to eq @profile_2
+						expect(results.second).to eq @profile_1
 					end
 				
 					it "orders results by distance from a city" do
 						# Order wrt @location_2 city and state, so expect @profile_2 first.
 						results = Profile.fuzzy_search(@summary_1, address: "#{@location_2.city}, #{@location_2.region}").results
-						results.should have(2).things
-						results.first.should == @profile_2
-						results.second.should == @profile_1
+						expect(results.size).to eq 2
+						expect(results.first).to eq @profile_2
+						expect(results.second).to eq @profile_1
 					end
 				
 					it "orders results by distance from a city with postal code" do
 						# Order wrt @location_2 city, state, and postal code, so expect @profile_2 first.
 						results = Profile.fuzzy_search(@summary_1, address: "#{@location_2.city}, #{@location_2.region} #{@location_2.postal_code}").results
-						results.should have(2).things
-						results.first.should == @profile_2
-						results.second.should == @profile_1
+						expect(results.size).to eq 2
+						expect(results.first).to eq @profile_2
+						expect(results.second).to eq @profile_1
 					end
 				end
 			end
@@ -469,11 +469,11 @@ describe Profile do
 			end
 		
 			it "should return 4 results for the first page" do
-				Profile.fuzzy_search('moonlight', per_page: '4').should have(4).results
+				expect(Profile.fuzzy_search('moonlight', per_page: '4').results.size).to eq 4
 			end
 		
 			it "should return 2 results for the third page" do
-				Profile.fuzzy_search('moonlight', per_page: '4', page: 3).should have(2).results
+				expect(Profile.fuzzy_search('moonlight', per_page: '4', page: 3).results.size).to eq 2
 			end
 		end
 		
@@ -490,15 +490,15 @@ describe Profile do
 		
 			it "should list first the profiles with the service assigned to them" do
 				search = Profile.search_by_service service
-				search.should have(2).results
-				search.results.first.should == profile_with_service
-				search.results.second.should == profile_with_name
+				expect(search.results.size).to eq 2
+				expect(search.results.first).to eq profile_with_service
+				expect(search.results.second).to eq profile_with_name
 			end
 		
 			it "should ONLY find profiles with the service assigned to them" do
 				search = Profile.fuzzy_search service.name, service_id: service.id
-				search.should have(1).result
-				search.results.first.should == profile_with_service
+				expect(search.results.size).to eq 1
+				expect(search.results.first).to eq profile_with_service
 			end
 		end
 		
@@ -509,7 +509,7 @@ describe Profile do
 			end
 			
 			it "should return no results if no query is supplied to a fuzzy search" do
-				Profile.fuzzy_search('').should have(:no).results
+				expect(Profile.fuzzy_search('').results.size).to eq 0
 			end
 		end
 	end
@@ -522,9 +522,9 @@ describe Profile do
 				:hours, :admin_notes, :availability_service_area_note].each do |attr|
 				s = 'a' * Profile::MAX_LENGTHS[attr]
 				@profile.send "#{attr}=", s
-				@profile.should have(:no).errors_on(attr)
+				expect(@profile.errors_on(attr).size).to eq 0
 				@profile.send "#{attr}=", (s + 'a')
-				@profile.should have(1).error_on(attr)
+				expect(@profile.error_on(attr).size).to eq 1
 			end
 		end
 	end
@@ -541,10 +541,10 @@ describe Profile do
 		
 		context "when profile is NOT saved before invitation is attempted" do
 			it "does not send invitation email" do
-				message = mock('message')
-				ProfileMailer.stub(:invite).and_return(message)
-				ProfileMailer.should_not_receive(:invite)
-				message.should_not_receive(:deliver)
+				message = double('message')
+				allow(ProfileMailer).to receive(:invite).and_return(message)
+				expect(ProfileMailer).not_to receive(:invite)
+				expect(message).not_to receive(:deliver)
 				@profile.invite subject, body
 			end
 		end
@@ -556,35 +556,35 @@ describe Profile do
 			end
 		
 			it "sends invitation email" do
-				message = mock('message')
-				@profile.stub(:generate_token).and_return(delivery_token)
-				ProfileMailer.should_receive(:invite).with(recipient, subject, body, @profile, delivery_token, false).and_return(message)
-				message.should_receive(:deliver)
+				message = double('message')
+				allow(@profile).to receive(:generate_token).and_return(delivery_token)
+				expect(ProfileMailer).to receive(:invite).with(recipient, subject, body, @profile, delivery_token, false).and_return(message)
+				expect(message).to receive(:deliver)
 				@profile.invite subject, body
 			end
 			
 			context "invitation attributes are properly set" do
 				before(:each) do
 					@profile.invite subject, body
-					@profile.should have(:no).errors
+					expect(@profile.errors.size).to eq 0
 				end
 				
 				it "sets invitation token" do
-					@profile.invitation_token.should be_present
+					expect(@profile.invitation_token).to be_present
 				end
 				
 				it "tracks invitation recipient" do
-					@profile.email_deliveries.where(recipient: recipient, email_type: 'invitation').last.should be_present
+					expect(@profile.email_deliveries.where(recipient: recipient, email_type: 'invitation').last).to be_present
 				end
 			
 				it "tracks invitation delivery time" do
-					(delivery = @profile.email_deliveries.where(recipient: recipient, email_type: 'invitation').last).should be_present
-					delivery.created_at.to_f.should be_within(600).of(Time.zone.now.to_f) # be generous: within 10 minutes
+					expect(delivery = @profile.email_deliveries.where(recipient: recipient, email_type: 'invitation').last).to be_present
+					expect(delivery.created_at.to_f).to be_within(600).of(Time.zone.now.to_f) # be generous: within 10 minutes
 				end
 			
 				it "has a tracking category" do
-					(delivery = @profile.email_deliveries.where(recipient: recipient, email_type: 'invitation').last).should be_present
-					delivery.tracking_category.should == @profile.invitation_tracking_category
+					expect(delivery = @profile.email_deliveries.where(recipient: recipient, email_type: 'invitation').last).to be_present
+					expect(delivery.tracking_category).to eq @profile.invitation_tracking_category
 				end
 			end
 		end
@@ -593,10 +593,10 @@ describe Profile do
 			it "should not send an invitation email" do
 				@profile.user = FactoryGirl.create(:expert_user)
 				@profile.save
-				message = mock('message')
-				ProfileMailer.stub(:invite).and_return(message)
-				ProfileMailer.should_not_receive(:invite)
-				message.should_not_receive(:deliver)
+				message = double('message')
+				allow(ProfileMailer).to receive(:invite).and_return(message)
+				expect(ProfileMailer).not_to receive(:invite)
+				expect(message).not_to receive(:deliver)
 				@profile.invite subject, body
 			end
 		end
@@ -606,7 +606,7 @@ describe Profile do
 		admin_notes = 'Contact this provider'
 		@profile.admin_notes = admin_notes
 		@profile.save
-		Profile.with_admin_notes.first.admin_notes.should == admin_notes
+		expect(Profile.with_admin_notes.first.admin_notes).to eq admin_notes
 	end
 	
 	context "ratings" do
@@ -622,24 +622,24 @@ describe Profile do
 		end
 		
 		it "maintains an average rating score" do
-			profile_to_rate.reload.rating_average_score.should be_within(0.01).of(2.5)
+			expect(profile_to_rate.reload.rating_average_score).to be_within(0.01).of(2.5)
 		end
 		
 		it "can rerate a review" do
 			profile_to_rate.reload.rate 4, zeus
-			profile_to_rate.reload.rating_average_score.should be_within(0.01).of(3.5)
+			expect(profile_to_rate.reload.rating_average_score).to be_within(0.01).of(3.5)
 		end
 		
 		it "can remove a rating" do
 			profile_to_rate.reload.rate nil, zeus
-			profile_to_rate.reload.rating_average_score.should be_within(0.01).of(3)
+			expect(profile_to_rate.reload.rating_average_score).to be_within(0.01).of(3)
 		end
 		
 		it "should update the ratings count cache" do
 			profile_to_rate.reload
 			# The count method on the association always does a database query,
 			# so it's a reliable count of the associated rating records.
-			profile_to_rate.ratings_count.should == profile_to_rate.ratings.count
+			expect(profile_to_rate.ratings_count).to eq profile_to_rate.ratings.count
 		end
 	end
 	
@@ -649,12 +649,12 @@ describe Profile do
 		end
 		
 		it "is not my profile" do
-			@profile.should_not be_owned_by(@me)
+			expect(@profile).not_to be_owned_by(@me)
 		end
 		
 		it "is my profile" do
 			@me.profile = @profile
-			@profile.should be_owned_by(@me)
+			expect(@profile).to be_owned_by(@me)
 		end
 	end
 	
@@ -666,49 +666,50 @@ describe Profile do
 		
 		it "accepts clients from first two age ranges" do
 			profile.age_ranges = [first_age_range, second_age_range]
-			profile.age_ranges.include?(first_age_range).should be_true
-			profile.age_ranges.include?(second_age_range).should be_true
+			expect(profile.age_ranges.include?(first_age_range)).to be_truthy
+			expect(profile.age_ranges.include?(second_age_range)).to be_truthy
 		end
 		
 		it "does not accept clients from first age range" do
 			profile.age_ranges = [second_age_range]
-			profile.age_ranges.include?(first_age_range).should be_false
+			expect(profile.age_ranges.include?(first_age_range)).to be_falsey
 		end
 		
 		it "exposes its sorted age range names" do
 			profile.age_ranges = [second_age_range, first_age_range]
-			profile.should have(2).age_range_names
-			(names = profile.age_range_names).first.should == first_age_range.name
-			names.second.should == second_age_range.name
+			expect(profile.age_ranges.size).to eq 2
+			names = profile.age_range_names
+			expect(names.first).to eq first_age_range.name
+			expect(names.second).to eq second_age_range.name
 		end
 		
 		it "displays its age ranges" do
 			profile.age_ranges = [first_age_range, second_age_range]
-			profile.display_age_ranges.include?(first_age_range.name).should be_true
-			profile.display_age_ranges.include?(second_age_range.name).should be_true
+			expect(profile.display_age_ranges.include?(first_age_range.name)).to be_truthy
+			expect(profile.display_age_ranges.include?(second_age_range.name)).to be_truthy
 		end
 		
 		it "does not expose retired age ranges" do
 			profile.age_ranges = [first_age_range, retired_age_range]
-			profile.should have(1).age_range
-			profile.age_ranges.include?(retired_age_range).should be_false
+			expect(profile.age_ranges.size).to eq 1
+			expect(profile.age_ranges.include?(retired_age_range)).to be_falsey
 		end
 		
 		it "has a comment field" do
 			profile.ages_stages_note = note = 'Lorem ipsum'
-			profile.ages_stages_note.should == note
+			expect(profile.ages_stages_note).to eq note
 		end
 	end
 	
 	context "year started" do
 		it "accepts a four digit year" do
 			@profile.year_started = '1998'
-			@profile.should have(:no).errors_on(:year_started)
+			expect(@profile.errors_on(:year_started).size).to eq 0
 		end
 		
 		it "accepts alphanumeric text" do
 			@profile.year_started = 'Institute established: 1953; Day School established: 1973'
-			@profile.should have(:no).errors_on(:year_started)
+			expect(@profile.errors_on(:year_started).size).to eq 0
 		end
 	end
 	
@@ -716,14 +717,14 @@ describe Profile do
 		it "accepts a valid email address" do
 			[:email, :invitation_email].each do |attr|
 				@profile.send "#{attr}=", 'a@b.com'
-				@profile.should have(:no).errors_on(attr)
+				expect(@profile.errors_on(attr).size).to eq 0
 			end
 		end
 		
 		it "rejects an invalid email address" do
 			[:email, :invitation_email].each do |attr|
 				@profile.send "#{attr}=", 'a@b.'
-				@profile.should have(1).error_on(attr)
+				expect(@profile.error_on(attr).size).to eq 1
 			end
 		end
 	end
@@ -731,24 +732,24 @@ describe Profile do
 	it "automatically strips leading and trailing whitespace from selected attributes" do
 		email = 'a@b.com'
 		@profile.email = " #{email} "
-		@profile.should have(:no).errors_on(:email)
-		@profile.email.should == email
+		expect(@profile.errors_on(:email).size).to eq 0
+		expect(@profile.email).to eq email
 	end
 	
 	context "claimable profile" do
 		it "finds a claimable profile by its claim token" do
 			profile = FactoryGirl.create :claimable_profile
-			Profile.find_claimable(profile.invitation_token).should == profile
+			expect(Profile.find_claimable(profile.invitation_token)).to eq profile
 		end
 		
 		it "does not return a profile with no claim token" do
 			profile = FactoryGirl.create :unclaimable_profile
-			Profile.find_claimable(profile.invitation_token).should be_nil
+			expect(Profile.find_claimable(profile.invitation_token)).to be_nil
 		end
 		
 		it "does not return a profile that has been claimed" do
 			profile = FactoryGirl.create :claimed_profile
-			Profile.find_claimable(profile.invitation_token).should be_nil
+			expect(Profile.find_claimable(profile.invitation_token)).to be_nil
 		end
 	end
 
@@ -768,7 +769,7 @@ describe Profile do
 				update_existing: true
 			}
 			# We can do the following because we are mocking the lists API.
-			Gibbon::API.new.lists.should_receive(:subscribe).with(opts).once
+			expect(Gibbon::API.new.lists).to receive(:subscribe).with(opts).once
 			@profile.save
 		end
 	end

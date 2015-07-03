@@ -3,8 +3,8 @@ require 'spec_helper'
 def destroys_unattached_profile
 	id = FactoryGirl.create(:profile).id
 	delete :destroy, id: id
-	response.should redirect_to(controller: 'profiles', action: 'admin')
-	Profile.find_by_id(id).should be_nil
+	expect(response).to redirect_to(controller: 'profiles', action: 'admin')
+	expect(Profile.find_by_id(id)).to be_nil
 end
 
 def protects_attached_profile
@@ -14,11 +14,11 @@ def protects_attached_profile
 	user.profile = profile
 	user.save
 	delete :destroy, id: id
-	response.should redirect_to(root_path)
-	Profile.find_by_id(id).should_not be_nil
+	expect(response).to redirect_to(root_path)
+	expect(Profile.find_by_id(id)).not_to be_nil
 end
 
-describe ProfilesController do
+describe ProfilesController, :type => :controller do
 	let(:photo_url) { 'https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png' }
 	
 	context "as site visitor attempting to access a published profile" do
@@ -32,18 +32,18 @@ describe ProfilesController do
 			end
 			
 			it "renders the view" do
-				response.should render_template('show')
+				expect(response).to render_template('show')
 			end
 			
 			it "assigns @profile" do
-				assigns[:profile].should == @profile
+				expect(assigns[:profile]).to eq @profile
 			end
 		end
 		
 		describe "GET 'edit'" do
 			it "can not render the view" do
 				get :edit, id: @profile.id
-				response.should_not render_template('edit')
+				expect(response).not_to render_template('edit')
 			end
 		end
 	end
@@ -56,14 +56,14 @@ describe ProfilesController do
 		describe "GET 'show'" do
 			it "can not render the view" do
 				get :show, id: @profile.id
-				response.should_not render_template('show')
+				expect(response).not_to render_template('show')
 			end
 		end
 		
 		describe "GET 'edit'" do
 			it "can not render the view" do
 				get :edit, id: @profile.id
-				response.should_not render_template('edit')
+				expect(response).not_to render_template('edit')
 			end
 		end
 	end
@@ -74,8 +74,8 @@ describe ProfilesController do
 				id = FactoryGirl.create(:profile).id
 				headline = 'Koji Tano'
 				put :update, id: id, profile: FactoryGirl.attributes_for(:profile, headline: headline)
-				response.should_not redirect_to(controller: 'profiles', action: 'show', id: id)
-				Profile.find_by_id(id).headline.should_not == headline
+				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: id)
+				expect(Profile.find_by_id(id).headline).not_to eq headline
 			end
 		end
 		describe "POST 'photo_update'", :photo_upload => true do
@@ -83,7 +83,7 @@ describe ProfilesController do
 				id = FactoryGirl.create(:profile).id
 				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 'image/png')
 				post :photo_update, id: id, file: @photo_file
-				response.status.should eq(302)
+				expect(response.status).to eq(302)
 				expect(Profile.find_by_id(id).profile_photo.original_filename).to_not eq("profile_photo_test_under1MB.jpg")
 				@photo_file.close
 			end
@@ -95,8 +95,8 @@ describe ProfilesController do
 			it "should not destroy a profile" do
 				id = FactoryGirl.create(:profile).id
 				delete :destroy, id: id
-				response.should redirect_to(new_user_session_path)
-				Profile.find_by_id(id).should_not be_nil
+				expect(response).to redirect_to(new_user_session_path)
+				expect(Profile.find_by_id(id)).not_to be_nil
 			end
 		end
 	end
@@ -113,8 +113,8 @@ describe ProfilesController do
 				id = FactoryGirl.create(:profile).id
 				headline = 'Koji Tano'
 				put :update, id: id, profile: FactoryGirl.attributes_for(:profile, headline: headline)
-				response.should_not redirect_to(controller: 'profiles', action: 'show', id: id)
-				Profile.find_by_id(id).headline.should_not == headline
+				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: id)
+				expect(Profile.find_by_id(id).headline).not_to eq headline
 			end
 		end
 
@@ -123,7 +123,7 @@ describe ProfilesController do
 				id = FactoryGirl.create(:profile).id
 				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 'image/png')
 				post :photo_update, id: id, file: @photo_file
-				response.status.should eq(302)
+				expect(response.status).to eq(302)
 				expect(Profile.find_by_id(id).profile_photo.original_filename).to_not eq("profile_photo_test_under1MB.jpg")
 				@photo_file.close
 			end
@@ -133,8 +133,8 @@ describe ProfilesController do
 			it "should not destroy a profile" do
 				id = FactoryGirl.create(:profile).id
 				delete :destroy, id: id
-				response.should redirect_to(root_path)
-				Profile.find_by_id(id).should_not be_nil
+				expect(response).to redirect_to(root_path)
+				expect(Profile.find_by_id(id)).not_to be_nil
 			end
 		end
 	end
@@ -153,7 +153,7 @@ describe ProfilesController do
 			describe "GET 'edit'" do
 				it "can not render the view" do
 					get :edit, id: other_published_profile_id
-					response.should_not render_template('edit')
+					expect(response).not_to render_template('edit')
 				end
 			end
 		end
@@ -161,7 +161,7 @@ describe ProfilesController do
 		describe "GET 'view_my_profile'" do
 			it "renders show" do
 				get :view_my_profile
-				response.should render_template('show')
+				expect(response).to render_template('show')
 			end
 			
 			context "ensures the provider has a profile" do
@@ -171,13 +171,13 @@ describe ProfilesController do
 				end
 			
 				it "creates a profile if needed" do
-					assigns[:profile].should_not be_nil
-					assigns[:profile].user.should == me
+					expect(assigns[:profile]).not_to be_nil
+					expect(assigns[:profile].user).to eq me
 				end
 			
 				it "creates a published profile" do
-					assigns[:profile].should_not be_nil
-					assigns[:profile].is_published.should be_true
+					expect(assigns[:profile]).not_to be_nil
+					expect(assigns[:profile].is_published).to be_truthy
 				end
 			end
 		end
@@ -185,7 +185,7 @@ describe ProfilesController do
 		describe "GET 'edit_my_profile'" do
 			it "renders edit" do
 				get :edit_my_profile
-				response.should render_template('edit')
+				expect(response).to render_template('edit')
 			end
 			
 			context "ensures the provider has a profile" do
@@ -195,13 +195,13 @@ describe ProfilesController do
 				end
 			
 				it "creates a profile if needed" do
-					assigns[:profile].should_not be_nil
-					assigns[:profile].user.should == me
+					expect(assigns[:profile]).not_to be_nil
+					expect(assigns[:profile].user).to eq me
 				end
 			
 				it "creates a published profile" do
-					assigns[:profile].should_not be_nil
-					assigns[:profile].is_published.should be_true
+					expect(assigns[:profile]).not_to be_nil
+					expect(assigns[:profile].is_published).to be_truthy
 				end
 			end
 		end
@@ -209,18 +209,18 @@ describe ProfilesController do
 		describe "PUT 'formlet_update'" do
 			it "successfully updates the profile via a formlet" do
 				put :formlet_update, id: my_profile_id, formlet: 'summary', profile: {summary: 'A short story.'}
-				response.should render_template('formlet')
+				expect(response).to render_template('formlet')
 			end
 			
 			it "successfully updates a profile attribute via a formlet" do
 				attrs = {summary: 'A short story.'}
 				put :formlet_update, id: my_profile_id, formlet: 'summary', profile: attrs
-				assigns[:profile].summary.should == attrs[:summary]
+				expect(assigns[:profile].summary).to eq attrs[:summary]
 			end
 			
 			it "cannot update a profile I don't own" do
 				put :formlet_update, id: other_published_profile_id, formlet: 'summary', profile: {summary: 'A short story.'}
-				response.should_not render_template('formlet')
+				expect(response).not_to render_template('formlet')
 			end
 			
 			it "fails to self-publish my profile" do
@@ -246,15 +246,15 @@ describe ProfilesController do
 			it "should not destroy another profile" do
 				id = other_profile_id
 				delete :destroy, id: id
-				response.should redirect_to(root_path)
-				Profile.find_by_id(id).should_not be_nil
+				expect(response).to redirect_to(root_path)
+				expect(Profile.find_by_id(id)).not_to be_nil
 			end
 			
 			it "should not destroy my profile" do
 				id = my_profile_id
 				delete :destroy, id: id
-				response.should redirect_to(root_path)
-				Profile.find_by_id(id).should_not be_nil
+				expect(response).to redirect_to(root_path)
+				expect(Profile.find_by_id(id)).not_to be_nil
 			end
 		end
 		
@@ -264,20 +264,20 @@ describe ProfilesController do
 			it "should not update another profile" do
 				id = other_profile_id
 				put :update, id: id, profile: attrs
-				response.should_not redirect_to(controller: 'profiles', action: 'show', id: id)
-				flash[:alert].should_not be_nil
+				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: id)
+				expect(flash[:alert]).not_to be_nil
 			end
 			
 			it "should not update my profile" do
 				id = my_profile_id
 				put :update, id: id, profile: attrs
-				response.should_not redirect_to(controller: 'profiles', action: 'show', id: id)
-				flash[:alert].should_not be_nil
+				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: id)
+				expect(flash[:alert]).not_to be_nil
 			end
 			
 			it "should not update a profile attribute via this action" do
 				put :update, id: my_profile_id, profile: attrs
-				assigns[:profile].first_name.should_not == attrs[:first_name]
+				expect(assigns[:profile].first_name).not_to eq attrs[:first_name]
 			end
 		end
 
@@ -290,7 +290,7 @@ describe ProfilesController do
 				id = my_profile_id
 				post :photo_update, id: id, file: @photo_file
 				@profile = Profile.find_by_id(id)
-				response.should be_success
+				expect(response).to be_success
 				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
 				expect(response.body).to include("profile_photo_test_under1MB.jpg")
 				@profile.profile_photo.destroy
@@ -301,7 +301,7 @@ describe ProfilesController do
 				id = my_profile_id
 				post :photo_update, id: id, source_url: photo_url
 				@profile = Profile.find_by_id(id)
-				response.should be_success
+				expect(response).to be_success
 				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
 				expect(response.body).to include(@profile.profile_photo.url(:original))
 				@profile.profile_photo.destroy
@@ -311,7 +311,7 @@ describe ProfilesController do
 			it "cannot update profile photo of a profile I don't own" do
 				id = other_profile_id
 				post :photo_update, id: id, file: @photo_file
-				response.status.should eq(302)
+				expect(response.status).to eq(302)
 				expect(Profile.find_by_id(id).profile_photo.original_filename).to_not eq("profile_photo_test_under1MB.jpg")
 			end
 			after(:all) do
@@ -325,12 +325,12 @@ describe ProfilesController do
 			end
 			
 			it "returns JSON" do
-				response.headers['Content-Type'].should include('application/json')
+				expect(response.headers['Content-Type']).to include('application/json')
 			end
 			
 			it "returns association information about the categories, services, and specialties attached to this profile" do
-				response.body.should include(me.profile.services.first.name)
-				response.body.should include(me.profile.specialties.first.name)
+				expect(response.body).to include(me.profile.services.first.name)
+				expect(response.body).to include(me.profile.specialties.first.name)
 			end
 		end
 		
@@ -340,11 +340,11 @@ describe ProfilesController do
 			end
 			
 			it "returns HTML" do
-				response.headers['Content-Type'].should include('text/html')
+				expect(response.headers['Content-Type']).to include('text/html')
 			end
 			
 			it "returns the provider profile" do
-				assigns[:profile].should == me.profile
+				expect(assigns[:profile]).to eq me.profile
 			end
 		end
 		
@@ -354,11 +354,11 @@ describe ProfilesController do
 			end
 			
 			it "returns HTML" do
-				response.headers['Content-Type'].should include('text/html')
+				expect(response.headers['Content-Type']).to include('text/html')
 			end
 			
 			it "returns the provider profile" do
-				assigns[:profile].should == me.profile
+				expect(assigns[:profile]).to eq me.profile
 			end
 		end
 	end
@@ -376,11 +376,11 @@ describe ProfilesController do
 			end
 		
 			it "renders the view" do
-				response.should render_template('index')
+				expect(response).to render_template('index')
 			end
 		
 			it "assigns @profiles" do
-				assigns[:profiles].should == Profile.all
+				expect(assigns[:profiles]).to eq Profile.all
 			end
 		end
 	
@@ -390,11 +390,11 @@ describe ProfilesController do
 			end
 		
 			it "renders the view" do
-				response.should render_template('new')
+				expect(response).to render_template('new')
 			end
 		
 			it "assigns @profile" do
-				assigns[:profile].should_not be_nil
+				expect(assigns[:profile]).not_to be_nil
 			end
 		end
 	
@@ -408,15 +408,15 @@ describe ProfilesController do
 		
 			it "successfully creates the profile" do
 				post :create, profile: @profile_attrs
-				response.should redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
-				flash[:notice].should_not be_nil
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
+				expect(flash[:notice]).not_to be_nil
 			end
 		
 			it "can create the profile with no last name" do
 				@profile_attrs[:last_name] = ''
 				post :create, profile: @profile_attrs
-				response.should redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
-				flash[:notice].should_not be_nil
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
+				expect(flash[:notice]).not_to be_nil
 			end
 		end
 	
@@ -427,15 +427,15 @@ describe ProfilesController do
 			end
 		
 			it "renders the view" do
-				response.should render_template('edit')
+				expect(response).to render_template('edit')
 			end
 		
 			it "assigns @profile" do
-				assigns[:profile].should == @profile
+				expect(assigns[:profile]).to eq @profile
 			end
 			
 			it "ensures the profile has a location record to edit or fill in" do
-				assigns[:profile].should have_at_least(1).location
+				expect(assigns[:profile].locations.size).to be >= 1
 			end
 		end
 	
@@ -451,15 +451,15 @@ describe ProfilesController do
 		
 			it "successfully updates the profile" do
 				put :update, id: @profile.id, profile: @profile_attrs
-				response.should redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
-				flash[:notice].should_not be_nil
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
+				expect(flash[:notice]).not_to be_nil
 			end
 		
 			it "can update the profile with no last name" do
 				@profile_attrs[:last_name] = ''
 				put :update, id: @profile.id, profile: @profile_attrs
-				response.should redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
-				flash[:notice].should_not be_nil
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
+				expect(flash[:notice]).not_to be_nil
 			end
 		end
 
@@ -472,7 +472,7 @@ describe ProfilesController do
 				@photo_file = Rack::Test::UploadedFile.new(
 					Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 'image/png')
 				post :photo_update, id: id, file: @photo_file
-				response.should be_success
+				expect(response).to be_success
 				expect(Profile.find_by_id(id).profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
 				expect(response.body).to include("profile_photo_test_under1MB.jpg")
 				@photo_file.close
@@ -483,7 +483,7 @@ describe ProfilesController do
 				id = @profile.id
 				post :photo_update, id: id, source_url: photo_url
 				@profile = Profile.find_by_id(id)
-				response.should be_success
+				expect(response).to be_success
 				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
 				expect(response.body).to include(@profile.profile_photo.url(:original))
 				@profile.profile_photo.destroy
@@ -518,14 +518,14 @@ describe ProfilesController do
 			it "renders the view" do
 				@eddie = FactoryGirl.create(:expert_user, email: 'eddie@example.com')
 				get :index
-				response.should render_template('index')
+				expect(response).to render_template('index')
 			end
 		end
 	
 		describe "GET 'new'" do
 			it "renders the view" do
 				get :new
-				response.should render_template('new')
+				expect(response).to render_template('new')
 			end
 		end
 	
@@ -536,14 +536,14 @@ describe ProfilesController do
 						category_ids: ["#{FactoryGirl.create(:category).id}"],
 						specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
 				post :create, profile: @profile_attrs
-				response.should redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
-				flash[:notice].should_not be_nil
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
+				expect(flash[:notice]).not_to be_nil
 			end
 			
 			it "successfully creates the profile from the admin page" do
 				post :create, profile: FactoryGirl.attributes_for(:profile), admin: true
-				response.should redirect_to(controller: 'profiles', action: 'edit', id: assigns[:profile].id)
-				flash[:notice].should_not be_nil
+				expect(response).to redirect_to(controller: 'profiles', action: 'edit', id: assigns[:profile].id)
+				expect(flash[:notice]).not_to be_nil
 			end
 		end
 	
@@ -551,7 +551,7 @@ describe ProfilesController do
 			it "renders the view" do
 				@profile = FactoryGirl.create(:profile)
 				get :edit, id: @profile.id
-				response.should render_template('edit')
+				expect(response).to render_template('edit')
 			end
 		end
 	
@@ -563,8 +563,8 @@ describe ProfilesController do
 						specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
 				@profile = FactoryGirl.create(:profile)
 				put :update, id: @profile.id, profile: @profile_attrs
-				response.should redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
-				flash[:notice].should_not be_nil
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
+				expect(flash[:notice]).not_to be_nil
 			end
 		end
 
@@ -579,7 +579,7 @@ describe ProfilesController do
 					'image/png')
 				@profile.profile_photo = @photo_file
 				post :photo_update, id: id, file: @photo_file
-				response.should be_success
+				expect(response).to be_success
 				expect(Profile.find_by_id(id).profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
 				expect(response.body).to include("profile_photo_test_under1MB.jpg")
 			end
@@ -587,19 +587,19 @@ describe ProfilesController do
 				id = @profile.id
 				post :photo_update, id: id, source_url: photo_url
 				@profile = Profile.find_by_id(id)
-				response.should be_success
+				expect(response).to be_success
 				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
 				expect(response.body).to include(@profile.profile_photo.url(:original))
 			end
 			it "should not upload empty file" do
 				post :photo_update, id: @profile.id, file: ''
-				response.status.should eq(400)
+				expect(response.status).to eq(400)
 			end
 			it "should not upload file over 5MB in size" do
 				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/6MB.jpg'))
 				@profile.profile_photo = @photo_file
 				post :photo_update, id: @profile.id, file: @photo_file
-				response.should be_success
+				expect(response).to be_success
 				expect(response.body).to include(I18n.t("controllers.profiles.profile_photo_filesize_error"))
 			end
 			it "should not upload non-image file" do
@@ -607,7 +607,7 @@ describe ProfilesController do
 				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'))
 				@profile.profile_photo = @photo_file
 				post :photo_update, id: @profile.id, file: @photo_file
-				response.should be_success
+				expect(response).to be_success
 				expect(response.body).to include(I18n.t("controllers.profiles.profile_photo_filetype_error"))
 			end
 			after(:each) do
@@ -637,11 +637,11 @@ describe ProfilesController do
 			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, locations_attributes: {
 				'0' => location_1_attrs, '1' => location_2_attrs
 			})
-			response.should redirect_to(controller: 'profiles', action: 'show', id: profile.id)
-			assigns[:profile].should have(2).locations
+			expect(response).to redirect_to(controller: 'profiles', action: 'show', id: profile.id)
+			expect(assigns[:profile].locations.size).to eq 2
 			addresses = [location_1_attrs[:address1], location_2_attrs[:address1]]
-			addresses.include?(assigns[:profile].locations[0].address1).should be_true
-			addresses.include?(assigns[:profile].locations[1].address1).should be_true
+			expect(addresses.include?(assigns[:profile].locations[0].address1)).to be_truthy
+			expect(addresses.include?(assigns[:profile].locations[1].address1)).to be_truthy
 		end
 	end
 	
@@ -653,11 +653,11 @@ describe ProfilesController do
 		end
 		
 		it "should assign published profiles" do
-			assigns[:profiles].include?(@published_profile).should be_true
+			expect(assigns[:profiles].include?(@published_profile)).to be_truthy
 		end
 		
 		it "should not assign unpublished profiles" do
-			assigns[:profiles].include?(@unpublished_profile).should_not be_true
+			expect(assigns[:profiles].include?(@unpublished_profile)).not_to be_truthy
 		end
 	end
 	
@@ -671,23 +671,23 @@ describe ProfilesController do
 		
 		it "should show search results" do
 			get :search, query: @published_profile.last_name
-			response.should render_template(:search_results)
+			expect(response).to render_template(:search_results)
 		end
 		
 		it "should assign search results" do
 			get :search, query: @published_profile.last_name
-			assigns[:search].should have_at_least(1).result
+			expect(assigns[:search].results.size).to be >= 1
 		end
 		
 		context "visitor is not known" do
 			it "should assign published profiles" do
 				get :search, query: @published_profile.last_name
-				assigns[:search].results.include?(@published_profile).should be_true
+				expect(assigns[:search].results.include?(@published_profile)).to be_truthy
 			end
 			
 			it "should not assign unpublished profiles" do
 				get :search, query: @unpublished_profile.last_name
-				assigns[:search].results.include?(@unpublished_profile).should_not be_true
+				expect(assigns[:search].results.include?(@unpublished_profile)).not_to be_truthy
 			end
 		end
 		
@@ -699,7 +699,7 @@ describe ProfilesController do
 			
 			it "should assign unpublished profiles" do
 				get :search, query: @unpublished_profile.last_name
-				assigns[:search].results.include?(@unpublished_profile).should be_true
+				expect(assigns[:search].results.include?(@unpublished_profile)).to be_truthy
 			end
 		end
 		
@@ -715,11 +715,11 @@ describe ProfilesController do
 			end
 			
 			it "should assign profiles that have the search area tag" do
-				assigns[:search].results.include?(@published_sf_profile).should be_true
+				expect(assigns[:search].results.include?(@published_sf_profile)).to be_truthy
 			end
 			
 			it "should not assign profiles that do not have the search area tag" do
-				assigns[:search].results.include?(@published_profile).should_not be_true
+				expect(assigns[:search].results.include?(@published_profile)).not_to be_truthy
 			end
 		end
 	end
@@ -749,52 +749,52 @@ describe ProfilesController do
 		
 		it "should show the nearest provider at the top when searching by postal code" do
 			get :search, query: 'river brewing co', postal_code: bear_location.postal_code
-			assigns[:search].should have(2).results
-			assigns[:search].results.first.should == bear_profile
-			assigns[:search].results.second.should == rr_profile
+			expect(assigns[:search].results.size).to eq 2
+			expect(assigns[:search].results.first).to eq bear_profile
+			expect(assigns[:search].results.second).to eq rr_profile
 		end
 		
 		it "should show the nearest provider at the top when searching by city and state" do
 			get :search, query: 'river brewing co', city: bear_location.city, region: bear_location.region
-			assigns[:search].should have(2).results
-			assigns[:search].results.first.should == bear_profile
-			assigns[:search].results.second.should == rr_profile
+			expect(assigns[:search].results.size).to eq 2
+			expect(assigns[:search].results.first).to eq bear_profile
+			expect(assigns[:search].results.second).to eq rr_profile
 		end
 		
 		it "should show the nearest provider at the top when searching by service and postal code" do
 			get :search, service_id: service.id, postal_code: rr_location.postal_code
-			assigns[:search].should have(2).results
-			assigns[:search].results.first.should == rr_profile
-			assigns[:search].results.second.should == bear_profile
+			expect(assigns[:search].results.size).to eq 2
+			expect(assigns[:search].results.first).to eq rr_profile
+			expect(assigns[:search].results.second).to eq bear_profile
 		end
 		
 		context "using address option" do
 			it "should show the nearest provider at the top when searching by postal code" do
 				get :search, query: 'river brewing co', address: bear_location.postal_code
-				assigns[:search].should have(2).results
-				assigns[:search].results.first.should == bear_profile
-				assigns[:search].results.second.should == rr_profile
+				expect(assigns[:search].results.size).to eq 2
+				expect(assigns[:search].results.first).to eq bear_profile
+				expect(assigns[:search].results.second).to eq rr_profile
 			end
 		
 			it "should show the nearest provider at the top when searching by city and state" do
 				get :search, query: 'river brewing co', address: "#{bear_location.city}, #{bear_location.region}"
-				assigns[:search].should have(2).results
-				assigns[:search].results.first.should == bear_profile
-				assigns[:search].results.second.should == rr_profile
+				expect(assigns[:search].results.size).to eq 2
+				expect(assigns[:search].results.first).to eq bear_profile
+				expect(assigns[:search].results.second).to eq rr_profile
 			end
 		
 			it "should show the nearest provider at the top when searching by city, state, and postal code" do
 				get :search, query: 'river brewing co', address: "#{bear_location.city}, #{bear_location.region} #{bear_location.postal_code}"
-				assigns[:search].should have(2).results
-				assigns[:search].results.first.should == bear_profile
-				assigns[:search].results.second.should == rr_profile
+				expect(assigns[:search].results.size).to eq 2
+				expect(assigns[:search].results.first).to eq bear_profile
+				expect(assigns[:search].results.second).to eq rr_profile
 			end
 		
 			it "should show the nearest provider at the top when searching by service and postal code" do
 				get :search, service_id: service.id, address: rr_location.postal_code
-				assigns[:search].should have(2).results
-				assigns[:search].results.first.should == rr_profile
-				assigns[:search].results.second.should == bear_profile
+				expect(assigns[:search].results.size).to eq 2
+				expect(assigns[:search].results.first).to eq rr_profile
+				expect(assigns[:search].results.second).to eq bear_profile
 			end
 		end
 	end
@@ -808,12 +808,12 @@ describe ProfilesController do
 		
 		it "should show 4 results on the first page" do
 			get :search, query: 'magnolia', per_page: '4'
-			assigns[:search].should have(4).results
+			expect(assigns[:search].results.size).to eq 4
 		end
 		
 		it "should show 2 results on the third page" do
 			get :search, query: 'magnolia', per_page: '4', page: 3
-			assigns[:search].should have(2).results
+			expect(assigns[:search].results.size).to eq 2
 		end
 	end
 	
@@ -830,9 +830,9 @@ describe ProfilesController do
 		
 		it "profiles with the service assigned to them should be listed first" do
 			get :search, service_id: service.id
-			assigns[:search].should have(2).results
-			assigns[:search].results.first.should == profile_with_service
-			assigns[:search].results.second.should == profile_with_name
+			expect(assigns[:search].results.size).to eq 2
+			expect(assigns[:search].results.first).to eq profile_with_service
+			expect(assigns[:search].results.second).to eq profile_with_name
 		end
 	end
 	
@@ -844,7 +844,7 @@ describe ProfilesController do
 		
 		it "should return no results if no search query is supplied" do
 			get :search, query: ''
-			assigns[:search].should have(:no).results
+			expect(assigns[:search].results.size).to eq 0
 		end
 	end
 	
@@ -870,19 +870,19 @@ describe ProfilesController do
 			end
 		
 			it "renders the invitation page" do
-				response.should render_template('new_invitation')
+				expect(response).to render_template('new_invitation')
 			end
 			
 			context "submit the form to send the invitation" do
 				it "should redirect to profile view page if succesful" do
 					put :send_invitation, parameters
-					response.should redirect_to(controller: 'profiles', action: 'show', id: profile.id)
+					expect(response).to redirect_to(controller: 'profiles', action: 'show', id: profile.id)
 				end
 				
 				it "should render the invitation page if failed" do
 					put :send_invitation, parameters.merge(profile: {invitation_email: 'nonsense'})
-					response.should render_template('new_invitation')
-					assigns[:profile].should have(1).error_on :invitation_email
+					expect(response).to render_template('new_invitation')
+					expect(assigns[:profile].error_on(:invitation_email).size).to eq 1
 				end
 			end
 		end
@@ -891,8 +891,8 @@ describe ProfilesController do
 			expert_with_profile = FactoryGirl.create(:expert_user)
 			sign_in editor
 			put :send_invitation, parameters.merge(id: expert_with_profile.profile.id)
-			response.should render_template('new_invitation')
-			flash[:alert].should_not be_nil
+			expect(response).to render_template('new_invitation')
+			expect(flash[:alert]).not_to be_nil
 		end
 	end
 	
@@ -907,32 +907,33 @@ describe ProfilesController do
 			parent = FactoryGirl.create(:parent)
 			sign_in parent
 			post :rate, id: profile_to_rate.id, score: '2'
-			(profile = Profile.find profile_to_rate.id).should have(1).rating
-			profile.ratings.find_by_rater_id(parent.id).score.should == 2
+			profile = Profile.find profile_to_rate.id
+			expect(profile.ratings.size).to eq 1
+			expect(profile.ratings.find_by_rater_id(parent.id).score).to eq 2
 		end
 		
 		it "should fail to rate if not signed in" do
 			post :rate, id: profile_to_rate.id, score: '2'
-			Profile.find(profile_to_rate.id).should have(:no).ratings
+			expect(profile_to_rate.reload.ratings.size).to eq 0
 		end
 		
 		it "redirects to the member sign-up page if not signed in" do
 			post :rate, id: profile_to_rate.id, score: '2'
-			response.should redirect_to member_sign_up_path
+			expect(response).to redirect_to member_sign_up_path
 		end
 		
 		it "should fail to rate the rater's profile" do
 			sign_in FactoryGirl.create(:provider, profile: profile_to_rate)
 			post :rate, id: profile_to_rate.id, score: '2'
-			Profile.find(profile_to_rate.id).should have(:no).ratings
+			expect(profile_to_rate.reload.ratings.size).to eq 0
 		end
 		
 		it "should remove a rating" do
 			sign_in FactoryGirl.create(:parent)
 			post :rate, id: profile_to_rate.id, score: '2'
-			Profile.find(profile_to_rate.id).should have(1).rating
+			expect(profile_to_rate.reload.ratings.size).to eq 1
 			post :rate, id: profile_to_rate.id
-			Profile.find(profile_to_rate.id).should have(:no).rating
+			expect(profile_to_rate.reload.ratings.size).to eq 0
 		end
 	end
 	
@@ -940,31 +941,31 @@ describe ProfilesController do
 		profile = FactoryGirl.create(:unpublished_profile)
 		sign_in FactoryGirl.create(:parent)
 		post :rate, id: profile.id, score: '2'
-		Profile.find(profile.id).should have(:no).rating
+		expect(profile.reload.ratings.size).to eq 0
 	end
 	
 	describe "GET admin" do
 		it "does not render the view when not signed in" do
 			get :admin
-			response.should_not render_template('admin')
+			expect(response).not_to render_template('admin')
 		end
 		
 		it "does not render the view when signed in as an expert user" do
 			sign_in FactoryGirl.create(:expert_user)
 			get :admin
-			response.should_not render_template('admin')
+			expect(response).not_to render_template('admin')
 		end
 		
 		it "does not render the view when signed in as a client user" do
 			sign_in FactoryGirl.create(:client_user)
 			get :admin
-			response.should_not render_template('admin')
+			expect(response).not_to render_template('admin')
 		end
 		
 		it "renders the view when signed in as an admin user" do
 			sign_in FactoryGirl.create(:admin_user)
 			get :admin
-			response.should render_template('admin')
+			expect(response).to render_template('admin')
 		end
 	end
 	
@@ -975,48 +976,48 @@ describe ProfilesController do
 		describe "GET 'show'" do
 			it "redirects to the sign-up page" do
 				get :show, id: published_profile.id
-				response.should redirect_to alpha_sign_up_path
+				expect(response).to redirect_to alpha_sign_up_path
 			end
 			
 			it "shows a profile marked as 'public on private site'" do
 				get :show, id: public_profile_on_private_site.id
-				response.should render_template('show')
-				assigns[:profile].should == public_profile_on_private_site
+				expect(response).to render_template('show')
+				expect(assigns[:profile]).to eq public_profile_on_private_site
 			end
 			
 			it "does not show an unpublished profile marked as 'public on private site'" do
 				public_profile_on_private_site.is_published = false
 				public_profile_on_private_site.save
 				get :show, id: public_profile_on_private_site.id
-				response.should redirect_to alpha_sign_up_path
+				expect(response).to redirect_to alpha_sign_up_path
 			end
 		end
 		
 		describe "GET 'search'" do
 			it "redirects to the sign-up page" do
 				get :search, query: published_profile.last_name
-				response.should redirect_to alpha_sign_up_path
+				expect(response).to redirect_to alpha_sign_up_path
 			end
 		end
 		
 		describe "GET 'admin'" do
 			it "redirects to the sign-up page" do
 				get :admin
-				response.should redirect_to alpha_sign_up_path
+				expect(response).to redirect_to alpha_sign_up_path
 			end
 		end
 		
 		describe "GET 'index'" do
 			it "redirects to the sign-up page" do
 				get :index
-				response.should redirect_to alpha_sign_up_path
+				expect(response).to redirect_to alpha_sign_up_path
 			end
 		end
 		
 		describe "GET 'link_index'" do
 			it "redirects to the sign-up page" do
 				get :link_index
-				response.should redirect_to alpha_sign_up_path
+				expect(response).to redirect_to alpha_sign_up_path
 			end
 		end
 	end

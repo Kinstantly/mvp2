@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe StripeConnectMailer, payments: true do
+describe StripeConnectMailer, type: :mailer, payments: true do
 	include EmailSpec::Helpers
 	include EmailSpec::Matchers
 	include Rails.application.routes.url_helpers
@@ -13,15 +13,15 @@ describe StripeConnectMailer, payments: true do
 		let(:email) { StripeConnectMailer.welcome_provider provider }
 		
 		it "should be delivered to the provider" do
-			email.should deliver_to provider_email
+			expect(email).to deliver_to provider_email
 		end
 		
 		it "should identify the provider" do
-			email.should have_body_text provider_profile.first_name
+			expect(email).to have_body_text provider_profile.first_name
 		end
 		
 		it "should have a link to the client list" do
-			email.should have_body_text customer_files_url
+			expect(email).to have_body_text customer_files_url
 		end
 		
 		# it "should have a link to the Stripe dashboard" do
@@ -29,11 +29,11 @@ describe StripeConnectMailer, payments: true do
 		# end
 		
 		it "should have a link to the provider's payment introduction" do
-			email.should have_body_text about_payments_profile_url provider_profile
+			expect(email).to have_body_text about_payments_profile_url provider_profile
 		end
 		
 		it "should mention payments in the subject" do
-			email.should have_subject /payment/
+			expect(email).to have_subject /payment/
 		end
 	end
 	

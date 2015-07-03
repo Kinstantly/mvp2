@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Users::RegistrationsController do
+describe Users::RegistrationsController, :type => :controller do
 	let(:email) { 'mimi@la.boheme.it' }
 	let(:new_password) { 'Pucc1n1!' }
 	let(:username) { 'Giacomo' }
@@ -24,10 +24,10 @@ describe Users::RegistrationsController do
 					}
 
 					user = assigns[:user].reload
-					user.parent_newsletters_stage1.should be_true
-					user.parent_newsletters_stage2.should be_true
-					user.parent_newsletters_stage3.should be_true
-					user.provider_newsletters.should be_false
+					expect(user.parent_newsletters_stage1).to be_truthy
+					expect(user.parent_newsletters_stage2).to be_truthy
+					expect(user.parent_newsletters_stage3).to be_truthy
+					expect(user.provider_newsletters).to be_falsey
 				end
 
 				it "does not subscribe to the mailing lists" do
@@ -42,10 +42,10 @@ describe Users::RegistrationsController do
 					}
 
 					user = assigns[:user].reload
-					user.parent_newsletters_stage1.should be_false
-					user.parent_newsletters_stage2.should be_false
-					user.parent_newsletters_stage3.should be_false
-					user.provider_newsletters.should be_false
+					expect(user.parent_newsletters_stage1).to be_falsey
+					expect(user.parent_newsletters_stage2).to be_falsey
+					expect(user.parent_newsletters_stage3).to be_falsey
+					expect(user.provider_newsletters).to be_falsey
 				end
 			end
 		end
@@ -59,18 +59,18 @@ describe Users::RegistrationsController do
 
 			it "updates email address for confirmation" do
 				put :update, user: {email: email, current_password: mimi.password}
-				response.should redirect_to edit_user_registration_url
-				flash[:notice].should have_content 'confirmation'
+				expect(response).to redirect_to edit_user_registration_url
+				expect(flash[:notice]).to have_content 'confirmation'
 			end
 		
 			it "fails to update email address with double quote" do
 				put :update, user: {email: email+'"', current_password: mimi.password}
-				response.should render_template('edit')
+				expect(response).to render_template('edit')
 			end
 		
 			it "fails to update email address with single quote" do
 				put :update, user: {email: email+"'", current_password: mimi.password}
-				response.should render_template('edit')
+				expect(response).to render_template('edit')
 			end
 			
 			context "with mailing lists" do
@@ -83,9 +83,9 @@ describe Users::RegistrationsController do
 					}
 				
 					user = assigns[:user].reload
-					user.parent_newsletters_stage1.should be_true
-					user.parent_newsletters_stage2.should be_true
-					user.parent_newsletters_stage3.should be_true
+					expect(user.parent_newsletters_stage1).to be_truthy
+					expect(user.parent_newsletters_stage2).to be_truthy
+					expect(user.parent_newsletters_stage3).to be_truthy
 				end
 			
 				it "cannot subscribe to mailing lists if previously blocked" do
@@ -98,9 +98,9 @@ describe Users::RegistrationsController do
 					}
 				
 					user = assigns[:user].reload
-					user.parent_newsletters_stage1.should be_false
-					user.parent_newsletters_stage2.should be_false
-					user.parent_newsletters_stage3.should be_false
+					expect(user.parent_newsletters_stage1).to be_falsey
+					expect(user.parent_newsletters_stage2).to be_falsey
+					expect(user.parent_newsletters_stage3).to be_falsey
 				end
 			end
 		end
@@ -123,10 +123,10 @@ describe Users::RegistrationsController do
 					}
 
 					user = assigns[:user].reload
-					user.parent_newsletters_stage1.should be_true
-					user.parent_newsletters_stage2.should be_true
-					user.parent_newsletters_stage3.should be_true
-					user.provider_newsletters.should be_true
+					expect(user.parent_newsletters_stage1).to be_truthy
+					expect(user.parent_newsletters_stage2).to be_truthy
+					expect(user.parent_newsletters_stage3).to be_truthy
+					expect(user.provider_newsletters).to be_truthy
 				end
 
 				it "does not subscribe to the mailing lists" do
@@ -143,10 +143,10 @@ describe Users::RegistrationsController do
 					}
 
 					user = assigns[:user].reload
-					user.parent_newsletters_stage1.should be_false
-					user.parent_newsletters_stage2.should be_false
-					user.parent_newsletters_stage3.should be_false
-					user.provider_newsletters.should be_false
+					expect(user.parent_newsletters_stage1).to be_falsey
+					expect(user.parent_newsletters_stage2).to be_falsey
+					expect(user.parent_newsletters_stage3).to be_falsey
+					expect(user.provider_newsletters).to be_falsey
 				end
 				
 				context "while claiming a profile" do
@@ -167,10 +167,10 @@ describe Users::RegistrationsController do
 						}
 
 						user = assigns[:user].reload
-						user.parent_newsletters_stage1.should be_true
-						user.parent_newsletters_stage2.should be_true
-						user.parent_newsletters_stage3.should be_true
-						user.provider_newsletters.should be_true
+						expect(user.parent_newsletters_stage1).to be_truthy
+						expect(user.parent_newsletters_stage2).to be_truthy
+						expect(user.parent_newsletters_stage3).to be_truthy
+						expect(user.provider_newsletters).to be_truthy
 					end
 				end
 			end
@@ -190,15 +190,15 @@ describe Users::RegistrationsController do
 				let(:provider) { User.find_by_email email }
 			
 				it "displays confirmation notice with tracking parameters" do
-					response.should redirect_to '/member/awaiting_confirmation?email_pending_confirmation=t&parent_newsletters_stage1=t&provider=t'
+					expect(response).to redirect_to '/member/awaiting_confirmation?email_pending_confirmation=t&parent_newsletters_stage1=t&provider=t'
 				end
 				
 				it "has a profile" do
-					provider.profile.should_not be_nil
+					expect(provider.profile).not_to be_nil
 				end
 			
 				it "has a published profile" do
-					provider.profile.is_published.should be_true
+					expect(provider.profile.is_published).to be_truthy
 				end
 			end
 		end

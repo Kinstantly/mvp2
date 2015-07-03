@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Stripe API", payments: true do
+describe "Stripe API", type: :request, payments: true do
 	# Run the following manually with "--no-drb --tag excluded_by_default".
 	# We don't want to hit the Stripe API too often with an invalid key at the risk of getting blocked.
 	context "Without valid Stripe API keys", excluded_by_default: true do

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "User registration and editing" do
+describe "User registration and editing", :type => :request do
 	context "registering as a parent" do
 		let(:parent_attributes) { FactoryGirl.attributes_for :parent }
 		let(:parent_sign_up_attributes) { {
@@ -11,27 +11,27 @@ describe "User registration and editing" do
 		
 		it "redirects to the sign-up confirmation page" do
 			post user_registration_path, user: parent_sign_up_attributes
-			response.should redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
+			expect(response).to redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
 		end
 		
 		context "coming from the blog" do
 			it "redirects to the sign-up confirmation page" do
 				get new_user_registration_path(blog: 't')
 				post user_registration_path, user: parent_sign_up_attributes
-				response.should redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
+				expect(response).to redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
 			end
 		end
 
 		context "in-blog sign-up", in_blog: true do
 			it "renders the view" do
 				get in_blog_sign_up_path
-				response.should be_success
-				response.should render_template('in_blog_new')
+				expect(response).to be_success
+				expect(response).to render_template('in_blog_new')
 			end
 			it "redirects to in-blog confirmation page" do
 				get in_blog_sign_up_path
 				post user_registration_path, in_blog: true, user: parent_sign_up_attributes
-				response.should redirect_to in_blog_awaiting_confirmation_url email_pending_confirmation: 't'
+				expect(response).to redirect_to in_blog_awaiting_confirmation_url email_pending_confirmation: 't'
 			end
 		end
 	end
@@ -46,17 +46,17 @@ describe "User registration and editing" do
 		
 		it "redirects to the subscriptions edit page when requesting contact preferences editing" do
 			get edit_user_registration_url(contact_preferences: 't')
-			response.should redirect_to edit_subscriptions_url
+			expect(response).to redirect_to edit_subscriptions_url
 		end
 		
 		it "redirects to the home page if requesting the registration page" do
 			get new_user_registration_path
-			response.should redirect_to root_url
+			expect(response).to redirect_to root_url
 		end
 		
 		it "redirects to the subscriptions edit page if requesting the newsletter sign-up page" do
 			get new_user_registration_path(nlsub: 't')
-			response.should redirect_to edit_subscriptions_url
+			expect(response).to redirect_to edit_subscriptions_url
 		end
 	end
 	
@@ -70,14 +70,14 @@ describe "User registration and editing" do
 		
 		it "redirects to the sign-up confirmation page" do
 			post user_registration_path, user: provider_sign_up_attributes
-			response.should redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
+			expect(response).to redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
 		end
 		
 		context "coming from the blog" do
 			it "redirects to the sign-up confirmation page" do
 				get new_user_registration_path(blog: 't')
 				post user_registration_path, user: provider_sign_up_attributes
-				response.should redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
+				expect(response).to redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
 			end
 		end
 	end
@@ -92,17 +92,17 @@ describe "User registration and editing" do
 		
 		it "redirects to the subscriptions edit page when requesting contact preferences editing" do
 			get edit_user_registration_url(contact_preferences: 't')
-			response.should redirect_to edit_subscriptions_url
+			expect(response).to redirect_to edit_subscriptions_url
 		end
 		
 		it "redirects to my profile edit page if requesting the registration page" do
 			get new_user_registration_path
-			response.should redirect_to edit_my_profile_url
+			expect(response).to redirect_to edit_my_profile_url
 		end
 		
 		it "redirects to the subscriptions edit page if requesting the newsletter sign-up page" do
 			get new_user_registration_path(nlsub: 't')
-			response.should redirect_to edit_subscriptions_url
+			expect(response).to redirect_to edit_subscriptions_url
 		end
 	end
 end

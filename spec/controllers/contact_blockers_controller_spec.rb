@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ContactBlockersController do
+describe ContactBlockersController, :type => :controller do
 
 	# This should return at least the minimal set of attributes required to create a valid ContactBlocker.
 	let (:valid_attributes) { FactoryGirl.attributes_for :contact_blocker }
@@ -14,17 +14,17 @@ describe ContactBlockersController do
 		describe "GET new_from_email_delivery" do
 			it "assigns a new contact_blocker as @contact_blocker" do
 				get :new_from_email_delivery, email_delivery_token: email_delivery.token
-				assigns(:contact_blocker).should be_a_new(ContactBlocker)
+				expect(assigns(:contact_blocker)).to be_a_new(ContactBlocker)
 			end
 
 			it "new contact_blocker is associated with an email delivery" do
 				get :new_from_email_delivery, email_delivery_token: email_delivery.token
-				assigns(:contact_blocker).email_delivery.should be_present
+				expect(assigns(:contact_blocker).email_delivery).to be_present
 			end
 			
 			it "goes to recovery page with invalid email delivery token" do
 				get :new_from_email_delivery, email_delivery_token: email_delivery.token+'a'
-				response.should redirect_to email_delivery_not_found_url
+				expect(response).to redirect_to email_delivery_not_found_url
 			end
 		end
 
@@ -44,29 +44,29 @@ describe ContactBlockersController do
 
 				it "assigns a newly created contact_blocker as @contact_blocker" do
 					post :create_from_email_delivery, email_delivery_token: email_delivery.token, contact_blocker: valid_attributes_with_email_delivery
-					assigns(:contact_blocker).should be_a(ContactBlocker)
-					assigns(:contact_blocker).should be_persisted
+					expect(assigns(:contact_blocker)).to be_a(ContactBlocker)
+					expect(assigns(:contact_blocker)).to be_persisted
 				end
 
 				it "redirects to the confirmation view" do
 					post :create_from_email_delivery, email_delivery_token: email_delivery.token, contact_blocker: valid_attributes_with_email_delivery
-					response.should redirect_to contact_blocker_confirmation_url
+					expect(response).to redirect_to contact_blocker_confirmation_url
 				end
 			end
 
 			describe "with invalid params" do
 				it "assigns a newly created but unsaved contact_blocker as @contact_blocker" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					ContactBlocker.any_instance.stub(:update_attributes_from_email_delivery).and_return(false)
+					allow_any_instance_of(ContactBlocker).to receive(:update_attributes_from_email_delivery).and_return(false)
 					post :create_from_email_delivery, email_delivery_token: email_delivery.token, contact_blocker: {}
-					assigns(:contact_blocker).should be_a_new(ContactBlocker)
+					expect(assigns(:contact_blocker)).to be_a_new(ContactBlocker)
 				end
 
 				it "renders the 'new_from_email_delivery' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					ContactBlocker.any_instance.stub(:update_attributes_from_email_delivery).and_return(false)
+					allow_any_instance_of(ContactBlocker).to receive(:update_attributes_from_email_delivery).and_return(false)
 					post :create_from_email_delivery, email_delivery_token: email_delivery.token, contact_blocker: {}
-					response.should render_template('new_from_email_delivery')
+					expect(response).to render_template('new_from_email_delivery')
 				end
 			end
 			
@@ -92,7 +92,7 @@ describe ContactBlockersController do
 			describe "GET new" do
 				it "assigns a new contact_blocker as @contact_blocker" do
 					get :new
-					assigns(:contact_blocker).should be_a_new(ContactBlocker)
+					expect(assigns(:contact_blocker)).to be_a_new(ContactBlocker)
 				end
 			end
 
@@ -106,29 +106,29 @@ describe ContactBlockersController do
 
 					it "assigns a newly created contact_blocker as @contact_blocker" do
 						post :create, {contact_blocker: valid_attributes}
-						assigns(:contact_blocker).should be_a(ContactBlocker)
-						assigns(:contact_blocker).should be_persisted
+						expect(assigns(:contact_blocker)).to be_a(ContactBlocker)
+						expect(assigns(:contact_blocker)).to be_persisted
 					end
 
 					it "redirects to the created contact_blocker" do
 						post :create, {contact_blocker: valid_attributes}
-						response.should redirect_to ContactBlocker.order('id').last
+						expect(response).to redirect_to ContactBlocker.order('id').last
 					end
 				end
 
 				describe "with invalid params" do
 					it "assigns a newly created but unsaved contact_blocker as @contact_blocker" do
 						# Trigger the behavior that occurs when invalid params are submitted
-						ContactBlocker.any_instance.stub(:save).and_return(false)
+						allow_any_instance_of(ContactBlocker).to receive(:save).and_return(false)
 						post :create, {contact_blocker: {}}
-						assigns(:contact_blocker).should be_a_new(ContactBlocker)
+						expect(assigns(:contact_blocker)).to be_a_new(ContactBlocker)
 					end
 
 					it "renders the 'new' template" do
 						# Trigger the behavior that occurs when invalid params are submitted
-						ContactBlocker.any_instance.stub(:save).and_return(false)
+						allow_any_instance_of(ContactBlocker).to receive(:save).and_return(false)
 						post :create, {contact_blocker: {}}
-						response.should render_template 'new'
+						expect(response).to render_template 'new'
 					end
 				end
 			
@@ -150,26 +150,26 @@ describe ContactBlockersController do
 			describe "GET index" do
 				it "assigns all contact_blockers as @contact_blockers" do
 					get :index
-					assigns(:contact_blockers).should eq([contact_blocker])
+					expect(assigns(:contact_blockers)).to eq([contact_blocker])
 				end
 				
 				it "renders 'index'" do
 					get :index
-					response.should render_template 'index'
+					expect(response).to render_template 'index'
 				end
 			end
 
 			describe "GET show" do
 				it "assigns the requested contact_blocker as @contact_blocker" do
 					get :show, {id: contact_blocker.to_param}
-					assigns(:contact_blocker).should eq(contact_blocker)
+					expect(assigns(:contact_blocker)).to eq(contact_blocker)
 				end
 			end
 
 			describe "GET edit" do
 				it "assigns the requested contact_blocker as @contact_blocker" do
 					get :edit, {id: contact_blocker.to_param}
-					assigns(:contact_blocker).should eq(contact_blocker)
+					expect(assigns(:contact_blocker)).to eq(contact_blocker)
 				end
 			end
 
@@ -180,34 +180,34 @@ describe ContactBlockersController do
 						# specifies that the newly created ContactBlocker
 						# receives the :update_attributes message with whatever params are
 						# submitted in the request as the admin role.
-						ContactBlocker.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
+						expect_any_instance_of(ContactBlocker).to receive(:update_attributes).with({'these' => 'params'})
 						put :update, {id: contact_blocker.to_param, contact_blocker: {'these' => 'params'}}
 					end
 
 					it "assigns the requested contact_blocker as @contact_blocker" do
 						put :update, {id: contact_blocker.to_param, contact_blocker: valid_attributes}
-						assigns(:contact_blocker).should eq(contact_blocker)
+						expect(assigns(:contact_blocker)).to eq(contact_blocker)
 					end
 
 					it "redirects to the contact_blocker" do
 						put :update, {id: contact_blocker.to_param, contact_blocker: valid_attributes}
-						response.should redirect_to(contact_blocker)
+						expect(response).to redirect_to(contact_blocker)
 					end
 				end
 
 				describe "with invalid params" do
 					it "assigns the contact_blocker as @contact_blocker" do
 						# Trigger the behavior that occurs when invalid params are submitted
-						ContactBlocker.any_instance.stub(:save).and_return(false)
+						allow_any_instance_of(ContactBlocker).to receive(:save).and_return(false)
 						put :update, {id: contact_blocker.to_param, contact_blocker: {}}
-						assigns(:contact_blocker).should eq(contact_blocker)
+						expect(assigns(:contact_blocker)).to eq(contact_blocker)
 					end
 
 					it "re-renders the 'edit' template" do
 						# Trigger the behavior that occurs when invalid params are submitted
-						ContactBlocker.any_instance.stub(:update_attributes).and_return(false)
+						allow_any_instance_of(ContactBlocker).to receive(:update_attributes).and_return(false)
 						put :update, {id: contact_blocker.to_param, contact_blocker: {}}
-						response.should render_template 'edit'
+						expect(response).to render_template 'edit'
 					end
 				end
 			end
@@ -221,7 +221,7 @@ describe ContactBlockersController do
 
 				it "redirects to the contact_blockers list" do
 					delete :destroy, {id: contact_blocker.to_param}
-					response.should redirect_to(contact_blockers_url)
+					expect(response).to redirect_to(contact_blockers_url)
 				end
 			end
 		end

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe "home/contact" do
+describe "home/contact", :type => :view do
 	it "should show contact page content" do
 		render
-		rendered.should have_content 'Ask us anything'
+		expect(rendered).to have_content 'Ask us anything'
 	end
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CustomerFilesController, payments: true do
+describe CustomerFilesController, type: :controller, payments: true do
 	let(:authorized_amount_cents) { 10000 }
 	let(:charge_amount_usd) { '25.00' }
 	let(:charge_amount_cents) { (charge_amount_usd.to_f * 100).to_i }
@@ -22,13 +22,13 @@ describe CustomerFilesController, payments: true do
 		customer_file_1
 		customer_file_2
 		
-		Stripe::Token.stub(:create).with(any_args) do
+		allow(Stripe::Token).to receive(:create).with(any_args) do
 			api_token
 		end
-		Stripe::Charge.stub(:create).with(any_args) do
+		allow(Stripe::Charge).to receive(:create).with(any_args) do
 			api_charge
 		end
-		Stripe::BalanceTransaction.stub(:retrieve).with(any_args) do
+		allow(Stripe::BalanceTransaction).to receive(:retrieve).with(any_args) do
 			api_balance_transaction
 		end
 	end
@@ -37,16 +37,16 @@ describe CustomerFilesController, payments: true do
 		describe "GET index" do
 			it "is prevented from viewing a list of customer files" do
 				get :index
-				response.status.should == 302 # Redirect.
-				assigns(:customer_files).should be_nil
+				expect(response.status).to eq 302 # Redirect.
+				expect(assigns(:customer_files)).to be_nil
 			end
 		end
 
 		describe "GET show" do
 			it "is prevented from viewing a customer file" do
 				get :show, id: customer_file_1.id
-				response.status.should == 302 # Redirect.
-				assigns(:customer_file).should be_nil
+				expect(response.status).to eq 302 # Redirect.
+				expect(assigns(:customer_file)).to be_nil
 			end
 		end
 	end
@@ -59,24 +59,24 @@ describe CustomerFilesController, payments: true do
 		describe "GET index" do
 			it "does not list the customer's file" do
 				get :index
-				assigns(:customer_files).include?(customer_file_1).should be_false
+				expect(assigns(:customer_files).include?(customer_file_1)).to be_falsey
 			end
 			
 			it "does not list another customer's file" do
 				get :index
-				assigns(:customer_files).include?(customer_file_2).should be_false
+				expect(assigns(:customer_files).include?(customer_file_2)).to be_falsey
 			end
 		end
 
 		describe "GET show" do
 			it "does not show the customer's file" do
 				get :show, id: customer_file_1.id
-				response.status.should == 302 # Redirect.
+				expect(response.status).to eq 302 # Redirect.
 			end
 
 			it "does not show another customer's file" do
 				get :show, id: customer_file_2.id
-				response.status.should == 302 # Redirect.
+				expect(response.status).to eq 302 # Redirect.
 			end
 		end
 	end
@@ -89,27 +89,27 @@ describe CustomerFilesController, payments: true do
 		describe "GET index" do
 			it "assigns a list of the provider's customer files" do
 				get :index
-				assigns(:customer_files).include?(customer_file_1).should be_true
-				assigns(:customer_files).include?(customer_file_2).should be_true
+				expect(assigns(:customer_files).include?(customer_file_1)).to be_truthy
+				expect(assigns(:customer_files).include?(customer_file_2)).to be_truthy
 			end
 			
 			it "does not list another provider's customer file" do
 				get :index
-				assigns(:customer_files).include?(another_customer_file).should be_false
+				expect(assigns(:customer_files).include?(another_customer_file)).to be_falsey
 			end
 		end
 
 		describe "GET show" do
 			it "assigns a customer file" do
 				get :show, id: customer_file_1.id
-				assigns(:customer_file).should == customer_file_1
+				expect(assigns(:customer_file)).to eq customer_file_1
 			end
 		end
 		
 		describe "GET new_charge" do
 			it "assigns a customer file" do
 				get :new_charge, id: customer_file_1.id
-				assigns(:customer_file).should == customer_file_1
+				expect(assigns(:customer_file)).to eq customer_file_1
 			end
 		end
 		

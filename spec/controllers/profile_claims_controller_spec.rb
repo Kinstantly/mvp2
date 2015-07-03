@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ProfileClaimsController do
+describe ProfileClaimsController, :type => :controller do
   let(:profile_claim) { FactoryGirl.create :profile_claim }
   let (:valid_attributes) { FactoryGirl.attributes_for :profile_claim}
   let(:published_profile) { FactoryGirl.create :published_profile }
@@ -9,7 +9,7 @@ describe ProfileClaimsController do
     describe "GET new" do
       it "assigns a new profile_claim as @profile_claim" do
         get :new, id: published_profile.id
-        assigns(:profile_claim).should be_a_new(ProfileClaim)
+        expect(assigns(:profile_claim)).to be_a_new(ProfileClaim)
       end
     end
 
@@ -27,29 +27,29 @@ describe ProfileClaimsController do
         it "assigns a newly created profile_claim as @profile_claim" do
           valid_attributes.merge(profile_id: published_profile.id)
           post :create, {:profile_claim => valid_attributes, :profile_id => published_profile.id}
-          assigns(:profile_claim).should be_a(ProfileClaim)
-          assigns(:profile_claim).should be_persisted
+          expect(assigns(:profile_claim)).to be_a(ProfileClaim)
+          expect(assigns(:profile_claim)).to be_persisted
         end
 
         it "redirects to the created profile_claim" do
           post :create, {:profile_claim => valid_attributes}
-          response.should render_template('create')
+          expect(response).to render_template('create')
         end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved profile_claim as @profile_claim" do
           # Trigger the behavior that occurs when invalid params are submitted
-          ProfileClaim.any_instance.stub(:save).and_return(false)
+          allow_any_instance_of(ProfileClaim).to receive(:save).and_return(false)
           post :create, {:profile_claim => {}}
-          assigns(:profile_claim).should be_a_new(ProfileClaim)
+          expect(assigns(:profile_claim)).to be_a_new(ProfileClaim)
         end
 
         it "renders the 'create' template" do
           # Trigger the behavior that occurs when invalid params are submitted
-          ProfileClaim.any_instance.stub(:save).and_return(false)
+          allow_any_instance_of(ProfileClaim).to receive(:save).and_return(false)
           post :create, {:ProfileClaim => {}}
-          response.should render_template('create')
+          expect(response).to render_template('create')
         end
       end
       
@@ -88,7 +88,7 @@ describe ProfileClaimsController do
     describe "POST create" do
       it "assigns current user as claimant" do
         post :create, {:profile_claim => valid_attributes}
-        assigns[:profile_claim].claimant.should eq(user)
+        expect(assigns[:profile_claim].claimant).to eq(user)
       end
     end
   end
@@ -104,21 +104,21 @@ describe ProfileClaimsController do
     describe "GET index" do
       it "assigns all profile_claims as @profile_claims" do
         get :index
-        assigns(:profile_claims).should eq([profile_claim])
+        expect(assigns(:profile_claims)).to eq([profile_claim])
       end
     end
 
     describe "GET show" do
       it "assigns the requested profile_claim as @profile_claim" do
         get :show, {:id => profile_claim.to_param}
-        assigns(:profile_claim).should eq(profile_claim)
+        expect(assigns(:profile_claim)).to eq(profile_claim)
       end
     end
 
     describe "GET edit" do
       it "assigns the requested profile_claim as @profile_claim" do
         get :edit, {:id => profile_claim.to_param}
-        assigns(:profile_claim).should eq(profile_claim)
+        expect(assigns(:profile_claim)).to eq(profile_claim)
       end
     end
 
@@ -129,34 +129,34 @@ describe ProfileClaimsController do
           # specifies that the newly created ProfileClaim
           # receives the :update_attributes message with whatever params are
           # submitted in the request as the admin role.
-          ProfileClaim.any_instance.should_receive(:update_attributes).with({'these' => 'params'}, {as: :admin})
+          expect_any_instance_of(ProfileClaim).to receive(:update_attributes).with({'these' => 'params'}, {as: :admin})
           put :update, {:id => profile_claim.to_param, :profile_claim => {'these' => 'params'}}
         end
 
         it "assigns the requested profile_claim as @profile_claim" do
           put :update, {:id => profile_claim.to_param, :profile_claim => valid_attributes}
-          assigns(:profile_claim).should eq(profile_claim)
+          expect(assigns(:profile_claim)).to eq(profile_claim)
         end
 
         it "redirects to the profile_claim" do
           put :update, {:id => profile_claim.to_param, :profile_claim => valid_attributes}
-          response.should redirect_to(profile_claim)
+          expect(response).to redirect_to(profile_claim)
         end
       end
 
       describe "with invalid params" do
         it "assigns the profile_claim as @profile_claim" do
           # Trigger the behavior that occurs when invalid params are submitted
-          ProfileClaim.any_instance.stub(:save).and_return(false)
+          allow_any_instance_of(ProfileClaim).to receive(:save).and_return(false)
           put :update, {:id => profile_claim.to_param, :profile_claim => {}}
-          assigns(:profile_claim).should eq(profile_claim)
+          expect(assigns(:profile_claim)).to eq(profile_claim)
         end
 
         it "re-renders the 'edit' template" do
           # Trigger the behavior that occurs when invalid params are submitted
-          ProfileClaim.any_instance.stub(:update_attributes).and_return(false)
+          allow_any_instance_of(ProfileClaim).to receive(:update_attributes).and_return(false)
           put :update, {:id => profile_claim.to_param, :profile_claim => {}}
-          response.should render_template("edit")
+          expect(response).to render_template("edit")
         end
       end
       
@@ -164,7 +164,7 @@ describe ProfileClaimsController do
         it "can assign admin notes" do
           expect {
             put :update, id: profile_claim.to_param, profile_claim: {admin_notes: 'Good notes.'}
-          }.to_not raise_error(ActiveModel::MassAssignmentSecurity::Error)
+          }.to_not raise_error
         end
       end
     end
@@ -178,7 +178,7 @@ describe ProfileClaimsController do
 
       it "redirects to the profile_claim list" do
         delete :destroy, {:id => profile_claim.to_param}
-        response.should redirect_to(profile_claims_url)
+        expect(response).to redirect_to(profile_claims_url)
       end
     end
   end
