@@ -1,6 +1,6 @@
 FactoryGirl.define do
 	factory :user do
-		ignore do
+		transient do
 			require_confirmation false
 			pending_welcome false
 		end

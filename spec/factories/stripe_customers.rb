@@ -8,7 +8,7 @@ FactoryGirl.define do
 		livemode true
 		
 		factory :stripe_customer_with_cards do
-			ignore do
+			transient do
 				card_count 1
 			end
 
