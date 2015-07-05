@@ -5,7 +5,7 @@ describe Users::SessionsController, :type => :controller do
 	let(:provider) { FactoryGirl.create :provider }
 	let(:admin_user) { FactoryGirl.create :admin_user }
 		
-	before(:each) do
+	before(:example) do
 		@request.env["devise.mapping"] = Devise.mappings[:user]
 	end
 

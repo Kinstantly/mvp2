@@ -4,7 +4,7 @@ describe "home/show_all_categories", :type => :view do
 	let(:service) { FactoryGirl.create :predefined_service }
 	let(:category) { FactoryGirl.create :predefined_category, services: [service] }
 	
-	before(:each) do
+	before(:example) do
 		category # make sure we have the category and service
 	end
 	

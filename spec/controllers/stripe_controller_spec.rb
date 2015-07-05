@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe StripeController, type: :controller, payments: true do
 	describe "GET webhook" do
-		around(:each) do |example|
+		around(:example) do |example|
 			original_logger = StripeController.logger
 			example.run
 			StripeController.logger = original_logger

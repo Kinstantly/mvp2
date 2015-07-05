@@ -74,7 +74,7 @@ describe StripeCharge, type: :model, payments: true do
 		let(:api_charge) { stripe_charge_mock amount_cents: charge_amount_cents,  refunds: api_refunds }
 		let(:api_application_fee_list) { application_fee_list_mock }
 		
-		before(:each) do
+		before(:example) do
 			allow(Stripe::Charge).to receive(:retrieve).with(any_args) do
 				api_charge
 			end
@@ -146,7 +146,7 @@ describe StripeCharge, type: :model, payments: true do
 			FactoryGirl.create :captured_stripe_charge_with_customer, amount_usd: charge_amount_usd
 		}
 		
-		before(:each) do
+		before(:example) do
 			allow(Stripe::Charge).to receive(:retrieve).and_raise(Stripe::AuthenticationError)
 			allow(Stripe::BalanceTransaction).to receive(:retrieve).and_raise(Stripe::AuthenticationError)
 			allow(Stripe::ApplicationFee).to receive(:all).and_raise(Stripe::AuthenticationError)

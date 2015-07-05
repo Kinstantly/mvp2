@@ -7,11 +7,11 @@ describe Rack::Attack, :type => :request do
 	end
 	
 	context "the requesting IP address is blocked" do
-		before(:each) do
+		before(:example) do
 			Rails.cache.write 'deny_request_from_ip_address_127.0.0.1', true
 		end
 		
-		after(:each) do
+		after(:example) do
 			Rails.cache.delete 'deny_request_from_ip_address_127.0.0.1'
 		end
 		

@@ -34,7 +34,7 @@ describe CustomerFile, type: :model, payments: true do
 	end
 	
 	context "Provider charging their customer" do
-		before(:each) do
+		before(:example) do
 			allow(Stripe::Token).to receive(:create).with(any_args) do
 				api_token
 			end
@@ -74,7 +74,7 @@ describe CustomerFile, type: :model, payments: true do
 	end
 	
 	context "Without valid Stripe API keys" do
-		before(:each) do
+		before(:example) do
 			allow(Stripe::Token).to receive(:create).and_raise(Stripe::AuthenticationError)
 			allow(Stripe::Charge).to receive(:create).and_raise(Stripe::AuthenticationError)
 			allow(Stripe::BalanceTransaction).to receive(:retrieve).and_raise(Stripe::AuthenticationError)

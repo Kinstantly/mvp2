@@ -20,7 +20,7 @@ describe HomeController, :type => :controller do
 		end
 		
 		context "when signed in as an admin user" do
-			before(:each) do
+			before(:example) do
 				sign_in FactoryGirl.create(:admin_user)
 				get :admin
 			end
@@ -36,7 +36,7 @@ describe HomeController, :type => :controller do
 	end
 	
 	describe "GET 'about'" do
-		before(:each) do
+		before(:example) do
 			get :about
 		end
 		
@@ -50,7 +50,7 @@ describe HomeController, :type => :controller do
 	end
 	
 	describe "GET 'contact'" do
-		before(:each) do
+		before(:example) do
 			get :contact
 		end
 		
@@ -64,7 +64,7 @@ describe HomeController, :type => :controller do
 	end
 	
 	describe "GET 'privacy'" do
-		before(:each) do
+		before(:example) do
 			get :privacy
 		end
 		
@@ -78,7 +78,7 @@ describe HomeController, :type => :controller do
 	end
 	
 	describe "GET 'terms'" do
-		before(:each) do
+		before(:example) do
 			get :terms
 		end
 		

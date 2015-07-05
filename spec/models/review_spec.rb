@@ -6,36 +6,36 @@ describe Review, :type => :model do
 	
 	it "has a body attribute" do
 		review.body = 'Luciano Pavarotti can sing!'
-		expect(review).to have(:no).errors_on(:body)
+		expect(review.errors_on(:body).size).to eq 0
 	end
 	
 	it "has a title attribute" do
 		review.title = 'E serbata a questo acciaro'
-		expect(review).to have(:no).errors_on(:title)
+		expect(review.errors_on(:title).size).to eq 0
 	end
 	
 	it "has a good_to_know attribute" do
 		review.good_to_know = 'Giulietta'
-		expect(review).to have(:no).errors_on(:good_to_know)
+		expect(review.errors_on(:good_to_know).size).to eq 0
 	end
 	
 	it "has a reviewer email virtual attribute" do
 		review.reviewer_email = 'jsutherland@la.stupenda.au'
-		expect(review).to have(:no).errors_on(:reviewer_email)
+		expect(review.errors_on(:reviewer_email).size).to eq 0
 	end
 	
 	it "has a reviewer username virtual attribute" do
 		review.reviewer_username = 'jsutherland'
-		expect(review).to have(:no).errors_on(:reviewer_username)
+		expect(review.errors_on(:reviewer_username).size).to eq 0
 	end
 	
 	it "limits the number of input characters for attributes stored as string or text records" do
 		[:title, :body, :good_to_know].each do |attr|
 			s = 'a' * Review::MAX_LENGTHS[attr]
 			review.send "#{attr}=", s
-			expect(review).to have(:no).errors_on(attr)
+			expect(review.errors_on(attr).size).to eq 0
 			review.send "#{attr}=", (s + 'a')
-			expect(review).to have(1).error_on(attr)
+			expect(review.error_on(attr).size).to eq 1
 		end
 	end
 	
@@ -57,7 +57,7 @@ describe Review, :type => :model do
 	end
 	
 	context "rating" do
-		before(:each) do
+		before(:example) do
 			review_by_parent.profile.rate nil, review_by_parent.reviewer
 		end
 		

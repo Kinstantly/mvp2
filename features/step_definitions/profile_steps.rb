@@ -790,12 +790,12 @@ end
 
 Then /^my profile should have no locations$/ do
 	find_user_profile
-	@profile.locations.should have(:no).things
+	expect(@profile.locations.size).to eq 0
 end
 
 Then /^the unclaimed profile should have no locations$/ do
 	find_unattached_profile
-	@profile.locations.should have(:no).things
+	expect(@profile.locations.size).to eq 0
 end
 
 Then /^the "(.*?)" and "(.*?)" specialties should appear in the profile edit input list$/ do |name1, name2|

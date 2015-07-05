@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SearchTerm, :type => :model do
-	before(:each) do
+	before(:example) do
 		@search_term = SearchTerm.new # FactoryGirl products don't have callbacks!
 		@search_term.name = 'social skills play groups'
 	end
@@ -13,12 +13,12 @@ describe SearchTerm, :type => :model do
 	it "strips whitespace from the name" do
 		name = 'music instruction'
 		@search_term.name = " #{name} "
-		expect(@search_term).to have(:no).errors_on(:name)
+		expect(@search_term.errors_on(:name).size).to eq 0
 		expect(@search_term.name).to eq name
 	end
 	
 	context "Sunspot/SOLR auto-indexing" do
-		before(:each) do
+		before(:example) do
 			@search_term.save
 			@specialty = FactoryGirl.create(:specialty, search_terms: [@search_term])
 			@profile = FactoryGirl.create(:published_profile, specialties: [@specialty])

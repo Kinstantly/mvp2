@@ -225,7 +225,7 @@ describe SubcategoriesController, :type => :controller do
 			let(:service) { FactoryGirl.create :service, name: 'Shpongle teacher' }
 			let(:display_order) { 7 }
 			
-			before(:each) do
+			before(:example) do
 				subcategory.services << service
 			end
 			
@@ -243,7 +243,7 @@ describe SubcategoriesController, :type => :controller do
 		describe "PUT remove_service" do
 			let(:service) { FactoryGirl.create :service, name: 'Shpongle teacher' }
 			
-			before(:each) do
+			before(:example) do
 				subcategory.services << service
 			end
 			

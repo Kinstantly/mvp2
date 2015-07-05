@@ -65,7 +65,7 @@ describe ContactBlocker, :type => :model do
 		end
 		
 		context "after creating subscriptions" do
-			before(:each) do
+			before(:example) do
 				user.parent_newsletters_stage1 = true
 				user.parent_newsletters_stage2 = true
 				user.parent_newsletters_stage3 = true
@@ -86,7 +86,7 @@ describe ContactBlocker, :type => :model do
 			end
 			
 			context "after the contact blocker for the user's email address is saved" do
-				before(:each) do
+				before(:example) do
 					contact_blocker.email = user.email
 					contact_blocker.save
 				end

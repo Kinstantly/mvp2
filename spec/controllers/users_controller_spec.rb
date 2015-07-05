@@ -20,7 +20,7 @@ describe UsersController, :type => :controller do
 	context "as a parent" do
 		let(:parent) { FactoryGirl.create :parent }
 		
-		before(:each) do
+		before(:example) do
 			sign_in parent
 		end
 		
@@ -131,7 +131,7 @@ describe UsersController, :type => :controller do
 		end
 
 		describe "PUT update_profile_help" do
-			before(:each) do
+			before(:example) do
 				provider.profile_help = true
 				provider.save
 			end
@@ -165,13 +165,13 @@ describe UsersController, :type => :controller do
 				FactoryGirl.create(:profile, invitation_email: 'Montserrat@Caballe.com', invitation_token: token)
 			}
 		
-			before(:each) do
+			before(:example) do
 				claimable_profile.reload.user = nil
 				claimable_profile.save
 			end
 		
 			context "as provider with no profile" do
-				before(:each) do
+				before(:example) do
 					provider.reload.profile = nil
 					provider.save
 				end
@@ -233,12 +233,12 @@ describe UsersController, :type => :controller do
 		let(:bert) { FactoryGirl.create :provider, email: 'bert@example.com' }
 		let(:ernie) { FactoryGirl.create :provider, email: 'ernie@example.com' }
 		
-		before(:each) do
+		before(:example) do
 			sign_in admin_user
 		end
 		
 		describe "GET users index" do
-			before(:each) do
+			before(:example) do
 				bert and ernie
 				get :index
 			end
@@ -253,7 +253,7 @@ describe UsersController, :type => :controller do
 		end
 		
 		describe "GET users show" do
-			before(:each) do
+			before(:example) do
 				get :show, id: bert.id
 			end
 			

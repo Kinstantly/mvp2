@@ -25,7 +25,7 @@ describe StripeCard, type: :model, payments: true do
 	end
 	
 	context "remote card information" do
-		before(:each) do
+		before(:example) do
 		  allow(Stripe::Customer).to receive(:retrieve).with(any_args) do
 				api_customer
 			end

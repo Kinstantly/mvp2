@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Profile, :type => :model do
-	before(:each) do
+	before(:example) do
 		@profile_data ||= {
 			first_name: 'Joe', last_name: 'Black', company_name: 'Coffee is Good',
 			categories: [FactoryGirl.create(:category, name: 'THERAPISTS & PARENTING COACHES')],
@@ -350,7 +350,7 @@ describe Profile, :type => :model do
 	
 	context "search" do
 		context "matching criteria" do
-			before(:each) do
+			before(:example) do
 				@profile = FactoryGirl.create(:published_profile, headline: 'Swedish dramatic soprano')
 				Profile.reindex
 				Sunspot.commit
@@ -366,7 +366,7 @@ describe Profile, :type => :model do
 		end
 		
 		context "ordering and restricting" do
-			before(:each) do
+			before(:example) do
 				@summary_1 = 'Swedish dramatic soprano'
 				@summary_2 = 'Italian dramatic soprano'
 				@profile_1 = FactoryGirl.create(:published_profile, headline: @summary_1)
@@ -383,7 +383,7 @@ describe Profile, :type => :model do
 			end
 		
 			context "geographic", geocoding_api: true, internet: true do
-				before(:each) do
+				before(:example) do
 					@location_1 = @profile_1.locations.build({address1: '1398 Haight St', city: 'San Francisco', region: 'CA', postal_code: '94117'})
 					@location_1.save
 					@geocode_1 = {latitude: @location_1.latitude, longitude: @location_1.longitude}
@@ -462,7 +462,7 @@ describe Profile, :type => :model do
 		end
 	
 		context "paginated" do
-			before(:each) do
+			before(:example) do
 				FactoryGirl.create_list(:published_profile, 10, company_name: 'Moonlight Brewery')
 				Profile.reindex
 				Sunspot.commit
@@ -482,7 +482,7 @@ describe Profile, :type => :model do
 			let(:profile_with_service) { FactoryGirl.create :published_profile, services: [service] }
 			let(:profile_with_name) { FactoryGirl.create :published_profile, headline: service.name }
 		
-			before(:each) do
+			before(:example) do
 				profile_with_name and profile_with_service
 				Profile.reindex
 				Sunspot.commit
@@ -503,7 +503,7 @@ describe Profile, :type => :model do
 		end
 		
 		context "null search results" do
-			before(:each) do
+			before(:example) do
 				FactoryGirl.create :published_profile, first_name: 'Maria', last_name: 'Callas'
 				FactoryGirl.create :published_profile, first_name: 'Cesare', last_name: 'Valletti'
 			end
@@ -535,7 +535,7 @@ describe Profile, :type => :model do
 		let(:body) { 'We are inviting you to claim your profile.' }
 		let(:delivery_token) { '895d1d74-1951-11e4-83cc-00264afffe0a' }
 		
-		before(:each) do
+		before(:example) do
 			@profile.invitation_email = recipient
 		end
 		
@@ -550,7 +550,7 @@ describe Profile, :type => :model do
 		end
 		
 		context "when profile is saved before invitation is attempted" do
-			before(:each) do
+			before(:example) do
 				@profile.invitation_tracking_category = 'profile_claim'
 				@profile.save
 			end
@@ -564,7 +564,7 @@ describe Profile, :type => :model do
 			end
 			
 			context "invitation attributes are properly set" do
-				before(:each) do
+				before(:example) do
 					@profile.invite subject, body
 					expect(@profile.errors.size).to eq 0
 				end
@@ -614,7 +614,7 @@ describe Profile, :type => :model do
 		let(:zeus) { FactoryGirl.create :parent, email: 'zeus@example.com', username: 'zeus' }
 		let(:hera) { FactoryGirl.create :parent, email: 'hera@example.com', username: 'hera' }
 		
-		before(:each) do
+		before(:example) do
 			profile = profile_to_rate.reload
 			profile.ratings.each &:destroy
 			profile.rate 2, zeus

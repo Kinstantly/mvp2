@@ -12,7 +12,7 @@ describe ReviewsController, :type => :controller do
 	let(:provider_with_published_profile) { FactoryGirl.create :provider, profile: published_profile }
 	
 	context "as a non-administrator attempting to access admin actions" do
-		before(:each) do
+		before(:example) do
 			sign_in parent
 		end
 

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Specialty, :type => :model do
-	before(:each) do
+	before(:example) do
 		@specialty = Specialty.new # FactoryGirl products don't have callbacks!
 		@specialty.name = 'behavior'
 	end
@@ -13,7 +13,7 @@ describe Specialty, :type => :model do
 	it "strips whitespace from the name" do
 		name = 'music instruction'
 		@specialty.name = " #{name} "
-		expect(@specialty).to have(:no).errors_on(:name)
+		expect(@specialty.errors_on(:name).size).to eq 0
 		expect(@specialty.name).to eq name
 	end
 	
@@ -24,7 +24,7 @@ describe Specialty, :type => :model do
 	end
 	
 	context "search terms" do
-		before(:each) do
+		before(:example) do
 			@search_terms = [FactoryGirl.create(:search_term, name: 'oppositional behavior'),
 				FactoryGirl.create(:search_term, name: 'defiant teens')]
 			@specialty.search_terms = @search_terms
@@ -54,7 +54,7 @@ describe Specialty, :type => :model do
 	end
 	
 	context "Sunspot/SOLR auto-indexing" do
-		before(:each) do
+		before(:example) do
 			@specialty.save
 			@profile = FactoryGirl.create(:published_profile, specialties: [@specialty])
 			Profile.reindex # reset the SOLR index

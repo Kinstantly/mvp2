@@ -18,7 +18,7 @@ describe StripeChargesController, type: :controller, payments: true do
 	end
 	
 	context "provider is signed in" do
-		before(:each) do
+		before(:example) do
 			sign_in provider
 		end
 		
@@ -49,7 +49,7 @@ describe StripeChargesController, type: :controller, payments: true do
 			let(:api_charge) { stripe_charge_mock amount_cents: charge_amount_cents,  refunds: api_refunds }
 			let(:api_application_fee_list) { application_fee_list_mock }
 		
-			before(:each) do
+			before(:example) do
 				allow(Stripe::Charge).to receive(:retrieve).with(any_args) do
 					api_charge
 				end
@@ -108,7 +108,7 @@ describe StripeChargesController, type: :controller, payments: true do
 	end
 	
 	context "client is signed in" do
-		before(:each) do
+		before(:example) do
 			sign_in client
 		end
 		

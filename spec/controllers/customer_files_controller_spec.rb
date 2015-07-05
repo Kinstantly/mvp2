@@ -18,7 +18,7 @@ describe CustomerFilesController, type: :controller, payments: true do
 	let(:api_charge) { stripe_charge_mock amount_cents: charge_amount_cents }
 	let(:api_balance_transaction) { stripe_balance_transaction_mock fee_cents: charge_fee_cents }
 	
-	before(:each) do
+	before(:example) do
 		customer_file_1
 		customer_file_2
 		
@@ -52,7 +52,7 @@ describe CustomerFilesController, type: :controller, payments: true do
 	end
 	
 	context "customer is signed in" do
-		before(:each) do
+		before(:example) do
 			sign_in parent_1
 		end
 		
@@ -82,7 +82,7 @@ describe CustomerFilesController, type: :controller, payments: true do
 	end
 	
 	context "provider is signed in" do
-		before(:each) do
+		before(:example) do
 			sign_in provider
 		end
 		

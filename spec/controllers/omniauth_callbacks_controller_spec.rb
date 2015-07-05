@@ -19,7 +19,7 @@ describe OmniauthCallbacksController, type: :controller, payments: true do
 		let(:stripe_account) { stripe_account_mock }
 		let(:stripe_account_pending_verification) { stripe_account_mock verified: false }
 	
-		before(:each) do
+		before(:example) do
 		  sign_in provider
 			@request.env["devise.mapping"] = Devise.mappings[:user] # This controller is an extension of a Devise controller.
 			@request.env["omniauth.auth"] = omniauth_values

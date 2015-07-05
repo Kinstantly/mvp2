@@ -5,7 +5,7 @@ describe "profiles/search_results", :type => :view do
 	let(:profile) { FactoryGirl.create :published_profile } # Should have at least one service.
 	
 	context "search by service" do
-		before(:each) do
+		before(:example) do
 			profile
 			Profile.reindex
 			Sunspot.commit
@@ -42,7 +42,7 @@ describe "profiles/search_results", :type => :view do
 	end
 	
 	context "fuzzy search" do
-		before(:each) do
+		before(:example) do
 			profile
 			Profile.reindex
 			Sunspot.commit

@@ -29,7 +29,7 @@ describe SpecialtiesController, :type => :controller do
 		end
 		
 		describe "GET 'index'" do
-			before(:each) do
+			before(:example) do
 				FactoryGirl.create(:predefined_specialty, name: 'making chile verde')
 				get :index
 			end
@@ -44,7 +44,7 @@ describe SpecialtiesController, :type => :controller do
 		end
 	
 		describe "GET 'new'" do
-			before(:each) do
+			before(:example) do
 				get :new
 			end
 		
@@ -72,7 +72,7 @@ describe SpecialtiesController, :type => :controller do
 		end
 	
 		describe "GET 'edit'" do
-			before(:each) do
+			before(:example) do
 				@specialty = FactoryGirl.create(:predefined_specialty, name: 'steaming tamales')
 				get :edit, id: @specialty.id
 			end
@@ -87,7 +87,7 @@ describe SpecialtiesController, :type => :controller do
 		end
 		
 		describe "PUT 'update'" do
-			before(:each) do
+			before(:example) do
 				@specialty = FactoryGirl.create(:predefined_specialty, name: 'steaming tamales',
 					search_terms: [FactoryGirl.create(:search_term, name: 'carne adovada')])
 			end

@@ -14,17 +14,17 @@ describe ProviderSuggestion, :type => :model do
 		it "must have a suggester or suggester fields" do
 			provider_suggestion.suggester = nil
 			provider_suggestion.suggester_email = nil
-			expect(provider_suggestion).to have(1).error_on :suggester_email
+			expect(provider_suggestion.error_on(:suggester_email).size).to eq 1
 		end
 		
 		it "must have a provider name" do
 			provider_suggestion.provider_name = nil
-			expect(provider_suggestion).to have(1).error_on :provider_name
+			expect(provider_suggestion.error_on(:provider_name).size).to eq 1
 		end
 		
 		it "must have a provider description" do
 			provider_suggestion.description = nil
-			expect(provider_suggestion).to have(1).error_on :description
+			expect(provider_suggestion.error_on(:description).size).to eq 1
 		end
 	end
 	
@@ -32,15 +32,15 @@ describe ProviderSuggestion, :type => :model do
 		[:description, :provider_name, :provider_url, :suggester_name].each do |attr|
 			s = 'a' * ProviderSuggestion::MAX_LENGTHS[attr]
 			provider_suggestion.send "#{attr}=", s
-			expect(provider_suggestion).to have(:no).errors_on(attr)
+			expect(provider_suggestion.errors_on(attr).size).to eq 0
 			provider_suggestion.send "#{attr}=", (s + 'a')
-			expect(provider_suggestion).to have(1).error_on(attr)
+			expect(provider_suggestion.error_on(attr).size).to eq 1
 		end
 	end
 	
 	it "must have a valid suggester email address if used" do
 		provider_suggestion.suggester_email = 'invalid@example'
-		expect(provider_suggestion).to have(1).error_on :suggester_email
+		expect(provider_suggestion.error_on(:suggester_email).size).to eq 1
 	end
 	
 	context "protected attributes" do

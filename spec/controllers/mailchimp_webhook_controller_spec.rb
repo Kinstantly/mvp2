@@ -22,7 +22,7 @@ describe MailchimpWebhookController, :type => :controller do
 		end
 
 		context "user unsubscribed remotely, but still subscribed locally" do
-			before(:each) do
+			before(:example) do
 				user.parent_newsletters_stage1 = true
 				user.save!
 				@parent_newsletters_stage1_leid = user.parent_newsletters_stage1_leid
@@ -60,7 +60,7 @@ describe MailchimpWebhookController, :type => :controller do
 		end
 
 		context "user subscribed both locally and remotely" do
-			before(:each) do
+			before(:example) do
 				user.parent_newsletters_stage1 = true
 				user.parent_newsletters_stage2 = true
 				user.parent_newsletters_stage3 = true

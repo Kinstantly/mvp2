@@ -60,7 +60,7 @@ describe Customer, type: :model, payments: true do
 	end
 	
 	context "new customer" do
-		before(:each) do
+		before(:example) do
 			expect(Stripe::Customer).to receive(:create).and_return(api_customer)
 			allow(Stripe::Customer).to receive(:retrieve).with(any_args) do
 				api_customer
@@ -130,7 +130,7 @@ describe Customer, type: :model, payments: true do
 	end
 	
 	context "Without valid Stripe API keys" do
-		before(:each) do
+		before(:example) do
 			allow(Stripe::Customer).to receive(:create).and_raise(Stripe::AuthenticationError)
 			allow(Stripe::Customer).to receive(:retrieve).and_raise(Stripe::AuthenticationError)
 		end

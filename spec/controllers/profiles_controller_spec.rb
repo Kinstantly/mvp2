@@ -22,12 +22,12 @@ describe ProfilesController, :type => :controller do
 	let(:photo_url) { 'https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png' }
 	
 	context "as site visitor attempting to access a published profile" do
-		before(:each) do
+		before(:example) do
 			@profile = FactoryGirl.create(:published_profile)
 		end
 		
 		describe "GET 'show'" do
-			before(:each) do
+			before(:example) do
 				get :show, id: @profile.id
 			end
 			
@@ -49,7 +49,7 @@ describe ProfilesController, :type => :controller do
 	end
 	
 	context "as site visitor attempting to access an unpublished profile" do
-		before(:each) do
+		before(:example) do
 			@profile = FactoryGirl.create(:unpublished_profile)
 		end
 		
@@ -165,7 +165,7 @@ describe ProfilesController, :type => :controller do
 			end
 			
 			context "ensures the provider has a profile" do
-				before(:each) do
+				before(:example) do
 					me.profile.destroy
 					get :view_my_profile
 				end
@@ -189,7 +189,7 @@ describe ProfilesController, :type => :controller do
 			end
 			
 			context "ensures the provider has a profile" do
-				before(:each) do
+				before(:example) do
 					me.profile.destroy
 					get :edit_my_profile
 				end
@@ -282,7 +282,7 @@ describe ProfilesController, :type => :controller do
 		end
 
 		describe "POST 'photo_update'", :photo_upload => true do
-			before(:all) do
+			before(:context) do
 				@photo_file = Rack::Test::UploadedFile.new(
 					Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 'image/png')
 			end
@@ -314,13 +314,13 @@ describe ProfilesController, :type => :controller do
 				expect(response.status).to eq(302)
 				expect(Profile.find_by_id(id).profile_photo.original_filename).to_not eq("profile_photo_test_under1MB.jpg")
 			end
-			after(:all) do
+			after(:context) do
 				@photo_file.close
 			end
 		end
 		
 		describe "GET 'services_info'" do
-			before(:each) do
+			before(:example) do
 				get :services_info, id: my_profile_id, format: :json
 			end
 			
@@ -335,7 +335,7 @@ describe ProfilesController, :type => :controller do
 		end
 		
 		describe "GET 'show_tab'" do
-			before(:each) do
+			before(:example) do
 				get :show_tab, id: my_profile_id
 			end
 			
@@ -349,7 +349,7 @@ describe ProfilesController, :type => :controller do
 		end
 		
 		describe "GET 'edit_tab'" do
-			before(:each) do
+			before(:example) do
 				get :edit_tab, id: my_profile_id
 			end
 			
@@ -370,7 +370,7 @@ describe ProfilesController, :type => :controller do
 		end
 
 		describe "GET 'index'" do
-			before(:each) do
+			before(:example) do
 				@eddie = FactoryGirl.create(:expert_user, email: 'eddie@example.com')
 				get :index
 			end
@@ -385,7 +385,7 @@ describe ProfilesController, :type => :controller do
 		end
 	
 		describe "GET 'new'" do
-			before(:each) do
+			before(:example) do
 				get :new
 			end
 		
@@ -399,7 +399,7 @@ describe ProfilesController, :type => :controller do
 		end
 	
 		describe "POST 'create'" do
-			before(:each) do
+			before(:example) do
 				@profile_attrs = 
 					FactoryGirl.attributes_for(:profile,
 						category_ids: ["#{FactoryGirl.create(:category).id}"],
@@ -421,7 +421,7 @@ describe ProfilesController, :type => :controller do
 		end
 	
 		describe "GET 'edit'" do
-			before(:each) do
+			before(:example) do
 				@profile = FactoryGirl.create(:profile)
 				get :edit, id: @profile.id
 			end
@@ -440,7 +440,7 @@ describe ProfilesController, :type => :controller do
 		end
 	
 		describe "PUT 'update'" do
-			before(:each) do
+			before(:example) do
 				@profile_attrs = 
 					FactoryGirl.attributes_for(:profile,
 						category_ids: ["#{FactoryGirl.create(:category).id}"],
@@ -464,7 +464,7 @@ describe ProfilesController, :type => :controller do
 		end
 
 		describe "POST 'photo_update'", :photo_upload => true do
-			before(:each) do
+			before(:example) do
 				@profile = FactoryGirl.create(:profile)
 			end
 			it "successfully uploads profile photo", :photo_upload => true do
@@ -489,7 +489,7 @@ describe ProfilesController, :type => :controller do
 				@profile.profile_photo.destroy
 				@profile.save	
 			end
-			after(:each) do
+			after(:example) do
 				#delete uploaded photo
 				@profile.profile_photo.destroy
 				@profile.save
@@ -569,7 +569,7 @@ describe ProfilesController, :type => :controller do
 		end
 
 		describe "POST 'photo_update'", :photo_upload => true do
-			before(:each) do
+			before(:example) do
 				@profile = FactoryGirl.create(:profile)
 			end
 			it "successfully uploads profile photo" do
@@ -610,7 +610,7 @@ describe ProfilesController, :type => :controller do
 				expect(response).to be_success
 				expect(response.body).to include(I18n.t("controllers.profiles.profile_photo_filetype_error"))
 			end
-			after(:each) do
+			after(:example) do
 				#close source photo
 				@photo_file.close if @profile_file
 				#delete uploaded photo
@@ -646,7 +646,7 @@ describe ProfilesController, :type => :controller do
 	end
 	
 	context "for a search engine crawler" do
-		before(:each) do
+		before(:example) do
 			@published_profile = FactoryGirl.create(:published_profile, last_name: 'Garanca')
 			@unpublished_profile = FactoryGirl.create(:unpublished_profile, last_name: 'Netrebko')
 			get :link_index
@@ -662,7 +662,7 @@ describe ProfilesController, :type => :controller do
 	end
 	
 	context "as a site visitor searching for a profile" do
-		before(:each) do
+		before(:example) do
 			@published_profile = FactoryGirl.create(:published_profile, last_name: 'Garanca')
 			@unpublished_profile = FactoryGirl.create(:unpublished_profile, last_name: 'Netrebko')
 			Profile.reindex
@@ -692,7 +692,7 @@ describe ProfilesController, :type => :controller do
 		end
 		
 		context "visitor is a profile editor" do
-			before(:each) do
+			before(:example) do
 				@profile_editor = FactoryGirl.create(:profile_editor, email: 'editor@example.com')
 				sign_in @profile_editor
 			end
@@ -704,7 +704,7 @@ describe ProfilesController, :type => :controller do
 		end
 		
 		context "search restricted by search area tag", geocoding_api: true, internet: true do
-			before(:each) do
+			before(:example) do
 				tag = FactoryGirl.create(:search_area_tag, name: 'San Francisco')
 				loc = FactoryGirl.create(:location, search_area_tag: tag)
 				last_name = @published_profile.last_name
@@ -741,7 +741,7 @@ describe ProfilesController, :type => :controller do
 				locations: [rr_location], services: [service])
 		}
 		
-		before(:each) do
+		before(:example) do
 			bear_profile and rr_profile
 			Profile.reindex
 			Sunspot.commit
@@ -800,7 +800,7 @@ describe ProfilesController, :type => :controller do
 	end
 	
 	context "paginated search" do
-		before(:each) do
+		before(:example) do
 			FactoryGirl.create_list(:published_profile, 10, company_name: 'Magnolia Gastropub and Brewery')
 			Profile.reindex
 			Sunspot.commit
@@ -822,7 +822,7 @@ describe ProfilesController, :type => :controller do
 		let(:profile_with_service) { FactoryGirl.create :published_profile, services: [service] }
 		let(:profile_with_name) { FactoryGirl.create :published_profile, headline: service.name }
 		
-		before(:each) do
+		before(:example) do
 			profile_with_name and profile_with_service
 			Profile.reindex
 			Sunspot.commit
@@ -837,7 +837,7 @@ describe ProfilesController, :type => :controller do
 	end
 	
 	context "null search results" do
-		before(:each) do
+		before(:example) do
 			FactoryGirl.create :published_profile, first_name: 'Maria', last_name: 'Callas'
 			FactoryGirl.create :published_profile, first_name: 'Cesare', last_name: 'Valletti'
 		end
@@ -899,7 +899,7 @@ describe ProfilesController, :type => :controller do
 	context "rating published profiles" do
 		let(:profile_to_rate) { FactoryGirl.create(:published_profile) }
 		
-		before(:each) do
+		before(:example) do
 			Profile.find(profile_to_rate.id).ratings.each &:destroy
 		end
 		

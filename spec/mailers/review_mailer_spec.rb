@@ -7,7 +7,7 @@ describe ProfileMailer, :type => :mailer do
 	REVIEW_MODERATOR_EMAIL
 	
 	context "moderator notification email" do
-		before(:each) do
+		before(:example) do
 			@review = FactoryGirl.create :review_by_parent
 			@email = ReviewMailer.notify_moderator @review
 		end

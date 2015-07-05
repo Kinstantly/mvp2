@@ -54,7 +54,7 @@ describe Category, :type => :model do
 	# end
 	
 	context "category lists" do
-		before(:each) do
+		before(:example) do
 			category.is_predefined = true
 		end
 		
@@ -91,7 +91,7 @@ describe Category, :type => :model do
 				FactoryGirl.create(:subcategory, name: 'CAMPS')]
 		}
 		
-		before(:each) do
+		before(:example) do
 			category.subcategories = subcategories
 			category.save
 			category.reload
@@ -122,7 +122,7 @@ describe Category, :type => :model do
 			FactoryGirl.create(:published_profile, categories: [category])
 		}
 		
-		before(:each) do
+		before(:example) do
 			profile # Instantiate!
 			Profile.reindex # reset the SOLR index
 			Sunspot.commit

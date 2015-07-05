@@ -29,5 +29,5 @@ Then /^my rating for this provider should be (\d+)$/ do |rating|
 end
 
 Then /^the published profile should have no ratings$/ do
-	find_published_profile.should have(:no).ratings
+	expect(find_published_profile.ratings.size).to eq 0
 end

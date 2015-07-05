@@ -225,7 +225,7 @@ describe CategoriesController, :type => :controller do
 			let(:subcategory) { FactoryGirl.create :subcategory, name: 'Billabongs' }
 			let(:display_order) { 7 }
 			
-			before(:each) do
+			before(:example) do
 				category.subcategories << subcategory
 			end
 			
@@ -243,7 +243,7 @@ describe CategoriesController, :type => :controller do
 		describe "PUT remove_subcategory" do
 			let(:subcategory) { FactoryGirl.create :subcategory, name: 'How to Lean on the Everlasting Arms' }
 			
-			before(:each) do
+			before(:example) do
 				category.subcategories << subcategory
 			end
 			

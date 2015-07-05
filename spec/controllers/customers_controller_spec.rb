@@ -16,7 +16,7 @@ describe CustomersController, type: :controller, payments: true do
 	let(:invalid_profile) { invalid_provider.profile }
 	let(:invalid_profile_id) { invalid_profile.id.to_s }
 	
-	before(:each) do
+	before(:example) do
 		allow(Stripe::Customer).to receive(:create).with(any_args) do
 			api_customer
 		end
@@ -43,7 +43,7 @@ describe CustomersController, type: :controller, payments: true do
 	end
 	
 	context "customer is signed in" do
-		before(:each) do
+		before(:example) do
 			sign_in parent
 		end
 		

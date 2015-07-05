@@ -10,13 +10,13 @@ describe Location, :type => :model do
 		location.country = 'ES'
 		location.postal_code = '070XX'
 		location.note = 'The elevator is broken.'
-		expect(location).to have(:no).errors_on(:address1)
-		expect(location).to have(:no).errors_on(:address2)
-		expect(location).to have(:no).errors_on(:city)
-		expect(location).to have(:no).errors_on(:region)
-		expect(location).to have(:no).errors_on(:country)
-		expect(location).to have(:no).errors_on(:postal_code)
-		expect(location).to have(:no).errors_on(:note)
+		expect(location.errors_on(:address1).size).to eq 0
+		expect(location.errors_on(:address2).size).to eq 0
+		expect(location.errors_on(:city).size).to eq 0
+		expect(location.errors_on(:region).size).to eq 0
+		expect(location.errors_on(:country).size).to eq 0
+		expect(location.errors_on(:postal_code).size).to eq 0
+		expect(location.errors_on(:note).size).to eq 0
 	end
 	
 	it "limits the number of input characters for attributes stored as string or text records" do
@@ -24,16 +24,16 @@ describe Location, :type => :model do
 		[:address1, :address2, :city, :region, :postal_code, :country, :note].each do |attr|
 			s = 'a' * Location::MAX_LENGTHS[attr]
 			location.send "#{attr}=", s
-			expect(location).to have(:no).errors_on(attr)
+			expect(location.errors_on(attr).size).to eq 0
 			location.send "#{attr}=", (s + 'a')
-			expect(location).to have(1).error_on(attr)
+			expect(location.error_on(attr).size).to eq 1
 		end
 	end
 	
 	it "has a search area tag used to limit the scope of full-text searches" do
 		location = FactoryGirl.create :location
 		location.search_area_tag = FactoryGirl.create :search_area_tag, name: 'East Bay'
-		expect(location).to have(:no).errors_on(:search_area_tag)
+		expect(location.errors_on(:search_area_tag).size).to eq 0
 	end
 	
 	it "has Sunspot coordinates" do
@@ -48,18 +48,18 @@ describe Location, :type => :model do
 	end
 	
 	context "phone number" do
-		before(:each) do
+		before(:example) do
 			@location = Location.new
 		end
 		
 		it "should accept a properly formatted US number" do
 			@location.phone = '(415) 555-1234'
-			expect(@location).to have(:no).errors_on(:phone)
+			expect(@location.errors_on(:phone).size).to eq 0
 		end
 		
 		it "should fail with an improperly formatted US number" do
 			@location.phone = '(415) 55-1234'
-			expect(@location).to have(1).errors_on(:phone)
+			expect(@location.errors_on(:phone).size).to eq 1
 		end
 	end
 	
@@ -67,7 +67,7 @@ describe Location, :type => :model do
 		location = Location.new
 		phone = '(800) 555-1001'
 		location.phone = " #{phone} "
-		expect(location).to have(:no).errors_on(:phone)
+		expect(location.errors_on(:phone).size).to eq 0
 		expect(location.phone).to eq phone
 	end
 end

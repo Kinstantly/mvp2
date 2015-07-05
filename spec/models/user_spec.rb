@@ -131,7 +131,7 @@ describe User, :type => :model do
 				}
 				let(:ralph) { FactoryGirl.create :provider, email: 'Ralph@VaughanWilliams.com' }
 				
-				before(:each) do
+				before(:example) do
 					profile_to_claim.reload.user = nil
 					profile_to_claim.save
 				end
@@ -145,7 +145,7 @@ describe User, :type => :model do
 				end
 			
 				context "this user does not already have a persistent profile" do
-					before(:each) do
+					before(:example) do
 						ralph.profile = nil
 						ralph.save
 					end
@@ -241,7 +241,7 @@ describe User, :type => :model do
 			end
 
 			context "AFTER admin approval" do
-				before(:each) do
+				before(:example) do
 					provider.admin_confirmation_sent_at = Time.now.utc
 					provider.save
 				end
@@ -386,7 +386,7 @@ describe User, :type => :model do
 		user = User.new
 		username = 'SteveEarle'
 		user.username = " #{username} "
-		expect(user).to have(:no).errors_on(:username)
+		expect(user.errors_on(:username).size).to eq 0
 		expect(user.username).to eq username
 	end
 	

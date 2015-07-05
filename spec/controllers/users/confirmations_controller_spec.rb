@@ -13,7 +13,7 @@ describe Users::ConfirmationsController, :type => :controller do
 			parent_newsletters_stage2: true
 	}
 	
-	before(:each) do
+	before(:example) do
 		@request.env["devise.mapping"] = Devise.mappings[:user]
 	end
 
@@ -66,7 +66,7 @@ describe Users::ConfirmationsController, :type => :controller do
 	context "as admin user" do
 		let(:bossy) { FactoryGirl.create :admin_user, email: 'bossy@example.com' }
 		
-		before(:each) do
+		before(:example) do
 			sign_in bossy
 		end
 		

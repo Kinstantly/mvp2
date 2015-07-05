@@ -14,7 +14,7 @@ describe Subcategory, :type => :model do
 	it "strips whitespace from the name" do
 		name = 'CHILD CARE'
 		subcategory.name = " #{name} "
-		expect(subcategory).to have(:no).errors_on(:name)
+		expect(subcategory.errors_on(:name).size).to eq 0
 		expect(subcategory.name).to eq name
 	end
 
@@ -39,7 +39,7 @@ describe Subcategory, :type => :model do
 				FactoryGirl.create(:category, name: 'Education')]
 		}
 		
-		before(:each) do
+		before(:example) do
 			subcategory.categories = categories
 			subcategory.save
 			subcategory.reload
@@ -64,7 +64,7 @@ describe Subcategory, :type => :model do
 				FactoryGirl.create(:service, name: 'Occupational Therapists')]
 		}
 		
-		before(:each) do
+		before(:example) do
 			subcategory.services = services
 			subcategory.save
 			subcategory.reload
@@ -101,7 +101,7 @@ describe Subcategory, :type => :model do
 			FactoryGirl.create(:published_profile, subcategories: [subcategory])
 		}
 		
-		before(:each) do
+		before(:example) do
 			profile # Instantiate!
 			Profile.reindex # reset the SOLR index
 			Sunspot.commit

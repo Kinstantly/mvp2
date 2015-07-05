@@ -5,32 +5,32 @@ describe Rating, :type => :model do
 	
 	it "has a score attribute" do
 		rating.score = 2
-		expect(rating).to have(:no).errors_on(:score)
+		expect(rating.errors_on(:score).size).to eq 0
 	end
 	
 	it "requires a score" do
 		rating.score = nil
-		expect(rating).to have_at_least(1).error_on(:score)
+		expect(rating.error_on(:score).size).to be >= 1
 	end
 	
 	it "must have a numeric score" do
 		rating.score = 'five'
-		expect(rating).to have(1).error_on(:score)
+		expect(rating.error_on(:score).size).to eq 1
 	end
 	
 	it "must have an integral score" do
 		rating.score = 2.5
-		expect(rating).to have(1).error_on(:score)
+		expect(rating.error_on(:score).size).to eq 1
 	end
 	
 	it "must have a score from 1 to 5" do
 		rating.score = 0
-		expect(rating).to have(1).error_on(:score)
+		expect(rating.error_on(:score).size).to eq 1
 		rating.score = 1
-		expect(rating).to have(:no).errors_on(:score)
+		expect(rating.errors_on(:score).size).to eq 0
 		rating.score = 5
-		expect(rating).to have(:no).errors_on(:score)
+		expect(rating.errors_on(:score).size).to eq 0
 		rating.score = 6
-		expect(rating).to have(1).error_on(:score)
+		expect(rating.error_on(:score).size).to eq 1
 	end
 end

@@ -14,7 +14,7 @@ describe Service, :type => :model do
 	it "strips whitespace from the name" do
 		name = 'music teacher'
 		service.name = " #{name} "
-		expect(service).to have(:no).errors_on(:name)
+		expect(service.errors_on(:name).size).to eq 0
 		expect(service.name).to eq name
 	end
 	
@@ -26,13 +26,13 @@ describe Service, :type => :model do
 	
 	it "can be shown on the home page" do
 		service.show_on_home_page = true
-		expect(service).to have(:no).errors_on(:show_on_home_page)
+		expect(service.errors_on(:show_on_home_page).size).to eq 0
 	end
 	
 	context "finding services that belong to a subcategory" do
 		let(:subcategory) { FactoryGirl.create(:subcategory, name: 'psychiatrists') }
 		
-		before(:each) do
+		before(:example) do
 			service.save
 		end
 		
@@ -53,7 +53,7 @@ describe Service, :type => :model do
 				FactoryGirl.create(:specialty, name: 'adoption')]
 		}
 		
-		before(:each) do
+		before(:example) do
 			service.specialties = specialties
 			service.save
 			service.reload
@@ -84,7 +84,7 @@ describe Service, :type => :model do
 			FactoryGirl.create(:published_profile, services: [service])
 		}
 		
-		before(:each) do
+		before(:example) do
 			profile # Instantiate a profile for indexing into Solr.
 			Profile.reindex # reset the SOLR index
 			Sunspot.commit

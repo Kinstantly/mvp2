@@ -5,7 +5,7 @@ describe Users::RegistrationsController, :type => :controller do
 	let(:new_password) { 'Pucc1n1!' }
 	let(:username) { 'Giacomo' }
 	
-	before(:each) do
+	before(:example) do
 		@request.env["devise.mapping"] = Devise.mappings[:user]
 	end
 	
@@ -176,7 +176,7 @@ describe Users::RegistrationsController, :type => :controller do
 			end
 
 			context "after registration" do
-				before(:each) do
+				before(:example) do
 					post :create, user: {
 						is_provider: '1',
 						email: email,
