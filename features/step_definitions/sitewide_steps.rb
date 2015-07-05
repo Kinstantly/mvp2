@@ -8,15 +8,15 @@ When /^I wait a bit$/ do
 end
 
 Then /^I should see "(.*?)" on the page$/ do |content|
-	page.should have_content content
+	expect(page).to have_content content
 end
 
 Then /^I should see "(.*?)" text on the page$/ do |locale_path|
-	page.should have_content I18n.t locale_path
+	expect(page).to have_content I18n.t locale_path
 end
 
 Then /^I should not see "(.*?)" on the page$/ do |content|
-	page.should_not have_content content
+	expect(page).to_not have_content content
 end
 
 When /^I click on the "(.*?)" (?:link|button)$/ do |link_or_button|
@@ -41,22 +41,22 @@ end
 
 Then /^I should see "(.*?)" in the "(.*?)" field$/ do |text, field|
 	within(:xpath, "//*[contains(text(), \"#{field}\")]/..") do
-		page.should have_content text
+		expect(page).to have_content text
 	end
 end
 
 Then /^I should land on the home page$/ do
-	current_path.should eq root_path
+	expect(current_path).to eq root_path
 end
 
 Then /^I should see a "(.*?)" link button on the page$/ do |label|
 	within('a.button') do
-		page.should have_content label
+		expect(page).to have_content label
 	end
 end
 
 Then /^I should see a "(.*?)" button linked to "(.*?)" on the page$/ do |label, url|
-	should have_link(label, href: url)
+	expect(page).to have_link(label, href: url)
 end
 
 Then /^I should (not )?see html element "(.*?)"$/ do |no, selector|

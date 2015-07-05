@@ -21,11 +21,11 @@ end
 ### THEN ###
 
 Then /^the profile should have an average rating of ([\d.]+)$/ do |rating|
-	page.should have_css(".ratings-section .reviews[title=\"#{rating}\"]")
+	expect(page).to have_css(".ratings-section .reviews[title=\"#{rating}\"]")
 end
 
 Then /^my rating for this provider should be (\d+)$/ do |rating|
-	page.should have_css(".rate_provider .rate.reviewed-#{rating}-star")
+	expect(page).to have_css(".rate_provider .rate.reviewed-#{rating}-star")
 end
 
 Then /^the published profile should have no ratings$/ do

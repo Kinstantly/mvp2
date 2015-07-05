@@ -378,86 +378,86 @@ end
 
 ### THEN ###
 Then /^I should be signed in$/ do
-  page.should have_content I18n.t('views.sign_out.label').upcase
-  page.should_not have_content I18n.t('views.sign_in.label')
+  expect(page).to have_content I18n.t('views.sign_out.label').upcase
+  expect(page).to_not have_content I18n.t('views.sign_in.label')
 end
 
 Then /^I should be signed out$/ do
-  page.should have_content I18n.t('views.sign_in.label')
-  page.should_not have_content I18n.t('views.sign_out.label').upcase
+  expect(page).to have_content I18n.t('views.sign_in.label')
+  expect(page).to_not have_content I18n.t('views.sign_out.label').upcase
 end
 
 Then /^I see an unconfirmed account message$/ do
-  page.should have_content I18n.t('devise.registrations.signed_up_but_unconfirmed')
+  expect(page).to have_content I18n.t('devise.registrations.signed_up_but_unconfirmed')
 end
 
 Then /^I see a confirmed account message$/ do
-  page.should have_content I18n.t('devise.confirmations.confirmed')
+  expect(page).to have_content I18n.t('devise.confirmations.confirmed')
 end
 
 Then /^I see a successful sign in message$/ do
-  page.should have_content I18n.t('devise.sessions.signed_in')
+  expect(page).to have_content I18n.t('devise.sessions.signed_in')
 end
 
 Then /^I should see a successful sign up message$/ do
-  page.should have_content I18n.t('devise.registrations.signed_up')
+  expect(page).to have_content I18n.t('devise.registrations.signed_up')
 end
 
 Then /^I should see an invalid email message$/ do
-  page.should have_content "#{User.human_attribute_name :email} is invalid"
+  expect(page).to have_content "#{User.human_attribute_name :email} is invalid"
 end
 
 Then /^I should see a missing password message$/ do
-  page.should have_content "#{User.human_attribute_name :password} #{I18n.t 'activerecord.errors.messages.blank'}"
+  expect(page).to have_content "#{User.human_attribute_name :password} #{I18n.t 'activerecord.errors.messages.blank'}"
 end
 
 Then /^I should see a missing password confirmation message$/ do
-  page.should have_content "#{User.human_attribute_name :password} #{I18n.t 'activerecord.errors.models.user.attributes.password.confirmation'}"
+  expect(page).to have_content "#{User.human_attribute_name :password} #{I18n.t 'activerecord.errors.models.user.attributes.password.confirmation'}"
 end
 
 Then /^I should see a mismatched password message$/ do
-  page.should have_content "#{User.human_attribute_name :password} #{I18n.t 'activerecord.errors.models.user.attributes.password.confirmation'}"
+  expect(page).to have_content "#{User.human_attribute_name :password} #{I18n.t 'activerecord.errors.models.user.attributes.password.confirmation'}"
 end
 
 Then /^I should see a missing username message$/ do
-  page.should have_content "#{User.human_attribute_name :username} #{I18n.t 'activerecord.errors.messages.blank'}"
+  expect(page).to have_content "#{User.human_attribute_name :username} #{I18n.t 'activerecord.errors.messages.blank'}"
 end
 
 Then /^I should see a signed out message$/ do
-  page.should have_content I18n.t('devise.sessions.signed_out')
+  expect(page).to have_content I18n.t('devise.sessions.signed_out')
 end
 
 Then /^I see an invalid login message$/ do
-  page.should have_content I18n.t('devise.failure.invalid')
+  expect(page).to have_content I18n.t('devise.failure.invalid')
 end
 
 Then /^I should see an account edited message$/ do
-  page.should have_content I18n.t('devise.registrations.updated')
+  expect(page).to have_content I18n.t('devise.registrations.updated')
 end
 
 Then /^I should see a subscriptions edited message$/ do
-  page.should have_content I18n.t('controllers.users.subscriptions_updated')
+  expect(page).to have_content I18n.t('controllers.users.subscriptions_updated')
 end
 
 Then /^I should be an expert$/ do
-  @user.should be_expert
+  expect(@user).to be_expert
 end
 
 Then /^I should be a client$/ do
-  @user.should be_client
+  expect(@user).to be_client
 end
 
 Then /^I should see more than one user$/ do
-	page.should have_content @visitor[:email]
-	page.should have_content @visitor_2[:email]
+	expect(page).to have_content @visitor[:email]
+	expect(page).to have_content @visitor_2[:email]
 end
 
 Then /^I should not see user data$/ do
-	page.should_not have_content @visitor[:email]
+	expect(page).to_not have_content @visitor[:email]
 end
 
 Then /^I should not see user data that is not my own$/ do
-	page.should_not have_content @visitor_2[:email]
+	expect(page).to_not have_content @visitor_2[:email]
 end
 
 Then /^I should (?:be|land) on the (provider|member) (?:registration|sign[- ]up) page$/ do |role|
@@ -467,37 +467,37 @@ Then /^I should (?:be|land) on the (provider|member) (?:registration|sign[- ]up)
 	else
 		member_sign_up_path
 	end
-	page.current_path.should == path
+	expect(page.current_path).to eq path
 end
 
 Then /^I should land on the sign-in page$/ do
-  current_path.should eq new_user_session_path
+  expect(current_path).to eq new_user_session_path
 end
 
 Then /^I should land on the alpha sign-up page$/ do
-  current_path.should eq alpha_sign_up_path
+  expect(current_path).to eq alpha_sign_up_path
 end
 
 Then /^I should (not )?see confirmation instructions form$/ do |no|
   if no.present?
-    page.has_button?('Send confirmation instructions').should_not be_true    
-    # page.has_css?("input[value='#{@user_2[:email]}']").should_not be_true
+    expect(page.has_button?('Send confirmation instructions')).to be false
+    # expect(page.has_css?("input[value='#{@user_2[:email]}']")).to be false
   else
-    page.has_button?('Send confirmation instructions').should be_true
-    find('input#user_email', visible: false).value.should == @user_2[:email]
+    expect(page.has_button?('Send confirmation instructions')).to be true
+    expect(find('input#user_email', visible: false).value).to eq @user_2[:email]
   end
 end
 
 Then /^I should (not )?land on the account page$/ do |no|
   if no.present?
-    current_path.should_not eq user_path @user_2
+    expect(current_path).to_not eq user_path @user_2
   else
-    current_path.should eq user_path @user_2
+    expect(current_path).to eq user_path @user_2
   end
 end
 
 Then /^I should see "(.*?)" (translated )?link to contact_preferences section of my account settings page$/ do |selector, tr|
   link_selector = tr.present? ? I18n.t(selector) : selector
   path = edit_subscriptions_url
-  page.has_link?(link_selector, href: path).should == true
+  expect(page.has_link?(link_selector, href: path)).to be true
 end

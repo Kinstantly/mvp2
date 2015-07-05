@@ -59,21 +59,21 @@ end
 ### THEN ###
 
 Then /^the profile should have (no|\d+) reviews?$/ do |how_many|
-	@profile.reload.should have(how_many).reviews
+	expect(@profile.reload.reviews.size).to eq (how_many == 'no' ? 0 : how_many.to_i)
 end
 
 Then /^the profile should show the review$/ do
 	within('#reviews') do
-	  page.should have_content @profile.reviews.first.body
+	  expect(page).to have_content @profile.reviews.first.body
 	end
 end
 
 Then /^I should land on the view page for the published profile$/ do
 	find_unattached_profile
-	current_path.should == profile_path(@published_profile)
+	expect(current_path).to eq profile_path(@published_profile)
 end
 
 Then /^I should land on the review form of the profile$/ do
 	find_unattached_profile
-	current_path.should == new_review_for_profile_path(@published_profile)
+	expect(current_path).to eq new_review_for_profile_path(@published_profile)
 end

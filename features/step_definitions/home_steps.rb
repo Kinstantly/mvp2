@@ -41,63 +41,63 @@ end
 
 Then /^I should see an email input box$/ do
 	# This does not seem to work if the content is in an iframe (even using Selenium).
-	page.should have_content('Email')
+	expect(page).to have_content('Email')
 end
 
 Then /^I should see a Google form$/ do
-	page.should have_css('iframe')
+	expect(page).to have_css('iframe')
 end
 
 Then /^I should see contact information$/ do
-	page.should have_content 'Ask us anything'
+	expect(page).to have_content 'Ask us anything'
 end
 
 Then /^I should see a statement about us$/ do
-	page.should have_content('Meet the Founders')
+	expect(page).to have_content('Meet the Founders')
 end
 
 Then /^I should see a list of frequently asked questions and answers$/ do
-	page.should have_content('Frequently')
+	expect(page).to have_content('Frequently')
 end
 
 Then /^I should see explanations of our terms of use$/ do
 	within('.privacy .section-header') do
-		page.should have_content('Terms of Use')
+		expect(page).to have_content('Terms of Use')
 	end
 end
 
 Then /^I should see explanations of our privacy policy$/ do
 	within('.privacy .section-header') do
-		page.should have_content('Our Privacy Policy')
+		expect(page).to have_content('Our Privacy Policy')
 	end
 end
 
 Then /^I should see that authored category$/ do
-	page.should have_content(@authored_category.name)
+	expect(page).to have_content(@authored_category.name)
 end
 
 Then /^I should not see that authored category$/ do
-	page.should_not have_content(@authored_category.name)
+	expect(page).to_not have_content(@authored_category.name)
 end
 
 Then /^I should see that authored category in the "(first|second)" column$/ do |which_column|
 	within("#col#{column_name_to_number which_column}") do
-		page.should have_content(@authored_category.name)
+		expect(page).to have_content(@authored_category.name)
 	end
 end
 
 Then /^I should see that authored subcategory$/ do
-	page.should have_content(@authored_subcategory.name)
+	expect(page).to have_content(@authored_subcategory.name)
 end
 
 Then /^I should not see that authored subcategory$/ do
-	page.should_not have_content(@authored_subcategory.name)
+	expect(page).to_not have_content(@authored_subcategory.name)
 end
 
 Then /^I should see that authored service$/ do
-	page.should have_content(@authored_service.name)
+	expect(page).to have_content(@authored_service.name)
 end
 
 Then /^I should not see that authored service$/ do
-	page.should_not have_content(@authored_service.name)
+	expect(page).to_not have_content(@authored_service.name)
 end
