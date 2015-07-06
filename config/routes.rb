@@ -9,6 +9,7 @@ Mvp2::Application.routes.draw do
 	match 'privacy' => 'home#privacy'
 	match 'admin' => 'home#admin'
 	match 'show_all_categories' => 'home#show_all_categories'
+	match 'blog' => 'home#blog'
 	get 'recent_newsletters' => 'home#recent_newsletters'
 	get 'newsletter/latest/:name' => 'newsletters#latest', as: :latest_newsletter
 	get 'newsletter/list(/:name)' => 'newsletters#list', as: :newsletter_list

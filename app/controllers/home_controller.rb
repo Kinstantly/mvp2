@@ -11,6 +11,10 @@ class HomeController < ApplicationController
 	def admin
 		render layout: 'plain'
 	end
+
+	def blog
+		redirect_to "http://blog.kinstantly.com"
+	end
 	
 	private
 	

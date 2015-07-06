@@ -331,6 +331,16 @@
 			@include scale(font-size, 18);
 			a{ text-decoration: underline; padding: 0 6px; &:first-child{ padding-left: 0; }}
 		}
+		p.thank-you {
+			text-align: center;
+			font-size: 140%;
+			font-weight: 600;
+		}
+		ul.newsletter-editions-schedule{
+			list-style: disc inside none;
+			margin-left: 50px;
+		}
+		.newsletter-resources a{ text-decoration: underline; }
 	}
 	
 	.profile {

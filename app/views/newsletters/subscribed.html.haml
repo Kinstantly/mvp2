@@ -3,21 +3,27 @@
 - info_email = "#{t('contact.emails.info.value')}@#{t('email_domain')}"
 #content
 	#awaiting_confirmation.wider_form
-		%p.greeting THANK YOU!
+		%p.thank-you THANK YOU!
 		%br
-		%p
-			You're all signed up for Kinstantly This Week. You should receive your first issue within the next few days.
+		%br
+		%p You're all signed up for Kinstantly This Week.
+		%br
+		%p Watch your inbox for us on the following days:
+		%ul.newsletter-editions-schedule
+			%li Monday mornings: Teens edition
+			%li Wednesday mornings: Ages 5-12 edition
+			%li Friday mornings: Ages 0-4 edition
+		%br
+		%br
+		%p.newsletter-resources
+			Can't wait? Scan our
+			= link_to 'archive', newsletter_list_path
+			to catch up on past issues. Search our
+			= link_to 'directory', root_path
+			for great parenting experts and family services. And check out our
+			= link_to 'blog', blog_url
+			for use-it-now parenting advice and how-to lessons.
 		%br
 		%p
 			Welcome to Kinstantly!
 		%br
-		%p
-			The Kinstantly team
-		%br
-		%br
-		%p.nav-links
-			= link_to 'Our Directory', root_path
-			|
-			= link_to 'Our Blog', 'http://blog.kinstantly.com/'
-			|
-			= link_to 'About Us', about_path
