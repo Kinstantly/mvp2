@@ -13,6 +13,7 @@ class HomeController < ApplicationController
 	end
 
 	def blog
+		logger.debug "/blog path requested. Redirecting to http://blog.kinstantly.com" if logger
 		redirect_to "http://blog.kinstantly.com"
 	end
 	
