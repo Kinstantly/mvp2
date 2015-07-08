@@ -90,4 +90,14 @@ describe HomeController do
 			response.should render_template 'terms'
 		end
 	end
+
+	describe "GET 'blog'" do
+		before(:each) do
+			get :blog
+		end
+
+		it "redirects to the blog site" do
+			expect(response).to redirect_to "http://blog.kinstantly.com"
+		end
+	end
 end

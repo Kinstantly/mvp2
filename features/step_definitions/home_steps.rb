@@ -101,3 +101,7 @@ end
 Then /^I should not see that authored service$/ do
 	page.should_not have_content(@authored_service.name)
 end
+
+Then /^I should be redirected to the "([^\"]*)" site$/ do |url|
+	expect(page.current_url).to match(url)
+end
