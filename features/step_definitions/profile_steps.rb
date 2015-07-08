@@ -900,7 +900,7 @@ Then /^I should see profile data for that user$/ do
 end
 
 Then /^I should see "(.*?)" in the page title$/ do |words|
-	expect(find(:xpath, '//head/title', visible: false)).to have_content words
+	expect(title).to have_content words
 end
 
 Then /^the profile should be attached to my account$/ do

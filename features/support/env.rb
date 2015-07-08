@@ -49,6 +49,16 @@ Spork.prefork do
   # You can adjust how long this period is (the default is 2 seconds):
   Capybara.default_wait_time = 5
 
+  # Capybara Webkit configuration: https://github.com/thoughtbot/capybara-webkit#configuration
+  Capybara::Webkit.configure do |config|
+    # By default, requests to outside domains (anything besides localhost) will
+    # result in a warning. Several methods allow you to change this behavior.
+
+    # Edward tried to allow and block specific URLs, but that caused scenarios to fail randomly or webkit to hang.
+    # So let's just allow all URLs.  Too bad.
+    config.allow_unknown_urls
+  end
+
   # By default, any exception happening in your Rails application will bubble up
   # to Cucumber so that your scenario will fail. This is a different from how 
   # your application behaves in the production environment, where an error page will 
