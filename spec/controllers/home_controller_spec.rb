@@ -92,7 +92,7 @@ describe HomeController, :type => :controller do
 	end
 
 	describe "GET 'blog'" do
-		before(:each) do
+		before(:example) do
 			get :blog
 		end
 
