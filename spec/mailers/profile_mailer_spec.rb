@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ProfileMailer do
+describe ProfileMailer, :type => :mailer do
 	include EmailSpec::Helpers
 	include EmailSpec::Matchers
 	include Rails.application.routes.url_helpers
@@ -20,19 +20,19 @@ describe ProfileMailer do
 			let(:email) { ProfileMailer.invite recipient, subject, body, profile, delivery_token }
 		
 			it "should be set to be delivered to the specified recipient" do
-				email.should deliver_to(recipient)
+				expect(email).to deliver_to(recipient)
 			end
 
 			it "should use the specified the subject" do
-				email.should have_subject(subject)
+				expect(email).to have_subject(subject)
 			end
 		
 			it "should use the specified message body" do
-				email.should have_body_text(body)
+				expect(email).to have_body_text(body)
 			end
 			
 			it "should contain an unsubscribe link" do
-				email.should have_body_text(new_contact_blocker_from_email_delivery_url email_delivery_token: delivery_token)
+				expect(email).to have_body_text(new_contact_blocker_from_email_delivery_url email_delivery_token: delivery_token)
 			end
 		end
 		
@@ -41,7 +41,7 @@ describe ProfileMailer do
 			let(:email) { ProfileMailer.invite recipient, subject, body_with_claim_url, profile, delivery_token }
 		
 			it "should contain a link for claiming the profile" do
-				email.should have_body_text(/#{claim_user_profile_url(token: profile.invitation_token)}/)
+				expect(email).to have_body_text(/#{claim_user_profile_url(token: profile.invitation_token)}/)
 			end
 		end
 	end

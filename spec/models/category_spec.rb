@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Category do
+describe Category, :type => :model do
 	# FactoryGirl products don't have callbacks!
 	let(:category) { Category.new name: 'ACTIVITIES' }
 	
@@ -8,14 +8,15 @@ describe Category do
 	# so no use testing here for numericality.
 	
 	it "has a name" do
-		category.save.should be_true
+		expect(category.save).to be_truthy
 	end
 	
 	it "strips whitespace from the name" do
 		name = 'FAMILY SERVICES'
 		category.name = " #{name} "
-		category.should have(:no).errors_on(:name)
-		category.name.should == name
+		category.valid?
+		expect(category.errors[:name].size).to eq 0
+		expect(category.name).to eq name
 	end
 
 	it "can be trashed" do
@@ -29,55 +30,58 @@ describe Category do
 	it "can be flagged as predefined" do
 		category.is_predefined = true
 		category.see_all_column = 1 # required if predefined
-		category.save.should be_true
-		Category.predefined.include?(category).should be_true
+		expect(category.save).to be_truthy
+		expect(Category.predefined.include?(category)).to be_truthy
 	end
 	
 	it "can be shown in the second column of the home page" do
 		category.home_page_column = 2
-		category.should have(:no).errors_on(:home_page_column)
+		category.valid?
+		expect(category.errors[:home_page_column].size).to eq 0
 	end
 	
 	it "can be shown in the third column of the see-all page" do
 		category.see_all_column = 3
-		category.should have(:no).errors_on(:see_all_column)
+		category.valid?
+		expect(category.errors[:see_all_column].size).to eq 0
 	end
 	
 	# it "must display on the see-all page if predefined" do
 	# 	category.is_predefined = true
 	# 	category.see_all_column = nil
-	# 	category.should have(1).error_on(:see_all_column)
+	# 	category.valid?
+	# 	expect(category.errors[:see_all_column].size).to eq 1
 	# end
 	
 	context "category lists" do
-		before(:each) do
+		before(:example) do
 			category.is_predefined = true
 		end
 		
 		it "belongs to home-category list if flagged to display on the home page" do
 			category.home_page_column = 1
-			category.save.should be_true
-			category.reload.category_lists.include?(CategoryList.home_list).should be_true
+			expect(category.save).to be_truthy
+			expect(category.reload.category_lists.include?(CategoryList.home_list)).to be_truthy
 		end
 		
 		it "does not belong to home-category list if removed from the home page" do
 			category.home_page_column = 1
-			category.save.should be_true
+			expect(category.save).to be_truthy
 			category.home_page_column = nil
-			category.save.should be_true
-			category.reload.category_lists.include?(CategoryList.home_list).should_not be_true
+			expect(category.save).to be_truthy
+			expect(category.reload.category_lists.include?(CategoryList.home_list)).not_to be_truthy
 		end
 		
 		it "belongs to the all-category list if predefined" do
-			category.save.should be_true
-			category.reload.category_lists.include?(CategoryList.all_list).should be_true
+			expect(category.save).to be_truthy
+			expect(category.reload.category_lists.include?(CategoryList.all_list)).to be_truthy
 		end
 		
 		it "does not belong to the all-category list if no longer predefined" do
-			category.save.should be_true
+			expect(category.save).to be_truthy
 			category.is_predefined = false
-			category.save.should be_true
-			category.reload.category_lists.include?(CategoryList.all_list).should_not be_true
+			expect(category.save).to be_truthy
+			expect(category.reload.category_lists.include?(CategoryList.all_list)).not_to be_truthy
 		end
 	end
 	
@@ -87,7 +91,7 @@ describe Category do
 				FactoryGirl.create(:subcategory, name: 'CAMPS')]
 		}
 		
-		before(:each) do
+		before(:example) do
 			category.subcategories = subcategories
 			category.save
 			category.reload
@@ -95,7 +99,7 @@ describe Category do
 		
 		it "it has persistent associated subcategories" do
 			subcategories.each do |svc|
-				category.subcategories.include?(svc).should be_true
+				expect(category.subcategories.include?(svc)).to be_truthy
 			end
 		end
 		
@@ -118,7 +122,7 @@ describe Category do
 			FactoryGirl.create(:published_profile, categories: [category])
 		}
 		
-		before(:each) do
+		before(:example) do
 			profile # Instantiate!
 			Profile.reindex # reset the SOLR index
 			Sunspot.commit
@@ -126,20 +130,20 @@ describe Category do
 		
 		it "after modifying a category, reindexes search for any profiles that contain it" do
 			new_name = 'HEALTH'
-			Profile.fuzzy_search(new_name).results.include?(profile).should be_false
+			expect(Profile.fuzzy_search(new_name).results.include?(profile)).to be_falsey
 			category.name = new_name
 			category.save
 			Sunspot.commit
-			Profile.fuzzy_search(new_name).results.include?(profile).should be_true
+			expect(Profile.fuzzy_search(new_name).results.include?(profile)).to be_truthy
 		end
 		
 		it "should not be searchable after trashing" do
 			name = category.name
-			Profile.fuzzy_search(name).results.include?(profile).should be_true
+			expect(Profile.fuzzy_search(name).results.include?(profile)).to be_truthy
 			category.trash = true
 			category.save
 			Sunspot.commit
-			Profile.fuzzy_search(name).results.include?(profile).should be_false
+			expect(Profile.fuzzy_search(name).results.include?(profile)).to be_falsey
 		end
 	end
 end

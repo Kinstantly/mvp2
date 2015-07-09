@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe UserAccountMailer do
+describe UserAccountMailer, :type => :mailer do
 	include EmailSpec::Helpers
 	include EmailSpec::Matchers
 	include Rails.application.routes.url_helpers
@@ -10,15 +10,15 @@ describe UserAccountMailer do
 		let(:email) { UserAccountMailer.on_create_confirmation_instructions user }
 		
 		it "should deliver to the user" do
-			email.should deliver_to(user.email)
+			expect(email).to deliver_to(user.email)
 		end
 		
 		it "should have the confirmation email subject" do
-			email.should have_subject(I18n.t 'devise.mailer.on_create_confirmation_instructions.subject')
+			expect(email).to have_subject(I18n.t 'devise.mailer.on_create_confirmation_instructions.subject')
 		end
 		
 		it "should contain a confirmation link" do
-			email.should have_body_text(user_confirmation_url)
+			expect(email).to have_body_text(user_confirmation_url)
 		end
 	end
 	
@@ -27,15 +27,15 @@ describe UserAccountMailer do
 		let(:email) { UserAccountMailer.on_create_provider_confirmation_instructions user }
 		
 		it "should deliver to the user" do
-			email.should deliver_to(user.email)
+			expect(email).to deliver_to(user.email)
 		end
 		
 		it "should have the confirmation email subject" do
-			email.should have_subject(I18n.t 'devise.mailer.on_create_provider_confirmation_instructions.subject')
+			expect(email).to have_subject(I18n.t 'devise.mailer.on_create_provider_confirmation_instructions.subject')
 		end
 		
 		it "should contain a confirmation link" do
-			email.should have_body_text(user_confirmation_url)
+			expect(email).to have_body_text(user_confirmation_url)
 		end
 	end
 	
@@ -44,15 +44,15 @@ describe UserAccountMailer do
 		let(:email) { UserAccountMailer.on_create_welcome user }
 		
 		it "should deliver to the user" do
-			email.should deliver_to(user.email)
+			expect(email).to deliver_to(user.email)
 		end
 		
 		it "should have the welcome email subject" do
-			email.should have_subject(I18n.t 'devise.mailer.on_create_welcome.subject')
+			expect(email).to have_subject(I18n.t 'devise.mailer.on_create_welcome.subject')
 		end
 		
 		it "should contain a link to the provider's profile edit page" do
-			email.should have_body_text(edit_my_profile_url)
+			expect(email).to have_body_text(edit_my_profile_url)
 		end
 	end
 end

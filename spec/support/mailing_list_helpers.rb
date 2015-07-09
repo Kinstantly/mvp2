@@ -13,7 +13,7 @@ def set_up_gibbon_lists_api_mock
 	@mailchimp_lists = {}
 	
 	# subscribe
-	lists_api.stub(:subscribe) do |options| # id: list_id
+	allow(lists_api).to receive(:subscribe) do |options| # id: list_id
 		id = options[:id]
 		email = options[:email][:email]
 		if id.present? and email.present?
@@ -25,7 +25,7 @@ def set_up_gibbon_lists_api_mock
 	end
 	
 	# unsubscribe
-	lists_api.stub(:unsubscribe) do |options| # id: list_id
+	allow(lists_api).to receive(:unsubscribe) do |options| # id: list_id
 		id = options[:id]
 		email = options[:email][:email]
 		if id.present? and email.present?
@@ -43,7 +43,7 @@ def set_up_gibbon_lists_api_mock
 	end
 	
 	# member_info
-	lists_api.stub(:member_info) do |options| # id: list_id, emails: array_of_hashes
+	allow(lists_api).to receive(:member_info) do |options| # id: list_id, emails: array_of_hashes
 		r = { 'success_count' => 0, 'error_count' => 0, 'data' => [] }
 		id = options[:id]
 		email_info_list = options[:emails]
@@ -66,7 +66,7 @@ def set_up_gibbon_lists_api_mock
 	end
 	
 	# members
-	lists_api.stub(:members) do |options| # id: list_id, status: status_value
+	allow(lists_api).to receive(:members) do |options| # id: list_id, status: status_value
 		r = { 'total' => 0, 'data' => [] }
 		id = options[:id]
 		status = options[:status].presence || 'subscribed'
@@ -85,7 +85,7 @@ def set_up_gibbon_lists_api_mock
 	end
 	
 	# lists API
-	Gibbon::API.any_instance.stub(:lists).and_return(lists_api)
+	allow_any_instance_of(Gibbon::API).to receive(:lists).and_return(lists_api)
 end
 
 def set_up_gibbon_campaigns_api_mock
@@ -93,7 +93,7 @@ def set_up_gibbon_campaigns_api_mock
 	campaigns_api = double('Struct::GibbonCampaignsAPI').as_null_object
 	
 	# list
-	campaigns_api.stub(:list) do |options| # filters: filters
+	allow(campaigns_api).to receive(:list) do |options| # filters: filters
 		id = options[:filters][:campaign_id]
 		if id.present?
 			data = [{
@@ -111,7 +111,7 @@ def set_up_gibbon_campaigns_api_mock
 	end
 	
 	# content
-	campaigns_api.stub(:content) do |options| # cid: id
+	allow(campaigns_api).to receive(:content) do |options| # cid: id
 		id = options[:cid]
 		if id.present?
 			{ 'html' => '<!DOCTYPE html><html><head></head><body>THIS WEEKEND: sport events.</body></html>' }
@@ -121,7 +121,7 @@ def set_up_gibbon_campaigns_api_mock
 	end
 	
 	# campaigns API
-	Gibbon::API.any_instance.stub(:campaigns).and_return(campaigns_api)
+	allow_any_instance_of(Gibbon::API).to receive(:campaigns).and_return(campaigns_api)
 end
 
 def mailing_lists

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "User sign-in and sign-out" do
+describe "User sign-in and sign-out", :type => :request do
 	context "sign in as a parent" do
 		let(:parent) { FactoryGirl.create :parent }
 		let(:parent_credentials) { { email: parent.email, password: parent.password } }
@@ -9,7 +9,7 @@ describe "User sign-in and sign-out" do
 			get new_user_session_path
 			# sign in as a parent
 			post user_session_path, user: parent_credentials
-			response.should redirect_to '/'
+			expect(response).to redirect_to '/'
 		end
 		
 		context "starting at newsletter sign-up form" do
@@ -17,7 +17,7 @@ describe "User sign-in and sign-out" do
 				get new_user_registration_path(blog: 't', nlsub: 't')
 				# sign in as a parent
 				post user_session_path, user: parent_credentials
-				response.should redirect_to edit_subscriptions_url
+				expect(response).to redirect_to edit_subscriptions_url
 			end
 		end
 	
@@ -27,32 +27,32 @@ describe "User sign-in and sign-out" do
 
 			it "responds with status 201 with a proper authentication token and correct credentials" do
 				post sign_in_path, user: parent_credentials, format: :json
-				response.status.should == 201
+				expect(response.status).to eq 201
 			end
 
 			it "responds with status 401 without a proper authentication token" do
 				post sign_in_path_without_auth_token, user: parent_credentials, format: :json
-				response.status.should == 401
+				expect(response.status).to eq 401
 			end
 
 			it "responds with status 401 without the correct password" do
 				post sign_in_path, user: parent_credentials.merge(password: '*'), format: :json
-				response.status.should == 401
+				expect(response.status).to eq 401
 			end
 
 			it "responds with status 401 without the correct email address" do
 				post sign_in_path, user: parent_credentials.merge(email: 'bad@example.com'), format: :json
-				response.status.should == 401
+				expect(response.status).to eq 401
 			end
 
 			it "responds with a noncommittal error message without the correct password" do
 				post sign_in_path, user: parent_credentials.merge(password: '*'), format: :json
-				response.body.should include '"error":"Invalid email or password."'
+				expect(response.body).to include '"error":"Invalid email or password."'
 			end
 
 			it "responds with a noncommittal error message without the correct email address" do
 				post sign_in_path, user: parent_credentials.merge(email: 'bad@example.com'), format: :json
-				response.body.should include '"error":"Invalid email or password."'
+				expect(response.body).to include '"error":"Invalid email or password."'
 			end
 		end
 	end
@@ -65,7 +65,7 @@ describe "User sign-in and sign-out" do
 			get new_user_session_path
 			# sign in as a provider
 			post user_session_path, user: provider_credentials
-			response.should redirect_to edit_my_profile_path
+			expect(response).to redirect_to edit_my_profile_path
 		end
 	end
 end

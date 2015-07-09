@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe CustomerMailer, payments: true do
+describe CustomerMailer, type: :mailer, payments: true do
 	include EmailSpec::Helpers
 	include EmailSpec::Matchers
 	include Rails.application.routes.url_helpers
@@ -18,15 +18,15 @@ describe CustomerMailer, payments: true do
 			let(:email) { CustomerMailer.confirm_authorized_amount customer_file }
 		
 			it "should be delivered to the customer" do
-				email.should deliver_to user.email
+				expect(email).to deliver_to user.email
 			end
 		
 			it "should identify the provider" do
-				email.should have_body_text provider_profile.company_otherwise_display_name
+				expect(email).to have_body_text provider_profile.company_otherwise_display_name
 			end
 		
 			it "should have a link to the provider's profile" do
-				email.should have_body_text profile_url provider_profile
+				expect(email).to have_body_text profile_url provider_profile
 			end
 		
 			# it "should have a link to the payments page" do
@@ -34,11 +34,11 @@ describe CustomerMailer, payments: true do
 			# end
 		
 			it "should have a link to the authorization page" do
-				email.should have_body_text authorize_payment_url provider_profile
+				expect(email).to have_body_text authorize_payment_url provider_profile
 			end
 		
 			it "should show the authorized amount" do
-				email.should have_body_text display_currency_amount customer_file.authorized_amount_usd
+				expect(email).to have_body_text display_currency_amount customer_file.authorized_amount_usd
 			end
 		
 			# it "should show the card information" do
@@ -46,7 +46,7 @@ describe CustomerMailer, payments: true do
 			# end
 		
 			it "should mention authorization in the subject" do
-				email.should have_subject /auth/
+				expect(email).to have_subject /auth/
 			end
 		end
 		
@@ -54,15 +54,15 @@ describe CustomerMailer, payments: true do
 			let(:email) { CustomerMailer.notify_provider_of_payment_authorization customer_file }
 		
 			it "should be delivered to the provider" do
-				email.should deliver_to provider_email
+				expect(email).to deliver_to provider_email
 			end
 		
 			it "should identify the client" do
-				email.should have_body_text user.username
+				expect(email).to have_body_text user.username
 			end
 		
 			it "should have a link to the customer details page" do
-				email.should have_body_text customer_file_url customer_file
+				expect(email).to have_body_text customer_file_url customer_file
 			end
 		
 			# it "should show the authorized amount" do
@@ -70,7 +70,7 @@ describe CustomerMailer, payments: true do
 			# end
 		
 			it "should mention authorization in the subject" do
-				email.should have_subject /auth/
+				expect(email).to have_subject /auth/
 			end
 		end
 	end
@@ -87,31 +87,31 @@ describe CustomerMailer, payments: true do
 			let(:email) { CustomerMailer.confirm_revoked_authorization customer_file }
 		
 			it "should be delivered to the customer" do
-				email.should deliver_to user.email
+				expect(email).to deliver_to user.email
 			end
 		
 			it "should identify the provider" do
-				email.should have_body_text provider_profile.company_otherwise_display_name
+				expect(email).to have_body_text provider_profile.company_otherwise_display_name
 			end
 		
 			it "should have a link to the provider's profile" do
-				email.should have_body_text profile_url provider_profile
+				expect(email).to have_body_text profile_url provider_profile
 			end
 		
 			it "should have a link to the payments page" do
-				email.should have_body_text customer_url customer
+				expect(email).to have_body_text customer_url customer
 			end
 		
 			it "should have a link to the authorization page" do
-				email.should have_body_text authorize_payment_url provider_profile
+				expect(email).to have_body_text authorize_payment_url provider_profile
 			end
 		
 			it "should mention revocation in the subject" do
-				email.should have_subject /revoked/
+				expect(email).to have_subject /revoked/
 			end
 		
 			it "should mention revocation in the message body" do
-				email.should have_body_text "no longer has permission to charge your card"
+				expect(email).to have_body_text "no longer has permission to charge your card"
 			end
 		end
 		
@@ -119,23 +119,23 @@ describe CustomerMailer, payments: true do
 			let(:email) { CustomerMailer.notify_provider_of_revoked_authorization customer_file }
 		
 			it "should be delivered to the provider" do
-				email.should deliver_to provider_email
+				expect(email).to deliver_to provider_email
 			end
 		
 			it "should identify the client" do
-				email.should have_body_text user.username
+				expect(email).to have_body_text user.username
 			end
 		
 			it "should have a link to the customer details page" do
-				email.should have_body_text customer_file_url customer_file
+				expect(email).to have_body_text customer_file_url customer_file
 			end
 		
 			it "should mention revocation in the subject" do
-				email.should have_subject /revoked/
+				expect(email).to have_subject /revoked/
 			end
 		
 			it "should mention revocation in the message body" do
-				email.should have_body_text "has revoked payment authorization"
+				expect(email).to have_body_text "has revoked payment authorization"
 			end
 		end
 	end

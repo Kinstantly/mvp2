@@ -31,17 +31,17 @@ end
 ### THEN ###
 
 Then /^I should be on the unsubscribe page$/ do
-	page.should have_content I18n.t('views.contact_blocker.edit.unsubscribe_title')
+	expect(page).to have_content I18n.t('views.contact_blocker.edit.unsubscribe_title')
 end
 
 Then /^I should be on the unsubscribe confirmation page$/ do
-	page.should have_content /unsubscribe successful/i
+	expect(page).to have_content /unsubscribe successful/i
 end
 
 Then /^I should be on the unsubscribe recovery page$/ do
-	page.should have_content I18n.t('views.contact_blocker.view.unsubscribe_error')
+	expect(page).to have_content I18n.t('views.contact_blocker.view.unsubscribe_error')
 end
 
 Then /^I should see no invitation link$/ do
-	page.should_not have_content I18n.t('views.profile.view.invitation_to_claim_link')
+	expect(page).to_not have_content I18n.t('views.profile.view.invitation_to_claim_link')
 end

@@ -1,28 +1,28 @@
 require 'spec_helper'
 
-describe Rack::Attack do
+describe Rack::Attack, :type => :request do
 	it "returns a normal response by default" do
 		get '/'
-		response.status.should == 200
+		expect(response.status).to eq 200
 	end
 	
 	context "the requesting IP address is blocked" do
-		before(:each) do
+		before(:example) do
 			Rails.cache.write 'deny_request_from_ip_address_127.0.0.1', true
 		end
 		
-		after(:each) do
+		after(:example) do
 			Rails.cache.delete 'deny_request_from_ip_address_127.0.0.1'
 		end
 		
 		it "returns a response forbidden code" do
 			get '/'
-			response.status.should == 403
+			expect(response.status).to eq 403
 		end
 		
 		it "does not return the page content" do
 			get '/'
-			response.body.should == "Forbidden\n"
+			expect(response.body).to eq "Forbidden\n"
 		end
 	end
 end

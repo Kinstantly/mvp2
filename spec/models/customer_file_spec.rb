@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CustomerFile, payments: true do
+describe CustomerFile, type: :model, payments: true do
 	let(:authorized_amount_cents) { 10000 }
 	let(:charge_amount_usd) { '25.00' }
 	let(:charge_amount_cents) { (charge_amount_usd.to_f * 100).to_i }
@@ -21,27 +21,27 @@ describe CustomerFile, payments: true do
 	let(:api_balance_transaction) { stripe_balance_transaction_mock fee_cents: charge_fee_cents }
 		
 	it "belongs to a provider" do
-		customer_file.provider.should_not be_nil
+		expect(customer_file.provider).not_to be_nil
 	end
 	
 	it "references a customer" do
-		customer_file.customer.should_not be_nil
+		expect(customer_file.customer).not_to be_nil
 	end
 	
 	it "specifies the amount authorized by the customer that the provider can charge" do
 		customer_file.authorized_amount = 2500
-		customer_file.should have(:no).errors_on(:authorized_amount)
+		expect(customer_file.errors_on(:authorized_amount).size).to eq 0
 	end
 	
 	context "Provider charging their customer" do
-		before(:each) do
-			Stripe::Token.stub(:create).with(any_args) do
+		before(:example) do
+			allow(Stripe::Token).to receive(:create).with(any_args) do
 				api_token
 			end
-			Stripe::Charge.stub(:create).with(any_args) do
+			allow(Stripe::Charge).to receive(:create).with(any_args) do
 				api_charge
 			end
-			Stripe::BalanceTransaction.stub(:retrieve).with(any_args) do
+			allow(Stripe::BalanceTransaction).to receive(:retrieve).with(any_args) do
 				api_balance_transaction
 			end
 		end
@@ -62,29 +62,29 @@ describe CustomerFile, payments: true do
 			expect {
 				customer_file.create_charge charge_params.merge(charge_amount_usd: excessive_charge_amount_usd)
 			}.to change(StripeCharge, :count).by(0)
-			customer_file.errors.should_not be_empty
+			expect(customer_file.errors).not_to be_empty
 		end
 		
 		it "should not allow a statement description that is too long" do
 			expect {
 				customer_file.create_charge charge_params.merge(charge_statement_description: 'Long statement description')
 			}.to change(StripeCharge, :count).by(0)
-			customer_file.errors.should_not be_empty
+			expect(customer_file.errors).not_to be_empty
 		end
 	end
 	
 	context "Without valid Stripe API keys" do
-		before(:each) do
-			Stripe::Token.stub(:create).and_raise(Stripe::AuthenticationError)
-			Stripe::Charge.stub(:create).and_raise(Stripe::AuthenticationError)
-			Stripe::BalanceTransaction.stub(:retrieve).and_raise(Stripe::AuthenticationError)
+		before(:example) do
+			allow(Stripe::Token).to receive(:create).and_raise(Stripe::AuthenticationError)
+			allow(Stripe::Charge).to receive(:create).and_raise(Stripe::AuthenticationError)
+			allow(Stripe::BalanceTransaction).to receive(:retrieve).and_raise(Stripe::AuthenticationError)
 		end
 		
 		it "should not be able to create a charge" do
 			expect {
 				customer_file.create_charge charge_params
 			}.to change(StripeCharge, :count).by(0)
-			customer_file.errors.should_not be_empty
+			expect(customer_file.errors).not_to be_empty
 		end
 	end
 end

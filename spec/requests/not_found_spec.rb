@@ -1,20 +1,20 @@
 require "spec_helper"
 
-describe "Not found or accessible" do
+describe "Not found or accessible", :type => :request do
 	context "not logged in" do
 		it "redirects to sign-in page when access is denied" do
 			get profile_path FactoryGirl.create(:unpublished_profile)
-			response.should redirect_to new_user_session_url
+			expect(response).to redirect_to new_user_session_url
 		end
 
 		it "redirects to sign-in page when record not found" do
 			get '/profiles/1000'
-			response.should redirect_to new_user_session_url
+			expect(response).to redirect_to new_user_session_url
 		end
 
 		it "redirects to sign-in page when requested path is undefined" do
 			get '/supercalifragilistic'
-			response.should redirect_to new_user_session_url
+			expect(response).to redirect_to new_user_session_url
 		end
 	end
 
@@ -28,34 +28,34 @@ describe "Not found or accessible" do
 		
 		it "redirects to home page when access is denied" do
 			get profile_path FactoryGirl.create(:unpublished_profile)
-			response.should redirect_to root_url
+			expect(response).to redirect_to root_url
 		end
 
 		it "redirects to home page when record not found" do
 			get '/profiles/1000'
-			response.should redirect_to root_url
+			expect(response).to redirect_to root_url
 		end
 
 		it "redirects to home page when requested path is undefined" do
 			get '/supercalifragilistic'
-			response.should redirect_to root_url
+			expect(response).to redirect_to root_url
 		end
 	end
 
 	context "not logged in when running as a private site", private_site: true do
 		it "redirects to alpha sign-up page when access is denied" do
 			get profile_path FactoryGirl.create(:unpublished_profile)
-			response.should redirect_to alpha_sign_up_url
+			expect(response).to redirect_to alpha_sign_up_url
 		end
 
 		it "redirects to alpha sign-up page when record not found" do
 			get '/profiles/1000'
-			response.should redirect_to alpha_sign_up_url
+			expect(response).to redirect_to alpha_sign_up_url
 		end
 
 		it "redirects to alpha sign-up page when requested path is undefined" do
 			get '/supercalifragilistic'
-			response.should redirect_to alpha_sign_up_url
+			expect(response).to redirect_to alpha_sign_up_url
 		end
 	end
 
@@ -69,17 +69,17 @@ describe "Not found or accessible" do
 		
 		it "redirects to home page when access is denied" do
 			get profile_path FactoryGirl.create(:unpublished_profile)
-			response.should redirect_to root_url
+			expect(response).to redirect_to root_url
 		end
 
 		it "redirects to home page when record not found" do
 			get '/profiles/1000'
-			response.should redirect_to root_url
+			expect(response).to redirect_to root_url
 		end
 
 		it "redirects to home page when requested path is undefined" do
 			get '/supercalifragilistic'
-			response.should redirect_to root_url
+			expect(response).to redirect_to root_url
 		end
 	end
 end

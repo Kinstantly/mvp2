@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe StripeInfo, payments: true do
+describe StripeInfo, type: :model, payments: true do
 	let(:provider) { FactoryGirl.create :provider_before_payment_setup }
 	let(:stripe_info) { FactoryGirl.build :stripe_info, user: provider }
 	let(:stripe_user_id) { 'acct_15KNvdGsKLXicgHb' }
@@ -16,22 +16,22 @@ describe StripeInfo, payments: true do
 	}
 	
 	it "accepts authorization values" do
-		stripe_info.configure_authorization(omniauth_values).should be_true
-		stripe_info.stripe_user_id.should == stripe_user_id
-		stripe_info.access_token.should == access_token
-		stripe_info.publishable_key.should == publishable_key
+		expect(stripe_info.configure_authorization(omniauth_values)).to be_truthy
+		expect(stripe_info.stripe_user_id).to eq stripe_user_id
+		expect(stripe_info.access_token).to eq access_token
+		expect(stripe_info.publishable_key).to eq publishable_key
 	end
 	
 	it "sends a welcome email to a newly connected provider" do
 		message = double('Mail::Message')
-		message.should_receive :deliver
-		StripeConnectMailer.should_receive(:welcome_provider).and_return(message)
+		expect(message).to receive :deliver
+		expect(StripeConnectMailer).to receive(:welcome_provider).and_return(message)
 		stripe_info.configure_authorization(omniauth_values)
 	end
 	
 	it "creates a payment announcement" do
 		stripe_info.configure_authorization(omniauth_values)
-		provider.profile.should have(1).payment_profile_announcement
+		expect(provider.profile.payment_profile_announcements.size).to eq 1
 	end
 	
 	context "using the Stripe API" do
@@ -39,19 +39,19 @@ describe StripeInfo, payments: true do
 		let(:stripe_account_pending_verification) { stripe_account_mock verified: false }
 	
 		it "needs more verification" do
-			Stripe::Account.stub(:retrieve).with(any_args) do
+			allow(Stripe::Account).to receive(:retrieve).with(any_args) do
 				stripe_account_pending_verification
 			end
 			
-			stripe_info.should_not be_fully_enabled
+			expect(stripe_info).not_to be_fully_enabled
 		end
 	
 		it "is fully enabled" do
-			Stripe::Account.stub(:retrieve).with(any_args) do
+			allow(Stripe::Account).to receive(:retrieve).with(any_args) do
 				stripe_account
 			end
 			
-			stripe_info.should be_fully_enabled
+			expect(stripe_info).to be_fully_enabled
 		end
 	end
 end

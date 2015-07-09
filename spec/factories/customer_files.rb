@@ -6,7 +6,7 @@ FactoryGirl.define do
 		association :customer, factory: :customer_with_card
 		authorized_amount 1000
 		
-		ignore do
+		transient do
 			authorized_amount_usd nil
 		end
 		

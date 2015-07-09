@@ -9,7 +9,7 @@ FactoryGirl.define do
 		tracking_category 'FactoryTrackingCategory'
 		
 		factory :email_delivery_with_contact_blockers do
-			ignore do
+			transient do
 				contact_blockers_count 1
 			end
 			

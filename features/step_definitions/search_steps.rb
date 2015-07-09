@@ -27,29 +27,29 @@ end
 
 Then /^I should see profile data in the search results list$/ do
 	within('.search-results') do
-		page.should have_content @published_profile_data[:last_name]
+		expect(page).to have_content @published_profile_data[:last_name]
 	end
 end
 
 Then /^I should see "([^\"]+)" in the search results list$/ do |arg1|
 	within('.search-results') do
-		page.should have_content arg1
+		expect(page).to have_content arg1
 	end
 end
 
 Then /^I should see "([^\"]+)" and "([^\"]+)" in the search results list$/ do |arg1, arg2|
 	within('.search-results') do
-		page.should have_content arg1
-		page.should have_content arg2
+		expect(page).to have_content arg1
+		expect(page).to have_content arg2
 	end
 end
 
 Then /^I should see "(.*?)" first in the search results list$/ do |arg1|
 	within('.search-results li.result:first-of-type') do
-		page.should have_content arg1
+		expect(page).to have_content arg1
 	end
 end
 
 Then /^I should see no search results$/ do
-	page.should_not have_css('.search-results .result')
+	expect(page).to_not have_css('.search-results .result')
 end

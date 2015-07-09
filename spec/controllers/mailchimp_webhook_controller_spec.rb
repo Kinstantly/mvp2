@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe MailchimpWebhookController do
+describe MailchimpWebhookController, :type => :controller do
 	let(:token) { Rails.configuration.mailchimp_webhook_security_token }
 	let(:list_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage1]}	
 	let(:user) { FactoryGirl.create(:client_user) }
@@ -18,11 +18,11 @@ describe MailchimpWebhookController do
 		
 		it "returns a status of 200 no matter what" do
 			post :process_notification, token: 'none'
-			response.status.should == 200
+			expect(response.status).to eq 200
 		end
 
 		context "user unsubscribed remotely, but still subscribed locally" do
-			before(:each) do
+			before(:example) do
 				user.parent_newsletters_stage1 = true
 				user.save!
 				@parent_newsletters_stage1_leid = user.parent_newsletters_stage1_leid
@@ -39,28 +39,28 @@ describe MailchimpWebhookController do
 				params[:token] = "none"
 				post :process_notification, params
 				user.reload
-				user.parent_newsletters_stage1.should == true
-				user.parent_newsletters_stage1_leid.should == @parent_newsletters_stage1_leid
+				expect(user.parent_newsletters_stage1).to eq true
+				expect(user.parent_newsletters_stage1_leid).to eq @parent_newsletters_stage1_leid
 			end
 
 			it "should not process notification with invalid request params" do
 				params.delete(:type)
 				post :process_notification, params
 				user.reload
-				user.parent_newsletters_stage1.should == true
-				user.parent_newsletters_stage1_leid.should == @parent_newsletters_stage1_leid
+				expect(user.parent_newsletters_stage1).to eq true
+				expect(user.parent_newsletters_stage1_leid).to eq @parent_newsletters_stage1_leid
 			end
 			
 			it "removes subscription when valid unsubscribe notification received" do
 				post :process_notification, params
 				user.reload
-				user.parent_newsletters_stage1.should == false
-				user.parent_newsletters_stage1_leid.should == nil
+				expect(user.parent_newsletters_stage1).to eq false
+				expect(user.parent_newsletters_stage1_leid).to eq nil
 			end
 		end
 
 		context "user subscribed both locally and remotely" do
-			before(:each) do
+			before(:example) do
 				user.parent_newsletters_stage1 = true
 				user.parent_newsletters_stage2 = true
 				user.parent_newsletters_stage3 = true
@@ -71,14 +71,14 @@ describe MailchimpWebhookController do
 			it "should NOT remove subscriptions" do
 				post :process_notification, params
 				user.reload
-				user.parent_newsletters_stage1.should be_true
-				user.parent_newsletters_stage2.should be_true
-				user.parent_newsletters_stage3.should be_true
-				user.provider_newsletters.should be_true
-				user.parent_newsletters_stage1_leid.should be_present
-				user.parent_newsletters_stage2_leid.should be_present
-				user.parent_newsletters_stage3_leid.should be_present
-				user.provider_newsletters_leid.should be_present
+				expect(user.parent_newsletters_stage1).to be_truthy
+				expect(user.parent_newsletters_stage2).to be_truthy
+				expect(user.parent_newsletters_stage3).to be_truthy
+				expect(user.provider_newsletters).to be_truthy
+				expect(user.parent_newsletters_stage1_leid).to be_present
+				expect(user.parent_newsletters_stage2_leid).to be_present
+				expect(user.parent_newsletters_stage3_leid).to be_present
+				expect(user.provider_newsletters_leid).to be_present
 			end
 			
 			it "should remove one subscription" do
@@ -88,14 +88,14 @@ describe MailchimpWebhookController do
 				
 				post :process_notification, params
 				user.reload
-				user.parent_newsletters_stage1.should_not be_true
-				user.parent_newsletters_stage2.should be_true
-				user.parent_newsletters_stage3.should be_true
-				user.provider_newsletters.should be_true
-				user.parent_newsletters_stage1_leid.should_not be_present
-				user.parent_newsletters_stage2_leid.should be_present
-				user.parent_newsletters_stage3_leid.should be_present
-				user.provider_newsletters_leid.should be_present
+				expect(user.parent_newsletters_stage1).not_to be_truthy
+				expect(user.parent_newsletters_stage2).to be_truthy
+				expect(user.parent_newsletters_stage3).to be_truthy
+				expect(user.provider_newsletters).to be_truthy
+				expect(user.parent_newsletters_stage1_leid).not_to be_present
+				expect(user.parent_newsletters_stage2_leid).to be_present
+				expect(user.parent_newsletters_stage3_leid).to be_present
+				expect(user.provider_newsletters_leid).to be_present
 			end
 		end
 
@@ -104,14 +104,14 @@ describe MailchimpWebhookController do
 			it "creates a new record when valid campaign data provided" do
 				post :process_notification, campaign_params
 				new_newsletter = Newsletter.find_by_cid(campaign_params[:data][:id])
-				new_newsletter.should be_present
-				new_newsletter.cid.should == campaign_params[:data][:id]
+				expect(new_newsletter).to be_present
+				expect(new_newsletter.cid).to eq campaign_params[:data][:id]
 			end
 			
 			it "does not create a new record when invalid campaign data provided" do
 				post :process_notification, campaign_params.merge(data: {id: nil})
 				new_newsletter = Newsletter.find_by_cid(campaign_params[:data][:id])
-				new_newsletter.should be_nil
+				expect(new_newsletter).to be_nil
 			end
 		end
 	end

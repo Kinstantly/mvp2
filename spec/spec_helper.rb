@@ -23,7 +23,8 @@ Spork.prefork do
 
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
-  require 'rspec/autorun'
+  # require 'rspec/autorun'
+  require 'rspec/collection_matchers' # Should only be using this for error_on and errors_on.
   require 'capybara/rspec'
   require 'email_spec'
   require 'paperclip/matchers'
@@ -63,6 +64,10 @@ Spork.prefork do
     #     --seed 1234
     config.order = "random"
     
+    # rspec-rails 3 no longer automatically infers an example group's spec type from the file location.
+    # Explicitly opt-in to this feature.
+    config.infer_spec_type_from_file_location!
+    
     config.include Paperclip::Shoulda::Matchers
 
     # Examples that we don't want to run by default should have this tag.
@@ -73,20 +78,20 @@ Spork.prefork do
     config.before(:suite) do
       DatabaseCleaner.strategy = :truncation
     end
-    config.before(:each) do
+    config.before(:example) do
       DatabaseCleaner.start
     end
-    config.after(:each) do
+    config.after(:example) do
       DatabaseCleaner.clean
     end
 
     # Mocks for the MailChimp API via Gibbon.
-    config.before(:each) do
+    config.before(:example) do |example|
       set_up_gibbon_mocks unless example.metadata[:contact_mailchimp]
     end
 
     # Specs for describing behavior while running as a private site.
-    config.around(:each) do |example|
+    config.around(:example) do |example|
       if example.metadata[:private_site]
         previous_state = Rails.configuration.running_as_private_site
         Rails.configuration.running_as_private_site = true

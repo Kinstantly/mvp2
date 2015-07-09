@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CustomersController, payments: true do
+describe CustomersController, type: :controller, payments: true do
 	let(:parent) { FactoryGirl.create :parent }
 	let(:email) { 'parent@example.com' }
 	let(:provider) { FactoryGirl.create :payable_provider }
@@ -16,11 +16,11 @@ describe CustomersController, payments: true do
 	let(:invalid_profile) { invalid_provider.profile }
 	let(:invalid_profile_id) { invalid_profile.id.to_s }
 	
-	before(:each) do
-		Stripe::Customer.stub(:create).with(any_args) do
+	before(:example) do
+		allow(Stripe::Customer).to receive(:create).with(any_args) do
 			api_customer
 		end
-		Stripe::Customer.stub(:retrieve).with(any_args) do
+		allow(Stripe::Customer).to receive(:retrieve).with(any_args) do
 			api_customer
 		end
 	end
@@ -29,7 +29,7 @@ describe CustomersController, payments: true do
 		describe "GET /authorize_payment/:profile_id" do
 			it "is prevented by CanCan from assigning a new customer" do
 				get :authorize_payment, profile_id: profile_id
-				assigns(:customer).should be_nil
+				expect(assigns(:customer)).to be_nil
 			end
 		end
 
@@ -43,24 +43,24 @@ describe CustomersController, payments: true do
 	end
 	
 	context "customer is signed in" do
-		before(:each) do
+		before(:example) do
 			sign_in parent
 		end
 		
 		describe "GET /authorize_payment/:profile_id" do
 			it "requires provider to be set up for payment to be authorized" do
 				get :authorize_payment, profile_id: invalid_profile_id
-				response.should redirect_to edit_user_registration_url
+				expect(response).to redirect_to edit_user_registration_url
 			end
 			
 			it "assigns a new customer as @customer" do
 				get :authorize_payment, profile_id: profile_id
-				assigns(:customer).should be_a_new(Customer)
+				expect(assigns(:customer)).to be_a_new(Customer)
 			end
 
 			it "assigns the provider's profile as @profile" do
 				get :authorize_payment, profile_id: profile_id
-				assigns(:profile).should == profile
+				expect(assigns(:profile)).to eq profile
 			end
 		end
 

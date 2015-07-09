@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe OmniauthCallbacksController, payments: true do
+describe OmniauthCallbacksController, type: :controller, payments: true do
 	let(:provider) { FactoryGirl.create :provider_before_payment_setup }
 	let(:stripe_info) { FactoryGirl.build :stripe_info, user: provider }
 	let(:stripe_user_id) { 'acct_15KNvdGsKLXicgHb' }
@@ -19,7 +19,7 @@ describe OmniauthCallbacksController, payments: true do
 		let(:stripe_account) { stripe_account_mock }
 		let(:stripe_account_pending_verification) { stripe_account_mock verified: false }
 	
-		before(:each) do
+		before(:example) do
 		  sign_in provider
 			@request.env["devise.mapping"] = Devise.mappings[:user] # This controller is an extension of a Devise controller.
 			@request.env["omniauth.auth"] = omniauth_values
@@ -27,29 +27,29 @@ describe OmniauthCallbacksController, payments: true do
 		
 		context "the new Stripe account is fully enabled" do
 			it "completes the Stripe Connect setup" do
-				Stripe::Account.stub(:retrieve).with(any_args) do
+				allow(Stripe::Account).to receive(:retrieve).with(any_args) do
 					stripe_account
 				end
 				get :stripe_connect
-				response.should render_template 'success'
+				expect(response).to render_template 'success'
 			end
 		end
 		
 		context "the new Stripe account is enabled but needs more verification" do
 			it "requires more information from the provider" do
-				Stripe::Account.stub(:retrieve).with(any_args) do
+				allow(Stripe::Account).to receive(:retrieve).with(any_args) do
 					stripe_account_pending_verification
 				end
 				get :stripe_connect
-				response.should redirect_to stripe_dashboard_url
+				expect(response).to redirect_to stripe_dashboard_url
 			end
 		end
 		
 		context "there was a problem completing the setup" do
 			it "reports the problem" do
-				StripeInfo.any_instance.stub(:configure_authorization).and_return(false)
+				allow_any_instance_of(StripeInfo).to receive(:configure_authorization).and_return(false)
 				get :stripe_connect
-				response.should render_template 'error'
+				expect(response).to render_template 'error'
 			end
 		end
 	end

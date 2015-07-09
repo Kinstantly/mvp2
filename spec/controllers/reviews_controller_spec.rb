@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ReviewsController do
+describe ReviewsController, :type => :controller do
 	let(:unpublished_profile) { FactoryGirl.create :unpublished_profile }
 	let(:published_profile) { FactoryGirl.create :published_profile }
 	let(:review_attributes) {
@@ -12,7 +12,7 @@ describe ReviewsController do
 	let(:provider_with_published_profile) { FactoryGirl.create :provider, profile: published_profile }
 	
 	context "as a non-administrator attempting to access admin actions" do
-		before(:each) do
+		before(:example) do
 			sign_in parent
 		end
 
@@ -21,8 +21,8 @@ describe ReviewsController do
 				count = User.find(parent.id).reviews_given.count
 				post :admin_create,
 					review: review_attributes.merge(reviewer_email: parent.email, reviewer_username: parent.username)
-				response.should_not render_template('admin_create')
-				User.find(parent.id).reviews_given.count.should == count
+				expect(response).not_to render_template('admin_create')
+				expect(User.find(parent.id).reviews_given.count).to eq count
 			end
 		end
 		
@@ -30,8 +30,8 @@ describe ReviewsController do
 			it "cannot update a review via the admin action" do
 				body = 'Best sweet potato pecan pie in the county!'
 				put :admin_update, id: review_by_parent.id, review: review_attributes.merge(body: body)
-				response.should_not render_template('admin_update')
-				Review.find(review_by_parent.id).body.should_not == body
+				expect(response).not_to render_template('admin_update')
+				expect(Review.find(review_by_parent.id).body).not_to eq body
 			end
 		end
 		
@@ -39,8 +39,8 @@ describe ReviewsController do
 			it "cannot delete a review" do
 				review = FactoryGirl.create :review_by_parent, reviewer: parent
 				delete :destroy, id: review.id
-				response.should_not redirect_to(controller: 'profiles', action: 'show', id: review.profile.id)
-				Review.find_by_id(review.id).should_not be_nil
+				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: review.profile.id)
+				expect(Review.find_by_id(review.id)).not_to be_nil
 			end
 		end
 	end
@@ -56,27 +56,27 @@ describe ReviewsController do
 			it "creates a review attached to a profile" do
 				email, username = 'conchita@example.com', 'cbautista'
 				post :admin_create, review: review_attributes.merge(reviewer_email: email, reviewer_username: username)
-				response.should render_template('admin_create')
-				(profile = assigns[:review].profile).should_not be_nil
-				profile.should == published_profile
+				expect(response).to render_template('admin_create')
+				expect(profile = assigns[:review].profile).not_to be_nil
+				expect(profile).to eq published_profile
 			end
 			
 			it "creates a review with a new reviewer" do
 				email, username = 'conchita@example.com', 'cbautista'
 				post :admin_create, review: review_attributes.merge(reviewer_email: email, reviewer_username: username)
-				response.should render_template('admin_create')
-				(reviewer = assigns[:review].reviewer).should_not be_nil
-				reviewer.email.should == email
-				reviewer.username.should == username
+				expect(response).to render_template('admin_create')
+				expect(reviewer = assigns[:review].reviewer).not_to be_nil
+				expect(reviewer.email).to eq email
+				expect(reviewer.username).to eq username
 			end
 			
 			it "creates a review with an existing reviewer" do
 				parent = FactoryGirl.create :parent
 				post :admin_create, 
 					review: review_attributes.merge(reviewer_email: parent.email, reviewer_username: parent.username)
-				response.should render_template('admin_create')
-				(reviewer = assigns[:review].reviewer).should_not be_nil
-				reviewer.email.should == parent.email
+				expect(response).to render_template('admin_create')
+				expect(reviewer = assigns[:review].reviewer).not_to be_nil
+				expect(reviewer.email).to eq parent.email
 			end
 			
 			it "creates a review with an existing provider as reviewer with no previous username" do
@@ -84,9 +84,9 @@ describe ReviewsController do
 				username = 'EnzoGrimaldo'
 				post :admin_create,
 					review: review_attributes.merge(reviewer_email: provider.email, reviewer_username: username)
-				response.should render_template('admin_create')
-				(reviewer = assigns[:review].reviewer).should_not be_nil
-				reviewer.username.should == username
+				expect(response).to render_template('admin_create')
+				expect(reviewer = assigns[:review].reviewer).not_to be_nil
+				expect(reviewer.username).to eq username
 			end
 		end
 	
@@ -94,28 +94,28 @@ describe ReviewsController do
 			it "updates a review" do
 				body = 'Durme hermosa donzella'
 				put :admin_update, id: review_by_parent.id, review: review_attributes.merge(body: body)
-				response.should render_template('admin_update')
-				assigns[:review].body.should == body
+				expect(response).to render_template('admin_update')
+				expect(assigns[:review].body).to eq body
 			end
 			
 			it "updates a review with a new reviewer" do
 				email, username = 'amina@example.com', 'amina'
 				put :admin_update, id: review_by_parent.id,
 					review: review_attributes.merge(reviewer_email: email, reviewer_username: username)
-				response.should render_template('admin_update')
-				(reviewer = assigns[:review].reviewer).should_not be_nil
-				reviewer.email.should == email
-				reviewer.username.should == username
+				expect(response).to render_template('admin_update')
+				expect(reviewer = assigns[:review].reviewer).not_to be_nil
+				expect(reviewer.email).to eq email
+				expect(reviewer.username).to eq username
 			end
 		
 			it "does not modify the reviewer username" do
 				username = 'elvino'
 				put :admin_update, id: review_by_parent.id,
 					review: review_attributes.merge(reviewer_email: review_by_parent.reviewer.email, reviewer_username: username)
-				response.should render_template('admin_update')
-				(reviewer = assigns[:review].reviewer).should_not be_nil
-				reviewer.username.should_not == username
-				reviewer.username.should == review_by_parent.reviewer.username
+				expect(response).to render_template('admin_update')
+				expect(reviewer = assigns[:review].reviewer).not_to be_nil
+				expect(reviewer.username).not_to eq username
+				expect(reviewer.username).to eq review_by_parent.reviewer.username
 			end
 		end
 		
@@ -123,8 +123,8 @@ describe ReviewsController do
 			it "deletes a review" do
 				review = FactoryGirl.create :review_by_parent
 				delete :destroy, id: review.id
-				response.should redirect_to(controller: 'profiles', action: 'show', id: review.profile.id)
-				Review.find_by_id(review.id).should be_nil
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: review.profile.id)
+				expect(Review.find_by_id(review.id)).to be_nil
 			end
 		end
 	end
@@ -136,8 +136,8 @@ describe ReviewsController do
 				email, username = 'example@example.com', 'example'
 				post :create,
 					review: review_attributes.merge(reviewer_email: email, reviewer_username: username)
-				response.should_not redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
-				Profile.find(published_profile.id).reviews.count.should == count
+				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				expect(Profile.find(published_profile.id).reviews.count).to eq count
 			end
 		end
 	end
@@ -150,8 +150,8 @@ describe ReviewsController do
 				parent.save
 				count = published_profile.reviews.count
 				post :create, review: review_attributes
-				response.should_not redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
-				Profile.find(published_profile.id).reviews.count.should == count
+				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				expect(Profile.find(published_profile.id).reviews.count).to eq count
 			end
 		end
 	end
@@ -161,17 +161,17 @@ describe ReviewsController do
 			it "creates a review attached to a profile" do
 				sign_in parent
 				post :create, review: review_attributes
-				response.should redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
-				(profile = assigns[:review].profile).should_not be_nil
-				profile.should == published_profile
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				expect(profile = assigns[:review].profile).not_to be_nil
+				expect(profile).to eq published_profile
 			end
 
 			it "cannot create a review attached to an unpublished profile" do
 				sign_in parent
 				count = unpublished_profile.reviews.count
 				post :create, review: review_attributes.merge(profile_id: unpublished_profile.id)
-				response.should_not redirect_to(controller: 'profiles', action: 'show', id: unpublished_profile.id)
-				Profile.find(unpublished_profile.id).reviews.count.should == count
+				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: unpublished_profile.id)
+				expect(Profile.find(unpublished_profile.id).reviews.count).to eq count
 			end
 		end
 	end
@@ -182,16 +182,16 @@ describe ReviewsController do
 				sign_in provider
 				count = published_profile.reviews.count
 				post :create, review: review_attributes
-				response.should redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
-				Profile.find(published_profile.id).reviews.count.should == (count + 1)
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				expect(Profile.find(published_profile.id).reviews.count).to eq(count + 1)
 			end
 			
 			it "denies review of the selfsame provider" do
 				sign_in provider_with_published_profile
 				count = published_profile.reviews.count
 				post :create, review: review_attributes
-				response.should_not redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
-				Profile.find(published_profile.id).reviews.count.should == count
+				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
+				expect(Profile.find(published_profile.id).reviews.count).to eq count
 			end
 		end
 	end

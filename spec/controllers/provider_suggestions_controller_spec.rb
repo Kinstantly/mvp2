@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ProviderSuggestionsController do
+describe ProviderSuggestionsController, :type => :controller do
 
 	# This should return at least the minimal set of attributes required to create a valid ProviderSuggestion.
 	let (:valid_attributes) { FactoryGirl.attributes_for :provider_suggestion }
@@ -11,7 +11,7 @@ describe ProviderSuggestionsController do
 		describe "GET new" do
 			it "assigns a new provider_suggestion as @provider_suggestion" do
 				get :new
-				assigns(:provider_suggestion).should be_a_new(ProviderSuggestion)
+				expect(assigns(:provider_suggestion)).to be_a_new(ProviderSuggestion)
 			end
 		end
 
@@ -25,29 +25,29 @@ describe ProviderSuggestionsController do
 
 				it "assigns a newly created provider_suggestion as @provider_suggestion" do
 					post :create, {:provider_suggestion => valid_attributes}
-					assigns(:provider_suggestion).should be_a(ProviderSuggestion)
-					assigns(:provider_suggestion).should be_persisted
+					expect(assigns(:provider_suggestion)).to be_a(ProviderSuggestion)
+					expect(assigns(:provider_suggestion)).to be_persisted
 				end
 
 				it "redirects to the created provider_suggestion" do
 					post :create, {:provider_suggestion => valid_attributes}
-					response.should render_template('create')
+					expect(response).to render_template('create')
 				end
 			end
 
 			describe "with invalid params" do
 				it "assigns a newly created but unsaved provider_suggestion as @provider_suggestion" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					ProviderSuggestion.any_instance.stub(:save).and_return(false)
+					allow_any_instance_of(ProviderSuggestion).to receive(:save).and_return(false)
 					post :create, {:provider_suggestion => {}}
-					assigns(:provider_suggestion).should be_a_new(ProviderSuggestion)
+					expect(assigns(:provider_suggestion)).to be_a_new(ProviderSuggestion)
 				end
 
 				it "renders the 'create' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					ProviderSuggestion.any_instance.stub(:save).and_return(false)
+					allow_any_instance_of(ProviderSuggestion).to receive(:save).and_return(false)
 					post :create, {:provider_suggestion => {}}
-					response.should render_template('create')
+					expect(response).to render_template('create')
 				end
 			end
 			
@@ -79,21 +79,21 @@ describe ProviderSuggestionsController do
 		describe "GET index" do
 			it "assigns all provider_suggestions as @provider_suggestions" do
 				get :index
-				assigns(:provider_suggestions).should eq([provider_suggestion])
+				expect(assigns(:provider_suggestions)).to eq([provider_suggestion])
 			end
 		end
 
 		describe "GET show" do
 			it "assigns the requested provider_suggestion as @provider_suggestion" do
 				get :show, {:id => provider_suggestion.to_param}
-				assigns(:provider_suggestion).should eq(provider_suggestion)
+				expect(assigns(:provider_suggestion)).to eq(provider_suggestion)
 			end
 		end
 
 		describe "GET edit" do
 			it "assigns the requested provider_suggestion as @provider_suggestion" do
 				get :edit, {:id => provider_suggestion.to_param}
-				assigns(:provider_suggestion).should eq(provider_suggestion)
+				expect(assigns(:provider_suggestion)).to eq(provider_suggestion)
 			end
 		end
 
@@ -104,34 +104,34 @@ describe ProviderSuggestionsController do
 					# specifies that the newly created ProviderSuggestion
 					# receives the :update_attributes message with whatever params are
 					# submitted in the request as the admin role.
-					ProviderSuggestion.any_instance.should_receive(:update_attributes).with({'these' => 'params'}, {as: :admin})
+					expect_any_instance_of(ProviderSuggestion).to receive(:update_attributes).with({'these' => 'params'}, {as: :admin})
 					put :update, {:id => provider_suggestion.to_param, :provider_suggestion => {'these' => 'params'}}
 				end
 
 				it "assigns the requested provider_suggestion as @provider_suggestion" do
 					put :update, {:id => provider_suggestion.to_param, :provider_suggestion => valid_attributes}
-					assigns(:provider_suggestion).should eq(provider_suggestion)
+					expect(assigns(:provider_suggestion)).to eq(provider_suggestion)
 				end
 
 				it "redirects to the provider_suggestion" do
 					put :update, {:id => provider_suggestion.to_param, :provider_suggestion => valid_attributes}
-					response.should redirect_to(provider_suggestion)
+					expect(response).to redirect_to(provider_suggestion)
 				end
 			end
 
 			describe "with invalid params" do
 				it "assigns the provider_suggestion as @provider_suggestion" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					ProviderSuggestion.any_instance.stub(:save).and_return(false)
+					allow_any_instance_of(ProviderSuggestion).to receive(:save).and_return(false)
 					put :update, {:id => provider_suggestion.to_param, :provider_suggestion => {}}
-					assigns(:provider_suggestion).should eq(provider_suggestion)
+					expect(assigns(:provider_suggestion)).to eq(provider_suggestion)
 				end
 
 				it "re-renders the 'edit' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					ProviderSuggestion.any_instance.stub(:update_attributes).and_return(false)
+					allow_any_instance_of(ProviderSuggestion).to receive(:update_attributes).and_return(false)
 					put :update, {:id => provider_suggestion.to_param, :provider_suggestion => {}}
-					response.should render_template("edit")
+					expect(response).to render_template("edit")
 				end
 			end
 			
@@ -139,7 +139,7 @@ describe ProviderSuggestionsController do
 				it "can assign admin notes" do
 					expect {
 						put :update, id: provider_suggestion.to_param, provider_suggestion: {admin_notes: 'Good notes.'}
-					}.to_not raise_error(ActiveModel::MassAssignmentSecurity::Error)
+					}.to_not raise_error
 				end
 			end
 		end
@@ -153,7 +153,7 @@ describe ProviderSuggestionsController do
 
 			it "redirects to the provider_suggestions list" do
 				delete :destroy, {:id => provider_suggestion.to_param}
-				response.should redirect_to(provider_suggestions_url)
+				expect(response).to redirect_to(provider_suggestions_url)
 			end
 		end
 	end

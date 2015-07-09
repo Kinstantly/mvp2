@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ServicesController do
+describe ServicesController, :type => :controller do
 
 	# This should return at least the minimal set of attributes required to create a valid Service.
 	let (:valid_attributes) { FactoryGirl.attributes_for :service }
@@ -11,21 +11,21 @@ describe ServicesController do
 		describe "GET index" do
 			it "cannot view services" do
 				get :index
-				assigns(:services).should be_nil
+				expect(assigns(:services)).to be_nil
 			end
 		end
 
 		describe "GET new" do
 			it "cannot get a new service" do
 				get :new
-				assigns(:service).should be_nil
+				expect(assigns(:service)).to be_nil
 			end
 		end
 
 		describe "GET edit" do
 			it "cannot get a service to edit" do
 				get :edit, id: service.to_param
-				assigns(:service).should be_nil
+				expect(assigns(:service)).to be_nil
 			end
 		end
 
@@ -41,7 +41,7 @@ describe ServicesController do
 		describe "PUT update" do
 			it "cannot update a service" do
 				put :update, {id: service.to_param, service: valid_attributes}
-				assigns(:service).should be_nil
+				expect(assigns(:service)).to be_nil
 			end
 		end
 
@@ -68,7 +68,7 @@ describe ServicesController do
 			it "assigns all services as @services" do
 				get :index
 				Service.all.each do |svc|
-					assigns(:services).should include(svc)
+					expect(assigns(:services)).to include(svc)
 				end
 			end
 		end
@@ -76,14 +76,14 @@ describe ServicesController do
 		describe "GET new" do
 			it "assigns a new service as @service" do
 				get :new
-				assigns(:service).should be_a_new(Service)
+				expect(assigns(:service)).to be_a_new(Service)
 			end
 		end
 
 		describe "GET edit" do
 			it "assigns the requested service as @service" do
 				get :edit, id: service.to_param
-				assigns(:service).should eq(service)
+				expect(assigns(:service)).to eq(service)
 			end
 		end
 
@@ -97,29 +97,29 @@ describe ServicesController do
 
 				it "assigns a newly created service as @service" do
 					post :create, service: valid_attributes
-					assigns(:service).should be_a(Service)
-					assigns(:service).should be_persisted
+					expect(assigns(:service)).to be_a(Service)
+					expect(assigns(:service)).to be_persisted
 				end
 
 				it "redirects to the edit page for the created service" do
 					post :create, service: valid_attributes
-					response.should redirect_to(edit_service_url Service.last)
+					expect(response).to redirect_to(edit_service_url Service.last)
 				end
 			end
 
 			describe "with invalid params" do
 				it "assigns a newly created but unsaved service as @service" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					Service.any_instance.stub(:save).and_return(false)
+					allow_any_instance_of(Service).to receive(:save).and_return(false)
 					post :create, service: {}
-					assigns(:service).should be_a_new(Service)
+					expect(assigns(:service)).to be_a_new(Service)
 				end
 
 				it "re-renders the 'new' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					Service.any_instance.stub(:save).and_return(false)
+					allow_any_instance_of(Service).to receive(:save).and_return(false)
 					post :create, service: {}
-					response.should render_template("new")
+					expect(response).to render_template("new")
 				end
 			end
 		end
@@ -129,34 +129,34 @@ describe ServicesController do
 				it "updates the requested service" do
 					# Assuming there are no other services in the database, this specifies that service
 					# receives the :update_attributes message with whatever params are submitted in the request.
-					Service.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
+					expect_any_instance_of(Service).to receive(:update_attributes).with({'these' => 'params'})
 					put :update, {id: service.to_param, service: {'these' => 'params'}}
 				end
 
 				it "assigns the requested service as @service" do
 					put :update, {id: service.to_param, service: valid_attributes}
-					assigns(:service).should eq(service)
+					expect(assigns(:service)).to eq(service)
 				end
 
 				it "redirects to the service" do
 					put :update, {id: service.to_param, service: valid_attributes}
-					response.should redirect_to(edit_service_url service)
+					expect(response).to redirect_to(edit_service_url service)
 				end
 			end
 
 			describe "with invalid params" do
 				it "assigns the service as @service" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					Service.any_instance.stub(:save).and_return(false)
+					allow_any_instance_of(Service).to receive(:save).and_return(false)
 					put :update, {id: service.to_param, service: {}}
-					assigns(:service).should eq(service)
+					expect(assigns(:service)).to eq(service)
 				end
 
 				it "re-renders the 'edit' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					Service.any_instance.stub(:save).and_return(false)
+					allow_any_instance_of(Service).to receive(:save).and_return(false)
 					put :update, {id: service.to_param, service: {}}
-					response.should render_template("edit")
+					expect(response).to render_template("edit")
 				end
 			end
 		end
@@ -170,7 +170,7 @@ describe ServicesController do
 
 			it "redirects to the services list" do
 				delete :destroy, id: service.to_param
-				response.should redirect_to(services_url)
+				expect(response).to redirect_to(services_url)
 			end
 		end
 	end

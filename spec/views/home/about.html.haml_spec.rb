@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe "home/about" do
+describe "home/about", :type => :view do
 	it "should have some text about us" do
 		render
-		rendered.should have_content 'Meet the Founders'
+		expect(rendered).to have_content 'Meet the Founders'
 	end
 end

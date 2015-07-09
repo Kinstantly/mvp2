@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe StripeCustomer, payments: true do
+describe StripeCustomer, type: :model, payments: true do
 	let(:stripe_customer) { FactoryGirl.create :stripe_customer }
 	let(:api_customer) { stripe_customer_mock }
 	
 	it "has an API ID" do
-		stripe_customer.api_customer_id.should be_present
+		expect(stripe_customer.api_customer_id).to be_present
 	end
 	
 	it "has a description" do
-		stripe_customer.description.should be_present
+		expect(stripe_customer.description).to be_present
 	end
 	
 	it "can have a credit card" do
@@ -26,9 +26,9 @@ describe StripeCustomer, payments: true do
 	end
 	
 	it "can retrieve remote customer information" do
-		Stripe::Customer.stub(:retrieve).with(any_args) do
+		allow(Stripe::Customer).to receive(:retrieve).with(any_args) do
 			api_customer
 		end
-		stripe_customer.retrieve.should == api_customer
+		expect(stripe_customer.retrieve).to eq api_customer
 	end
 end

@@ -51,15 +51,15 @@ Then /^I should only be subscribed to the "(.*?)" mailing lists?(?: and| but)( n
 	subscribed_mailing_lists = lists.split(/,?\s+(?:and\s+)?/)
 	mailing_lists.each do |list|
 		if subscribed_mailing_lists.include?(list) 
-			@user[list].should be_true
+			expect(@user[list]).to be_truthy
 			if not_synced.present?
-				@user["#{list}_leid"].should be_nil
+				expect(@user["#{list}_leid"]).to be_nil
 			else
-				@user["#{list}_leid"].should be_present
+				expect(@user["#{list}_leid"]).to be_present
 			end
 		else
-			@user[list].should be_false
-			@user["#{list}_leid"].should be_nil
+			expect(@user[list]).to be_falsey
+			expect(@user["#{list}_leid"]).to be_nil
 		end
 	end
 end
@@ -67,15 +67,15 @@ end
 Then /^I should be subscribed to all mailing lists$/ do
 	@user.reload
 	mailing_lists.each do |list|
-		@user[list].should be_true
-		@user["#{list}_leid"].should be_present
+		expect(@user[list]).to be_truthy
+		expect(@user["#{list}_leid"]).to be_present
 	end
 end
 
 Then /^I should not be subscribed to any mailing lists$/ do
 	@user.reload
 	mailing_lists.each do |list|
-		@user[list].should be_false
-		@user["#{list}_leid"].should be_nil
+		expect(@user[list]).to be_falsey
+		expect(@user["#{list}_leid"]).to be_nil
 	end
 end

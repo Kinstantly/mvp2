@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "profiles/show_tab" do
+describe "profiles/show_tab", :type => :view do
 	let(:provider) { FactoryGirl.create(:provider, email: 'me@example.com') }
 	let(:profile) { provider.profile }
 	
@@ -11,6 +11,6 @@ describe "profiles/show_tab" do
 	it "should show the provider first name" do
 		assign :profile, profile
 		render
-		rendered.should have_content(profile.first_name)
+		expect(rendered).to have_content(profile.first_name)
 	end
 end

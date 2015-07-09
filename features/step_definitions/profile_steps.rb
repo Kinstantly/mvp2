@@ -674,18 +674,18 @@ end
 
 When /^I (?:should )?see step "(one|two|three)" of "(.*?)" formlet$/ do |step, formlet|
 	within("##{formlet_id formlet}") do
-		# page.has_css?("li.step_#{step}:not(.aria-hidden)", :visible => true).should be_true
-		page.has_css?("li.step_#{step}", :visible => true).should be_true
+		# expect(page.has_css?("li.step_#{step}:not(.aria-hidden)", :visible => true)).to be true
+		expect(page.has_css?("li.step_#{step}", :visible => true)).to be true
 		case step
 		when 'one'
-			page.has_no_css?('li.step_two', :visible => true).should be_true
-			page.has_no_css?('li.step_three', :visible => true).should be_true
+			expect(page.has_no_css?('li.step_two', :visible => true)).to be true
+			expect(page.has_no_css?('li.step_three', :visible => true)).to be true
 		when 'two'
-			page.has_no_css?('li.step_one', :visible => true).should be_true
-			page.has_no_css?('li.step_three', :visible => true).should be_true
+			expect(page.has_no_css?('li.step_one', :visible => true)).to be true
+			expect(page.has_no_css?('li.step_three', :visible => true)).to be true
 		when 'three'
-			page.has_no_css?('li.step_one.aria-hidden', :visible => true).should be_true
-			page.has_no_css?('li.step_two.aria-hidden', :visible => true).should be_true
+			expect(page.has_no_css?('li.step_one.aria-hidden', :visible => true)).to be true
+			expect(page.has_no_css?('li.step_two.aria-hidden', :visible => true)).to be true
 		end
 	end
 end
@@ -734,68 +734,68 @@ end
 
 Then /^I should see my profile information$/ do
 	within('.profile h1') do
-		page.should have_content @profile.first_name
-		page.should have_content @profile.last_name
+		expect(page).to have_content @profile.first_name
+		expect(page).to have_content @profile.last_name
 	end
 end
 
 Then /^meta\-data should contain "(.*?)"$/ do |text|
-	page.should have_selector("meta[content~=\"#{text.downcase}\"]", visible: false)
+	expect(page).to have_selector("meta[content~=\"#{text.downcase}\"]", visible: false)
 end
 
 Then /^I should see one of my specialties$/ do
-	page.should have_content @profile.specialties.first.name
+	expect(page).to have_content @profile.specialties.first.name
 end
 
 Then /^I should land on the profile view page$/ do
-	current_path.should == my_profile_path
+	expect(current_path).to eq my_profile_path
 end
 
 Then /^I should (?:land|remain) on the profile edit page$/ do
-	current_path.should == edit_my_profile_path
+	expect(current_path).to eq edit_my_profile_path
 end
 
 Then /^my email address should be saved to my user record$/ do
-	@user.email.should == @visitor[:email]
+	expect(@user.email).to eq @visitor[:email]
 end
 
 Then /^my country code should be set to "(.*?)"$/ do |country|
 	find_user_profile
-	@profile.locations.each { |location| location.country.should == country}
+	@profile.locations.each { |location| expect(location.country).to eq country}
 end
 
 Then /^(?:my|the) profile should show "([^\"]+)"$/ do |value|
-	page.should have_content value
+	expect(page).to have_content value
 end
 
 Then /^(?:my|the) profile should not show "([^\"]+)"$/ do |value|
-	page.should_not have_content value
+	expect(page).to_not have_content value
 end
 
 Then /^(?:my|the) profile should show "([^\"]+)" within "([^\"]+)"$/ do |value, css_class_name|
 	within(".#{css_class_name}") do
-		page.should have_content value
+		expect(page).to have_content value
 	end
 end
 
 Then /^(?:my|the) profile should show "([^\"]+)" within the (first|second) location address$/ do |value, which|
 	within(location_address_selector which) do
-		page.should have_content value
+		expect(page).to have_content value
 	end
 end
 
 Then /^(?:my|the) profile should not display the (first|second) location$/ do |which|
-	page.should_not have_css(location_address_selector which)
+	expect(page).to_not have_css(location_address_selector which)
 end
 
 Then /^my profile should have no locations$/ do
 	find_user_profile
-	@profile.locations.should have(:no).things
+	expect(@profile.locations.size).to eq 0
 end
 
 Then /^the unclaimed profile should have no locations$/ do
 	find_unattached_profile
-	@profile.locations.should have(:no).things
+	expect(@profile.locations.size).to eq 0
 end
 
 Then /^the "(.*?)" and "(.*?)" specialties should appear in the profile edit input list$/ do |name1, name2|
@@ -807,14 +807,14 @@ end
 
 Then /^then I should be offered the "(.*?)" and "(.*?)" (.*?)$/ do |name1, name2, things|
 	within("#services .#{things}") do
-		page.should have_content name1
-		page.should have_content name2
+		expect(page).to have_content name1
+		expect(page).to have_content name2
 	end
 end
 
 Then /^I should be offered no (.*?)$/ do |things|
 	within("#services .#{things}") do
-		page.should_not have_content FactoryGirl.attributes_for(things.singularize.to_sym)[:name]
+		expect(page).to_not have_content FactoryGirl.attributes_for(things.singularize.to_sym)[:name]
 	end
 end
 
@@ -822,161 +822,161 @@ Then /^my profile edit page should show "([^\"]+)" displayed (as a link )?in the
 	selector = "##{formlet_id formlet}"
 	selector += ' a' if link.present?
 	within(selector, match: :first) do
-		page.should have_content value
+		expect(page).to have_content value
 	end
 end
 
 Then /^my profile edit page should show "([^\"]+)" and "([^\"]+)" displayed in the "([^\"]+)" area$/ do |value1, value2, formlet|
 	within("##{formlet_id formlet}") do
-		page.should have_content value1
-		page.should have_content value2
+		expect(page).to have_content value1
+		expect(page).to have_content value2
 	end
 end
 
 Then /^I should see more than one profile$/ do
-	page.should have_content @profile_data[:company_name]
-	page.should have_content @profile_data_2[:company_name]
+	expect(page).to have_content @profile_data[:company_name]
+	expect(page).to have_content @profile_data_2[:company_name]
 end
 
 Then /^I should not see profile data$/ do
-	page.should_not have_content @profile_data[:company_name]
+	expect(page).to_not have_content @profile_data[:company_name]
 end
 
 Then /^I should not see profile data that is not my own$/ do
-	page.should_not have_content @profile_data_2[:company_name]
+	expect(page).to_not have_content @profile_data_2[:company_name]
 end
 
 Then /^I should see published profile data$/ do
-	page.should have_content @published_profile_data[:company_name]
+	expect(page).to have_content @published_profile_data[:company_name]
 end
 
 Then /^I should see a profile edit form$/ do
-	page.should have_content I18n.t 'views.profile.edit.editing_tip'
+	expect(page).to have_content I18n.t 'views.profile.edit.editing_tip'
 end
 
 Then /^I should see the new profile data$/ do
-	page.should have_content @unattached_profile_data[:first_name]
-	page.should have_content @unattached_profile_data[:middle_name]
-	page.should have_content @unattached_profile_data[:last_name]
-	# page.should have_content MyHelpers.strip_url(@unattached_profile_data[:url])
+	expect(page).to have_content @unattached_profile_data[:first_name]
+	expect(page).to have_content @unattached_profile_data[:middle_name]
+	expect(page).to have_content @unattached_profile_data[:last_name]
+	# expect(page).to have_content MyHelpers.strip_url(@unattached_profile_data[:url])
 end
 
 Then /^I should land on the view page for the unclaimed profile$/ do
 	find_unattached_profile
-	current_path.should == profile_path(@profile)
+	expect(current_path).to eq profile_path(@profile)
 end
 
 Then /^I should land on the edit page for the unclaimed profile$/ do
 	find_unattached_profile
-	current_path.should == edit_profile_path(@profile)
+	expect(current_path).to eq edit_profile_path(@profile)
 end
 
 Then /^the last name in the unclaimed profile should be "(.*?)"$/ do |last_name|
 	find_unattached_profile
-	@profile.last_name.should == last_name
+	expect(@profile.last_name).to eq last_name
 end
 
 Then /^the (?:new|previously unpublished) profile should be published$/ do
 	find_unattached_profile
-	@profile.is_published.should be_true
+	expect(@profile.is_published).to be_truthy
 end
 
 Then /^the search area tag in the unclaimed profile should be "(.*?)"$/ do |tag|
 	find_unattached_profile
-	@profile.locations.first.search_area_tag.name.should == tag
+	expect(@profile.locations.first.search_area_tag.name).to eq tag
 end
 
 # Dynamic display showing what the display name will be after saving.
 Then /^the display name should be dynamically shown as "(.*?)"$/ do |display_name|
 	within('.display_name_area') do
-		page.should have_content display_name
+		expect(page).to have_content display_name
 	end 
 end
 
 Then /^I should see profile data for that user$/ do
 	within('.links .url') do
-		page.should have_content MyHelpers.strip_url(@profile_data[:url])
+		expect(page).to have_content MyHelpers.strip_url(@profile_data[:url])
 	end
 end
 
 Then /^I should see "(.*?)" in the page title$/ do |words|
-	expect(find(:xpath, '//head/title', visible: false)).to have_content words
+	expect(title).to have_content words
 end
 
 Then /^the profile should be attached to my account$/ do
 	find_user_profile
-	@profile.should == @unattached_profile
+	expect(@profile).to eq @unattached_profile
 end
 
 Then /^I should see form fields for an extra location on my profile edit page$/ do
-	page.should have_css '#locations form .fields + .fields'
+	expect(page).to have_css '#locations form .fields + .fields'
 end
 
 Then /^I should see form fields for an extra location on the admin profile edit page$/ do
-	page.should have_css '.location_contact_profile .fields + .fields'
+	expect(page).to have_css '.location_contact_profile .fields + .fields'
 end
 
 Then /^I should see form fields for a (second )?review on the admin profile edit page$/ do |which|
-	page.should have_css ".reviews .fields#{' + .fields' if which.try(:strip) == 'second'}"
+	expect(page).to have_css ".reviews .fields#{' + .fields' if which.try(:strip) == 'second'}"
 end
 
 Then /^I should be asked to replace my existing profile$/ do
 	within('a[id="claim_profile_confirm_link"]') do
-		page.should have_content 'Click here'
+		expect(page).to have_content 'Click here'
 	end
 end
 
 Then /^edit my profile page should show "(.*?)" image as my profile photo$/ do |file_name|
 	using_wait_time 3 do
-		page.has_css?("img[src*='#{file_name}']", :count => 2).should be_true
+		expect(page.has_css?("img[src*='#{file_name}']", :count => 2)).to be true
 		file_path = Rails.root.join("public/profile_photos/#{@profile.id}", file_name)
-		File.exist?(file_path).should be_true
+		expect(File.exist?(file_path)).to be true
 		File.delete(file_path)
 	end
 end
 
 Then /^I should see a Google Map$/ do
 	within 'body' do
-		page.should have_xpath("//script[starts-with(@src, 'https://maps.googleapis.com/maps/api')]", visible: false)
+		expect(page).to have_xpath("//script[starts-with(@src, 'https://maps.googleapis.com/maps/api')]", visible: false)
 	end
 	within('#map_canvas') do
-		page.should_not be_blank
+		expect(page).to_not be_blank
 	end
 end
 
 # Need the following two step definitions because for some strange reason Sunspot will not commit updates to Solr when we are testing with javascript and therefore we can't use javascript when testing search.
 Then /^I should see a Google Map container$/ do
-	page.should have_css('#map_canvas')
+	expect(page).to have_css('#map_canvas')
 end
 Then /^I should not see a Google Map container$/ do
-	page.should_not have_css('#map_canvas')
+	expect(page).to_not have_css('#map_canvas')
 end
 
 Then /^I should see (?:the )"(.*?)" message$/ do |locale_path|
- 	page.should have_content I18n.t locale_path
+ 	expect(page).to have_content I18n.t locale_path
 end
 
 Then /^I should see the "(.*?)" formlet$/ do |formlet|
-	page.should have_css("##{formlet_id formlet}.formlet", visible: true)
+	expect(page).to have_css("##{formlet_id formlet}.formlet", visible: true)
 end
 
 Then /^I should see an edit tab$/ do
-	page.should have_content I18n.t('views.profile.edit.edit_tab')
+	expect(page).to have_content I18n.t('views.profile.edit.edit_tab')
 end
 
 Then /^the administrator should receive (an|no|\d+) emails?$/ do |amount|
-  unread_emails_for(@user.email).size.should == parse_email_count(amount)
+  expect(unread_emails_for(@user.email).size).to eq parse_email_count(amount)
 end
 
 Then /^I should see an invitation to "(.*?)" to claim their profile$/ do |email|
 	within '.invitation_state' do
-		page.should have_content email
+		expect(page).to have_content email
 	end
 end
 
 Then /^I should see the photo editor$/ do
 	pending 'figure out why Capybara does not recognize the visible state of the Aviary photo editor'
 	using_wait_time 3 do
-		page.should have_css('#avpw_controls')
+		expect(page).to have_css('#avpw_controls')
 	end
 end

@@ -1,127 +1,127 @@
 require 'spec_helper'
 
-describe User do
+describe User, :type => :model do
 	context "provider" do
 		let(:provider) { FactoryGirl.build :provider, password_confirmation: nil, profile: nil }
 		
 		context "email address" do
 			it "should not allow an email address with no @ character" do
 				provider.email = 'kelly'
-				provider.should have(1).error_on(:email)
+				expect(provider.error_on(:email).size).to eq 1
 			end
 	
 			it "should be happy if we set an email address that includes an @ character" do
 				provider.email = 'kelly@example.com'
-				provider.should have(:no).errors_on(:email)
+				expect(provider.errors_on(:email).size).to eq 0
 			end
 	
 			it "should require an email address" do
 				provider.email = nil
-				provider.should have(1).error_on(:email)
+				expect(provider.error_on(:email).size).to eq 1
 			end
 			
 			it "should reject an email input field that is too long" do
 				email = 'example@example.com'
 				provider.email = ('a' * (User::MAX_LENGTHS[:email] - email.length)) + email
-				provider.should have(:no).errors_on(:email)
+				expect(provider.errors_on(:email).size).to eq 0
 				provider.email = 'a' + provider.email
-				provider.should have(1).error_on(:email)
+				expect(provider.error_on(:email).size).to eq 1
 			end
 		end
 	
 		context "password" do
 			it "should require a password" do
 				provider.password = nil
-				provider.should have(1).error_on(:password)
+				expect(provider.error_on(:password).size).to eq 1
 			end
 			
 			it "should not allow a password that is too short" do
 				provider.password = 'a' * (User::MIN_LENGTHS[:password] - 1)
-				provider.should have(1).error_on(:password)
+				expect(provider.error_on(:password).size).to eq 1
 				provider.password += 'a'
-				provider.should have(:no).errors_on(:password)
+				expect(provider.errors_on(:password).size).to eq 0
 			end
 			
 			it "should not allow a password that is too long" do
 				provider.password = 'a' * User::MAX_LENGTHS[:password]
-				provider.should have(:no).errors_on(:password)
+				expect(provider.errors_on(:password).size).to eq 0
 				provider.password += 'a'
-				provider.should have(1).error_on(:password)
+				expect(provider.error_on(:password).size).to eq 1
 			end
 		end
 	
 		it "should succeed if saved with both an email address and a password" do
 			provider.email = 'kelly@example.com'
 			provider.password = '1Two&Tres'
-			provider.save.should be_true
+			expect(provider.save).to be_truthy
 		end
 		
 		context "phone number" do
 			it "is happy with a valid US phone number and extension" do
 				provider.phone = '(800) 555-1234 x56'
-				provider.should have(:no).errors_on(:phone)
+				expect(provider.errors_on(:phone).size).to eq 0
 			end
 			
 			it "should fail with an invalid US phone number" do
 				provider.phone = '(111) 555-1234'
-				provider.should have(1).error_on(:phone)
+				expect(provider.error_on(:phone).size).to eq 1
 			end
 			
 			it "should reject a phone input field that is too long" do
 				phone = '(800) 555-1234 x56'
 				provider.phone = phone + ('0' * (User::MAX_LENGTHS[:phone] - phone.length))
-				provider.should have(:no).errors_on(:phone)
+				expect(provider.errors_on(:phone).size).to eq 0
 				provider.phone += '0'
-				provider.should have(1).error_on(:phone)
+				expect(provider.error_on(:phone).size).to eq 1
 			end
 		end
 		
 		context "registration special code" do
 			it "should allow a blank code" do
 				provider.registration_special_code = ''
-				provider.should have(:no).errors_on(:registration_special_code)
+				expect(provider.errors_on(:registration_special_code).size).to eq 0
 			end
 			
 			it "should not allow a code that is too long" do
 				provider.registration_special_code = 'a' * User::MAX_LENGTHS[:registration_special_code]
-				provider.should have(:no).errors_on(:registration_special_code)
+				expect(provider.errors_on(:registration_special_code).size).to eq 0
 				provider.registration_special_code += 'a'
-				provider.should have(1).error_on(:registration_special_code)
+				expect(provider.error_on(:registration_special_code).size).to eq 1
 			end
 		end
 	
 		context "profile" do
 			it "should have no profile if new" do
-				provider.profile.should be_nil
+				expect(provider.profile).to be_nil
 			end
 	
 			it "should have a profile if profile is built" do
 				provider.build_profile
-				provider.profile.should_not be_nil
+				expect(provider.profile).not_to be_nil
 			end
 			
 			it "should not have a persisted profile if new" do
-				provider.has_persisted_profile?.should_not be_true
+				expect(provider.has_persisted_profile?).not_to be_truthy
 			end
 			
 			it "should not have a persisted profile if merely built" do
 				provider.build_profile
-				provider.has_persisted_profile?.should_not be_true
+				expect(provider.has_persisted_profile?).not_to be_truthy
 			end
 			
 			it "should have a persisted profile if it was created" do
 				provider.create_profile
-				provider.has_persisted_profile?.should be_true
+				expect(provider.has_persisted_profile?).to be_truthy
 			end
 			
 			it "should load a profile" do
 				provider.load_profile
-				provider.profile.should_not be_nil
+				expect(provider.profile).not_to be_nil
 			end
 			
 			it "should have a published profile" do
 				provider.load_profile
-				provider.profile.is_published.should be_true
+				expect(provider.profile.is_published).to be_truthy
 			end
 		
 			context "claiming" do
@@ -131,43 +131,43 @@ describe User do
 				}
 				let(:ralph) { FactoryGirl.create :provider, email: 'Ralph@VaughanWilliams.com' }
 				
-				before(:each) do
+				before(:example) do
 					profile_to_claim.reload.user = nil
 					profile_to_claim.save
 				end
 			
 				it "should fail if this user already has a persistent profile" do
-					ralph.claim_profile(token).should_not be_true
+					expect(ralph.claim_profile(token)).not_to be_truthy
 				end
 				
 				it "should succeed if we force a claim of the profile even if the user already has an existing profile" do
-					ralph.claim_profile(token, true).should be_true
+					expect(ralph.claim_profile(token, true)).to be_truthy
 				end
 			
 				context "this user does not already have a persistent profile" do
-					before(:each) do
+					before(:example) do
 						ralph.profile = nil
 						ralph.save
 					end
 				
 					it "should claim the profile specified by the given token" do
-						ralph.claim_profile(token).should be_true
+						expect(ralph.claim_profile(token)).to be_truthy
 					end
 				
 					it "should fail if the token does not match a profile" do
-						ralph.claim_profile('nonsense').should_not be_true
+						expect(ralph.claim_profile('nonsense')).not_to be_truthy
 					end
 				
 					it "should fail if the profile is already claimed" do
-						ralph.claim_profile(token).should be_true
-						ralph.claim_profile(token).should_not be_true
+						expect(ralph.claim_profile(token)).to be_truthy
+						expect(ralph.claim_profile(token)).not_to be_truthy
 					end
 				end
 				
 				it "should declare that this user is in the process of claiming their profile" do
 					ralph.claiming_profile! token
-					ralph.should be_claiming_profile
-					ralph.profile_to_claim.should == profile_to_claim
+					expect(ralph).to be_claiming_profile
+					expect(ralph.profile_to_claim).to eq profile_to_claim
 				end
 			end
 		end
@@ -181,30 +181,30 @@ describe User do
 			
 			it "should have no errors for a valid email address" do
 				result = User.send_confirmation_instructions email: provider.email, admin_confirmation_sent_by_id: admin.id
-				result.errors[:email].should_not be_present
-				result.errors[:admin_confirmation_sent_at].should_not be_present
+				expect(result.errors[:email]).not_to be_present
+				expect(result.errors[:admin_confirmation_sent_at]).not_to be_present
 			end
 			
 			it "should have an error for an invalid email address" do
 				result = User.send_confirmation_instructions email: 'no_one@example.org', admin_confirmation_sent_by_id: admin.id
-				result.errors[:email].should be_present
+				expect(result.errors[:email]).to be_present
 			end
 			
 			it "should track who triggered the email" do
 				User.send_confirmation_instructions email: provider.email, admin_confirmation_sent_by_id: admin.id
-				provider.reload.admin_confirmation_sent_by.should == admin
+				expect(provider.reload.admin_confirmation_sent_by).to eq admin
 			end
 			
 			it "should track when admin sent the email" do
 				User.send_confirmation_instructions email: provider.email, admin_confirmation_sent_by_id: admin.id
-				provider.reload.admin_confirmation_sent_at.to_f.should be_within(10).of(Time.now.utc.to_f)
+				expect(provider.reload.admin_confirmation_sent_at.to_f).to be_within(10).of(Time.now.utc.to_f)
 			end
 			
 			context "when running as a private site", private_site: true do
 				it "admin should be able to send confirmation instructions" do
 					result = User.send_confirmation_instructions email: provider.email, admin_confirmation_sent_by_id: admin.id
-					result.errors[:email].should_not be_present
-					result.errors[:admin_confirmation_sent_at].should_not be_present
+					expect(result.errors[:email]).not_to be_present
+					expect(result.errors[:admin_confirmation_sent_at]).not_to be_present
 				end
 			end
 		end
@@ -213,18 +213,18 @@ describe User do
 			context "BEFORE admin approval" do
 				it "should NOT send confirmation instructions" do
 					result = User.send_confirmation_instructions email: provider.email
-					result.errors[:admin_confirmation_sent_at].should be_present
+					expect(result.errors[:admin_confirmation_sent_at]).to be_present
 				end
 				
 				it "should NOT confirm" do
 					result = User.confirm_by_token provider.confirmation_token
-					result.should_not be_confirmed
-					result.errors[:admin_confirmation_sent_at].should be_present
+					expect(result).not_to be_confirmed
+					expect(result.errors[:admin_confirmation_sent_at]).to be_present
 				end
 
 				it "should NOT send password reset instructions" do
 					result = User.send_reset_password_instructions email: provider.email
-					result.errors[:admin_confirmation_sent_at].should be_present
+					expect(result.errors[:admin_confirmation_sent_at]).to be_present
 				end
 				
 				it "should NOT reset password" do
@@ -235,31 +235,31 @@ describe User do
 					old_encrypted_password = provider.encrypted_password
 					new_password = User.generate_password
 					result = User.reset_password_by_token reset_password_token: token, password: new_password, password_confirmation: new_password
-					result.encrypted_password.should == old_encrypted_password
-					result.errors[:admin_confirmation_sent_at].should be_present
+					expect(result.encrypted_password).to eq old_encrypted_password
+					expect(result.errors[:admin_confirmation_sent_at]).to be_present
 				end
 			end
 
 			context "AFTER admin approval" do
-				before(:each) do
+				before(:example) do
 					provider.admin_confirmation_sent_at = Time.now.utc
 					provider.save
 				end
 				
 				it "should send confirmation instructions" do
 					result = User.send_confirmation_instructions email: provider.email
-					result.errors[:admin_confirmation_sent_at].should_not be_present
+					expect(result.errors[:admin_confirmation_sent_at]).not_to be_present
 				end
 				
 				it "should confirm" do
 					result = User.confirm_by_token provider.confirmation_token
-					result.should be_confirmed
-					result.errors[:admin_confirmation_sent_at].should_not be_present
+					expect(result).to be_confirmed
+					expect(result.errors[:admin_confirmation_sent_at]).not_to be_present
 				end
 
 				it "should send password reset instructions" do
 					result = User.send_reset_password_instructions email: provider.email
-					result.errors[:admin_confirmation_sent_at].should_not be_present
+					expect(result.errors[:admin_confirmation_sent_at]).not_to be_present
 				end
 				
 				it "should reset password" do
@@ -270,8 +270,8 @@ describe User do
 					old_encrypted_password = provider.encrypted_password
 					new_password = User.generate_password
 					result = User.reset_password_by_token reset_password_token: token, password: new_password, password_confirmation: new_password
-					result.encrypted_password.should_not == old_encrypted_password
-					result.errors[:admin_confirmation_sent_at].should_not be_present
+					expect(result.encrypted_password).not_to eq old_encrypted_password
+					expect(result.errors[:admin_confirmation_sent_at]).not_to be_present
 				end
 			end
 		end
@@ -283,33 +283,33 @@ describe User do
 		context "username" do
 			it "should not allow a username that is too short" do
 				parent.username = 'a' * (User::MIN_LENGTHS[:username] - 1)
-				parent.should have(1).error_on(:username)
+				expect(parent.error_on(:username).size).to eq 1
 				parent.username += 'a'
-				parent.should have(:no).errors_on(:username)
+				expect(parent.errors_on(:username).size).to eq 0
 			end
 			
 			it "should not allow a username that is too long" do
 				parent.username = 'a' * User::MAX_LENGTHS[:username]
-				parent.should have(:no).errors_on(:username)
+				expect(parent.errors_on(:username).size).to eq 0
 				parent.username += 'a'
-				parent.should have(1).error_on(:username)
+				expect(parent.error_on(:username).size).to eq 1
 			end
 			
 			it "should allow only alphanumeric and underscore characters in the username" do
 				parent.username = 'kel&ly'
-				parent.should have(1).error_on(:username)
+				expect(parent.error_on(:username).size).to eq 1
 			end
 	
 			it "should not require a username if a client" do
 				parent.username = nil
-				parent.should have(:no).errors_on(:username)
+				expect(parent.errors_on(:username).size).to eq 0
 			end
 			
 			it "should require a unique username" do
 				username = 'gotta_be_me'
 				FactoryGirl.create(:client_user, username: username)
 				parent.username = username
-				parent.should have(1).error_on(:username)
+				expect(parent.error_on(:username).size).to eq 1
 			end
 		end
 	end
@@ -318,33 +318,33 @@ describe User do
 		let(:user) { User.new }
 
 		it "should have no roles if new" do
-			user.roles.should be_empty
+			expect(user.roles).to be_empty
 		end
 		
 		it "should be an admin if the admin role is added" do
 			user.add_role 'admin'
-			user.should be_admin
+			expect(user).to be_admin
 		end
 		
 		it "should not be an admin if the admin role is removed" do
 			user.add_role 'admin'
 			user.remove_role 'admin'
-			user.should_not be_admin
+			expect(user).not_to be_admin
 		end
 		
 		it "should be an expert if the expert role is added" do
 			user.add_role 'expert'
-			user.should be_expert
+			expect(user).to be_expert
 		end
 		
 		it "should be a client if the client role is added" do
 			user.add_role 'client'
-			user.should be_client
+			expect(user).to be_client
 		end
 		
 		it "should be a profile editor if the profile_editor role is added" do
 			user.add_role 'profile_editor'
-			user.should be_profile_editor
+			expect(user).to be_profile_editor
 		end
 	end
 	
@@ -360,7 +360,7 @@ describe User do
 		}
 		
 		it "does not require the current password to update newsletter subscriptions" do
-			user.update_attributes(newsletter_subscriptions, as: :passwordless).should be_true
+			expect(user.update_attributes(newsletter_subscriptions, as: :passwordless)).to be_truthy
 		end
 		
 		it "requires the current password to update the email address" do
@@ -386,8 +386,8 @@ describe User do
 		user = User.new
 		username = 'SteveEarle'
 		user.username = " #{username} "
-		user.should have(:no).errors_on(:username)
-		user.username.should == username
+		expect(user.errors_on(:username).size).to eq 0
+		expect(user.username).to eq username
 	end
 	
 	context "email subscriptions", mailchimp: true do
@@ -398,9 +398,9 @@ describe User do
 			system_list_ids = Rails.configuration.mailchimp_list_id.values
 			gb = Gibbon::API.new
 			r = gb.lists.list
-			r.present?.should be_true
+			expect(r.present?).to be_truthy
 			mailchimp_list_ids = r['data'].collect { |list_data| list_data['id'] }   
-			(system_list_ids - mailchimp_list_ids).empty?.should be_true
+			expect((system_list_ids - mailchimp_list_ids).empty?).to be_truthy
 		end
 
 		it "can subscribe to mailing lists" do
@@ -409,9 +409,9 @@ describe User do
 			parent.parent_newsletters_stage3 = true
 			parent.save
 			parent.reload
-			parent.parent_newsletters_stage1.should be_true
-			parent.parent_newsletters_stage2.should be_true
-			parent.parent_newsletters_stage3.should be_true
+			expect(parent.parent_newsletters_stage1).to be_truthy
+			expect(parent.parent_newsletters_stage2).to be_truthy
+			expect(parent.parent_newsletters_stage3).to be_truthy
 		end
 		
 		it "cannot subscribe to mailing lists if previously blocked" do
@@ -421,9 +421,9 @@ describe User do
 			parent.parent_newsletters_stage3 = true
 			parent.save
 			parent.reload
-			parent.parent_newsletters_stage1.should be_false
-			parent.parent_newsletters_stage2.should be_false
-			parent.parent_newsletters_stage3.should be_false
+			expect(parent.parent_newsletters_stage1).to be_falsey
+			expect(parent.parent_newsletters_stage2).to be_falsey
+			expect(parent.parent_newsletters_stage3).to be_falsey
 		end
 		
 		it "requires a subscription to at least one edition if signing up for the newsletter" do
@@ -431,25 +431,25 @@ describe User do
 			new_parent.parent_newsletters_stage1 = false
 			new_parent.parent_newsletters_stage2 = false
 			new_parent.parent_newsletters_stage3 = false
-			new_parent.should have(1).error_on(:base)
+			expect(new_parent.error_on(:base).size).to eq 1
 		end
 
 		context "confirmation not required for newsletter subscription to take effect" do
 			let(:user) { FactoryGirl.create :client_user, require_confirmation: true, parent_newsletters_stage1: true, parent_newsletters_stage2: true, parent_newsletters_stage3: true }
 				
 			it "should be added to mailing list before confirmation" do
-				user.parent_newsletters_stage1_leid.should be_present
-				user.parent_newsletters_stage2_leid.should be_present
-				user.parent_newsletters_stage3_leid.should be_present
+				expect(user.parent_newsletters_stage1_leid).to be_present
+				expect(user.parent_newsletters_stage2_leid).to be_present
+				expect(user.parent_newsletters_stage3_leid).to be_present
 			end
 
 			it "should be added to mailing list after confirmation" do
 				user.confirm!
 				user.save
 				user.reload
-				user.parent_newsletters_stage1_leid.should be_present
-				user.parent_newsletters_stage2_leid.should be_present
-				user.parent_newsletters_stage3_leid.should be_present
+				expect(user.parent_newsletters_stage1_leid).to be_present
+				expect(user.parent_newsletters_stage2_leid).to be_present
+				expect(user.parent_newsletters_stage3_leid).to be_present
 			end
 		end
 
@@ -469,7 +469,7 @@ describe User do
 					update_existing: true
 				}
 				# We can do the following because we are mocking the lists API.
-				Gibbon::API.new.lists.should_receive(:subscribe).with(opts).once
+				expect(Gibbon::API.new.lists).to receive(:subscribe).with(opts).once
 				parent.save
 			end
 
@@ -485,7 +485,7 @@ describe User do
 					update_existing: true
 				}
 				# We can do the following because we are mocking the lists API.
-				Gibbon::API.new.lists.should_receive(:subscribe).with(opts).once
+				expect(Gibbon::API.new.lists).to receive(:subscribe).with(opts).once
 				parent.save
 			end
 		end
@@ -505,7 +505,7 @@ describe User do
 					update_existing: true
 				}
 				# We can do the following because we are mocking the lists API.
-				Gibbon::API.new.lists.should_receive(:subscribe).with(opts).once
+				expect(Gibbon::API.new.lists).to receive(:subscribe).with(opts).once
 				provider.save
 			end
 
@@ -521,7 +521,7 @@ describe User do
 					update_existing: true
 				}
 				# We can do the following because we are mocking the lists API.
-				Gibbon::API.new.lists.should_receive(:subscribe).with(opts).once
+				expect(Gibbon::API.new.lists).to receive(:subscribe).with(opts).once
 				provider.save
 			end
 		end
@@ -533,11 +533,11 @@ describe User do
 			let(:paying_parent) { FactoryGirl.create(:customer_file).customer.user }
 			
 			it "should indicate that this user has no paid providers" do
-				parent.should_not have_paid_providers
+				expect(parent).not_to have_paid_providers
 			end
 			
 			it "should indicate that this user has paid providers" do
-				paying_parent.should have_paid_providers
+				expect(paying_parent).to have_paid_providers
 			end
 		end
 		
@@ -546,11 +546,11 @@ describe User do
 			let(:paid_provider) { FactoryGirl.create(:customer_file).provider }
 			
 			it "should indicate that this provider has no paying customers" do
-				provider.should_not have_paying_customers
+				expect(provider).not_to have_paying_customers
 			end
 			
 			it "should indicate that this provider has paying customers" do
-				paid_provider.should have_paying_customers
+				expect(paid_provider).to have_paying_customers
 			end
 		end
 	end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CategoriesController do
+describe CategoriesController, :type => :controller do
 
 	# This should return at least the minimal set of attributes required to create a valid Category.
 	let (:valid_attributes) { FactoryGirl.attributes_for :category }
@@ -11,21 +11,21 @@ describe CategoriesController do
 		describe "GET index" do
 			it "cannot view categories" do
 				get :index
-				assigns(:categories).should be_nil
+				expect(assigns(:categories)).to be_nil
 			end
 		end
 
 		describe "GET new" do
 			it "cannot get a new category" do
 				get :new
-				assigns(:category).should be_nil
+				expect(assigns(:category)).to be_nil
 			end
 		end
 
 		describe "GET edit" do
 			it "cannot get a category to edit" do
 				get :edit, id: category.to_param
-				assigns(:category).should be_nil
+				expect(assigns(:category)).to be_nil
 			end
 		end
 
@@ -41,7 +41,7 @@ describe CategoriesController do
 		describe "PUT update" do
 			it "cannot update a category" do
 				put :update, {id: category.to_param, category: valid_attributes}
-				assigns(:category).should be_nil
+				expect(assigns(:category)).to be_nil
 			end
 		end
 
@@ -68,7 +68,7 @@ describe CategoriesController do
 			it "assigns all categories as @categories" do
 				get :index
 				Category.all.each do |cat|
-					assigns(:categories).should include(cat)
+					expect(assigns(:categories)).to include(cat)
 				end
 			end
 		end
@@ -76,14 +76,14 @@ describe CategoriesController do
 		describe "GET new" do
 			it "assigns a new category as @category" do
 				get :new
-				assigns(:category).should be_a_new(Category)
+				expect(assigns(:category)).to be_a_new(Category)
 			end
 		end
 
 		describe "GET edit" do
 			it "assigns the requested category as @category" do
 				get :edit, id: category.to_param
-				assigns(:category).should eq(category)
+				expect(assigns(:category)).to eq(category)
 			end
 		end
 
@@ -97,29 +97,29 @@ describe CategoriesController do
 
 				it "assigns a newly created category as @category" do
 					post :create, category: valid_attributes
-					assigns(:category).should be_a(Category)
-					assigns(:category).should be_persisted
+					expect(assigns(:category)).to be_a(Category)
+					expect(assigns(:category)).to be_persisted
 				end
 
 				it "redirects to the edit page for the created category" do
 					post :create, category: valid_attributes
-					response.should redirect_to(edit_category_url Category.last)
+					expect(response).to redirect_to(edit_category_url Category.last)
 				end
 			end
 
 			describe "with invalid params" do
 				it "assigns a newly created but unsaved category as @category" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					Category.any_instance.stub(:save).and_return(false)
+					allow_any_instance_of(Category).to receive(:save).and_return(false)
 					post :create, category: {}
-					assigns(:category).should be_a_new(Category)
+					expect(assigns(:category)).to be_a_new(Category)
 				end
 
 				it "re-renders the 'new' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					Category.any_instance.stub(:save).and_return(false)
+					allow_any_instance_of(Category).to receive(:save).and_return(false)
 					post :create, category: {}
-					response.should render_template("new")
+					expect(response).to render_template("new")
 				end
 			end
 		end
@@ -129,34 +129,34 @@ describe CategoriesController do
 				it "updates the requested category" do
 					# Assuming there are no other categories in the database, this specifies that category
 					# receives the :update_attributes message with whatever params are submitted in the request.
-					Category.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
+					expect_any_instance_of(Category).to receive(:update_attributes).with({'these' => 'params'})
 					put :update, {id: category.to_param, category: {'these' => 'params'}}
 				end
 
 				it "assigns the requested category as @category" do
 					put :update, {id: category.to_param, category: valid_attributes}
-					assigns(:category).should eq(category)
+					expect(assigns(:category)).to eq(category)
 				end
 
 				it "redirects to the category" do
 					put :update, {id: category.to_param, category: valid_attributes}
-					response.should redirect_to(edit_category_url category)
+					expect(response).to redirect_to(edit_category_url category)
 				end
 			end
 
 			describe "with invalid params" do
 				it "assigns the category as @category" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					Category.any_instance.stub(:save).and_return(false)
+					allow_any_instance_of(Category).to receive(:save).and_return(false)
 					put :update, {id: category.to_param, category: {}}
-					assigns(:category).should eq(category)
+					expect(assigns(:category)).to eq(category)
 				end
 
 				it "re-renders the 'edit' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					Category.any_instance.stub(:save).and_return(false)
+					allow_any_instance_of(Category).to receive(:save).and_return(false)
 					put :update, {id: category.to_param, category: {}}
-					response.should render_template("edit")
+					expect(response).to render_template("edit")
 				end
 			end
 		end
@@ -170,20 +170,20 @@ describe CategoriesController do
 
 			it "redirects to the categories list" do
 				delete :destroy, id: category.to_param
-				response.should redirect_to(categories_url)
+				expect(response).to redirect_to(categories_url)
 			end
 		end
 		
 		describe "PUT add_subcategory" do
 			it "redirects to the category" do
 				put :add_subcategory, id: category.to_param, name: 'Australian Music Instruction'
-				response.should redirect_to(edit_category_url category)
+				expect(response).to redirect_to(edit_category_url category)
 			end
 
 			it "adds a subcategory" do
 				subcategory = FactoryGirl.create :subcategory, name: 'Outback Activities'
 				put :add_subcategory, id: category.to_param, name: subcategory.name
-				assigns(:category).subcategories.should include(subcategory)
+				expect(assigns(:category).subcategories).to include(subcategory)
 			end
 
 			it "adds an existing subcategory" do
@@ -197,7 +197,7 @@ describe CategoriesController do
 				subcategory = FactoryGirl.create :subcategory, name: 'Violetta Divas'
 				order = 5
 				put :add_subcategory, id: category.to_param, name: subcategory.name, subcategory_display_order: order
-				assigns(:category).category_subcategory(subcategory).subcategory_display_order.should eq(order)
+				expect(assigns(:category).category_subcategory(subcategory).subcategory_display_order).to eq(order)
 			end
 			
 			it "creates a subcategory" do
@@ -209,7 +209,7 @@ describe CategoriesController do
 			it "adds a created subcategory" do
 				name = 'Didgeridoo Clubs'
 				put :add_subcategory, id: category.to_param, name: name
-				assigns(:category).subcategories.should include(Subcategory.find_by_name name)
+				expect(assigns(:category).subcategories).to include(Subcategory.find_by_name name)
 			end
 			
 			it "does not add a duplicate subcategory" do
@@ -225,36 +225,36 @@ describe CategoriesController do
 			let(:subcategory) { FactoryGirl.create :subcategory, name: 'Billabongs' }
 			let(:display_order) { 7 }
 			
-			before(:each) do
+			before(:example) do
 				category.subcategories << subcategory
 			end
 			
 			it "redirects to the category" do
 				put :update_subcategory, id: category.to_param, subcategory_id: subcategory.to_param, subcategory_display_order: display_order
-				response.should redirect_to(edit_category_url category)
+				expect(response).to redirect_to(edit_category_url category)
 			end
 			
 			it "modifies the display order of a subcategory" do
 				put :update_subcategory, id: category.to_param, subcategory_id: subcategory.to_param, subcategory_display_order: display_order
-				assigns(:category).category_subcategory(subcategory).subcategory_display_order.should eq(display_order)
+				expect(assigns(:category).category_subcategory(subcategory).subcategory_display_order).to eq(display_order)
 			end
 		end
 		
 		describe "PUT remove_subcategory" do
 			let(:subcategory) { FactoryGirl.create :subcategory, name: 'How to Lean on the Everlasting Arms' }
 			
-			before(:each) do
+			before(:example) do
 				category.subcategories << subcategory
 			end
 			
 			it "redirects to the category" do
 				put :remove_subcategory, id: category.to_param, subcategory_id: subcategory.to_param
-				response.should redirect_to(edit_category_url category)
+				expect(response).to redirect_to(edit_category_url category)
 			end
 
 			it "removes a subcategory" do
 				put :remove_subcategory, id: category.to_param, subcategory_id: subcategory.to_param
-				assigns(:category).subcategories.should_not include(subcategory)
+				expect(assigns(:category).subcategories).not_to include(subcategory)
 			end
 		end
 	end

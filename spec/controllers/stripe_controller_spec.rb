@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe StripeController, payments: true do
+describe StripeController, type: :controller, payments: true do
 	describe "GET webhook" do
-		around(:each) do |example|
+		around(:example) do |example|
 			original_logger = StripeController.logger
 			example.run
 			StripeController.logger = original_logger
@@ -10,11 +10,12 @@ describe StripeController, payments: true do
 		
 		it "returns a status of 200 no matter what" do
 			get :webhook, provider_id: 'hank'
-			response.status.should == 200
+			expect(response.status).to eq 200
 		end
 		
 		it "logs the passed data" do
-			(logger = double 'logger').should_receive :info
+			logger = double 'logger'
+			expect(logger).to receive :info
 			StripeController.logger = logger
 			get :webhook, provider_id: 'hank'
 		end

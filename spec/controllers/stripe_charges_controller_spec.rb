@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe StripeChargesController, payments: true do
+describe StripeChargesController, type: :controller, payments: true do
 	let(:charge_without_provider) { FactoryGirl.create :captured_stripe_charge }
 	let(:charge_without_customer) { FactoryGirl.create :captured_stripe_charge }
 	let(:charge) { FactoryGirl.create :captured_stripe_charge_with_customer }
@@ -11,28 +11,28 @@ describe StripeChargesController, payments: true do
 		describe "GET show" do
 			it "cannot show the details of a charge" do
 				get :show, id: charge.id
-				response.status.should == 302 # Redirect.
-				assigns(:stripe_charge).should be_nil # Never makes it to CanCan.
+				expect(response.status).to eq 302 # Redirect.
+				expect(assigns(:stripe_charge)).to be_nil # Never makes it to CanCan.
 			end
 		end
 	end
 	
 	context "provider is signed in" do
-		before(:each) do
+		before(:example) do
 			sign_in provider
 		end
 		
 		describe "GET show" do
 			it "can ONLY show the details of a charge made by the provider" do
 				get :show, id: charge_without_provider.id
-				response.status.should == 302 # Redirect.
+				expect(response.status).to eq 302 # Redirect.
 			end
 		end
 		
 		describe "GET show" do
 			it "shows the details of a charge made by the provider" do
 				get :show, id: charge.id
-				assigns(:stripe_charge).should == charge
+				expect(assigns(:stripe_charge)).to eq charge
 			end
 		end
 		
@@ -49,14 +49,14 @@ describe StripeChargesController, payments: true do
 			let(:api_charge) { stripe_charge_mock amount_cents: charge_amount_cents,  refunds: api_refunds }
 			let(:api_application_fee_list) { application_fee_list_mock }
 		
-			before(:each) do
-				Stripe::Charge.stub(:retrieve).with(any_args) do
+			before(:example) do
+				allow(Stripe::Charge).to receive(:retrieve).with(any_args) do
 					api_charge
 				end
-				Stripe::BalanceTransaction.stub(:retrieve).with(any_args) do
+				allow(Stripe::BalanceTransaction).to receive(:retrieve).with(any_args) do
 					api_balance_transaction
 				end
-				Stripe::ApplicationFee.stub(:all).with(any_args) do
+				allow(Stripe::ApplicationFee).to receive(:all).with(any_args) do
 					api_application_fee_list
 				end
 				
@@ -67,31 +67,31 @@ describe StripeChargesController, payments: true do
 			describe "PUT create_refund" do
 				it "applies a partial refund" do
 					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
-					assigns(:stripe_charge).amount_refunded_usd.cents.should == refund_amount_cents
+					expect(assigns(:stripe_charge).amount_refunded_usd.cents).to eq refund_amount_cents
 				end
 
 				it "applies a full refund" do
 					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: charge_amount_usd}
-					assigns(:stripe_charge).amount_refunded_usd.cents.should == charge_amount_cents
+					expect(assigns(:stripe_charge).amount_refunded_usd.cents).to eq charge_amount_cents
 				end
 				
 				it "applies multiple refunds" do
 					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
 					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
-					assigns(:stripe_charge).amount_refunded_usd.cents.should == (2 * refund_amount_cents)
+					expect(assigns(:stripe_charge).amount_refunded_usd.cents).to eq(2 * refund_amount_cents)
 				end
 			
 				it "cannot refund more than the charge" do
 					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: '$400.00'}
-					response.should render_template :show
-					assigns(:stripe_charge).amount_refunded_usd.should be_nil
+					expect(response).to render_template :show
+					expect(assigns(:stripe_charge).amount_refunded_usd).to be_nil
 				end
 			
 				it "cannot do multiple refunds totalling more than the charge" do
 					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
 					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: charge_amount_usd}
-					response.should render_template :show
-					assigns(:stripe_charge).amount_refunded_usd.should == refund_amount_usd
+					expect(response).to render_template :show
+					expect(assigns(:stripe_charge).amount_refunded_usd).to eq refund_amount_usd
 				end
 			end
 		end
@@ -101,28 +101,28 @@ describe StripeChargesController, payments: true do
 		describe "GET show" do
 			it "cannot show the details of a charge" do
 				get :show, id: charge.id
-				response.status.should == 302 # Redirect.
-				assigns(:stripe_charge).should be_nil # Never makes it to CanCan.
+				expect(response.status).to eq 302 # Redirect.
+				expect(assigns(:stripe_charge)).to be_nil # Never makes it to CanCan.
 			end
 		end
 	end
 	
 	context "client is signed in" do
-		before(:each) do
+		before(:example) do
 			sign_in client
 		end
 		
 		describe "GET show" do
 			it "can ONLY show the details of a charge made to the client" do
 				get :show, id: charge_without_customer.id
-				response.status.should == 302 # Redirect.
+				expect(response.status).to eq 302 # Redirect.
 			end
 		end
 		
 		describe "GET show" do
 			it "shows the details of a charge made to the client" do
 				get :show, id: charge.id
-				assigns(:stripe_charge).should == charge
+				expect(assigns(:stripe_charge)).to eq charge
 			end
 		end
 	end

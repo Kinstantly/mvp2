@@ -17,10 +17,7 @@
 		%meta{content: (@meta_description.presence || t('meta.description')), name: 'description'}
 		= favicon_link_tag '/favicon.ico?v=1'
 		%link{href: '/apple-touch-icon.png', rel: 'apple-touch-icon'}
-		%title
-			- if @page_title_prefix.present?
-				= "#{@page_title_prefix} |"
-			= "#{company_name} | #{company_tagline}"
+		%title= [@page_title_prefix, company_name].compact.join(' | ')
 		-# Allow option to load CSS before javascript so we do not see a flash of unformatted HTML.
 		= yield :head_before_js
 		/[if lt IE 9]

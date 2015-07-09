@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Subcategory do
+describe Subcategory, :type => :model do
 	# FactoryGirl products don't have callbacks, so let's build it ourselves!
 	let(:subcategory) { Subcategory.new name: 'CHILD & FAMILY' }
 	
@@ -8,14 +8,14 @@ describe Subcategory do
 	# so no use testing here for numericality.
 	
 	it "has a name" do
-		subcategory.save.should be_true
+		expect(subcategory.save).to be_truthy
 	end
 	
 	it "strips whitespace from the name" do
 		name = 'CHILD CARE'
 		subcategory.name = " #{name} "
-		subcategory.should have(:no).errors_on(:name)
-		subcategory.name.should == name
+		expect(subcategory.errors_on(:name).size).to eq 0
+		expect(subcategory.name).to eq name
 	end
 
 	it "can be trashed" do
@@ -39,7 +39,7 @@ describe Subcategory do
 				FactoryGirl.create(:category, name: 'Education')]
 		}
 		
-		before(:each) do
+		before(:example) do
 			subcategory.categories = categories
 			subcategory.save
 			subcategory.reload
@@ -47,13 +47,13 @@ describe Subcategory do
 		
 		it "it has persistent associated categories" do
 			categories.each do |category|
-				subcategory.categories.include?(category).should be_true
+				expect(subcategory.categories.include?(category)).to be_truthy
 			end
 		end
 		
 		it "it has a association model for categories" do
 			categories.each do |category|
-				category.category_subcategory(subcategory).subcategory.should eq subcategory
+				expect(category.category_subcategory(subcategory).subcategory).to eq subcategory
 			end
 		end
 	end
@@ -64,7 +64,7 @@ describe Subcategory do
 				FactoryGirl.create(:service, name: 'Occupational Therapists')]
 		}
 		
-		before(:each) do
+		before(:example) do
 			subcategory.services = services
 			subcategory.save
 			subcategory.reload
@@ -72,13 +72,13 @@ describe Subcategory do
 		
 		it "it has persistent associated services" do
 			services.each do |service|
-				subcategory.services.include?(service).should be_true
+				expect(subcategory.services.include?(service)).to be_truthy
 			end
 		end
 		
 		it "it has an association model for services" do
 			services.each do |service|
-				subcategory.service_subcategory(service).service.should eq service
+				expect(subcategory.service_subcategory(service).service).to eq service
 			end
 		end
 		
@@ -101,7 +101,7 @@ describe Subcategory do
 			FactoryGirl.create(:published_profile, subcategories: [subcategory])
 		}
 		
-		before(:each) do
+		before(:example) do
 			profile # Instantiate!
 			Profile.reindex # reset the SOLR index
 			Sunspot.commit
@@ -109,20 +109,20 @@ describe Subcategory do
 		
 		it "after modifying a subcategory, reindexes search for any profiles that contain it" do
 			new_name = 'COUPLES/ADULT'
-			Profile.fuzzy_search(new_name).results.include?(profile).should be_false
+			expect(Profile.fuzzy_search(new_name).results.include?(profile)).to be_falsey
 			subcategory.name = new_name
 			subcategory.save
 			Sunspot.commit
-			Profile.fuzzy_search(new_name).results.include?(profile).should be_true
+			expect(Profile.fuzzy_search(new_name).results.include?(profile)).to be_truthy
 		end
 		
 		it "should not be searchable after trashing" do
 			name = subcategory.name
-			Profile.fuzzy_search(name).results.include?(profile).should be_true
+			expect(Profile.fuzzy_search(name).results.include?(profile)).to be_truthy
 			subcategory.trash = true
 			subcategory.save
 			Sunspot.commit
-			Profile.fuzzy_search(name).results.include?(profile).should be_false
+			expect(Profile.fuzzy_search(name).results.include?(profile)).to be_falsey
 		end
 	end
 end

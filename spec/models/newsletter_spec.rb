@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Newsletter do
+describe Newsletter, :type => :model do
 	let(:newsletter) { FactoryGirl.create :newsletter }
 
 	it "has these attributes: :cid, :list_id, :send_time, :title, :subject, :archive_url, :content" do
@@ -12,39 +12,39 @@ describe Newsletter do
 		newsletter.archive_url = 'http://example.com'
 		newsletter.content = '<html></html>'
 		newsletter.send_time = Time.zone.now
-		newsletter.should have(:no).errors_on(:cid)
-		newsletter.should have(:no).errors_on(:list_id)
-		newsletter.should have(:no).errors_on(:title)
-		newsletter.should have(:no).errors_on(:subject)
-		newsletter.should have(:no).errors_on(:archive_url)
-		newsletter.should have(:no).errors_on(:content)
-		newsletter.should have(:no).errors_on(:send_time)
+		expect(newsletter.errors_on(:cid).size).to eq 0
+		expect(newsletter.errors_on(:list_id).size).to eq 0
+		expect(newsletter.errors_on(:title).size).to eq 0
+		expect(newsletter.errors_on(:subject).size).to eq 0
+		expect(newsletter.errors_on(:archive_url).size).to eq 0
+		expect(newsletter.errors_on(:content).size).to eq 0
+		expect(newsletter.errors_on(:send_time).size).to eq 0
 	end
 	
 	context "required attributes" do
 		it "must have cid" do
 			newsletter.cid = nil
-			newsletter.should have(1).error_on :cid
+			expect(newsletter.errors_on(:cid).size).to eq 1
 		end
 		it "must have list_id" do
 			newsletter.list_id = nil
-			newsletter.should have(1).error_on :list_id
+			expect(newsletter.errors_on(:list_id).size).to eq 1
 		end
 		it "must have title" do
 			newsletter.title = nil
-			newsletter.should have(1).error_on :title
+			expect(newsletter.errors_on(:title).size).to eq 1
 		end
 		it "must have subject" do
 			newsletter.subject = nil
-			newsletter.should have(1).error_on :subject
+			expect(newsletter.errors_on(:subject).size).to eq 1
 		end
 		it "must have content" do
 			newsletter.content = nil
-			newsletter.should have(1).error_on :content
+			expect(newsletter.errors_on(:content).size).to eq 1
 		end
 		it "must have send_time" do
 			newsletter.send_time = nil
-			newsletter.should have(1).error_on :send_time
+			expect(newsletter.errors_on(:send_time).size).to eq 1
 		end
 	end
 end
