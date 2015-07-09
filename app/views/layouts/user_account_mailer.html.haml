@@ -5,7 +5,8 @@
 				%tr
 					%td{align: 'center'}
 						= link_to root_url do
-							= image_tag mailer_image_url('kinstantly-logo-small-tag-260px.png'), alt: mailer_logo_alt
+							= image_tag attachments['kinstantly-logo-small.png'].try(:url), alt: "logo"
+						%h2 WELCOME TO KINSTANTLY!
 			%tr
 				%td
 					= yield

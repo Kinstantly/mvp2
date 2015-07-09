@@ -31,16 +31,20 @@
 	%br
 	= render "devise/shared/links" unless embedded_in
 - else # Default sign-up.
-	%p.greeting WELCOME TO KINSTANTLY!
+	%p.greeting WELCOME!
 	%br
-	%p To complete your registration, check your email and click on the confirmation link we just sent you.
+	%p
+		To complete your registration, look for the
+		%strong email we just sent you
+		and
+		%strong click the confirmation button.
 	%br
 	- if params[:provider].present?
-		%p Once you've confirmed your registration, you'll be able to complete your profile&mdash;and we'll get busy helping you grow your business.
+		%p Once you've confirmed your email address, you'll be able to start building your profile—and we'll get to work helping you grow your business.
 		%br
 	%p
 		Thanks very much!
 	%p
-		The Kinstantly team
+		The Kinstantly Team
 	%br
 	= render "devise/shared/links" unless embedded_in
