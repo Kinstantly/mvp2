@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.0.0'
+ruby '2.2.2'
 
 gem 'rails', '3.2.22'
 
@@ -121,6 +121,7 @@ gem 'paper_trail', '~> 2'
 gem 'auto_strip_attributes'
 
 group :development, :test do
+	gem 'test-unit', '~> 3.0'
 	gem 'rspec-rails', '~> 3.3'
 	gem 'rspec-collection_matchers'
 	gem 'cucumber-rails', '~> 1.0', require: false
