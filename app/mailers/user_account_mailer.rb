@@ -28,7 +28,6 @@ class UserAccountMailer < Devise::Mailer
 	# Send on user creation when claiming a profile, i.e., simple welcome email.
 	def on_create_welcome(record, opts={})
 		@show_logo = true
-		attachments.inline['kinstantly-logo-small.png'] = File.read(File.join(Rails.root,'app','assets','images','kinstantly-logo-small-260px.png'))
 		devise_mail(record, :on_create_welcome, opts)
 	end
 end

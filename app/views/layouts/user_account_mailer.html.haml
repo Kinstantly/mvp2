@@ -5,7 +5,7 @@
 				%tr
 					%td{align: 'center'}
 						= link_to root_url do
-							= image_tag attachments['kinstantly-logo-small.png'].try(:url), alt: "logo"
+							= image_tag mailer_image_url('kinstantly-logo-small-260px.png'), alt: mailer_logo_alt
 						%h2 WELCOME TO KINSTANTLY!
 			%tr
 				%td
