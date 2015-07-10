@@ -38,6 +38,11 @@ If you're using RVM, it will parse the Ruby version from the Gemfile as long as 
 
  rvm --ruby-version use 2.2.2 # Or whatever the correct version number is.
 
+Get the latest version of RubyGems (for security reasons).
+
+ gem update --system
+ gem --version # Should be at least version 2.4.8.
+
 Install Bundler.
 
  gem install bundler
