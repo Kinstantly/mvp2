@@ -120,8 +120,11 @@ gem 'paper_trail', '~> 2'
 # (e.g. when user copy/pastes some value to a form and the value has extra spaces at the end).
 gem 'auto_strip_attributes'
 
+# Test::Unit is no longer included in the Ruby distribution.
+# 'rails console' needs this, so it needs to be installed on production.
+gem 'test-unit', '~> 3.0'
+
 group :development, :test do
-	gem 'test-unit', '~> 3.0'
 	gem 'rspec-rails', '~> 3.3'
 	gem 'rspec-collection_matchers'
 	gem 'cucumber-rails', '~> 1.0', require: false
