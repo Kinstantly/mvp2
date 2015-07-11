@@ -142,7 +142,7 @@ group :development, :test do
 end
 
 #Image processor and model manager for photo uploads
-gem 'paperclip', '~> 3.5.0'
+gem 'paperclip', '~> 4.3'
 
 #S3 storage
 gem 'aws-sdk', '~> 1.5.7'

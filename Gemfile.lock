@@ -94,7 +94,7 @@ GEM
     chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
-    cocaine (0.5.1)
+    cocaine (0.5.7)
       climate_control (>= 0.0.3, < 1.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -272,6 +272,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.25.1)
+    mimemagic (0.3.0)
     mini_portile (0.6.2)
     monetize (0.3.0)
       money (~> 6.1.0.beta1)
@@ -313,11 +314,12 @@ GEM
     paper_trail (2.7.2)
       activerecord (~> 3.0)
       railties (~> 3.0)
-    paperclip (3.5.1)
-      activemodel (>= 3.0.0)
-      activesupport (>= 3.0.0)
-      cocaine (~> 0.5.0)
+    paperclip (4.3.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      cocaine (~> 0.5.5)
       mime-types
+      mimemagic (= 0.3.0)
     pg (0.18.1)
     phonie (1.0.2)
     polyglot (0.3.5)
@@ -498,7 +500,7 @@ DEPENDENCIES
   nokogiri
   omniauth-stripe-connect!
   paper_trail (~> 2)
-  paperclip (~> 3.5.0)
+  paperclip (~> 4.3)
   pg
   phonie
   progress_bar
