@@ -145,7 +145,12 @@ group :development, :test do
 end
 
 #Image processor and model manager for photo uploads
-gem 'paperclip', '~> 4.3'
+# We really want the following, but it uses too much memory.  See below.
+# gem 'paperclip', '~> 4.3'
+
+# The following includes a fix for CVE-2015-2963 and a fix for memory over usage.
+# https://github.com/thoughtbot/paperclip/pull/1888/commits
+gem 'paperclip', git: 'https://github.com/dgynn/paperclip.git', branch: 'interpolations_tuning'
 
 #S3 storage
 gem 'aws-sdk', '~> 1.5.7'

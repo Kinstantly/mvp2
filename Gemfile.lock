@@ -17,6 +17,18 @@ GIT
       sunspot (= 2.0.0.pre.130115)
 
 GIT
+  remote: https://github.com/dgynn/paperclip.git
+  revision: 9f96d829053725a76fe295b306c988f555f31929
+  branch: interpolations_tuning
+  specs:
+    paperclip (4.3.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      cocaine (~> 0.5.5)
+      mime-types
+      mimemagic (= 0.3.0)
+
+GIT
   remote: https://github.com/isaacsanders/omniauth-stripe-connect.git
   revision: 232c4a7220ec6205e9037ae38e22777e14ef080a
   specs:
@@ -314,12 +326,6 @@ GEM
     paper_trail (2.7.2)
       activerecord (~> 3.0)
       railties (~> 3.0)
-    paperclip (4.3.0)
-      activemodel (>= 3.2.0)
-      activesupport (>= 3.2.0)
-      cocaine (~> 0.5.5)
-      mime-types
-      mimemagic (= 0.3.0)
     pg (0.18.1)
     phonie (1.0.2)
     polyglot (0.3.5)
@@ -500,7 +506,7 @@ DEPENDENCIES
   nokogiri
   omniauth-stripe-connect!
   paper_trail (~> 2)
-  paperclip (~> 4.3)
+  paperclip!
   pg
   phonie
   progress_bar
