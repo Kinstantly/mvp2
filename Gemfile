@@ -153,7 +153,7 @@ end
 gem 'paperclip', git: 'https://github.com/dgynn/paperclip.git', branch: 'interpolations_tuning'
 
 #S3 storage
-gem 'aws-sdk', '~> 1.5.7'
+gem 'aws-sdk', '~> 1.6'
 
 #AJAX file uploader
 gem 'jack_up', :git => 'https://github.com/thoughtbot/jack_up.git'

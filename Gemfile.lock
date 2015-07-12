@@ -79,11 +79,11 @@ GEM
     atomic (1.1.14)
     auto_strip_attributes (2.0.2)
       activerecord (>= 3.0)
-    aws-sdk (1.5.8)
-      httparty (~> 0.7)
+    aws-sdk (1.64.0)
+      aws-sdk-v1 (= 1.64.0)
+    aws-sdk-v1 (1.64.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
-      uuidtools (~> 2.1)
     bcrypt-ruby (3.1.1)
     builder (3.0.4)
     cache_digests (0.3.1)
@@ -475,7 +475,7 @@ PLATFORMS
 
 DEPENDENCIES
   auto_strip_attributes
-  aws-sdk (~> 1.5.7)
+  aws-sdk (~> 1.6)
   cache_digests
   cancancan
   capybara (~> 2.4)
