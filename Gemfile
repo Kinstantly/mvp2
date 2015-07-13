@@ -23,7 +23,10 @@ gem 'json', '>= 1.7.7'
 gem 'pg'
 
 gem 'haml'
-gem 'html2haml'
+
+# html2haml loads ruby_parser which requires tons of memory.
+# Only needed in development from the command line.  Install it manually!
+# gem 'html2haml', group: :development
 
 # Get error message helpers for forms.
 gem 'dynamic_form'
@@ -144,6 +147,13 @@ group :development, :test do
 	gem 'spork-rails'
 end
 
+# Benchmarking.
+group :development do
+	gem 'derailed'
+	gem 'stackprof'
+	gem 'rails-footnotes', '>= 3.7.9'
+end
+
 #Image processor and model manager for photo uploads
 # We really want the following, but it uses too much memory.  See below.
 # gem 'paperclip', '~> 4.3'
@@ -187,8 +197,6 @@ gem 'cache_digests'
 # Makes running your Rails app easier. Based on the ideas behind 12factor.net
 # https://github.com/heroku/rails_12factor
 gem 'rails_12factor', group: :production
-
-gem 'rails-footnotes', '>= 3.7.9', group: :development
 
 #Support for ReCAPTCHA's Mailhide API
 gem 'recaptcha-mailhide'
