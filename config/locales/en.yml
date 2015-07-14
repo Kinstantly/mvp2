@@ -523,6 +523,8 @@ en:
         add: 'Fill in a new location'
     newsletter:
       archive: 'Newsletter archive'
+      description: 'Our weekly newsletter offers uncommon common sense--an eye-opening roundup of news, research, and expert insights for your stage of parenting.'
+      description_html: 'Our weekly newsletter offers uncommon common sense&mdash;an eye-opening roundup of news, research, and expert insights for <em>your</em> stage of parenting.'
       name: 'Kinstantly This Week'
       sign_up_link: '< Sign up for Kinstantly This Week'
     passwords:
