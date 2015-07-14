@@ -1,17 +1,17 @@
 - @content_class = 'profile_content'
 - @page_title_prefix = profile_page_title_prefix @profile
 -# Meta description and keywords are set by the profiles controller.
+-# Facebook Open Graph properties follow. Used by the layout to generate meta-properties.
+- @og_url = profile_url(@profile)
+- @og_title = @profile.company_otherwise_display_name
+- if @profile.profile_photo_file_name.present?
+	- @og_image = @profile.profile_photo.url(:original)
+	-# - profile_photo_geometry = @profile.profile_photo.styles[:original].geometry
+	-# - @og_image_width = profile_photo_geometry.sub(/x.*\z/i, '')
+	-# - @og_image_height = profile_photo_geometry.sub(/\A.*x/i, '')
+- @og_type = 'business.business'
+- @og_updated_time = display_profile_date(@profile.updated_at)
 - content_for :head do
-	%meta{property: 'og:url', content: profile_url(@profile)}
-	- if (og_title = @profile.company_otherwise_display_name).present?
-		%meta{property: 'og:title', content: og_title}
-	- if @profile.profile_photo_file_name.present?
-		%meta{property: 'og:image', content: @profile.profile_photo.url(:original)}
-	%meta{property: 'og:type', content: 'business.business'}
-	- if (og_description = @profile.headline).present?
-		%meta{property: 'og:description', content: og_description}
-	%meta{property: 'og:site_name', content: t('company.name')}
-	%meta{property: 'og:updated_time', content: display_profile_date(@profile.updated_at)}
 	%meta{name: "thumbnail", content: @profile.profile_photo.url(:original)}
 - show_and_edit = can?(:manage_my_profile, @profile) || can?(:edit, @profile)
 - if show_and_edit
