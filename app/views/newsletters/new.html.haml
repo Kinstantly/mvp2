@@ -2,6 +2,8 @@
 - @page_title_prefix = t 'views.newsletter.name'
 - @hide_masthead = true
 - @hide_follow = true
+- @og_title = "#{t 'views.newsletter.name'} | #{company_tagline}"
+- @og_description = @meta_description = t 'views.newsletter.description'
 - short_company_description ||= t 'company.short_company_description_html'
 - parent_newsletters_hint	= t "views.sign_up.parent_newsletters_hint"
 
@@ -10,9 +12,7 @@
 		.company_desc
 			%a{title: "#{company_name}", href: root_url}
 				= image_tag "newsletter_banner.jpg", alt: short_company_description, itemprop: 'image', class: "banner"
-			%h5
-				:plain
-					Our weekly newsletter offers uncommon common sense&mdash;an eye-opening roundup of news, research, and expert insights for <em>your</em> stage of parenting.
+			%h5= t 'views.newsletter.description_html'
 		#sign_up.generic_form
 			= form_tag "/newsletters/subscribe" do
 				- unless @errors.blank?

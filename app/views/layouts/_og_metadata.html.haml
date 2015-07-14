@@ -1,0 +1,13 @@
+-# Facebook Open Graph properties. See http://ogp.me/
+%meta{property: 'og:url', content: (@og_url.presence || request.url)}
+%meta{property: 'og:title', content: (@og_title.presence || "#{company_name} | #{company_tagline}")}
+- og_image = @og_image.presence || "#{request.base_url}#{image_path('kinstantly_facebook_bug.png')}"
+%meta{property: 'og:image', content: og_image}
+%meta{property: 'og:image:secure_url', content: og_image}
+-# %meta{property: 'og:image:width', content: (@og_image_width.presence || '200')}
+-# %meta{property: 'og:image:height', content: (@og_image_height.presence || '200')}
+%meta{property: 'og:type', content: (@og_type.presence || 'website')}
+%meta{property: 'og:description', content: (@og_description.presence || @meta_description.presence || t('meta.description'))}
+%meta{property: 'og:site_name', content: (@og_site_name.presence || company_name)}
+- if @og_updated_time.present?
+	%meta{property: 'og:updated_time', content: @og_updated_time}
