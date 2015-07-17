@@ -110,9 +110,12 @@ Create a fresh mvp2_performance database with the following command.
 
   RAILS_ENV=performance bundle exec rake db:create
 
-Get a copy of the production database with the following command (if you don't have permission, have someone who does supply you with a copy).
+Get a copy of the production database with the following commands (if you don't have permission, have someone who does supply you with a copy).
 
-  heroku pgbackups:url
+  backup=$(heroku pg:backups --app get-answers-5555 | perl -ne 'if (!$done && /^(\S+)\s.*\sFinished\s/) { print $1; $done = true; }')
+  url=$(heroku pg:backups public-url $backup --quiet --app get-answers-5555)
+  f=${backup}.dump
+  curl --output $f "$url"
 
 Load the production copy into your mvp2_performance databse.  In this example the file with the production copy is named 'a327.dump'.
 
