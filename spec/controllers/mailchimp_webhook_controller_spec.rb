@@ -99,6 +99,14 @@ describe MailchimpWebhookController, :type => :controller do
 			end
 		end
 
+		context 'user never subscribed' do
+		  it 'should handle unsubscribe notification gracefully' do
+				post :process_notification, params
+				user.reload
+				expect(user.parent_newsletters_stage1).not_to be_truthy
+		  end
+		end
+
 		context "new campaign sent" do
 			# The following works because we are mocking the campaigns API.
 			it "creates a new record when valid campaign data provided" do
@@ -112,6 +120,12 @@ describe MailchimpWebhookController, :type => :controller do
 				post :process_notification, campaign_params.merge(data: {id: nil})
 				new_newsletter = Newsletter.find_by_cid(campaign_params[:data][:id])
 				expect(new_newsletter).to be_nil
+			end
+			
+			it 'will not duplicate the record when notified twice of the same campaign' do
+				post :process_notification, campaign_params
+				post :process_notification, campaign_params
+				expect(Newsletter.where(cid: campaign_params[:data][:id]).size).to eq 1
 			end
 		end
 	end

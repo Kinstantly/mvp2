@@ -16,10 +16,10 @@ class MailchimpWebhookController < ApplicationController
 			when 'campaign'
 				on_campaign_sent data
 			else
-				logger.info "MailChimp Webhook: unexpected incoming notification. Params: #{params}" if logger
+				logger.error "MailChimp Webhook error: unexpected incoming notification. Params: #{params}" if logger
 			end
 		else
-			logger.info "MailChimp Webhook: invalid incoming notification. Params: #{params}" if logger
+			logger.error "MailChimp Webhook error: invalid incoming notification. Params: #{params}" if logger
 		end
 		render :nothing => true
 	end
@@ -32,7 +32,7 @@ class MailchimpWebhookController < ApplicationController
 		list_name = Rails.configuration.mailchimp_list_id.key(incoming_list_id)
 
 		if !User.mailing_list_name_valid?(list_name)
-			logger.info "MailChimp Webhook unsubscribe verification failed: incoming_list_id \'#{incoming_list_id}\' is not valid. List name: #{list_name}." if logger
+			logger.error "MailChimp Webhook unsubscribe verification error: incoming_list_id \'#{incoming_list_id}\' is not valid. List name: #{list_name}." if logger
 			return
 		end
 		if data['reason'] == 'abuse'
@@ -53,8 +53,10 @@ class MailchimpWebhookController < ApplicationController
 					end
 					AdminMailer.newsletter_unsubscribe_alert(list_name, subscriber_email).deliver
 				else
-					logger.info "MailChimp Webhook unsubscribe verification failed. MailChimp response: #{r}" if logger
+					logger.error "MailChimp Webhook unsubscribe verification error. MailChimp response: #{r}" if logger
 				end
+			else
+				logger.info "MailChimp Webhook unsubscribe: No member_info for list_name => #{list_name}, email => #{subscriber_email}" if logger
 			end
 		rescue Gibbon::MailChimpError => e
 			logger.error "MailChimp Webhook error while processing notification: #{e.message}, error code: #{e.code}." if logger
@@ -84,20 +86,24 @@ class MailchimpWebhookController < ApplicationController
 				newsletter.archive_url = campaign_info['archive_url']
 				newsletter.content = campaign_content
 				if !newsletter.save
-					logger.info "MailChimp Webhook: campaign save failed." if logger
+					logger.error "MailChimp Webhook error: campaign save failed." if logger
 				end
+			else
+				logger.error "MailChimp Webhook error: could not retrieve info or content for campaign ID => #{id}" if logger
 			end
+		else
+			logger.error "MailChimp Webhook error: Newsletter campaign record already exists for campaign ID => #{id}.  Ignoring this webhook event." if logger
 		end
 	end
 
 	def retrieve_campaign_info(id)
 		gb = Gibbon::API.new
 		begin
-			filters = { campaign_id: id, status: 'sent' }
+			filters = { campaign_id: id }
 			r = gb.campaigns.list filters: filters
 			info = r.try(:[], 'data').try(:first) unless r.blank?
 		rescue Exception => e
-			logger.info "Error while retrieving MailChimp archive list: #{e.message}" if logger
+			logger.error "Error while retrieving MailChimp archive list: #{e.message}" if logger
 		ensure
 			return info || []
 		end
@@ -109,7 +115,7 @@ class MailchimpWebhookController < ApplicationController
 			r = gb.campaigns.content cid: id
 			html = r.try(:[], 'html') unless r.blank?
 		rescue Exception => e
-			logger.info "Error while retrieving MailChimp newsletter content: #{e.message}" if logger
+			logger.error "Error while retrieving MailChimp newsletter content: #{e.message}" if logger
 		ensure
 			return html
 		end
