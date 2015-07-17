@@ -100,7 +100,13 @@ First back up your development database, as protection, in case you accidentally
 
   pg_dump -f "mvp2_development_$(date '+%Y%m%d').sql" mvp2_development
 
-If you ran 'bundle exec rake db:create', then you should already have a mvp2_performance database.  But if you don't have one, run the following command.
+If you already have a mvp2_performance database and you intend to get a copy of the production database, it's easiest to start from scratch by dropping your existing mvp2_performance database (note: you have to connect to a database other than the one you intend to drop).
+
+  psql mvp2_development
+  drop database mvp2_performance;
+  \q
+
+Create a fresh mvp2_performance database with the following command.
 
   RAILS_ENV=performance bundle exec rake db:create
 
@@ -119,7 +125,7 @@ Start up a Solr instance for performance testing.
 To be safe, modify all of the user email addresses and passwords in the performance database using the Rails console.
 
   RAILS_ENV=performance bundle exec rails console
-  User.all.each{ |u| u.update_column(:email, "example+perf#{u.id}@example.com"); u.update_column(:encrypted_password, '*'); u.password = u.password_confirmation = 'ffffff'; u.save }
+  User.all.each{ |u| u.update_column(:email, "example+perf#{u.id}@example.com"); u.update_column(:encrypted_password, '*') }
   exit
 
 Load the Solr instance with production data generated from the mvp2_performance database.

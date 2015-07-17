@@ -66,10 +66,11 @@ gem 'cancancan'
 
 # Sitemap generation and search engine pinging.
 # Can upload sitemaps to AWS S3 (see below).
-gem 'sitemap_generator', '~> 5.0.0'
+gem 'sitemap_generator', '~> 5.1'
 
-# AWS S3 access.
-gem 'fog'
+# Fog gives sitemap_generator access to AWS S3.
+# The fog gem is a memory hog.  So use fog-aws instead.
+gem 'fog-aws'
 
 # Search with the Solr search engine.
 # gem 'sunspot_rails', '~> 2.0.0.pre'
