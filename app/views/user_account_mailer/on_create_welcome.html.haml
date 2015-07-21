@@ -1,35 +1,36 @@
 - name = @resource.profile_to_claim.try :first_name
-= "Hi#{' '+name if name.present?},"
+= "Hi #{name.presence || 'there'},"
 %br
 %br
-Thanks for joining Kinstantly. Your
-= link_to 'free profile', edit_my_profile_url
-is an easy way for parents to find you, learn more about you, and get in touch with you.
+Thanks for joining Kinstantly. We're excited to help you grow your business.
 %br
 %br
-To get started filling out your profile, just click this link:
-= link_to 'my profile.', edit_my_profile_url
-You'll find it takes just a few minutes. And you can update your profile whenever you want, as often as you want.
+%strong Here's how to get started:
+Fill out your profile, so families can more easily find you, learn about your services, and get in touch with you. As soon as you do, we'll start linking to you in our
+= succeed "." do
+	= link_to 'weekly newsletter', newsletter_list_url
 %br
 %br
 Only have time to fill out a few fields right now? Parents tell us these are the things they look for most:
 %br
 %ul
 	%li your specialties
-	%li a photo of you (a smile helps)
 	%li the best ways to contact you
+	%li your street address, or even just your zip code, so that people searching for you can see your location on the map
+	%li a photo of you (a smile helps)
 %br
-Also, if you haven't already, be sure to include your street address &ndash; or at least your zip code &ndash; so that anyone searching for you can see your location on the map.
+We save each part of your profile as you go, so you can complete or update your profile whenever you want, as often as you want.
 %br
-%br
-Please don't hesitate to shoot me an email if you need help or have questions. Just reply to this email.
-%br
+%p{style: 'margin-top:25px;margin-bottom:20px;'}
+	= link_to 'Start editing my profile', edit_my_profile_url, style: 'background-color:#e75370;border-radius:4px;color:#fff;font-size:16px;display:inline-block;font-weight:bold;padding:10px 25px;text-decoration:none;'
 %br
 Thanks so much,
 %br
 %br
-Jim Scott
+Jim (co-founder and dad) and the Kinstantly Team
 %br
-Founder and CEO
 %br
-= link_to t('company.name'), root_url
+P.S. If you ever have questions or suggestions on how we can do better, shoot me an email at
+= succeed "." do
+	= mail_to 'jscott@kinstantly.com'
+I'd love to hear from you.
