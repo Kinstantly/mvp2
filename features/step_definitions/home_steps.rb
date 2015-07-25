@@ -53,7 +53,7 @@ Then /^I should see contact information$/ do
 end
 
 Then /^I should see a statement about us$/ do
-	expect(page).to have_content('Meet the Founders')
+	expect(page).to have_content('Our Story')
 end
 
 Then /^I should see a list of frequently asked questions and answers$/ do

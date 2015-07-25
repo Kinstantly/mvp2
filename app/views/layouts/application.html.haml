@@ -33,7 +33,7 @@
 		#fb-root
 		-# Point global namespace my_vars to window.my_vars defined in global.js.coffee
 		%script var my_vars = window.my_vars;
-		%header#header
+		%header#header{class: @header_class}
 			%section#account-bar
 				%ul.container
 					- if user_signed_in?
