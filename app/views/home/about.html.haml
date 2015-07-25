@@ -4,6 +4,7 @@
 - @page_title = "#{company_name} - About us"
 - jim_email = "jscott@#{t('email_domain')}"
 - edward_email = "esimpson@#{t('email_domain')}"
+- newsletter_path = user_signed_in? ? edit_subscriptions_path : newsletter_signup_path
 - cache 'about_page' do
 	%section.content-section
 		%section.takeaway
@@ -31,9 +32,10 @@
 				.row	
 					.col.one-third
 						.product-box
-							.product-logo
-								= image_tag "k_round.png", alt: "Kinstantly.com", itemprop: 'image', border: "0"
-							%h3 Kinstantly.com
+							%a{href: "#{root_path}", class: 'product-name'}
+								%span.product-logo
+									= image_tag "k_round.png", alt: "Kinstantly.com", itemprop: 'image', border: "0"
+								Kinstantly.com
 							%p
 								Our directory gives you access to thousands of great family services providers, so you can find them easily, quickly learn what you need to know to make your decision, and connect with them in more convenient ways.
 							%p
@@ -48,9 +50,10 @@
 									= link_to 'college admissions consultant', profile_path(2096), target: "_blank"
 					.col.one-third
 						.product-box
-							.product-logo
-								= image_tag "k_u.png", alt: "Kinstantly U", itemprop: 'image', border: "0"
-							%h3 Kinstantly U.
+							%a{href: "http://blog.kinstantly.com/", class: 'product-name'}
+								%span.product-logo
+									= image_tag "k_u.png", alt: "Kinstantly U", itemprop: 'image', border: "0"
+								Kinstantly U.
 							%p
 								Our blog offers use-it-now expert advice, how-to lessons, and inspiring insights for everything from 
 								%a{href: "http://blog.kinstantly.com/list-5-ways-to-get-kids-to-practice-without-nagging", target: '_blank'}
@@ -62,9 +65,10 @@
 								Coming soon: e-learning courses
 					.col.one-third
 						.product-box
-							.product-logo
-								= image_tag "heart_envelope.png", alt: "Kinstantly This Week", itemprop: 'image', border: "0"
-							%h3 Kinstantly This Week
+							%a{href: "#{newsletter_path}", class: 'product-name'}
+								%span.product-logo
+									= image_tag "heart_envelope.png", alt: "Kinstantly This Week", itemprop: 'image', border: "0"
+								Kinstantly This Week
 							%p
 								Each week, we scan the news, talk to top experts, and dig through the latest research for age-based ideas you'll actually use—all in a quick, fun read delivered to your inbox.
 							%p
@@ -185,4 +189,14 @@
 			.signup-prompt
 				If you share our belief that raising a family should be one of life's great adventures—and never any harder than it needs to be—please join us:
 				%br
-				= link_to (image_tag "newsletter_signup_prompt.png", alt: "Sign Up for our weekly newsletter", itemprop: 'image', border: "0"), user_signed_in? ? edit_subscriptions_path : newsletter_signup_path, class: "newsletter-signup-button"
+				= link_to (image_tag "newsletter_signup_prompt.png", alt: "Sign Up for our weekly newsletter", itemprop: 'image', border: "0"), newsletter_path, class: "newsletter-signup-button"
+
+:javascript
+	// Get an array of all element heights
+	var elm_heights = $('.products .col').map(function() {
+	    return $(this).height();
+	}).get();
+
+	var max_height = Math.max.apply(null, elm_heights);
+	if($(window).width() > 682)
+		$('.products .col').height(max_height);
