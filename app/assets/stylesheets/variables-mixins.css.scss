@@ -463,3 +463,8 @@ $button_corner_radius: 4px;
 	margin-right: 0;
 	margin-left: 0;
 }
+
+@mixin clearfix {
+  &:before, &:after { content: " "; display: table; }
+  &:after { clear: both; }
+}

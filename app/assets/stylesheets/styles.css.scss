@@ -6,7 +6,15 @@
 /*  Header -------------------------------------------------------------------------- */
 
 #header {
-
+	&.shadow{
+		@media screen and (min-width: $break-5) {
+			-webkit-box-shadow: 0 0px 4px 2px $kinstantly_light_gray;
+			-moz-box-shadow: 0 0px 4px 2px $kinstantly_light_gray;
+			box-shadow: 0 0px 4px 2px $kinstantly_light_gray;
+			position: relative;
+			z-index: 1;
+		}
+	}
 	#masthead {
 		@include scale(margin-top, 21);
 		@extend %clearfix;
@@ -1327,9 +1335,13 @@
 }
 
 /*  About pages -------------------------------------------------------------------------- */
-
 .about {
 	#content {
+		@media screen and (min-width: $break-9){
+			max-width: 1140px;
+			padding-left: 0;
+			padding-right: 0;
+		}
 		h1 {
 			font-family: $header-font-stack;
 			font-weight: 500;
@@ -1362,7 +1374,7 @@
 		@media screen and (max-width: $break-6-2) {
 			float: none;
 			}
-	}
+		}
 	  .right {
 	
 		@media screen and (max-width: $break-6-2) {
@@ -1528,6 +1540,261 @@
 			-khtml-opacity: 0.7;
 			-webkit-opacity: 0.7;
 			opacity: 0.7;
+		}
+	}
+	.row{
+		width: 100%;
+	    margin: 0;
+	    max-width: 100%;
+  		@include clearfix(); // Clearfix for all rows
+	}
+	.col{
+		position: relative;
+		float: left;
+		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
+		img{ margin: 0 auto; }
+	}
+	.one-third{ width: 33.3333333333%; }
+	.two-third{ width: 66.6666666667%; }
+
+	@media screen and (max-width: $break-6) {
+		.col{ width: 100% !important; }
+	}
+	
+	$takeaway-offset: 18px;
+	.takeaway{
+		position: relative;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		padding: 0;
+		img{
+			position: relative;
+			box-sizing: border-box;
+			display: block;
+			width: 100%;
+			top: $takeaway-offset * -1;
+			@media screen and (max-width: $break-5){
+				top: 0;
+				border: 1px solid #ccc;
+				border-top: none;
+			}
+		}
+		h3{
+			position: absolute;
+			right: 0;
+			left: 0;
+			bottom: $takeaway-offset;
+			font-size: 30px;
+			line-height: 150%;
+			text-align: center;
+			padding: 18px 40px 16px;
+			background-color: rgba(0, 0, 0, 0.35);
+			color: $white;
+			@media screen and (max-width: $break-9) {
+				font-size: 26px;
+				padding: 16px 40px 15px;
+			}
+			@media screen and (max-width: $break-8) {
+				font-size: 22px;
+				padding: 16px 50px 15px;
+			}
+			@media screen and (max-width: $break-7) {
+				font-size: 20px;
+				padding: 14px 24px 13px;
+			}
+			@media screen and (max-width: $break-6) {
+				font-size: 18px;
+				padding: 14px 21px 13px;
+			}
+			@media screen and (max-width: $break-6-2) {
+				font-size: 16px;
+				padding: 12px 16px 12px;
+			}
+			@media screen and (max-width: $break-5) {
+				position: relative;
+				top: 0;
+				background-color: rgba(0, 0, 0, 0.55);
+			}
+		}
+	}
+	.about-details{
+		color: $secondary-color;
+		padding: 13px 8%;
+
+		h1{ text-align: center; margin-top: 14px; margin-bottom: 20px; }
+		.intro{
+			font-size: 27px;
+			line-height: 30px;
+			padding: 5px 0;
+			text-align: center;
+			@media screen and (max-width: $break-9) {
+				font-size: 24px;
+				padding: 0;
+			}
+			@media screen and (max-width: $break-5) {
+				padding: 5px 0;
+			}
+		}
+		.story{
+			margin-top: 43px;
+
+			.blurb{
+				background: url(#{$image-path}/boy_in_blue.jpg) no-repeat;
+				background-size: 100% auto;
+				padding-top: calc(259 / 260 * 100% ); /*push box bottom with respect to height-width ratio */
+				max-width: 260px;
+				margin: 0 auto;
+			}
+			.col.two-third{ padding: 8px 10px 8px 20px; font-size: 18px; }
+			@media screen and (max-width: $break-6) {
+				margin-top: 23px;
+				h1{ margin-bottom: 4px; }
+				.one-third{
+					width: 30% !important;
+					margin-right: 20px;
+					margin-bottom: 20px;
+				}
+				.two-third{ float: none; padding: 0; }
+			}
+		}
+		.products{
+			margin-bottom: 58px;
+			.row{ display: table; height: 100%; }
+			.col{
+				display: table-cell;
+				float: none;
+				height: 100%;
+				overflow: hidden;
+				padding-right: 15px;
+				padding-left: 15px;
+			}
+
+			.product-box{
+				height: 100%;
+				display: inline-block;
+				vertical-align: top;
+				overflow: hidden;
+				background-color: $light-gray;
+				padding: 22px 36px;
+				text-align: center;
+				.product-logo{
+					display: inline-block;
+					width: 100%;
+					height: 75px;
+					img{ display: block; width: auto; height: auto; }
+				}
+				.product-name{
+					display: block;
+					font-size: 20px;
+					font-weight: 600;
+					line-height: 24px;
+					color: $blue;
+					margin-bottom: 10px;
+				}
+				p{ font-size: 16px; line-height: 24px; }
+			}
+			@media screen and (max-width: $break-9) {
+				.col{
+					padding-right: 10px;
+					padding-left: 10px;
+				}
+				.product-box{
+					padding: 16px 20px;
+				}
+			}
+			@media screen and (max-width: $break-8) {
+				.col{
+					padding-right: 7px;
+					padding-left: 7px;
+				}
+				.product-box{
+					padding: 16px;
+					.product-name{
+						font-size: 18px;
+						line-height: 22px;
+					}
+					p{ font-size: 14px; line-height: 20px; }
+				}
+			}
+			@media screen and (max-width: $break-6) {
+				margin-bottom: 38px;
+				.col{
+					float: left;
+					display: block;
+					padding: 0;
+					margin-bottom: 20px;
+				}
+				.product-box{
+					padding: 22px 36px;
+					.product-name{
+						font-size: 20px;
+						line-height: 24px;
+						margin-bottom: 10px;
+					}
+					p{ font-size: 16px; line-height: 24px; }
+				}
+			}
+		}
+		.people{
+			margin-bottom: 82px;
+			padding: 0 10px;
+			> p{ font-size: 18px; }
+			.row{ margin: 18px 0; }
+			.col{
+				padding-right: 16px;
+				padding-left: 16px;
+			}
+			.profile-pic{
+				text-align: center;
+				img{ width: 100%; max-width: 248px; }
+			}
+			.name > span{
+				color: $blue;
+				font-size: 20px;
+				font-weight: 700;
+			}
+			.profile-desc > div{ margin-bottom: 18px; }
+			@media screen and (max-width: $break-6){
+				margin-bottom: 52px;
+				.col{ margin-top: 38px; }
+			}
+		}
+		.signup-prompt{
+			margin-bottom: 100px;
+			padding: 0 50px;
+			font-size: 30px;
+			font-style: oblique;
+			line-height: 1.5em;
+			text-align: center;
+
+			.newsletter-signup-button{
+				display: inline-block;
+				background: url(#{$image-path}/newsletter_signup_bkg.jpg) no-repeat;
+				background-size: 100% auto;
+				width: 421px;
+				height: 71px;
+				margin: 20px auto;
+				img{ margin-top: 18px; }
+			}
+			@media screen and (max-width: $break-6) {
+				margin-bottom: 50px;
+				padding: 0;
+				font-size: 20px;
+			}
+			@media screen and (max-width: 512px){
+				.newsletter-signup-button{
+					width: 100%;
+					img{
+						width: 90%;
+						margin-top: 3.5%;
+						margin-left: -8px;
+					}
+				}
+			}
 		}
 	}
 }
