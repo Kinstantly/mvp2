@@ -12,7 +12,7 @@
 			%h3 Kinstantly makes raising great kids easier—so more of every day is filled with the parts you love, not the parts you don't.	
 		%section.about-details
 			.intro
-				We connect you with amazing parenting experts, services, and advice.
+				Discover amazing experts, services, and insights that'll change your ideas about parenting (in a good way).
 			.story
 				%h1 Our Story
 				.row
@@ -22,9 +22,9 @@
 						%p
 							It started with a frustrating attempt to find some answers to help one kid having trouble at school. 
 						%p
-							We googled ADHD and executive function and a bunch of other terms and got something like 46,200,000 results—none of them much help. Then we asked our Facebook friends, got a bunch of names, and called or emailed about 20 therapists and coaches. We got exactly one response. (We couldn't afford her.) We thought: Really? Do other parents find it this difficult to find, say, just the right sleep consultant or speech therapist or college essay coach?
+							We googled ADHD and executive function and a bunch of other terms and got something like 46,200,000 results—none of them much help. Then we asked our Facebook friends, got a bunch of names, and called or emailed about 20 therapists and coaches. We got exactly one response. (We couldn't afford her.) We thought: Really? Do other parents find it this difficult to find, say, just the right speech therapist or sort out a really tough behavior problem or figure out how to get a kid to practice the dang piano without nagging?
 						%p
-							To find out, we talked to hundreds of moms and dads from all over the world (including, by Skype, a very nice woman in China) and heard pretty much the same thing from all of them: Yup, it's hard.
+							To find out, we talked to hundreds of moms and dads (including, by Skype, a very nice woman in China) and heard pretty much the same thing from all of them: Yup, it's hard.
 						%p
 							So we decided to fix it. 
 			.products
@@ -47,22 +47,18 @@
 									= link_to 'nanny/sitter', profile_path(2074), target: "_blank"
 								and this
 								= succeed '.' do
-									= link_to 'college admissions consultant', profile_path(2096), target: "_blank"
+									= link_to 'college essay coach', profile_path(2058), target: "_blank"
 					.col.one-third
 						.product-box
 							%a{href: "http://blog.kinstantly.com/", class: 'product-name'}
 								%span.product-logo
 									= image_tag "k_u.png", alt: "Kinstantly U", itemprop: 'image', border: "0"
-								Kinstantly U.
+								Kinstantly U
 							%p
-								Our blog offers use-it-now expert advice, how-to lessons, and inspiring insights for everything from 
-								%a{href: "http://blog.kinstantly.com/list-5-ways-to-get-kids-to-practice-without-nagging", target: '_blank'}
-									how to get your kid to practice a musical instument (without nagging)
-								to
-								%a{href: "http://blog.kinstantly.com/how-to-write-a-college-essay-that-admissions-committees-will-love", target: '_blank'}
-									how to write a college essay that admissions committees will love.
-							%p 
-								Coming soon: e-learning courses
+								Our blog offers use-it-now expert advice, how-to lessons, and fresh ideas for family fun.
+							%p
+								:plain
+									Check out: <a href="http://blog.kinstantly.com/how-to-find-the-right-preschool-for-your-child-and-you/" target="_blank">How to Find the Right Preschool</a>, <a href="http://blog.kinstantly.com/how-to-take-great-photos-of-kids/" target="_blank">How to Take Great Photos of Kids</a>, and <a href="http://blog.kinstantly.com/interview-tutor-and-educator-amanda-vogel-on-why-so-many-bright-kids-are-struggling-in-school/" target="_blank">Why So Many Bright Kids Are Struggling in School</a>.
 					.col.one-third
 						.product-box
 							%a{href: "#{newsletter_path}", class: 'product-name'}
@@ -70,11 +66,13 @@
 									= image_tag "heart_envelope.png", alt: "Kinstantly This Week", itemprop: 'image', border: "0"
 								Kinstantly This Week
 							%p
-								Each week, we scan the news, talk to top experts, and dig through the latest research for age-based ideas you'll actually use—all in a quick, fun read delivered to your inbox.
+								Get an age-based roundup of the most eye-opening parenting news and ideas from around the world&mdash;all in a fun, quick read delivered to your inbox.
 							%p
-								See our archive of
 								= succeed '.' do
-									= link_to "past issues", newsletter_list_path
+									= link_to "Sign up", newsletter_path
+								Or see our
+								= link_to 'archive', newsletter_list_path
+								of past issues.
 			.people
 				%h1 Our People
 				%p
@@ -88,7 +86,7 @@
 							.name
 								= succeed ',' do
 									%span Jim Scott
-								co-founder and ceo, dad of 2 and step-dad of 4
+								co-founder and ceo, dad of 2 and stepdad of 4
 							.before
 								%strong Before Kinstantly:
 								Global VP of content for
@@ -127,11 +125,11 @@
 							.name
 								= succeed ',' do
 									%span Paula Spencer Scott
-								editorial director, mom of 4, step-mom of 2
+								editorial director, mom of 4, stepmom of 2
 							.before
 								%strong Before Kinstantly:
 								author or co-author of a dozen pregnancy, parenting, and health books, including 
-								%em Momfidence, Bright From the Start,
+								%em Bright From the Start
 								and 
 								%em The Happiest Toddler on the Block
 							.fav
@@ -149,10 +147,10 @@
 								product manager, staff writer, and future mom (fingers crossed!)
 							.before
 								%strong Before Kinstantly:
-								Everything from teaching high school English to tutoring at-risk kids to writing a vampire romance novel
+								Everything from high school English teacher to tutor for at-risk kids to author of a vampire romance novel
 							.fav
 								%strong Favorite family vacation spot:
-								The North Shore of Kaua'i. (We've already scoped out the most kid-friendly beaches.)
+								The North Shore of Kaua'i. (We've already scoped out some kid-friendly beaches.)
 					.col.one-third
 						.profile-pic
 							%a{href: "https://www.linkedin.com/in/annamakarova", target: '_blank'}
@@ -179,7 +177,7 @@
 								creative director, mom of 2
 							.before
 								%strong Before Kinstantly:
-								Design and art direction at
+								Design and art director at
 								%a{href: "http://babycenter.com", target: '_blank'} BabyCenter
 								and
 								%a{href: "http://greatschools.org", target: '_blank'}GreatSchools.org
