@@ -5,7 +5,7 @@
 - jim_email = "jscott@#{t('email_domain')}"
 - edward_email = "esimpson@#{t('email_domain')}"
 - newsletter_path = user_signed_in? ? edit_subscriptions_path : newsletter_signup_path
-- cache 'about_page' do
+- cache ['about_page', user_signed_in?] do
 	%section.content-section
 		%section.takeaway
 			= image_tag "about_top_photo.jpg", alt: "About us", itemprop: 'image', border: "0"
