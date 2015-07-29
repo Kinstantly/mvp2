@@ -128,6 +128,17 @@ def sign_in_payable_provider
 	sign_in @payable_provider
 end
 
+def load_user(who)
+	case who
+	when 'I'
+		expect(@user).to be_present
+		@user.reload
+	else
+		@user = User.find_by_email who
+		expect(@user).to be_present
+	end
+end
+
 ### GIVEN ###
 Given /^I am not logged in$/ do
   visit '/users/sign_out'
@@ -374,6 +385,10 @@ end
 When /^I visit the newsletter sign-up page and subscribe to the "(.*?)" mailing lists?$/ do |mailing_lists|
   create_visitor
   sign_up_and_subscribe '/newsletter', mailing_lists.split(/,?\s+(?:and\s+)?/)
+end
+
+When /^I click on the sign[- ]?up button$/ do
+	click_button 'sign_up_button'
 end
 
 ### THEN ###
