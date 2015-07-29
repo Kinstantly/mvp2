@@ -31,6 +31,10 @@ When /^I check "(.*?)"$/ do |field|
 	check field
 end
 
+When /^I choose the "(.*?)" radio button$/ do |button|
+	choose button
+end
+
 When /^I (?:enter|type|fill) "(.*?)" in the "(.*?)" field$/ do |text, field|
 	fill_in field, with: text
 end

@@ -46,8 +46,8 @@ end
 
 ### THEN ###
 
-Then /^I should only be subscribed to the "(.*?)" mailing lists?(?: and| but)( not)? synced to the list server$/ do |lists, not_synced|
-	@user.reload
+Then /^(\S+) should only be subscribed to the "(.*?)" mailing lists?(?: and| but)( not)? synced to the list server$/ do |who, lists, not_synced|
+	load_user who
 	subscribed_mailing_lists = lists.split(/,?\s+(?:and\s+)?/)
 	mailing_lists.each do |list|
 		if subscribed_mailing_lists.include?(list) 
@@ -64,16 +64,16 @@ Then /^I should only be subscribed to the "(.*?)" mailing lists?(?: and| but)( n
 	end
 end
 
-Then /^I should be subscribed to all mailing lists$/ do
-	@user.reload
+Then /^(\S+) should be subscribed to all mailing lists$/ do |who|
+	load_user who
 	mailing_lists.each do |list|
 		expect(@user[list]).to be_truthy
 		expect(@user["#{list}_leid"]).to be_present
 	end
 end
 
-Then /^I should not be subscribed to any mailing lists$/ do
-	@user.reload
+Then /^(\S+) should not be subscribed to any mailing lists$/ do |who|
+	load_user who
 	mailing_lists.each do |list|
 		expect(@user[list]).to be_falsey
 		expect(@user["#{list}_leid"]).to be_nil
