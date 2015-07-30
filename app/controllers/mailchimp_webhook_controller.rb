@@ -36,7 +36,7 @@ class MailchimpWebhookController < ApplicationController
 			return
 		end
 		if data['reason'] == 'abuse'
-			logger.info "MailChimp Webhook: user \'id##{user.id}\' reported abuse." if logger
+			logger.info "MailChimp Webhook: user reported abuse: email => #{subscriber_email}" if logger
 		end
 		
 		emails = [{email: subscriber_email}]

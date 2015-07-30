@@ -57,6 +57,14 @@ describe MailchimpWebhookController, :type => :controller do
 				expect(user.parent_newsletters_stage1).to eq false
 				expect(user.parent_newsletters_stage1_leid).to eq nil
 			end
+			
+			it 'logs it if the reason for unsubscribing is abuse' do
+				params[:data][:reason] = 'abuse'
+				logger = double 'logger'
+				expect(logger).to receive(:info).with(/abuse/)
+				allow_any_instance_of(MailchimpWebhookController).to receive(:logger).and_return(logger)
+				post :process_notification, params
+			end
 		end
 
 		context "user subscribed both locally and remotely" do
