@@ -338,7 +338,9 @@ class User < ActiveRecord::Base
 		
 		# Generate a password that is not too long.
 		def generate_password
-			generate_token('encrypted_password').slice(0, MAX_LENGTHS[:password])
+			gen = Random.new
+			max = 1_000_000_000_000_000
+			OpenSSL::HMAC.hexdigest('SHA224', gen.rand(max).to_s, gen.rand(max).to_s).slice(0, MAX_LENGTHS[:password])
 		end
 	
 		def admin_approval_required(user)
@@ -368,7 +370,8 @@ class User < ActiveRecord::Base
 	
 		def confirm_by_token(confirmation_token)
 			if running_as_private_site?
-				admin_approval_required(find_or_initialize_with_error_by(:confirmation_token, confirmation_token)) do
+				encoded_token = Devise.token_generator.digest(self, :confirmation_token, confirmation_token)
+				admin_approval_required(find_or_initialize_with_error_by(:confirmation_token, encoded_token)) do
 					super
 				end
 			else
@@ -388,7 +391,8 @@ class User < ActiveRecord::Base
 	
 		def reset_password_by_token(attributes={})
 			if running_as_private_site?
-				admin_approval_required(find_or_initialize_with_error_by(:reset_password_token, attributes[:reset_password_token])) do
+				encoded_token = Devise.token_generator.digest(self, :reset_password_token, attributes[:reset_password_token])
+				admin_approval_required(find_or_initialize_with_error_by(:reset_password_token, encoded_token)) do
 					super
 				end
 			else
@@ -409,14 +413,16 @@ class User < ActiveRecord::Base
 	# A callback method used to deliver confirmation instructions on creation.
 	# This overrides the Devise method to allow us to define our own email.
 	def send_on_create_confirmation_instructions
+		generate_confirmation_token! unless @raw_confirmation_token
+		
 		if signed_up_for_mailing_lists
-			send_devise_notification :on_create_newsletter_confirmation_instructions
+			send_devise_notification :on_create_newsletter_confirmation_instructions, @raw_confirmation_token
 		elsif signed_up_from_blog
-			send_devise_notification :on_create_blog_confirmation_instructions
+			send_devise_notification :on_create_blog_confirmation_instructions, @raw_confirmation_token
 		elsif is_provider?
-			send_devise_notification :on_create_provider_confirmation_instructions
+			send_devise_notification :on_create_provider_confirmation_instructions, @raw_confirmation_token
 		else
-			send_devise_notification :on_create_confirmation_instructions
+			send_devise_notification :on_create_confirmation_instructions, @raw_confirmation_token
 		end
 	end
 	

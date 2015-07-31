@@ -2,6 +2,13 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
 	
 	before_filter :set_admin_mode
 	
+	# GET /resource/confirmation?confirmation_token=abcdef
+	def show
+		super do |resource|
+			sign_in(resource_name, resource) if resource.errors.empty?
+		end
+	end
+	
 	protected
 	
 	# The path used after resending confirmation instructions.
@@ -23,7 +30,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
 		elsif resource.try(:is_provider?)
 			edit_my_profile_path
 		else
-			super
+			stored_location_for(resource) || super
 		end
 		# Add various flags for tracking purposes.
 		path_or_url += (path_or_url.include?(??) ? '&' : '?') + 'email_confirmed=t'

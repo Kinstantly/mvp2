@@ -37,8 +37,9 @@ Mvp2::Application.routes.draw do
 		get '/alpha/sign_up', to: 'users/registrations#new', is_private_alpha: true
 		get '/newsletter', to: 'users/registrations#new', nlsub: 't', as: :newsletter_signup
 		get '/newsletters', to: 'users/registrations#new', nlsub: 't'
-		get '/in_blog/sign_up', to: 'users/registrations#in_blog_new', blog: true, nlsub: true, in_blog: true
+		get '/in_blog/sign_up', to: 'users/registrations#new', blog: true, nlsub: true, in_blog: true
 		get '/in_blog/awaiting_confirmation', to: 'users/registrations#in_blog_awaiting_confirmation', in_blog: true
+		get '/in_blog/edit_subscriptions', to: 'users/registrations#in_blog_edit_subscriptions', in_blog: true
 		# get '/users/subscriptions/edit', to: 'users/registrations#edit', as: 'edit_subscriptions', subscription_preferences: true
 	end
 	

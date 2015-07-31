@@ -24,13 +24,13 @@ describe Users::ConfirmationsController, :type => :controller do
 	context "as a client pending email confirmation" do
 		describe "GET show" do
 			it "redirects to the home page with tracking parameter" do
-				get :show, confirmation_token: mimi.confirmation_token
+				get :show, confirmation_token: devise_raw_confirmation_token(mimi)
 				expect(response).to redirect_to '/?email_confirmed=t'
 				expect(flash[:notice]).to have_content 'confirmed'
 			end
 			
 			it "tracking parameters indicate subscriptions" do
-				get :show, confirmation_token: mimi_subscribed.confirmation_token
+				get :show, confirmation_token: devise_raw_confirmation_token(mimi_subscribed)
 				expect(response).to redirect_to '/?email_confirmed=t&parent_newsletters_stage1=t&parent_newsletters_stage2=t'
 				expect(flash[:notice]).to have_content 'confirmed'
 			end

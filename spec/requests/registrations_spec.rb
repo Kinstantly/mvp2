@@ -26,8 +26,9 @@ describe "User registration and editing", :type => :request do
 			it "renders the view" do
 				get in_blog_sign_up_path
 				expect(response).to be_success
-				expect(response).to render_template('in_blog_new')
+				expect(response).to render_template 'new'
 			end
+			
 			it "redirects to in-blog confirmation page" do
 				get in_blog_sign_up_path
 				post user_registration_path, in_blog: true, user: parent_sign_up_attributes

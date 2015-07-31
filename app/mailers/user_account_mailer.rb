@@ -6,22 +6,26 @@ class UserAccountMailer < Devise::Mailer
 	sendgrid_category :use_subject_lines # Set sendgrid category to email subject
 
 	# Send on non-provider account creation. Performs email address confirmation.
-	def on_create_confirmation_instructions(record, opts={})
+	def on_create_confirmation_instructions(record, token, opts={})
+		@token = token
 		devise_mail(record, :on_create_confirmation_instructions, opts)
 	end
 	
 	# Send on provider account creation. Performs email address confirmation.
-	def on_create_provider_confirmation_instructions(record, opts={})
+	def on_create_provider_confirmation_instructions(record, token, opts={})
+		@token = token
 		devise_mail(record, :on_create_provider_confirmation_instructions, opts)
 	end
 	
 	# Send on account creation when signing up for the newsletter. Performs email address confirmation.
-	def on_create_newsletter_confirmation_instructions(record, opts={})
+	def on_create_newsletter_confirmation_instructions(record, token, opts={})
+		@token = token
 		devise_mail(record, :on_create_newsletter_confirmation_instructions, opts)
 	end
 	
 	# Send on account creation when signing up from the blog. Performs email address confirmation.
-	def on_create_blog_confirmation_instructions(record, opts={})
+	def on_create_blog_confirmation_instructions(record, token, opts={})
+		@token = token
 		devise_mail(record, :on_create_blog_confirmation_instructions, opts)
 	end
 	

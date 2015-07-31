@@ -6,6 +6,7 @@ en:
       expired: "has expired, please request a new one"
       not_found: "not found"
       already_confirmed: "was already confirmed, please try logging in"
+      confirmation_period_expired: "needs to be confirmed within %{period}, please request a new one"
       not_locked: "was not locked"
       not_saved:
         one: "1 error prohibited this %{resource} from being saved:"
@@ -36,11 +37,14 @@ en:
       unconfirmed: 'Please check your email for confirmation instructions from Kinstantly. After you have confirmed, you will be allowed to use the site.'
       confirmation_not_sent: "We are reviewing your request to participate. If everything looks fine, we'll send you an email with login information."
       locked: 'Your account is locked.'
+      last_attempt: 'You have one more attempt before your account is locked.'
+      not_found_in_database: 'Invalid %{authentication_keys} or password.'
       invalid: 'Invalid email or password.'
       invalid_token: 'Invalid authentication token.'
       timeout: 'Your session expired, please log in again to continue.'
       inactive: 'Your account was not activated yet.'
     sessions:
+      already_signed_out: 'Logged out successfully.'
       signed_in: 'Logged in successfully.'
       signed_out: 'Logged out successfully.'
     passwords:
