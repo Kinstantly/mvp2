@@ -217,7 +217,7 @@ describe User, :type => :model do
 				end
 				
 				it "should NOT confirm" do
-					result = User.confirm_by_token provider.confirmation_token
+					result = User.confirm_by_token devise_raw_confirmation_token(provider)
 					expect(result).not_to be_confirmed
 					expect(result.errors[:admin_confirmation_sent_at]).to be_present
 				end
@@ -228,12 +228,9 @@ describe User, :type => :model do
 				end
 				
 				it "should NOT reset password" do
-					token = User.reset_password_token
-					provider.reset_password_token = token
-					provider.reset_password_sent_at = Time.now.utc
-					provider.save
 					old_encrypted_password = provider.encrypted_password
 					new_password = User.generate_password
+					token = devise_raw_reset_password_token(provider)
 					result = User.reset_password_by_token reset_password_token: token, password: new_password, password_confirmation: new_password
 					expect(result.encrypted_password).to eq old_encrypted_password
 					expect(result.errors[:admin_confirmation_sent_at]).to be_present
@@ -252,7 +249,7 @@ describe User, :type => :model do
 				end
 				
 				it "should confirm" do
-					result = User.confirm_by_token provider.confirmation_token
+					result = User.confirm_by_token devise_raw_confirmation_token(provider)
 					expect(result).to be_confirmed
 					expect(result.errors[:admin_confirmation_sent_at]).not_to be_present
 				end
@@ -263,12 +260,9 @@ describe User, :type => :model do
 				end
 				
 				it "should reset password" do
-					token = User.reset_password_token
-					provider.reset_password_token = token
-					provider.reset_password_sent_at = Time.now.utc
-					provider.save
 					old_encrypted_password = provider.encrypted_password
 					new_password = User.generate_password
+					token = devise_raw_reset_password_token(provider)
 					result = User.reset_password_by_token reset_password_token: token, password: new_password, password_confirmation: new_password
 					expect(result.encrypted_password).not_to eq old_encrypted_password
 					expect(result.errors[:admin_confirmation_sent_at]).not_to be_present
@@ -444,7 +438,7 @@ describe User, :type => :model do
 			end
 
 			it "should be added to mailing list after confirmation" do
-				user.confirm!
+				user.confirm
 				user.save
 				user.reload
 				expect(user.parent_newsletters_stage1_leid).to be_present

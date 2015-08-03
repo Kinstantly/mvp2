@@ -1,17 +1,12 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 	# Add this controller to the devise route if you need to customize the registration controller.
 
-	before_filter :before_registration, only: :create
 	after_filter :after_registration, only: :create
 	
 	# User settings page should not be cached because it might display sensitive information.
 	after_filter :set_no_cache_response_headers, only: [:edit, :update]
 
 	layout :registrations_layout
-
-	def in_blog_new
-		new
-	end
 
 	def edit
 		if params[:contact_preferences].present?
@@ -22,39 +17,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		end
 	end
 
-	# POST /resource
-	def create
-		build_resource(sign_up_params)
-
-		if resource.save
-			if resource.active_for_authentication?
-				set_flash_message :notice, :signed_up if is_navigational_format?
-				sign_up(resource_name, resource)
-				respond_with resource, :location => after_sign_up_path_for(resource)
-			else
-				set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_navigational_format?
-				expire_session_data_after_sign_in!
-				respond_with resource, :location => after_inactive_sign_up_path_for(resource)
-			end
-		else
-			clean_up_passwords resource
-			if params[:in_blog].present?
-				render :in_blog_new
-			else
-				render :new
-			end
-		end
-	end
-
 	protected
 
-	# Override build_resource method in superclass.
-	# This override allows us to pre-build the resource before the create action is executed.
-	# It also allows us to configure the resource before it is used.
+	# Override build_resource method of the superclass.
+	# This allows us to configure the resource before it is first saved (by the create method).
 	def build_resource(hash=nil)
-		super unless resource
+		super
 		
-		# During private alpha, registrants are screened. Don't send them the confirmation link until they've pass screening.
+		# session[:claiming_profile] might have been set with the token value by lib/custom_authentication_failure_app.rb.
+		resource.claiming_profile! session[:claiming_profile] if session[:claiming_profile].present?
+		
+		# During private alpha, registrants are screened. Don't send them the confirmation link until they've passed screening.
 		# The exception is someone we've invited to claim their profile.
 		resource.skip_confirmation_notification! if running_as_private_site? && !resource.profile_to_claim
 		
@@ -69,10 +42,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 				session[:after_confirmation_url] = blog_url
 			end
 		end
+		
 		# If the newsletter subscription parameter is present, set resource.signed_up_for_mailing_lists to true, otherwise preserve its current value.
 		if params[:nlsub].present? && resource.new_record?
 			resource.signed_up_for_mailing_lists = true
 		end
+		
 		# Flags that tell the views whether this registration is primarily a newsletter or blog sign-up from the user's perspective.
 		@signing_up_from_blog = resource.signed_up_from_blog
 		@signing_up_for_newsletter = resource.signed_up_for_mailing_lists
@@ -82,19 +57,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	# Called if we're already signed in and thus no registration is required.
 	# If we were trying to get to newsletter sign-up, go to contact preferences instead.
 	def require_no_authentication
-		flash[:after_sign_in_path_override] = edit_subscriptions_path if params[:nlsub].present?
+		if params[:in_blog].present?
+			flash[:after_sign_in_path_override] = in_blog_edit_subscriptions_path
+		elsif params[:nlsub].present?
+			flash[:after_sign_in_path_override] = edit_subscriptions_path
+		end
 		super
 	end
 
 	private
-
-	# Note: session[:claiming_profile] was set to the token by lib/custom_authentication_failure_app.rb.
-	def before_registration
-		if session[:claiming_profile].present?
-			build_resource sign_up_params
-			resource.claiming_profile! session[:claiming_profile]
-		end
-	end
 	
 	def after_registration
 		if resource && resource.errors.empty?
@@ -150,7 +121,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	# True if the request is for a sign-up that is embedded on the blog.
 	# Checks for the in_blog the parameter (i.e. unsuccessful create action with in-blog signup).
 	def request_in_blog?
-		params[:in_blog].present? || ['in_blog_new', 'in_blog_awaiting_confirmation'].include?(action_name)
+		params[:in_blog].present? || ['in_blog_edit_subscriptions', 'in_blog_awaiting_confirmation'].include?(action_name)
 	end
 	
 	def registrations_layout

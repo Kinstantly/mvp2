@@ -7,7 +7,7 @@ describe UserAccountMailer, :type => :mailer do
 	
 	context "confirmation email to a parent" do
 		let(:user) { FactoryGirl.create :parent, require_confirmation: true }
-		let(:email) { UserAccountMailer.on_create_confirmation_instructions user }
+		let(:email) { UserAccountMailer.on_create_confirmation_instructions user, 'token' }
 		
 		it "should deliver to the user" do
 			expect(email).to deliver_to(user.email)
@@ -24,7 +24,7 @@ describe UserAccountMailer, :type => :mailer do
 	
 	context "confirmation email to a provider" do
 		let(:user) { FactoryGirl.create :provider, require_confirmation: true }
-		let(:email) { UserAccountMailer.on_create_provider_confirmation_instructions user }
+		let(:email) { UserAccountMailer.on_create_provider_confirmation_instructions user, 'token' }
 		
 		it "should deliver to the user" do
 			expect(email).to deliver_to(user.email)

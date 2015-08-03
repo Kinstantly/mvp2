@@ -1,0 +1,7 @@
+#sign_up.sign_up.smaller_form
+	= render partial: "devise/shared/signup", locals:{ embedded_in: true, inline_tip: false }
+	%p
+		Already signed up with Kinstantly?
+	%p
+		= link_to "Click here", edit_subscriptions_url, target: "_blank"
+		to change your subscription preferences.
