@@ -1335,13 +1335,16 @@
 }
 
 /*  About pages -------------------------------------------------------------------------- */
+/*  About, contact, privacy, and terms pages all use the "about" class, so be careful. */
 .about {
-	#content {
+	#content.no-side-padding {
 		@media screen and (min-width: $break-9){
 			max-width: 1140px;
 			padding-left: 0;
 			padding-right: 0;
 		}
+	}
+	#content {
 		h1 {
 			font-family: $header-font-stack;
 			font-weight: 500;
@@ -1558,6 +1561,7 @@
 	}
 	.one-third{ width: 33.3333333333%; }
 	.two-third{ width: 66.6666666667%; }
+	.one-half{ width: 50%; }
 
 	@media screen and (max-width: $break-6) {
 		.col{ width: 100% !important; }
@@ -1680,7 +1684,7 @@
 				overflow: hidden;
 				background-color: $light-gray;
 				padding: 22px 36px;
-				text-align: center;
+//				text-align: center;
 				.product-logo{
 					display: inline-block;
 					width: 100%;
@@ -1696,6 +1700,14 @@
 					margin-bottom: 10px;
 				}
 				p{ font-size: 16px; line-height: 24px; }
+				ul{
+					list-style: disc outside;
+					li{
+						font-size: 16px;
+						line-height: 24px;
+						margin-bottom: 1em;
+					}
+				}
 			}
 			@media screen and (max-width: $break-9) {
 				.col{

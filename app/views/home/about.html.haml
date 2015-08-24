@@ -1,6 +1,6 @@
 - @body_class = 'interior about'
 - @header_class = 'shadow'
-- @content_class = 'about-page no-upper-hr'
+- @content_class = 'about-page no-upper-hr no-side-padding'
 - @page_title = "#{company_name} - About us"
 - jim_email = "jscott@#{t('email_domain')}"
 - edward_email = "esimpson@#{t('email_domain')}"
@@ -9,79 +9,89 @@
 	%section.content-section
 		%section.takeaway
 			= image_tag "about_top_photo.jpg", alt: "About us", itemprop: 'image', border: "0"
-			%h3 Kinstantly makes raising great kids easier—so more of every day is filled with the parts you love, not the parts you don't.	
+			%h3 Raising great kids just got easier
 		%section.about-details
 			.intro
-				Discover amazing experts, services, and insights that'll change your ideas about parenting (in a good way).
+				Kinstantly turns problems into solutions (and makes family life more rewarding) at every stage of parenting.
 			.story
 				%h1 Our Story
 				.row
 					.col.one-third
 						.blurb
 					.col.two-third
+						%h2 So much info, so little that's life-changing
 						%p
-							It started with a frustrating attempt to find some answers to help one kid having trouble at school. 
+							With the world at our scrolling, swiping fingertips, you'd expect the information that makes a real difference to families to be easier to find than ever.
 						%p
-							We googled ADHD and executive function and a bunch of other terms and got something like 46,200,000 results—none of them much help. Then we asked our Facebook friends, got a bunch of names, and called or emailed about 20 therapists and coaches. We got exactly one response. (We couldn't afford her.) We thought: Really? Do other parents find it this difficult to find, say, just the right speech therapist or sort out a really tough behavior problem or figure out how to get a kid to practice the dang piano without nagging?
+							But baby horoscopes, celebramom news, and click candy are crowding out the compelling, meaningful stuff parents tell us they're looking for.
+						%h2 So many experts, so hard to connect
 						%p
-							To find out, we talked to hundreds of moms and dads (including, by Skype, a very nice woman in China) and heard pretty much the same thing from all of them: Yup, it's hard.
+							At the same time, the technologies that have made booking a table or getting a ride fast and easy aren't yet working for anyone trying to find someone with the skills to get you through a rough parenting patch or just enrich your family's life.
 						%p
-							So we decided to fix it. 
+							It's too hard to connect with just the right child sleep consultant or flute teacher or ADHD coach&mdash;who's available when you are, at a price you can afford.
+						%h2 We want to fix that...
 			.products
-				%h1 Our Products
+				%h1 Our Solution
 				.row	
-					.col.one-third
+					.col.one-half
 						.product-box
-							%a{href: "#{root_path}", class: 'product-name'}
-								%span.product-logo
-									= image_tag "k_round.png", alt: "Kinstantly.com", itemprop: 'image', border: "0"
-								Kinstantly.com
-							%p
-								Our directory gives you access to thousands of great family services providers, so you can find them easily, quickly learn what you need to know to make your decision, and connect with them in more convenient ways.
-							%p
-								Check out this
-								= succeed ',' do
-									= link_to 'sleep consultant', profile_path(819), target: "_blank"
-								this
-								= succeed ',' do
-									= link_to 'nanny/sitter', profile_path(2074), target: "_blank"
-								and this
-								= succeed '.' do
-									= link_to 'college essay coach', profile_path(2058), target: "_blank"
-					.col.one-third
-						.product-box
-							%a{href: "http://blog.kinstantly.com/", class: 'product-name'}
+							%a{href: "http://blog.kinstantly.com/", class: 'product-name', target: '_blank'}
 								%span.product-logo
 									= image_tag "k_u.png", alt: "Kinstantly U", itemprop: 'image', border: "0"
-								Kinstantly U
 							%p
-								Our blog offers use-it-now expert advice, how-to lessons, and fresh ideas for family fun.
+								We create truly useful, compelling content that helps you drill down to what really matters, so you don't waste your time, money, or worry on stuff that doesn't.
 							%p
-								:plain
-									Check out: <a href="http://blog.kinstantly.com/how-to-find-the-right-preschool-for-your-child-and-you/" target="_blank">How to Find the Right Preschool</a>, <a href="http://blog.kinstantly.com/how-to-take-great-photos-of-kids/" target="_blank">How to Take Great Photos of Kids</a>, and <a href="http://blog.kinstantly.com/interview-tutor-and-educator-amanda-vogel-on-why-so-many-bright-kids-are-struggling-in-school/" target="_blank">Why So Many Bright Kids Are Struggling in School</a>.
-					.col.one-third
+								Drawing on our extensive network of experts, we challenge the conventional wisdom, sort myth from fact, and translate hard science and data into engaging stories and how-to guides like these:
+							%ul
+								%li
+									:plain
+										We asked a child development expert and former daycare owner what makes the best preschool. <a href="http://blog.kinstantly.com/how-to-find-the-right-preschool-for-your-child-and-you/" target="_blank">Here's what she told us</a>.
+								%li
+									:plain
+										Think you take great kid photos? We bet you can do even better, with these <a href="http://blog.kinstantly.com/how-to-take-great-photos-of-kids/" target="_blank">7 secrets from a pro</a>.
+								%li
+									:plain
+										Why are so many bright students struggling in school? <a href="http://blog.kinstantly.com/interview-tutor-and-educator-amanda-vogel-on-why-so-many-bright-kids-are-struggling-in-school/" target="_blank">Here's the surprisingly common answer</a>.
+								%li
+									:plain
+										Forcing kids to practice (and nagging) doesn't work, says this clarinet teacher. <a href="http://blog.kinstantly.com/list-5-ways-to-get-kids-to-practice-without-nagging/" target="_blank">These 5 ideas work way better</a>.
+								%li
+									:plain
+										What <a href="http://blog.kinstantly.com/interview-family-therapist-lorraine-platt-on-what-teen-girls-really-need-more-than-cellphones/" target="_blank">teen girls really need</a> (more than cellphones). Plus a cry for help parents often miss.
+					.col.one-half
 						.product-box
-							%a{href: "#{newsletter_path}", class: 'product-name'}
+							%a{href: "#{root_path}", class: 'product-name', target: '_blank'}
 								%span.product-logo
-									= image_tag "heart_envelope.png", alt: "Kinstantly This Week", itemprop: 'image', border: "0"
-								Kinstantly This Week
+									= image_tag "k_round.png", alt: "Kinstantly.com", itemprop: 'image', border: "0"
 							%p
-								Get an age-based roundup of the most eye-opening parenting news and ideas from around the world&mdash;all in a fun, quick read delivered to your inbox.
+								Our
+								= link_to 'directory', root_path, target: "_blank"
+								makes it easy to connect with thousands of amazing experts and services. Many offer their services by Skype, phone, or online, so it doesn't matter if you live in Toledo, Ohio, or Toledo, Spain.
 							%p
-								= succeed '.' do
-									= link_to "Sign up", newsletter_path
-								Or see our
-								= link_to 'archive', newsletter_list_path
-								of past issues.
+								Many also accept online payments through Kinstantly. No more, "Oops, I forgot to bring a check" when you drop your kid off for day care or dance class. (They
+								%i hate
+								that.)
+							%p
+								Check out this terrific
+								= succeed ',' do
+									= link_to 'sleep and parenting coach', profile_path(153), target: "_blank"
+								this adored
+								= succeed ',' do
+									= link_to 'classroom behavior specialist', profile_path(2225), target: "_blank"
+								this awesome
+								= succeed ',' do
+									= link_to 'clarinet teacher', profile_path(1191), target: "_blank"
+								and this
+								= link_to 'college essay coach', profile_path(2058), target: "_blank"
+								who really connects with teens.
+							%p
+								Coming soon: online scheduling
 			.people
 				%h1 Our People
 				%p
-					We're a small team representing every point along the parenting timeline, from trying to conceive to getting kids off to college. We use our combined experiences (and, yeah, the mistakes we'd do over if we could) to help you see what's coming, what works, and what doesn't at every stage of family life.
+					We represent all points along the parenting timeline, from trying to conceive to getting kids off to college, brought together by a shared philosophy: Raising a family should be one of life's great adventures&mdash;and never any harder than it needs to be.
 				.row	
 					.col.one-third
-						.profile-pic
-							%a{href: "https://www.linkedin.com/in/hookooejim", target: '_blank'}
-								= image_tag "jim_261x261.jpg", alt: "Jim Scott", itemprop: 'image', border: "0"
 						.profile-desc
 							.name
 								= succeed ',' do
@@ -89,19 +99,12 @@
 								co-founder and ceo, dad of 2 and stepdad of 4
 							.before
 								%strong Before Kinstantly:
-								Global VP of content for
-								= succeed ';' do
-									%a{href: "http://babycenter.com", target: '_blank'} BabyCenter
 								co-founder of
-								%a{href: "http://caring.com", target: '_blank'} Caring.com
-							.fav
-								%strong Favorite bedtime reading:
-								%em The Rats of NIMH.
-								I couldn't put it down, even after our boys fell asleep—so I pretty much had to say yes when our oldest asked for two pet rats (one for each shoulder) for his birthday.
+								= succeed ';' do
+									%a{href: "http://caring.com", target: '_blank'} Caring.com
+								global vp of editorial,
+								%a{href: "http://babycenter.com", target: '_blank'} BabyCenter
 					.col.one-third
-						.profile-pic
-							%a{href: "https://www.linkedin.com/in/edwardvsimpson", target: '_blank'}
-								= image_tag "edward_261x261.jpg", alt: "Edward Simpson", itemprop: 'image', border: "0"
 						.profile-desc
 							.name
 								= succeed ',' do
@@ -109,37 +112,25 @@
 								co-founder and cto, deeply involved, with his wife (a childcare worker), in the backyard-neighborhoods movement
 							.before
 								%strong Before Kinstantly:
-								Senior developer for 
+								senior developer, 
 								= succeed ';' do
 									%a{href: "http://babycenter.com", target: '_blank'} BabyCenter
-								Technical Director for the 
+								technical director,
 								%a{href: 'http://www.igc.org/html/aboutigc.html', target: '_blank'} Institute for Global Communications
-							.fav
-								%strong Favorite childhood memory:
-								Doing science experiments at home—like growing pinto beans and graphing their growth rate (yup, I was always a nerd).
 					.col.one-third
-						.profile-pic
-							%a{href: "https://www.linkedin.com/in/forpaulaspencerscott", target: '_blank'}
-								= image_tag "paula_261x261.jpg", alt: "Paula Spencer Scott", itemprop: 'image', border: "0"
 						.profile-desc
 							.name
 								= succeed ',' do
 									%span Paula Spencer Scott
-								editorial director, mom of 4, stepmom of 2
+								content chief, mom of 4, step-mom of 2
 							.before
 								%strong Before Kinstantly:
-								author or co-author of a dozen pregnancy, parenting, and health books, including 
-								%em Bright From the Start
+								author or co-author of a dozen pregnancy, parenting, and health books, including
+								%em Momfidence, Bright From the Start
 								and 
 								%em The Happiest Toddler on the Block
-							.fav
-								%strong Favorite part of the day:
-								My early morning walks with my mom friends. They remind me that I'm not the only one who feels like I'm always playing Whac-a-Mole.
 				.row	
 					.col.one-third
-						.profile-pic
-							%a{href: "https://www.linkedin.com/pub/megan-kempston/13/131/8a5", target: '_blank'}
-								= image_tag "megan_261x261.jpg", alt: "Megan Kempston", itemprop: 'image', border: "0"
 						.profile-desc
 							.name
 								= succeed ',' do
@@ -147,14 +138,8 @@
 								product manager, staff writer, and future mom (fingers crossed!)
 							.before
 								%strong Before Kinstantly:
-								Everything from high school English teacher to tutor for at-risk kids to author of a vampire romance novel
-							.fav
-								%strong Favorite family vacation spot:
-								The North Shore of Kaua'i. (We've already scoped out some kid-friendly beaches.)
+								high school English teacher, tutor to at-risk kids, vampire romance novelist
 					.col.one-third
-						.profile-pic
-							%a{href: "https://www.linkedin.com/in/annamakarova", target: '_blank'}
-								= image_tag "anna_261x261.jpg", alt: "Anna Makarova", itemprop: 'image', border: "0"
 						.profile-desc
 							.name
 								= succeed ',' do
@@ -162,14 +147,8 @@
 								senior developer, mom of 1
 							.before
 								%strong Before Kinstantly:
-								Freelance full-stack developer; Chinese interpreter
-							.fav
-								%strong Favorite place to code:
-								A very quiet public library near our home. It's where I work after dropping my son off at school each day.
+								freelance full-stack developer, Chinese interpreter
 					.col.one-third
-						.profile-pic
-							%a{href: "https://www.linkedin.com/pub/allyson-appen/0/a3/747", target: '_blank'}
-								= image_tag "allyson_261x261.jpg", alt: "Allyson Appen", itemprop: 'image', border: "0"
 						.profile-desc
 							.name
 								= succeed ',' do
@@ -177,17 +156,21 @@
 								creative director, mom of 2
 							.before
 								%strong Before Kinstantly:
-								Design and art director at
+								design and art director,
 								%a{href: "http://babycenter.com", target: '_blank'} BabyCenter
 								and
-								%a{href: "http://greatschools.org", target: '_blank'}GreatSchools.org
-							.fav
-								%strong Favorite kid moment:
-								When my son decided to cook bacon by laying the strips over the oven rack—without a pan underneath. The fire department was not amused. 
+								%a{href: "http://greatschools.org", target: '_blank'} GreatSchools.org
 			.signup-prompt
-				If you share our belief that raising a family should be one of life's great adventures—and never any harder than it needs to be—please join us:
+				Like us on Facebook to get new content and updates first:
 				%br
-				= link_to (image_tag "newsletter_signup_prompt.png", alt: "Sign Up for our weekly newsletter", itemprop: 'image', border: "0"), newsletter_path, class: "newsletter-signup-button"
+				%br
+				:javascript
+					my_vars.need_fb_api = true;
+				:plain
+					<div class="fb-like" data-href="https://www.facebook.com/kinstantly" data-layout="standard" data-action="like" data-show-faces="true" data-share="false"></div>
+				%br
+				%br
+				Because when you drop your kid off for preschool or 1st grade or middle school or college, we want you to feel pretty great about how everything is turning out.
 
 :javascript
 	// Get an array of all element heights

@@ -122,14 +122,13 @@
 					my_vars.profile_map?.init(my_vars.f.load_fb_api)
 					my_vars.search_results_map?.init(my_vars.f.load_fb_api)
 				
-				
 			# Appends maps.googleapis script
 			my_vars.f.load_google_api = () ->
 				script = document.createElement('script');
 				script.type = 'text/javascript';
 				script.src = "https://maps.googleapis.com/maps/api/js?key=" + my_vars.google_api_key + "&libraries=places&sensor=false&callback=post_load_init";
 				document.body.appendChild(script);
-
+			
 			# Appends FB api script
 			my_vars.f.load_fb_api = () ->
 				id = 'facebook-jssdk'
@@ -155,6 +154,9 @@
 				# Ensure rating stars render properly after everything is loaded.
 				my_vars.f.rating_score_reset() if my_vars.f.rating_score_reset
 				my_vars.f.rate_reset() if my_vars.f.rate_reset
+				
+				# Load the Facebook API if requested.
+				my_vars.f.load_fb_api() if my_vars.need_fb_api
 				
 			#
 			# # Add change event to selects, and trigger it on load, so the span is up to date
