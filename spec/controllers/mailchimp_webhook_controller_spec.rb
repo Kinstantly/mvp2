@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe MailchimpWebhookController, :type => :controller do
 	let(:token) { Rails.configuration.mailchimp_webhook_security_token }
-	let(:list_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage1]}	
+	let(:list_id) { mailchimp_list_ids[:parent_newsletters_stage1]}
 	let(:user) { FactoryGirl.create(:client_user) }
 	let(:params) {{ type: "unsubscribe", token: token, data: {list_id: list_id, email: user.email }}}
 	let(:campaign_params) {

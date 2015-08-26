@@ -83,7 +83,7 @@ class NewslettersController < ApplicationController
 		lists.each do |list_name|
 			next if !User.mailing_list_name_valid?(list_name)
 
-			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			list_id = mailchimp_list_ids[list_name]
 			email_struct = { email: email }
 			begin
 				gb = Gibbon::API.new
@@ -144,7 +144,7 @@ class NewslettersController < ApplicationController
 		gb = Gibbon::API.new
 		gb.timeout = 2 # second(s)
 		begin
-			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			list_id = mailchimp_list_ids[list_name]
 			filters = { list_id: list_id, status: 'sent' }
 			r = gb.campaigns.list filters: filters, sort_field: 'send_time', limit: 1
 			url = r.try(:[], 'data').try(:[], 0).try(:[], 'archive_url') unless r.blank?
@@ -158,7 +158,7 @@ class NewslettersController < ApplicationController
 	def list_archive(list_name)
 		gb = Gibbon::API.new
 		begin
-			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			list_id = mailchimp_list_ids[list_name]
 			filters = { list_id: list_id, status: 'sent' }
 			r = gb.campaigns.list filters: filters, sort_field: 'send_time', limit: 100
 			data = r.try(:[], 'data') unless r.blank?

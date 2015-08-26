@@ -15,7 +15,8 @@ class User < ActiveRecord::Base
 	# Setup accessible (or protected) attributes for your model
 	PASSWORDLESS_ACCESSIBLE_ATTRIBUTES = [
 		:provider_marketing_emails, :provider_newsletters,
-		:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3
+		:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3,
+		:parent_newsletters
 	]
 	PASSWORD_ACCESSIBLE_ATTRIBUTES = [
 		*PASSWORDLESS_ACCESSIBLE_ATTRIBUTES,
@@ -402,7 +403,7 @@ class User < ActiveRecord::Base
 		
 		# True if list name is one of predefined list names.
 		def mailing_list_name_valid?(list_name)
-			Rails.configuration.mailchimp_list_id.has_key?(list_name)
+			mailchimp_list_ids.has_key?(list_name)
 		end
 
 	end
@@ -472,7 +473,7 @@ class User < ActiveRecord::Base
 		list_names.each do |list_name|
 			next if !User.mailing_list_name_valid?(list_name)
 
-			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			list_id = mailchimp_list_ids[list_name]
 			subscriber_leid = leids[list_name]
 			email_struct = { leid: subscriber_leid }
 			if new_email && subscriber_leid.present?
@@ -503,7 +504,7 @@ class User < ActiveRecord::Base
 		list_names.each do |list_name|
 			next if !User.mailing_list_name_valid?(list_name)
 			
-			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			list_id = mailchimp_list_ids[list_name]
 			subscriber_leid = leids[list_name]
 			email_struct = {email: email, leid: subscriber_leid}
 			begin
@@ -524,7 +525,7 @@ class User < ActiveRecord::Base
 	def import_subscriptions
 		[:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3,
 			:provider_newsletters].each do |list_name|
-			list_id = Rails.configuration.mailchimp_list_id[list_name]
+			list_id = mailchimp_list_ids[list_name]
 			begin
 				gb = Gibbon::API.new
 				r = gb.lists.member_info id: list_id, emails: [{email: email}]

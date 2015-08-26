@@ -29,7 +29,7 @@ class MailchimpWebhookController < ApplicationController
 	def on_unsubscribe(data)
 		incoming_list_id = data['list_id']
 		subscriber_email = data['email']
-		list_name = Rails.configuration.mailchimp_list_id.key(incoming_list_id)
+		list_name = mailchimp_list_ids.key(incoming_list_id)
 
 		if !User.mailing_list_name_valid?(list_name)
 			logger.error "MailChimp Webhook unsubscribe verification error: incoming_list_id \'#{incoming_list_id}\' is not valid. List name: #{list_name}." if logger

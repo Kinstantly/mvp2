@@ -36,6 +36,10 @@ module SiteConfigurationHelpers
 			Rails.configuration.google_analytics_tracking_id
 		end
 		
+		def mailchimp_list_ids
+			Rails.configuration.mailing_lists[:mailchimp_list_ids]
+		end
+		
 		def update_mailing_lists_in_background?
 			Rails.configuration.mailing_lists[:update_in_background]
 		end

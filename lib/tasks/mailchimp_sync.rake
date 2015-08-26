@@ -105,7 +105,7 @@ namespace :mailchimp do
 	end
 
 	def batch_subscribe_to_list(list_name)
-		list_id = Rails.configuration.mailchimp_list_id[list_name]
+		list_id = Rails.configuration.mailing_lists[:mailchimp_list_ids][list_name]
 		return if list_id.blank?
 		batch = build_batch(list_name)
 		begin
@@ -132,12 +132,12 @@ namespace :mailchimp do
 	end
 
 	def list_archive(include_old_editions)
-		list_ids = [ Rails.configuration.mailchimp_list_id[:parent_newsletters_stage1],
-			Rails.configuration.mailchimp_list_id[:parent_newsletters_stage2],
-			Rails.configuration.mailchimp_list_id[:parent_newsletters_stage3] ]
+		list_ids = [ Rails.configuration.mailing_lists[:mailchimp_list_ids][:parent_newsletters_stage1],
+			Rails.configuration.mailing_lists[:mailchimp_list_ids][:parent_newsletters_stage2],
+			Rails.configuration.mailing_lists[:mailchimp_list_ids][:parent_newsletters_stage3] ]
 		list_ids_filter = list_ids * ","
 		if(include_old_editions)
-			list_ids_filter += ", " + Rails.configuration.mailchimp_list_id[:parent_newsletters]
+			list_ids_filter += ", " + Rails.configuration.mailing_lists[:mailchimp_list_ids][:parent_newsletters]
 		end
 
 		gb = Gibbon::API.new

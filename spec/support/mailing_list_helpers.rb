@@ -133,7 +133,7 @@ def empty_mailing_lists
 	begin
 		gb = Gibbon::API.new
 		mailing_lists.each do |list_name|
-			list_id = Rails.configuration.mailchimp_list_id[list_name.to_sym]
+			list_id = Rails.configuration.mailing_lists[:mailchimp_list_ids][list_name.to_sym]
 			gb.lists.members(id: list_id)['data'].each do |member|
 				gb.lists.unsubscribe id: list_id, email: {email: member['email']}, delete_member: true, send_notify: false
 			end

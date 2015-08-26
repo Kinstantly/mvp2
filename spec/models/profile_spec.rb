@@ -755,7 +755,7 @@ describe Profile, :type => :model do
 
 	context "AFTER save", mailchimp: true do
 		it "should notify MailChimp, if first name changed" do
-			list_id = Rails.configuration.mailchimp_list_id[:provider_newsletters]
+			list_id = mailchimp_list_ids[:provider_newsletters]
 			@profile.user = FactoryGirl.create(:expert_user, provider_newsletters: true)
 			@profile.save
 			@profile.reload

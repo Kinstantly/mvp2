@@ -389,12 +389,12 @@ describe User, :type => :model do
 		let(:new_parent) { FactoryGirl.build :parent }
 		
 		it "can request MailChimp and mailing lists exist in MailChimp account", contact_mailchimp: true do
-			system_list_ids = Rails.configuration.mailchimp_list_id.values
+			local_list_ids = mailchimp_list_ids.values
 			gb = Gibbon::API.new
 			r = gb.lists.list
 			expect(r.present?).to be_truthy
-			mailchimp_list_ids = r['data'].collect { |list_data| list_data['id'] }   
-			expect((system_list_ids - mailchimp_list_ids).empty?).to be_truthy
+			remote_list_ids = r['data'].collect { |list_data| list_data['id'] }   
+			expect((local_list_ids - remote_list_ids).empty?).to be_truthy
 		end
 
 		it "can subscribe to mailing lists" do
@@ -448,9 +448,9 @@ describe User, :type => :model do
 		end
 
 		context "parent" do
-			let(:parent_newsletters_stage1_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage1] }		
-			let(:parent_newsletters_stage2_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage2] }
-			let(:parent_newsletters_stage3_id) { Rails.configuration.mailchimp_list_id[:parent_newsletters_stage3] }
+			let(:parent_newsletters_stage1_id) { mailchimp_list_ids[:parent_newsletters_stage1] }		
+			let(:parent_newsletters_stage2_id) { mailchimp_list_ids[:parent_newsletters_stage2] }
+			let(:parent_newsletters_stage3_id) { mailchimp_list_ids[:parent_newsletters_stage3] }
 			
 			it "should set mailchimp subscriber name to username" do
 				parent.parent_newsletters_stage1 = true
@@ -486,7 +486,7 @@ describe User, :type => :model do
 
 		context "provider" do
 			let(:provider) { FactoryGirl.create :provider_with_username }
-			let(:provider_newsletters_list_id) { Rails.configuration.mailchimp_list_id[:provider_newsletters] }
+			let(:provider_newsletters_list_id) { mailchimp_list_ids[:provider_newsletters] }
 			
 			it "should set mailchimp subscriber name to profile first and last name" do
 				provider.provider_newsletters = true

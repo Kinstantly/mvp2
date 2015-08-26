@@ -120,7 +120,7 @@ Mvp2::Application.configure do
 
   # Wrapper for MailChimp API
   Gibbon::API.api_key = ENV['MAILCHIMP_API_KEY']
-  config.mailchimp_list_id = {
+  config.mailing_lists[:mailchimp_list_ids] = {
     :parent_marketing_emails => ENV['PARENT_MARKETING_EMAILS_LIST_ID'],
     :parent_newsletters => ENV['PARENT_NEWSLETTERS_LIST_ID'],
     :parent_newsletters_stage1 => ENV['PARENT_NEWSLETTERS_STAGE1_ID'],

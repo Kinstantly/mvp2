@@ -5,18 +5,18 @@ class Newsletter < ActiveRecord::Base
 	validates_presence_of :cid, :list_id, :send_time, :title, :subject, :archive_url, :content
 	
 	scope :parent_newsletters_stage1, -> { where(
-		"list_id = '#{Rails.configuration.mailchimp_list_id[:parent_newsletters_stage1]}' OR
-		(list_id = '#{Rails.configuration.mailchimp_list_id[:parent_newsletters]}' AND 
+		"list_id = '#{mailchimp_list_ids[:parent_newsletters_stage1]}' OR
+		(list_id = '#{mailchimp_list_ids[:parent_newsletters]}' AND 
 		title LIKE 'Kids 0-4%')")
 	}
 	scope :parent_newsletters_stage2, -> { where(
-		"list_id = '#{Rails.configuration.mailchimp_list_id[:parent_newsletters_stage2]}' OR
-		(list_id = '#{Rails.configuration.mailchimp_list_id[:parent_newsletters]}' AND 
+		"list_id = '#{mailchimp_list_ids[:parent_newsletters_stage2]}' OR
+		(list_id = '#{mailchimp_list_ids[:parent_newsletters]}' AND 
 		title LIKE 'Kids 5-12%')")
 	}
 	scope :parent_newsletters_stage3, -> { where(
-		"list_id = '#{Rails.configuration.mailchimp_list_id[:parent_newsletters_stage3]}' OR
-		(list_id = '#{Rails.configuration.mailchimp_list_id[:parent_newsletters]}' AND 
+		"list_id = '#{mailchimp_list_ids[:parent_newsletters_stage3]}' OR
+		(list_id = '#{mailchimp_list_ids[:parent_newsletters]}' AND 
 		title LIKE 'Teens%')")
 	}
 	
