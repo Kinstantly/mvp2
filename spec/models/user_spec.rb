@@ -347,9 +347,7 @@ describe User, :type => :model do
 		let(:newsletter_subscriptions) {
 			{
 				provider_newsletters: '1',
-				parent_newsletters_stage1: '1', 
-				parent_newsletters_stage2: '1',
-				parent_newsletters_stage3: '1'
+				parent_newsletters: '1', 
 			}
 		}
 		
@@ -398,66 +396,50 @@ describe User, :type => :model do
 		end
 
 		it "can subscribe to mailing lists" do
-			parent.parent_newsletters_stage1 = true
-			parent.parent_newsletters_stage2 = true
-			parent.parent_newsletters_stage3 = true
+			parent.parent_newsletters = true
 			parent.save
 			parent.reload
-			expect(parent.parent_newsletters_stage1).to be_truthy
-			expect(parent.parent_newsletters_stage2).to be_truthy
-			expect(parent.parent_newsletters_stage3).to be_truthy
+			expect(parent.parent_newsletters).to be_truthy
 		end
 		
 		it "cannot subscribe to mailing lists if previously blocked" do
 			FactoryGirl.create :contact_blocker, email: parent.email
-			parent.parent_newsletters_stage1 = true
-			parent.parent_newsletters_stage2 = true
-			parent.parent_newsletters_stage3 = true
+			parent.parent_newsletters = true
 			parent.save
 			parent.reload
-			expect(parent.parent_newsletters_stage1).to be_falsey
-			expect(parent.parent_newsletters_stage2).to be_falsey
-			expect(parent.parent_newsletters_stage3).to be_falsey
+			expect(parent.parent_newsletters).to be_falsey
 		end
 		
-		it "requires a subscription to at least one edition if signing up for the newsletter" do
+		it "requires a subscription to at least one list if signing up for the newsletter" do
 			new_parent.signed_up_for_mailing_lists = true
-			new_parent.parent_newsletters_stage1 = false
-			new_parent.parent_newsletters_stage2 = false
-			new_parent.parent_newsletters_stage3 = false
+			new_parent.parent_newsletters = false
 			expect(new_parent.error_on(:base).size).to eq 1
 		end
 
 		context "confirmation not required for newsletter subscription to take effect" do
-			let(:user) { FactoryGirl.create :client_user, require_confirmation: true, parent_newsletters_stage1: true, parent_newsletters_stage2: true, parent_newsletters_stage3: true }
+			let(:user) { FactoryGirl.create :client_user, require_confirmation: true, parent_newsletters: true }
 				
 			it "should be added to mailing list before confirmation" do
-				expect(user.parent_newsletters_stage1_leid).to be_present
-				expect(user.parent_newsletters_stage2_leid).to be_present
-				expect(user.parent_newsletters_stage3_leid).to be_present
+				expect(user.parent_newsletters_leid).to be_present
 			end
 
 			it "should be added to mailing list after confirmation" do
 				user.confirm
 				user.save
 				user.reload
-				expect(user.parent_newsletters_stage1_leid).to be_present
-				expect(user.parent_newsletters_stage2_leid).to be_present
-				expect(user.parent_newsletters_stage3_leid).to be_present
+				expect(user.parent_newsletters_leid).to be_present
 			end
 		end
 
 		context "parent" do
-			let(:parent_newsletters_stage1_id) { mailchimp_list_ids[:parent_newsletters_stage1] }		
-			let(:parent_newsletters_stage2_id) { mailchimp_list_ids[:parent_newsletters_stage2] }
-			let(:parent_newsletters_stage3_id) { mailchimp_list_ids[:parent_newsletters_stage3] }
+			let(:parent_newsletters_id) { mailchimp_list_ids[:parent_newsletters] }		
 			
 			it "should set mailchimp subscriber name to username" do
-				parent.parent_newsletters_stage1 = true
+				parent.parent_newsletters = true
 				merge_vars = { FNAME: parent.username, LNAME: "" }
 				opts = {
-					email: { leid: parent.parent_newsletters_stage1_leid, email: parent.email },
-					id: parent_newsletters_stage1_id,
+					email: { leid: parent.parent_newsletters_leid, email: parent.email },
+					id: parent_newsletters_id,
 					merge_vars: merge_vars,
 					double_optin: false,
 					update_existing: true
@@ -468,12 +450,12 @@ describe User, :type => :model do
 			end
 
 			it "should set mailchimp subscriber name to email if username is empty" do
-				parent.parent_newsletters_stage2 = true
+				parent.parent_newsletters = true
 				parent.username = "updated_username"
 				merge_vars = { FNAME: parent.username, LNAME: "" }
 				opts = {
-					email: { leid: parent.parent_newsletters_stage2_leid, email: parent.email },
-					id: parent_newsletters_stage2_id,
+					email: { leid: parent.parent_newsletters_leid, email: parent.email },
+					id: parent_newsletters_id,
 					merge_vars: merge_vars,
 					double_optin: false,
 					update_existing: true

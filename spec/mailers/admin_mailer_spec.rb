@@ -46,7 +46,7 @@ describe AdminMailer, :type => :mailer do
 
 	context "newsletter subscribe alert" do
 		let(:subscriber_email)	{'subscriber1@newsletter.com'}
-		let(:subscriptions)		{[:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3]}
+		let(:subscriptions)		{[:parent_newsletters]}
 		let(:email) { AdminMailer.newsletter_subscribe_alert(subscriptions, subscriber_email) }
 
 		it "should be set to be delivered to admin" do
@@ -64,7 +64,7 @@ describe AdminMailer, :type => :mailer do
 
 	context "newsletter unsubscribe alert" do
 		let(:subscriber_email)	{'subscriber1@newsletter.com'}
-		let(:subscription)		{User.human_attribute_name :parent_newsletters_stage1}
+		let(:subscription)		{User.human_attribute_name :parent_newsletters}
 		let(:email) { AdminMailer.newsletter_unsubscribe_alert(subscription, subscriber_email) }
 
 		it "should be set to be delivered to admin" do
@@ -72,11 +72,11 @@ describe AdminMailer, :type => :mailer do
 		end
 
 		it "should show the subscriber's email in the subject" do
-			expect(email).to have_subject(/#{subscriber_email}/)
+			expect(email).to have_subject(/#{subscriber_email}/i)
 		end
 
 		it "should contain newsletter edition user has unsubscribed from" do
-			expect(email).to have_body_text(subscription)
+			expect(email).to have_body_text(/#{subscription}/i)
 		end
 	end
 	

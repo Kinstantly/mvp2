@@ -9,8 +9,7 @@ describe Users::ConfirmationsController, :type => :controller do
 	let(:mimi_subscribed) {
 		FactoryGirl.create :client_user, 
 			require_confirmation: true,
-			parent_newsletters_stage1: true,
-			parent_newsletters_stage2: true
+			parent_newsletters: true
 	}
 	
 	before(:example) do
@@ -31,7 +30,7 @@ describe Users::ConfirmationsController, :type => :controller do
 			
 			it "tracking parameters indicate subscriptions" do
 				get :show, confirmation_token: devise_raw_confirmation_token(mimi_subscribed)
-				expect(response).to redirect_to '/?email_confirmed=t&parent_newsletters_stage1=t&parent_newsletters_stage2=t'
+				expect(response).to redirect_to '/?email_confirmed=t&parent_newsletters=t'
 				expect(flash[:notice]).to have_content 'confirmed'
 			end
 		end

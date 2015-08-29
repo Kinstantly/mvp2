@@ -40,6 +40,10 @@ module SiteConfigurationHelpers
 			Rails.configuration.mailing_lists[:mailchimp_list_ids]
 		end
 		
+		def active_mailing_lists
+			Rails.configuration.mailing_lists[:active_lists]
+		end
+		
 		def update_mailing_lists_in_background?
 			Rails.configuration.mailing_lists[:update_in_background]
 		end

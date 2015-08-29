@@ -161,7 +161,7 @@ class Profile < ActiveRecord::Base
 		# Update MailChimp subscription if first or last name changed
 		subscription_attr = changes.slice(:first_name, :last_name)
 		if claimed? && errors.empty? && subscription_attr.any?
-			user.sync_subscription_preferenses(subscription_attr)
+			user.sync_subscription_preferences(subscription_attr)
 		end
 	end
 	

@@ -60,7 +60,7 @@
 	%label.strong.cell
 		Subscriptions:
 	%span.cell
-		= @user.leids.keys.map{ |list| User.human_attribute_name list if @user.send list }.compact.join(', ')
+		= active_mailing_lists.map{ |list| User.human_attribute_name list if @user.send list }.compact.join(', ')
 	- if @user.has_paid_providers?
 		%br
 		%label.strong.cell

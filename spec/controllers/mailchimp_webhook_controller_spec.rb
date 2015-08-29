@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe MailchimpWebhookController, :type => :controller do
 	let(:token) { Rails.configuration.mailchimp_webhook_security_token }
-	let(:list_id) { mailchimp_list_ids[:parent_newsletters_stage1]}
+	let(:list_id) { mailchimp_list_ids[:parent_newsletters]}
 	let(:user) { FactoryGirl.create(:client_user) }
 	let(:params) {{ type: "unsubscribe", token: token, data: {list_id: list_id, email: user.email }}}
 	let(:campaign_params) {
@@ -23,9 +23,9 @@ describe MailchimpWebhookController, :type => :controller do
 
 		context "user unsubscribed remotely, but still subscribed locally" do
 			before(:example) do
-				user.parent_newsletters_stage1 = true
+				user.parent_newsletters = true
 				user.save!
-				@parent_newsletters_stage1_leid = user.parent_newsletters_stage1_leid
+				@parent_newsletters_leid = user.parent_newsletters_leid
 	
 				# Unsubscribe without deleting user from the list
 				gb = Gibbon::API.new
@@ -39,23 +39,23 @@ describe MailchimpWebhookController, :type => :controller do
 				params[:token] = "none"
 				post :process_notification, params
 				user.reload
-				expect(user.parent_newsletters_stage1).to eq true
-				expect(user.parent_newsletters_stage1_leid).to eq @parent_newsletters_stage1_leid
+				expect(user.parent_newsletters).to eq true
+				expect(user.parent_newsletters_leid).to eq @parent_newsletters_leid
 			end
 
 			it "should not process notification with invalid request params" do
 				params.delete(:type)
 				post :process_notification, params
 				user.reload
-				expect(user.parent_newsletters_stage1).to eq true
-				expect(user.parent_newsletters_stage1_leid).to eq @parent_newsletters_stage1_leid
+				expect(user.parent_newsletters).to eq true
+				expect(user.parent_newsletters_leid).to eq @parent_newsletters_leid
 			end
 			
 			it "removes subscription when valid unsubscribe notification received" do
 				post :process_notification, params
 				user.reload
-				expect(user.parent_newsletters_stage1).to eq false
-				expect(user.parent_newsletters_stage1_leid).to eq nil
+				expect(user.parent_newsletters).to eq false
+				expect(user.parent_newsletters_leid).to eq nil
 			end
 			
 			it 'logs it if the reason for unsubscribing is abuse' do
@@ -69,9 +69,7 @@ describe MailchimpWebhookController, :type => :controller do
 
 		context "user subscribed both locally and remotely" do
 			before(:example) do
-				user.parent_newsletters_stage1 = true
-				user.parent_newsletters_stage2 = true
-				user.parent_newsletters_stage3 = true
+				user.parent_newsletters = true
 				user.provider_newsletters = true
 				user.save!
 			end
@@ -79,30 +77,22 @@ describe MailchimpWebhookController, :type => :controller do
 			it "should NOT remove subscriptions" do
 				post :process_notification, params
 				user.reload
-				expect(user.parent_newsletters_stage1).to be_truthy
-				expect(user.parent_newsletters_stage2).to be_truthy
-				expect(user.parent_newsletters_stage3).to be_truthy
+				expect(user.parent_newsletters).to be_truthy
 				expect(user.provider_newsletters).to be_truthy
-				expect(user.parent_newsletters_stage1_leid).to be_present
-				expect(user.parent_newsletters_stage2_leid).to be_present
-				expect(user.parent_newsletters_stage3_leid).to be_present
+				expect(user.parent_newsletters_leid).to be_present
 				expect(user.provider_newsletters_leid).to be_present
 			end
 			
 			it "should remove one subscription" do
 				Gibbon::API.new.lists.unsubscribe id: list_id,
-					email: {email: user.email, leid: user.parent_newsletters_stage1_leid},
+					email: {email: user.email, leid: user.parent_newsletters_leid},
 					delete_member: true, send_goodbye: false, send_notify: false
 				
 				post :process_notification, params
 				user.reload
-				expect(user.parent_newsletters_stage1).not_to be_truthy
-				expect(user.parent_newsletters_stage2).to be_truthy
-				expect(user.parent_newsletters_stage3).to be_truthy
+				expect(user.parent_newsletters).not_to be_truthy
 				expect(user.provider_newsletters).to be_truthy
-				expect(user.parent_newsletters_stage1_leid).not_to be_present
-				expect(user.parent_newsletters_stage2_leid).to be_present
-				expect(user.parent_newsletters_stage3_leid).to be_present
+				expect(user.parent_newsletters_leid).not_to be_present
 				expect(user.provider_newsletters_leid).to be_present
 			end
 		end
@@ -111,7 +101,7 @@ describe MailchimpWebhookController, :type => :controller do
 		  it 'should handle unsubscribe notification gracefully' do
 				post :process_notification, params
 				user.reload
-				expect(user.parent_newsletters_stage1).not_to be_truthy
+				expect(user.parent_newsletters).not_to be_truthy
 		  end
 		end
 

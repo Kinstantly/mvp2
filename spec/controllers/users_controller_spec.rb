@@ -11,7 +11,7 @@ describe UsersController, :type => :controller do
 		
 		describe "PUT edit_subscriptions" do
 			it "should require login" do
-				put :update_subscriptions, user: {parent_newsletters_stage1: '1'}
+				put :update_subscriptions, user: {parent_newsletters: '1'}
 				expect(response).to redirect_to new_user_session_url
 			end
 		end
@@ -33,13 +33,13 @@ describe UsersController, :type => :controller do
 		
 		describe "PUT edit_subscriptions" do
 			it "should return to the subscription management page after a successful update" do
-				put :update_subscriptions, user: {parent_newsletters_stage1: '1'}
+				put :update_subscriptions, user: {parent_newsletters: '1'}
 				expect(response).to redirect_to edit_subscriptions_url
 			end
 			
 			it "should update the parent's subscriptions" do
-				put :update_subscriptions, user: {parent_newsletters_stage1: '1', provider_newsletters: '0'}
-				expect(assigns[:user].parent_newsletters_stage1).to be_truthy
+				put :update_subscriptions, user: {parent_newsletters: '1', provider_newsletters: '0'}
+				expect(assigns[:user].parent_newsletters).to be_truthy
 				expect(assigns[:user].provider_newsletters).to be_falsey
 			end
 			
@@ -78,8 +78,8 @@ describe UsersController, :type => :controller do
 			end
 			
 			it "should update the provider's subscriptions" do
-				put :update_subscriptions, user: {parent_newsletters_stage1: '0', provider_newsletters: '1'}
-				expect(assigns[:user].parent_newsletters_stage1).to be_falsey
+				put :update_subscriptions, user: {parent_newsletters: '0', provider_newsletters: '1'}
+				expect(assigns[:user].parent_newsletters).to be_falsey
 				expect(assigns[:user].provider_newsletters).to be_truthy
 			end
 			

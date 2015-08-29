@@ -20,35 +20,24 @@
 						- @errors.each do |error|
 							= error
 							%br
-				.signup-for-newsletters
-					%p.checkbox-header= parent_newsletters_hint
-					%ul.checkbox
-						%li
-							= check_box_tag :parent_newsletters_stage1, 1, @parent_newsletters_stage1
-							= label_tag :parent_newsletters_stage1, User.human_attribute_name(:parent_newsletters_stage1)
-						%li
-							= check_box_tag :parent_newsletters_stage2, 1, @parent_newsletters_stage2
-							= label_tag :parent_newsletters_stage2, User.human_attribute_name(:parent_newsletters_stage2)
-						%li
-							= check_box_tag :parent_newsletters_stage3, 1, @parent_newsletters_stage3
-							= label_tag :parent_newsletters_stage3, User.human_attribute_name(:parent_newsletters_stage3)
+				= hidden_field_tag :parent_newsletters, '1'
 				.email.text_field
 					= label_tag :email, 'Email:'
 					= email_field_tag :email, @email, placeholder: 'Enter your email address'
 				.buttons
 					= submit_tag t(:newsletter_sign_up_label, scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default newsletter_sign_up', id: 'sign_up_button'
 					= link_to t(:newsletter_sign_up_cancel, scope: 'views.sign_up'), root_path, class: 'cancel', id: 'sign_up_cancel_button'
-		%p.newsletter-sample
-			See a sample:
-			=link_to User.human_attribute_name(:parent_newsletters_stage1), '#stage1_sample_view'
-			|
-			=link_to User.human_attribute_name(:parent_newsletters_stage2), '#stage2_sample_view'
-			|
-			=link_to User.human_attribute_name(:parent_newsletters_stage3), '#stage3_sample_view'
-			%span.left-indent
-				Or check out our 
-				= succeed '.' do
-					= link_to 'archive', newsletter_list_path
+		-# %p.newsletter-sample
+		-# 	See a sample:
+		-# 	=link_to User.human_attribute_name(:parent_newsletters_stage1), '#stage1_sample_view'
+		-# 	|
+		-# 	=link_to User.human_attribute_name(:parent_newsletters_stage2), '#stage2_sample_view'
+		-# 	|
+		-# 	=link_to User.human_attribute_name(:parent_newsletters_stage3), '#stage3_sample_view'
+		-# 	%span.left-indent
+		-# 		Or check out our
+		-# 		= succeed '.' do
+		-# 			= link_to 'archive', newsletter_list_path
 	%section.col2
 		%blockquote
 			"This is my new favorite email. It actually makes me a better mom."
@@ -79,32 +68,32 @@
 				%a.gp{href: "https://plus.google.com/+Kinstantly", :target => "_blank"}
 					= image_tag "googleone.png", alt: "Google Plus", itemprop: 'image', border: "0"
 					Google Plus
-	%hr.clearfix
-	=link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right', id: 'stage1_sample_view'}
-	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage1, noga: 't')}", id: 'stage1_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
-	=link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right', id: 'stage2_sample_view'}
-	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage2, noga: 't')}", id: 'stage2_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
-	=link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right', id: 'stage3_sample_view'}
-	%iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage3, noga: 't')}", id: 'stage3_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
-	=link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right'}
+	-# %hr.clearfix
+	-# =link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right', id: 'stage1_sample_view'}
+	-# %iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage1, noga: 't')}", id: 'stage1_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
+	-# =link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right', id: 'stage2_sample_view'}
+	-# %iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage2, noga: 't')}", id: 'stage2_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
+	-# =link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right', id: 'stage3_sample_view'}
+	-# %iframe{src: "#{latest_newsletter_url(:parent_newsletters_stage3, noga: 't')}", id: 'stage3_sample', width: '100%', onload: 'my_vars.f.setIframeHeight(this.id)'}
+	-# =link_to '^ Back to sign up', '#login_panel', {class: 'back-to-top-link right'}
 
--# The following JavaScript sets the height of the iframe to match its document's height so that the regular window scrollbars can be used rather than iframe scrollbars.
--# Source: http://www.dyn-web.com/tutorials/iframes/height/demo.php
--# See also: stackoverflow.com/questions/1145850/
-:javascript
-	my_vars.f.getDocHeight = function (doc) {
-		doc = doc || document;
-		var body = doc.body, html = doc.documentElement;
-		var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-		return height;
-	}
-	
-	my_vars.f.setIframeHeight = function (id) {
-			var ifrm = document.getElementById(id);
-			var doc = ifrm.contentDocument? ifrm.contentDocument: ifrm.contentWindow.document;
-			ifrm.style.visibility = 'hidden';
-			ifrm.style.height = "10px"; // reset to minimal height ...
-			// IE opt. for bing/msn needs a bit added or scrollbar appears
-			ifrm.style.height = my_vars.f.getDocHeight(doc) + 4 + "px";
-			ifrm.style.visibility = 'visible';
-	}
+-# -# The following JavaScript sets the height of the iframe to match its document's height so that the regular window scrollbars can be used rather than iframe scrollbars.
+-# -# Source: http://www.dyn-web.com/tutorials/iframes/height/demo.php
+-# -# See also: stackoverflow.com/questions/1145850/
+-# :javascript
+-# 	my_vars.f.getDocHeight = function (doc) {
+-# 		doc = doc || document;
+-# 		var body = doc.body, html = doc.documentElement;
+-# 		var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+-# 		return height;
+-# 	}
+-#
+-# 	my_vars.f.setIframeHeight = function (id) {
+-# 			var ifrm = document.getElementById(id);
+-# 			var doc = ifrm.contentDocument? ifrm.contentDocument: ifrm.contentWindow.document;
+-# 			ifrm.style.visibility = 'hidden';
+-# 			ifrm.style.height = "10px"; // reset to minimal height ...
+-# 			// IE opt. for bing/msn needs a bit added or scrollbar appears
+-# 			ifrm.style.height = my_vars.f.getDocHeight(doc) + 4 + "px";
+-# 			ifrm.style.visibility = 'visible';
+-# 	}

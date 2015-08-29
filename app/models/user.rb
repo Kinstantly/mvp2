@@ -15,7 +15,6 @@ class User < ActiveRecord::Base
 	# Setup accessible (or protected) attributes for your model
 	PASSWORDLESS_ACCESSIBLE_ATTRIBUTES = [
 		:provider_marketing_emails, :provider_newsletters,
-		:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3,
 		:parent_newsletters
 	]
 	PASSWORD_ACCESSIBLE_ATTRIBUTES = [
@@ -75,7 +74,7 @@ class User < ActiveRecord::Base
 	[:postal_code, :registration_special_code].each do |attribute|
 		validates attribute, length: { maximum: MAX_LENGTHS[attribute] }, allow_blank: true
 	end
-	validates :parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3, :provider_newsletters, email_subscription: true
+	validates *active_mailing_lists, email_subscription: true if active_mailing_lists.present?
 	
 	scope :order_by_id, order('id')
 	scope :order_by_descending_id, order('id DESC')
@@ -84,7 +83,7 @@ class User < ActiveRecord::Base
 	after_save do
 		# Create new or update/delete existing subscription.
 		subscription_attr_updated = (changes.slice :email, :username)
-		sync_subscription_preferenses(subscription_attr_updated)
+		sync_subscription_preferences(subscription_attr_updated)
 	end
 	
 	# Only used by single sign-on, so return as little information as possible.
@@ -216,22 +215,25 @@ class User < ActiveRecord::Base
 		email.present? and ContactBlocker.find_by_email(email).present?
 	end
 
-	# List names with corresponding list-email ids (leid).
+	# Returns the name of the attribute that holds the user's leid (see below) for the given list.
+	def leid_attr_name(list_name)
+		list_name.to_s + '_leid'
+	end
+	
+	# Returns this user's list-email id (leid) for the given list name.
 	# Leids are used by MailChimp to identify user on a mailing list.
-	def leids
-		{ parent_newsletters_stage1: parent_newsletters_stage1_leid,
-			parent_newsletters_stage2: parent_newsletters_stage2_leid,
-			parent_newsletters_stage3: parent_newsletters_stage3_leid,
-			provider_newsletters: provider_newsletters_leid }
+	def leid(list_name)
+		leid_attr = leid_attr_name list_name
+		respond_to?(leid_attr) ? send(leid_attr) : nil
 	end
 
-	# True if this user is currently subscribed to a mailing list.
+	# True if this user is currently subscribed to the specified mailing list.
 	def subscribed_to_mailing_list?(list_name)
-		leids[list_name].present?
+		leid(list_name).present?
 	end
 
 	#Sync local subscriptions changes (create/update/delete) with MailChimp.
-	def sync_subscription_preferenses(updated_attrs=[])
+	def sync_subscription_preferences(updated_attrs=[])
 		email_updated = updated_attrs[:email].present?
 		if email_updated
 			if update_mailing_lists_in_background?
@@ -240,18 +242,14 @@ class User < ActiveRecord::Base
 				import_subscriptions
 			end
 		end
-		old_values = {
-			parent_newsletters_stage1: subscribed_to_mailing_list?(:parent_newsletters_stage1),
-			parent_newsletters_stage2: subscribed_to_mailing_list?(:parent_newsletters_stage2),
-			parent_newsletters_stage3: subscribed_to_mailing_list?(:parent_newsletters_stage3),
-			provider_newsletters: subscribed_to_mailing_list?(:provider_newsletters)
-		}
-		new_values = {
-			parent_newsletters_stage1: parent_newsletters_stage1,
-			parent_newsletters_stage2: parent_newsletters_stage2,
-			parent_newsletters_stage3: parent_newsletters_stage3,
-			provider_newsletters: provider_newsletters
-		}
+		old_values = active_mailing_lists.inject({}) do |list_values, list|
+			list_values[list] = subscribed_to_mailing_list?(list)
+			list_values
+		end
+		new_values = active_mailing_lists.inject({}) do |list_values, list|
+			list_values[list] = send(list)
+			list_values
+		end
 		
 		subscriptions_to_update = old_values.merge(new_values){|key, ov, nv| ((!ov && nv) || (ov && nv && updated_attrs.any?))}.select {|k,v| v}.keys
 		subscriptions_to_remove = old_values.merge(new_values){|key, ov, nv| (ov && !nv)}.select {|k,v| v}.keys
@@ -270,7 +268,7 @@ class User < ActiveRecord::Base
 	def process_unsubscribe_event(list_name)
 		# List name is valid?
 		return unless User.mailing_list_name_valid?(list_name)
-		update_column("#{list_name}_leid", nil)
+		update_column(leid_attr_name(list_name), nil)
 		update_column(list_name, false)
 	end
 
@@ -280,17 +278,16 @@ class User < ActiveRecord::Base
 		# List name is valid?
 		return unless User.mailing_list_name_valid?(list_name)
 		if read_attribute list_name
-			update_column("#{list_name}_leid", leid)
+			update_column(leid_attr_name(list_name), leid)
 		end
 	end
 	
 	# Ensure that this user is not subscribed to any of our emails.
 	# Assumes that the user will be unsubscribed from external mailing lists via callback(s).
 	def remove_email_subscriptions
-		self.parent_newsletters_stage1 = false
-		self.parent_newsletters_stage2 = false
-		self.parent_newsletters_stage3 = false
-		self.provider_newsletters = false
+		active_mailing_lists.each do |list_name|
+			write_attribute list_name, false
+		end
 		save!
 	end
 	
@@ -446,7 +443,7 @@ class User < ActiveRecord::Base
 	
 	# Do validation required by a registration event that is mainly for subscribing to our newsletter.
 	def validate_newsletter_subscription
-		unless parent_newsletters_stage1 or parent_newsletters_stage2 or parent_newsletters_stage3
+		unless (active_mailing_lists.inject(false) { |subscribed, list| subscribed or read_attribute(list) })
 			errors.add :base, :newsletter_edition_not_selected
 		end
 	end
@@ -474,7 +471,7 @@ class User < ActiveRecord::Base
 			next if !User.mailing_list_name_valid?(list_name)
 
 			list_id = mailchimp_list_ids[list_name]
-			subscriber_leid = leids[list_name]
+			subscriber_leid = leid list_name
 			email_struct = { leid: subscriber_leid }
 			if new_email && subscriber_leid.present?
 				# User changed their email; email attribute have been updated at this time.
@@ -491,7 +488,7 @@ class User < ActiveRecord::Base
 					double_optin: false,
 					update_existing: true
 				if r.present?
-					update_column("#{list_name}_leid", r['leid'])
+					update_column(leid_attr_name(list_name), r['leid'])
 				end
 			rescue Gibbon::MailChimpError => e
 				logger.error "MailChimp error while subscribing user #{id} to #{merge_vars}: #{e.message}, error code: #{e.code}" if logger
@@ -505,7 +502,7 @@ class User < ActiveRecord::Base
 			next if !User.mailing_list_name_valid?(list_name)
 			
 			list_id = mailchimp_list_ids[list_name]
-			subscriber_leid = leids[list_name]
+			subscriber_leid = leid list_name
 			email_struct = {email: email, leid: subscriber_leid}
 			begin
 				gb = Gibbon::API.new
@@ -514,7 +511,7 @@ class User < ActiveRecord::Base
 					delete_member: true,
 					send_goodbye: false,
 					send_notify: false
-				update_column("#{list_name}_leid", nil)
+				update_column(leid_attr_name(list_name), nil)
 			rescue Gibbon::MailChimpError => e
 				logger.error "MailChimp error while unsubscribing user #{id}: #{e.message}, error code: #{e.code}" if logger
 			end
@@ -523,15 +520,14 @@ class User < ActiveRecord::Base
 
 	# Checks for existing subscriptions on MailChimp and updates user subscription preferences accordingly
 	def import_subscriptions
-		[:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3,
-			:provider_newsletters].each do |list_name|
+		active_mailing_lists.each do |list_name|
 			list_id = mailchimp_list_ids[list_name]
 			begin
 				gb = Gibbon::API.new
 				r = gb.lists.member_info id: list_id, emails: [{email: email}]
 				if r.present? && r['success_count'] == 1 && r.try(:[], 'data').try(:[], 0).present?
-					update_column("#{list_name}", true)
-					update_column("#{list_name}_leid", r['data'][0]['leid'])
+					update_column(list_name.to_s, true)
+					update_column(leid_attr_name(list_name), r['data'][0]['leid'])
 				end
 			rescue Gibbon::MailChimpError => e
 				logger.error "MailChimp error while importing mailchimp subscriptions for user #{id} #{email}: #{e.message}, error code: #{e.code}" if logger

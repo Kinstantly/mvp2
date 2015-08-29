@@ -81,7 +81,7 @@ namespace :mailchimp do
 			merge_vars = { FNAME: first_name, LNAME: last_name }
 			
 			email_struct = { email: subscriber.email }
-			subscriber_leid = subscriber.leids[list_name]
+			subscriber_leid = subscriber.leid list_name
 			
 			if subscriber_leid
 				merge_vars['new-email'] = subscriber.email

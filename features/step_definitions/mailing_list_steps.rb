@@ -31,6 +31,15 @@ When /^an administrator unsubscribes me from all mailing lists$/ do
 	@user = me
 end
 
+When /^I visit the newsletter-only sign-up page and subscribe(?: with email "(.*?)")?$/ do |email|
+	email ||= (create_visitor && @visitor[:email])
+	visit '/newsletter'
+	within('#sign_up') do
+		fill_in 'Email', with: email
+	end
+	click_button 'sign_up_button'
+end
+
 When /^I visit the newsletter-only sign-up page and subscribe to the "(.*?)" mailing lists?(?: with email "(.*?)")?$/ do |lists, email|
 	email ||= (create_visitor && @visitor[:email])
 	list_names = lists.split(/,?\s+(?:and\s+)?/)

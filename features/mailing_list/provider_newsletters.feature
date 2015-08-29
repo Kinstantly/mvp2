@@ -12,7 +12,7 @@ Feature: Provider marketing tips mailing list
 		When I visit the "/provider/sign_up" page
 			And I enter "provider@example.org" in the "Email" field
 			And I enter "aitle459fjcm.%" in the "Password" field
-			And I check "Provider marketing tips"
+			And I check "Get our monthly newsletter for providers"
 			And I click on the sign-up button
 			And I see an unconfirmed account message
 		Then provider@example.org should only be subscribed to the "provider_newsletters" mailing list and synced to the list server
@@ -21,7 +21,7 @@ Feature: Provider marketing tips mailing list
 		When I visit the "/provider/sign_up" page
 			And I enter "parent@example.org" in the "Email" field
 			And I enter "aitle459fjcm.%" in the "Password" field
-			And I check "Provider marketing tips"
+			And I check "Get our monthly newsletter for providers"
 			And I choose the "I'm a parent" radio button
 			And I click on the sign-up button
 			And I see an unconfirmed account message

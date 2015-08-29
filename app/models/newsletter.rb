@@ -4,6 +4,9 @@ class Newsletter < ActiveRecord::Base
 	attr_accessible :cid, :list_id, :send_time, :title, :subject, :archive_url, :content
 	validates_presence_of :cid, :list_id, :send_time, :title, :subject, :archive_url, :content
 	
+	scope :parent_newsletters, -> { where(
+		"list_id = '#{mailchimp_list_ids[:parent_newsletters]}' AND title NOT LIKE 'Kids 0-4%'")
+	}
 	scope :parent_newsletters_stage1, -> { where(
 		"list_id = '#{mailchimp_list_ids[:parent_newsletters_stage1]}' OR
 		(list_id = '#{mailchimp_list_ids[:parent_newsletters]}' AND 

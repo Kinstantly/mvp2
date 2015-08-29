@@ -280,13 +280,13 @@ end
 
 When /^I sign up on the blog site with valid data$/ do
   create_visitor
-  sign_up_and_subscribe 'in_blog/sign_up', ['parent_newsletters_stage1']
+  sign_up_and_subscribe 'in_blog/sign_up', ['parent_newsletters']
 end
 
 When /^I sign up on the blog site with invalid data$/ do
   create_visitor
   @visitor = @visitor.merge(:password => "")
-  sign_up_and_subscribe 'in_blog/sign_up', ['parent_newsletters_stage1']
+  sign_up_and_subscribe 'in_blog/sign_up', ['parent_newsletters']
 end
 
 When /^I return to the site$/ do

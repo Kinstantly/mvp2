@@ -66,22 +66,16 @@ describe ContactBlocker, :type => :model do
 		
 		context "after creating subscriptions" do
 			before(:example) do
-				user.parent_newsletters_stage1 = true
-				user.parent_newsletters_stage2 = true
-				user.parent_newsletters_stage3 = true
+				user.parent_newsletters = true
 				user.provider_newsletters = true
 				user.save
 			end
 			
 			it "has created subscriptions for testing purposes" do
 				user.reload
-				expect(user.parent_newsletters_stage1).to be_truthy
-				expect(user.parent_newsletters_stage2).to be_truthy
-				expect(user.parent_newsletters_stage3).to be_truthy
+				expect(user.parent_newsletters).to be_truthy
 				expect(user.provider_newsletters).to be_truthy
-				expect(user.parent_newsletters_stage1_leid).not_to be_nil
-				expect(user.parent_newsletters_stage2_leid).not_to be_nil
-				expect(user.parent_newsletters_stage3_leid).not_to be_nil
+				expect(user.parent_newsletters_leid).not_to be_nil
 				expect(user.provider_newsletters_leid).not_to be_nil
 			end
 			
@@ -93,13 +87,9 @@ describe ContactBlocker, :type => :model do
 				
 				it "has removed existing subscriptions" do
 					user.reload
-					expect(user.parent_newsletters_stage1).to be_falsey
-					expect(user.parent_newsletters_stage2).to be_falsey
-					expect(user.parent_newsletters_stage3).to be_falsey
+					expect(user.parent_newsletters).to be_falsey
 					expect(user.provider_newsletters).to be_falsey
-					expect(user.parent_newsletters_stage1_leid).to be_nil
-					expect(user.parent_newsletters_stage2_leid).to be_nil
-					expect(user.parent_newsletters_stage3_leid).to be_nil
+					expect(user.parent_newsletters_leid).to be_nil
 					expect(user.provider_newsletters_leid).to be_nil
 				end
 			end

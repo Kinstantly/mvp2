@@ -28,22 +28,8 @@
 			%p.checkbox-header= parent_newsletters_hint
 			%ul.checkbox
 				%li
-					= f.check_box :parent_newsletters_stage1
-					= f.label :parent_newsletters_stage1
-				%li
-					= f.check_box :parent_newsletters_stage2
-					= f.label :parent_newsletters_stage2
-				%li
-					= f.check_box :parent_newsletters_stage3
-					= f.label :parent_newsletters_stage3
-			- if @signing_up_from_blog
-				%p.newsletter-sample{ style: 'padding-top:10px;'}
-					See a sample:
-					=link_to '0-4', latest_newsletter_path(:parent_newsletters_stage1), {target: '_blank'}
-					|
-					=link_to '5-12', latest_newsletter_path(:parent_newsletters_stage2), {target: '_blank'}
-					|
-					=link_to 'Teens', latest_newsletter_path(:parent_newsletters_stage3), {target: '_blank'}
+					= f.check_box :parent_newsletters
+					= f.label :parent_newsletters
 	.email.text_field
 		- unless @signing_up_from_blog
 			- if @signing_up_for_newsletter_onsite
@@ -117,23 +103,17 @@
 
 	- unless @signing_up_for_newsletter
 		.newsletters-signup
-			%h2= parent_newsletters_prompt
+			-# %h2= parent_newsletters_prompt
 			.checkbox
-				%p= parent_newsletters_hint
-				= f.check_box :parent_newsletters_stage1
-				= f.label :parent_newsletters_stage1
-				%br
-				= f.check_box :parent_newsletters_stage2
-				= f.label :parent_newsletters_stage2
-				%br
-				= f.check_box :parent_newsletters_stage3
-				= f.label :parent_newsletters_stage3
+				-# %p= parent_newsletters_hint
+				= f.check_box :parent_newsletters
+				= f.label :parent_newsletters, parent_newsletters_prompt
 				%br
 			#provider-newsletters-signup{:class => ("hidden" unless (is_provider || claiming_profile))}
-				%h2= provider_newsletters_prompt
+				-# %h2= provider_newsletters_prompt
 				.checkbox
 					= f.check_box :provider_newsletters
-					= f.label :provider_newsletters
+					= f.label :provider_newsletters, provider_newsletters_prompt
 	.buttons
 		- if @signing_up_for_newsletter
 			= f.submit t(:newsletter_sign_up_label, scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default newsletter_sign_up', id: 'sign_up_button'

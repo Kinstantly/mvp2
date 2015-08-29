@@ -102,7 +102,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 		if resource
 			path += '&nlsub=t' if resource.signed_up_for_mailing_lists
 			path += '&blog=t' if resource.signed_up_from_blog
-			[:parent_newsletters_stage1, :parent_newsletters_stage2, :parent_newsletters_stage3, :provider_newsletters].each do |list|
+			active_mailing_lists.each do |list|
 				path += "&#{list}=t" if resource.send list
 			end
 			path += '&provider=t' if resource.is_provider?

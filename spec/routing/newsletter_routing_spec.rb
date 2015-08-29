@@ -11,8 +11,8 @@ describe Users::RegistrationsController, :type => :routing do
 		# 	get('/newsletters').should route_to('users/registrations#new', nlsub: 't')
 		# end
 
-		it 'routes "/newsletter/latest/parent_newsletters_stage1" to most recent parent_newsletters_stage1 campaign' do
-			expect(get('/newsletter/latest/parent_newsletters_stage1')).to route_to('newsletters#latest', name: 'parent_newsletters_stage1')
+		it 'routes "/newsletter/latest/parent_newsletters" to most recent parent_newsletters campaign' do
+			expect(get('/newsletter/latest/parent_newsletters')).to route_to('newsletters#latest', name: 'parent_newsletters')
 		end
 
 		it 'routes "/newsletter/list" to newsletter archive page' do

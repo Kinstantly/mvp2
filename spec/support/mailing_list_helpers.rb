@@ -125,7 +125,7 @@ def set_up_gibbon_campaigns_api_mock
 end
 
 def mailing_lists
-	['parent_newsletters_stage1', 'parent_newsletters_stage2', 'parent_newsletters_stage3', 'provider_newsletters']
+	['parent_newsletters', 'provider_newsletters']
 end
 
 # Make sure all of the test mailing lists are empty.

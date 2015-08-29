@@ -4,7 +4,7 @@ describe "Newsletters", :type => :request do
 	
 	describe "request latest sample url" do
 		it "responds successfully" do
-			get latest_newsletter_path(:parent_newsletters_stage1)
+			get latest_newsletter_path(:parent_newsletters)
 			expect(response.status).to eq(200)
 		end
 	end
@@ -29,9 +29,9 @@ describe "Newsletters", :type => :request do
 			expect(response.status).to eq(200)
 		end
 		it "redirects to the sign-up confirmation page" do
-			post newsletters_subscribe_path, { parent_newsletters_stage1: 1, email: 'subscriber@example.com' }
+			post newsletters_subscribe_path, { parent_newsletters: 1, email: 'subscriber@example.com' }
 			expect(response.status).to eq(302)
-			expect(response.redirect_url).to eq newsletters_subscribed_url({ nlsub: 't', parent_newsletters_stage1: 't' })
+			expect(response.redirect_url).to eq newsletters_subscribed_url({ nlsub: 't', parent_newsletters: 't' })
 		end
 	end
 end

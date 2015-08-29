@@ -11,28 +11,27 @@ class NewslettersController < ApplicationController
 	def subscribe
 		@errors = []
 		@email = params[:email].presence
-		@parent_newsletters_stage1 = params[:parent_newsletters_stage1].present?
-		@parent_newsletters_stage2 = params[:parent_newsletters_stage2].present?
-		@parent_newsletters_stage3 = params[:parent_newsletters_stage3].present?
+		active_mailing_lists.each do |list|
+			instance_variable_set "@#{list}", params[list].present?
+		end
 
-		subscribe_lists = { parent_newsletters_stage1: @parent_newsletters_stage1,
-			parent_newsletters_stage2: @parent_newsletters_stage2,
-			parent_newsletters_stage3: @parent_newsletters_stage3}.select{ |k,v| v }
-		subscribe_keys = subscribe_lists.keys
+		subscribe_lists = active_mailing_lists.select do |list|
+			instance_variable_get "@#{list}"
+		end
 
-		@errors << 'Email address is required' if @email.blank?
-		@errors << 'Select at least one edition' if subscribe_keys.blank?
+		@errors << t('views.newsletter.email_required') if @email.blank?
+		@errors << t('views.newsletter.list_required') if subscribe_lists.blank?
 
 		if @errors.any?
 			render :new
 		else
-			job = NewsletterSubscriptionJob.new subscribe_keys, @email
+			job = NewsletterSubscriptionJob.new subscribe_lists, @email
 			if update_mailing_lists_in_background?
 				Delayed::Job.enqueue job
 			else
 				job.perform
 			end
-			redirect_to newsletters_subscribed_url(subscribe_keys.inject(nlsub: 't'){ |p, list| p.merge list => 't' })
+			redirect_to newsletters_subscribed_url(subscribe_lists.inject(nlsub: 't'){ |p, list| p.merge list => 't' })
 		end
 	end
 

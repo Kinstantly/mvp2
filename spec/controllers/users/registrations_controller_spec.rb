@@ -18,15 +18,11 @@ describe Users::RegistrationsController, :type => :controller do
 						password: new_password,
 						password_confirmation: new_password,
 						username: username,
-						parent_newsletters_stage1: true,
-						parent_newsletters_stage2: true,
-						parent_newsletters_stage3: true
+						parent_newsletters: true,
 					}
 
 					user = assigns[:user].reload
-					expect(user.parent_newsletters_stage1).to be_truthy
-					expect(user.parent_newsletters_stage2).to be_truthy
-					expect(user.parent_newsletters_stage3).to be_truthy
+					expect(user.parent_newsletters).to be_truthy
 					expect(user.provider_newsletters).to be_falsey
 				end
 
@@ -36,15 +32,11 @@ describe Users::RegistrationsController, :type => :controller do
 						password: new_password,
 						password_confirmation: new_password,
 						username: username,
-						parent_newsletters_stage1: false,
-						parent_newsletters_stage2: false,
-						parent_newsletters_stage3: false
+						parent_newsletters: false,
 					}
 
 					user = assigns[:user].reload
-					expect(user.parent_newsletters_stage1).to be_falsey
-					expect(user.parent_newsletters_stage2).to be_falsey
-					expect(user.parent_newsletters_stage3).to be_falsey
+					expect(user.parent_newsletters).to be_falsey
 					expect(user.provider_newsletters).to be_falsey
 				end
 			end
@@ -76,31 +68,23 @@ describe Users::RegistrationsController, :type => :controller do
 			context "with mailing lists" do
 				it "can subscribe to mailing lists" do
 					put :update, user: {
-						parent_newsletters_stage1: true,
-						parent_newsletters_stage2: true,
-						parent_newsletters_stage3: true,
+						parent_newsletters: true,
 						current_password: mimi.password
 					}
 				
 					user = assigns[:user].reload
-					expect(user.parent_newsletters_stage1).to be_truthy
-					expect(user.parent_newsletters_stage2).to be_truthy
-					expect(user.parent_newsletters_stage3).to be_truthy
+					expect(user.parent_newsletters).to be_truthy
 				end
 			
 				it "cannot subscribe to mailing lists if previously blocked" do
 					FactoryGirl.create :contact_blocker, email: mimi.email
 					put :update, user: {
-						parent_newsletters_stage1: true,
-						parent_newsletters_stage2: true,
-						parent_newsletters_stage3: true,
+						parent_newsletters: true,
 						current_password: mimi.password
 					}
 				
 					user = assigns[:user].reload
-					expect(user.parent_newsletters_stage1).to be_falsey
-					expect(user.parent_newsletters_stage2).to be_falsey
-					expect(user.parent_newsletters_stage3).to be_falsey
+					expect(user.parent_newsletters).to be_falsey
 				end
 			end
 		end
@@ -116,16 +100,12 @@ describe Users::RegistrationsController, :type => :controller do
 						password: new_password,
 						password_confirmation: new_password,
 						username: username,
-						parent_newsletters_stage1: true,
-						parent_newsletters_stage2: true,
-						parent_newsletters_stage3: true,
+						parent_newsletters: true,
 						provider_newsletters: true
 					}
 
 					user = assigns[:user].reload
-					expect(user.parent_newsletters_stage1).to be_truthy
-					expect(user.parent_newsletters_stage2).to be_truthy
-					expect(user.parent_newsletters_stage3).to be_truthy
+					expect(user.parent_newsletters).to be_truthy
 					expect(user.provider_newsletters).to be_truthy
 				end
 
@@ -136,16 +116,12 @@ describe Users::RegistrationsController, :type => :controller do
 						password: new_password,
 						password_confirmation: new_password,
 						username: username,
-						parent_newsletters_stage1: false,
-						parent_newsletters_stage2: false,
-						parent_newsletters_stage3: false,
+						parent_newsletters: false,
 						provider_newsletters: false
 					}
 
 					user = assigns[:user].reload
-					expect(user.parent_newsletters_stage1).to be_falsey
-					expect(user.parent_newsletters_stage2).to be_falsey
-					expect(user.parent_newsletters_stage3).to be_falsey
+					expect(user.parent_newsletters).to be_falsey
 					expect(user.provider_newsletters).to be_falsey
 				end
 				
@@ -160,16 +136,12 @@ describe Users::RegistrationsController, :type => :controller do
 							password: new_password,
 							password_confirmation: new_password,
 							username: username,
-							parent_newsletters_stage1: true,
-							parent_newsletters_stage2: true,
-							parent_newsletters_stage3: true,
+							parent_newsletters: true,
 							provider_newsletters: true
 						}
 
 						user = assigns[:user].reload
-						expect(user.parent_newsletters_stage1).to be_truthy
-						expect(user.parent_newsletters_stage2).to be_truthy
-						expect(user.parent_newsletters_stage3).to be_truthy
+						expect(user.parent_newsletters).to be_truthy
 						expect(user.provider_newsletters).to be_truthy
 					end
 				end
@@ -183,14 +155,14 @@ describe Users::RegistrationsController, :type => :controller do
 						password: new_password,
 						password_confirmation: new_password,
 						username: username,
-						parent_newsletters_stage1: true
+						parent_newsletters: true
 					}
 				end
 			
 				let(:provider) { User.find_by_email email }
 			
 				it "displays confirmation notice with tracking parameters" do
-					expect(response).to redirect_to '/member/awaiting_confirmation?email_pending_confirmation=t&parent_newsletters_stage1=t&provider=t'
+					expect(response).to redirect_to '/member/awaiting_confirmation?email_pending_confirmation=t&parent_newsletters=t&provider=t'
 				end
 				
 				it "has a profile" do
