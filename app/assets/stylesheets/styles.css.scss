@@ -2971,8 +2971,10 @@ ul.links-list > li{
 
 			@media screen and (max-width: $break-6-2) {
 				width: 100%;
-				margin-top: 0;
 				border-right: none !important;
+				
+				&:first-of-type { margin-bottom: 0; }
+				& + .col2 { margin-top: 20px; }
 			}
 		}
 		hr{ margin: 0; }
