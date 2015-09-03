@@ -13,7 +13,7 @@ en:
       phone: '(415) 250-2512'
     name: 'Kinstantly'
     tagline: 'Raising great kids just got easier'
-    short_company_description_html: 'Find the best family services &mdash; from child care to college admissions advisors &mdash; where and when you need them.'
+    short_company_description_html: 'Kinstantly turns problems into solutions and makes family life more rewarding&mdash;at every stage of parenting.'
     short_tagline: 'Raising great kids just got easier'
     alpha_note: "We're launching soon! But if you'd like a sneak peek, sign up below."
   email_domain: 'kinstantly.com'
@@ -818,11 +818,11 @@ en:
       username_inline_tip: 'It will display next to any reviews you write and must contain at least four characters—letters and numerals only, no spaces. Examples: Mama2000, DadEO.'
       username_tip: "This will display next to any reviews you write and must contain at least four characters - letters and numerals only, no spaces. Examples: Mama2000, DadEO" 
       password_tip: 'It must contain at least  %{minimum} characters.'
-      parent_tag: "I'm a parent or planning a family"
+      parent_tag: "I'm a parent or other family member"
       provider_tag: "I provide services to families"
       parent_provider_tag: "I'm both a parent and a provider"
       registration_special_code_tip: 'Have a promotional code? Enter it here.'
-      parent_newsletters_prompt: 'Get the weekly emails parents love!'
+      parent_newsletters_prompt: 'Get the best of Kinstantly delivered to your inbox once a week!'
       parent_newsletters_hint: 'Check one or more editions:'
       provider_newsletters_prompt: 'Get our monthly newsletter for providers'
     specialty:

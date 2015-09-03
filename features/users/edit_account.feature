@@ -49,7 +49,7 @@ Feature: Edit account
 	Scenario: Change news settings as a client
 		Given I am logged in as a client user
 			And I am on my contact preferences edit page
-		When I check "Get the weekly emails parents love"
+		When I check "Get the best of Kinstantly"
 			And I save the account settings
 		Then I should see a subscriptions edited message
 
@@ -57,7 +57,7 @@ Feature: Edit account
 		Given I am logged in as a provider
 			And I am on my contact preferences edit page
 		When I check "Get our monthly newsletter for providers"
-			And I check "Get the weekly emails parents love"
+			And I check "Get the best of Kinstantly"
 			And I save the account settings
 		Then I should see a subscriptions edited message
 

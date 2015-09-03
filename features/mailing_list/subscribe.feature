@@ -67,12 +67,12 @@ Feature: Subscribe to newsletters and/or marketing emails
 	# 	Then I should see "Check one or more editions" on the page
 
 	Scenario: User subscribes from blog and is fully subscribed before confirmation
-		When I sign up as a parent on the blog site and subscribe to the "parent_newsletters" mailing list
+		When I sign up on the blog site with valid data
 			And I see an unconfirmed account message
 		Then I should only be subscribed to the "parent_newsletters" mailing list and synced to the list server
 
 	Scenario: User subscribes from blog and is fully subscribed after confirmation
-		When I sign up as a parent on the blog site and subscribe to the "parent_newsletters" mailing list
+		When I sign up on the blog site with valid data
 			And I open the email with subject "Confirm your Kinstantly account"
 		 	And I follow "confirm" in the email
 		Then I should only be subscribed to the "parent_newsletters" mailing list and synced to the list server

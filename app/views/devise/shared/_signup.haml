@@ -24,12 +24,7 @@
 	= f.hidden_field :signed_up_for_mailing_lists
 	
 	- if @signing_up_for_newsletter
-		.signup-for-newsletters
-			%p.checkbox-header= parent_newsletters_hint
-			%ul.checkbox
-				%li
-					= f.check_box :parent_newsletters
-					= f.label :parent_newsletters
+		= f.hidden_field :parent_newsletters, value: '1'
 	.email.text_field
 		- unless @signing_up_from_blog
 			- if @signing_up_for_newsletter_onsite
@@ -86,20 +81,21 @@
 		= f.hidden_field :is_provider, value: ''
 	- else
 		.radio_buttons
-			%label
-				= f.radio_button :is_provider, ''
-				= parent_tag
-			%br
-			%label
-				- if params[:is_provider].present?
-					= f.radio_button :is_provider, '1', checked: true
-				- else
-					= f.radio_button :is_provider, '1'
-				= provider_tag
-			%br
-			%label
-				= f.radio_button :is_provider, '2'
-				= parent_provider_tag
+			.checkbox
+				%label
+					= f.radio_button :is_provider, ''
+					= parent_tag
+			.checkbox
+				%label
+					- if params[:is_provider].present?
+						= f.radio_button :is_provider, '1', checked: true
+					- else
+						= f.radio_button :is_provider, '1'
+					= provider_tag
+			.checkbox
+				%label
+					= f.radio_button :is_provider, '2'
+					= parent_provider_tag
 
 	- unless @signing_up_for_newsletter
 		.newsletters-signup
