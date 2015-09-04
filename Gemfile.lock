@@ -18,7 +18,7 @@ GIT
 
 GIT
   remote: https://github.com/dgynn/paperclip.git
-  revision: 9f96d829053725a76fe295b306c988f555f31929
+  revision: c77ca6343699af2ed9435fa7b63d59cb9843af53
   branch: interpolations_tuning
   specs:
     paperclip (4.3.0)
@@ -483,4 +483,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   1.10.5
+   1.10.6
