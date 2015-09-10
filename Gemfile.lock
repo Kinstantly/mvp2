@@ -86,6 +86,7 @@ GEM
     bcrypt (3.1.10)
     benchmark-ips (2.2.0)
     builder (3.0.4)
+    byebug (6.0.2)
     cache_digests (0.3.1)
       actionpack (>= 3.2)
       thread_safe
@@ -417,6 +418,7 @@ PLATFORMS
 DEPENDENCIES
   auto_strip_attributes
   aws-sdk (~> 1.6)
+  byebug
   cache_digests
   cancancan
   capybara (~> 2.4)

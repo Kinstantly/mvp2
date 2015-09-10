@@ -191,9 +191,9 @@ gem 'dalli'
 # https://github.com/rails/cache_digests
 gem 'cache_digests'
 
-# To use debugger
-# Ruby version 2.2.0 is not supported as of 19-Feb-2015.
-#gem 'debugger', group: :development
+# The byebug debugger.
+# Example: bundle exec rails server --port=5000
+gem 'byebug', group: :development
 
 # Makes running your Rails app easier. Based on the ideas behind 12factor.net
 # https://github.com/heroku/rails_12factor
