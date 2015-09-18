@@ -26,6 +26,18 @@ describe Users::SessionsController, :type => :controller do
 				expect(response).to render_template :new
 				expect(flash[:alert]).to have_content /invalid.*password/i
 			end
+			
+			it 'can not access forbidden attributes' do
+				post :create, user: { email: parent.email, password: parent.password, failed_attempts: 5 }
+				expect(response).to redirect_to '/'
+				expect(parent.reload.failed_attempts).to eq 0 # should be forbidden and thus unchanged
+			end
+			
+			it 'can not access forbidden attributes' do
+				post :create, user: { email: parent.email, password: "#{parent.password}x", failed_attempts: 5 }
+				expect(response).to render_template :new
+				expect(parent.reload.failed_attempts).to eq 1 # should be forbidden and thus reflect only 1 failed attempt
+			end
 		end
 		
 		describe "DELETE sessions" do

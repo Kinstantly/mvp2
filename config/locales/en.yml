@@ -582,6 +582,7 @@ en:
         payment_authorization_link: 'Authorize payments'
         payment_info_link: 'Learn more'
         payment_promo: 'This provider accepts credit card payments.'
+        profile_is_owned: 'Profile is owned by'
         profile_is_owned_by: 'Profile is owned by %{owner}'
         profile_is_public_on_private_site: 'Profile is public on private site'
         profile_is_published: 'Profile is published'

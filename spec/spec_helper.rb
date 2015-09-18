@@ -91,19 +91,15 @@ Spork.prefork do
     end
 
     # Specs for describing behavior while running as a private site.
-    config.around(:example) do |example|
-      if example.metadata[:private_site]
-        previous_state = Rails.configuration.running_as_private_site
-        Rails.configuration.running_as_private_site = true
-        # Object.send(:remove_const, 'User')
-        # load 'user.rb'
-        example.run
-        Rails.configuration.running_as_private_site = previous_state
-        # Object.send(:remove_const, 'User')
-        # load 'user.rb'
-      else
-        example.run
-      end
+    config.around(:example, private_site: true) do |example|
+      previous_state = Rails.configuration.running_as_private_site
+      Rails.configuration.running_as_private_site = true
+      # Object.send(:remove_const, 'User')
+      # load 'user.rb'
+      example.run
+      Rails.configuration.running_as_private_site = previous_state
+      # Object.send(:remove_const, 'User')
+      # load 'user.rb'
     end
   end
 

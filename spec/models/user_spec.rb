@@ -342,38 +342,6 @@ describe User, :type => :model do
 		end
 	end
 	
-	context "updating attributes" do
-		let(:user) { FactoryGirl.create :user, profile: nil }
-		let(:newsletter_subscriptions) {
-			{
-				provider_newsletters: '1',
-				parent_newsletters: '1', 
-			}
-		}
-		
-		it "does not require the current password to update newsletter subscriptions" do
-			expect(user.update_attributes(newsletter_subscriptions, as: :passwordless)).to be_truthy
-		end
-		
-		it "requires the current password to update the email address" do
-			expect {
-				user.update_attributes({email: 'leontyne@example.org'}, as: :passwordless)
-			}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-		end
-		
-		it "requires the current password to update the password" do
-			expect {
-				user.update_attributes({password: 'ju4&8gswopl3'}, as: :passwordless)
-			}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-		end
-		
-		it "does not update an attribute that is not accessible at all" do
-			expect {
-				user.update_attributes({failed_attempts: 0})
-			}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-		end
-	end
-	
 	it "automatically strips leading and trailing whitespace from selected attributes" do
 		user = User.new
 		username = 'SteveEarle'

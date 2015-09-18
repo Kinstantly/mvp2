@@ -47,19 +47,19 @@ Mvp2::Application.routes.draw do
 	get 'edit_subscriptions' => 'users#edit_subscriptions', as: 'edit_subscriptions'
 	put 'update_subscriptions' => 'users#update_subscriptions'
 	
-	# When profile is accessed via user.
-	# Only current_user should have access to the profile.
-	match 'edit_user_profile' => 'users#edit_profile'
-	match 'update_user_profile' => 'users#update_profile'
-	match 'view_user_profile' => 'users#view_profile'
+	# DEPRECATED: When profile is accessed via user.
+	# match 'edit_user_profile' => 'users#edit_profile'
+	# match 'update_user_profile' => 'users#update_profile'
+	# match 'view_user_profile' => 'users#view_profile'
+	
+	# A provider claims their profile via the users controller.
+	# But has no other access to their profile via the users controller.
 	match 'claim_profile/:token' => 'users#claim_profile', as: :claim_user_profile
 	match 'claim_profile/:token/confirm' => 'users#force_claim_profile', as: :force_claim_user_profile
-	# Except admin can see all profiles.
-	#match 'users' => 'users#index'
 	
-	# Admin can list all and edit/update individual profiles.
+	# Admin can list and view user accounts.
 	# User can update profile_help attribute.
-	resources :users, only: [:index, :show, :edit, :update] do
+	resources :users, only: [:index, :show] do
 		member do
 			put 'update_profile_help'
 		end

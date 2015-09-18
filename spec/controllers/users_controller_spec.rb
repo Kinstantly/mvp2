@@ -46,13 +46,38 @@ describe UsersController, :type => :controller do
 			it "should not update the email address" do
 				expect {
 					put :update_subscriptions, user: {email: 'wrong@example.org'}
-				}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+				}.to_not change { parent.reload.email }
 			end
 			
 			it "should not update the password" do
 				expect {
 					put :update_subscriptions, user: {password: 'noway2change', password_confirmation: 'noway2change'}
-				}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+				}.to_not change { parent.reload.encrypted_password }
+			end
+		end
+		
+		context 'trying to access the user admin interface' do
+			describe "GET users show" do
+				it 'should not allow the parent to see their user admin record' do
+					get :show, id: parent.id
+					expect(response).not_to render_template('show')
+				end
+			end
+			
+			describe "GET users edit" do
+				it 'should not allow the parent to edit their user admin record' do
+					expect {
+						get :edit, id: parent.id
+					}.to raise_error ActionController::RoutingError
+				end
+			end
+			
+			describe "PUT users update" do
+				it 'should not allow the parent to update their user admin record' do
+					expect {
+						put :update, id: parent.id, user: {username: 'new_username'}
+					}.to raise_error ActionController::RoutingError
+				end
 			end
 		end
 	end
@@ -86,47 +111,19 @@ describe UsersController, :type => :controller do
 			it "should not update the email address" do
 				expect {
 					put :update_subscriptions, user: {email: 'wrong@example.org'}
-				}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+				}.to_not change { provider.reload.email }
 			end
 			
 			it "should not update the password" do
 				expect {
 					put :update_subscriptions, user: {password: 'noway2change', password_confirmation: 'noway2change'}
-				}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-			end
-		end
-	
-		describe "GET view_profile" do
-			it "should not show the profile via the users controller" do
-				get :view_profile
-				expect(response).not_to render_template('view_profile')
+				}.to_not change { provider.reload.encrypted_password }
 			end
 		end
 	
 		describe "GET users index" do
 			it "does not render the view" do
 				expect(response).not_to render_template('index')
-			end
-		end
-	
-		describe "GET edit_profile" do
-			it "should not render the profile edit view via the users controller" do
-				get :edit_profile
-				expect(response).not_to render_template('edit_profile')
-			end
-		end
-	
-		describe "POST update_profile" do
-			it "should not update the profile via the users controller" do
-				post :update_profile, user: FactoryGirl.attributes_for(:user)
-				expect(response).not_to redirect_to(controller: 'users', action: 'view_profile')
-				expect(flash[:alert]).not_to be_nil
-			end
-		
-			it "should not update a profile attribute via the users controller" do
-				new_first_name = 'Billie Joe'
-				post :update_profile, user: FactoryGirl.attributes_for(:user, profile: {first_name: new_first_name})
-				expect(assigns[:profile].first_name).not_to eq new_first_name
 			end
 		end
 
@@ -215,14 +212,35 @@ describe UsersController, :type => :controller do
 				end
 			end
 		end
-
-		describe "GET users show" do
-			let(:client_user) { FactoryGirl.create :client_user }
 		
-			context "as an expert_user attempting to access a user account" do
-				it "does not render the view" do
+		context 'trying to access the user admin interface' do
+			let(:client_user) { FactoryGirl.create :client_user }
+			
+			describe "GET users show" do
+				it 'should not allow the provider to see their user admin record' do
+					get :show, id: provider.id
+					expect(response).not_to render_template('show')
+				end
+				
+				it "should not allow the provider to access another user admin record" do
 					get :show, id: client_user.id
 					expect(response).not_to render_template('show')
+				end
+			end
+			
+			describe "GET users edit" do
+				it 'should not allow the provider to edit their user admin record' do
+					expect {
+						get :edit, id: provider.id
+					}.to raise_error ActionController::RoutingError
+				end
+			end
+			
+			describe "PUT users update" do
+				it 'should not allow the provider to update their user admin record' do
+					expect {
+						put :update, id: provider.id, user: {username: 'new_username'}
+					}.to raise_error ActionController::RoutingError
 				end
 			end
 		end

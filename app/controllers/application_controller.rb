@@ -151,6 +151,8 @@ class ApplicationController < ActionController::Base
 		end
 	end
 	
+	# Devise's wrapper for strong parameters.
+	# Devise's default for sign_in works for us.
 	def configure_permitted_devise_parameters
 		devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(*User::PASSWORD_ACCESSIBLE_ATTRIBUTES) }
 		devise_parameter_sanitizer.for(:account_update) { |u| u.permit(*User::PASSWORD_ACCESSIBLE_ATTRIBUTES) }

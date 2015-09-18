@@ -2,6 +2,12 @@ class ActiveRecord::Base
 	
 	include SiteConfigurationHelpers
 	
+	# The default list of attributes that are accessible by mass assignment.
+	DEFAULT_ACCESSIBLE_ATTRIBUTES = []
+	def default_accessible_attributes
+		self.class::DEFAULT_ACCESSIBLE_ATTRIBUTES
+	end
+	
 	def join_present_attrs(separator=' ', *attrs)
 		attrs.map { |attr|
 				self.try(attr).presence

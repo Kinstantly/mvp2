@@ -27,7 +27,7 @@ class UsersController < ApplicationController
 	end
 	
 	def update_subscriptions
-		if @user.update_attributes(params[:user], as: :passwordless)
+		if @user.update_attributes(user_params)
 			set_flash_message :notice, :subscriptions_updated
 			redirect_to action: :edit_subscriptions
 		else
@@ -36,15 +36,16 @@ class UsersController < ApplicationController
 		end
 	end
 
-	def update_profile
-		if @user.update_attributes(params[:user], as: updater_role)
-			set_flash_message :notice, :profile_updated
-			redirect_to action: :view_profile
-		else
-			set_flash_message :alert, :profile_update_error
-			render action: :edit_profile
-		end
-	end
+	# # DEPRECATED profile update via this controller.
+	# def update_profile
+	# 	if @user.update_attributes(params[:user], as: updater_role)
+	# 		set_flash_message :notice, :profile_updated
+	# 		redirect_to action: :view_profile
+	# 	else
+	# 		set_flash_message :alert, :profile_update_error
+	# 		render action: :edit_profile
+	# 	end
+	# end
 	
 	# Try to claim the profile specified by the token parameter.
 	# Do not use set_up_user filter because we don't want to build a profile.
@@ -70,7 +71,7 @@ class UsersController < ApplicationController
 
 	def update_profile_help
 		params[:user].slice!(:profile_help)
-		if current_user.update_attributes(params[:user])
+		if current_user.update_attributes(user_params)
 			@update_succeeded = true
 		end
 		render template: "profiles/profile_help_formlet_update"
@@ -84,5 +85,9 @@ class UsersController < ApplicationController
 			@user.build_profile unless @user.profile
 			@profile = @user.profile
 		end
+	end
+	
+	def user_params
+		params.require(:user).permit(*User::PASSWORDLESS_ACCESSIBLE_ATTRIBUTES)
 	end
 end

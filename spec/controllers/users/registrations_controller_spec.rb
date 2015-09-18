@@ -39,6 +39,19 @@ describe Users::RegistrationsController, :type => :controller do
 					expect(user.parent_newsletters).to be_falsey
 					expect(user.provider_newsletters).to be_falsey
 				end
+				
+				it 'can not access forbidden attributes' do
+					post :create, user: {
+						email: email,
+						password: new_password,
+						password_confirmation: new_password,
+						failed_attempts: 5
+					}
+					
+					user = assigns[:user].reload
+					expect(user.email).to eq email
+					expect(user.failed_attempts).to eq 0 # should be forbidden and thus unchanged
+				end
 			end
 		end
 	
@@ -63,6 +76,14 @@ describe Users::RegistrationsController, :type => :controller do
 			it "fails to update email address with single quote" do
 				put :update, user: {email: email+"'", current_password: mimi.password}
 				expect(response).to render_template('edit')
+			end
+			
+			it 'can not access forbidden attributes' do
+				new_username = mimi.username + '_new'
+				put :update, user: {username: new_username, failed_attempts: 5, current_password: mimi.password}
+				user = assigns[:user].reload
+				expect(user.username).to eq new_username
+				expect(user.failed_attempts).to eq 0 # should be forbidden and thus unchanged
 			end
 			
 			context "with mailing lists" do
