@@ -44,5 +44,6 @@ center,centre
 theater,theatre
 adhd,ahdh
 obgyn,ob gyn,obstetrics,gynecology,gynecologist,obstetrist
-psychotherapy,psychotherapist
+psychiatrist,psychiatry,psychologist,psychology,psychotherapy,psychotherapist
 babysitter,babysitting,baby sitter,baby sitting
+daycare,day care
