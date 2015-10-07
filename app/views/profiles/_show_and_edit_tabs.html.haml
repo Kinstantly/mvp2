@@ -22,3 +22,5 @@
 					ui.panel.html my_vars.tab_load_error_message
 			load: (event, ui) ->
 				window.post_load_init()
+				# Sometimes the inactive tab gets stuck in the loading state and is therefore unclickable.
+				$('#tabs li.ui-tabs-loading').removeClass('ui-tabs-loading')
