@@ -7,7 +7,14 @@ Feature: Suggest a provider
 	Scenario: Bring up provider suggestion form
 		Given I am on the search results page
 		When I click on "Tell us"
-		Then I should see "Thanks for helping us find another great provider" on the page
+		Then I should see "click here" on the page
+			And I should see "would like to be included in our directory" on the page
+
+	Scenario: I am the missing provider, so I'll sign up
+		Given I am on the search results page
+		When I click on "Tell us"
+			And I click on "click here"
+		Then I should land on the provider sign-up page
 
 	Scenario: Submit provider suggestion form
 		Given I am on the search results page

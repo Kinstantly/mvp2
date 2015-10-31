@@ -699,7 +699,8 @@ en:
         description_tip: 'Just a line or two about the provider to help us find the right one'
         done: 'Done'
         new_header: 'Suggest a Provider'
-        new_intro: "Thanks for helping us find another great provider. (Your personal information won't be shared or made public.)"
+        new_intro_html: "(Or <a href='%{url}'>click here</a> if you're a provider&mdash;and would like to be included in our directory.)"
+        new_intro_signed_in: 'Thanks for helping us find another great provider.'
         provider_name_label: "%{attribute_name} you're recommending"
         provider_url_label: "%{attribute_name}, if you know it"
         submit: 'Submit'

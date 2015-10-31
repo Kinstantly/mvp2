@@ -1,5 +1,8 @@
 .close-popover-button.cancel
 %h1= t 'views.provider_suggestion.edit.new_header'
 #provider_suggestion_form.generic_form
-	%p= t 'views.provider_suggestion.edit.new_intro'
+	- if user_signed_in?
+		%p= t 'views.provider_suggestion.edit.new_intro_signed_in'
+	- else
+		%p= t 'views.provider_suggestion.edit.new_intro_html', url: provider_sign_up_path
 	= render partial: 'form'
