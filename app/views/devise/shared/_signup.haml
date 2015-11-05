@@ -12,7 +12,6 @@
 - parent_newsletters_prompt	= t "views.sign_up.parent_newsletters_prompt"
 - parent_newsletters_hint	= t "views.sign_up.parent_newsletters_hint"
 - provider_newsletters_prompt	= t "views.sign_up.provider_newsletters_prompt"
-- inline_tip = inline_tip === false ? inline_tip : true
 
 - unless embedded_in
 	%h1= t "views.sign_up.#{whoami}_title"
@@ -33,8 +32,6 @@
 				= f.label :email
 			%br
 		= f.email_field :email, placeholder: ( @signing_up_from_blog ? 'Enter email address' : ('Enter your email address' if @signing_up_for_newsletter) )
-		- if inline_tip
-			%p.note.grey_text= email_tip
 	-# - if @signing_up_for_newsletter
 	-# 	.postal_code.text_field
 	-# 		= f.text_field :postal_code, placeholder: 'Enter ZIP code'
@@ -48,14 +45,10 @@
 	-# 			%p.note.grey_text= username_inline_tip
 	.password.text_field
 		- unless @signing_up_from_blog
-			- if @signing_up_for_newsletter_onsite
-				= f.label :password,  'Password (must be at least 8 characters):'
-			- else
-				= f.label :password
+			= f.label :password
+			%span= "(#{password_tip})"
 			%br
 		= f.password_field :password, autocomplete: 'off', placeholder: ( @signing_up_from_blog ? "Enter password" : ("Choose a password" if @signing_up_for_newsletter))
-		- if inline_tip
-			%p.note.grey_text= password_tip
 	-#
 	-# .password_confirmation.text_field
 	-# 	- unless @signing_up_for_newsletter
@@ -80,29 +73,33 @@
 		-# Keep it simple and sign them up as a parent.
 		= f.hidden_field :is_provider, value: ''
 	- else
-		.radio_buttons
-			.checkbox
-				%label
-					= f.radio_button :is_provider, ''
-					= parent_tag
-			.checkbox
-				%label
-					- if params[:is_provider].present?
-						= f.radio_button :is_provider, '1', checked: true
-					- else
-						= f.radio_button :is_provider, '1'
-					= provider_tag
-			.checkbox
-				%label
-					= f.radio_button :is_provider, '2'
-					= parent_provider_tag
+		= f.hidden_field :is_provider, value: (is_provider ? '1' : '')
+		-# .radio_buttons
+		-# 	.checkbox
+		-# 		%label
+		-# 			= f.radio_button :is_provider, ''
+		-# 			= parent_tag
+		-# 	.checkbox
+		-# 		%label
+		-# 			- if params[:is_provider].present?
+		-# 				= f.radio_button :is_provider, '1', checked: true
+		-# 			- else
+		-# 				= f.radio_button :is_provider, '1'
+		-# 			= provider_tag
+		-# 	.checkbox
+		-# 		%label
+		-# 			= f.radio_button :is_provider, '2'
+		-# 			= parent_provider_tag
 
 	- unless @signing_up_for_newsletter
 		.newsletters-signup
 			-# %h2= parent_newsletters_prompt
 			.checkbox
 				-# %p= parent_newsletters_hint
-				= f.check_box :parent_newsletters
+				- if is_provider
+					= f.check_box :parent_newsletters
+				- else
+					= f.check_box :parent_newsletters, checked: 'checked'
 				= f.label :parent_newsletters, parent_newsletters_prompt
 				%br
 			#provider-newsletters-signup{:class => ("hidden" unless (is_provider || claiming_profile))}

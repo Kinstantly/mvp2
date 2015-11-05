@@ -1,11 +1,12 @@
 - @body_class ||= 'interior'
+- @home_link_options ||= {}
 - content_for :head_before_js do
 	= stylesheet_link_tag "interior", media: "screen, handheld, print"
 - content_for :body_header do
 	- unless @hide_masthead
 		#masthead.container
 			%h1
-				= home_link
+				= home_link @home_link_options
 			%nav#menu
 				%button.menu Menu
 				%ul

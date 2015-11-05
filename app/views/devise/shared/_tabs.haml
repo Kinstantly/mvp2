@@ -1,13 +1,14 @@
+- is_provider = params[:is_provider].present? || resource.is_provider?
 - is_private_alpha = params[:is_private_alpha].present?
 - default_tab = controller.controller_name == 'registrations' ? 0 : 1;
 - company_name = "#{t('company.name')}"
-- short_company_description = t 'company.short_company_description_html'
 - alpha_note = "#{t('company.alpha_note')}"
+- @home_link_options = {class: 'logo_no_tagline'} unless is_provider
 
 #login_panel
 	.container.positioner
 		.company_desc
-			%h2= short_company_description
+			%h2= is_provider ? t('views.sign_up.provider_prompt_html') : t('company.short_tagline')
 			-if is_private_alpha
 				%p.alpha_note= alpha_note
 		#tabs.ui-tabs.ui-widget.ui-widget-content.ui-corner-all

@@ -28,6 +28,10 @@
 				@include scale(width, 185);
 				@include scale(min-height, 50);
 				float: left;
+				
+				&.logo_no_tagline {
+					background: transparent url('#{$image-path}/logo_no_tagline_directorypage.png') no-repeat;
+				}
 			}
 		}
 		#findProvider {
@@ -2706,7 +2710,8 @@ ul.links-list > li{
 			h2 {
 				font-family: $header-font-stack;
 				@include scale(font-size, 24);
-				text-indent: -0.5em;
+				// text-indent: -0.5em;
+				text-align: center;
 				letter-spacing: 0.03em;
 				line-height: 1.2em;
 				color: $default_color;

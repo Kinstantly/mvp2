@@ -60,8 +60,8 @@ module ApplicationHelper
 		link_to body, provider_sign_up_path, options unless user_signed_in?
 	end
 	
-	def home_link
-		link_to "#{company_name}", root_path
+	def home_link(options={})
+		link_to "#{company_name}", root_path, options
 	end
 	
 	def home_link_with_tagline
