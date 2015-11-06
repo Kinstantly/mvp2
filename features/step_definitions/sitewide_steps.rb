@@ -31,6 +31,10 @@ When /^I check "(.*?)"$/ do |field|
 	check field
 end
 
+When /^I uncheck "(.*?)"$/ do |field|
+	uncheck field
+end
+
 When /^I choose the "(.*?)" radio button$/ do |button|
 	choose button
 end

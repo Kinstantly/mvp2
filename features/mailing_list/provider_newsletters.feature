@@ -12,17 +12,20 @@ Feature: Provider marketing tips mailing list
 		When I visit the "/provider/sign_up" page
 			And I enter "provider@example.org" in the "Email" field
 			And I enter "aitle459fjcm.%" in the "Password" field
-			And I check "Get our monthly newsletter for providers"
+			And I check "Get occasional tips on how to grow your business"
 			And I click on the sign-up button
 			And I see an unconfirmed account message
 		Then provider@example.org should only be subscribed to the "provider_newsletters" mailing list and synced to the list server
 
 	Scenario: Parent should not be allowed to subscribe to the marketing tips list
-		When I visit the "/provider/sign_up" page
+		When I visit the "/users/sign_up" page
+		Then I should see "Get a weekly roundup of our best parenting stories" on the page
+			And I should not see "Get occasional tips on how to grow your business" on the page
+
+	Scenario: Parent should not be subscribed to the marketing tips list
+		When I visit the "/users/sign_up" page
 			And I enter "parent@example.org" in the "Email" field
 			And I enter "aitle459fjcm.%" in the "Password" field
-			And I check "Get our monthly newsletter for providers"
-			And I choose the "I'm a parent" radio button
 			And I click on the sign-up button
 			And I see an unconfirmed account message
-		Then parent@example.org should not be subscribed to any mailing lists
+		Then parent@example.org should only be subscribed to the "parent_newsletters" mailing list and synced to the list server
