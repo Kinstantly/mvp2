@@ -1,0 +1,592 @@
+// Styles for the home page only.
+
+@import 'sitewide';
+
+body {
+	overflow-x: hidden;
+}
+
+#header {
+	#masthead {
+		@include scale(margin-top, 18);
+		@extend %clearfix;
+		
+		h1:before {
+			content: "";
+			display: block;
+			padding-top: 13.9830508%;
+			
+			@media (max-width: 48em) {
+				padding-top: 27.027027%;
+			}
+		}
+		
+		h1 {
+			width: 64.4827586%;
+			@include scale(max-width, 475);
+			position: relative;
+			float: left;
+			@media (max-width: 38em) {
+				@include scale(margin-bottom, 18,16);
+			}
+			
+			a {
+				position: absolute;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				text-indent: -999em;
+				background: transparent url('#{$image-path}/kinstantly-logo-homev2.png') no-repeat;
+				@include background-size(contain,center);
+				transform: rotate( .0001deg ); // This is a stupid fix for Firefox making image blurry
+				
+				@media (max-width: 48em) {
+					background: transparent url('#{$image-path}/kinstantly-logo-small-tag.png') no-repeat;
+					@include background-size(auto,left);
+				}
+				@media (max-width: 38em) {
+					@include background-size(cover,center);
+				}
+			}
+		}
+		#menu {
+			float: right;
+			margin: 1em 0;
+			@include scale(width, 32, 11);
+			@include scale(height, 28, 11);
+			overflow: visible;
+			position: relative;
+			/*z-index: 100;*/
+			
+			/*@media (max-width: 36em) {
+				position: inherit;
+			}*/
+			
+			.menu {
+				@include scale(width, 86, 11);
+				@include scale(height, 32, 11);
+				@include background-size (auto,right);
+				background: transparent url(#{$image-path}/Kinstantly_menu.png) no-repeat;
+				-ms-behavior: none !important;
+				@include border-radius(0);
+				border: none;
+				text-indent: -999em;
+				padding: 0;
+				float: right;
+				
+				@media (max-width: 36em) {
+					@include scale(width, 32, 11);
+					@include scale(height, 32, 11);
+					background: transparent url(#{$image-path}/menu-button-sm.svg) no-repeat;
+					@include background-size (cover,center);
+				}
+			
+				&:hover {
+					cursor: pointer;
+				}
+			
+			}
+			ul {
+				display: none;
+				@include scale(min-width, 170);
+				position: absolute;
+				@include scale(top, 32);
+				@include scale(right, 0);
+				border: 1px solid $kinstantly_light_gray;
+				background: $white;
+				z-index: 100; 
+				
+				@media (max-width: 36em) {
+					max-width: none;
+					@include scale(left, -167);
+					/*min-width: 93.75vw;
+					width: 93.75vw ; 
+					left: 3.125% !important;
+					top: 3.5em !important;*/
+				}
+				
+				li {
+					@include scale(font-size, 14, 16);
+					line-height: 1em;
+					border-bottom: 1px solid $kinstantly_light_gray;
+					
+					&:last-child {
+						border-bottom: none;
+					}
+					
+					a {
+						display: block;
+						@include scale(padding, 10, 14);
+					}
+				}
+			}
+			&:hover ul {
+				display: block;
+			}
+		}
+	}
+}
+
+#banner {
+	max-width: 71.25em;
+	width: 100%;
+//	@include scale(height, 490); 
+	margin: 0.25em auto 0 auto;
+	position: relative;
+	font-family: $font-stack;
+	overflow: visible;
+	
+		@media (max-width: 48em) {
+			background: none;
+			height: auto;
+		}
+	
+	.container {
+		height: 100%;
+		width: 100%;
+		max-width: 62.5em;
+		@include box-sizing;
+		position: relative;
+		overflow: visible;
+		clear: left;
+		@include scale(padding-top, 20);
+	
+		.banner-header {
+//			color: $white;
+//			@include text-shadow(2px, 1px, 9px, rgba(0,0,0,0.7));
+//			position: absolute;
+//			bottom: 41.837%;
+			@include scale(padding-right, 20);
+			z-index: 4;
+			
+//			@media (max-width: 48em) {
+				position: relative;
+				top: auto;
+				left: auto;
+				right: auto;
+				bottom: auto;
+				@include text-shadow(0, 0, 0, rgba(0,0,0,0.0));
+				@include scale(margin-bottom, 20);
+//			}
+			
+			h1 {
+				font-family: $header-font-stack;
+				@include scale(font-size, 40);
+				letter-spacing: 0.05em;
+//				font-weight: 700;
+				line-height: normal;
+				
+					text-align: center;
+					font-weight: 500;
+					color: $blue;
+				@media (max-width: 48em) {
+					@include scale(font-size, 30);
+				}
+				@media (max-width: 36em) {
+					@include scale(font-size, 20);
+				}
+			}
+			h2 {
+				font-family: $header-font-stack;
+				@include scale(font-size, 22);
+				letter-spacing: 0.05em;
+//				font-weight: 700;
+				line-height: 1.2em;
+				
+					text-align: center;
+					font-weight: 500;
+					color: $default_color;
+				@media (max-width: 48em) {
+					@include scale(font-size, 19);
+				}
+				@media (max-width: 36em) {
+					@include scale(font-size, 16);
+				}
+			}
+		}
+	
+		#findProvider {
+//				position: absolute;
+//				bottom: 26.938%;
+				font-family: $font-stack;
+				box-sizing: border-box;
+//				width: 93%;
+				max-width: 44em;
+				background: $medium-gray;
+				border: 1px solid $dark-gray;
+				@include border-radius (0.1875em);
+				@include scale(padding, 7);
+				z-index: 4;
+				
+//				@media (max-width: 48em) {
+					position: relative;
+					top: auto;
+					left: auto;
+					right: auto;
+					bottom: auto;
+					width: 100%;
+					@include scale(margin-bottom, 28);
+//				}
+	
+				div {
+					@include box-sizing;
+					@include scale(padding, 11 14, 18);
+					font-size: 1.125em;
+					@include border-radius (.1818em);
+					@include scale(margin-right, 3, 18);
+					@include box-shadow(1px, 1px, 2px, rgba(0,0,0,0.4), true);
+					border-bottom: 1px solid #D7D7D7;
+					position: relative;
+					background: #FFF;
+					display: inline-block;
+					width: calc(50% - 1.555555em);
+					line-height: 1em;
+					@media (max-width: 48em) {
+						width: 100%;
+						margin-bottom: 0.277778em;
+					}
+				
+						&:last-of-type {
+							@media (max-width: 48em) {
+							width: calc(100% - 2.75em);
+							margin-bottom: 0;
+						}
+					}
+					
+					label {
+						@include scale(margin-right, 6,18);
+						font-weight: bold;
+						color: #777;
+						display: inline-block;
+					}
+					
+					input {
+						background: transparent;
+						color: $search_input_color;
+						display: inline-block;
+						width: calc(100% - 2.9em);
+					}
+				}
+				#provider_search_button {
+					background: $kinstantly_pink url(#{$image-path}/search.svg) center center no-repeat;
+					background-size: cover;
+					text-indent: -999em;
+					background-size: 66.666%;
+					@include border-radius(0.2143em);
+					@include scale(width, 42,24);
+					@include scale(height, 43,24);
+					@include box-sizing;
+					float: right;
+					color: $white;
+					font-size: 1.5em;
+					font-weight: normal;
+					
+					&:hover {
+						cursor: pointer;
+						background-color: lighten($kinstantly_pink, 10%);
+					}
+				}
+		}
+	}
+	a.rslides_nav {
+		text-indent: -999em;
+		position: absolute;
+		top: 46.3265306%;
+		@include scale(width, 23);
+		@include scale(height, 33);
+		z-index: 50;
+		
+		@media (max-width: 67.25em) {
+			top: 21.3265306%;
+		}
+		
+		@media (max-width: 48em) {
+			display: none;
+		}
+		
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+	a.prev {
+		background: url(#{$image-path}/home-prev.png) no-repeat;
+		left: 2.43333%;
+	}
+	a.next {
+		background: url(#{$image-path}/home-next.png) no-repeat;
+		right: 2.43333%;
+	}
+	#blog-teasers li {
+		@include scale(padding, 24);
+		clear: left;
+		
+		@media (max-width: 48em) {
+			@include scale(padding-top, 0);
+		}
+		.teaser-image {
+			float: left;
+			width: 50%;
+			margin-right: 24px;
+			
+			@media (max-width: 48em) {
+				float: none;
+				width: 95%;
+				margin-right: auto;
+			}
+			
+			img {
+				width: 100%;
+			}
+		}
+		.caption {
+			display: inline;
+			font-size: 150%;
+			
+			@media (max-width: 48em) {
+				display: block;
+				font-size: 100%;
+			}
+		}
+	}
+	.banner {
+	  position: absolute;
+	  list-style: none;
+	  overflow: visible;
+	  width: 100%;
+	  padding: 0;
+	  margin: 0;
+	  z-index: 1;
+	  top: 0;
+	  left: 0;
+	  
+	  @media (max-width: 48em) {
+			display: block;
+			position: relative;
+			width: 100%;
+			margin-left: auto; margin-right: auto;
+			overflow: hidden;
+		}
+	
+		li {
+		  -webkit-backface-visibility: hidden;
+		  position: absolute;
+		  display: none;
+		  width: 100%;
+		  left: 0;
+		  top: 0;
+		  bottom: 0;
+		  right: 0;
+		  height: auto;
+		  overflow: visible;
+		  
+		  @media (max-width: 48em) {
+		  	position: relative;
+		  	overflow: hidden;
+		  	@include scale(padding, 0 20);
+		  	@include box-sizing;
+		  }
+		 
+		  &:first-child {
+		  display: block;
+		  height: 100% !important;
+		  }
+	
+			img.slide {
+			  display: block;
+			  height: auto;
+			  width: 1140px;
+			  border: 0;
+			  position: relative;
+			  left: 50%;
+			  margin-left: -570px;
+			  
+			  @media (max-width: 48em) {
+				  	position: relative;
+				  	overflow: hidden;
+				  	width: 100%;
+				  	left: 0;
+				  	margin-left: 0;
+				  }
+			  }
+			  .caption {
+				position: absolute;
+				right: 8.0701%;
+				bottom: 7%;
+				background: rgba($white,0.8);
+				@include border-radius(0.1875em);
+				font-size: 0.75em;
+				@include scale(width, 230, 12);
+				@include scale(padding, 10 10 10 8, 12);
+				line-height: 1.2em;
+				@include box-sizing;
+				z-index: 5 !important;
+				
+				@media (max-width: 66.125em) {
+					right: 4.735%;
+				}
+				
+					@media (max-width: 62.5em) {
+					right: 2%;
+				}
+				
+					@media (max-width: 48em) {
+					position: relative;
+					top: auto;
+					bottom: auto;
+					left: auto;
+					right: auto;
+					width: auto;
+				}
+				
+				img {
+					float: left;
+					margin-right: 1em;
+					@include scale(max-width, 48,12);
+					height: auto;
+					
+					@media (max-width: 48em) {
+						@include scale(max-width, 24,12);
+					}
+				}
+				p {
+					@include scale(margin, 3 0,12);
+					a {
+						text-decoration: underline;
+					}
+				}
+			}
+			p.credit {
+				position: absolute;
+				@include scale(font-size, 11);
+				@include scale(bottom, 10,11); 
+				@include scale(right, 10,11); 
+				color: $white;
+				
+				@media (max-width: 48em) {
+					bottom: 5em;
+					right: 3em;
+				}
+				a {
+					color: $white;
+					
+					&:hover {
+						text-decoration: underline;
+					}
+				}
+	}
+		}
+	 }
+}
+
+/* Content in columns -------------------------------------------------------------------------- */
+
+#content {
+	@media (max-width: 48em) {
+		text-align: center;
+		@include column-count(2,2.083333%);
+	}
+	@media (max-width: 32.5em) {
+		@include column-count(1,0);
+		}
+	
+	.col {
+		padding-top: 4.1666667%;
+		margin-right: 2.083333%;
+		&:nth-child(5) {
+			margin-right: 0;
+		}
+		@media (max-width: 48em) {
+			text-align: center;
+			margin-right: 0;
+			width: 100%;
+			@include scale(padding-top, 26);
+			display: inline-block;
+			float: none;
+		}
+		h4 {
+			font-family: $header-font-stack;
+			color: $blue;
+			font-size: 1em;
+			font-weight: 500;
+			text-transform: uppercase;
+			text-align: center;
+			@include scale(margin-bottom, 8);
+			@include scale(min-height, 40);
+			background: url(#{$image-path}/h4-icons1.svg) no-repeat;
+			background-size: 100%;
+			background-position: center top;
+			padding-top: 52.27272727%;
+			
+			@media (max-width: 48em) {
+				padding-top: .25em;
+				padding-bottom: .25em;
+				@include scale(padding-left, 40);
+				background-position: -.8em center !important;
+				background-size: 3.5em !important;
+				display: inline-block;
+				min-height: 0;
+			}
+		}
+		ul {
+			li {
+				@include scale(font-size, 15);
+				line-height: 1.2em;
+				@include scale(padding, 10 0 10 29, 15);
+				border-bottom: 1px solid $kinstantly_light_gray;
+				background: url(#{$image-path}/plus.gif) no-repeat 0 0.6em;
+				text-align: left;
+			}
+			li.open {
+		background: url(#{$image-path}/minus.gif) no-repeat 0 0.6em;
+		}
+			
+		}
+	}
+	.col {
+		@extend %span1of5;
+	}
+	#col2 h4 {
+		background: url(#{$image-path}/h4-icons2.svg) no-repeat;
+		background-size: 100%;
+		@media (max-width: 48em) {
+			background-size: 3em !important;
+			background-position: -.25em center !important;
+			@include scale(padding-left, 46);
+		}
+	}
+	#col3 h4 {
+		background: url(#{$image-path}/h4-icons3.svg) no-repeat;
+		background-size: 100%;
+	}
+	#col4 h4 {
+		background: url(#{$image-path}/h4-icons4.svg) no-repeat;
+		background-size: 100%;
+	}
+	#col5 h4 {
+		background: url(#{$image-path}/h4-icons5.svg) no-repeat;
+		background-size: 100%;
+	}
+}
+
+/* --- Accordion menus (functionality only) --- */
+
+.accordion {
+	
+	li {
+		display: block;
+		cursor: pointer;
+	}
+	ul {
+		list-style: none;
+		padding: 0 0 0 0;
+		display: none;
+		margin-bottom: 0 !important;
+	
+		li {
+			font-weight: normal;
+			cursor: auto;
+			background: none !important;
+		}
+	}
+}

@@ -1,0 +1,87 @@
+- @body_class = 'home'
+- @content_class = 'category-list'
+- content_for :head_before_js do
+	= stylesheet_link_tag @stylesheet_version, media: 'screen, handheld, print'
+- content_for :head do
+	%meta{property: 'fb:app_id', content: '876267945721057'}
+- content_for :body_header do
+	#masthead.container
+		%h1
+			= home_link
+		%nav#menu
+			%button.menu Menu
+			%ul
+				= index_link wrapper: {tag: :li}
+				-#%li
+					-#%a{:href => "#"} Browse by Category
+				-#%li
+					-#%a{:href => "#"} Q & A
+				= about_link wrapper: {tag: :li}
+				= contact_link wrapper: {tag: :li}
+				= terms_link wrapper: {tag: :li}
+				= privacy_link wrapper: {tag: :li}
+				= blog_link wrapper: {tag: :li}
+				= newsletter_sign_up_link wrapper: {tag: :li}
+- content_for :body_before_main_content do
+	%section#banner
+		%ul#blog-teasers
+			-# #slider.banner
+			- blog_teasers = []
+			- blog_teasers << {url: 'http://blog.kinstantly.com/bedtime-reading-books/', image: 'mom-and-son.jpg', title: "These 7 children's books ingeniously use the power of suggestion to put kids right to sleep"}
+			- blog_teasers << {url: 'http://blog.kinstantly.com/how-to-help-your-teen-choose-between-the-new-sat-old-sat-and-act/', image: 'Testing1.jpg', title: "How to choose between the new SAT, old SAT, and ACT. Plus, be careful to avoid this common mistake."}
+			- blog_teasers << {url: 'http://blog.kinstantly.com/barbie-commercial/', image: 'play-barbie.jpg', title: "The new Barbie commercial captures everything that's magical about kids and dolls"}
+			- blog_teasers.each do |teaser|
+				%li
+					%a{href: teaser[:url], class: 'teaser-image', target: '_blank'}
+						%img{src: "https://d27zr285hfv284.cloudfront.net/images/directory/home/#{teaser[:image]}", class: 'slide', alt: teaser[:title]}
+					.caption
+						%a{href: teaser[:url], target: '_blank'}
+							= teaser[:title]
+		.container
+			%header.banner-header
+				%h1= t 'views.home.view.marketing_message_line1_html'
+				%h2= t 'views.home.view.marketing_message_line2_html'
+			#findProvider.search
+				= form_tag search_providers_path, method: :get, id: 'providerSearch' do
+					%div
+						%label{:for => "provider"} Find
+						= text_field_tag :query, default_search_query(@search_query, @search_service), id: 'provider_search_query', autocomplete: 'off', placeholder: t('views.search.query_placeholder')
+					%div
+						%label{:for => "location"} Near
+						= text_field_tag :address, @search_address, id: 'provider_search_location', placeholder: t('views.search.address_placeholder')
+					= submit_tag 'Search', class: 'button submit pink', id: 'provider_search_button'
+
+- cache CategoryList.home_list do
+	- (1..5).each do |column|
+		.col{id: "col#{column}"}
+			- category = CategoryList.home_list.categories.where(home_page_column: column).first
+			- if category.present?
+				%h4= category.name
+				%ul.accordion
+					- category.subcategories.by_display_order.order_by_name.each do |subcategory|
+						%li= subcategory.name
+						%ul
+							- subcategory.services.by_display_order.order_by_name.each_with_index do |service, i|
+								%li
+									= link_to service.name, search_providers_by_service_path(service)
+					
+:javascript
+	// accordion menu
+	$(".accordion > li").click(function(){
+		if(false == $(this).next().is(':visible')) {
+			$('.accordion > ul').slideUp(300);
+		}
+		$(this).next('ul').slideToggle(300);
+		$(this).toggleClass( 'open' );
+	});
+	
+	// Slideshow 1
+	$(function () {
+		$("#slider").responsiveSlides({
+			maxwidth: 1146,
+			speed: 800,
+			timeout: 8000, 
+			nav: true
+		});
+	});
+
