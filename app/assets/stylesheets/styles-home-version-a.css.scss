@@ -37,12 +37,12 @@ body {
 				bottom: 0;
 				right: 0;
 				text-indent: -999em;
-				background: transparent url('#{$image-path}/kinstantly-logo-homev2.png') no-repeat;
+				background: transparent url('#{$image-path}/kinstantly-logo-home.png') no-repeat;
 				@include background-size(contain,center);
 				transform: rotate( .0001deg ); // This is a stupid fix for Firefox making image blurry
 				
 				@media (max-width: 48em) {
-					background: transparent url('#{$image-path}/kinstantly-logo-small-tag.png') no-repeat;
+					background: transparent url('#{$image-path}/kinstantly-logo-small.png') no-repeat;
 					@include background-size(auto,left);
 				}
 				@media (max-width: 38em) {
@@ -129,7 +129,7 @@ body {
 }
 
 #banner {
-	max-width: 71.25em;
+//	max-width: 71.25em;
 	width: 100%;
 //	@include scale(height, 490); 
 	margin: 0.25em auto 0 auto;
@@ -150,39 +150,43 @@ body {
 		position: relative;
 		overflow: visible;
 		clear: left;
-		@include scale(padding-top, 20);
-	
+		@include scale(padding-top, 15);
+		
+		&.teasers {
+			float: left; // Force background to envelope contained floating elements.
+			background-color: $light-gray;
+			max-width: none;
+			padding-right: 0;
+			@include scale(padding-bottom, 15);
+			@include scale(padding-left, 25);
+			
+			@media (max-width: 36em) {
+				@include scale(padding-left, 15);
+			}
+			@media (max-width: 26em) {
+				padding-left: 0;
+			}
+		}
+		
 		.banner-header {
-//			color: $white;
-//			@include text-shadow(2px, 1px, 9px, rgba(0,0,0,0.7));
-//			position: absolute;
-//			bottom: 41.837%;
 			@include scale(padding-right, 20);
 			z-index: 4;
-			
-//			@media (max-width: 48em) {
-				position: relative;
-				top: auto;
-				left: auto;
-				right: auto;
-				bottom: auto;
-				@include text-shadow(0, 0, 0, rgba(0,0,0,0.0));
-				@include scale(margin-bottom, 20);
-//			}
+			position: relative;
+			top: auto;
+			left: auto;
+			right: auto;
+			bottom: auto;
+			@include scale(margin-bottom, 8);
 			
 			h1 {
 				font-family: $header-font-stack;
-				@include scale(font-size, 40);
+				@include scale(font-size, 24);
 				letter-spacing: 0.05em;
-//				font-weight: 700;
 				line-height: normal;
+				text-align: center;
+				font-weight: 500;
+				color: $light-black;
 				
-					text-align: center;
-					font-weight: 500;
-					color: $blue;
-				@media (max-width: 48em) {
-					@include scale(font-size, 30);
-				}
 				@media (max-width: 36em) {
 					@include scale(font-size, 20);
 				}
@@ -191,15 +195,11 @@ body {
 				font-family: $header-font-stack;
 				@include scale(font-size, 22);
 				letter-spacing: 0.05em;
-//				font-weight: 700;
 				line-height: 1.2em;
+				text-align: center;
+				font-weight: 500;
+				color: $light-black;
 				
-					text-align: center;
-					font-weight: 500;
-					color: $default_color;
-				@media (max-width: 48em) {
-					@include scale(font-size, 19);
-				}
 				@media (max-width: 36em) {
 					@include scale(font-size, 16);
 				}
@@ -207,86 +207,80 @@ body {
 		}
 	
 		#findProvider {
-//				position: absolute;
-//				bottom: 26.938%;
-				font-family: $font-stack;
-				box-sizing: border-box;
-//				width: 93%;
-				max-width: 44em;
-				background: $medium-gray;
-				border: 1px solid $dark-gray;
-				@include border-radius (0.1875em);
-				@include scale(padding, 7);
-				z-index: 4;
-				
-//				@media (max-width: 48em) {
-					position: relative;
-					top: auto;
-					left: auto;
-					right: auto;
-					bottom: auto;
+			font-family: $font-stack;
+			box-sizing: border-box;
+			max-width: 44em;
+			background: $medium-gray;
+			border: 1px solid $dark-gray;
+			@include border-radius (0.1875em);
+			@include scale(padding, 7);
+			z-index: 4;
+			position: relative;
+			top: auto;
+			left: auto;
+			right: auto;
+			bottom: auto;
+			width: 100%;
+			margin: 0 auto;
+			
+			div {
+				@include box-sizing;
+				@include scale(padding, 11 14, 18);
+				font-size: 1.125em;
+				@include border-radius (.1818em);
+				@include scale(margin-right, 3, 18);
+				@include box-shadow(1px, 1px, 2px, rgba(0,0,0,0.4), true);
+				border-bottom: 1px solid #D7D7D7;
+				position: relative;
+				background: #FFF;
+				display: inline-block;
+				width: calc(50% - 1.555555em);
+				line-height: 1em;
+				@media (max-width: 48em) {
 					width: 100%;
-					@include scale(margin-bottom, 28);
-//				}
-	
-				div {
-					@include box-sizing;
-					@include scale(padding, 11 14, 18);
-					font-size: 1.125em;
-					@include border-radius (.1818em);
-					@include scale(margin-right, 3, 18);
-					@include box-shadow(1px, 1px, 2px, rgba(0,0,0,0.4), true);
-					border-bottom: 1px solid #D7D7D7;
-					position: relative;
-					background: #FFF;
-					display: inline-block;
-					width: calc(50% - 1.555555em);
-					line-height: 1em;
-					@media (max-width: 48em) {
-						width: 100%;
-						margin-bottom: 0.277778em;
+					margin-bottom: 0.277778em;
+				}
+			
+					&:last-of-type {
+						@media (max-width: 48em) {
+						width: calc(100% - 2.75em);
+						margin-bottom: 0;
 					}
+				}
 				
-						&:last-of-type {
-							@media (max-width: 48em) {
-							width: calc(100% - 2.75em);
-							margin-bottom: 0;
-						}
-					}
-					
-					label {
-						@include scale(margin-right, 6,18);
-						font-weight: bold;
-						color: #777;
-						display: inline-block;
-					}
-					
-					input {
-						background: transparent;
-						color: $search_input_color;
-						display: inline-block;
-						width: calc(100% - 2.9em);
-					}
+				label {
+					@include scale(margin-right, 6,18);
+					font-weight: bold;
+					color: #777;
+					display: inline-block;
 				}
-				#provider_search_button {
-					background: $kinstantly_pink url(#{$image-path}/search.svg) center center no-repeat;
-					background-size: cover;
-					text-indent: -999em;
-					background-size: 66.666%;
-					@include border-radius(0.2143em);
-					@include scale(width, 42,24);
-					@include scale(height, 43,24);
-					@include box-sizing;
-					float: right;
-					color: $white;
-					font-size: 1.5em;
-					font-weight: normal;
-					
-					&:hover {
-						cursor: pointer;
-						background-color: lighten($kinstantly_pink, 10%);
-					}
+				
+				input {
+					background: transparent;
+					color: $search_input_color;
+					display: inline-block;
+					width: calc(100% - 2.9em);
 				}
+			}
+			#provider_search_button {
+				background: $kinstantly_pink url(#{$image-path}/search.svg) center center no-repeat;
+				background-size: cover;
+				text-indent: -999em;
+				background-size: 66.666%;
+				@include border-radius(0.2143em);
+				@include scale(width, 42,24);
+				@include scale(height, 43,24);
+				@include box-sizing;
+				float: right;
+				color: $white;
+				font-size: 1.5em;
+				font-weight: normal;
+				
+				&:hover {
+					cursor: pointer;
+					background-color: lighten($kinstantly_pink, 10%);
+				}
+			}
 		}
 	}
 	a.rslides_nav {
@@ -321,34 +315,18 @@ body {
 		@include scale(padding, 8);
 		float: left;
 		width: 30%;
-//		clear: left;
-
-		@media (max-width: 48em) {
+		
+		@media (max-width: 36em) {
 			@include scale(padding, 16);
 			float: none;
 			width: 90%;
-		}
-		.teaser-image {
-//			float: left;
-//			width: 30%;
-//			margin-right: 24px;
 			
-//			@media (max-width: 48em) {
-//				width: 95%;
-//				margin-right: auto;
-//			}
-			
-			img {
-				width: 100%;
+			&:not(.featured) {
+				display: none;
 			}
 		}
-		.caption {
-			font-size: 120%;
-			
-			@media (max-width: 48em) {
-//				display: block;
-				font-size: 100%;
-			}
+		.teaser-image img {
+			width: 100%;
 		}
 	}
 	.banner {

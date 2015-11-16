@@ -24,23 +24,26 @@
 				= newsletter_sign_up_link wrapper: {tag: :li}
 - content_for :body_before_main_content do
 	%section#banner
-		%ul#blog-teasers
-			-# #slider.banner
-			- blog_teasers = []
-			- blog_teasers << {url: 'http://blog.kinstantly.com/bedtime-reading-books/', image: 'mom-and-son.jpg', title: "These 7 children's books ingeniously use the power of suggestion to put kids right to sleep"}
-			- blog_teasers << {url: 'http://blog.kinstantly.com/how-to-help-your-teen-choose-between-the-new-sat-old-sat-and-act/', image: 'Testing1.jpg', title: "How to choose between the new SAT, old SAT, and ACT. Plus, be careful to avoid this common mistake."}
-			- blog_teasers << {url: 'http://blog.kinstantly.com/barbie-commercial/', image: 'play-barbie.jpg', title: "The new Barbie commercial captures everything that's magical about kids and dolls"}
-			- blog_teasers.each do |teaser|
-				%li
-					%a{href: teaser[:url], class: 'teaser-image', target: '_blank'}
-						%img{src: "https://d27zr285hfv284.cloudfront.net/images/directory/home/#{teaser[:image]}", class: 'slide', alt: teaser[:title]}
-					.caption
-						%a{href: teaser[:url], target: '_blank'}
-							= teaser[:title]
+		.container.teasers
+			%header.banner-header
+				%h1= t 'company.tagline'
+			%ul#blog-teasers
+				-# #slider.banner
+				- blog_teasers = []
+				- blog_teasers << {url: 'http://blog.kinstantly.com/grateful-kids/', image: 'girl-in-red-450x300-95.jpg', title: "Here's the secret to raising grateful kids&mdash;from a researcher (and dad) who's spent years studying what works".html_safe, class: 'featured'}
+				- blog_teasers << {url: 'http://blog.kinstantly.com/bedtime-reading-books/', image: 'mom-and-son-525x350-95.jpg', title: "These 7 children's books ingeniously use the power of suggestion to put kids right to sleep"}
+				- blog_teasers << {url: 'http://blog.kinstantly.com/barbie-commercial/', image: 'play-barbie-525x350-95.jpg', title: "The new Barbie commercial captures everything that's magical about kids and dolls"}
+				- blog_teasers.each do |teaser|
+					%li{class: teaser[:class]}
+						%a{href: teaser[:url], class: 'teaser-image', target: '_blank'}
+							%img{src: "https://d27zr285hfv284.cloudfront.net/images/directory/home/#{teaser[:image]}", class: 'slide', alt: teaser[:title]}
+						.caption
+							%a{href: teaser[:url], target: '_blank'}
+								= teaser[:title]
 		.container
 			%header.banner-header
-				%h1= t 'views.home.view.marketing_message_line1_html'
-				%h2= t 'views.home.view.marketing_message_line2_html'
+				%h2
+					= t 'views.home.view.marketing_message_html'
 			#findProvider.search
 				= form_tag search_providers_path, method: :get, id: 'providerSearch' do
 					%div

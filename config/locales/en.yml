@@ -490,7 +490,7 @@ en:
         faq: 'FAQ'
         fewer_services: 'hide...'
         home: 'Home'
-        marketing_message_default: 'Find top-rated parenting experts, therapists, tutors, and more'
+        marketing_message_html: 'Find family services&mdash;from child care to college essay coaches'
         marketing_message_line1_html: 'Find the best family services'
         marketing_message_line2_html: '&mdash; from child care to college admissions advisors'
         more_services: 'more...'
