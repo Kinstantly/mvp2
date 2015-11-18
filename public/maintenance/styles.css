@@ -15,7 +15,7 @@
 	background-size: 100% auto;
 	margin: 16px 100px 0 0;
 	width: 321px;
-	min-height: 116px;
+	min-height: 79px;
 }
 
 #content {
@@ -34,7 +34,7 @@
 @media only screen and (min-width: 460px) {
 	#branding h1 {
 		width: 441px;
-		height: 159px;
+		height: 109px;
 	}
 }
 
