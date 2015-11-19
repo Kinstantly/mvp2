@@ -10,7 +10,7 @@
 
 #branding h1 {
 	display: block;
-	background: transparent url("/maintenance/kinstantly.png");
+	background: no-repeat transparent url("/maintenance/kinstantly.png");
 	text-indent: -999em;
 	background-size: 100% auto;
 	margin: 16px 100px 0 0;
