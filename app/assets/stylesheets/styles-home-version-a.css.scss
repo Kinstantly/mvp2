@@ -168,6 +168,10 @@ body {
 			}
 		}
 		
+		&.find-providers {
+			@include scale(padding-top, 25);
+		}
+		
 		.banner-header {
 			z-index: 4;
 			position: relative;
@@ -280,6 +284,12 @@ body {
 					background-color: lighten($kinstantly_pink, 10%);
 				}
 			}
+		}
+		
+		.category-header {
+			padding: 2% 0;
+			font-weight: 400;
+			color: $kinstantly_dark_gray;
 		}
 	}
 	a.rslides_nav {
@@ -467,10 +477,9 @@ body {
 	}
 	@media (max-width: 32.5em) {
 		@include column-count(1,0);
-		}
+	}
 	
 	.col {
-		padding-top: 4.1666667%;
 		margin-right: 2.083333%;
 		&:nth-child(5) {
 			margin-right: 0;
