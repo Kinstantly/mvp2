@@ -169,7 +169,6 @@ body {
 		}
 		
 		.banner-header {
-			@include scale(padding-right, 20);
 			z-index: 4;
 			position: relative;
 			top: auto;
