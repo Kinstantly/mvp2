@@ -6,8 +6,6 @@
 	%meta{property: 'fb:app_id', content: '876267945721057'}
 - content_for :body_header do
 	#masthead.container
-		%h1
-			= home_link
 		%nav#menu
 			%button.menu Menu
 			%ul
@@ -22,6 +20,14 @@
 				= privacy_link wrapper: {tag: :li}
 				= blog_link wrapper: {tag: :li}
 				= newsletter_sign_up_link wrapper: {tag: :li}
+		%h1
+			= home_link
+		%nav.nav-links
+			%a{href: '#provider-search-browse'}
+				= t 'views.home.view.nav.providers_html'
+			|
+			%a{href: blog_url}
+				= t 'views.home.view.nav.blog'
 - content_for :body_before_main_content do
 	%section#banner
 		.container.teasers
@@ -40,7 +46,7 @@
 						.caption
 							%a{href: teaser[:url], target: '_blank'}
 								= teaser[:title]
-		.container.find-providers
+		#provider-search-browse.container.find-providers
 			%header.banner-header
 				%h2
 					= t 'views.home.view.marketing_message_html'

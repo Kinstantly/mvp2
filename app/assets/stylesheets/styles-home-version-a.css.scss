@@ -8,27 +8,35 @@ body {
 
 #header {
 	#masthead {
+		max-width: none;
 		@include scale(margin-top, 18);
 		@extend %clearfix;
 		
 		h1:before {
 			content: "";
 			display: block;
-			padding-top: 13.9830508%;
+//			padding-top: 13.9830508%;
+			padding-top: 27.027027%;
 			
-			@media (max-width: 48em) {
-				padding-top: 27.027027%;
-			}
+//			@media (max-width: 48em) {
+//				padding-top: 27.027027%;
+//			}
 		}
 		
 		h1 {
-			width: 64.4827586%;
+			width: 30%;
 			@include scale(max-width, 475);
+			@include scale(margin-left, 14, 16);
 			position: relative;
 			float: left;
-			@media (max-width: 38em) {
-				@include scale(margin-bottom, 18,16);
+			
+			@media (max-width: 48em) {
+				width: 64.4827586%;
+				margin-left: 0;
 			}
+//			@media (max-width: 38em) {
+//				@include scale(margin-bottom, 18,16);
+//			}
 			
 			a {
 				position: absolute;
@@ -38,44 +46,61 @@ body {
 				right: 0;
 				text-indent: -999em;
 				background: transparent url('#{$image-path}/kinstantly-logo-home.png') no-repeat;
-				@include background-size(contain,center);
+				@include background-size(contain,left);
 				transform: rotate( .0001deg ); // This is a stupid fix for Firefox making image blurry
 				
 				@media (max-width: 48em) {
 					background: transparent url('#{$image-path}/kinstantly-logo-small.png') no-repeat;
 					@include background-size(auto,left);
+					background-position: top left;
 				}
 				@media (max-width: 38em) {
-					@include background-size(cover,center);
+					@include background-size(cover,top);
 				}
 			}
 		}
+		
+		.nav-links {
+			text-transform: uppercase;
+			@include scale(font-size, 18, 16);
+			@include scale(padding-top, 24, 16);
+			
+			a:first-of-type {
+				@include scale(margin-left, 32, 16);
+			}
+			
+			@media (max-width: 48em) {
+				display: none;
+			}
+		}
+		
 		#menu {
-			float: right;
-			margin: 1em 0;
+			float: left;
+//			margin: 1em 0;
 			@include scale(width, 32, 11);
 			@include scale(height, 28, 11);
 			overflow: visible;
 			position: relative;
 			/*z-index: 100;*/
+			display: none;
 			
-			/*@media (max-width: 36em) {
-				position: inherit;
-			}*/
+			@media (max-width: 48em) {
+				display: block;
+			}
 			
 			.menu {
-				@include scale(width, 86, 11);
-				@include scale(height, 32, 11);
-				@include background-size (auto,right);
-				background: transparent url(#{$image-path}/Kinstantly_menu.png) no-repeat;
+//				@include scale(width, 86, 11);
+//				@include scale(height, 32, 11);
+//				@include background-size (auto,right);
+//				background: transparent url(#{$image-path}/Kinstantly_menu.png) no-repeat;
 				-ms-behavior: none !important;
 				@include border-radius(0);
 				border: none;
 				text-indent: -999em;
 				padding: 0;
-				float: right;
+//				float: right;
 				
-				@media (max-width: 36em) {
+				@media (max-width: 48em) {
 					@include scale(width, 32, 11);
 					@include scale(height, 32, 11);
 					background: transparent url(#{$image-path}/menu-button-sm.svg) no-repeat;
@@ -92,14 +117,14 @@ body {
 				@include scale(min-width, 170);
 				position: absolute;
 				@include scale(top, 32);
-				@include scale(right, 0);
+				@include scale(left, 0);
 				border: 1px solid $kinstantly_light_gray;
 				background: $white;
 				z-index: 100; 
 				
-				@media (max-width: 36em) {
+				@media (max-width: 48em) {
 					max-width: none;
-					@include scale(left, -167);
+//					@include scale(left, -167);
 					/*min-width: 93.75vw;
 					width: 93.75vw ; 
 					left: 3.125% !important;
