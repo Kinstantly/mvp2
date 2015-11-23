@@ -28,6 +28,9 @@
 			|
 			%a{href: blog_url}
 				= t 'views.home.view.nav.blog'
+		%nav#search-mag-button
+			%a{href: '#provider-search-browse'}
+				%button Search
 - content_for :body_before_main_content do
 	%section#banner
 		.container.teasers

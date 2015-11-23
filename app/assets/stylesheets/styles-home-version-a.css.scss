@@ -74,6 +74,37 @@ body {
 			}
 		}
 		
+		#search-mag-button {
+			float: right;
+			display: none;
+			
+			@media (max-width: 48em) {
+				display: block;
+			}
+			
+			button {
+				-ms-behavior: none !important;
+				@include border-radius(0);
+				border: none;
+				text-indent: -999em;
+				
+				@media (max-width: 48em) {
+					@include scale(width, 34, 11);
+					@include scale(height, 36, 11);
+					background: transparent url(#{$image-path}/search-light-gray.png) no-repeat;
+					@include background-size (contain,center);
+				}
+				@media (max-width: 36em) {
+					@include scale(width, 34, 14);
+					@include scale(height, 36, 14);
+				}
+				
+				&:hover {
+					cursor: pointer;
+				}
+			}
+		}
+		
 		#menu {
 			float: left;
 //			margin: 1em 0;
