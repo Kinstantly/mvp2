@@ -250,6 +250,11 @@ body {
 			bottom: auto;
 			width: 100%;
 			margin: 0 auto;
+			@media (max-width: 36em) {
+				background: transparent;
+				border: 0px none;
+				padding: 0px;
+			}
 			
 			div {
 				@include box-sizing;
@@ -268,11 +273,18 @@ body {
 					width: 100%;
 					margin-bottom: 0.277778em;
 				}
+				@media (max-width: 36em) {
+					width: calc(100% - 2.75em);
+					margin-bottom: 0;
+				}
 			
-					&:last-of-type {
-						@media (max-width: 48em) {
+				&:last-of-type {
+					@media (max-width: 48em) {
 						width: calc(100% - 2.75em);
 						margin-bottom: 0;
+					}
+					@media (max-width: 36em) {
+						display: none;
 					}
 				}
 				
@@ -315,6 +327,10 @@ body {
 			padding: 2% 0;
 			font-weight: 400;
 			color: $kinstantly_dark_gray;
+			
+			@media (max-width: 48em) {
+				padding: 4% 0 0;
+			}
 		}
 	}
 	a.rslides_nav {
