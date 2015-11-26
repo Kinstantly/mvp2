@@ -107,7 +107,7 @@ body {
 		
 		#menu {
 			float: left;
-//			margin: 1em 0;
+			margin-top: 0.5%;
 			@include scale(width, 32, 11);
 			@include scale(height, 28, 11);
 			overflow: visible;
@@ -364,39 +364,39 @@ body {
 			}
 		}
 	}
-	a.rslides_nav {
+	a.blog-teaser-right-nav {
 		text-indent: -999em;
 		position: absolute;
-		top: 46.3265306%;
+		top: 35%;
+		right: 2.43333%;
 		@include scale(width, 23);
 		@include scale(height, 33);
 		z-index: 50;
+		background: url(#{$image-path}/blog-teaser-right-nav-gray.png) no-repeat;
 		
-		@media (max-width: 67.25em) {
-			top: 21.3265306%;
+		@media (max-width: 36em) {
+			top: 40%;
+			right: 9%;
+			background: url(#{$image-path}/blog-teaser-right-nav-light.png) no-repeat;
 		}
-		
-		@media (max-width: 48em) {
-			display: none;
-		}
-		
 		&:hover {
 			opacity: 0.8;
 		}
-	}
-	a.prev {
-		background: url(#{$image-path}/home-prev.png) no-repeat;
-		left: 2.43333%;
-	}
-	a.next {
-		background: url(#{$image-path}/home-next.png) no-repeat;
-		right: 2.43333%;
 	}
 	#blog-teasers li {
 		@include scale(padding, 8);
 		float: left;
 		width: 30%;
 		
+		@media (max-width: 62em) {
+			width: 29.5%;
+		}
+		@media (max-width: 55em) {
+			width: 29%;
+		}
+		@media (max-width: 48em) {
+			width: 28.5%;
+		}
 		@media (max-width: 36em) {
 			@include scale(padding, 16);
 			float: none;
