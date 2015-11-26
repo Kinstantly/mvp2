@@ -134,7 +134,7 @@ body {
 				@media (max-width: 48em) {
 					@include scale(width, 32, 11);
 					@include scale(height, 32, 11);
-					background: transparent url(#{$image-path}/menu-button-sm.svg) no-repeat;
+					background: transparent url(#{$image-path}/menu-button-sm-gray.png) no-repeat;
 					@include background-size (cover,center);
 				}
 			
