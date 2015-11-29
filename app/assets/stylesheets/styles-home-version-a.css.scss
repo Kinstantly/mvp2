@@ -65,6 +65,9 @@ body {
 			@include scale(font-size, 18, 16);
 			@include scale(padding-top, 24, 16);
 			
+			a:visited {
+				color: $default_link_color;
+			}
 			a:first-of-type {
 				@include scale(margin-left, 32, 16);
 			}
