@@ -1,0 +1,120 @@
+- @body_class = 'home'
+- @content_class = 'category-list'
+- content_for :head_before_js do
+	= stylesheet_link_tag 'home_page_old', media: 'screen, handheld, print'
+- content_for :head do
+	%meta{property: 'fb:app_id', content: '876267945721057'}
+- content_for :body_header do
+	#masthead.container
+		%h1
+			= home_link
+		%nav#menu
+			%button.menu Menu
+			%ul
+				= index_link wrapper: {tag: :li}
+				-#%li
+					-#%a{:href => "#"} Browse by Category
+				-#%li
+					-#%a{:href => "#"} Q & A
+				= about_link wrapper: {tag: :li}
+				= contact_link wrapper: {tag: :li}
+				= terms_link wrapper: {tag: :li}
+				= privacy_link wrapper: {tag: :li}
+				= blog_link wrapper: {tag: :li}
+				= newsletter_sign_up_link wrapper: {tag: :li}
+- content_for :body_before_main_content do
+	%section#banner
+		.container
+			#findProvider.search
+				= form_tag search_providers_path, method: :get, id: 'providerSearch' do
+					%div
+						%label{:for => "provider"} Find
+						= text_field_tag :query, default_search_query(@search_query, @search_service), id: 'provider_search_query', autocomplete: 'off', placeholder: t('views.search.query_placeholder')
+					%div
+						%label{:for => "location"} Near
+						= text_field_tag :address, @search_address, id: 'provider_search_location', placeholder: t('views.search.address_placeholder')
+					= submit_tag 'Search', class: 'button submit pink', id: 'provider_search_button'
+			%header.banner-header
+				%h1= t 'views.home.view.marketing_message_line1_html'
+				%h2= t 'views.home.view.marketing_message_line2_html'
+		%ul#slider.banner
+			%li
+				= image_tag "Breastfeeding.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("CarrieFinger48X48.jpg", class: "avatar", alt: "Carrie Finger"), profile_path(1578)
+					%p
+						= link_to "Carrie Finger", profile_path(1578)
+						offers in-home lactation consulting and massage in the East Bay
+				%p.credit
+					= link_to '&copy; Slava Basovich'.html_safe, profile_path(1509)
+			%li
+				= image_tag "Tutor1.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("NurturingWisdom48X48.jpg", class: "avatar", alt: "Nurturing Wisdom"), search_providers_path(query: 'Nurturing Wisdom')
+					%p
+						= link_to "Nurturing Wisdom", search_providers_path(query: 'Nurturing Wisdom')
+						offers 1:1 tutoring and test prep in San Francisco and Chicago
+			%li
+				= image_tag "Rachelandstudent.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("RachelCondry48X48.jpg", class: "avatar", alt: "Rachel Condry"), profile_path(1191)
+					%p
+						= link_to "Rachel Condry", profile_path(1191)
+						teaches clarinet in Emeryville, CA
+			%li
+				= image_tag "Slava1.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("SlavaBasovich48X48.jpg", class: "avatar", alt: "Slava Basovich"), profile_path(1509)
+					%p
+						= link_to "Slava Basovich", profile_path(1509)
+						shoots family photos throughout the Bay Area
+				%p.credit
+					= link_to '&copy; Slava Basovich'.html_safe, profile_path(1509)
+			%li
+				= image_tag "CuteBlondeGirl-003.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("JessicaMichelson48X48.jpg", class: "avatar", alt: "Dr. Jessica Michelson"), profile_path(117)
+					%p
+						= link_to "Dr. Jessica Michelson", profile_path(117)
+						offers early parenthood coaching in Oakland, CA
+			%li
+				= image_tag "Stanford1.jpg", class: "slide", alt: ""
+				%aside.caption
+					= link_to image_tag("KathyMcCleary48X48.jpg", class: "avatar", alt: "Kathleen McCleary"), profile_path(2058)
+					%p
+						= link_to "Kathleen McCleary", profile_path(2058)
+						offers college essay consulting by phone or video anywhere
+- cache CategoryList.home_list do
+	- (1..5).each do |column|
+		.col{id: "col#{column}"}
+			- category = CategoryList.home_list.categories.where(home_page_column: column).first
+			- if category.present?
+				%h4= category.name
+				%ul.accordion
+					- category.subcategories.by_display_order.order_by_name.each do |subcategory|
+						%li= subcategory.name
+						%ul
+							- subcategory.services.by_display_order.order_by_name.each_with_index do |service, i|
+								%li
+									= link_to service.name, search_providers_by_service_path(service)
+					
+:javascript
+	// accordion menu
+	$(".accordion > li").click(function(){
+		if(false == $(this).next().is(':visible')) {
+			$('.accordion > ul').slideUp(300);
+		}
+		$(this).next('ul').slideToggle(300);
+		$(this).toggleClass( 'open' );
+	});
+	
+	// Slideshow 1
+	$(function () {
+		$("#slider").responsiveSlides({
+			maxwidth: 1146,
+			speed: 800,
+			timeout: 8000, 
+			nav: true
+		});
+	});
+

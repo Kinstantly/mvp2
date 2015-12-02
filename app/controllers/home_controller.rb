@@ -6,12 +6,8 @@ class HomeController < ApplicationController
 	
 	def index
 		case params[:version]
-		when 'a'
-			@stylesheet_version = 'home_page_version_a'
-			render action: 'index_version', layout: 'application'
-		when 'b'
-			@stylesheet_version = 'home_page_version_b'
-			render action: 'index_version', layout: 'application'
+		when 'old'
+			render action: 'index_old', layout: 'application'
 		else
 			render layout: 'application'
 		end
