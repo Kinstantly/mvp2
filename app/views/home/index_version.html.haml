@@ -39,9 +39,9 @@
 			%ul#blog-teasers
 				-# #slider.banner
 				- blog_teasers = []
-				- blog_teasers << {url: 'http://blog.kinstantly.com/grateful-kids/', image: 'girl-in-red-450x300-95.jpg', title: "Here's the secret to raising grateful kids&mdash;from a researcher (and dad) who's spent years studying what works".html_safe, class: 'featured'}
-				- blog_teasers << {url: 'http://blog.kinstantly.com/bedtime-reading-books/', image: 'mom-and-son-525x350-95.jpg', title: "These 7 children's books ingeniously use the power of suggestion to put kids right to sleep"}
-				- blog_teasers << {url: 'http://blog.kinstantly.com/barbie-commercial/', image: 'play-barbie-525x350-95.jpg', title: "The new Barbie commercial captures everything that's magical about kids and dolls"}
+				- blog_teasers << {url: 'http://blog.kinstantly.com/toddler-making-coffee/', image: 'coffee_570_380.jpg', title: "Watching this toddler make coffee for his dad will change everything you think you know about what our kids can do (if we let them)".html_safe, class: 'featured'}
+				- blog_teasers << {url: 'http://blog.kinstantly.com/mommy-correctness-on-the-playground/', image: 'playground_600_400.jpg', title: "This ex-pat mom says \"mommy correctness\" is ruining kids' fun on the playground. Is she right?".html_safe}
+				- blog_teasers << {url: 'http://blog.kinstantly.com/kids-with-anxiety/', image: 'anxiety_600_400.jpg', title: "Why anxiety is increasingly common in kids, early warning signs&mdash;and the gentle fixes that help them thrive".html_safe}
 				- blog_teasers.each do |teaser|
 					%li{class: teaser[:class]}
 						%a{href: teaser[:url], class: 'teaser-image', target: '_blank'}

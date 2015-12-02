@@ -61,6 +61,11 @@ $generic_form_width: 418px;
 $form_element_width: 388px;
 $large_photo_y: 168px;
 
+$masthead_break_1: 58em;
+$masthead_break_2: 40em;
+$masthead_break_3: 36em;
+$masthead_break_4: 36em;
+
 @mixin cell-style {
 	border: {
 		width: thin;
