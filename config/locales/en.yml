@@ -484,7 +484,7 @@ en:
     home:
       view:
         about: 'About us'
-        blog: 'Kinstantly blog'
+        blog: 'Top stories'
         browse_title: 'Explore by category'
         contact: 'Contact us'
         faq: 'FAQ'
@@ -500,6 +500,7 @@ en:
           u: 'U'
         newsletter_sign_up: 'Kinstantly newsletter'
         privacy: 'Privacy policy'
+        providers_html: 'Providers &amp; services'
         search_title: "I'm looking for..."
         see_all_categories: 'See all'
         see_all_services: 'See all'

@@ -14,6 +14,7 @@
 				= contact_link wrapper: {tag: :li}
 				= terms_link wrapper: {tag: :li}
 				= privacy_link wrapper: {tag: :li}
+				= find_providers_link wrapper: {tag: :li}
 				= blog_link wrapper: {tag: :li}
 				= newsletter_sign_up_link wrapper: {tag: :li}
 		%h1
@@ -39,10 +40,10 @@
 				- blog_teasers << {url: 'http://blog.kinstantly.com/kids-with-anxiety/', image: 'anxiety_600_400.jpg', title: "Why anxiety is increasingly common in kids, early warning signs&mdash;and the gentle fixes that help them thrive".html_safe}
 				- blog_teasers.each do |teaser|
 					%li{class: teaser[:class]}
-						%a{href: teaser[:url], class: 'teaser-image', target: '_blank'}
+						%a{href: teaser[:url], class: 'teaser-image'}
 							%img{src: "https://d27zr285hfv284.cloudfront.net/images/directory/home/#{teaser[:image]}", class: 'slide', alt: teaser[:title]}
 						.caption
-							%a{href: teaser[:url], target: '_blank'}
+							%a{href: teaser[:url]}
 								= teaser[:title]
 			%a{href: blog_url, class: 'blog-teaser-right-nav'}
 				= t 'views.home.view.nav.blog'

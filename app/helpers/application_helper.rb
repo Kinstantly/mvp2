@@ -209,9 +209,12 @@ module ApplicationHelper
 		link_wrapper link_to(t('views.home.view.privacy'), path), options if show_link?(path)
 	end
 
+	def find_providers_link(options={})
+		link_wrapper link_to(t('views.home.view.providers_html'), root_url(anchor: 'provider-search-browse')), options
+	end
+	
 	def blog_link(options={})
-		url = 'http://blog.kinstantly.com/'
-		link_wrapper link_to(t('views.home.view.blog'), url), options
+		link_wrapper link_to(t('views.home.view.blog'), blog_url), options
 	end
 
 	def newsletter_sign_up_link(options={})
