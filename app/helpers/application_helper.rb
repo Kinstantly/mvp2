@@ -210,7 +210,7 @@ module ApplicationHelper
 	end
 
 	def find_providers_link(options={})
-		link_wrapper link_to(t('views.home.view.providers_html'), root_url(anchor: 'provider-search-browse')), options
+		link_wrapper link_to(t('views.home.view.providers_html'), root_path(anchor: 'provider-search-browse')), options
 	end
 	
 	def blog_link(options={})

@@ -35,34 +35,35 @@
 				.row	
 					.col.one-half
 						.product-box
-							%a{href: "http://blog.kinstantly.com/", class: 'product-name', target: '_blank'}
-								%span.product-logo
-									= image_tag "k_u.png", alt: "Kinstantly U", itemprop: 'image', border: "0"
+							%a{href: blog_url, class: 'product-name', target: "_blank"}
+								= t('views.home.view.blog')
+								-# %span.product-logo
+									-# = image_tag "k_u.png", alt: "Kinstantly U", itemprop: 'image', border: "0"
 							%p
-								We create truly useful, compelling content that helps you drill down to what really matters, so you don't waste your time, money, or worry on stuff that doesn't.
-							%p
-								Drawing on our extensive network of experts, we challenge the conventional wisdom, sort myth from fact, and translate hard science and data into engaging stories and how-to guides like these:
+								Drawing on our extensive network of experts, we challenge the conventional wisdom, sort myth from fact, and translate hard science and data into compelling and useful
+								%a{href: blog_url, target: '_blank'}
+									TOP STORIES
+								like these:
 							%ul
 								%li
-									:plain
-										Researchers explain the simple thing you can teach a toddler to <a href="http://blog.kinstantly.com/toddler-behavior-problems/" target="_blank">make behavior problems disappear</a>.
+									%a{href: 'http://blog.kinstantly.com/toddler-making-coffee/', target: '_blank'}
+										Watching this toddler make coffee for his dad will change everything you think you know about what our kids can do (if we let them)
 								%li
-									:plain
-										Knowing how to say hello has become one of the lost skills of childhood. <a href="http://blog.kinstantly.com/how-to-say-hello/" target="_blank">Here's how to get it back</a>.
+									%a{href: 'http://blog.kinstantly.com/mommy-correctness-on-the-playground/', target: '_blank'}
+										This ex-pat mom says "mommy correctness" is ruining kids' fun on the playground. Is she right?
 								%li
-									:plain
-										<a href="http://blog.kinstantly.com/disorganized-struggling-student/" target="_blank">4 steps that can help you</a> turn a disorganized, struggling student into a happy achiever.
+									%a{href: 'http://blog.kinstantly.com/kids-with-anxiety/', target: '_blank'}
+										Why anxiety is increasingly common in kids, early warning signs&mdash;and the gentle fixes that help them thrive
 					.col.one-half
 						.product-box
-							%a{href: "#{root_path}", class: 'product-name', target: '_blank'}
-								%span.product-logo
-									= image_tag "k_round.png", alt: "Kinstantly.com", itemprop: 'image', border: "0"
+							%a{href: root_path(anchor: 'provider-search-browse'), class: 'product-name', target: "_blank"}
+								= t('views.home.view.providers_html')
+								-# %span.product-logo
+									-# = image_tag "k_round.png", alt: "Kinstantly.com", itemprop: 'image', border: "0"
 							%p
 								Our
-								= link_to 'directory', root_path, target: "_blank"
+								= link_to 'directory', root_path(anchor: 'provider-search-browse'), target: "_blank"
 								makes it easy to connect with thousands of amazing experts and services. Many offer their services by Skype, by phone, or online, so it doesn't matter if you live in Toledo, Ohio, or Toledo, Spain.
-							%p
-								Many also accept online payments through Kinstantly. No more "Oops, I forgot to bring a check" when you drop your kid off for day care or dance class.
 							%p
 								Check out this terrific
 								= succeed ',' do
@@ -137,7 +138,7 @@
 							.name
 								= succeed ',' do
 									%span Anna Makarova
-								senior developer, mom of 1
+								senior developer, mom of 2
 							.before
 								%strong Before Kinstantly:
 								freelance full-stack developer, Chinese interpreter
