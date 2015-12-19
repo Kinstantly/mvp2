@@ -35,9 +35,9 @@
 				%h1= t 'company.tagline'
 			%ul#blog-teasers
 				- blog_teasers = []
-				- blog_teasers << {url: 'http://blog.kinstantly.com/toddler-making-coffee/', image: 'coffee_570_380.jpg', title: "Watching this toddler make coffee for his dad will change everything you think you know about what our kids can do (if we let them)".html_safe, class: 'featured'}
-				- blog_teasers << {url: 'http://blog.kinstantly.com/mommy-correctness-on-the-playground/', image: 'playground_600_400.jpg', title: "This ex-pat mom says \"mommy correctness\" is ruining kids' fun on the playground. Is she right?".html_safe}
-				- blog_teasers << {url: 'http://blog.kinstantly.com/kids-with-anxiety/', image: 'anxiety_600_400.jpg', title: "Why anxiety is increasingly common in kids, early warning signs&mdash;and the gentle fixes that help them thrive".html_safe}
+				- blog_teasers << {url: 'http://blog.kinstantly.com/best-books-for-parents/', image: 'bestbooks_home_page.jpg', title: "These 5 books for parents are the best of 2015".html_safe, class: 'featured'}
+				- blog_teasers << {url: 'http://blog.kinstantly.com/kids-stress/', image: 'stress_home_page.jpg', title: "Coping with stress is hard for kids. These 3 simple skills we can teach them really help.".html_safe}
+				- blog_teasers << {url: 'http://blog.kinstantly.com/help-teen-plan-future/', image: 'teens_home_page.jpg', title: "To help your teen plan for the future (gulp), maybe skip the lectures and pep talks. This works way better.".html_safe}
 				- blog_teasers.each do |teaser|
 					%li{class: teaser[:class]}
 						%a{href: teaser[:url], class: 'teaser-image'}
