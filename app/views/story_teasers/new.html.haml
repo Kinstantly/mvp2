@@ -1,0 +1,10 @@
+- @page_title = "#{company_name} - Create story teaser"
+.edit
+	%h1= "Create story teaser"
+	#top_bar
+		= render partial: 'home/admin_nav'
+	#forms
+		= render partial: 'form'
+		%br
+		= link_to 'List', story_teasers_path
+= render partial: 'shared/save_changes_prompt'

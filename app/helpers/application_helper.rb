@@ -136,6 +136,13 @@ module ApplicationHelper
 		link_to t('views.profile_claim.name').pluralize, profile_claims_path if can? :manage, ProfileClaim
 	end
 	
+	def admin_story_teaser_links
+		if can? :manage, StoryTeaser
+			link_to(t('views.story_teaser.name').pluralize, story_teasers_path) +
+				link_to(t('views.story_teaser.edit.create'), new_story_teaser_path)
+		end
+	end
+	
 	def admin_contact_blocker_links
 		if can? :manage, ContactBlocker
 			link_to(t('views.contact_blocker.name').pluralize, contact_blockers_path) +

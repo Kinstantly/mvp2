@@ -1,0 +1,10 @@
+= simple_form_for @story_teaser do |f|
+	= f.error_notification
+	= f.input :active
+	= f.input :display_order
+	= f.input :url
+	= f.input :image_file
+	= f.input :title
+	= f.input :css_class
+	= f.button :submit
+	= link_to 'Cancel', (@story_teaser.new_record? ? story_teasers_path : story_teaser_path(@story_teaser))

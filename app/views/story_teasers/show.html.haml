@@ -1,0 +1,24 @@
+.show
+	%p#notice= notice
+	%table
+		%tr
+			%td= StoryTeaser.human_attribute_name :active
+			%td= @story_teaser.active ? 'Yes' : 'No'
+		%tr
+			%td= StoryTeaser.human_attribute_name :display_order
+			%td= @story_teaser.display_order
+		%tr
+			%td= StoryTeaser.human_attribute_name :url
+			%td= @story_teaser.url
+		%tr
+			%td= StoryTeaser.human_attribute_name :image_file
+			%td= @story_teaser.image_file
+		%tr
+			%td= StoryTeaser.human_attribute_name :title
+			%td= @story_teaser.title
+		%tr
+			%td= StoryTeaser.human_attribute_name :css_class
+			%td= @story_teaser.css_class
+	= link_to 'Edit', edit_story_teaser_path(@story_teaser)
+	|
+	= link_to 'List', story_teasers_path

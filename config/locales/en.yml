@@ -846,6 +846,11 @@ en:
       view:
         find_by_name: 'Specialty name'
         not_browsable: '(grayed-out not assigned to a browsable service)'
+    story_teaser:
+      name: 'Story teaser'
+      edit:
+        confirm_destroy: "Are you sure you want to remove the story teaser entitled '%{title}'?"
+        create: 'Create a story teaser'
     stripe_charge:
       refund:
         reason:

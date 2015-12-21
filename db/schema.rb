@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150415054266) do
+ActiveRecord::Schema.define(:version => 20151220065135) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -409,6 +409,19 @@ ActiveRecord::Schema.define(:version => 20150415054266) do
     t.boolean  "is_predefined", :default => false
     t.boolean  "trash",         :default => false
   end
+
+  create_table "story_teasers", :force => true do |t|
+    t.boolean  "active"
+    t.integer  "display_order"
+    t.string   "url"
+    t.string   "image_file"
+    t.string   "title"
+    t.string   "css_class"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "story_teasers", ["active", "display_order"], :name => "index_story_teasers_on_active_and_display_order"
 
   create_table "stripe_cards", :force => true do |t|
     t.integer  "stripe_customer_id"

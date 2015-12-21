@@ -194,6 +194,9 @@ Mvp2::Application.routes.draw do
 		end
 	end
 	
+	# Displayed teasers that click through to stories.
+	resources :story_teasers
+	
 	# Catch all other routing requests and do something benign.
 	# The main purpose of this route is to provide as little information as possible to site probers.
 	# For Rails 4, add "via: :all".
