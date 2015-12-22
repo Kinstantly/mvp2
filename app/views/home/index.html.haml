@@ -34,10 +34,6 @@
 			%header.banner-header
 				%h1= t 'company.tagline'
 			%ul#blog-teasers
-				-# - blog_teasers = []
-				-# - blog_teasers << {url: 'http://blog.kinstantly.com/kids-stress/', image: 'stress_home_page.jpg', title: "Coping with stress is hard for kids. These 3 simple skills we can teach them really help.".html_safe, class: 'featured'}
-				-# - blog_teasers << {url: 'http://blog.kinstantly.com/help-teen-plan-future/', image: 'teens_home_page.jpg', title: "To help your teen plan for the future (gulp), maybe skip the lectures and pep talks. This works way better.".html_safe}
-				-# - blog_teasers << {url: 'http://blog.kinstantly.com/toddler-making-coffee/', image: 'coffee_570_380.jpg', title: "Watching this toddler make coffee for his dad will change everything you think you know about what our kids can do (if we let them)".html_safe}
 				- StoryTeaser.active_only.order_by_display_order.limit(3).each_with_index do |teaser, i|
 					%li{id: "story_teaser_#{i+1}", class: teaser.css_class}
 						%a{href: teaser.url, class: 'teaser-image'}
@@ -45,7 +41,7 @@
 						.caption
 							%a{href: teaser.url}
 								= teaser.title.html_safe
-			%a{href: blog_url, class: 'blog-teaser-right-nav'}
+			%a{href: (blog_url + '?utm_source=directory_home&utm_medium=banner&utm_content=arrow&utm_campaign=blog_home'), class: 'blog-teaser-right-nav'}
 				= t 'views.home.view.nav.blog'
 		#provider-search-browse.container.find-providers
 			%header.banner-header
