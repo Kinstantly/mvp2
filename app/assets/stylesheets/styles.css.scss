@@ -36,7 +36,7 @@
 		}
 		#findProvider {
 			box-sizing: border-box;
-			width: 58.323%;
+			width: 65%;
 			background: $medium-gray;
 			border: 1px solid $dark-gray;
 			@include border-radius (0.1875em);
@@ -108,7 +108,7 @@
 		#menu {
 			float: right;
 			margin: .7em 0;
-			@include scale(width, 64, 11);
+			@include scale(width, 28, 11);
 			@include scale(height, 28, 11);
 			overflow: visible;
 			position: relative;
@@ -119,10 +119,10 @@
 			}
 			
 			.menu {
-				@include scale(width, 86, 11);
+				@include scale(width, 32, 11);
 				@include scale(height, 28, 11);
-				@include background-size (auto,left);
-				background: transparent url(#{$image-path}/Kinstantly_menu.png) no-repeat;
+				@include background-size (cover,center);
+				background: transparent url(#{$image-path}/menu-button-gray.png) no-repeat;
 				@include border-radius(0);
 				border: none;
 				text-indent: -999em;
@@ -130,9 +130,9 @@
 				float: right;
 				
 				@media (max-width: 36em) {
-					@include scale(width, 32, 11);
-					@include scale(height, 28, 11);
-					background: transparent url(#{$image-path}/menu-button-sm.svg) no-repeat;
+					//@include scale(width, 32, 11);
+					//@include scale(height, 28, 11);
+					background: transparent url(#{$image-path}/menu-button-sm-gray.png) no-repeat;
 					@include background-size (cover,center);
 				}
 			
