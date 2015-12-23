@@ -7,6 +7,8 @@
 
 #header {
 	&.shadow{
+		@include scale(padding-bottom, 16, 16);
+		
 		@media screen and (min-width: $break-5) {
 			-webkit-box-shadow: 0 0px 4px 2px $kinstantly_light_gray;
 			-moz-box-shadow: 0 0px 4px 2px $kinstantly_light_gray;
@@ -107,7 +109,7 @@
 		}
 		#menu {
 			float: right;
-			margin: .7em 0;
+			margin: .7em 0 0;
 			@include scale(width, 28, 11);
 			@include scale(height, 28, 11);
 			overflow: visible;
@@ -179,6 +181,21 @@
 				display: block;
 			}
 
+		}
+		
+		.nav-links {
+			clear: both;
+			text-align: center;
+			text-transform: uppercase;
+			@include scale(padding-top, 16, 16);
+			
+			@media (max-width: $break-3) {
+				@include scale(font-size, 13, 16);
+				@include scale(padding-top, 24, 16);
+			}
+			@media (max-width: $break-2) {
+				display: none;
+			}
 		}
 
 	}
