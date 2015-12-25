@@ -372,11 +372,11 @@ body {
 			right: 9%;
 			width: 29px;
 			height: 39px;
-			background: url(#{$image-path}/blog-teaser-right-nav-light-bgnd.png) no-repeat;
-			opacity: 0.5;
+			background: url(#{$image-path}/blog-teaser-right-nav-dark-white-bgnd.png) no-repeat;
+			opacity: 0.6;
 			
 			&:hover {
-				opacity: 0.7;
+				opacity: 0.8;
 			}
 		}
 	}
