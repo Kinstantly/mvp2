@@ -37,12 +37,12 @@ body {
 				bottom: 0;
 				right: 0;
 				text-indent: -999em;
-				background: transparent url('#{$image-path}/kinstantly-logo-home.png') no-repeat;
+				background: transparent url('#{$image-path}/kinstantly-logo-home-tag.png') no-repeat;
 				@include background-size(contain,left);
 				transform: rotate( .0001deg ); // This is a stupid fix for Firefox making image blurry
 				
 				@media (max-width: $masthead_break_3) {
-					background: transparent url('#{$image-path}/kinstantly-logo-small.png') no-repeat;
+					background: transparent url('#{$image-path}/kinstantly-logo-small-tag.png') no-repeat;
 					//@include background-size(auto,left);
 					@include background-size(cover,top);
 					background-position: top left;
@@ -106,7 +106,7 @@ body {
 		
 		#menu {
 			float: left;
-			margin-top: 0.5%;
+			margin-top: 0.8%;
 			@include scale(width, 32, 11);
 			@include scale(height, 28, 11);
 			overflow: visible;

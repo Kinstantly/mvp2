@@ -31,8 +31,8 @@
 - content_for :body_before_main_content do
 	%section#banner
 		.container.teasers
-			%header.banner-header
-				%h1= t 'company.tagline'
+			-# %header.banner-header
+			-# 	%h1= t 'company.tagline'
 			%ul#blog-teasers
 				- StoryTeaser.active_only.order_by_display_order.limit(3).each_with_index do |teaser, i|
 					%li{id: "story_teaser_#{i+1}", class: teaser.css_class}
