@@ -24,6 +24,7 @@ Mvp2::Application.routes.draw do
 		registrations: 'users/registrations', 
 		sessions: 'users/sessions', 
 		confirmations: 'users/confirmations',
+		two_factor_authentication: 'users/two_factor_authentication',
 		omniauth_callbacks: 'omniauth_callbacks'
 	}
 	

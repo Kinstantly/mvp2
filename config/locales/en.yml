@@ -877,6 +877,11 @@ en:
         edit: 'Edit subcategory'
       view:
         find_by_name: 'Subcategory name'
+    two_factor_authentication:
+      cancel: 'Cancel'
+      prompt: 'Check your authenticator app and enter the one-time password code here:'
+      submit: 'Log in'
+      submit_disable: 'Logging in...'
     user:
       edit:
         email_note: 'We also use this email to contact you.'

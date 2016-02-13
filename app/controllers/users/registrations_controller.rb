@@ -1,6 +1,8 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 	# Add this controller to the devise route if you need to customize the registration controller.
 
+	before_filter :confirm_two_factor_authenticated, except: [:new, :create, :cancel]
+	
 	after_filter :after_registration, only: :create
 	
 	# User settings page should not be cached because it might display sensitive information.
@@ -66,6 +68,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	end
 
 	private
+	
+	def confirm_two_factor_authenticated
+		return if is_fully_authenticated?
+
+		flash[:error] = t('devise.errors.messages.user_not_authenticated')
+		redirect_to user_two_factor_authentication_url
+	end
 	
 	def after_registration
 		if resource && resource.errors.empty?

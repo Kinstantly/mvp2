@@ -3398,6 +3398,13 @@ ul.links-list > li{
 	label{ line-height: 1.5em; font-weight: normal; margin-bottom: 4px;}
 	.bold{ font-weight: bold;}
 }
+.two_factor_authentication.generic_form {
+	.buttons {
+		input, a {
+			width: 40%;
+		}
+	}
+}
 
 /*Newsletter archive page*/
 .newsletter-archive{

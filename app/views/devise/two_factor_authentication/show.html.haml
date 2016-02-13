@@ -1,0 +1,13 @@
+#content
+	.two_factor_authentication.generic_form
+		%h3
+			= t 'views.two_factor_authentication.prompt'
+		%br
+		= form_tag [resource_name, :two_factor_authentication], method: :put do
+			= devise_error_messages!
+			.text_field
+				= text_field_tag :otp_code
+			%br
+			.buttons
+				= submit_tag t('views.two_factor_authentication.submit'), disable_with: t('views.two_factor_authentication.submit_disable'), class: 'highlight'
+				= link_to t('views.two_factor_authentication.cancel'), destroy_user_session_path, method: :delete, class: 'cancel'

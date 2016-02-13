@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151220065135) do
+ActiveRecord::Schema.define(:version => 20160212044633) do
 
   create_table "admin_events", :force => true do |t|
     t.string   "name"
@@ -545,10 +545,15 @@ ActiveRecord::Schema.define(:version => 20151220065135) do
     t.boolean  "parent_newsletters_stage2",      :default => false
     t.string   "parent_newsletters_stage3_leid"
     t.boolean  "parent_newsletters_stage3",      :default => false
+    t.integer  "second_factor_attempts_count",   :default => 0
+    t.string   "encrypted_otp_secret_key"
+    t.string   "encrypted_otp_secret_key_iv"
+    t.string   "encrypted_otp_secret_key_salt"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["encrypted_otp_secret_key"], :name => "index_users_on_encrypted_otp_secret_key", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true

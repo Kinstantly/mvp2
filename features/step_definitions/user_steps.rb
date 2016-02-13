@@ -28,26 +28,26 @@ def create_unconfirmed_user
   visit '/users/sign_out'
 end
 
-def create_user
+def create_user(options={})
   create_visitor
   delete_user
-  @user = FactoryGirl.create(:expert_user, @visitor)
+  @user = FactoryGirl.create(:expert_user, @visitor.merge(options))
 end
 
-def create_client_user
+def create_client_user(options={})
   create_visitor
   delete_user
   @visitor[:username] = 'username'
-  @user = FactoryGirl.create(:client_user, @visitor)
+  @user = FactoryGirl.create(:client_user, @visitor.merge(options))
 end
 
-def create_admin_user
+def create_admin_user(options={})
   create_visitor
-  @user = User.find_by_email(@admin_user[:email]) || FactoryGirl.create(:admin_user, @admin_user)
+  @user = User.find_by_email(@admin_user[:email]) || FactoryGirl.create(:admin_user, @admin_user.merge(options))
 end
 
-def create_profile_editor
-  create_user
+def create_profile_editor(options={})
+  create_user options
   @user.add_role :profile_editor
   @user.save
 end
@@ -172,13 +172,13 @@ Given /^I exist as an unconfirmed user$/ do
   create_unconfirmed_user
 end
 
-Given /^I am logged in as (an administrator|a profile editor)$/ do |role|
+Given /^I am logged in as (an administrator|a profile editor)( requiring two-factor authentication)?$/ do |role, tfa|
 	case role
 	when 'an administrator'
-		create_admin_user
+		create_admin_user require_two_factor_authentication: tfa.present?
 		sign_in_admin
 	when 'a profile editor'
-		create_profile_editor
+		create_profile_editor require_two_factor_authentication: tfa.present?
 		sign_in
 	end
 end
@@ -393,6 +393,16 @@ When /^I click on the sign[- ]?up button$/ do
 	click_button 'sign_up_button'
 end
 
+When /^I submit the correct one-time password$/ do
+	fill_in 'otp_code', with: @user.otp_code
+	click_button I18n.t('views.two_factor_authentication.submit')
+end
+
+When /^I submit an incorrect one-time password$/ do
+	fill_in 'otp_code', with: sprintf('%06d', (@user.otp_code.to_i + 1))
+	click_button I18n.t('views.two_factor_authentication.submit')
+end
+
 ### THEN ###
 Then /^I should be signed in$/ do
   expect(page).to have_content I18n.t('views.sign_out.label').upcase
@@ -517,4 +527,16 @@ Then /^I should see "(.*?)" (translated )?link to contact_preferences section of
   link_selector = tr.present? ? I18n.t(selector) : selector
   path = edit_subscriptions_url
   expect(page.has_link?(link_selector, href: path)).to be true
+end
+
+Then /^I should see the two-factor authentication page$/ do
+  expect(page).to have_content I18n.t('views.two_factor_authentication.prompt')
+end
+
+Then /^I should be signed in with two-factor authentication$/ do
+  expect(page).to have_content I18n.t('devise.two_factor_authentication.success')
+end
+
+Then /^I should have run out of two-factor authentication attempts$/ do
+  expect(page).to have_content I18n.t('devise.two_factor_authentication.max_login_attempts_reached')
 end

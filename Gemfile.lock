@@ -156,6 +156,7 @@ GEM
     email_spec (1.6.0)
       launchy (~> 2.1)
       mail (~> 2.2)
+    encryptor (2.0.0)
     erubis (2.7.0)
     excon (0.45.4)
     execjs (1.4.0)
@@ -315,6 +316,7 @@ GEM
       thor (>= 0.14.6, < 2.0)
     raindrops (0.13.0)
     rake (10.5.0)
+    randexp (0.1.7)
     rdoc (3.12.2)
       json (~> 1.4)
     recaptcha-mailhide (0.1.1)
@@ -324,6 +326,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    rotp (2.1.1)
     rsolr (1.0.8)
       builder (>= 2.1.2)
     rspec-collection_matchers (1.1.2)
@@ -389,6 +392,12 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
+    two_factor_authentication (1.1.5)
+      devise
+      encryptor
+      rails (>= 3.1.1)
+      randexp
+      rotp
     tzinfo (0.3.46)
     uglifier (1.3.0)
       execjs (>= 0.3.0)
@@ -476,6 +485,7 @@ DEPENDENCIES
   sunspot_solr!
   syntax
   test-unit (~> 3.0)
+  two_factor_authentication
   uglifier (>= 1.0.3)
   underscore-rails
   unicorn

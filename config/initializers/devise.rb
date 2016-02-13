@@ -275,4 +275,16 @@ Devise.setup do |config|
     :scope => 'read_write', # or :scope => 'read_only'
     :stripe_landing => 'register' # Show registration screen because most users will not already have a Stripe account.
 
+  # Two factor authentication for Devise.
+  # https://github.com/Houdini/two_factor_authentication
+  config.max_login_attempts = 5  # Maximum second factor attempts count.
+  config.allowed_otp_drift_seconds = 30  # Allowed time drift between client and server.
+  config.otp_length = 6  # OTP code length
+  config.remember_otp_session_for_seconds = 30.days  # Time before browser has to enter OTP code again. Default is 0.
+	config.otp_secret_encryption_key = ENV['OTP_SECRET_ENCRYPTION_KEY']
+	if Rails.env.test? or Rails.env.development?
+		# Default key. Do not use this in production!
+		config.otp_secret_encryption_key ||= '4d4b5eb38d4829a3589c5ae174b2ebb71d07a6f8ecd40e0ae2621b3dd97acb8884be4276d1670be94148515a7c27f2c6b35f518681cf5c99fd7525d9d379612e'
+	end
+
 end

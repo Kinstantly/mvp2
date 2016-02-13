@@ -5,9 +5,11 @@ class User < ActiveRecord::Base
 	# Include default devise modules. Others available are:
 	# :token_authenticatable,
 	# :timeoutable and :omniauthable
-	devise :database_authenticatable, :registerable, :confirmable,
+	# Also include https://github.com/Houdini/two_factor_authentication.
+	devise :two_factor_authenticatable, :database_authenticatable, :registerable, :confirmable,
 		:recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable
-		
+	has_one_time_password encrypted: true
+	
 	before_create :skip_confirmation!, if: :claiming_profile?
 	after_create :send_welcome_email, if: :claiming_profile?
 	
@@ -328,6 +330,19 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	def send_two_factor_authentication_code
+		# use Model#otp_code and send via SMS, etc.
+		logger.debug "User#otp_code=>#{otp_code}" if Rails.env.development?
+	end
+	
+	def need_two_factor_authentication?(request)
+		Devise.otp_secret_encryption_key.present? and otp_secret_key.present? and (admin? or profile_editor?)
+	end
+	
+	def reset_otp_secret_key
+		self.otp_secret_key = ROTP::Base32.random_base32
+	end
+	
 	# Public class methods.
 	#
 	# For methods whose behavior is identical in the superclass when not running as a private site,

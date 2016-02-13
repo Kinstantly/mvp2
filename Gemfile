@@ -60,6 +60,10 @@ gem 'ruby-prof'
 # Authentication based on Warden.
 gem 'devise'
 
+# Two factor authentication for Devise.
+# https://github.com/Houdini/two_factor_authentication
+gem 'two_factor_authentication'
+
 # Authorization library.
 # https://github.com/CanCanCommunity/cancancan
 gem 'cancancan'

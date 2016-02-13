@@ -2,6 +2,7 @@ FactoryGirl.define do
 	factory :user do
 		transient do
 			require_confirmation false
+			require_two_factor_authentication false
 			pending_welcome false
 		end
 		
@@ -10,10 +11,22 @@ FactoryGirl.define do
 		password_confirmation 'FactoryPassword'
 		profile_help false
 		
-		# In case we are using the Devise Confirmable module, do not require the confirmation step
-		# unless otherwise specified.
-		# Do it here because confirmed_at cannot be mass assigned.
-		after(:build) { |user, evaluator| user.skip_confirmation! unless evaluator.require_confirmation }
+		after(:build) { |user, evaluator|
+			# In case we are using the Devise Confirmable module, do not require the confirmation step
+			# unless otherwise specified.
+			# Do it here because confirmed_at cannot be mass assigned.
+			user.skip_confirmation! unless evaluator.require_confirmation
+		}
+		
+		after(:create) { |user, evaluator|
+			# two_factor_authentication automatically sets up a otp_secret_key which then requires doing
+			# the two-factor authentication step during sign-ins.  We don't want to mess with that for most tests.
+			# So don't require two-factor authentication unless so specified.
+			unless evaluator.require_two_factor_authentication
+				user.otp_secret_key = nil
+				user.save
+			end
+		}
 		
 		profile
 		
