@@ -880,6 +880,11 @@ en:
     two_factor_authentication:
       cancel: 'Cancel'
       prompt: 'Check your authenticator app and enter the one-time password code here:'
+      qrcode_label: 'Scan this code using your favorite authenticator app:'
+      qrcode_show: 'Click to see your two-factor authentication code'
+      qrcode_reset: 'Click to create a new two-factor authentication code'
+      qrcode_reset_confirm: 'You will have to scan the new code with your authenticator app.  Continue?'
+      settings: 'Two-factor authentication'
       submit: 'Log in'
       submit_disable: 'Logging in...'
     user:

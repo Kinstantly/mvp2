@@ -42,6 +42,8 @@ Mvp2::Application.routes.draw do
 		get '/in_blog/awaiting_confirmation', to: 'users/registrations#in_blog_awaiting_confirmation', in_blog: true
 		get '/in_blog/edit_subscriptions', to: 'users/registrations#in_blog_edit_subscriptions', in_blog: true
 		# get '/users/subscriptions/edit', to: 'users/registrations#edit', as: 'edit_subscriptions', subscription_preferences: true
+		get 'two_factor_authentication/qrcode', to: 'users/two_factor_authentication#qrcode'
+		get 'two_factor_authentication/reset_code', to: 'users/two_factor_authentication#reset_code'
 	end
 	
 	# User can edit their subscriptions without entering their password, i.e., bypass Devise.

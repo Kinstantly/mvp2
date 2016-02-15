@@ -128,12 +128,30 @@
 						= t 'views.user.edit.customer_link_before'
 						= link_to t('views.user.edit.customer_link'), resource.as_customer
 						= t 'views.user.edit.customer_link_after'
+				- if resource.two_factor_authentication_allowed?
+					%br
+					%h1= t 'views.two_factor_authentication.settings'
+					#two_factor_authentication.formlet.info-popover
+						= render partial: 'devise/two_factor_authentication/account_settings_qrcode'
+					#two_factor_authentication_reset.info-popover
+						= link_to t('views.two_factor_authentication.qrcode_reset'), '#', class: 'link'
 		-#
 			.cancel_account.generic_form
 				= t('views.user.edit.cancel_account_prompt')
 				= link_to t('views.user.edit.cancel_account'), registration_path(resource_name), data: { confirm: t('views.user.edit.cancel_account_confirmation') }, method: :delete
 
+		:javascript
+				my_vars.two_factor_authentication_reset_code_path = '#{two_factor_authentication_reset_code_path}';
+				my_vars.two_factor_authentication_reset_confirm = '#{t "views.two_factor_authentication.qrcode_reset_confirm"}';
+
 		:coffeescript
 			$ ->
 				$('.formlet').addClass('open-formlet-popover').on 'click', my_vars.f.open_formlet
 				$('.formlet').each -> my_vars.f.configure_formlet this
+				
+				$('#two_factor_authentication_reset a').on 'click', (e) ->
+					my_vars.f.close_formlets e
+					if confirm(my_vars.two_factor_authentication_reset_confirm)
+						$('#two_factor_authentication').load my_vars.two_factor_authentication_reset_code_path, ->
+							my_vars.f.configure_formlet $('#two_factor_authentication').click()
+					false

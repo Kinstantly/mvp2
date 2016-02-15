@@ -64,6 +64,10 @@ gem 'devise'
 # https://github.com/Houdini/two_factor_authentication
 gem 'two_factor_authentication'
 
+# Generates a QR code from a URI, I hope.
+# https://github.com/samvincent/rqrcode-rails3
+gem 'rqrcode-rails3'
+
 # Authorization library.
 # https://github.com/CanCanCommunity/cancancan
 gem 'cancancan'

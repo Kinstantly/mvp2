@@ -1,0 +1,6 @@
+- if resource.need_two_factor_authentication?(request)
+	= link_to t('views.two_factor_authentication.qrcode_show'), '#', class: 'link', id: 'two_factor_authentication_show_qrcode'
+	.edit.popover
+		%h3= t 'views.two_factor_authentication.qrcode_label'
+		%p
+			= image_tag two_factor_authentication_qrcode_path(format: :svg, version: Time.zone.now.to_i)

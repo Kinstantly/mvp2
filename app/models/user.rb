@@ -335,8 +335,12 @@ class User < ActiveRecord::Base
 		logger.debug "User#otp_code=>#{otp_code}" if Rails.env.development?
 	end
 	
+	def two_factor_authentication_allowed?
+		(admin? or profile_editor?) and Devise.otp_secret_encryption_key.present?
+	end
+	
 	def need_two_factor_authentication?(request)
-		Devise.otp_secret_encryption_key.present? and otp_secret_key.present? and (admin? or profile_editor?)
+		two_factor_authentication_allowed? and otp_secret_key.present?
 	end
 	
 	def reset_otp_secret_key
