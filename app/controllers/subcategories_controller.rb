@@ -31,7 +31,7 @@ class SubcategoriesController < ApplicationController
 	end
 	
 	def update
-		if @subcategory.update_attributes(params[:subcategory])
+		if @subcategory.update_attributes(subcategory_params)
 			set_flash_message :notice, :updated, name: @subcategory.name
 			redirect_to edit_subcategory_path(@subcategory)
 		else
@@ -103,5 +103,12 @@ class SubcategoriesController < ApplicationController
 		if (service_id = params[:service_id]).present? and (service = Service.find(service_id)) and (@subcategory.services.include?(service))
 			@service = service
 		end
+	end
+	
+	# Use this method to whitelist the permissible parameters. Example:
+	# params.require(:person).permit(:name, :age)
+	# Also, you can specialize this method with per-user checking of permissible attributes.
+	def subcategory_params
+		params.require(:subcategory).permit(*Subcategory::DEFAULT_ACCESSIBLE_ATTRIBUTES)
 	end
 end

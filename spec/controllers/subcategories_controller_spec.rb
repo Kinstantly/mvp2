@@ -111,14 +111,14 @@ describe SubcategoriesController, :type => :controller do
 				it "assigns a newly created but unsaved subcategory as @subcategory" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(Subcategory).to receive(:save).and_return(false)
-					post :create, subcategory: {}
+					post :create, subcategory: valid_attributes # An empty subcategory hash results in no category at all.
 					expect(assigns(:subcategory)).to be_a_new(Subcategory)
 				end
 
 				it "re-renders the 'new' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(Subcategory).to receive(:save).and_return(false)
-					post :create, subcategory: {}
+					post :create, subcategory: valid_attributes # An empty subcategory hash results in no category at all.
 					expect(response).to render_template("new")
 				end
 			end
@@ -128,9 +128,15 @@ describe SubcategoriesController, :type => :controller do
 			describe "with valid params" do
 				it "updates the requested subcategory" do
 					# Assuming there are no other subcategories in the database, this specifies that subcategory
-					# receives the :update_attributes message with whatever params are submitted in the request.
-					expect_any_instance_of(Subcategory).to receive(:update_attributes).with({'these' => 'params'})
-					put :update, {id: subcategory.to_param, subcategory: {'these' => 'params'}}
+					# receives the :update_attributes message with valid parameters that are submitted in the request.
+					expect_any_instance_of(Subcategory).to receive(:update_attributes).with(valid_attributes)
+					put :update, {id: subcategory.to_param, subcategory: valid_attributes}
+				end
+
+				it "does not update the requested subcategory with invalid parameters" do
+					# Subcategory will not receive the :update_attributes message with invalid parameters
+					expect_any_instance_of(Subcategory).to receive(:update_attributes).with({})
+					put :update, {id: subcategory.to_param, subcategory: {'invalid' => 'params'}}
 				end
 
 				it "assigns the requested subcategory as @subcategory" do
@@ -148,14 +154,14 @@ describe SubcategoriesController, :type => :controller do
 				it "assigns the subcategory as @subcategory" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(Subcategory).to receive(:save).and_return(false)
-					put :update, {id: subcategory.to_param, subcategory: {}}
+					put :update, {id: subcategory.to_param, subcategory: valid_attributes}
 					expect(assigns(:subcategory)).to eq(subcategory)
 				end
 
 				it "re-renders the 'edit' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(Subcategory).to receive(:save).and_return(false)
-					put :update, {id: subcategory.to_param, subcategory: {}}
+					put :update, {id: subcategory.to_param, subcategory: valid_attributes}
 					expect(response).to render_template("edit")
 				end
 			end
