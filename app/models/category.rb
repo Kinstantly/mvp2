@@ -1,7 +1,12 @@
 class Category < ActiveRecord::Base
+	# Remove the following after upgrading to Rails 4.0 or greater.
+	include ActiveModel::ForbiddenAttributesProtection
+	
 	has_paper_trail # Track changes to each category.
 	
-	attr_accessible :name, :is_predefined, :service_ids, :display_order, :home_page_column, :see_all_column
+	DEFAULT_ACCESSIBLE_ATTRIBUTES = [ :name, :is_predefined, :service_ids, :display_order, :home_page_column, :see_all_column ]
+	
+	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	# Strip leading and trailing whitespace from (admin) input intended for these attributes.
 	auto_strip_attributes :name

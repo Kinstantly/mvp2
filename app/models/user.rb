@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
 	]
 	# attr_accessible *PASSWORDLESS_ACCESSIBLE_ATTRIBUTES, as: :passwordless
 	# attr_accessible *PASSWORD_ACCESSIBLE_ATTRIBUTES
-	attr_protected :id # Because config.active_record.whitelist_attributes=true and we want strong parameters to do the work.
+	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :email, :phone, :username, :postal_code

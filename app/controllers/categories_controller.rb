@@ -32,7 +32,7 @@ class CategoriesController < ApplicationController
 	end
 	
 	def update
-		if @category.update_attributes(params[:category])
+		if @category.update_attributes(category_params)
 			set_flash_message :notice, :updated, name: @category.name
 			redirect_to edit_category_path(@category)
 		else
@@ -94,5 +94,12 @@ class CategoriesController < ApplicationController
 		if (subcategory_id = params[:subcategory_id]).present? and (subcategory = Subcategory.find(subcategory_id)) and (@category.subcategories.include?(subcategory))
 			@subcategory = subcategory
 		end
+	end
+	
+	# Use this method to whitelist the permissible parameters. Example:
+	# params.require(:person).permit(:name, :age)
+	# Also, you can specialize this method with per-user checking of permissible attributes.
+	def category_params
+		params.require(:category).permit(*Category::DEFAULT_ACCESSIBLE_ATTRIBUTES)
 	end
 end

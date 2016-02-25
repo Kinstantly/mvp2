@@ -111,14 +111,14 @@ describe CategoriesController, :type => :controller do
 				it "assigns a newly created but unsaved category as @category" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(Category).to receive(:save).and_return(false)
-					post :create, category: {}
+					post :create, category: valid_attributes # An empty category hash results in no category at all.
 					expect(assigns(:category)).to be_a_new(Category)
 				end
 
 				it "re-renders the 'new' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(Category).to receive(:save).and_return(false)
-					post :create, category: {}
+					post :create, category: valid_attributes # An empty category hash results in no category at all.
 					expect(response).to render_template("new")
 				end
 			end
@@ -128,9 +128,15 @@ describe CategoriesController, :type => :controller do
 			describe "with valid params" do
 				it "updates the requested category" do
 					# Assuming there are no other categories in the database, this specifies that category
-					# receives the :update_attributes message with whatever params are submitted in the request.
-					expect_any_instance_of(Category).to receive(:update_attributes).with({'these' => 'params'})
-					put :update, {id: category.to_param, category: {'these' => 'params'}}
+					# receives the :update_attributes message with valid parameters that are submitted in the request.
+					expect_any_instance_of(Category).to receive(:update_attributes).with(valid_attributes)
+					put :update, {id: category.to_param, category: valid_attributes}
+				end
+
+				it "does not update the requested category with invalid parameters" do
+					# Category will not receive the :update_attributes message with invalid parameters
+					expect_any_instance_of(Category).to receive(:update_attributes).with({})
+					put :update, {id: category.to_param, category: {'invalid' => 'params'}}
 				end
 
 				it "assigns the requested category as @category" do
@@ -148,14 +154,14 @@ describe CategoriesController, :type => :controller do
 				it "assigns the category as @category" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(Category).to receive(:save).and_return(false)
-					put :update, {id: category.to_param, category: {}}
+					put :update, {id: category.to_param, category: valid_attributes}
 					expect(assigns(:category)).to eq(category)
 				end
 
 				it "re-renders the 'edit' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(Category).to receive(:save).and_return(false)
-					put :update, {id: category.to_param, category: {}}
+					put :update, {id: category.to_param, category: valid_attributes}
 					expect(response).to render_template("edit")
 				end
 			end
