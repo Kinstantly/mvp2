@@ -25,7 +25,7 @@ class ServicesController < ApplicationController
 	end
 	
 	def update
-		if @service.update_attributes(params[:service])
+		if @service.update_attributes(service_params)
 			if (subcategory_id = params[:subcategory_id]).present?
 				# We came from a mini-form on a subcategory admin page.
 				redirect_to edit_subcategory_path(subcategory_id, anchor: 'links')
@@ -58,5 +58,14 @@ class ServicesController < ApplicationController
 			set_flash_message :alert, :not_found_by_name, name: name
 			redirect_to services_url
 		end
+	end
+	
+	private
+	
+	# Use this method to whitelist the permissible parameters. Example:
+	# params.require(:person).permit(:name, :age)
+	# Also, you can specialize this method with per-user checking of permissible attributes.
+	def service_params
+		params.require(:service).permit(*Service::DEFAULT_ACCESSIBLE_ATTRIBUTES)
 	end
 end

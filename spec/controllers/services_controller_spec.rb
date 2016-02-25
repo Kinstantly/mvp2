@@ -111,14 +111,14 @@ describe ServicesController, :type => :controller do
 				it "assigns a newly created but unsaved service as @service" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(Service).to receive(:save).and_return(false)
-					post :create, service: {}
+					post :create, service: valid_attributes # An empty service hash results in no category at all.
 					expect(assigns(:service)).to be_a_new(Service)
 				end
 
 				it "re-renders the 'new' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(Service).to receive(:save).and_return(false)
-					post :create, service: {}
+					post :create, service: valid_attributes # An empty service hash results in no category at all.
 					expect(response).to render_template("new")
 				end
 			end
@@ -128,9 +128,15 @@ describe ServicesController, :type => :controller do
 			describe "with valid params" do
 				it "updates the requested service" do
 					# Assuming there are no other services in the database, this specifies that service
-					# receives the :update_attributes message with whatever params are submitted in the request.
-					expect_any_instance_of(Service).to receive(:update_attributes).with({'these' => 'params'})
-					put :update, {id: service.to_param, service: {'these' => 'params'}}
+					# receives the :update_attributes message with valid parameters that are submitted in the request.
+					expect_any_instance_of(Service).to receive(:update_attributes).with(valid_attributes)
+					put :update, {id: service.to_param, service: valid_attributes}
+				end
+
+				it "does not update the requested service with invalid parameters" do
+					# Service will not receive the :update_attributes message with invalid parameters
+					expect_any_instance_of(Service).to receive(:update_attributes).with({})
+					put :update, {id: service.to_param, service: {'invalid' => 'params'}}
 				end
 
 				it "assigns the requested service as @service" do
@@ -148,14 +154,14 @@ describe ServicesController, :type => :controller do
 				it "assigns the service as @service" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(Service).to receive(:save).and_return(false)
-					put :update, {id: service.to_param, service: {}}
+					put :update, {id: service.to_param, service: valid_attributes}
 					expect(assigns(:service)).to eq(service)
 				end
 
 				it "re-renders the 'edit' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(Service).to receive(:save).and_return(false)
-					put :update, {id: service.to_param, service: {}}
+					put :update, {id: service.to_param, service: valid_attributes}
 					expect(response).to render_template("edit")
 				end
 			end
