@@ -1,10 +1,14 @@
 class Location < ActiveRecord::Base
+	# Remove the following after upgrading to Rails 4.0 or greater.
+	include ActiveModel::ForbiddenAttributesProtection
+	
 	has_paper_trail # Track changes to each location.
 	
-	DEFAULT_ACCESSIBLE_ATTRIBUTES = [:address1, :address2, :city, :region, :postal_code, :country, :phone, :note, :profile_id, :search_area_tag_id]
-	attr_accessible *DEFAULT_ACCESSIBLE_ATTRIBUTES
-	attr_accessible *DEFAULT_ACCESSIBLE_ATTRIBUTES, as: :profile_editor
-	attr_accessible *DEFAULT_ACCESSIBLE_ATTRIBUTES, as: :admin
+	DEFAULT_ACCESSIBLE_ATTRIBUTES = [:address1, :address2, :city, :region, :postal_code, :country, :phone, :note, :search_area_tag_id]
+	# attr_accessible *DEFAULT_ACCESSIBLE_ATTRIBUTES
+	# attr_accessible *DEFAULT_ACCESSIBLE_ATTRIBUTES, as: :profile_editor
+	# attr_accessible *DEFAULT_ACCESSIBLE_ATTRIBUTES, as: :admin
+	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :address1, :address2, :city, :region, :postal_code, :country, :phone, :note

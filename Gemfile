@@ -201,6 +201,7 @@ gem 'cache_digests'
 
 # The byebug debugger.
 # Example: bundle exec rails server --port=5000
+# http://github.com/deivid-rodriguez/byebug
 gem 'byebug', group: :development
 
 # Makes running your Rails app easier. Based on the ideas behind 12factor.net

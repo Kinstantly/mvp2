@@ -11,7 +11,7 @@ class Review < ActiveRecord::Base
 	belongs_to :profile, counter_cache: true, touch: true
 	
 	# Touch the associated reviewer to change the cache_key for its fragment caches.
-	belongs_to :reviewer, class_name: 'User', counter_cache: 'reviews_given_count', counter_cache_association: :reviews_given, touch: true
+	belongs_to :reviewer, class_name: 'User', counter_cache: 'reviews_given_count', touch: true, counter_cache_association: :reviews_given
 	# has_one :rating, dependent: :destroy # when we had one rating per review.
 	# accepts_nested_attributes_for :rating, allow_destroy: true
 	

@@ -1,8 +1,8 @@
 class Announcement < ActiveRecord::Base
 	has_paper_trail # Track changes to each announcement.
 
-	attr_accessible :body, :headline, :icon, :position, :button_text, :button_url, :start_at, :end_at
-  
+	DEFAULT_ACCESSIBLE_ATTRIBUTES = [ :body, :headline, :icon, :position, :button_text, :button_url, :start_at, :end_at ]
+
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :body, :headline, :button_text, :button_url
 	

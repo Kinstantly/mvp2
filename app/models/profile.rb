@@ -1,4 +1,6 @@
 class Profile < ActiveRecord::Base
+	# Remove the following after upgrading to Rails 4.0 or greater.
+	include ActiveModel::ForbiddenAttributesProtection
 	
 	# Placeholder for profiles with no photo.
 	DEFAULT_PHOTO_PATH = 'profile-photo-placeholder-225.png'
@@ -14,11 +16,9 @@ class Profile < ActiveRecord::Base
 	
 	DEFAULT_ACCESSIBLE_ATTRIBUTES = [
 		:first_name, :last_name, :middle_name, :credentials, :email, 
-		:company_name, :url, :locations_attributes, :reviews_attributes, :profile_announcements_attributes,
+		:company_name, :url,
 		:headline, :education, :certifications, :year_started, 
-		:languages, :insurance_accepted, :summary, :resources,
-		:category_ids, :subcategory_ids, :service_ids, :specialty_ids, :specialty_names,
-		:custom_service_names, :custom_specialty_names, 
+		:languages, :insurance_accepted, :summary, :resources, 
 		:consult_in_person, :consult_in_group, :consult_by_email, :consult_by_phone, :consult_by_video, 
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, :consult_at_other, 
 		:pricing, :service_area, :hours, :accepting_new_clients, :availability_service_area_note,
@@ -27,7 +27,8 @@ class Profile < ActiveRecord::Base
 		:evening_hours_available, :weekend_hours_available, :free_initial_consult, :sliding_scale_available,
 		:financial_aid_available,
 		:consult_remotely, # provider offers most or all services remotely
-		:search_terms
+		:search_terms,
+		{ specialty_names: [], custom_service_names: [], custom_specialty_names: [] }
 		# :adoption_stage, :preconception_stage, :pregnancy_stage, :ages, # superseded by age_ranges and ages_stages_note
 	]
 	EDITOR_ACCESSIBLE_ATTRIBUTES = [
@@ -41,11 +42,13 @@ class Profile < ActiveRecord::Base
 		:widget_code,
 		:search_widget_code,
 		:invitation_email,
-		:invitation_tracking_category
+		:invitation_tracking_category,
+		{ category_ids: [], subcategory_ids: [], service_ids: [], specialty_ids: [] }
 	]
-	attr_accessible *DEFAULT_ACCESSIBLE_ATTRIBUTES
-	attr_accessible *EDITOR_ACCESSIBLE_ATTRIBUTES, as: :profile_editor
-	attr_accessible *EDITOR_ACCESSIBLE_ATTRIBUTES, as: :admin
+	# attr_accessible *DEFAULT_ACCESSIBLE_ATTRIBUTES
+	# attr_accessible *EDITOR_ACCESSIBLE_ATTRIBUTES, as: :profile_editor
+	# attr_accessible *EDITOR_ACCESSIBLE_ATTRIBUTES, as: :admin
+	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :first_name, :last_name, :middle_name, :credentials, :email, :company_name, :url,

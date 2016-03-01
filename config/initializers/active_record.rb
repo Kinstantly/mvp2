@@ -41,9 +41,12 @@ class ActiveRecord::Base
 	# The default implementation of the counter_cache option only works for create and destroy.
 	# But it needs to also work for update, e.g., when associating a record that was previously created.
 	def self.belongs_to(name, options={})
-		counter_cache = options.delete :counter_cache
+		counter_cache = options.delete :counter_cache # Delete so that super won't implement. Instead, we will here.
 		counter_cache_association = options.delete :counter_cache_association
 		reflection = super
+		# The following will notify the inverse reflection that we have it covered.
+		reflection.options[:counter_cache] = counter_cache if counter_cache
+		# Now implement our own counter cache updates.
 		if counter_cache
 			belongs_to_name = reflection.name
 			belongs_to_foreign_key = reflection.foreign_key

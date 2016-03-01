@@ -101,7 +101,7 @@ class ProfilesController < ApplicationController
 	end
 	
 	def update
-		if @profile.update_attributes(params[:profile], as: updater_role)
+		if @profile.update_attributes(profile_params)
 			set_flash_message :notice, :updated
 			redirect_to profile_url @profile
 		else
@@ -119,7 +119,7 @@ class ProfilesController < ApplicationController
 			@refresh_formlets = params[:refresh_formlets]
 			@refresh_partials = params[:refresh_partials]
 			@child_formlet = params[:child_formlet]
-			@update_succeeded = @profile.update_attributes(params[:profile])
+			@update_succeeded = @profile.update_attributes(profile_params)
 		end
 		respond_with @profile, layout: false
 	end
@@ -228,7 +228,7 @@ class ProfilesController < ApplicationController
 		@subject, @body = params[:subject], params[:body]
 		test_invitation = (params[:commit] == t('views.profile.edit.invitation_preview_button'))
 		email = test_invitation.present? ? current_user.email : nil
-		if @profile.update_attributes(params[:profile], as: updater_role) && @profile.invite(@subject, @body, sender: current_user, preview_email: email)
+		if @profile.update_attributes(profile_params) && @profile.invite(@subject, @body, sender: current_user, preview_email: email)
 			set_flash_message :notice, :invitation_sent, recipient: (email.presence || @profile.invitation_email)
 			if test_invitation.present?
 				render action: :new_invitation, layout: 'plain'
@@ -313,9 +313,24 @@ class ProfilesController < ApplicationController
 		end
 	end
 	
-	private
-	
 	def paged_profiles_with_no(type)
 		Profile.where('id NOT IN(?)', type.group(:profile_id).select(:profile_id).map(&:profile_id)).page(params[:page]).per(params[:per_page])
+	end
+	
+	# Use this method to whitelist the permissible parameters. Example:
+	# params.require(:person).permit(:name, :age)
+	# Also, you can specialize this method with per-user checking of permissible attributes.
+	def profile_params
+		permitted_locations_attributes = Location::DEFAULT_ACCESSIBLE_ATTRIBUTES + [:id, :_destroy]
+		permitted_profile_announcements_attributes = ProfileAnnouncement::DEFAULT_ACCESSIBLE_ATTRIBUTES + [:id, :_destroy]
+		if [:admin, :profile_editor].include?(updater_role)
+			params.require(:profile).permit(*Profile::EDITOR_ACCESSIBLE_ATTRIBUTES,
+				locations_attributes: permitted_locations_attributes,
+				profile_announcements_attributes: permitted_profile_announcements_attributes)
+		else
+			params.require(:profile).permit(*Profile::DEFAULT_ACCESSIBLE_ATTRIBUTES,
+				locations_attributes: permitted_locations_attributes,
+				profile_announcements_attributes: permitted_profile_announcements_attributes)
+		end
 	end
 end

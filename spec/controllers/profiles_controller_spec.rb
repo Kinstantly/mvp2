@@ -141,7 +141,8 @@ describe ProfilesController, :type => :controller do
 	
 	context "as a provider" do
 		let(:me) { FactoryGirl.create(:expert_user, email: 'me@example.com') }
-		let(:my_profile_id) { me.profile.id }
+		let(:my_profile) { me.profile }
+		let(:my_profile_id) { my_profile.id }
 		let(:other_profile_id) { FactoryGirl.create(:profile).id }
 		let(:other_published_profile_id) { FactoryGirl.create(:published_profile).id }
 		
@@ -224,21 +225,22 @@ describe ProfilesController, :type => :controller do
 			end
 			
 			it "fails to self-publish my profile" do
+				expect(my_profile.is_published).to eq false
 				expect {
 					put :formlet_update, id: my_profile_id, formlet: 'summary', profile: {is_published: true}
-				}.to raise_error(/protected attributes/i)
+				}.not_to change { my_profile.reload.is_published }
 			end
 			
 			it "fails to update my admin notes" do
 				expect {
 					put :formlet_update, id: my_profile_id, formlet: 'summary', profile: {admin_notes: 'Sneaky notes'}
-				}.to raise_error(/protected attributes/i)
+				}.not_to change { my_profile.reload.admin_notes }
 			end
 
 			it "fails to update widget code" do
 				expect {
 					put :formlet_update, id: my_profile_id, formlet: 'summary', profile: {widget_code: '<a>some code</a>'}
-				}.to raise_error(/protected attributes/i)
+				}.not_to change { my_profile.reload.widget_code }
 			end
 		end
 		
@@ -361,6 +363,98 @@ describe ProfilesController, :type => :controller do
 				expect(assigns[:profile]).to eq me.profile
 			end
 		end
+		
+		describe 'editing specialties' do
+			let(:specialty_names) { ["", "Surf school", "Windsurfing lessons"] }
+			
+			it 'should add two specialties' do
+				put :formlet_update, id: my_profile_id, formlet: 'specialties', profile: {specialty_names: specialty_names}
+				expect((my_profile.reload.specialties.map(&:name) + [""]).sort).to eq specialty_names.sort
+			end
+		end
+		
+		describe "editing locations", geocoding_api: true, internet: true do
+			let(:city_state) { {city: 'San Francisco', region: 'CA'} }
+			let(:location_1_attrs) { FactoryGirl.attributes_for(:location, {address1: '1398 Haight St.'}.merge(city_state)) }
+			let(:location_2_attrs) { FactoryGirl.attributes_for(:location, {address1: '563 2nd St.'}.merge(city_state)) }
+			let(:location_1) { FactoryGirl.create(:location, location_1_attrs) }
+			let(:my_profile_with_location_1) { 
+				my_profile.locations = [location_1]
+				my_profile.save!
+				my_profile
+			}
+			
+			it "should add two locations" do
+				expect {
+					put :formlet_update, id: my_profile_id, formlet: 'locations', profile: FactoryGirl.attributes_for(:profile, locations_attributes: {
+						'0' => location_1_attrs, '1' => location_2_attrs
+					})
+				}.to change { my_profile.reload.locations.size }.by(2)
+				addresses = [location_1_attrs[:address1], location_2_attrs[:address1]]
+				my_profile.reload.locations.each { |location|
+					expect(addresses.include?(location.address1)).to be_truthy
+				}
+			end
+			
+			it "should update a location" do
+				location = my_profile_with_location_1.locations.first
+				expect {
+					put :formlet_update, id: my_profile_id, formlet: 'locations', profile: FactoryGirl.attributes_for(:profile, locations_attributes: {
+						'0' => location_2_attrs.merge({id: location.id})
+					})
+				}.to change { location.reload.address1 }.from(location_1_attrs[:address1]).to(location_2_attrs[:address1])
+			end
+			
+			it 'should delete a location' do
+				location = my_profile_with_location_1.locations.first
+				expect {
+					put :formlet_update, id: my_profile_id, formlet: 'locations', profile: FactoryGirl.attributes_for(:profile, locations_attributes: {
+						'0' => location_1_attrs.merge({id: location.id, _destroy: '1'})
+					})
+				}.to change { my_profile_with_location_1.reload.locations.size }.by(-1)
+			end
+		end
+		
+		describe 'editing profile announcements' do
+			let(:announcement_attrs) {
+				FactoryGirl.attributes_for(:profile_announcement, 
+					body: 'Legally-imposed culture reduction is cabbage-brained!')
+			}
+			let(:announcement) { FactoryGirl.create(:profile_announcement, announcement_attrs) }
+			let(:my_profile_with_announcement) {
+				my_profile.profile_announcements = [announcement]
+				my_profile.save!
+				my_profile
+			}
+			
+			it "should add an announcement" do
+				expect {
+					put :formlet_update, id: my_profile_id, formlet: 'announcements', child_formlet: 'announcement_new', profile: FactoryGirl.attributes_for(:profile, profile_announcements_attributes: {
+						'0' => announcement_attrs
+					})
+				}.to change { my_profile.reload.profile_announcements.size }.by(1)
+				expect(my_profile.reload.profile_announcements.map(&:body).include?(announcement_attrs[:body])).to be_truthy
+			end
+			
+			it 'should update an announcement' do
+				announcement_to_update = my_profile_with_announcement.profile_announcements.first
+				new_body = 'Another way of sending fond returns is here!'
+				expect {
+					put :formlet_update, id: my_profile_id, formlet: 'announcements', child_formlet: 'announcement_0', profile: FactoryGirl.attributes_for(:profile, profile_announcements_attributes: {
+						'0' => announcement_attrs.merge({id: announcement_to_update.id, body: new_body})
+					})
+				}.to change { announcement_to_update.reload.body }.from(announcement_attrs[:body]).to(new_body)
+			end
+			
+			it 'should delete an announcement' do
+				announcement_to_delete = my_profile_with_announcement.profile_announcements.first
+				expect {
+					put :formlet_update, id: my_profile_id, formlet: 'announcements', child_formlet: 'announcement_0', profile: FactoryGirl.attributes_for(:profile, profile_announcements_attributes: {
+						'0' => announcement_attrs.merge({id: announcement_to_delete.id, _destroy: '1'})
+					})
+				}.to change { my_profile_with_announcement.reload.profile_announcements.size }.by(-1)
+			end
+		end
 	end
 	
 	context "as admin user" do
@@ -410,6 +504,8 @@ describe ProfilesController, :type => :controller do
 				post :create, profile: @profile_attrs
 				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
 				expect(flash[:notice]).not_to be_nil
+				expect(assigns[:profile].categories.first).not_to be_nil
+				expect(assigns[:profile].specialties.first).not_to be_nil
 			end
 		
 			it "can create the profile with no last name" do
@@ -538,6 +634,8 @@ describe ProfilesController, :type => :controller do
 				post :create, profile: @profile_attrs
 				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
 				expect(flash[:notice]).not_to be_nil
+				expect(assigns[:profile].categories.first).not_to be_nil
+				expect(assigns[:profile].specialties.first).not_to be_nil
 			end
 			
 			it "successfully creates the profile from the admin page" do
@@ -629,19 +727,44 @@ describe ProfilesController, :type => :controller do
 			end
 		end
 		
-		it "should add two locations", geocoding_api: true, internet: true do
-			city_state = {city: 'San Francisco', region: 'CA'}
-			location_1_attrs = FactoryGirl.attributes_for(:location, {address1: '1398 Haight St.'}.merge(city_state))
-			location_2_attrs = FactoryGirl.attributes_for(:location, {address1: '1855 Haight St.'}.merge(city_state))
-			profile = FactoryGirl.create(:profile)
-			put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, locations_attributes: {
-				'0' => location_1_attrs, '1' => location_2_attrs
-			})
-			expect(response).to redirect_to(controller: 'profiles', action: 'show', id: profile.id)
-			expect(assigns[:profile].locations.size).to eq 2
-			addresses = [location_1_attrs[:address1], location_2_attrs[:address1]]
-			expect(addresses.include?(assigns[:profile].locations[0].address1)).to be_truthy
-			expect(addresses.include?(assigns[:profile].locations[1].address1)).to be_truthy
+		describe "editing locations", geocoding_api: true, internet: true do
+			let(:city_state) { {city: 'San Francisco', region: 'CA'} }
+			let(:location_1_attrs) { FactoryGirl.attributes_for(:location, {address1: '1398 Haight St.'}.merge(city_state)) }
+			let(:location_2_attrs) { FactoryGirl.attributes_for(:location, {address1: '563 2nd St.'}.merge(city_state)) }
+			let(:profile) { FactoryGirl.create(:profile) }
+			let(:location_1) { FactoryGirl.create(:location, location_1_attrs) }
+			let(:profile_with_location_1) { FactoryGirl.create(:profile, locations: [location_1]) }
+			
+			it "should add two locations" do
+				expect {
+					put :update, id: profile.id, profile: FactoryGirl.attributes_for(:profile, locations_attributes: {
+						'0' => location_1_attrs, '1' => location_2_attrs
+					})
+				}.to change { profile.reload.locations.size }.by(2)
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: profile.id)
+				addresses = [location_1_attrs[:address1], location_2_attrs[:address1]]
+				assigns[:profile].locations.each { |location|
+					expect(addresses.include?(location.address1)).to be_truthy
+				}
+			end
+		
+			it "should update a location" do
+				location = profile_with_location_1.locations.first
+				expect {
+					put :update, id: profile_with_location_1.id, profile: FactoryGirl.attributes_for(:profile, locations_attributes: {
+						'0' => location_2_attrs.merge({id: location.id})
+					})
+				}.to change { location.reload.address1 }.from(location_1_attrs[:address1]).to(location_2_attrs[:address1])
+			end
+			
+			it 'should delete a location' do
+				location = profile_with_location_1.locations.first
+				expect {
+					put :update, id: profile_with_location_1.id, profile: FactoryGirl.attributes_for(:profile, locations_attributes: {
+						'0' => location_1_attrs.merge({id: location.id, _destroy: '1'})
+					})
+				}.to change { profile_with_location_1.reload.locations.size }.by(-1)
+			end
 		end
 	end
 	
