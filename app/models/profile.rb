@@ -23,7 +23,7 @@ class Profile < ActiveRecord::Base
 		:visit_home, :visit_school, :consult_at_hospital, :consult_at_camp, :consult_at_other, 
 		:pricing, :service_area, :hours, :accepting_new_clients, :availability_service_area_note,
 		:photo_source_url, :profile_photo,
-		:age_range_ids, :ages_stages_note,
+		:ages_stages_note,
 		:evening_hours_available, :weekend_hours_available, :free_initial_consult, :sliding_scale_available,
 		:financial_aid_available,
 		:consult_remotely, # provider offers most or all services remotely
@@ -43,7 +43,7 @@ class Profile < ActiveRecord::Base
 		:search_widget_code,
 		:invitation_email,
 		:invitation_tracking_category,
-		{ category_ids: [], subcategory_ids: [], service_ids: [], specialty_ids: [] }
+		{ category_ids: [], subcategory_ids: [], service_ids: [], specialty_ids: [], age_range_ids: [] }
 	]
 	# attr_accessible *DEFAULT_ACCESSIBLE_ATTRIBUTES
 	# attr_accessible *EDITOR_ACCESSIBLE_ATTRIBUTES, as: :profile_editor
