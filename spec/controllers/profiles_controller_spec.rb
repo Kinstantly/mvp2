@@ -365,11 +365,31 @@ describe ProfilesController, :type => :controller do
 		end
 		
 		describe 'editing specialties' do
-			let(:specialty_names) { ["", "Surf school", "Windsurfing lessons"] }
+			let(:specialty_names) { ["Mars surf school", "Sandsurfing lessons"] }
+			let(:my_profile_with_specialties) {
+				my_profile.specialties = specialty_names.map(&:to_specialty)
+				my_profile.save!
+				my_profile
+			}
 			
-			it 'should add two specialties' do
-				put :formlet_update, id: my_profile_id, formlet: 'specialties', profile: {specialty_names: specialty_names}
-				expect((my_profile.reload.specialties.map(&:name) + [""]).sort).to eq specialty_names.sort
+			it 'should replace with two specialties' do
+				expect {
+					put :formlet_update, id: my_profile_id, formlet: 'specialties', profile: {
+						specialty_names: specialty_names
+					}
+				}.to change { my_profile.reload.specialties.map(&:name).sort }
+					.from(my_profile.specialties.map(&:name).sort)
+					.to(specialty_names.sort)
+			end
+			
+			it 'should delete a specialty' do
+				expect {
+					put :formlet_update, id: my_profile_with_specialties.id, formlet: 'specialties', profile: {
+						specialty_names: specialty_names.slice(0, 1)
+					}
+				}.to change { my_profile_with_specialties.reload.specialties.map(&:name).sort }
+					.from(my_profile_with_specialties.specialties.map(&:name).sort)
+					.to(specialty_names.slice(0, 1).sort)
 			end
 		end
 		
@@ -493,24 +513,27 @@ describe ProfilesController, :type => :controller do
 		end
 	
 		describe "POST 'create'" do
-			before(:example) do
-				@profile_attrs = 
-					FactoryGirl.attributes_for(:profile,
-						category_ids: ["#{FactoryGirl.create(:category).id}"],
-						specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
-			end
+			let(:profile_attrs) {
+				FactoryGirl.attributes_for(:profile,
+					category_ids: ["#{FactoryGirl.create(:category).id}"],
+					subcategory_ids: ["#{FactoryGirl.create(:subcategory).id}"],
+					service_ids: ["#{FactoryGirl.create(:service).id}"],
+					specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
+			}
 		
 			it "successfully creates the profile" do
-				post :create, profile: @profile_attrs
+				post :create, profile: profile_attrs
 				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
 				expect(flash[:notice]).not_to be_nil
 				expect(assigns[:profile].categories.first).not_to be_nil
+				expect(assigns[:profile].subcategories.first).not_to be_nil
+				expect(assigns[:profile].services.first).not_to be_nil
 				expect(assigns[:profile].specialties.first).not_to be_nil
 			end
 		
 			it "can create the profile with no last name" do
-				@profile_attrs[:last_name] = ''
-				post :create, profile: @profile_attrs
+				profile_attrs[:last_name] = ''
+				post :create, profile: profile_attrs
 				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
 				expect(flash[:notice]).not_to be_nil
 			end
@@ -536,25 +559,29 @@ describe ProfilesController, :type => :controller do
 		end
 	
 		describe "PUT 'update'" do
-			before(:example) do
-				@profile_attrs = 
-					FactoryGirl.attributes_for(:profile,
-						category_ids: ["#{FactoryGirl.create(:category).id}"],
-						specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
-				FactoryGirl.create(:profile)
-				@profile = Profile.all.first
-			end
-		
+			let(:profile_attrs) {
+				FactoryGirl.attributes_for(:profile,
+					category_ids: ["#{FactoryGirl.create(:category).id}"],
+					subcategory_ids: ["#{FactoryGirl.create(:subcategory).id}"],
+					service_ids: ["#{FactoryGirl.create(:service).id}"],
+					specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
+			}
+			let(:profile) { FactoryGirl.create(:profile) }
+			
 			it "successfully updates the profile" do
-				put :update, id: @profile.id, profile: @profile_attrs
-				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
+				put :update, id: profile.id, profile: profile_attrs
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: profile.id)
 				expect(flash[:notice]).not_to be_nil
+				expect(assigns[:profile].categories.first).not_to be_nil
+				expect(assigns[:profile].subcategories.first).not_to be_nil
+				expect(assigns[:profile].services.first).not_to be_nil
+				expect(assigns[:profile].specialties.first).not_to be_nil
 			end
 		
 			it "can update the profile with no last name" do
-				@profile_attrs[:last_name] = ''
-				put :update, id: @profile.id, profile: @profile_attrs
-				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
+				profile_attrs[:last_name] = ''
+				put :update, id: profile.id, profile: profile_attrs
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: profile.id)
 				expect(flash[:notice]).not_to be_nil
 			end
 		end
@@ -724,6 +751,37 @@ describe ProfilesController, :type => :controller do
 			
 			it "should not destroy an attached profile" do
 				protects_attached_profile
+			end
+		end
+		
+		describe 'editing specialties' do
+			let(:specialty_names) { ["Mars surf school", "Sandsurfing lessons"] }
+			let(:profile) { FactoryGirl.create(:profile) }
+			let(:profile_with_specialties) {
+				profile.specialties = specialty_names.map(&:to_specialty)
+				profile.save!
+				profile
+			}
+			
+			it 'should add two specialties' do
+				specialties_names_before = profile.specialties.map(&:name)
+				expect {
+					put :update, id: profile.id,
+						profile: FactoryGirl.attributes_for(:profile, custom_specialty_names: specialty_names)
+				}.to change { profile.reload.specialties.map(&:name).sort }
+					.from(specialties_names_before.sort)
+					.to((specialties_names_before + specialty_names).uniq.sort)
+			end
+			
+			it 'should delete a specialty' do
+				specialties_names_before = profile_with_specialties.specialties.map(&:name)
+				kept_specialty = profile_with_specialties.specialties.first
+				expect {
+					put :update, id: profile_with_specialties.id,
+						profile: FactoryGirl.attributes_for(:profile, specialty_ids: [kept_specialty.id])
+				}.to change { profile_with_specialties.reload.specialties.map(&:name).sort }
+					.from(specialties_names_before.sort)
+					.to([kept_specialty.name])
 			end
 		end
 		
