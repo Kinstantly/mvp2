@@ -18,7 +18,7 @@ class ReviewsController < ApplicationController
 	end
 	
 	def admin_update
-		@success = @review.update_attributes_with_reviewer(params[:review]) && @review.rate(params[:rating_score])
+		@success = @review.update_attributes_with_reviewer(review_params) && @review.rate(params[:rating_score])
 		respond_with @review, layout: false
 	end
 	
@@ -50,6 +50,17 @@ class ReviewsController < ApplicationController
 		if (id = params[:profile_id]).present?
 			@profile = Profile.accessible_by(current_ability, :show).find(id)
 			@review.profile = @profile
+		end
+	end
+	
+	# Use this method to whitelist the permissible parameters. Example:
+	# params.require(:person).permit(:name, :age)
+	# Also, you can specialize this method with per-user checking of permissible attributes.
+	def review_params
+		if [:admin, :profile_editor].include?(updater_role)
+			params.require(:review).permit(*Review::EDITOR_ACCESSIBLE_ATTRIBUTES)
+		else
+			params.require(:review).permit(*Review::DEFAULT_ACCESSIBLE_ATTRIBUTES)
 		end
 	end
 end

@@ -135,7 +135,8 @@ describe ReviewsController, :type => :controller do
 				count = published_profile.reviews.count
 				email, username = 'example@example.com', 'example'
 				post :create,
-					review: review_attributes.merge(reviewer_email: email, reviewer_username: username)
+					review: review_attributes.merge(reviewer_email: email, reviewer_username: username),
+					profile_id: published_profile.id
 				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
 				expect(Profile.find(published_profile.id).reviews.count).to eq count
 			end
@@ -149,7 +150,7 @@ describe ReviewsController, :type => :controller do
 				parent.confirmed_at = nil
 				parent.save
 				count = published_profile.reviews.count
-				post :create, review: review_attributes
+				post :create, review: review_attributes, profile_id: published_profile.id
 				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
 				expect(Profile.find(published_profile.id).reviews.count).to eq count
 			end
@@ -160,7 +161,7 @@ describe ReviewsController, :type => :controller do
 		describe "POST create" do
 			it "creates a review attached to a profile" do
 				sign_in parent
-				post :create, review: review_attributes
+				post :create, review: review_attributes, profile_id: published_profile.id
 				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
 				expect(profile = assigns[:review].profile).not_to be_nil
 				expect(profile).to eq published_profile
@@ -169,7 +170,7 @@ describe ReviewsController, :type => :controller do
 			it "cannot create a review attached to an unpublished profile" do
 				sign_in parent
 				count = unpublished_profile.reviews.count
-				post :create, review: review_attributes.merge(profile_id: unpublished_profile.id)
+				post :create, review: review_attributes, profile_id: unpublished_profile.id
 				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: unpublished_profile.id)
 				expect(Profile.find(unpublished_profile.id).reviews.count).to eq count
 			end
@@ -181,7 +182,7 @@ describe ReviewsController, :type => :controller do
 			it "allows review of another provider" do
 				sign_in provider
 				count = published_profile.reviews.count
-				post :create, review: review_attributes
+				post :create, review: review_attributes, profile_id: published_profile.id
 				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
 				expect(Profile.find(published_profile.id).reviews.count).to eq(count + 1)
 			end
@@ -189,7 +190,7 @@ describe ReviewsController, :type => :controller do
 			it "denies review of the selfsame provider" do
 				sign_in provider_with_published_profile
 				count = published_profile.reviews.count
-				post :create, review: review_attributes
+				post :create, review: review_attributes, profile_id: published_profile.id
 				expect(response).not_to redirect_to(controller: 'profiles', action: 'show', id: published_profile.id)
 				expect(Profile.find(published_profile.id).reviews.count).to eq count
 			end
