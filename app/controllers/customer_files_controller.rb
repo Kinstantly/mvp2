@@ -27,11 +27,20 @@ class CustomerFilesController < ApplicationController
 	# PUT /customer_files/:id/create_charge
 	def create_charge
 		respond_with @customer_file do |format|
-			if @customer_file.create_charge(params[:customer_file])
+			if @customer_file.create_charge(customer_file_params)
 				set_flash_message :notice, :created_charge
 			else
 				format.html { render :new_charge }
 			end
 		end
+	end
+	
+	private
+	
+	# Use this method to whitelist the permissible parameters. Example:
+	# params.require(:person).permit(:name, :age)
+	# Also, you can specialize this method with per-user checking of permissible attributes.
+	def customer_file_params
+		params.require(:customer_file).permit(*CustomerFile::DEFAULT_ACCESSIBLE_ATTRIBUTES)
 	end
 end

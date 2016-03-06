@@ -114,15 +114,31 @@ describe CustomerFilesController, type: :controller, payments: true do
 		end
 		
 		describe "PUT create_charge" do
+			let(:params) {
+				{
+					charge_amount_usd: charge_amount_usd,
+					charge_description: 'test',
+					charge_statement_description: 'test'
+				}
+			}
+			
 			it "creates a charge record" do
 				expect {
-					params = {
-						charge_amount_usd: charge_amount_usd,
-						charge_description: 'test',
-						charge_statement_description: 'test'
-					}
 					put :create_charge, id: customer_file_1.id, customer_file: params
 				}.to change(StripeCharge, :count).by(1)
+			end
+			
+			it 'decrements the authorized amount by the charge amount' do
+				expect {
+					put :create_charge, id: customer_file_1.id, customer_file: params
+				}.to change { customer_file_1.reload.authorized_amount }.by(- charge_amount_cents)
+			end
+			
+			it 'cannot modify the authorized amount directly' do
+				expect {
+					put :create_charge, id: customer_file_1.id,
+						customer_file: params.merge(authorized_amount: (2 * customer_file_1.authorized_amount))
+				}.to change { customer_file_1.reload.authorized_amount }.by(- charge_amount_cents)
 			end
 		end
 	end
