@@ -1,7 +1,12 @@
 class ContactBlocker < ActiveRecord::Base
+	# Remove the following after upgrading to Rails 4.0 or greater.
+	include ActiveModel::ForbiddenAttributesProtection
+	
 	has_paper_trail # Track changes to each contact blocker.
 	
-	attr_accessible :email
+	DEFAULT_ACCESSIBLE_ATTRIBUTES = [ :email ]
+	
+	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	# If you want to make other attributes accessible to admin, use a role, e.g.,
 	# attr_accessible :email, :email_delivery_id, as: :admin

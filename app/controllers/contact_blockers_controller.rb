@@ -22,7 +22,7 @@ class ContactBlockersController < ApplicationController
 	
 	def create_from_email_delivery
 		if @contact_blocker
-			if @contact_blocker.update_attributes_from_email_delivery params[:contact_blocker]
+			if @contact_blocker.update_attributes_from_email_delivery contact_blocker_params
 				redirect_to contact_blocker_confirmation_url
 			else
 				render action: :new_from_email_delivery
@@ -62,7 +62,7 @@ class ContactBlockersController < ApplicationController
 
 	def update
 		respond_with(@contact_blocker) do |format|
-			if @contact_blocker.update_attributes params[:contact_blocker]
+			if @contact_blocker.update_attributes contact_blocker_params
 				set_flash_message :notice, :updated, email: @contact_blocker.email
 			else
 				set_flash_message :alert, :update_error
@@ -87,5 +87,12 @@ class ContactBlockersController < ApplicationController
 		if (token = params[:email_delivery_token]).present? and (email_delivery = EmailDelivery.find_by_token token)
 			@contact_blocker = email_delivery.contact_blockers.build email: email_delivery.recipient
 		end
+	end
+	
+	# Use this method to whitelist the permissible parameters. Example:
+	# params.require(:person).permit(:name, :age)
+	# Also, you can specialize this method with per-user checking of permissible attributes.
+	def contact_blocker_params
+		params.require(:contact_blocker).permit(*ContactBlocker::DEFAULT_ACCESSIBLE_ATTRIBUTES)
 	end
 end

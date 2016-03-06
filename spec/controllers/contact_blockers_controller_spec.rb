@@ -58,24 +58,38 @@ describe ContactBlockersController, :type => :controller do
 				it "assigns a newly created but unsaved contact_blocker as @contact_blocker" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(ContactBlocker).to receive(:update_attributes_from_email_delivery).and_return(false)
-					post :create_from_email_delivery, email_delivery_token: email_delivery.token, contact_blocker: {}
+					post :create_from_email_delivery, email_delivery_token: email_delivery.token, contact_blocker: valid_attributes
 					expect(assigns(:contact_blocker)).to be_a_new(ContactBlocker)
 				end
 
 				it "renders the 'new_from_email_delivery' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(ContactBlocker).to receive(:update_attributes_from_email_delivery).and_return(false)
-					post :create_from_email_delivery, email_delivery_token: email_delivery.token, contact_blocker: {}
+					post :create_from_email_delivery, email_delivery_token: email_delivery.token, contact_blocker: valid_attributes
 					expect(response).to render_template('new_from_email_delivery')
 				end
 			end
 			
 			describe "attempting to modify protected attribute(s)" do
-				it "cannot assign the email delivery record" do
-					email_delivery = FactoryGirl.create :email_delivery
+				let(:correct_email_delivery) {
+					FactoryGirl.create :email_delivery, recipient: 'one@example.org', token: 'tokenone'
+				}
+				let(:incorrect_email_delivery) {
+					FactoryGirl.create :email_delivery, recipient: 'two@example.org', token: 'tokentwo'
+				}
+				
+				it "can assign the email delivery token (proof of test)" do
 					expect {
-						post :create_from_email_delivery, email_delivery_token: email_delivery.token, contact_blocker: valid_attributes_with_email_delivery.merge(email_delivery_id: email_delivery.to_param)
-					}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+						post :create_from_email_delivery, email_delivery_token: correct_email_delivery.token,
+							contact_blocker: valid_attributes.merge(email: correct_email_delivery.recipient)
+					}.to change(ContactBlocker.where(email_delivery_id: correct_email_delivery), :count).by(1)
+				end
+				
+				it "cannot assign the email delivery record" do
+					expect {
+						post :create_from_email_delivery, email_delivery_token: correct_email_delivery.token,
+							contact_blocker: valid_attributes_with_email_delivery.merge(email_delivery_id: incorrect_email_delivery.to_param)
+					}.to change(ContactBlocker.where(email_delivery_id: incorrect_email_delivery), :count).by(0)
 				end
 			end
 		end
@@ -120,14 +134,14 @@ describe ContactBlockersController, :type => :controller do
 					it "assigns a newly created but unsaved contact_blocker as @contact_blocker" do
 						# Trigger the behavior that occurs when invalid params are submitted
 						allow_any_instance_of(ContactBlocker).to receive(:save).and_return(false)
-						post :create, {contact_blocker: {}}
+						post :create, {contact_blocker: valid_attributes}
 						expect(assigns(:contact_blocker)).to be_a_new(ContactBlocker)
 					end
 
 					it "renders the 'new' template" do
 						# Trigger the behavior that occurs when invalid params are submitted
 						allow_any_instance_of(ContactBlocker).to receive(:save).and_return(false)
-						post :create, {contact_blocker: {}}
+						post :create, {contact_blocker: valid_attributes}
 						expect(response).to render_template 'new'
 					end
 				end
@@ -136,7 +150,7 @@ describe ContactBlockersController, :type => :controller do
 					it "cannot assign the email delivery record" do
 						expect {
 							post :create, contact_blocker: valid_attributes.merge(email_delivery_id: email_delivery.to_param)
-						}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+						}.to change(ContactBlocker.where(email_delivery_id: email_delivery), :count).by(0)
 					end
 				end
 			end
@@ -180,8 +194,8 @@ describe ContactBlockersController, :type => :controller do
 						# specifies that the newly created ContactBlocker
 						# receives the :update_attributes message with whatever params are
 						# submitted in the request as the admin role.
-						expect_any_instance_of(ContactBlocker).to receive(:update_attributes).with({'these' => 'params'})
-						put :update, {id: contact_blocker.to_param, contact_blocker: {'these' => 'params'}}
+						expect_any_instance_of(ContactBlocker).to receive(:update_attributes).with(valid_attributes)
+						put :update, {id: contact_blocker.to_param, contact_blocker: valid_attributes}
 					end
 
 					it "assigns the requested contact_blocker as @contact_blocker" do
@@ -199,14 +213,14 @@ describe ContactBlockersController, :type => :controller do
 					it "assigns the contact_blocker as @contact_blocker" do
 						# Trigger the behavior that occurs when invalid params are submitted
 						allow_any_instance_of(ContactBlocker).to receive(:save).and_return(false)
-						put :update, {id: contact_blocker.to_param, contact_blocker: {}}
+						put :update, {id: contact_blocker.to_param, contact_blocker: valid_attributes}
 						expect(assigns(:contact_blocker)).to eq(contact_blocker)
 					end
 
 					it "re-renders the 'edit' template" do
 						# Trigger the behavior that occurs when invalid params are submitted
 						allow_any_instance_of(ContactBlocker).to receive(:update_attributes).and_return(false)
-						put :update, {id: contact_blocker.to_param, contact_blocker: {}}
+						put :update, {id: contact_blocker.to_param, contact_blocker: valid_attributes}
 						expect(response).to render_template 'edit'
 					end
 				end
