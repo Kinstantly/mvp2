@@ -1,7 +1,12 @@
 class Customer < ActiveRecord::Base
+	# Remove the following after upgrading to Rails 4.0 or greater.
+	include ActiveModel::ForbiddenAttributesProtection
+	
 	has_paper_trail # Track changes to each provider-customer record.
 	
-	# attr_accessible 
+	DEFAULT_ACCESSIBLE_ATTRIBUTES = []
+	
+	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	belongs_to :user
 	has_many :providers, class_name: 'User', through: :customer_files
