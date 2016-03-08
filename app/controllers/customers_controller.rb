@@ -9,12 +9,14 @@ class CustomersController < ApplicationController
 	# For actions specified by the :new option, a new customer will be built rather than fetching one.
 	load_and_authorize_resource
 
+	before_filter :load_profile_id
+
 	# GET /authorize_payment/:profile_id
 	def authorize_payment
 		@customer = current_user.as_customer || Customer.new
-		@profile = @customer.provider_for_profile(params[:profile_id]).profile
-		@authorized = @customer.authorized_for_profile params[:profile_id]
-		@authorized_amount = @customer.authorized_amount_for_profile params[:profile_id]
+		@profile = @customer.provider_for_profile(@profile_id).profile
+		@authorized = @customer.authorized_for_profile @profile_id
+		@authorized_amount = @customer.authorized_amount_for_profile @profile_id
 		respond_with @customer
 	rescue Payment::ChargeAuthorizationError => error
 		logger.error "#{self.class} Error: #{error}"
@@ -25,9 +27,9 @@ class CustomersController < ApplicationController
 	# GET /authorize_payment_confirmation/:profile_id
 	def authorize_payment_confirmation
 		@customer = current_user.as_customer
-		@profile = @customer.provider_for_profile(params[:profile_id]).profile
-		@authorized = @customer.authorized_for_profile params[:profile_id]
-		@authorized_amount = @customer.authorized_amount_for_profile params[:profile_id]
+		@profile = @customer.provider_for_profile(@profile_id).profile
+		@authorized = @customer.authorized_for_profile @profile_id
+		@authorized_amount = @customer.authorized_amount_for_profile @profile_id
 		respond_with @customer
 	rescue Payment::ChargeAuthorizationError => error
 		logger.error "#{self.class} Error: #{error}"
@@ -43,12 +45,12 @@ class CustomersController < ApplicationController
 	def create
 		success = @customer.save_with_authorization(
 			user:         current_user,
-			profile_id:   params[:profile_id],
+			profile_id:   @profile_id,
 			stripe_token: params[:stripeToken],
 			amount:       params[:authorized_amount]
 		)
 		
-		success_path = authorize_payment_confirmation_path params[:profile_id], created: true
+		success_path = authorize_payment_confirmation_path @profile_id, created: true
 		
 		respond_with @customer, location: success_path do |format|
 			if success
@@ -60,24 +62,24 @@ class CustomersController < ApplicationController
 	end
 	
 	def update
-		@profile = @customer.provider_for_profile(params[:profile_id]).profile
-		@authorized = @customer.authorized_for_profile params[:profile_id]
-		@authorized_amount = @customer.authorized_amount_for_profile params[:profile_id]
+		@profile = @customer.provider_for_profile(@profile_id).profile
+		@authorized = @customer.authorized_for_profile @profile_id
+		@authorized_amount = @customer.authorized_amount_for_profile @profile_id
 		success = @customer.save_with_authorization(
-			profile_id:       params[:profile_id],
+			profile_id:       @profile_id,
 			stripe_token:     params[:stripeToken],
 			authorized:       params[:authorized],
 			amount:           params[:authorized_amount],
 			amount_increment: params[:authorized_amount_increment]
 		)
 		
-		success_path = authorize_payment_confirmation_path params[:profile_id], card_changed: params[:card_changed]
+		success_path = authorize_payment_confirmation_path @profile_id, card_changed: params[:card_changed]
 		
 		respond_with @customer, location: success_path do |format|
 			if success
 				if params[:card_changed]
 					set_flash_message :notice, :card_changed
-				elsif @customer.authorized_for_profile params[:profile_id]
+				elsif @customer.authorized_for_profile @profile_id
 					set_flash_message :notice, :payment_authorized
 				else
 					set_flash_message :notice, :payment_authorization_revoked
@@ -88,4 +90,13 @@ class CustomersController < ApplicationController
 		end
 	end
 	
+	private
+	
+	# Ensure the requested profile is accessible by the current user.
+	def load_profile_id
+		id = params[:profile_id]
+		if id.present? && Profile.accessible_by(current_ability, :show).exists?(id)
+			@profile_id = id
+		end
+	end
 end
