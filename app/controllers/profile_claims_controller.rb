@@ -42,7 +42,7 @@ class ProfileClaimsController < ApplicationController
 	
 	# PUT /profile_claims/1
 	def update
-		if @profile_claim.update_attributes params[:profile_claim], as: updater_role
+		if @profile_claim.update_attributes profile_claim_params
 			set_flash_message :notice, :updated
 			respond_with @profile_claim
 		else
@@ -69,6 +69,17 @@ class ProfileClaimsController < ApplicationController
 		if (id = params[:profile_id]).present?
 			@profile = Profile.accessible_by(current_ability, :show).find(id)
 			@profile_claim.profile = @profile
+		end
+	end
+	
+	# Use this method to whitelist the permissible parameters. Example:
+	# params.require(:person).permit(:name, :age)
+	# Also, you can specialize this method with per-user checking of permissible attributes.
+	def profile_claim_params
+		if [:admin].include?(updater_role)
+			params.require(:profile_claim).permit(*ProfileClaim::EDITOR_ACCESSIBLE_ATTRIBUTES)
+		else
+			params.require(:profile_claim).permit(*ProfileClaim::DEFAULT_ACCESSIBLE_ATTRIBUTES)
 		end
 	end
 

@@ -36,48 +36,4 @@ describe ProfileClaim, :type => :model do
 		profile_claim.valid?
 		expect(profile_claim.errors[:claimant_phone].size).to eq 1
 	end
-	
-	context "protected attributes" do
-		context "as default role" do
-			it "can NOT mass-assign admin notes" do
-				expect {
-					profile_claim.update_attributes admin_notes: 'Bad notes.'
-				}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-			end
-
-			it "can NOT mass-assign claimant" do
-				expect {
-					profile_claim.update_attributes claimant_id: parent.to_param
-				}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-			end
-
-			it "can NOT mass-assign profile" do
-				expect {
-					profile_claim.update_attributes profile_id: profile.to_param
-				}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-			end
-		end
-		
-		context "as admin role" do
-			let(:role) { {as: :admin} }
-			
-			it "can mass-assign admin notes" do
-				expect {
-					profile_claim.update_attributes({admin_notes: 'Good notes.'}, role)
-				}.to_not raise_error
-			end
-
-			it "can NOT mass-assign claimant" do
-				expect {
-					profile_claim.update_attributes({claimant_id: parent.to_param}, role)
-				}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-			end
-
-			it "can NOT mass-assign profile" do
-				expect {
-					profile_claim.update_attributes profile_id: profile.to_param
-				}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-			end
-		end
-	end
 end
