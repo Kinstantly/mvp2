@@ -1,9 +1,16 @@
 class ProviderSuggestion < ActiveRecord::Base
+	# Remove the following after upgrading to Rails 4.0 or greater.
+	include ActiveModel::ForbiddenAttributesProtection
+	
 	has_paper_trail # Track changes to each provider suggestion.
 	
-	ACCESSIBLE_ATTRIBUTES = [:description, :provider_name, :provider_url, :suggester_email, :suggester_name, :permission_use_suggester_name]
-	attr_accessible *ACCESSIBLE_ATTRIBUTES
-	attr_accessible *ACCESSIBLE_ATTRIBUTES, :admin_notes, as: :admin
+	DEFAULT_ACCESSIBLE_ATTRIBUTES = [ :description, :provider_name, :provider_url, :suggester_email, :suggester_name, :permission_use_suggester_name ]
+	EDITOR_ACCESSIBLE_ATTRIBUTES = [
+		*DEFAULT_ACCESSIBLE_ATTRIBUTES,
+		:admin_notes
+	]
+	
+	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :description, :provider_name, :provider_url, :suggester_email, :suggester_name

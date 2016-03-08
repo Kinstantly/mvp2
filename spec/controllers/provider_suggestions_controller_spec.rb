@@ -39,31 +39,69 @@ describe ProviderSuggestionsController, :type => :controller do
 				it "assigns a newly created but unsaved provider_suggestion as @provider_suggestion" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(ProviderSuggestion).to receive(:save).and_return(false)
-					post :create, {:provider_suggestion => {}}
+					post :create, {:provider_suggestion => valid_attributes}
 					expect(assigns(:provider_suggestion)).to be_a_new(ProviderSuggestion)
 				end
 
 				it "renders the 'create' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(ProviderSuggestion).to receive(:save).and_return(false)
-					post :create, {:provider_suggestion => {}}
+					post :create, {:provider_suggestion => valid_attributes}
 					expect(response).to render_template('create')
 				end
 			end
 			
 			describe "attempting to modify protected attribute(s)" do
 				it "cannot assign admin notes" do
+					notes = 'Sneaky notes.'
 					expect {
-						post :create, provider_suggestion: valid_attributes.merge(admin_notes: 'Sneaky notes.')
-					}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+						post :create, provider_suggestion: valid_attributes.merge(admin_notes: notes)
+					}.to change(ProviderSuggestion, :count).by(1)
+					expect(ProviderSuggestion.order(:id).last.admin_notes).not_to eq notes
 				end
 
 				it "cannot assign the suggester" do
-					suggester = FactoryGirl.create :parent
+					suggester = FactoryGirl.create :parent, email: 'nottheone@example.org', username: 'nottheone'
 					expect {
 						post :create, provider_suggestion: valid_attributes.merge(suggester_id: suggester.to_param)
-					}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+					}.to change(ProviderSuggestion, :count).by(1)
+					expect(ProviderSuggestion.order(:id).last.suggester).not_to eq suggester
 				end
+			end
+		end
+	end
+	
+	context "as signed-in user" do
+		let(:user) { FactoryGirl.create :parent}
+		
+		before (:each) do
+			sign_in user
+		end
+
+		describe "POST create" do
+			it "assigns current user as the suggester" do
+				expect {
+					post :create, provider_suggestion: valid_attributes
+				}.to change(ProviderSuggestion, :count).by(1)
+				expect(ProviderSuggestion.order(:id).last.suggester).to eq user
+			end
+		end
+
+		describe "attempting to modify protected attribute(s)" do
+			it "cannot assign admin notes" do
+				notes = 'Sneaky notes.'
+				expect {
+					post :create, provider_suggestion: valid_attributes.merge(admin_notes: notes)
+				}.to change(ProviderSuggestion, :count).by(1)
+				expect(ProviderSuggestion.order(:id).last.admin_notes).not_to eq notes
+			end
+
+			it "cannot assign an arbitrary suggester" do
+				suggester = FactoryGirl.create :parent, email: 'nottheone@example.org', username: 'nottheone'
+				expect {
+					post :create, provider_suggestion: valid_attributes.merge(suggester_id: suggester.to_param)
+				}.to change(ProviderSuggestion, :count).by(1)
+				expect(ProviderSuggestion.order(:id).last.suggester).not_to eq suggester
 			end
 		end
 	end
@@ -104,8 +142,8 @@ describe ProviderSuggestionsController, :type => :controller do
 					# specifies that the newly created ProviderSuggestion
 					# receives the :update_attributes message with whatever params are
 					# submitted in the request as the admin role.
-					expect_any_instance_of(ProviderSuggestion).to receive(:update_attributes).with({'these' => 'params'}, {as: :admin})
-					put :update, {:id => provider_suggestion.to_param, :provider_suggestion => {'these' => 'params'}}
+					expect_any_instance_of(ProviderSuggestion).to receive(:update_attributes).with(valid_attributes)
+					put :update, {:id => provider_suggestion.to_param, :provider_suggestion => valid_attributes}
 				end
 
 				it "assigns the requested provider_suggestion as @provider_suggestion" do
@@ -122,24 +160,26 @@ describe ProviderSuggestionsController, :type => :controller do
 			describe "with invalid params" do
 				it "assigns the provider_suggestion as @provider_suggestion" do
 					# Trigger the behavior that occurs when invalid params are submitted
-					allow_any_instance_of(ProviderSuggestion).to receive(:save).and_return(false)
-					put :update, {:id => provider_suggestion.to_param, :provider_suggestion => {}}
+					allow_any_instance_of(ProviderSuggestion).to receive(:update_attributes).and_return(false)
+					put :update, {:id => provider_suggestion.to_param, :provider_suggestion => valid_attributes}
 					expect(assigns(:provider_suggestion)).to eq(provider_suggestion)
 				end
 
 				it "re-renders the 'edit' template" do
 					# Trigger the behavior that occurs when invalid params are submitted
 					allow_any_instance_of(ProviderSuggestion).to receive(:update_attributes).and_return(false)
-					put :update, {:id => provider_suggestion.to_param, :provider_suggestion => {}}
+					put :update, {:id => provider_suggestion.to_param, :provider_suggestion => valid_attributes}
 					expect(response).to render_template("edit")
 				end
 			end
 			
 			describe "admin can modify attribute(s) that are protected from the default role" do
 				it "can assign admin notes" do
+					notes = 'Good notes.'
 					expect {
-						put :update, id: provider_suggestion.to_param, provider_suggestion: {admin_notes: 'Good notes.'}
-					}.to_not raise_error
+						put :update, id: provider_suggestion.to_param,
+							provider_suggestion: valid_attributes.merge(admin_notes: notes)
+					}.to change { provider_suggestion.reload.admin_notes }.from(provider_suggestion.admin_notes).to(notes)
 				end
 			end
 		end

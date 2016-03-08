@@ -92,8 +92,10 @@ describe ProfileClaimsController, :type => :controller do
 
 		describe "POST create" do
 			it "assigns current user as claimant" do
-				post :create, {:profile_claim => valid_attributes, :profile_id => published_profile.id}
-				expect(assigns[:profile_claim].claimant).to eq(user)
+				expect {
+					post :create, {:profile_claim => valid_attributes, :profile_id => published_profile.id}
+				}.to change(ProfileClaim, :count).by(1)
+				expect(ProfileClaim.order(:id).last.claimant).to eq user
 			end
 		end
 

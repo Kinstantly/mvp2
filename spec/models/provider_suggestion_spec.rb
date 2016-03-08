@@ -42,36 +42,4 @@ describe ProviderSuggestion, :type => :model do
 		provider_suggestion.suggester_email = 'invalid@example'
 		expect(provider_suggestion.error_on(:suggester_email).size).to eq 1
 	end
-	
-	context "protected attributes" do
-		context "as default role" do
-			it "can NOT mass-assign admin notes" do
-				expect {
-					provider_suggestion.update_attributes admin_notes: 'Bad notes.'
-				}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-			end
-
-			it "can NOT mass-assign suggester" do
-				expect {
-					provider_suggestion.update_attributes suggester_id: parent.to_param
-				}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-			end
-		end
-		
-		context "as admin role" do
-			let(:role) { {as: :admin} }
-			
-			it "can mass-assign admin notes" do
-				expect {
-					provider_suggestion.update_attributes({admin_notes: 'Good notes.'}, role)
-				}.to_not raise_error
-			end
-
-			it "can NOT mass-assign suggester" do
-				expect {
-					provider_suggestion.update_attributes({suggester_id: parent.to_param}, role)
-				}.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-			end
-		end
-	end
 end

@@ -37,7 +37,7 @@ class ProviderSuggestionsController < ApplicationController
 	
 	# PUT /provider_suggestions/1
 	def update
-		if @provider_suggestion.update_attributes params[:provider_suggestion], as: updater_role
+		if @provider_suggestion.update_attributes provider_suggestion_params
 			set_flash_message :notice, :updated
 			respond_with @provider_suggestion
 		else
@@ -55,5 +55,18 @@ class ProviderSuggestionsController < ApplicationController
 			set_flash_message :alert, :destroy_error, name: @provider_suggestion.provider_name
 		end
 		respond_with @provider_suggestion
+	end
+	
+	private
+	
+	# Use this method to whitelist the permissible parameters. Example:
+	# params.require(:person).permit(:name, :age)
+	# Also, you can specialize this method with per-user checking of permissible attributes.
+	def provider_suggestion_params
+		if [:admin].include?(updater_role)
+			params.require(:provider_suggestion).permit(*ProviderSuggestion::EDITOR_ACCESSIBLE_ATTRIBUTES)
+		else
+			params.require(:provider_suggestion).permit(*ProviderSuggestion::DEFAULT_ACCESSIBLE_ATTRIBUTES)
+		end
 	end
 end
