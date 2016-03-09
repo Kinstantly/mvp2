@@ -1,9 +1,17 @@
 class Specialty < ActiveRecord::Base
+	# Remove the following after upgrading to Rails 4.0 or greater.
+	include ActiveModel::ForbiddenAttributesProtection
+	
 	has_paper_trail # Track changes to each specialty.
 	
 	attr_writer :search_term_ids_to_remove, :search_term_names_to_add # readers defined below
 	
-	attr_accessible :name, :is_predefined, :search_term_ids_to_remove, :search_term_names_to_add
+	DEFAULT_ACCESSIBLE_ATTRIBUTES = [
+		:name, :is_predefined,
+		{ search_term_ids_to_remove: [], search_term_names_to_add: [] }
+	]
+	
+	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	# Strip leading and trailing whitespace from (admin) input intended for these attributes.
 	auto_strip_attributes :name

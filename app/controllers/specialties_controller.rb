@@ -30,7 +30,7 @@ class SpecialtiesController < ApplicationController
 	end
 	
 	def update
-		if @specialty.update_attributes(params[:specialty])
+		if @specialty.update_attributes(specialty_params)
 			if (service_id = params[:service_id]).present?
 				# We came from a mini-form on a service admin page.
 				redirect_to edit_service_path(service_id, anchor: 'links')
@@ -63,5 +63,14 @@ class SpecialtiesController < ApplicationController
 			set_flash_message :alert, :not_found_by_name, name: name
 			redirect_to specialties_url
 		end
+	end
+	
+	private
+	
+	# Use this method to whitelist the permissible parameters. Example:
+	# params.require(:person).permit(:name, :age)
+	# Also, you can specialize this method with per-user checking of permissible attributes.
+	def specialty_params
+		params.require(:specialty).permit(*Specialty::DEFAULT_ACCESSIBLE_ATTRIBUTES)
 	end
 end
