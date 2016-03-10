@@ -1,5 +1,5 @@
 class AdminEvent < ActiveRecord::Base
-	attr_accessible :name
+	# attr_accessible :name
 	
 	default_scope where(trash: false)
 	scope :trash, where(trash: true)

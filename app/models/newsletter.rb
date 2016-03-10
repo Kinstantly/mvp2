@@ -1,7 +1,7 @@
 class Newsletter < ActiveRecord::Base
 	has_paper_trail # Track changes to each rating.
 	
-	attr_accessible :cid, :list_id, :send_time, :title, :subject, :archive_url, :content
+	# attr_accessible :cid, :list_id, :send_time, :title, :subject, :archive_url, :content
 	validates_presence_of :cid, :list_id, :send_time, :title, :subject, :archive_url, :content
 	
 	scope :parent_newsletters, -> { where(
