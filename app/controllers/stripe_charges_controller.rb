@@ -22,11 +22,20 @@ class StripeChargesController < ApplicationController
 	# PUT /stripe_charges/:id/create_refund
 	def create_refund
 		respond_with @stripe_charge do |format|
-			if @stripe_charge.create_refund(params[:stripe_charge])
+			if @stripe_charge.create_refund(stripe_charge_params)
 				set_flash_message :notice, :created_refund
 			else
 				format.html { render :show }
 			end
 		end
+	end
+	
+	private
+	
+	# Use this method to whitelist the permissible parameters. Example:
+	# params.require(:person).permit(:name, :age)
+	# Also, you can specialize this method with per-user checking of permissible attributes.
+	def stripe_charge_params
+		params.require(:stripe_charge).permit(*StripeCharge::DEFAULT_ACCESSIBLE_ATTRIBUTES)
 	end
 end
