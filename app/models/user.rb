@@ -1,7 +1,4 @@
 class User < ActiveRecord::Base
-	# Remove the following after upgrading to Rails 4.0 or greater.
-	include ActiveModel::ForbiddenAttributesProtection
-	
 	# Include default devise modules. Others available are:
 	# :token_authenticatable,
 	# :timeoutable and :omniauthable
@@ -28,9 +25,6 @@ class User < ActiveRecord::Base
 		:profile_attributes, :phone, :is_provider, :username, :registration_special_code,
 		:signed_up_from_blog, :signed_up_for_mailing_lists, :postal_code
 	]
-	# attr_accessible *PASSWORDLESS_ACCESSIBLE_ATTRIBUTES, as: :passwordless
-	# attr_accessible *PASSWORD_ACCESSIBLE_ATTRIBUTES
-	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :email, :phone, :username, :postal_code

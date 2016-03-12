@@ -1,7 +1,4 @@
 class ProfileClaim < ActiveRecord::Base
-	# Remove the following after upgrading to Rails 4.0 or greater.
-	include ActiveModel::ForbiddenAttributesProtection
-	
 	has_paper_trail # Track changes to each profile claim.
 	
 	DEFAULT_ACCESSIBLE_ATTRIBUTES = [ :claimant_email, :claimant_phone ]
@@ -9,8 +6,6 @@ class ProfileClaim < ActiveRecord::Base
 		*DEFAULT_ACCESSIBLE_ATTRIBUTES,
 		:admin_notes
 	]
-	
-	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :claimant_email, :claimant_phone

@@ -1,14 +1,9 @@
 class ProfileAnnouncement < Announcement
-	# Remove the following after upgrading to Rails 4.0 or greater.
-	include ActiveModel::ForbiddenAttributesProtection
-	
 	DEFAULT_ACCESSIBLE_ATTRIBUTES = [
 		*Announcement::DEFAULT_ACCESSIBLE_ATTRIBUTES,
 		:search_result_position,
 		:search_result_link_text
 	]
-
-	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 
 	auto_strip_attributes :search_result_link_text
 

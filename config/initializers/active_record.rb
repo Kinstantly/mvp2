@@ -1,5 +1,8 @@
 class ActiveRecord::Base
 	
+	# Remove the following after upgrading to Rails 4.0 or greater.
+	include ActiveModel::ForbiddenAttributesProtection
+	
 	include SiteConfigurationHelpers
 	
 	# The default list of attributes that are accessible by mass assignment.

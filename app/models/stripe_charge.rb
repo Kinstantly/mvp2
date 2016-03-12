@@ -1,7 +1,4 @@
 class StripeCharge < ActiveRecord::Base
-	# Remove the following after upgrading to Rails 4.0 or greater.
-	include ActiveModel::ForbiddenAttributesProtection
-	
 	has_paper_trail # Track changes to each Stripe charge record.
 	
 	after_create :notify_customer
@@ -11,8 +8,6 @@ class StripeCharge < ActiveRecord::Base
 	# 	:balance_transaction, :fee, :stripe_fee, :application_fee, :description, :statement_description,
 	# 	:refund_amount_usd, :fee_refunded, :stripe_fee_refunded, :application_fee_refunded, :last_refunded_at
 	DEFAULT_ACCESSIBLE_ATTRIBUTES = [ :refund_amount_usd, :refund_reason ]
-	
-	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	belongs_to :stripe_card
 	belongs_to :customer_file

@@ -1,7 +1,4 @@
 class Profile < ActiveRecord::Base
-	# Remove the following after upgrading to Rails 4.0 or greater.
-	include ActiveModel::ForbiddenAttributesProtection
-	
 	# Placeholder for profiles with no photo.
 	DEFAULT_PHOTO_PATH = 'profile-photo-placeholder-225.png'
 	DEFAULT_EDIT_PHOTO_PATH = 'profile-edit-photo-placeholder-225.png'
@@ -45,10 +42,6 @@ class Profile < ActiveRecord::Base
 		:invitation_tracking_category,
 		{ category_ids: [], subcategory_ids: [], service_ids: [], specialty_ids: [], age_range_ids: [] }
 	]
-	# attr_accessible *DEFAULT_ACCESSIBLE_ATTRIBUTES
-	# attr_accessible *EDITOR_ACCESSIBLE_ATTRIBUTES, as: :profile_editor
-	# attr_accessible *EDITOR_ACCESSIBLE_ATTRIBUTES, as: :admin
-	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :first_name, :last_name, :middle_name, :credentials, :email, :company_name, :url,

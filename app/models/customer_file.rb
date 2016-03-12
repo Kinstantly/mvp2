@@ -1,13 +1,8 @@
 class CustomerFile < ActiveRecord::Base
-	# Remove the following after upgrading to Rails 4.0 or greater.
-	include ActiveModel::ForbiddenAttributesProtection
-	
 	has_paper_trail # Track changes to each customer file.
 	
 	attr_accessor :charge_amount, :charge_description, :charge_statement_description, :authorized_amount_increment
 	DEFAULT_ACCESSIBLE_ATTRIBUTES = [ :charge_amount_usd, :charge_description, :charge_statement_description ]
-	
-	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	belongs_to :provider, class_name: 'User', foreign_key: 'user_id'
 	belongs_to :customer

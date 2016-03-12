@@ -37,7 +37,7 @@ end
 def create_client_user(options={})
   create_visitor
   delete_user
-  @visitor[:username] = 'username'
+  @visitor[:username] = 'UsernameOfClient'
   @user = FactoryGirl.create(:client_user, @visitor.merge(options))
 end
 
@@ -485,6 +485,10 @@ end
 
 Then /^I should not see user data that is not my own$/ do
 	expect(page).to_not have_content @visitor_2[:email]
+end
+
+Then /^I should see my username$/ do
+	expect(page).to have_content @user.username
 end
 
 Then /^I should (?:be|land) on the (provider|member) (?:registration|sign[- ]up) page$/ do |role|

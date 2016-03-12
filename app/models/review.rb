@@ -1,16 +1,11 @@
 class Review < ActiveRecord::Base
-	# Remove the following after upgrading to Rails 4.0 or greater.
-	include ActiveModel::ForbiddenAttributesProtection
-	
 	has_paper_trail # Track changes to each review.
 	
-	DEFAULT_ACCESSIBLE_ATTRIBUTES = [ :body, :good_to_know ]
+	DEFAULT_ACCESSIBLE_ATTRIBUTES = [ :body, :good_to_know, :reviewer_username ]
 	EDITOR_ACCESSIBLE_ATTRIBUTES = [
 		*DEFAULT_ACCESSIBLE_ATTRIBUTES,
-		:title, :profile_id, :reviewer_email, :reviewer_username
+		:title, :profile_id, :reviewer_email
 	]
-	
-	attr_protected :id # config.active_record.whitelist_attributes=true but we want it to be effectively false for selected models for which we want strong parameters to do the work.
 	
 	# Strip leading and trailing whitespace from input intended for these attributes.
 	auto_strip_attributes :title, :body, :good_to_know

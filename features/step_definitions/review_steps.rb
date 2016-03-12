@@ -17,12 +17,14 @@ end
 
 ### WHEN ###
 
-When /^I enter "(.*?)"(?: as the )?(reviewer email|reviewer username|title|good-to-know)? (?:of|in) the (new|first|second) review on the (?:admin profile edit|review) page$/ do |text, field, which|
+When /^I enter "(.*?)"(?: as the )?(reviewer email|reviewer username|username|title|good-to-know)? (?:of|in) the (new|first|second) review on the (?:admin profile edit|review) page$/ do |text, field, which|
 	attribute = case field
 	when 'reviewer email'
 		:reviewer_email
 	when 'reviewer username'
 		:reviewer_username_admin
+	when 'username'
+		:reviewer_username
 	when 'title'
 		:title
 	when 'good-to-know'
