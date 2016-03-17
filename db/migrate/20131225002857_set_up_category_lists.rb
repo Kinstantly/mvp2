@@ -4,11 +4,11 @@ class SetUpCategoryLists < ActiveRecord::Migration
 	HOME_LIST_NAME = 'home'
 	
 	class CategoryList < ActiveRecord::Base
-		has_and_belongs_to_many :categories
+		has_and_belongs_to_many :categories, join_table: 'categories_category_lists'
 	end
 	
 	class Category < ActiveRecord::Base
-		has_and_belongs_to_many :category_lists
+		has_and_belongs_to_many :category_lists, join_table: 'categories_category_lists'
 	end
 	
 	def up

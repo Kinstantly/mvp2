@@ -6,7 +6,7 @@ class Category < ActiveRecord::Base
 	# Strip leading and trailing whitespace from (admin) input intended for these attributes.
 	auto_strip_attributes :name
 	
-	has_and_belongs_to_many :category_lists
+	has_and_belongs_to_many :category_lists, join_table: 'categories_category_lists'
 	has_and_belongs_to_many :profiles
 	has_and_belongs_to_many :services, after_add: :services_changed, after_remove: :services_changed
 	has_many :category_subcategories do
