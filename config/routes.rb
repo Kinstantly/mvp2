@@ -2,14 +2,14 @@ Mvp2::Application.routes.draw do
 	# Home page.
 	root :to => 'home#index'
 	
-	match 'about' => 'home#about'
-	match 'contact' => 'home#contact'
-	match 'faq' => 'home#faq'
-	match 'terms' => 'home#terms'
-	match 'privacy' => 'home#privacy'
-	match 'admin' => 'home#admin'
-	match 'show_all_categories' => 'home#show_all_categories'
-	match 'blog' => 'home#blog'
+	get 'about' => 'home#about'
+	get 'contact' => 'home#contact'
+	get 'faq' => 'home#faq'
+	get 'terms' => 'home#terms'
+	get 'privacy' => 'home#privacy'
+	get 'admin' => 'home#admin'
+	get 'show_all_categories' => 'home#show_all_categories'
+	get 'blog' => 'home#blog'
 	get 'recent_newsletters' => 'home#recent_newsletters'
 	get 'newsletter/latest/:name' => 'newsletters#latest', as: :latest_newsletter
 	get 'newsletter/list(/:name)' => 'newsletters#list', as: :newsletter_list
@@ -57,8 +57,8 @@ Mvp2::Application.routes.draw do
 	
 	# A provider claims their profile via the users controller.
 	# But has no other access to their profile via the users controller.
-	match 'claim_profile/:token' => 'users#claim_profile', as: :claim_user_profile
-	match 'claim_profile/:token/confirm' => 'users#force_claim_profile', as: :force_claim_user_profile
+	get 'claim_profile/:token' => 'users#claim_profile', as: :claim_user_profile
+	get 'claim_profile/:token/confirm' => 'users#force_claim_profile', as: :force_claim_user_profile
 	
 	# Admin can list and view user accounts.
 	# User can update profile_help attribute.
@@ -101,18 +101,18 @@ Mvp2::Application.routes.draw do
 	end
 	
 	# Accessing my profile (for providers).
-	match 'my_profile' => 'profiles#view_my_profile'
-	match 'confirm_claim_profile/:claim_token' => 'profiles#view_my_profile', as: :confirm_claim_profile
-	match 'edit_my_profile' => 'profiles#edit_my_profile'
+	get 'my_profile' => 'profiles#view_my_profile'
+	get 'confirm_claim_profile/:claim_token' => 'profiles#view_my_profile', as: :confirm_claim_profile
+	get 'edit_my_profile' => 'profiles#edit_my_profile'
 	
 	# Links to profiles for search engine crawlers.
-	match 'providers' => 'profiles#link_index'
-	match 'providers/page/:page' => 'profiles#link_index'
+	get 'providers' => 'profiles#link_index'
+	get 'providers/page/:page' => 'profiles#link_index'
 	
 	# Profile search.
-	match 'search_providers' => 'profiles#search'
-	match 'search_providers/service/:service_id' => 'profiles#search', as: :search_providers_by_service
-	match 'search_providers/service/:service_id/page/:page' => 'profiles#search'
+	get 'search_providers' => 'profiles#search'
+	get 'search_providers/service/:service_id' => 'profiles#search', as: :search_providers_by_service
+	get 'search_providers/service/:service_id/page/:page' => 'profiles#search'
 	
 	resources :categories, except: :show do
 		member do
@@ -176,7 +176,7 @@ Mvp2::Application.routes.draw do
 
 	# MailChimp webhook
 	# Their validator uses GET, so allow both POST and GET.  Yuck.
-	match 'hooks/a11d83adba52b483798f5e7de90c3e57' => 'mailchimp_webhook#process_notification'
+	match 'hooks/a11d83adba52b483798f5e7de90c3e57' => 'mailchimp_webhook#process_notification', via: [:get, :post]
 
 	# Customers of a provider.
 	resources :customers
@@ -203,22 +203,22 @@ Mvp2::Application.routes.draw do
 	# Catch all other routing requests and do something benign.
 	# The main purpose of this route is to provide as little information as possible to site probers.
 	# For Rails 4, add "via: :all".
-	match '*undefined_path' => 'application#not_found'
+	match '*undefined_path' => 'application#not_found' #, via: :all
 	
 	# Where to go after sign-up or sign-in.
 	#  Using this option causes the response path to be user_root; kind of weird.
 	#  Better to override in the ApplicationController.
-	# match 'user_root' => 'users#edit_profile'
+	# get 'user_root' => 'users#edit_profile'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
   # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
+  #   get 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
+  #   get 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
@@ -265,5 +265,5 @@ Mvp2::Application.routes.draw do
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id))(.:format)'
+  # get ':controller(/:action(/:id))(.:format)'
 end
