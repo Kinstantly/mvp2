@@ -1,6 +1,6 @@
 class CreateAdoptionAgeRange < ActiveRecord::Migration
 	class AgeRange < ActiveRecord::Base
-		attr_accessible :name, :sort_index
+		# attr_accessible :name, :sort_index
 	end
 	
 	def up

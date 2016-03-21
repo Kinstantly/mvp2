@@ -2,7 +2,7 @@ class AddDisplayOrderToSearchAreaTag < ActiveRecord::Migration
 	@@bay_area_tag_names = ['San Francisco', 'North Bay', 'East Bay', 'South Bay']
 	
 	class SearchAreaTag < ActiveRecord::Base
-		attr_accessible :name, :display_order
+		# attr_accessible :name, :display_order
 	end
 	
 	def change

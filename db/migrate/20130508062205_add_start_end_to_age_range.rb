@@ -1,6 +1,6 @@
 class AddStartEndToAgeRange < ActiveRecord::Migration
 	class AgeRange < ActiveRecord::Base
-		attr_accessible :name, :start, :end
+		# attr_accessible :name, :start, :end
 	end
 	
 	def up

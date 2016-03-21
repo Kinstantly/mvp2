@@ -3,7 +3,7 @@ class RemoveProfileRatings < ActiveRecord::Migration
 	end
 	
 	class Profile < ActiveRecord::Base
-		attr_accessible :rating_average_score
+		# attr_accessible :rating_average_score
 	end
 	
 	def up

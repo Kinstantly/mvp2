@@ -14,7 +14,7 @@ class UpdateAgeRanges < ActiveRecord::Migration
 	}
 	
 	class AgeRange < ActiveRecord::Base
-		attr_accessible :name, :sort_index, :start, :end, :active
+		# attr_accessible :name, :sort_index, :start, :end, :active
 	end
 	
 	def up

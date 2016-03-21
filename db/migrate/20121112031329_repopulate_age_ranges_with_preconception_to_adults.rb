@@ -3,7 +3,7 @@ class RepopulateAgeRangesWithPreconceptionToAdults < ActiveRecord::Migration
 	@@new_age_ranges = ['preconception', 'pregnancy', '0-1', '1-3', '3-5', '5-8', '8-11', '11-14', '14-18+', 'adults']
 	
 	class AgeRange < ActiveRecord::Base
-		attr_accessible :name, :sort_index
+		# attr_accessible :name, :sort_index
 	end
 	
 	def up

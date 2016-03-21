@@ -5,7 +5,7 @@ class PopulateCategories < ActiveRecord::Migration
 		'Self Care', 'other']
 	
 	class Category < ActiveRecord::Base
-		attr_accessible :name
+		# attr_accessible :name
 	end
 	
 	def up

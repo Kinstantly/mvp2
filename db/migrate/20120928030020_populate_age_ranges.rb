@@ -2,7 +2,7 @@ class PopulateAgeRanges < ActiveRecord::Migration
 	@@age_ranges = ['0 to 6', '6 to 12', '12 to 18', '18+']
 	
 	class AgeRange < ActiveRecord::Base
-		attr_accessible :name
+		# attr_accessible :name
 	end
 	
 	def up
