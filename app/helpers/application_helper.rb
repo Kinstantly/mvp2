@@ -262,8 +262,8 @@ module ApplicationHelper
 		"#{form_builder.try(:object_name).presence || default_object_name}[#{attr_name}][]"
 	end
 	
-	# Use this helper to work around a bug that causes an unchecked undefined value when using jQuery 1.9.
-	# http://github.com/crowdint/rails3-jquery-autocomplete/issues/210
+	# The original purpose of this helper was to work around a bug that caused an unchecked undefined value when using jQuery 1.9. See http://github.com/crowdint/rails3-jquery-autocomplete/issues/210
+	# The bug is probably fixed with rails-jquery-autocomplete, which we are using now. But this helper is still useful for tweaking all usages of the autocomplete_field and autocomplete_field_tag.
 	def autocomplete_form_field(attribute, value, path, options={})
 		options[:id_element] ||= ''
 		options[:update_elements] ||= {}

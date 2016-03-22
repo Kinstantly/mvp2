@@ -299,8 +299,8 @@ GEM
       railties (= 3.2.22.2)
     rails-footnotes (3.7.9)
       rails (>= 3.0.0)
-    rails3-jquery-autocomplete (1.0.11)
-      rails (~> 3.0)
+    rails-jquery-autocomplete (1.0.3)
+      rails (>= 3.2)
     rails_12factor (0.0.2)
       rails_serve_static_assets
       rails_stdout_logging
@@ -470,7 +470,7 @@ DEPENDENCIES
   rack-timeout
   rails (= 3.2.22.2)
   rails-footnotes (>= 3.7.9)
-  rails3-jquery-autocomplete (= 1.0.11)
+  rails-jquery-autocomplete
   rails_12factor
   rails_autolink
   recaptcha-mailhide

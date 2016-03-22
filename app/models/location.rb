@@ -26,7 +26,12 @@ class Location < ActiveRecord::Base
 	
 	validates :phone, phone_number: true, allow_blank: true
 	
-	scope :unique_by_city, select(:city).uniq
+	# The following scope is desgined to work well with autocomplete.
+	# See https://github.com/bigtunacan/rails-jquery-autocomplete/issues/45
+	# This SELECT statement is compatible with "ORDER BY LOWER(city)".
+	# "SELECT DISTINCT city" is not compatible.
+	scope :unique_by_city, -> { select('MIN(id) as id, city').group(:city) }
+	
 	scope :order_by_id, order(:id)
 	
 	geocoded_by :geocodable_address # can also be an IP address

@@ -164,7 +164,13 @@ class Profile < ActiveRecord::Base
 	scope :order_by_id, order('id')
 	scope :order_by_descending_id, order('id DESC')
 	scope :order_by_last_name, order('lower(last_name)')
-	scope :unique_by_lead_generator, select(:lead_generator).uniq
+	
+	# The following scope is desgined to work well with autocomplete.
+	# See https://github.com/bigtunacan/rails-jquery-autocomplete/issues/45
+	# This SELECT statement is compatible with "ORDER BY LOWER(lead_generator)".
+	# "SELECT DISTINCT lead_generator" is not compatible.
+	scope :unique_by_lead_generator, -> { select('MIN(id) as id, lead_generator').group(:lead_generator) }
+	
 	scope :with_admin_notes, where('admin_notes IS NOT NULL')
 	
 	# Sunspot Solr search configuration.

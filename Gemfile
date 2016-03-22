@@ -93,10 +93,9 @@ gem 'progress_bar'
 # Generates various types of UUIDs.  It conforms to RFC 4122 whenever possible.
 gem 'uuidtools'
 
-# Rails integration of jQuery UI Autocomplete Widget.
-# Version 1.0.12 and above is for Rails 4.
-# Don't go above version 1.0.11 unless you are ready to do a lot of work getting it to return a unique list, i.e., no duplicates.
-gem 'rails3-jquery-autocomplete', '1.0.11'
+# Integration of jQuery UI Autocomplete Widget for Rails 3.2 and above.
+# https://github.com/bigtunacan/rails-jquery-autocomplete
+gem 'rails-jquery-autocomplete'
 
 # A repository of geographic regions for Ruby via Rails.
 gem 'carmen-rails', '~> 1.0.0.beta3'
