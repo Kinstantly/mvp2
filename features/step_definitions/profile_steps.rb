@@ -382,6 +382,12 @@ Given /^I have an announcement with "(.*?)" headline in my profile$/ do |headlin
 	@user.profile.save
 end
 
+Given /^the "(.*?)" specialties exist$/ do |specialties|
+	specialties.strip.split(/,\s+(?:and\s+)?/).each do |name|
+		FactoryGirl.create :specialty, name: name
+	end
+end
+
 ### WHEN ###
 
 When /^I view my profile$/ do
@@ -511,6 +517,13 @@ When /^I add the "(.*?)" and "(.*?)" custom specialties using enter$/ do |spec1,
 		click_button 'add_custom_specialties_text_field'
 		fill_in MyHelpers.profile_custom_specialties_id('1'), with: "#{spec1}\r\n"
 		fill_in MyHelpers.profile_custom_specialties_id('2'), with: spec2
+	end
+end
+
+# This step requires javascript.
+When /^I fill in the "(.*?)" specialty$/ do |spec|
+	within('#specialties .specialty_names') do
+		fill_in MyHelpers.profile_specialty_names_id('1'), with: spec
 	end
 end
 

@@ -79,6 +79,17 @@ Feature: Edit my expert profile
 			And my profile edit page should show "(505) 555-0123" displayed in the "locations" area
 			And my profile edit page should show "Bike parking in front." displayed in the "locations" area
 	
+	Scenario: Select location city with autocompletion
+		Given a published profile with cities "Albuquerque" and "Albany" and states "NM" and "CA"
+			And I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I open the "locations" formlet
+			And I enter "alb" in the "City" field of the "locations" formlet
+			And I choose "Albuquerque" in the autocompletion list
+			And I click on the "Save" button of the "locations" formlet
+		Then my profile edit page should show "Albuquerque" displayed in the "locations" area
+	
 	Scenario: Country code is US by default
 		Given I exist as a user
 			And I am logged in
@@ -124,6 +135,17 @@ Feature: Edit my expert profile
 			And I fill in the "story-books" and "dreams" specialties using enter
 			And I click on the "Save" button of the "specialties" formlet
 		Then my profile edit page should show "story-books" and "dreams" displayed in the "specialties" area
+	
+	Scenario: Fill in specialties using autocompletion
+		Given the "Story books, Starry nights, and Stewed tomatoes" specialties exist
+			And I exist as a user
+			And I am logged in
+			And I am on my profile edit page
+		When I open the "specialties" formlet
+			And I fill in the "st" specialty
+			And I choose "Starry nights" in the autocompletion list
+			And I click on the "Save" button of the "specialties" formlet
+		Then my profile edit page should show "Starry nights" displayed in the "specialties" area
 	
 	Scenario: Update Ages/stages text
 		Given I exist as a user
