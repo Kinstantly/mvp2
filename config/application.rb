@@ -47,6 +47,11 @@ module Mvp2
       send_mailchimp_welcome: ENV['SEND_MAILCHIMP_WELCOME'].present?
     }
     
+    # Regexp string used to enforce the format of a date input by a user.
+    config.input_date_regexp_string = '(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])/(19|20)[0-9][0-9]'
+    # Regexp used to enforce ISO 8601 date format.
+    config.iso_date_regexp = /\A(19|20)[0-9][0-9]-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])\z/
+    
     # Sitemap generator configuration.
     config.sitemap_default_host = "http://#{config.default_host}/"
     config.sitemap_sitemaps_path = 'sitemaps_dev/'

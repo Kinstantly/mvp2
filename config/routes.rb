@@ -18,6 +18,10 @@ Mvp2::Application.routes.draw do
 	get 'newsletters' => 'newsletters#new'
 	get 'newsletters/subscribed' => 'newsletters#subscribed'
 	post 'newsletters/subscribe' => 'newsletters#subscribe'
+	get 'kidnote' => 'newsletters#new', alerts: true
+	get 'kidnotes' => 'newsletters#new', alerts: true, as: :alerts
+	get 'kidnotes/subscribed' => 'newsletters#subscribed', alerts: true, as: :alerts_subscribed
+	post 'kidnotes/subscribe' => 'newsletters#subscribe', alerts: true, as: :alerts_subscribe
 	
 	# User model on which Devise authentication is based.
 	devise_for :users, controllers: { 

@@ -20,7 +20,7 @@ Feature: Parenting newsletter list
 		When I visit the "/users/sign_up" page
 			And I enter "parent@example.org" in the "Email" field
 			And I enter "aitle459fjcm.%" in the "Password" field
-			And I uncheck "Get a weekly roundup of our best parenting stories"
+			And I uncheck "Get age-based development updates"
 			And I click on the sign-up button
 			And I see an unconfirmed account message
 		Then parent@example.org should not be subscribed to any mailing lists

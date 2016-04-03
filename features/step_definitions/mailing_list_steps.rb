@@ -31,11 +31,17 @@ When /^an administrator unsubscribes me from all mailing lists$/ do
 	@user = me
 end
 
-When /^I visit the newsletter-only sign-up page and subscribe(?: with email "(.*?)")?$/ do |email|
+When /^I visit the (alerts|newsletter)-only sign-up page and subscribe(?: with email "(.*?)"(?: and date "(.*?)")?)?$/ do |list, email, date|
 	email ||= (create_visitor && @visitor[:email])
-	visit '/newsletter'
+	case list
+	when 'newsletter'
+		visit '/newsletter'
+	else
+		visit '/kidnotes'
+	end
 	within('#sign_up') do
 		fill_in 'Email', with: email
+		fill_in 'birth date', with: date if date
 	end
 	click_button 'sign_up_button'
 end
@@ -54,6 +60,12 @@ When /^I visit the newsletter-only sign-up page and subscribe to the "(.*?)" mai
 end
 
 ### THEN ###
+
+Then /^"(.*?)" should be subscribed to the "(.*?)" mailing list with (?:due|birth) date "(.*?)"$/ do |email, list, date|
+	merge_vars = member_of_mailing_list(email, list)['merges']
+	expect(merge_vars).to be_present
+	expect(merge_vars['DUEBIRTH1']).to eq date
+end
 
 Then /^(\S+) should only be subscribed to the "(.*?)" mailing lists?(?: and| but)( not)? synced to the list server$/ do |who, lists, not_synced|
 	load_user who

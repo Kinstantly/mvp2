@@ -17,6 +17,8 @@ def set_up_gibbon_lists_api_mock
 		id = options[:id]
 		email = options[:email][:email]
 		if id.present? and email.present?
+			options[:merge_vars] ||= {}
+			options[:merge_vars]['EMAIL'] = email
 			@mailchimp_lists[id] ||= {}
 			@mailchimp_lists[id][email] = options.merge 'leid' => "#{id}:#{email}", 'status' => 'subscribed'
 		else
@@ -54,7 +56,7 @@ def set_up_gibbon_lists_api_mock
 				info = @mailchimp_lists[id][email]
 				if info.present?
 					r['success_count'] += 1
-					r['data'] << info
+					r['data'] << info.merge('email' => email, 'merges' => info[:merge_vars])
 				else
 					r['error_count'] += 1
 				end
@@ -140,5 +142,16 @@ def empty_mailing_lists
 		end
 	rescue Gibbon::MailChimpError => e
 		puts "MailChimp error while unsubscribing: #{e.message}, error code: #{e.code}"
+	end
+end
+
+# Get info for a particular member of the specified list.
+def member_of_mailing_list(email, list_name)
+	begin
+		gb = Gibbon::API.new
+		list_id = Rails.configuration.mailing_lists[:mailchimp_list_ids][list_name.to_sym]
+		gb.lists.member_info(id: list_id, emails: [{email: email}])['data'][0]
+	rescue Gibbon::MailChimpError => e
+		puts "MailChimp error while retrieving member info: #{e.message}, error code: #{e.code}"
 	end
 end

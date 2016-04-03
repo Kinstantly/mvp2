@@ -19,7 +19,7 @@ Feature: Provider marketing tips mailing list
 
 	Scenario: Parent should not be allowed to subscribe to the marketing tips list
 		When I visit the "/users/sign_up" page
-		Then I should see "Get a weekly roundup of our best parenting stories" on the page
+		Then I should see "Get age-based development updates" on the page
 			And I should not see "Get occasional tips on how to grow your business" on the page
 
 	Scenario: Parent should not be subscribed to the marketing tips list

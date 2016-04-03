@@ -11,6 +11,8 @@ class NewslettersController < ApplicationController
 	def subscribe
 		@errors = []
 		@email = params[:email].presence
+		@duebirth1 = params[:duebirth1].presence
+		
 		active_mailing_lists.each do |list|
 			instance_variable_set "@#{list}", params[list].present?
 		end
@@ -21,17 +23,25 @@ class NewslettersController < ApplicationController
 
 		@errors << t('views.newsletter.email_required') if @email.blank?
 		@errors << t('views.newsletter.list_required') if subscribe_lists.blank?
+		@errors << t('views.newsletter.bad_date_format') if @duebirth1 && @duebirth1 !~ input_date_regexp && @duebirth1 !~ iso_date_regexp
 
 		if @errors.any?
 			render :new
 		else
-			job = NewsletterSubscriptionJob.new subscribe_lists, @email
+			subscribe_options = {}
+			subscribe_options[:merge_vars] = { 'DUEBIRTH1' => @duebirth1 } if @duebirth1
+			job = NewsletterSubscriptionJob.new subscribe_lists, @email, subscribe_options
 			if update_mailing_lists_in_background?
 				Delayed::Job.enqueue job
 			else
 				job.perform
 			end
-			redirect_to newsletters_subscribed_url(subscribe_lists.inject(nlsub: 't'){ |p, list| p.merge list => 't' })
+			subscribed_url_params = subscribe_lists.inject(nlsub: 't'){ |p, list| p.merge list => 't' }
+			if params[:alerts].present?
+				redirect_to alerts_subscribed_url(subscribed_url_params)
+			else
+				redirect_to newsletters_subscribed_url(subscribed_url_params)
+			end
 		end
 	end
 
@@ -77,7 +87,7 @@ class NewslettersController < ApplicationController
 	end
 
 	# Class method to create a new MailChimp subscription.
-	def self.subscribe_to_mailing_lists(lists=[], email)
+	def self.subscribe_to_mailing_lists(lists, email, options={})
 		successful_subscribes = []
 		lists.each do |list_name|
 			next if !User.mailing_list_name_valid?(list_name)
@@ -86,7 +96,14 @@ class NewslettersController < ApplicationController
 			email_struct = { email: email }
 			begin
 				gb = Gibbon::API.new
-				r = gb.lists.subscribe id: list_id, email: email_struct, double_optin: false, send_welcome: send_mailchimp_welcome?
+				subscribe_params = {
+					id: list_id,
+					email: email_struct,
+					double_optin: false,
+					send_welcome: send_mailchimp_welcome?
+				}
+				subscribe_params[:merge_vars] = options[:merge_vars] if options[:merge_vars]
+				r = gb.lists.subscribe subscribe_params
 				if r.try(:[], 'leid').present?
 					successful_subscribes << list_name
 				end

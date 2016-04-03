@@ -529,8 +529,9 @@ en:
         add: 'Fill in a new location'
     newsletter:
       archive: 'Newsletter archive'
-      description: 'Get the best of Kinstantly delivered to your inbox.'
-      description_html: 'Get the best of Kinstantly delivered to your inbox.'
+      bad_date_format: 'Please enter the date with the following format: MM/DD/YYYY'
+      description: 'Get age-based development updates, reminders, and Top Stories delivered to your inbox.'
+      description_html: 'Get age-based development updates, reminders, and Top Stories delivered to your inbox.'
       email_required: 'Email address is required'
       list_required: 'Select at least one list'
       name: 'Kinstantly This Week'
@@ -829,7 +830,7 @@ en:
       provider_tag: "I provide services to families"
       parent_provider_tag: "I'm both a parent and a provider"
       registration_special_code_tip: 'Have a promotional code? Enter it here.'
-      parent_newsletters_prompt: 'Get a weekly roundup of our best parenting stories delivered to your inbox.'
+      parent_newsletters_prompt: 'Get age-based development updates, reminders, and our Top Stories delivered to your inbox.'
       parent_newsletters_hint: 'Check one or more editions:'
       provider_newsletters_prompt: 'Get occasional tips on how to grow your business'
     specialty:

@@ -3,19 +3,35 @@
 - info_email = "#{t('contact.emails.info.value')}@#{t('email_domain')}"
 #content
 	#awaiting_confirmation.wider_form
-		%p.thank-you THANK YOU!
-		%br
-		%br
-		%p You're all signed up for Kinstantly This Week.
-		%br
-		%p Watch your inbox for us each Friday morning.
-		%br
-		%p.newsletter-resources
-			Can't wait? Check out our
-			= link_to 'blog', blog_url
-			for inspiring stories and use-it-now parenting advice. Or search our
-			= link_to 'directory', root_path
-			for amazing parenting experts and family services.
-		%br
-		%p Welcome to Kinstantly!
-		%br
+		- if params[:alerts].present?
+			%p.thank-you THANK YOU!
+			%br
+			%br
+			%p You're all signed up for KidNotes.
+			%br
+			%p.newsletter-resources
+				Can't wait? Check out our
+				= link_to 'blog', blog_url
+				for inspiring stories and use-it-now parenting advice. Or search our
+				= link_to 'directory', root_path
+				for amazing parenting experts and family services.
+			%br
+			%p Welcome to Kinstantly!
+			%br
+		- else
+			%p.thank-you THANK YOU!
+			%br
+			%br
+			%p You're all signed up for Kinstantly This Week.
+			%br
+			%p Watch your inbox for us each Friday morning.
+			%br
+			%p.newsletter-resources
+				Can't wait? Check out our
+				= link_to 'blog', blog_url
+				for inspiring stories and use-it-now parenting advice. Or search our
+				= link_to 'directory', root_path
+				for amazing parenting experts and family services.
+			%br
+			%p Welcome to Kinstantly!
+			%br

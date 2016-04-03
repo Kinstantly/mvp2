@@ -224,6 +224,7 @@ gem 'stripe_event'
 gem 'money-rails'
 
 # Mailchimp API wrapper
+# http://github.com/amro/gibbon
 gem "gibbon"
 
 # Prep for migration to Rails 4.

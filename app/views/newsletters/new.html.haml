@@ -6,13 +6,19 @@
 - @og_description = @meta_description = t 'views.newsletter.description'
 - short_company_description ||= t 'company.short_company_description_html'
 - parent_newsletters_hint	= t "views.sign_up.parent_newsletters_hint"
+- subscribing_to_alerts = params[:alerts].present?
 
 #login_panel.newsletter-sign-up
 	.container.positioner
 		.company_desc
-			%a{title: "#{company_name}", href: root_url}
-				= image_tag "newsletter_banner.jpg", alt: short_company_description, itemprop: 'image', class: "banner"
-			%h5= t 'views.newsletter.description_html'
+			- if subscribing_to_alerts
+				%a{title: "#{company_name}", href: root_url}
+					= image_tag 'kidNotes_hed-9.jpg', alt: short_company_description, itemprop: 'image', class: "banner"
+				%h5= t 'views.newsletter.description_html'
+			- else
+				%a{title: "#{company_name}", href: root_url}
+					= image_tag 'newsletter_banner.jpg', alt: short_company_description, itemprop: 'image', class: "banner"
+				%h5= t 'views.newsletter.description_html'
 		#sign_up.generic_form
 			= form_tag "/newsletters/subscribe" do
 				- unless @errors.blank?
@@ -21,6 +27,11 @@
 							= error
 							%br
 				= hidden_field_tag :parent_newsletters, '1'
+				- if subscribing_to_alerts
+					= hidden_field_tag :alerts, '1'
+					.text_field
+						= label_tag :duebirth1, "Due date or child's birth date:"
+						= text_field_tag :duebirth1, @duebirth1, type: 'date', placeholder: 'MM/DD/YYYY', pattern: input_date_regexp_string
 				.email.text_field
 					= label_tag :email, 'Email:'
 					= email_field_tag :email, @email, placeholder: 'Enter your email address'
@@ -43,7 +54,7 @@
 			"This is my new favorite email. It actually makes me a better mom."
 			%cite—mom of preschooler, now pregnant with #2
 		%blockquote
-			"What I love about the Kinstantly newsletter is that it's filled with info on exactly the topics I wonder/worry/want to know more about, from how much money is a reasonable amount to spend on prom to what the college wait list really means for my daughter—all in a fast, easy read."
+			"What I love about these emails is that they're filled with info on exactly the topics I wonder/worry/want to know more about. Like just this morning's email about what the college wait list really means for my daughter. Perfect timing!"
 			%cite—mom of two teen girls
 	%section.col2
 		%blockquote
