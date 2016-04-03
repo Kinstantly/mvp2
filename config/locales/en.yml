@@ -529,7 +529,7 @@ en:
         add: 'Fill in a new location'
     newsletter:
       archive: 'Newsletter archive'
-      bad_date_format: 'Please enter the date with the following format: MM/DD/YYYY'
+      bad_date_format: 'Please enter the date with the following format: %{input_format}'
       description: 'Get age-based development updates, reminders, and Top Stories delivered to your inbox.'
       description_html: 'Get age-based development updates, reminders, and Top Stories delivered to your inbox.'
       email_required: 'Email address is required'

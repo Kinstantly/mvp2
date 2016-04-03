@@ -23,7 +23,7 @@ class NewslettersController < ApplicationController
 
 		@errors << t('views.newsletter.email_required') if @email.blank?
 		@errors << t('views.newsletter.list_required') if subscribe_lists.blank?
-		@errors << t('views.newsletter.bad_date_format') if @duebirth1 && @duebirth1 !~ input_date_regexp && @duebirth1 !~ iso_date_regexp
+		@errors << t('views.newsletter.bad_date_format', input_format: input_date_format_string) if @duebirth1 && @duebirth1 !~ input_date_regexp && @duebirth1 !~ iso_date_regexp
 
 		if @errors.any?
 			render :new

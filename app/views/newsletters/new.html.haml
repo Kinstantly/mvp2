@@ -31,7 +31,7 @@
 					= hidden_field_tag :alerts, '1'
 					.text_field
 						= label_tag :duebirth1, "Due date or child's birth date:"
-						= text_field_tag :duebirth1, @duebirth1, type: 'date', placeholder: 'MM/DD/YYYY', pattern: input_date_regexp_string
+						= text_field_tag :duebirth1, @duebirth1, type: 'date', placeholder: input_date_format_string, pattern: input_date_regexp_string
 				.email.text_field
 					= label_tag :email, 'Email:'
 					= email_field_tag :email, @email, placeholder: 'Enter your email address'

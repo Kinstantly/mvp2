@@ -47,6 +47,8 @@ module Mvp2
       send_mailchimp_welcome: ENV['SEND_MAILCHIMP_WELCOME'].present?
     }
     
+    # Input date format that is displayed to the user. It should conform to input_date_regexp_string.
+    config.input_date_format_string = 'MM/DD/YYYY'
     # Regexp string used to enforce the format of a date input by a user.
     config.input_date_regexp_string = '(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])/(19|20)[0-9][0-9]'
     # Regexp used to enforce ISO 8601 date format.

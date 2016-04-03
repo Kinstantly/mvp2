@@ -52,6 +52,10 @@ module SiteConfigurationHelpers
 			Rails.configuration.mailing_lists[:send_mailchimp_welcome]
 		end
 		
+		def input_date_format_string
+			Rails.configuration.input_date_format_string
+		end
+		
 		def input_date_regexp_string
 			Rails.configuration.input_date_regexp_string
 		end
