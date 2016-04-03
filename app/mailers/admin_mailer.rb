@@ -28,6 +28,16 @@ class AdminMailer < ActionMailer::Base
 		mail subject: "Parent \"#{user.email}\" has registered", to: ADMIN_EMAIL
 	end
 
+	# Notify site admin, when user subscribes to alerts without creating an account.
+	def alerts_subscribe_alert(subscriptions, email, options={})
+		@subscriptions = subscriptions
+		@email = email
+		@duebirth1 = options[:merge_vars].try :[], 'DUEBIRTH1'
+		@newsletter_name = t 'views.newsletter.name'
+		sendgrid_category "#{@newsletter_name}-only Subscription Alert"
+		mail subject: "New #{@newsletter_name} subscriber: #{email} ", to: ADMIN_EMAIL
+	end
+
 	# Notify site admin, when user subscribes to newsletters without creating an account.
 	def newsletter_subscribe_alert(subscriptions, email)
 		@subscriptions = subscriptions

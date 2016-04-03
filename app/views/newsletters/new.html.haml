@@ -6,12 +6,11 @@
 - @og_description = @meta_description = t 'views.newsletter.description'
 - short_company_description ||= t 'company.short_company_description_html'
 - parent_newsletters_hint	= t "views.sign_up.parent_newsletters_hint"
-- subscribing_to_alerts = params[:alerts].present?
 
 #login_panel.newsletter-sign-up
 	.container.positioner
 		.company_desc
-			- if subscribing_to_alerts
+			- if @subscribing_to_alerts
 				%a{title: "#{company_name}", href: root_url}
 					= image_tag 'kidNotes_hed-9.jpg', alt: short_company_description, itemprop: 'image', class: "banner"
 				%h5= t 'views.newsletter.description_html'
@@ -27,10 +26,10 @@
 							= error
 							%br
 				= hidden_field_tag :parent_newsletters, '1'
-				- if subscribing_to_alerts
+				- if @subscribing_to_alerts
 					= hidden_field_tag :alerts, '1'
 					.text_field
-						= label_tag :duebirth1, "Due date or child's birth date:"
+						= label_tag :duebirth1, "#{t 'views.newsletter.duebirth1'}:"
 						= text_field_tag :duebirth1, @duebirth1, type: 'date', placeholder: input_date_format_string, pattern: input_date_regexp_string
 				.email.text_field
 					= label_tag :email, 'Email:'

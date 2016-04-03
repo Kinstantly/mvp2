@@ -1,6 +1,8 @@
 class NewslettersController < ApplicationController
 	
 	respond_to :html
+	
+	before_filter :load_variables
 
 	# GET /newsletter
 	def new
@@ -28,7 +30,7 @@ class NewslettersController < ApplicationController
 		if @errors.any?
 			render :new
 		else
-			subscribe_options = {}
+			subscribe_options = { subscribing_to_alerts: @subscribing_to_alerts }
 			subscribe_options[:merge_vars] = { 'DUEBIRTH1' => @duebirth1 } if @duebirth1
 			job = NewsletterSubscriptionJob.new subscribe_lists, @email, subscribe_options
 			if update_mailing_lists_in_background?
@@ -37,7 +39,7 @@ class NewslettersController < ApplicationController
 				job.perform
 			end
 			subscribed_url_params = subscribe_lists.inject(nlsub: 't'){ |p, list| p.merge list => 't' }
-			if params[:alerts].present?
+			if @subscribing_to_alerts
 				redirect_to alerts_subscribed_url(subscribed_url_params)
 			else
 				redirect_to newsletters_subscribed_url(subscribed_url_params)
@@ -112,11 +114,19 @@ class NewslettersController < ApplicationController
 			end
 		end
 		if successful_subscribes.any?
-			AdminMailer.newsletter_subscribe_alert(successful_subscribes, email).deliver
+			if options[:subscribing_to_alerts]
+				AdminMailer.alerts_subscribe_alert(successful_subscribes, email, options).deliver
+			else
+				AdminMailer.newsletter_subscribe_alert(successful_subscribes, email).deliver
+			end
 		end
 	end
 	
 	private
+	
+	def load_variables
+		@subscribing_to_alerts = params[:alerts].present?
+	end
 
 	def list_name(name_str)
 		case name_str

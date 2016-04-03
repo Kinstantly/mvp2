@@ -260,7 +260,7 @@ en:
         admin_confirmation_sent_at: ''
         registration_special_code: 'Special code'
         provider_newsletters: 'Provider marketing tips'
-        parent_newsletters: 'Kinstantly This Week'
+        parent_newsletters: 'KidNotes'
         parent_newsletters_stage1: 'Ages 0-4'
         parent_newsletters_stage2: 'Ages 5-12'
         parent_newsletters_stage3: 'Teens'
@@ -532,10 +532,11 @@ en:
       bad_date_format: 'Please enter the date with the following format: %{input_format}'
       description: 'Get age-based development updates, reminders, and Top Stories delivered to your inbox.'
       description_html: 'Get age-based development updates, reminders, and Top Stories delivered to your inbox.'
+      duebirth1: "Due date or child's birth date"
       email_required: 'Email address is required'
       list_required: 'Select at least one list'
-      name: 'Kinstantly This Week'
-      sign_up_link: '< Sign up for Kinstantly This Week'
+      name: 'KidNotes'
+      sign_up_link: '< Sign up for KidNotes'
     passwords:
       new_password_submit: 'Send me password instructions'
     profile:

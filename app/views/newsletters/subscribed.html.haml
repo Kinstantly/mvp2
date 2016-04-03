@@ -3,11 +3,11 @@
 - info_email = "#{t('contact.emails.info.value')}@#{t('email_domain')}"
 #content
 	#awaiting_confirmation.wider_form
-		- if params[:alerts].present?
+		- if @subscribing_to_alerts
 			%p.thank-you THANK YOU!
 			%br
 			%br
-			%p You're all signed up for KidNotes.
+			%p= "You're all signed up for #{t 'views.newsletter.name'}."
 			%br
 			%p.newsletter-resources
 				Can't wait? Check out our
