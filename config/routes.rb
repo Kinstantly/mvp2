@@ -18,6 +18,7 @@ Mvp2::Application.routes.draw do
 	get 'newsletters' => 'newsletters#new'
 	get 'newsletters/subscribed' => 'newsletters#subscribed'
 	post 'newsletters/subscribe' => 'newsletters#subscribe'
+	get 'oldnewsletters' => 'newsletters#new', oldnewsletters: true
 	get 'kidnote' => 'newsletters#new', alerts: true
 	get 'kidnotes' => 'newsletters#new', alerts: true, as: :alerts
 	get 'kidnotes/subscribed' => 'newsletters#subscribed', alerts: true, as: :alerts_subscribed

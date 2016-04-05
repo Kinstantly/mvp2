@@ -37,11 +37,11 @@ Feature: Subscribe to newsletters and/or marketing emails
 			And I should only be subscribed to the "provider_newsletters and parent_newsletters" mailing lists and synced to the list server
 
 	Scenario: User subscribes on the newsletter-only sign-up page without confirmation
-		When I visit the newsletter-only sign-up page and subscribe with email "example@kinstantly.com"
+		When I visit the old newsletter-only sign-up page and subscribe with email "example@kinstantly.com"
 		Then I should see "You're all signed up for Kinstantly This Week" on the page
 
 	Scenario: Previously subscribed parent can manage list after registration
-		When I visit the newsletter-only sign-up page and subscribe
+		When I visit the old newsletter-only sign-up page and subscribe
 		Then I should see "You're all signed up for Kinstantly This Week" on the page
 		And I sign up as a parent with valid user data
 			And I open the email with subject "Confirm your Kinstantly account"

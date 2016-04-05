@@ -6,7 +6,11 @@ class NewslettersController < ApplicationController
 
 	# GET /newsletter
 	def new
-		render layout: 'interior'
+		if @subscribing_to_alerts or @subscribing_to_oldnewsletters
+			render layout: 'interior'
+		else
+			redirect_to alerts_url
+		end
 	end
 
 	# POST /newsletters/subscribe
@@ -126,6 +130,7 @@ class NewslettersController < ApplicationController
 	
 	def load_variables
 		@subscribing_to_alerts = params[:alerts].present?
+		@subscribing_to_oldnewsletters = params[:oldnewsletters].present?
 	end
 
 	def list_name(name_str)

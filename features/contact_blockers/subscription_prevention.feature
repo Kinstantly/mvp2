@@ -10,7 +10,7 @@ Feature: Blocked email address cannot be subscribed to any mailing list
 		Given I exist as a provider
 			And I am logged in
 			And I am on my contact preferences edit page
-		When I check "Get a weekly roundup of our best parenting stories"
+		When I check "Get age-based development updates"
 			And I check "Get occasional tips on how to grow your business"
 			And I save the account settings
 		Then I should only be subscribed to the "parent_newsletters and provider_newsletters" mailing lists and synced to the list server
@@ -20,7 +20,7 @@ Feature: Blocked email address cannot be subscribed to any mailing list
 			And I opted out of receiving email from us
 			And I am logged in
 			And I am on my contact preferences edit page
-		When I check "Get a weekly roundup of our best parenting stories"
+		When I check "Get age-based development updates"
 			And I check "Get occasional tips on how to grow your business"
 			And I save the account settings
 		Then I should not be subscribed to any mailing lists

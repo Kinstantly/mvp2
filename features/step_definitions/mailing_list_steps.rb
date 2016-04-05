@@ -31,11 +31,11 @@ When /^an administrator unsubscribes me from all mailing lists$/ do
 	@user = me
 end
 
-When /^I visit the (alerts|newsletter)-only sign-up page and subscribe(?: with email "(.*?)"(?: and date "(.*?)")?)?$/ do |list, email, date|
+When /^I visit the (alerts|kidnotes|old newsletter)-only sign-up page and subscribe(?: with email "(.*?)"(?: and date "(.*?)")?)?$/ do |list, email, date|
 	email ||= (create_visitor && @visitor[:email])
 	case list
-	when 'newsletter'
-		visit '/newsletter'
+	when 'old newsletter'
+		visit '/oldnewsletters'
 	else
 		visit '/kidnotes'
 	end
@@ -46,10 +46,10 @@ When /^I visit the (alerts|newsletter)-only sign-up page and subscribe(?: with e
 	click_button 'sign_up_button'
 end
 
-When /^I visit the newsletter-only sign-up page and subscribe to the "(.*?)" mailing lists?(?: with email "(.*?)")?$/ do |lists, email|
+When /^I visit the old newsletter-only sign-up page and subscribe to the "(.*?)" mailing lists?(?: with email "(.*?)")?$/ do |lists, email|
 	email ||= (create_visitor && @visitor[:email])
 	list_names = lists.split(/,?\s+(?:and\s+)?/)
-	visit '/newsletter'
+	visit '/oldnewsletters'
 	within('#sign_up') do
 		list_names.each do |list_name|
 			check list_name

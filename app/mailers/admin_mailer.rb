@@ -35,7 +35,7 @@ class AdminMailer < ActionMailer::Base
 		@duebirth1 = options[:merge_vars].try :[], 'DUEBIRTH1'
 		@newsletter_name = t 'views.newsletter.name'
 		sendgrid_category "#{@newsletter_name}-only Subscription Alert"
-		mail subject: "New #{@newsletter_name} subscriber: #{email} ", to: ADMIN_EMAIL
+		mail subject: "#{@newsletter_name} sign-up from directory site", to: ADMIN_EMAIL
 	end
 
 	# Notify site admin, when user subscribes to newsletters without creating an account.

@@ -50,20 +50,21 @@ describe AdminMailer, :type => :mailer do
 		let(:birthdate1) { '8/1/2015' }
 		let(:options) { { merge_vars: { 'DUEBIRTH1' => birthdate1 } } }
 		let(:email) { AdminMailer.alerts_subscribe_alert(subscriptions, subscriber_email, options) }
+		let(:alerts_name) { I18n.t 'views.newsletter.name' }
 
 		it "should be set to be delivered to admin" do
 			expect(email).to deliver_to(ADMIN_EMAIL)
 		end
 
-		it "should show the subscriber's email in the subject" do
-			expect(email).to have_subject(/#{subscriber_email}/)
+		it "should show the newsletter name in the subject" do
+			expect(email).to have_subject(/#{alerts_name}/)
 		end
 
 		it "should show the subscriber child's birth date" do
 			expect(email).to have_body_text birthdate1
 		end
 
-		it "should list newsletter editions user has subscribed to" do
+		it "should list newsletters user has subscribed to" do
 			expect(email).to have_body_text(subscriptions.map{ |list| User.human_attribute_name list }.join(', '))
 		end
 	end

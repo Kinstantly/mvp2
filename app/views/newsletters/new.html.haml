@@ -31,6 +31,8 @@
 					.text_field
 						= label_tag :duebirth1, "#{t 'views.newsletter.duebirth1'}:"
 						= text_field_tag :duebirth1, @duebirth1, type: 'date', placeholder: input_date_format_string, pattern: input_date_regexp_string
+				- else
+					= hidden_field_tag :oldnewsletters, '1'
 				.email.text_field
 					= label_tag :email, 'Email:'
 					= email_field_tag :email, @email, placeholder: 'Enter your email address'

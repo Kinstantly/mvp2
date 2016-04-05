@@ -225,7 +225,7 @@ module ApplicationHelper
 	end
 
 	def newsletter_sign_up_link(options={})
-		path = user_signed_in? ? edit_subscriptions_path : newsletter_signup_path
+		path = user_signed_in? ? edit_subscriptions_path : alerts_path
 		link_wrapper link_to(t('views.home.view.newsletter_sign_up'), path), options
 	end
 	

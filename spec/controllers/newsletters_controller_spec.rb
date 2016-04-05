@@ -23,9 +23,9 @@ describe NewslettersController, type: :controller do
 			end
 		end
 
-		describe "GET newsletter sign-up page" do
+		describe "GET old newsletter sign-up page" do
 			it "renders the view" do
-				get :new
+				get :new, oldnewsletters: true
 				expect(response).to render_template('new')
 			end
 		end
@@ -62,10 +62,17 @@ describe NewslettersController, type: :controller do
 			end
 		end
 
+		describe "GET redirect to alerts sign-up page" do
+			it "renders the view" do
+				get :new
+				expect(response).to redirect_to alerts_url
+			end
+		end
+
 		describe "POST subscribe" do
 			it "should redirect to confirmation page after a successful update" do
 				post :subscribe, {
-					parent_newsletters: 1, email: 'subscriber@example.com', birth_date: '4/1/2015', alerts: true
+					parent_newsletters: 1, email: 'subscriber@example.com', duebirth1: '4/1/2015', alerts: true
 				}
 				expect(response).to redirect_to alerts_subscribed_url({ nlsub: 't', parent_newsletters: 't' })
 			end
@@ -79,14 +86,14 @@ describe NewslettersController, type: :controller do
 			
 			it "should re-render sign-up form if no email provided" do
 				post :subscribe, {
-					parent_newsletters: 1, birth_date: '4/1/2015', alerts: true
+					parent_newsletters: 1, duebirth1: '4/1/2015', alerts: true
 				}
 				expect(response).to render_template('new')
 			end
 			
 			it "should re-render sign-up form if no subscription list selected" do
 				post :subscribe, {
-					email: 'subscriber@example.com', birth_date: '4/1/2015', alerts: true
+					email: 'subscriber@example.com', duebirth1: '4/1/2015', alerts: true
 				}
 				expect(response).to render_template('new')
 			end
@@ -94,7 +101,7 @@ describe NewslettersController, type: :controller do
 			it "sends a confirmation email" do
 					expect {
 						post :subscribe, {
-							parent_newsletters: 1, email: 'subscriber@example.com', birth_date: '4/1/2015', alerts: true
+							parent_newsletters: 1, email: 'subscriber@example.com', duebirth1: '4/1/2015', alerts: true
 						}
 					}.to change {ActionMailer::Base.deliveries.count}.by(1)
 			end
