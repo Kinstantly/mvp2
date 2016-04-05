@@ -21,6 +21,8 @@
 /log/*.log
 /log/*.log.lck
 /log/*.log.gz
+/log/*.crash
+/log/*.crash.gz
 /tmp
 
 # Ignore dynamically generated sitemaps.
