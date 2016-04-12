@@ -3,6 +3,6 @@ class AgeRange < ActiveRecord::Base
 
 	has_and_belongs_to_many :profiles
 	
-	scope :active, where(active: true)
-	scope :sorted, order(:sort_index)
+	scope :active, -> { where(active: true) }
+	scope :sorted, -> { order(:sort_index) }
 end

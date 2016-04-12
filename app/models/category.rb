@@ -20,12 +20,12 @@ class Category < ActiveRecord::Base
 		end
 	end
 	
-	default_scope where(trash: false)
-	scope :trash, where(trash: true)
-	scope :predefined, where(is_predefined: true)
-	scope :order_by_name, order('lower(name)')
-	scope :display_order, order(:display_order)
-	scope :home_page_order, order(:home_page_column)
+	default_scope { where(trash: false) }
+	scope :trash, -> { where(trash: true) }
+	scope :predefined, -> { where(is_predefined: true) }
+	scope :order_by_name, -> { order('lower(name)') }
+	scope :display_order, -> { order(:display_order) }
+	scope :home_page_order, -> { order(:home_page_column) }
 	
 	MAX_STRING_LENGTH = 254
 	HOME_PAGE_COLUMNS = 1..5

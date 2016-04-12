@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Category, :type => :model do
 	# FactoryGirl products don't have callbacks!
 	let(:category) { Category.new name: 'ACTIVITIES' }
+	let(:another_category) { Category.new name: 'THERAPY' }
 	
 	# Integer attributes will be set to 0 if you try to give them a non-numeric value,
 	# so no use testing here for numericality.
@@ -52,6 +53,33 @@ describe Category, :type => :model do
 	# 	category.valid?
 	# 	expect(category.errors[:see_all_column].size).to eq 1
 	# end
+	
+	it 'can be sorted by name' do
+		category.name = 'B'
+		category.save
+		another_category.name = 'A'
+		another_category.save
+		expect(Category.order_by_name.first).to eq another_category
+		expect(Category.order_by_name.last).to eq category
+	end
+	
+	it 'can be sorted by display order' do
+		category.display_order = 99
+		category.save
+		another_category.display_order = 1
+		another_category.save
+		expect(Category.display_order.first).to eq another_category
+		expect(Category.display_order.last).to eq category
+	end
+	
+	it 'can be sorted by home page column' do
+		category.home_page_column = 2
+		category.save
+		another_category.home_page_column = 1
+		another_category.save
+		expect(Category.home_page_order.first).to eq another_category
+		expect(Category.home_page_order.last).to eq category
+	end
 	
 	context "category lists" do
 		before(:example) do
