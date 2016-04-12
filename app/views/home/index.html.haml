@@ -3,7 +3,10 @@
 - content_for :head_before_js do
 	= stylesheet_link_tag 'home_page', media: 'screen, handheld, print'
 - content_for :head do
+	-# Facebook app ID.
 	%meta{property: 'fb:app_id', content: '876267945721057'}
+	-# Pinterest: confirm this website.
+	%meta{name: 'p:domain_verify', content: 'a970fc780bae082e68b3aa0b6e9cd269'}
 - content_for :body_header do
 	#masthead.container
 		%nav#menu
