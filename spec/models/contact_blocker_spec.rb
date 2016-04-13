@@ -17,6 +17,13 @@ describe ContactBlocker, :type => :model do
 		expect(contact_blocker.errors[:email].size).to eq 1
 	end
 	
+	it 'can be ordered by descending ID' do
+		id1 = (FactoryGirl.create :contact_blocker).id
+		id2 = (FactoryGirl.create :contact_blocker).id
+		expect(ContactBlocker.order_by_descending_id.first.id).to eq (id1 > id2 ? id1 : id2)
+		expect(ContactBlocker.order_by_descending_id.last.id).to eq (id1 < id2 ? id1 : id2)
+	end
+	
 	it "can be associated with an email delivery" do
 		contact_blocker.email_delivery = FactoryGirl.create :email_delivery
 		contact_blocker.valid?

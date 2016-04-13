@@ -32,7 +32,7 @@ class Location < ActiveRecord::Base
 	# "SELECT DISTINCT city" is not compatible.
 	scope :unique_by_city, -> { select('MIN(id) as id, city').group(:city) }
 	
-	scope :order_by_id, order(:id)
+	scope :order_by_id, -> { order(:id) }
 	
 	geocoded_by :geocodable_address # can also be an IP address
 	before_save :geocode_address    # auto-fetch coordinates

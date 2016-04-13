@@ -47,24 +47,29 @@ describe Location, :type => :model do
 		expect(coords.lng).to be_within(0.0000001).of(lon)
 	end
 	
+	it 'can be ordered by ID' do
+		id1 = (FactoryGirl.create :location).id
+		id2 = (FactoryGirl.create :location).id
+		expect(Location.order_by_id.first.id).to eq (id1 < id2 ? id1 : id2)
+		expect(Location.order_by_id.last.id).to eq (id1 > id2 ? id1 : id2)
+	end
+	
 	context "phone number" do
-		before(:example) do
-			@location = Location.new
-		end
+		let(:location) { FactoryGirl.build :location }
 		
 		it "should accept a properly formatted US number" do
-			@location.phone = '(415) 555-1234'
-			expect(@location.errors_on(:phone).size).to eq 0
+			location.phone = '(415) 555-1234'
+			expect(location.errors_on(:phone).size).to eq 0
 		end
 		
 		it "should fail with an improperly formatted US number" do
-			@location.phone = '(415) 55-1234'
-			expect(@location.errors_on(:phone).size).to eq 1
+			location.phone = '(415) 55-1234'
+			expect(location.errors_on(:phone).size).to eq 1
 		end
 	end
 	
 	it "automatically strips leading and trailing whitespace from selected attributes" do
-		location = Location.new
+		location = FactoryGirl.build :location
 		phone = '(800) 555-1001'
 		location.phone = " #{phone} "
 		expect(location.errors_on(:phone).size).to eq 0

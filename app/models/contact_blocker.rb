@@ -10,7 +10,7 @@ class ContactBlocker < ActiveRecord::Base
 	
 	validates :email, email: true
 	
-	scope :order_by_descending_id, order('id DESC')
+	scope :order_by_descending_id, -> { order('id DESC') }
 	
 	after_save :remove_email_subscriptions
 	
