@@ -5,6 +5,13 @@ describe ProfileClaim, :type => :model do
 	let(:parent) { FactoryGirl.create :parent }
 	let(:profile) { FactoryGirl.create :profile }
 	
+	it 'can be ordered by descending ID' do
+		id1 = (FactoryGirl.create :profile_claim).id
+		id2 = (FactoryGirl.create :profile_claim).id
+		expect(ProfileClaim.order_by_descending_id.first.id).to eq (id1 > id2 ? id1 : id2)
+		expect(ProfileClaim.order_by_descending_id.last.id).to eq (id1 < id2 ? id1 : id2)
+	end
+	
 	it "can be associated with a claimant, e.g., a parent" do
 		profile_claim.claimant = parent
 		profile_claim.valid?

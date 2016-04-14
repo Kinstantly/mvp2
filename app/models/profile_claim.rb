@@ -24,7 +24,7 @@ class ProfileClaim < ActiveRecord::Base
 
 	validates :claimant_phone, phone_number: true, allow_blank: true
 
-	scope :order_by_descending_id, order('id DESC')
+	scope :order_by_descending_id, -> { order('id DESC') }
 
 	after_create :send_profile_claim_notice
 
