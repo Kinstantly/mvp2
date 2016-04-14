@@ -101,6 +101,37 @@ describe Profile, :type => :model do
 		end
 	end
 	
+	context 'scopes' do
+		it 'can be ordered by ID' do
+			id1 = (FactoryGirl.create :profile).id
+			id2 = (FactoryGirl.create :profile).id
+			expect(Profile.order_by_id.first.id).to eq (id1 < id2 ? id1 : id2)
+			expect(Profile.order_by_id.last.id).to eq (id1 > id2 ? id1 : id2)
+		end
+		
+		it 'can be ordered by descending ID' do
+			id1 = (FactoryGirl.create :profile).id
+			id2 = (FactoryGirl.create :profile).id
+			expect(Profile.order_by_descending_id.first.id).to eq (id1 > id2 ? id1 : id2)
+			expect(Profile.order_by_descending_id.last.id).to eq (id1 < id2 ? id1 : id2)
+		end
+		
+		it 'can be ordered by case-insensitive last name' do
+			FactoryGirl.create :profile, last_name: 'Bert'
+			FactoryGirl.create :profile, last_name: 'ernie'
+			expect(Profile.order_by_last_name.first.last_name).to eq 'Bert'
+			expect(Profile.order_by_last_name.last.last_name).to eq 'ernie'
+		end
+		
+		it 'can be selected by presence of admin notes' do
+			saved_profile = FactoryGirl.create :profile, admin_notes: nil
+			expect {
+				saved_profile.admin_notes = 'Red tape'
+				saved_profile.save
+			}.to change(Profile.with_admin_notes, :count).by(1)
+		end
+	end
+	
 	context "categories" do
 		it "stores a category" do
 			expect(profile.save).to be_truthy

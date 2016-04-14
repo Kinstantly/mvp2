@@ -4,6 +4,13 @@ describe ProviderSuggestion, :type => :model do
 	let(:provider_suggestion) { FactoryGirl.create :provider_suggestion }
 	let(:parent) { FactoryGirl.create :parent }
 	
+	it 'can be ordered by descending ID' do
+		id1 = (FactoryGirl.create :provider_suggestion).id
+		id2 = (FactoryGirl.create :provider_suggestion).id
+		expect(ProviderSuggestion.order_by_descending_id.first.id).to eq (id1 > id2 ? id1 : id2)
+		expect(ProviderSuggestion.order_by_descending_id.last.id).to eq (id1 < id2 ? id1 : id2)
+	end
+	
 	it "can be associated with a suggester, e.g., a parent" do
 		provider_suggestion.suggester = parent
 		provider_suggestion.valid?

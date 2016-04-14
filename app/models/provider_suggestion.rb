@@ -39,7 +39,7 @@ class ProviderSuggestion < ActiveRecord::Base
 		validates attribute, allow_blank: true, length: {minimum: MIN_LENGTHS[attribute], maximum: MAX_LENGTHS[attribute]}
 	end
 	
-	scope :order_by_descending_id, order('id DESC')
+	scope :order_by_descending_id, -> { order('id DESC') }
 	
 	after_create :send_provider_suggestion_notice
 	
