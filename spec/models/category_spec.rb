@@ -9,7 +9,8 @@ describe Category, :type => :model do
 	# so no use testing here for numericality.
 	
 	it "has a name" do
-		expect(category.save).to be_truthy
+		category.name = 'FUN'
+		expect(category.errors[:name]).to be_empty
 	end
 	
 	it "strips whitespace from the name" do

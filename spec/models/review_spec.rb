@@ -39,6 +39,24 @@ describe Review, :type => :model do
 		end
 	end
 	
+	it 'orders reviews by descending creation time' do
+		review1 = FactoryGirl.create :review, reviewer_email: 'reviewer1@example.org', reviewer_username: 'reviewer1'
+		sleep 0.1
+		review2 = FactoryGirl.create :review, reviewer_email: 'reviewer2@example.org', reviewer_username: 'reviewer2'
+		expect(Review.order_by_descending_created_at.first).to eq review2
+		expect(Review.order_by_descending_created_at.last).to eq review1
+	end
+	
+	it 'orders reviews by descending update time' do
+		review1 = FactoryGirl.create :review, reviewer_email: 'reviewer1@example.org', reviewer_username: 'reviewer1'
+		sleep 0.1
+		review2 = FactoryGirl.create :review, reviewer_email: 'reviewer2@example.org', reviewer_username: 'reviewer2'
+		expect {
+			sleep 0.1
+			review1.touch
+		}.to change { Review.order_by_descending_updated_at.first }.from(review2).to(review1)
+	end
+	
 	it "should create a user record for the reviewer" do
 		review.body = body = 'Luciano Pavarotti can sing!'
 		review.reviewer_email = email = 'jsutherland@la.stupenda.au'
