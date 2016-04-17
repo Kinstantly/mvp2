@@ -2,9 +2,8 @@ require 'spec_helper'
 
 describe SearchTerm, :type => :model do
 	let(:search_term) {
-		search_term = SearchTerm.new # FactoryGirl products don't have callbacks!
-		search_term.name = 'social skills play groups'
-		search_term
+		# FactoryGirl products don't have callbacks!
+		SearchTerm.new name: 'social skills play groups'
 	}
 	
 	it "has a name" do

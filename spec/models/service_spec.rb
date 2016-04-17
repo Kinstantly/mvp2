@@ -8,25 +8,61 @@ describe Service, :type => :model do
 	# so no use testing here for numericality.
 	
 	it "has a name" do
-		expect(service.save).to be_truthy
+		service.name = 'bouncy houses'
+		expect(service.errors_on(:name)).to be_empty
 	end
 	
 	it "strips whitespace from the name" do
 		name = 'music teacher'
 		service.name = " #{name} "
-		expect(service.errors_on(:name).size).to eq 0
+		expect(service.errors_on(:name)).to be_empty
 		expect(service.name).to eq name
 	end
 	
+	it "can be trashed" do
+		service.save # Make persistent.
+		expect {
+			service.trash = true
+			service.save
+		}.to change(Service, :count).by(-1)
+	end
+	
+	it 'can be found in the trash' do
+		service.trash = true
+		service.save
+		expect(Service.trash.include?(service)).to be_truthy
+	end
+	
+	it 'can be ordered by name' do
+		service_B = FactoryGirl.create :service, name: 'B'
+		service_A = FactoryGirl.create :service, name: 'A'
+		expect(Service.order_by_name.first).to eq service_A
+		expect(Service.order_by_name.last).to eq service_B
+	end
+	
+	it 'can be ordered for display' do
+		service_to_display_last = FactoryGirl.create :service, display_order: 99
+		service_to_display_first = FactoryGirl.create :service, display_order: 1
+		expect(Service.display_order.first).to eq service_to_display_first
+		expect(Service.display_order.last).to eq service_to_display_last
+	end
+	
 	it "can be flagged as predefined" do
-		service.is_predefined = true
-		expect(service.save).to be_truthy
-		expect(Service.predefined.include?(service)).to be_truthy
+		service.is_predefined = false
+		service.save
+		expect {
+			service.is_predefined = true
+			service.save
+		}.to change { Service.predefined.include?(service) }.from(false).to(true)
 	end
 	
 	it "can be shown on the home page" do
-		service.show_on_home_page = true
-		expect(service.errors_on(:show_on_home_page).size).to eq 0
+		service.show_on_home_page = false
+		service.save
+		expect {
+			service.show_on_home_page = true
+			service.save
+		}.to change { Service.for_home_page.include?(service) }.from(false).to(true)
 	end
 	
 	context "finding services that belong to a subcategory" do
@@ -34,18 +70,15 @@ describe Service, :type => :model do
 		
 		before(:example) do
 			service.save
+			subcategory
 		end
 		
-		it "does not belong to a subcategory" do
-			expect(Service.belongs_to_a_subcategory.include?(service)).to be_falsey
-		end
-		
-		it "belongs to a subcategory" do
-			subcategory.services << service
-			expect(Service.belongs_to_a_subcategory.include?(service)).to be_truthy
+		it "can be added to a subcategory" do
+			expect {
+				subcategory.services << service
+			}.to change { Service.belongs_to_a_subcategory.include?(service) }.from(false).to(true)
 		end
 	end
-	
 	
 	context "specialties" do
 		let(:specialties) {

@@ -15,13 +15,13 @@ class Service < ActiveRecord::Base
 	
 	has_and_belongs_to_many :specialties
 	
-	default_scope where(trash: false)
-	scope :trash, where(trash: true)
-	scope :belongs_to_a_subcategory, joins(:subcategories).order('lower(services.name)') # may contain duplicates
-	scope :predefined, where(is_predefined: true)
-	scope :order_by_name, order('lower(name)')
-	scope :display_order, order(:display_order)
-	scope :for_home_page, where(show_on_home_page: true)
+	default_scope { where(trash: false) }
+	scope :trash, -> { where(trash: true) }
+	scope :belongs_to_a_subcategory, -> { joins(:subcategories).order('lower(services.name)') } # may contain duplicates
+	scope :predefined, -> { where(is_predefined: true) }
+	scope :order_by_name, -> { order('lower(name)') }
+	scope :display_order, -> { order(:display_order) }
+	scope :for_home_page, -> { where(show_on_home_page: true) }
 	
 	MAX_STRING_LENGTH = 254
 	
