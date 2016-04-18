@@ -8,13 +8,14 @@ describe Subcategory, :type => :model do
 	# so no use testing here for numericality.
 	
 	it "has a name" do
-		expect(subcategory.save).to be_truthy
+		subcategory.name = 'Family Outings'
+		expect(subcategory.errors_on(:name)).to be_empty
 	end
 	
 	it "strips whitespace from the name" do
 		name = 'CHILD CARE'
 		subcategory.name = " #{name} "
-		expect(subcategory.errors_on(:name).size).to eq 0
+		expect(subcategory.errors_on(:name)).to be_empty
 		expect(subcategory.name).to eq name
 	end
 
@@ -26,12 +27,25 @@ describe Subcategory, :type => :model do
 		}.to change(Subcategory, :count).by(-1)
 	end
 	
+	it 'can be found in the trash' do
+		subcategory.trash = true
+		subcategory.save
+		expect(Subcategory.trash.include?(subcategory)).to be_truthy
+	end
+	
 	# it "can be flagged as predefined" do
 	# 	subcategory.is_predefined = true
 	# 	subcategory.see_all_column = 1 # required if predefined
 	# 	subcategory.save.should be_true
 	# 	Subcategory.predefined.include?(subcategory).should be_true
 	# end
+	
+	it 'can be ordered by name' do
+		subcategory_B = FactoryGirl.create :subcategory, name: 'B'
+		subcategory_A = FactoryGirl.create :subcategory, name: 'A'
+		expect(Subcategory.order_by_name.first).to eq subcategory_A
+		expect(Subcategory.order_by_name.last).to eq subcategory_B
+	end
 	
 	context "categories" do
 		let(:categories) {

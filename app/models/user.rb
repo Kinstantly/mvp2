@@ -76,9 +76,9 @@ class User < ActiveRecord::Base
 	end
 	validates *active_mailing_lists, email_subscription: true if active_mailing_lists.present?
 	
-	scope :order_by_id, order('id')
-	scope :order_by_descending_id, order('id DESC')
-	scope :order_by_email, order('lower(email)')
+	scope :order_by_id, -> { order('id') }
+	scope :order_by_descending_id, -> { order('id DESC') }
+	scope :order_by_email, -> { order('lower(email)') }
 
 	after_save do
 		# Create new or update/delete existing subscription.

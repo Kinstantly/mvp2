@@ -24,10 +24,10 @@ class Subcategory < ActiveRecord::Base
 
 	# has_and_belongs_to_many :services, after_add: :services_changed, after_remove: :services_changed
 	
-	default_scope where(trash: false)
-	scope :trash, where(trash: true)
-	# scope :predefined, where(is_predefined: true)
-	scope :order_by_name, order('lower(name)')
+	default_scope { where(trash: false) }
+	scope :trash, -> { where(trash: true) }
+	# scope :predefined, -> { where(is_predefined: true) }
+	scope :order_by_name, -> { order('lower(name)') }
 	
 	MAX_STRING_LENGTH = 254
 	

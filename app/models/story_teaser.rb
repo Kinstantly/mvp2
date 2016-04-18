@@ -26,8 +26,8 @@ class StoryTeaser < ActiveRecord::Base
 		validates attribute, allow_blank: true, length: {maximum: MAX_LENGTHS[attribute]}
 	end
 	
-	scope :order_by_descending_id, order('id DESC')
-	scope :order_by_active_display_order, order('active DESC, display_order ASC, id DESC')
-	scope :order_by_display_order, order('display_order ASC')
-	scope :active_only, where(active: true)
+	scope :order_by_descending_id, -> { order('id DESC') }
+	scope :order_by_active_display_order, -> { order('active DESC, display_order ASC, id DESC') }
+	scope :order_by_display_order, -> { order('display_order ASC') }
+	scope :active_only, -> { where(active: true) }
 end

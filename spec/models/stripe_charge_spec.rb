@@ -63,6 +63,25 @@ describe StripeCharge, type: :model, payments: true do
 		expect(charge.errors[:refund_reason]).to be_present
 	end
 	
+	it 'can be selected by provider' do
+		customer_file = FactoryGirl.create :customer_file
+		expect {
+			captured_stripe_charge.customer_file = customer_file
+			captured_stripe_charge.save
+		}.to change {
+			StripeCharge.all_for_provider(customer_file.provider).include?(captured_stripe_charge)
+		}.from(false).to(true)
+	end
+	
+	it 'can be ordered by most recent first' do
+		stripe_charge # Create a charge.
+		expect {
+			new_stripe_charge.save
+		}.to change {
+			StripeCharge.most_recent_first.first
+		}.from(stripe_charge).to(new_stripe_charge)
+	end
+	
 	context "using the Stripe API" do
 		let(:charge_amount_usd) { '200.00' }
 		let(:charge_amount_cents) { (charge_amount_usd.to_f * 100).to_i }

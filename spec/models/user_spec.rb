@@ -1,6 +1,27 @@
 require 'spec_helper'
 
 describe User, :type => :model do
+	it 'can be ordered by ID' do
+		id1 = (FactoryGirl.create :parent).id
+		id2 = (FactoryGirl.create :second_parent).id
+		expect(User.order_by_id.first.id).to eq (id1 < id2 ? id1 : id2)
+		expect(User.order_by_id.last.id).to eq (id1 > id2 ? id1 : id2)
+	end
+	
+	it 'can be ordered by descending ID' do
+		id1 = (FactoryGirl.create :parent).id
+		id2 = (FactoryGirl.create :second_parent).id
+		expect(User.order_by_descending_id.first.id).to eq (id1 > id2 ? id1 : id2)
+		expect(User.order_by_descending_id.last.id).to eq (id1 < id2 ? id1 : id2)
+	end
+	
+	it 'can be ordered by email address' do
+		eugenio = FactoryGirl.create :parent, email: 'eugenio@example.com'
+		consuelo = FactoryGirl.create :second_parent, email: 'consuelo@example.com'
+		expect(User.order_by_email.first).to eq consuelo
+		expect(User.order_by_email.last).to eq eugenio
+	end
+	
 	context "provider" do
 		let(:provider) { FactoryGirl.build :provider, password_confirmation: nil, profile: nil }
 		

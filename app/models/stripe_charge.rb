@@ -12,8 +12,8 @@ class StripeCharge < ActiveRecord::Base
 	belongs_to :stripe_card
 	belongs_to :customer_file
 	
-	scope :all_for_provider, lambda { |provider| joins(:customer_file).where(customer_files: {user_id: provider.id}) }
-	scope :most_recent_first, order('created_at DESC')
+	scope :all_for_provider, ->(provider) { joins(:customer_file).where(customer_files: {user_id: provider.id}) }
+	scope :most_recent_first, -> { order('created_at DESC') }
 	
 	monetize :amount, as: 'amount_usd', allow_nil: true
 	monetize :amount_refunded, as: 'amount_refunded_usd', allow_nil: true
