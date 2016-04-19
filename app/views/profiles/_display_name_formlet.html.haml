@@ -4,7 +4,7 @@
 .edit.popover
 	- if @profile.display_name.blank?
 		%span.note= t 'views.profile.edit.display_name_blank_note'
-	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+	= form_for [:formlet_update, @profile], remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
 		= hidden_field_tag 'refresh_partials', 'payments_setup'

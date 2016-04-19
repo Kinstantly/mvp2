@@ -29,7 +29,7 @@
 - locations = @profile.sorted_locations
 - @country ||= (locations.first.try(:country).presence || default_profile_country)
 .edit.popover
-	= nested_form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+	= nested_form_for [:formlet_update, @profile], remote: true, html: {id: "edit-#{formlet}"} do |f|
 		%h3{class: 'form_section'}= Profile.human_attribute_name :locations
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet

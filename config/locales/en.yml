@@ -342,6 +342,7 @@ en:
       edit:
         new_announcement_prompt: 'Create a new announcement on your profile'
         remove: 'Remove'
+        confirm_removal: 'Are you sure you want to remove this announcement?'
         headline_example: 'Example: Register now for Summer Camp!'
         body_example: 'Example: Camps fill up quickly, so register early. Note that full payment is required with registration.'
         button_text_example_html: "Example: register now!<br/>(Leave blank if you're not adding a link, below.)"

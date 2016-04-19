@@ -2,7 +2,7 @@
 %h3.editable= Profile.human_attribute_name :education
 %p.text_area.attribute_display= profile_display_text @profile.errorfree.education, preserve: true, links: true
 .edit.popover
-	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+	= form_for [:formlet_update, @profile], remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
 		.text_field#education_field

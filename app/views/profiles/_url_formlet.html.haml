@@ -4,7 +4,7 @@
 %span.long.url_icon.editable.attribute_display
 	= profile_linked_website @profile.errorfree, strip_url(@profile.url), 40, Profile.human_attribute_name(:url)
 .edit.popover
-	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+	= form_for [:formlet_update, @profile], remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
 		.text_field#url_field

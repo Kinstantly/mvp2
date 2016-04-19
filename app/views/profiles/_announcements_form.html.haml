@@ -19,7 +19,7 @@
 						= display_announcement.end_at_date
 			= announcement_button display_announcement.button_text, display_announcement.button_url
 		.edit.popover
-			= nested_form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}", "data-i" => i} do |f|
+			= nested_form_for [:formlet_update, @profile], remote: true, html: {id: "edit-#{formlet}", "data-i" => i} do |f|
 				%h3.section-header Announcement
 				- if announcement.changed? && announcement.errors.any?
 					= f.error_messages
@@ -133,7 +133,8 @@
 											= link_to center_announcement.try(:search_result_link_text) || "", profile_path(@profile), {class: "#{announcement_icon_class(center_announcement.try(:icon))}"}
 
 					= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
-					= af.link_to_remove t('views.announcement.edit.remove') unless display_announcement.new_record?
+					- unless display_announcement.new_record?
+						= af.link_to_remove t('views.announcement.edit.remove'), class: 'link_to_remove_announcement'
 					= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 :coffeescript
 	$ ->

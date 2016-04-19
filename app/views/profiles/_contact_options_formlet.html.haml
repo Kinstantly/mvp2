@@ -1,6 +1,6 @@
 - formlet = 'contact_options'
 .edit.popover
-	= form_for @profile, url: formlet_update_profile_path(@profile), remote: true, html: {id: "edit-#{formlet}"} do |f|
+	= form_for [:formlet_update, @profile], remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
 		#consultations

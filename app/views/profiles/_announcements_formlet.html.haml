@@ -18,6 +18,7 @@
 	my_vars.edit_announcement.max_lengths = #{ProfileAnnouncement::MAX_LENGTHS.to_json};
 	my_vars.edit_announcement.date_format = "#{ProfileAnnouncement::DATEFORMAT}";
 	my_vars.edit_announcement.icons_set = #{announcement_icons().map { |a| a[:class] }.to_json};
+	my_vars.edit_announcement.confirm_removal = '#{t "views.announcement.edit.confirm_removal"}';
 
 :coffeescript
 	js_dateformat = (internal_dateformat) ->
@@ -27,8 +28,8 @@
 
 	$.datepicker.setDefaults({dateFormat: js_dateformat(my_vars.edit_announcement.date_format)});
 
-	$('.remove_nested_fields').on 'click', () ->
-		ac_delete = window.confirm("Are you sure you want to remove this announcement?")
+	$('.link_to_remove_announcement').on 'click', () ->
+		ac_delete = window.confirm(my_vars.edit_announcement.confirm_removal)
 		if(ac_delete)
 			$(this).prev('[id$=_destroy]').val(true);
 			$(this).parent('form').submit();		
