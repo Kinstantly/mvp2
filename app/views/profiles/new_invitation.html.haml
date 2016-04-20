@@ -1,7 +1,7 @@
 - @subject ||= invite_provider_email_subject
 - @body    ||= raw invite_provider_email_body
 .edit_profile
-	= form_for @profile, url: send_invitation_profile_path(@profile) do |f|
+	= form_for [:send_invitation, @profile] do |f|
 		= f.error_messages
 		.profile_areas
 			.provider_invite

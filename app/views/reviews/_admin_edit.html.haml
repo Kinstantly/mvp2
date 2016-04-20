@@ -1,6 +1,6 @@
 %fieldset
 	%legend= t 'views.profile.edit.edit_review', name: review.reviewer.try(:username)
-	= form_for review, url: admin_update_review_path(review), method: :put, remote: true do |f|
+	= form_for [:admin_update, review], method: :put, remote: true do |f|
 		= render partial: 'reviews/admin_form_fields', locals: {review: review, f: f}
 	- if can?(:destroy, review)
 		- t_scope = 'views.review.edit'
