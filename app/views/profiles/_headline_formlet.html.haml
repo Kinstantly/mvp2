@@ -10,7 +10,7 @@
 			= f.label :headline
 			= f.text_field :headline
 			%p.note= t 'views.profile.edit.headline_example'
-		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+		= f.submit t('views.profile.edit.submit'), data: { disable_with: t('views.profile.edit.submit_disable') }, class: 'save'
 		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 
 :coffeescript

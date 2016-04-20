@@ -37,7 +37,7 @@
 					= label_tag :email, 'Email:'
 					= email_field_tag :email, @email, placeholder: 'Enter your email address'
 				.buttons
-					= submit_tag t(:newsletter_sign_up_label, scope: 'views.sign_up'), disable_with: t('views.sign_up.submit_disable'), class: 'default newsletter_sign_up', id: 'sign_up_button'
+					= submit_tag t(:newsletter_sign_up_label, scope: 'views.sign_up'), data: { disable_with: t('views.sign_up.submit_disable') }, class: 'default newsletter_sign_up', id: 'sign_up_button'
 					= link_to t(:newsletter_sign_up_cancel, scope: 'views.sign_up'), root_path, class: 'cancel', id: 'sign_up_cancel_button'
 		-# %p.newsletter-sample
 		-# 	See a sample:

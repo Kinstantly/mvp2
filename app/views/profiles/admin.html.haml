@@ -20,4 +20,4 @@
 							= profile_categories_check_box_tag @profile, category, f
 							= profile_categories_check_box_label category
 				.buttons
-					= f.submit 'Create profile', disable_with: 'Creating...'
+					= f.submit 'Create profile', data: { disable_with: 'Creating...' }

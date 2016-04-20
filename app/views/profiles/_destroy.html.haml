@@ -1,2 +1,2 @@
 = form_for @profile, method: :delete, html: {id: 'destroy_profile'} do |f|
-	= f.submit 'Delete profile', disable_with: 'Deleting...', confirm: 'This profile will be permanently removed.  Are you sure?'
+	= f.submit 'Delete profile', data: { disable_with: 'Deleting...', confirm: 'This profile will be permanently removed.  Are you sure?' }

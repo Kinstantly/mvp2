@@ -32,7 +32,7 @@
 						%div
 							%label{:for => "location"} Near
 							= text_field_tag :address, @search_address, id: 'provider_search_location', placeholder: t('views.search.address_placeholder')
-						= submit_tag 'Search', disable_with: 'Searching...', class: 'button submit pink', id: 'search'
+						= submit_tag 'Search', data: { disable_with: 'Searching...' }, class: 'button submit pink', id: 'search'
 			%nav.nav-links
 				%a{href: root_path(anchor: 'provider-search-browse')}
 					= t 'views.home.view.nav.providers_html'

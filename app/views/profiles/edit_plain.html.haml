@@ -13,7 +13,7 @@
 		= render partial: 'info_area'
 		= render partial: 'form', locals: {f: f}
 		.buttons
-			= f.submit 'Save changes', disable_with: 'Saving...', id: 'save_profile_button'
+			= f.submit 'Save changes', data: { disable_with: 'Saving...' }, id: 'save_profile_button'
 			= link_to "Cancel", profile_path(@profile)
 			= profile_link @profile
 			= edit_profile_link @profile

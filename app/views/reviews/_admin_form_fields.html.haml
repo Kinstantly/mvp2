@@ -28,7 +28,7 @@
 	.label_area= f.label :reviewer_username, Review.human_attribute_name(:reviewer_username_admin)
 	= f.text_field :reviewer_username
 .buttons
-	= f.submit 'Save', disable_with: 'Saving...', class: 'save'
+	= f.submit 'Save', data: { disable_with: 'Saving...' }, class: 'save'
 
 :javascript
 	// Prettify the star-rating inputs.

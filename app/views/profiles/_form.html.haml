@@ -79,7 +79,7 @@
 				.search_area_tag
 					= lf.label :search_area_tag_id
 					= lf.collection_select :search_area_tag_id, SearchAreaTag.all, :id, :name, {include_blank: 'Other'}
-			= lf.link_to_remove t('views.location.edit.remove'), confirm: t('views.location.edit.remove_confirm_admin')
+			= lf.link_to_remove t('views.location.edit.remove'), data: { confirm: t('views.location.edit.remove_confirm_admin') }
 		= f.link_to_add t('views.location.edit.add'), :locations
 	%fieldset.expertise_profile#edit_expertise
 		%legend= t 'views.profile.legend.expertise_profile_for', name: profile.display_name_or_company

@@ -8,5 +8,5 @@
 			.email.text_field
 				= f.label :email
 				= f.email_field :email
-			.buttons= f.submit t('devise.confirmations.new_confirmation_submit'), disable_with: t('devise.confirmations.new_confirmation_submit_disable'), class: 'default auto_width'
+			.buttons= f.submit t('devise.confirmations.new_confirmation_submit'), data: { disable_with: t('devise.confirmations.new_confirmation_submit_disable') }, class: 'default auto_width'
 		= render "devise/shared/links"

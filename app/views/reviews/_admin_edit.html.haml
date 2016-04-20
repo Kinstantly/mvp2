@@ -5,4 +5,4 @@
 	- if can?(:destroy, review)
 		- t_scope = 'views.review.edit'
 		= form_for review, method: :delete, html: {class: 'delete_review'} do |f|
-			= f.submit t('delete', scope: t_scope), disable_with: t('deleting', scope: t_scope), confirm: t('delete_confirm', scope: t_scope)
+			= f.submit t('delete', scope: t_scope), data: { disable_with: t('deleting', scope: t_scope), confirm: t('delete_confirm', scope: t_scope) }

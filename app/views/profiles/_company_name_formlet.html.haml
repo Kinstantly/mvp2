@@ -11,7 +11,7 @@
 			= f.label :company_name
 			= f.text_field :company_name
 			%p.note= t 'views.profile.edit.company_name_example'
-		= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+		= f.submit t('views.profile.edit.submit'), data: { disable_with: t('views.profile.edit.submit_disable') }, class: 'save'
 		= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 
 :coffeescript

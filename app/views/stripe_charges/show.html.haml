@@ -49,4 +49,4 @@
 						= f.label :refund_reason
 						= f.select :refund_reason, StripeCharge::REFUND_REASONS.map{|reason| [t(reason, scope: 'views.stripe_charge.refund.reason'), reason]}, {include_blank: true}
 					.buttons
-						= f.submit t('views.stripe_charge.refund.submit'), disable_with: t('views.stripe_charge.refund.submit_disable'), class: 'save'
+						= f.submit t('views.stripe_charge.refund.submit'), class: 'save', data: { disable_with: t('views.stripe_charge.refund.submit_disable') }

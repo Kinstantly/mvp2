@@ -11,7 +11,7 @@
 			= f.text_area :availability_service_area_note, size: '50x5', class: 'attr'
 			%p.note= t 'views.profile.edit.availability_service_area_note_example_html'
 		.buttons
-			= f.submit t('views.profile.edit.submit'), disable_with: t('views.profile.edit.submit_disable'), class: 'save'
+			= f.submit t('views.profile.edit.submit'), data: { disable_with: t('views.profile.edit.submit_disable') }, class: 'save'
 			= link_to t('views.profile.edit.cancel'), '#', class: 'cancel button'
 
 :coffeescript

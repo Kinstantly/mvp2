@@ -26,6 +26,6 @@
 			= f.label :remember_me
 
 	.buttons
-		= f.submit t('views.sign_in.label'), disable_with: t('views.sign_in.submit_disable'), class: 'default', id: 'sign_in_button'
+		= f.submit t('views.sign_in.label'), data: { disable_with: t('views.sign_in.submit_disable') }, class: 'default', id: 'sign_in_button'
 	%br
 	= render "devise/shared/links"

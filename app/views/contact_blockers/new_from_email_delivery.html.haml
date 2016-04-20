@@ -12,4 +12,4 @@
 				%p= t 'views.contact_blocker.edit.unsubscribe_note'
 				
 			.buttons
-				= f.submit t('views.contact_blocker.edit.unsubscribe_submit'), disable_with: t('views.contact_blocker.edit.unsubscribe_submit_disable'), class: 'default'
+				= f.submit t('views.contact_blocker.edit.unsubscribe_submit'), class: 'default', data: { disable_with: t('views.contact_blocker.edit.unsubscribe_submit_disable') }

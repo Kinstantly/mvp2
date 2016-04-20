@@ -7,7 +7,7 @@
 		= render partial: 'edit_form'
 		- if can?(:destroy, @category)
 			= form_for @category, method: :delete, html: {id: 'destroy_category', class: 'destroy_button'} do |f|
-				= f.submit t('views.category.edit.destroy_button'), disable_with: t('views.category.edit.destroy_button_disable'), confirm: t('views.category.edit.destroy_confirm')
+				= f.submit t('views.category.edit.destroy_button'), data: { disable_with: t('views.category.edit.destroy_button_disable'), confirm: t('views.category.edit.destroy_confirm') }
 	#links
 		%a{name: 'links'}
 		%h1= Category.human_attribute_name :subcategories
@@ -24,13 +24,13 @@
 						%tr
 							%td.miniform
 								= form_for @category, url: {action: :update_subcategory}, method: :put do |f|
-									= f.submit t('views.save'), disable_with: t('views.saving')
+									= f.submit t('views.save'), data: { disable_with: t('views.saving') }
 									= text_field_tag :subcategory_display_order, @category.category_subcategory(record).subcategory_display_order, size: 4
 									= hidden_field_tag :subcategory_id, record.to_param
 							%td= link_to record.name, edit_subcategory_path(record), class: 'name'
 							%td.miniform
 								= form_for @category, url: {action: :remove_subcategory}, method: :put do |f|
-									= f.submit t('views.remove'), disable_with: t('views.removing')
+									= f.submit t('views.remove'), data: { disable_with: t('views.removing') }
 									= hidden_field_tag :subcategory_id, record.to_param
 		%h1= t 'views.subcategory.edit.add'
 		%table
@@ -44,7 +44,7 @@
 				%tr
 					%td.miniform
 						= form_for @category, url: {action: :add_subcategory}, method: :put do |f|
-							= f.submit t('views.save'), disable_with: t('views.saving')
+							= f.submit t('views.save'), data: { disable_with: t('views.saving') }
 							= text_field_tag :subcategory_display_order, '', size: 4
 							= autocomplete_form_field :name, '', autocomplete_subcategory_name_categories_path, placeholder: t('views.subcategory.view.find_by_name'), size: 30
 = render partial: 'shared/save_changes_prompt'
