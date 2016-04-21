@@ -7,7 +7,7 @@
 		= render partial: 'edit_form'
 		- if can?(:destroy, @service)
 			= form_for @service, method: :delete, html: {id: 'destroy_service', class: 'destroy_button'} do |f|
-				= f.submit t('views.service.edit.destroy_button'), disable_with: t('views.category.edit.destroy_button_disable'), confirm: t('views.service.edit.destroy_confirm')
+				= f.submit t('views.service.edit.destroy_button'), data: { disable_with: t('views.category.edit.destroy_button_disable'), confirm: t('views.service.edit.destroy_confirm') }
 	#links
 		%a{name: 'links'}
 		%h1= Service.human_attribute_name :subcategories
@@ -30,7 +30,7 @@
 		-# 			%tr
 		-# 				%td.miniform
 		-# 					= form_for record do |f|
-		-# 						= f.submit 'Save', disable_with: 'Save'
+		-# 						= f.submit 'Save', data: { disable_with: 'Save' }
 		-# 						= f.text_field :name, size: 30
 		-# 						= hidden_field_tag :service_id, @service.id
 		-# 				%td= link_to record.name, edit_specialty_path(record), class: 'name'

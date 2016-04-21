@@ -5,5 +5,5 @@
 		= uf.fields_for :profile do |f|
 			= render partial: 'profiles/form', locals: {f: f, country: profile_country(@user.profile)}
 		.buttons
-			= uf.submit 'Save changes', disable_with: 'Saving...'
+			= uf.submit 'Save changes', data: { disable_with: 'Saving...' }
 			= link_to "Cancel", view_user_profile_path

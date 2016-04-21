@@ -5,7 +5,7 @@
 		= render partial: 'home/admin_nav'
 	.list{align: 'center'}
 		= form_tag find_by_name_services_path, method: :get do
-			= submit_tag t('views.find_button'), disable_with: 'Finding...'
+			= submit_tag t('views.find_button'), data: { disable_with: 'Finding...' }
 			= autocomplete_form_field 'name', '', autocomplete_service_name_profiles_path, placeholder: t('views.service.view.find_by_name'), size: 50
 		.pagination_nav
 			= render partial: 'shared/per_page_form', locals: { record_type: Service }

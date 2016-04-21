@@ -16,4 +16,4 @@
 				= f.label :provider_newsletters, t('views.sign_up.provider_newsletters_prompt')
 			%br
 			.buttons
-				= f.submit t('views.user.edit.submit'), disable_with: t('views.user.edit.submit_disable'), class: 'highlight'
+				= f.submit t('views.user.edit.submit'), data: { disable_with: t('views.user.edit.submit_disable') }, class: 'highlight'

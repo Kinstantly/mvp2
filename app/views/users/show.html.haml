@@ -55,7 +55,7 @@
 			= form_for @user, url: confirmation_path(@user), html: { method: :post, style: 'display:inline-block' } do |f|
 				= f.hidden_field :admin_confirmation_sent_by_id, value: current_user.try(:id)
 				= f.hidden_field :email
-				= f.submit t('devise.confirmations.create_confirmation_submit'), disable_with: t('devise.confirmations.create_confirmation_submit_disable'), class: 'default auto_width'
+				= f.submit t('devise.confirmations.create_confirmation_submit'), data: { disable_with: t('devise.confirmations.create_confirmation_submit_disable') }, class: 'default auto_width'
 	%br
 	%label.strong.cell
 		Subscriptions:
