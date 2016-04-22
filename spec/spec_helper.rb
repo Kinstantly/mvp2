@@ -101,6 +101,15 @@ Spork.prefork do
       # Object.send(:remove_const, 'User')
       # load 'user.rb'
     end
+    
+    # Hacky hack: On Mac OS X 10.11, RSpec is really hitting the CPU hard and
+    # literally making it hot!  Allow time to cool down between examples.
+    if ENV['RSPEC_THROTTLE_INTERVAL'].to_f > 0
+      puts "Throttle specified: sleep #{ENV['RSPEC_THROTTLE_INTERVAL'].to_f} seconds between each example."
+      config.after(:example) do
+        sleep ENV['RSPEC_THROTTLE_INTERVAL'].to_f
+      end
+    end
   end
 
   # End of Spork.prefork
