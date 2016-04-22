@@ -398,9 +398,10 @@
 					cropPresets: [['Square', '1:1'], 'Original']
 					onLoad: () ->
 						step_two.edit_profile_photo_link.prop('disabled', false);
-					onSave: (image_id, source_url) ->
-						if(!source_url)
+					onSave: (image_id, new_url) ->
+						if(!new_url)
 							return
+						source_url = new_url.replace(/^http:/i, 'https:') # Prevent mixed-content warning from browser.
 						upload_request_start(2)
 						poll_counter = 0
 						image_exists = false

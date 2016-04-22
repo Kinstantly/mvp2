@@ -18,8 +18,7 @@ class HomeController < ApplicationController
 	end
 
 	def blog
-		logger.debug "/blog path requested. Redirecting to http://blog.kinstantly.com" if logger
-		redirect_to "http://blog.kinstantly.com"
+		redirect_to blog_url
 	end
 	
 	private
