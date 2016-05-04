@@ -97,7 +97,7 @@ describe HomeController, :type => :controller do
 		end
 
 		it "redirects to the blog site" do
-			expect(response).to redirect_to "http://blog.kinstantly.com"
+			expect(response).to redirect_to blog_url
 		end
 	end
 end
