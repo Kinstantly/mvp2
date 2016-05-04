@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '2.3.0'
 
 gem 'rails', '3.2.22.2'
+# gem 'rails', '4.0.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -98,7 +99,8 @@ gem 'uuidtools'
 gem 'rails-jquery-autocomplete'
 
 # A repository of geographic regions for Ruby via Rails.
-gem 'carmen-rails', '~> 1.0.0.beta3'
+# https://github.com/jim/carmen-rails
+gem 'carmen-rails'
 
 # Parse and print phone numbers.  International support.
 gem 'phonie'
