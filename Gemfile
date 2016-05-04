@@ -140,8 +140,10 @@ gem 'test-unit', '~> 3.0'
 group :development, :test do
 	gem 'rspec-rails', '~> 3.3'
 	gem 'rspec-collection_matchers'
-	gem 'cucumber-rails', '~> 1.0', require: false
-	gem 'database_cleaner', '~> 0.8'
+	# https://cucumber.io/docs/reference/rails
+	gem 'cucumber-rails', require: false
+	# https://github.com/DatabaseCleaner/database_cleaner
+	gem 'database_cleaner' #, '~> 0.8'
 	# gem 'webrat', '~> 0.7'
 	gem 'factory_girl_rails', '~> 4.1'
 	gem 'email_spec', '~> 1.4'
