@@ -143,11 +143,16 @@ group :development, :test do
 	# https://cucumber.io/docs/reference/rails
 	gem 'cucumber-rails', require: false
 	# https://github.com/DatabaseCleaner/database_cleaner
-	gem 'database_cleaner' #, '~> 0.8'
+	gem 'database_cleaner'
 	# gem 'webrat', '~> 0.7'
 	gem 'factory_girl_rails', '~> 4.1'
 	gem 'email_spec', '~> 1.4'
-	gem 'capybara', '~> 2.4'
+	# https://github.com/jnicklas/capybara
+	gem 'capybara'
+	# https://github.com/thoughtbot/capybara-webkit
+	# https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit
+	# Qt 5.5 is the last version of Qt that capybara-webkit will support.
+	# The Qt project has dropped the WebKit bindings from binary releases in 5.6.
 	gem 'capybara-webkit'
 	gem 'launchy', '~> 2.1'
 	gem 'syntax'
