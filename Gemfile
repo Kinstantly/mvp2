@@ -166,7 +166,7 @@ end
 group :development do
 	gem 'derailed'
 	gem 'stackprof'
-	gem 'rails-footnotes', '>= 3.7.9'
+	gem 'rails-footnotes', '~> 4.0'
 end
 
 #Image processor and model manager for photo uploads
