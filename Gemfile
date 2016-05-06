@@ -109,6 +109,7 @@ gem 'phonie'
 gem 'geocoder'
 
 # Use to safely create links from user input.
+# http://github.com/tenderlove/rails_autolink
 gem 'rails_autolink'
 
 # Pagination.
