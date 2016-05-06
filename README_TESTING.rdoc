@@ -55,43 +55,6 @@ To run Rspec and Cucumber from inside TextMate, go to Preferences -> Advanced ->
 
 For the TM_RUBY value, you might have to use the expanded path instead of '~'.
 
-Note: the \-\-drb option is used to run Rspec and Cucumber via the Spork server (see below).
-
-== Spork
-
-Rspec is configured to use a Spork DRb server when such a server is running for Rspec.  The same goes for Cucumber.  You don't need to run Spork servers, but it speeds things up if you do.  To use Spork, you should run a server for each of Rspec and Cucumber (see below for the start-up commands).
-
-To use Spork with Rspec, you need to specify the '\-\-drb' option.  For example, to run all of the specs use this command:
-
- bundle exec rspec --drb spec
-
-To use Spork with Cucumber, you need to specify the '\-\-drb' option.  For example, to run all of the features use this command:
-
- bundle exec cucumber --drb
-
-Here are some useful aliases for starting and monitoring the Rspec and Cucumber Spork servers.  You need to use these aliases from the repository root.
-
- alias sporkrspecstart='bundle exec spork rspec >> log/sporkrspec.log 2>&1 &'
- alias sporkrspeclog='tail -f log/sporkrspec.log'
- alias sporkcukestart='bundle exec spork cucumber >> log/sporkcuke.log 2>&1 &'
- alias sporkcukelog='tail -f log/sporkcuke.log'
-
-=== Restarting Spork
-
-Some of your source files are preloaded by Spork.  If you modify any of these files and your tests depend on them, you will need to restart Spork to pick up the modifications.  To restart, you should kill and start the affected Spork process.
-
-It helps to know which files are preloaded.  You can discover that with diagnostic mode.  For more information see https://github.com/sporkrb/spork#diagnostic-mode
-
-== Guard
-
-TODO: Install and configure Guard for Spork, Rspec, and Cucumber.  Guard will detect changes to relevant files and restart Spork or run the modified Rspec or Cucumber tests.
-
-Gems to install and configure:
-
-* https://github.com/guard/guard-spork
-* https://github.com/guard/guard-rspec
-* https://github.com/guard/guard-cucumber
-
 == Performance testing
 
 When doing performance tests, it's best to use an environment as close as possible to production.  The Rails benchmark and profiling facilities configure a production environment by default.  But you also need your data to reflect production.  The best way to do this is to create a 'performance' environment that uses its own database and Solr instance which are loaded with production data.  The configuration for the 'performance' environment is already set up.  Follow these steps to set up your performance database and Solr instance.
@@ -162,3 +125,13 @@ For more information:
 * http://railscasts.com/episodes/411-performance-testing
 * http://m.onkey.org/running-rails-performance-tests-on-real-data
 * https://gist.github.com/hammady/4378820
+
+=== Rails Footnotes
+
+Rails footnotes displays footnotes in your application for debugging, such as sessions, request parameters, cookies, filter chain, routes, queries, etc.  It is most valuable for determining what database queries are being performed and how long they take to execute.  This is useful for performance evaluation.
+
+Rails footnotes is only loaded in the development environment and is disabled by default.  To enable it, run the rails server with a non-null value of the ENABLE_RAILS_FOOTNOTES environment variable, e.g.,
+
+  ENABLE_RAILS_FOOTNOTES=t bundle exec unicorn -p 5000 -c ./config/unicorn.rb
+
+For more information, see https://github.com/josevalim/rails-footnotes.

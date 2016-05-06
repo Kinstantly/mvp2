@@ -166,6 +166,7 @@ end
 group :development do
 	gem 'derailed'
 	gem 'stackprof'
+	# https://github.com/josevalim/rails-footnotes
 	gem 'rails-footnotes', '~> 4.0'
 end
 
