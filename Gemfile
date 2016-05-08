@@ -182,11 +182,14 @@ gem 'paperclip', git: 'https://github.com/dgynn/paperclip.git', branch: 'interpo
 #S3 storage
 gem 'aws-sdk', '~> 1.6'
 
-#AJAX file uploader
-gem 'jack_up', :git => 'https://github.com/thoughtbot/jack_up.git'
-#Required for Jack_up
+# AJAX file uploader
+# https://github.com/thoughtbot/jack_up
+gem 'jack_up'
+# Required for Jack_up
+# https://github.com/rweng/underscore-rails
 gem 'underscore-rails'
-#Required for Jack_up
+# Required for Jack_up
+# https://github.com/newbamboo/rack-raw-upload
 gem 'rack-raw-upload'
 
 # To use ActiveModel has_secure_password
