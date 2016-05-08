@@ -7,6 +7,9 @@ class ApplicationController < ActionController::Base
 	
 	http_basic_authenticate_with name: ENV['BASIC_AUTH_NAME'], password: ENV['BASIC_AUTH_PASSWORD'], unless: :skip_http_basic_authentication if ENV['BASIC_AUTH_NAME'].present?
 	
+	# PaperTrail filter that assigns current_user.id to PaperTrail.whodunnit.
+	before_filter :set_paper_trail_whodunnit
+	
 	# Store referrer for use after sign-in or sign-up if so directed.
 	before_filter :store_referrer, only: :new
 	

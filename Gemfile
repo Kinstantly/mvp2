@@ -38,13 +38,14 @@ gem 'nested_form'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails'#,   '~> 3.2.3'
+  gem 'coffee-rails'#, '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
 
-  gem 'uglifier', '>= 1.0.3'
+	# http://github.com/lautis/uglifier
+  gem 'uglifier'#, '>= 1.0.3'
 end
 
 # Has jquery and jquery_ujs.
@@ -119,6 +120,7 @@ gem 'kaminari'
 gem 'simple_form'
 
 # Background processing
+# http://github.com/collectiveidea/delayed_job_active_record
 gem 'delayed_job_active_record'
 
 # Support multiple simultaneous requests by forking multiple rails processes.
@@ -127,7 +129,8 @@ gem 'unicorn'
 # PaperTrail lets you track changes to your models' data. It's good for auditing or versioning.
 # You can see how a model looked at any stage in its lifecycle, revert it to any version, and
 # even undelete it after it's been destroyed.
-gem 'paper_trail', '~> 2'
+# https://github.com/airblade/paper_trail
+gem 'paper_trail'
 
 # AutoStripAttributes helps to remove unnecessary whitespace from ActiveRecord or ActiveModel attributes.
 # It's good for removing accidental spaces from user inputs
