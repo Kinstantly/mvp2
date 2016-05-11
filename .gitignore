@@ -48,5 +48,5 @@
 # Ignore rails_footnotes local configuration.
 /.rails_footnotes
 
-# Ignore bundler binstubs.
-/bin
+# With Rails 4.0 and up, bin stubs are version controlled.
+# /bin

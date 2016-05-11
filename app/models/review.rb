@@ -11,10 +11,10 @@ class Review < ActiveRecord::Base
 	auto_strip_attributes :title, :body, :good_to_know
 	
 	# Touch the associated profile to change the cache_key for its fragment caches.
-	belongs_to :profile, counter_cache: true, touch: true
+	belongs_to :profile, counter_cache: true, touch: true, inverse_of: :reviews
 	
 	# Touch the associated reviewer to change the cache_key for its fragment caches.
-	belongs_to :reviewer, class_name: 'User', counter_cache: 'reviews_given_count', touch: true, counter_cache_association: :reviews_given
+	belongs_to :reviewer, class_name: 'User', counter_cache: 'reviews_given_count', touch: true #, counter_cache_association: :reviews_given
 	# has_one :rating, dependent: :destroy # when we had one rating per review.
 	# accepts_nested_attributes_for :rating, allow_destroy: true
 	

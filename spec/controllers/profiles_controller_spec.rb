@@ -20,15 +20,17 @@ end
 
 describe ProfilesController, :type => :controller do
 	let(:photo_url) { 'https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png' }
+	let(:photo_filename) { 'profile_photo_test_under1MB.jpg' }
+	let(:photo_file) {
+		Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/assets/#{photo_filename}"), 'image/png')
+	}
 	
 	context "as site visitor attempting to access a published profile" do
-		before(:example) do
-			@profile = FactoryGirl.create(:published_profile)
-		end
+		let(:profile) { FactoryGirl.create(:published_profile) }
 		
 		describe "GET 'show'" do
 			before(:example) do
-				get :show, id: @profile.id
+				get :show, id: profile.id
 			end
 			
 			it "renders the view" do
@@ -36,33 +38,31 @@ describe ProfilesController, :type => :controller do
 			end
 			
 			it "assigns @profile" do
-				expect(assigns[:profile]).to eq @profile
+				expect(assigns[:profile]).to eq profile
 			end
 		end
 		
 		describe "GET 'edit'" do
 			it "can not render the view" do
-				get :edit, id: @profile.id
+				get :edit, id: profile.id
 				expect(response).not_to render_template('edit')
 			end
 		end
 	end
 	
 	context "as site visitor attempting to access an unpublished profile" do
-		before(:example) do
-			@profile = FactoryGirl.create(:unpublished_profile)
-		end
+		let(:profile) { FactoryGirl.create(:unpublished_profile) }
 		
 		describe "GET 'show'" do
 			it "can not render the view" do
-				get :show, id: @profile.id
+				get :show, id: profile.id
 				expect(response).not_to render_template('show')
 			end
 		end
 		
 		describe "GET 'edit'" do
 			it "can not render the view" do
-				get :edit, id: @profile.id
+				get :edit, id: profile.id
 				expect(response).not_to render_template('edit')
 			end
 		end
@@ -78,14 +78,14 @@ describe ProfilesController, :type => :controller do
 				expect(Profile.find_by_id(id).headline).not_to eq headline
 			end
 		end
+		
 		describe "POST 'photo_update'", :photo_upload => true do
 			it "cannot update profile photo", :photo_upload => true do
 				id = FactoryGirl.create(:profile).id
-				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 'image/png')
-				post :photo_update, id: id, file: @photo_file
+				post :photo_update, id: id, file: photo_file
 				expect(response.status).to eq(302)
-				expect(Profile.find_by_id(id).profile_photo.original_filename).to_not eq("profile_photo_test_under1MB.jpg")
-				@photo_file.close
+				expect(Profile.find_by_id(id).profile_photo.original_filename).to_not eq photo_filename
+				photo_file.close
 			end
 		end
 	end
@@ -121,11 +121,10 @@ describe ProfilesController, :type => :controller do
 		describe "POST 'photo_update'", :photo_upload => true do
 			it "cannot update profile photo", :photo_upload => true do
 				id = FactoryGirl.create(:profile).id
-				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 'image/png')
-				post :photo_update, id: id, file: @photo_file
+				post :photo_update, id: id, file: photo_file
 				expect(response.status).to eq(302)
-				expect(Profile.find_by_id(id).profile_photo.original_filename).to_not eq("profile_photo_test_under1MB.jpg")
-				@photo_file.close
+				expect(Profile.find_by_id(id).profile_photo.original_filename).to_not eq photo_filename
+				photo_file.close
 			end
 		end
 		
@@ -210,7 +209,7 @@ describe ProfilesController, :type => :controller do
 		describe "PUT 'formlet_update'" do
 			it "successfully updates the profile via a formlet" do
 				put :formlet_update, id: my_profile_id, formlet: 'summary', profile: {summary: 'A short story.'}
-				expect(response).to render_template('formlet')
+				expect(response).to render_template('profiles/formlet_update')
 			end
 			
 			it "successfully updates a profile attribute via a formlet" do
@@ -284,40 +283,35 @@ describe ProfilesController, :type => :controller do
 		end
 
 		describe "POST 'photo_update'", :photo_upload => true do
-			before(:context) do
-				@photo_file = Rack::Test::UploadedFile.new(
-					Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 'image/png')
-			end
 			it "successfully uploads profile photo" do
 				id = my_profile_id
-				post :photo_update, id: id, file: @photo_file
-				@profile = Profile.find_by_id(id)
+				post :photo_update, id: id, file: photo_file
+				profile = Profile.find_by_id(id)
 				expect(response).to be_success
-				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
-				expect(response.body).to include("profile_photo_test_under1MB.jpg")
-				@profile.profile_photo.destroy
-				@profile.save
+				expect(profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
+				expect(response.body).to include photo_filename
+				photo_file.close
+				profile.profile_photo.destroy
+				profile.save
 			end
 
 			it "successfully imports profile photo from url" do
 				id = my_profile_id
 				post :photo_update, id: id, source_url: photo_url
-				@profile = Profile.find_by_id(id)
+				profile = Profile.find_by_id(id)
 				expect(response).to be_success
-				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
-				expect(response.body).to include(@profile.profile_photo.url(:original))
-				@profile.profile_photo.destroy
-				@profile.save
+				expect(profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
+				expect(response.body).to include(profile.profile_photo.url(:original))
+				profile.profile_photo.destroy
+				profile.save
 			end
 
 			it "cannot update profile photo of a profile I don't own" do
 				id = other_profile_id
-				post :photo_update, id: id, file: @photo_file
+				post :photo_update, id: id, file: photo_file
 				expect(response.status).to eq(302)
-				expect(Profile.find_by_id(id).profile_photo.original_filename).to_not eq("profile_photo_test_under1MB.jpg")
-			end
-			after(:context) do
-				@photo_file.close
+				expect(Profile.find_by_id(id).profile_photo.original_filename).to_not eq photo_filename
+				photo_file.close
 			end
 		end
 		
@@ -478,14 +472,15 @@ describe ProfilesController, :type => :controller do
 	end
 	
 	context "as admin user" do
+		let(:bossy) { FactoryGirl.create(:admin_user, email: 'bossy@example.com') }
+		
 		before (:each) do
-			@bossy = FactoryGirl.create(:admin_user, email: 'bossy@example.com')
-			sign_in @bossy
+			sign_in bossy
 		end
 
 		describe "GET 'index'" do
 			before(:example) do
-				@eddie = FactoryGirl.create(:expert_user, email: 'eddie@example.com')
+				FactoryGirl.create(:expert_user, email: 'eddie@example.com')
 				get :index
 			end
 		
@@ -494,7 +489,9 @@ describe ProfilesController, :type => :controller do
 			end
 		
 			it "assigns @profiles" do
-				expect(assigns[:profiles]).to eq Profile.all
+				Profile.all.each do |profile|
+					expect(assigns[:profiles]).to include profile
+				end
 			end
 		end
 	
@@ -540,9 +537,10 @@ describe ProfilesController, :type => :controller do
 		end
 	
 		describe "GET 'edit'" do
+			let(:profile) { FactoryGirl.create(:profile) }
+			
 			before(:example) do
-				@profile = FactoryGirl.create(:profile)
-				get :edit, id: @profile.id
+				get :edit, id: profile.id
 			end
 		
 			it "renders the view" do
@@ -550,7 +548,7 @@ describe ProfilesController, :type => :controller do
 			end
 		
 			it "assigns @profile" do
-				expect(assigns[:profile]).to eq @profile
+				expect(assigns[:profile]).to eq profile
 			end
 			
 			it "ensures the profile has a location record to edit or fill in" do
@@ -587,37 +585,31 @@ describe ProfilesController, :type => :controller do
 		end
 
 		describe "POST 'photo_update'", :photo_upload => true do
-			before(:example) do
-				@profile = FactoryGirl.create(:profile)
-			end
+			let(:profile) { FactoryGirl.create(:profile) }
+			
 			it "successfully uploads profile photo", :photo_upload => true do
-				id = @profile.id
-				@photo_file = Rack::Test::UploadedFile.new(
-					Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 'image/png')
-				post :photo_update, id: id, file: @photo_file
+				id = profile.id
+				post :photo_update, id: id, file: photo_file
 				expect(response).to be_success
 				expect(Profile.find_by_id(id).profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
-				expect(response.body).to include("profile_photo_test_under1MB.jpg")
-				@photo_file.close
-				@profile.profile_photo.destroy
-				@profile.save
+				expect(response.body).to include photo_filename
+				photo_file.close
+				profile.profile_photo.destroy
+				profile.save
 			end
+			
 			it "successfully imports profile photo from url" do
-				id = @profile.id
+				id = profile.id
 				post :photo_update, id: id, source_url: photo_url
-				@profile = Profile.find_by_id(id)
+				profile = Profile.find_by_id(id)
 				expect(response).to be_success
-				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
-				expect(response.body).to include(@profile.profile_photo.url(:original))
-				@profile.profile_photo.destroy
-				@profile.save	
-			end
-			after(:example) do
-				#delete uploaded photo
-				@profile.profile_photo.destroy
-				@profile.save
+				expect(profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
+				expect(response.body).to include(profile.profile_photo.url(:original))
+				profile.profile_photo.destroy
+				profile.save	
 			end
 		end
+		
 		describe "DELETE 'destroy'" do
 			it "destroys unattached profile" do
 				destroys_unattached_profile
@@ -631,15 +623,15 @@ describe ProfilesController, :type => :controller do
 	
 	context "as profile editor" do
 		let(:review_rating_attrs) { {rating_attributes: FactoryGirl.attributes_for(:rating)} }
+		let(:profile_editor) { FactoryGirl.create(:profile_editor, email: 'editor@example.com') }
 		
 		before (:each) do
-			@profile_editor = FactoryGirl.create(:profile_editor, email: 'editor@example.com')
-			sign_in @profile_editor
+			sign_in profile_editor
 		end
 
 		describe "GET 'index'" do
 			it "renders the view" do
-				@eddie = FactoryGirl.create(:expert_user, email: 'eddie@example.com')
+				FactoryGirl.create(:expert_user, email: 'eddie@example.com')
 				get :index
 				expect(response).to render_template('index')
 			end
@@ -654,11 +646,11 @@ describe ProfilesController, :type => :controller do
 	
 		describe "POST 'create'" do
 			it "successfully creates the profile" do
-				@profile_attrs = 
+				profile_attrs = 
 					FactoryGirl.attributes_for(:profile,
 						category_ids: ["#{FactoryGirl.create(:category).id}"],
 						specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
-				post :create, profile: @profile_attrs
+				post :create, profile: profile_attrs
 				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: assigns[:profile].id)
 				expect(flash[:notice]).not_to be_nil
 				expect(assigns[:profile].categories.first).not_to be_nil
@@ -674,73 +666,79 @@ describe ProfilesController, :type => :controller do
 	
 		describe "GET 'edit'" do
 			it "renders the view" do
-				@profile = FactoryGirl.create(:profile)
-				get :edit, id: @profile.id
+				profile = FactoryGirl.create(:profile)
+				get :edit, id: profile.id
 				expect(response).to render_template('edit')
 			end
 		end
 	
 		describe "PUT 'update'" do
 			it "successfully updates the profile" do
-				@profile_attrs = 
+				profile_attrs = 
 					FactoryGirl.attributes_for(:profile,
 						category_ids: ["#{FactoryGirl.create(:category).id}"],
 						specialty_ids: ["#{FactoryGirl.create(:specialty).id}"])
-				@profile = FactoryGirl.create(:profile)
-				put :update, id: @profile.id, profile: @profile_attrs
-				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: @profile.id)
+				profile = FactoryGirl.create(:profile)
+				put :update, id: profile.id, profile: profile_attrs
+				expect(response).to redirect_to(controller: 'profiles', action: 'show', id: profile.id)
 				expect(flash[:notice]).not_to be_nil
 			end
 		end
 
 		describe "POST 'photo_update'", :photo_upload => true do
-			before(:example) do
-				@profile = FactoryGirl.create(:profile)
-			end
+			let(:profile) { FactoryGirl.create(:profile) }
+			
 			it "successfully uploads profile photo" do
-				id = @profile.id
-				@photo_file = Rack::Test::UploadedFile.new(
-					Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'), 
-					'image/png')
-				@profile.profile_photo = @photo_file
-				post :photo_update, id: id, file: @photo_file
+				id = profile.id
+				profile.profile_photo = photo_file
+				post :photo_update, id: id, file: photo_file
 				expect(response).to be_success
 				expect(Profile.find_by_id(id).profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
-				expect(response.body).to include("profile_photo_test_under1MB.jpg")
+				expect(response.body).to include photo_filename
+				photo_file.close
+				#delete uploaded photo
+				profile.profile_photo.destroy
+				profile.save
 			end
+			
 			it "successfully imports profile photo from url" do
-				id = @profile.id
+				id = profile.id
 				post :photo_update, id: id, source_url: photo_url
-				@profile = Profile.find_by_id(id)
+				profile = Profile.find_by_id(id)
 				expect(response).to be_success
-				expect(@profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
-				expect(response.body).to include(@profile.profile_photo.url(:original))
+				expect(profile.profile_photo.url).to_not eq(Profile::DEFAULT_PHOTO_PATH)
+				expect(response.body).to include(profile.profile_photo.url(:original))
+				#delete uploaded photo
+				profile.profile_photo.destroy
+				profile.save
 			end
+			
 			it "should not upload empty file" do
-				post :photo_update, id: @profile.id, file: ''
+				post :photo_update, id: profile.id, file: ''
 				expect(response.status).to eq(400)
 			end
+			
 			it "should not upload file over 5MB in size" do
-				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/6MB.jpg'))
-				@profile.profile_photo = @photo_file
-				post :photo_update, id: @profile.id, file: @photo_file
+				big_photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/6MB.jpg'))
+				profile.profile_photo = big_photo_file
+				post :photo_update, id: profile.id, file: big_photo_file
 				expect(response).to be_success
 				expect(response.body).to include(I18n.t("controllers.profiles.profile_photo_filesize_error"))
+				big_photo_file.close
+				profile.profile_photo.destroy
+				profile.save
 			end
+			
 			it "should not upload non-image file" do
 				#no content type meta-data set -> assuming invalid file type
-				@photo_file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/assets/profile_photo_test_under1MB.jpg'))
-				@profile.profile_photo = @photo_file
-				post :photo_update, id: @profile.id, file: @photo_file
+				non_image_file = Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/assets/#{photo_filename}"))
+				profile.profile_photo = non_image_file
+				post :photo_update, id: profile.id, file: non_image_file
 				expect(response).to be_success
 				expect(response.body).to include(I18n.t("controllers.profiles.profile_photo_filetype_error"))
-			end
-			after(:example) do
-				#close source photo
-				@photo_file.close if @profile_file
-				#delete uploaded photo
-				@profile.profile_photo.destroy
-				@profile.save
+				non_image_file.close
+				profile.profile_photo.destroy
+				profile.save
 			end
 		end
 
@@ -827,80 +825,89 @@ describe ProfilesController, :type => :controller do
 	end
 	
 	context "for a search engine crawler" do
+		let(:published_profile) { FactoryGirl.create(:published_profile, last_name: 'Garanca') }
+		let(:unpublished_profile) { FactoryGirl.create(:unpublished_profile, last_name: 'Netrebko') }
+		
 		before(:example) do
-			@published_profile = FactoryGirl.create(:published_profile, last_name: 'Garanca')
-			@unpublished_profile = FactoryGirl.create(:unpublished_profile, last_name: 'Netrebko')
+			published_profile and unpublished_profile
 			get :link_index
 		end
 		
 		it "should assign published profiles" do
-			expect(assigns[:profiles].include?(@published_profile)).to be_truthy
+			expect(assigns[:profiles].include?(published_profile)).to be_truthy
 		end
 		
 		it "should not assign unpublished profiles" do
-			expect(assigns[:profiles].include?(@unpublished_profile)).not_to be_truthy
+			expect(assigns[:profiles].include?(unpublished_profile)).not_to be_truthy
 		end
 	end
 	
 	context "as a site visitor searching for a profile" do
+		let(:published_profile) { FactoryGirl.create(:published_profile, last_name: 'Garanca') }
+		let(:unpublished_profile) { FactoryGirl.create(:unpublished_profile, last_name: 'Netrebko') }
+		
 		before(:example) do
-			@published_profile = FactoryGirl.create(:published_profile, last_name: 'Garanca')
-			@unpublished_profile = FactoryGirl.create(:unpublished_profile, last_name: 'Netrebko')
+			published_profile and unpublished_profile
 			Profile.reindex
 			Sunspot.commit
 		end
 		
 		it "should show search results" do
-			get :search, query: @published_profile.last_name
+			get :search, query: published_profile.last_name
 			expect(response).to render_template(:search_results)
 		end
 		
 		it "should assign search results" do
-			get :search, query: @published_profile.last_name
+			get :search, query: published_profile.last_name
 			expect(assigns[:search].results.size).to be >= 1
 		end
 		
 		context "visitor is not known" do
 			it "should assign published profiles" do
-				get :search, query: @published_profile.last_name
-				expect(assigns[:search].results.include?(@published_profile)).to be_truthy
+				get :search, query: published_profile.last_name
+				expect(assigns[:search].results.include?(published_profile)).to be_truthy
 			end
 			
 			it "should not assign unpublished profiles" do
-				get :search, query: @unpublished_profile.last_name
-				expect(assigns[:search].results.include?(@unpublished_profile)).not_to be_truthy
+				get :search, query: unpublished_profile.last_name
+				expect(assigns[:search].results.include?(unpublished_profile)).not_to be_truthy
 			end
 		end
 		
 		context "visitor is a profile editor" do
+			let(:profile_editor) { FactoryGirl.create(:profile_editor, email: 'editor@example.com') }
+			
 			before(:example) do
-				@profile_editor = FactoryGirl.create(:profile_editor, email: 'editor@example.com')
-				sign_in @profile_editor
+				sign_in profile_editor
 			end
 			
 			it "should assign unpublished profiles" do
-				get :search, query: @unpublished_profile.last_name
-				expect(assigns[:search].results.include?(@unpublished_profile)).to be_truthy
+				get :search, query: unpublished_profile.last_name
+				expect(assigns[:search].results.include?(unpublished_profile)).to be_truthy
 			end
 		end
 		
 		context "search restricted by search area tag", geocoding_api: true, internet: true do
+			let(:tag) { FactoryGirl.create(:search_area_tag, name: 'San Francisco') }
+			let(:loc) { FactoryGirl.create(:location, search_area_tag: tag) }
+			let(:last_name) { published_profile.last_name }
+			let(:published_sf_profile) {
+				FactoryGirl.create(:published_profile, last_name: last_name, locations: [loc])
+			}
+			
 			before(:example) do
-				tag = FactoryGirl.create(:search_area_tag, name: 'San Francisco')
-				loc = FactoryGirl.create(:location, search_area_tag: tag)
-				last_name = @published_profile.last_name
-				@published_sf_profile = FactoryGirl.create(:published_profile, last_name: last_name, locations: [loc])
+				published_sf_profile
 				Profile.reindex
 				Sunspot.commit
 				get :search, query: last_name, search_area_tag_id: tag.id
 			end
 			
 			it "should assign profiles that have the search area tag" do
-				expect(assigns[:search].results.include?(@published_sf_profile)).to be_truthy
+				expect(assigns[:search].results.include?(published_sf_profile)).to be_truthy
 			end
 			
 			it "should not assign profiles that do not have the search area tag" do
-				expect(assigns[:search].results.include?(@published_profile)).not_to be_truthy
+				expect(assigns[:search].results.include?(published_profile)).not_to be_truthy
 			end
 		end
 	end

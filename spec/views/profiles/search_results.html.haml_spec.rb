@@ -26,15 +26,15 @@ describe "profiles/search_results", :type => :view do
 	
 		it "should show the number of reviews of a provider" do
 			n_reviews = 3
-			profile.reviews = FactoryGirl.create_list(:review, n_reviews, reviewer: parent)
+			FactoryGirl.create_list(:review, n_reviews, reviewer: parent, profile: profile)
 			assign :search, Profile.search_by_service(profile.services.first)
 			render
 			expect(rendered).to have_content("#{n_reviews} reviews")
 		end
 	
 		it "should show the number of ratings of a provider" do
-			profile.ratings << FactoryGirl.create(:rating, rater: parent)
-			profile.ratings << FactoryGirl.create(:rating, rater: FactoryGirl.create(:second_parent))
+			FactoryGirl.create(:rating, rater: parent, rateable: profile)
+			FactoryGirl.create(:rating, rater: FactoryGirl.create(:second_parent), rateable: profile)
 			assign :search, Profile.search_by_service(profile.services.first)
 			render
 			expect(rendered).to have_content('2 ratings')

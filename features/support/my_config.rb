@@ -21,7 +21,7 @@ Capybara.javascript_driver = :webkit
 # you are attempting to interact with an element which is not yet present on the page.
 # Capybara automatically deals with this by waiting for elements to appear on the page.
 # You can adjust how long this period is (the default is 2 seconds):
-Capybara.default_max_wait_time = 5
+Capybara.default_max_wait_time = 10
 
 # Capybara Webkit configuration: https://github.com/thoughtbot/capybara-webkit#configuration
 Capybara::Webkit.configure do |config|

@@ -23,9 +23,10 @@ describe SpecialtiesController, :type => :controller do
 	end
 	
 	context "as admin user" do
+		let(:admin) { FactoryGirl.create(:admin_user, email: 'admin@example.com') }
+		
 		before (:each) do
-			@admin = FactoryGirl.create(:admin_user, email: 'admin@example.com')
-			sign_in @admin
+			sign_in admin
 		end
 		
 		describe "GET 'index'" do
@@ -39,7 +40,9 @@ describe SpecialtiesController, :type => :controller do
 			end
 		
 			it "assigns @specialties" do
-				expect(assigns[:specialties]).to eq Specialty.all
+				Specialty.all.each do |specialty|
+					expect(assigns[:specialties]).to include specialty
+				end
 			end
 		end
 	
@@ -72,9 +75,10 @@ describe SpecialtiesController, :type => :controller do
 		end
 	
 		describe "GET 'edit'" do
+			let(:specialty) { FactoryGirl.create(:predefined_specialty, name: 'steaming tamales') }
+			
 			before(:example) do
-				@specialty = FactoryGirl.create(:predefined_specialty, name: 'steaming tamales')
-				get :edit, id: @specialty.id
+				get :edit, id: specialty.id
 			end
 		
 			it "renders the view" do
@@ -82,38 +86,38 @@ describe SpecialtiesController, :type => :controller do
 			end
 		
 			it "assigns @specialty" do
-				expect(assigns[:specialty]).to eq @specialty
+				expect(assigns[:specialty]).to eq specialty
 			end
 		end
 		
 		describe "PUT 'update'" do
-			before(:example) do
-				@specialty = FactoryGirl.create(:predefined_specialty, name: 'steaming tamales',
+			let(:specialty) { 
+				FactoryGirl.create(:predefined_specialty, name: 'steaming tamales',
 					search_terms: [FactoryGirl.create(:search_term, name: 'carne adovada')])
-			end
+			}
 			
 			it "successfully updates the specialty" do
-				put :update, id: @specialty.id,
+				put :update, id: specialty.id,
 					specialty: FactoryGirl.attributes_for(:predefined_specialty, name: 'making chile verde')
 				expect(response).to redirect_to(controller: :specialties, action: :edit, id: assigns[:specialty].id)
 				expect(assigns[:specialty].name).to eq 'making chile verde'
 			end
 		
 			it "successfully adds search terms upon update" do
-				put :update, id: @specialty.id, specialty: FactoryGirl.attributes_for(:predefined_specialty,
+				put :update, id: specialty.id, specialty: FactoryGirl.attributes_for(:predefined_specialty,
 					search_term_names_to_add: ['green chile', 'chile verde'])
 				expect(assigns[:specialty].search_terms.find_by_name('green chile')).not_to be_nil
 				expect(assigns[:specialty].search_terms.find_by_name('chile verde')).not_to be_nil
 			end
 		
 			it "preserves search term upon update" do
-				put :update, id: @specialty.id,
+				put :update, id: specialty.id,
 					specialty: FactoryGirl.attributes_for(:predefined_specialty, name: 'making chile verde')
 				expect(assigns[:specialty].search_terms.find_by_name('carne adovada')).not_to be_nil
 			end
 		
 			it "successfully removes a search term upon update" do
-				put :update, id: @specialty.id, specialty: FactoryGirl.attributes_for(:predefined_specialty,
+				put :update, id: specialty.id, specialty: FactoryGirl.attributes_for(:predefined_specialty,
 					search_term_ids_to_remove: ['carne adovada'.to_search_term.id])
 				expect(assigns[:specialty].search_terms.find_by_name('carne adovada')).to be_nil
 			end

@@ -14,6 +14,7 @@ Feature: Administrator maintains parent reviews of providers
 			And I enter "CharlieDick" as the reviewer username in the new review on the admin profile edit page
 			And I give a rating of "4" in the new review on the admin profile edit page
 			And I click "Save" in the new review on the admin profile edit page
+			And I wait a bit
 			And I visit the admin view page for the current profile
 		Then the profile should show "Hank Williams is the best!"
 			And the profile should show "Go Hank!"
@@ -29,6 +30,7 @@ Feature: Administrator maintains parent reviews of providers
 			And I enter "jett_williams" as the reviewer username of the first review on the admin profile edit page
 			And I give a rating of "5" on the first review on the admin profile edit page
 			And I click "Save" in the first review on the admin profile edit page
+			And I wait a bit
 			And I visit the admin view page for the current profile
 		Then the profile should show "Hank Williams is the best!"
 			And the profile should show "jett_williams"

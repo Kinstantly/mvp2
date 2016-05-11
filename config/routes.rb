@@ -1,4 +1,8 @@
 Mvp2::Application.routes.draw do
+	# The priority is based upon order of creation: first created -> highest priority.
+	# See how all your routes lay out with "rake routes".
+	# You can have the root of your site routed with "root"
+	
 	# Home page.
 	root :to => 'home#index'
 	
@@ -76,12 +80,12 @@ Mvp2::Application.routes.draw do
 	resources :profiles do
 		member do
 			get 'new_invitation'
-			put 'send_invitation'
+			patch 'send_invitation'
 			get 'rating_score'
 			get 'edit_rating'
 			get 'rate'
 			post 'rate'
-			put 'formlet_update'
+			patch 'formlet_update'
 			post 'photo_update'
 			# plain layout; legacy
 			get 'show_plain'
@@ -208,7 +212,7 @@ Mvp2::Application.routes.draw do
 	# Catch all other routing requests and do something benign.
 	# The main purpose of this route is to provide as little information as possible to site probers.
 	# For Rails 4, add "via: :all".
-	match '*undefined_path' => 'application#not_found' #, via: :all
+	match '*undefined_path' => 'application#not_found', via: :all
 	
 	# Where to go after sign-up or sign-in.
 	#  Using this option causes the response path to be user_root; kind of weird.
@@ -218,18 +222,16 @@ Mvp2::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
-  # Sample of regular route:
+  # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
 
-  # Sample of named route:
-  #   get 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
+  # Example of named route that can be invoked with purchase_url(id: product.id)
+  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
+  # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
-  # Sample resource route with options:
+  # Example resource route with options:
   #   resources :products do
   #     member do
   #       get 'short'
@@ -241,21 +243,28 @@ Mvp2::Application.routes.draw do
   #     end
   #   end
 
-  # Sample resource route with sub-resources:
+  # Example resource route with sub-resources:
   #   resources :products do
   #     resources :comments, :sales
   #     resource :seller
   #   end
 
-  # Sample resource route with more complex sub-resources
+  # Example resource route with more complex sub-resources
   #   resources :products do
   #     resources :comments
   #     resources :sales do
-  #       get 'recent', :on => :collection
+  #       get 'recent', on: :collection
   #     end
   #   end
 
-  # Sample resource route within a namespace:
+  # Example resource route with concerns:
+  #   concern :toggleable do
+  #     post 'toggle'
+  #   end
+  #   resources :posts, concerns: :toggleable
+  #   resources :photos, concerns: :toggleable
+
+  # Example resource route within a namespace:
   #   namespace :admin do
   #     # Directs /admin/products/* to Admin::ProductsController
   #     # (app/controllers/admin/products_controller.rb)
@@ -264,11 +273,5 @@ Mvp2::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
-
-  # See how all your routes lay out with "rake routes"
-
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  # get ':controller(/:action(/:id))(.:format)'
+  # root to: 'welcome#index'
 end

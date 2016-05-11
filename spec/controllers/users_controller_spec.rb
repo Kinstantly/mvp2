@@ -144,7 +144,7 @@ describe UsersController, :type => :controller do
 			it "should not update user attributes other than profile_help" do
 				id = provider.id
 				email = 'billie@example.com'
-				put :update_profile_help,  id: id, user: {email: email}, format: :js
+				put :update_profile_help,  id: id, user: {email: email, profile_help: false}, format: :js
 				expect(provider.reload.email).not_to eq email
 				expect(provider.unconfirmed_email).not_to eq email
 			end
@@ -266,7 +266,9 @@ describe UsersController, :type => :controller do
 			end
 
 			it "assigns @users" do
-				expect(assigns[:users]).to eq User.all
+				User.all.each do |user|
+					expect(assigns[:users]).to include user
+				end
 			end
 		end
 		

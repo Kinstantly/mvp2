@@ -1,8 +1,5 @@
 class ActiveRecord::Base
 	
-	# Remove the following after upgrading to Rails 4.0 or greater.
-	include ActiveModel::ForbiddenAttributesProtection
-	
 	include SiteConfigurationHelpers
 	
 	# The default list of attributes that are accessible by mass assignment.
@@ -43,35 +40,35 @@ class ActiveRecord::Base
 	
 	# The default implementation of the counter_cache option only works for create and destroy.
 	# But it needs to also work for update, e.g., when associating a record that was previously created.
-	def self.belongs_to(name, options={})
-		counter_cache = options.delete :counter_cache # Delete so that super won't implement. Instead, we will here.
-		counter_cache_association = options.delete :counter_cache_association
-		reflection = super
-		# The following will notify the inverse reflection that we have it covered.
-		reflection.options[:counter_cache] = counter_cache if counter_cache
-		# Now implement our own counter cache updates.
-		if counter_cache
-			belongs_to_name = reflection.name
-			belongs_to_foreign_key = reflection.foreign_key
-			update_proc = Proc.new { |record| 
-				record.send(belongs_to_name).try :update_counter_cache, record, counter_cache: counter_cache, association: counter_cache_association
-			}
-			after_create update_proc
-			after_destroy update_proc
-			after_update do |record|
-				if (belongs_to_change = record.changes[belongs_to_foreign_key])
-					# Update counter cache for the previous parent.
-					if (old_belongs_to_id = belongs_to_change[0])
-						class_of_belongs_to = record.send(belongs_to_name).try(:class).presence || belongs_to_name.to_s.camelcase.constantize
-						class_of_belongs_to.find_by_id(old_belongs_to_id).try :update_counter_cache, record, counter_cache: counter_cache, association: counter_cache_association
-					end
-					# Now update counter cache for the current parent.
-					update_proc.call(record) 
-				end
-			end
-		end
-		reflection
-	end
+	# def self.belongs_to(name, options={})
+	# 	counter_cache = options.delete :counter_cache # Delete so that super won't implement. Instead, we will here.
+	# 	counter_cache_association = options.delete :counter_cache_association
+	# 	reflection = super
+	# 	# The following will notify the inverse reflection that we have it covered.
+	# 	reflection.options[:counter_cache] = counter_cache if counter_cache
+	# 	# Now implement our own counter cache updates.
+	# 	if counter_cache
+	# 		belongs_to_name = reflection.name
+	# 		belongs_to_foreign_key = reflection.foreign_key
+	# 		update_proc = Proc.new { |record|
+	# 			record.send(belongs_to_name).try :update_counter_cache, record, counter_cache: counter_cache, association: counter_cache_association
+	# 		}
+	# 		after_create update_proc
+	# 		after_destroy update_proc
+	# 		after_update do |record|
+	# 			if (belongs_to_change = record.changes[belongs_to_foreign_key])
+	# 				# Update counter cache for the previous parent.
+	# 				if (old_belongs_to_id = belongs_to_change[0])
+	# 					class_of_belongs_to = record.send(belongs_to_name).try(:class).presence || belongs_to_name.to_s.camelcase.constantize
+	# 					class_of_belongs_to.find_by_id(old_belongs_to_id).try :update_counter_cache, record, counter_cache: counter_cache, association: counter_cache_association
+	# 				end
+	# 				# Now update counter cache for the current parent.
+	# 				update_proc.call(record)
+	# 			end
+	# 		end
+	# 	end
+	# 	reflection
+	# end
 	
 	# This probably is not necessary.  I think the implementation above of the counter_cache option
 	# for belongs_to is good enough.

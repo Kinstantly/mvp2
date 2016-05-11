@@ -60,7 +60,7 @@ class Profile < ActiveRecord::Base
 	has_many :locations, dependent: :destroy
 	accepts_nested_attributes_for :locations, allow_destroy: true, limit: 100
 	
-	has_many :reviews, dependent: :destroy, include: :reviewer
+	has_many :reviews, -> { includes :reviewer }, dependent: :destroy, inverse_of: :profile
 	has_many :reviewers, through: :reviews
 	
 	has_many :ratings, as: :rateable, dependent: :destroy
@@ -621,7 +621,7 @@ class Profile < ActiveRecord::Base
 	
 	# Addition or removal of elements from this association should trigger the creation of new fragment caches for this profile.  Touch will result in a new cache key.
 	def association_changed(record)
-		touch
+		touch if persisted?
 	end
 	
 	# Deprecated because a newly-registered provider's profile is published upon creation.

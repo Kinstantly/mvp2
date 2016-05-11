@@ -227,31 +227,34 @@ Given /^there is an unclaimed profile with the "(.*?)" and "(.*?)" specialties$/
 end
 
 Given /^I visit the (view|edit|admin view|admin edit) page for (?:a|an|the)( existing)? (claimed|published|unclaimed|unpublished|current) profile( with no locations| with one location| with no reviews| with one review| with remote consultations)?$/ do |page, existing, type, items|
-	attrs = case items.try(:sub, /\A\s*with\s*/, '')
-	when 'no locations'
-		{ locations: [] }
-	when 'one location'
-		{ locations: [FactoryGirl.create(:location)] }
-	when 'no reviews'
-		{ reviews: [] }
-	when 'one review'
-		# The review needs a reviewer associated for display purposes, but should not have the
-		# associated profile preset because we need to associate it with the profile created here.
-		{ reviews: [FactoryGirl.create(:review, reviewer: FactoryGirl.create(:parent))] }
-	when 'remote consultations'
-		{ locations: [], consult_remotely: true }
-	else
-		{}
-	end
-	
 	case type
 	when /unclaimed|unpublished/
-		create_unattached_profile attrs unless existing
+		create_unattached_profile unless existing
 		find_unattached_profile
 	when /claimed|published/
-		create_published_profile attrs unless existing
+		create_published_profile unless existing
 		find_published_profile
 	end
+	
+	case items.try(:sub, /\A\s*with\s*/, '')
+	when 'no locations'
+		@profile.locations.map &:destroy
+	when 'one location'
+		# Associate it with the profile created here.
+		FactoryGirl.create(:location, profile: @profile)
+	when 'no reviews'
+		@profile.reviews.map &:destroy
+	when 'one review'
+		# The review needs a reviewer associated for display purposes.
+		# Associate it with the profile created here.
+		FactoryGirl.create(:review, reviewer: FactoryGirl.create(:parent), profile: @profile)
+	when 'remote consultations'
+		@profile.locations.map &:destroy
+		@profile.consult_remotely = true
+		@profile.save
+	end
+	
+	sleep 4 if items.present? # Wait for the cached count updates to complete.
 	
 	case page
 	when 'view'

@@ -7,7 +7,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
 	def stripe_connect
 		auth = request.env["omniauth.auth"]
-		stripe_info = StripeInfo.find_or_initialize_by_user_id(current_user.id)
+		stripe_info = StripeInfo.find_or_initialize_by(user_id: current_user.id)
 		if stripe_info.configure_authorization(auth)
 			if stripe_info.fully_enabled?
 				render 'success'

@@ -15,7 +15,6 @@ Feature: Create a new expert profile
 		When I visit the profile admin page
 			And I create the profile
 			And I enter profile information
-			And I click on the "View Public Profile" link
 		Then I should see the new profile data
 	
 	Scenario: Create and publish new profile as an administrator
