@@ -6,14 +6,14 @@ Please add missing information to this document.
 
 === Ruby
 
-We are using Ruby 2.2.2 and Rails 3.2.22 (as of July 9, 2015).  The Gemfile directs Heroku to use Ruby 2.2.2.
+We are using Ruby 2.3.0p0 and Rails 3.2.22.2 (as of March 30, 2016).  The Gemfile directs Heroku to use Ruby 2.3.0 and Rails 3.2.22.2.
 
-The Rails maintainers test version 3.2.22 against Ruby 2.2.2 and there is no guarantee that Rails 3.2.22 will work with later versions of Ruby.  Our plan is to upgrade to the latest stable version of Rails 4.
+The Rails maintainers test version 3.2.22 against Ruby 2.2.2 (the last time I checked) and there is no guarantee that Rails 3.2.22 will work with later versions of Ruby.  However, our application appears to be working fine with Ruby 2.3.0.  I am currently upgrading to the latest stable version of Rails 4.
 
-For Ruby you should use at least patch level 95, i.e., ruby 2.2.2p95, to include the latest security updates.  You can install or upgrade using RVM.
+For Ruby you should use at least ruby 2.2.2p95 to include the latest security updates.  You can install or upgrade using RVM.
 
  gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
- \curl -sSL https://get.rvm.io | bash -s stable --ruby=2.2.2
+ \curl -sSL https://get.rvm.io | bash -s stable --ruby=2.3.0
 
 RVM documentation is here: https://rvm.io/
 
@@ -36,17 +36,17 @@ First make sure you're running the correct version of ruby.
 
 If you're using RVM, it will parse the Ruby version from the Gemfile as long as you don't have other RVM configuration files overriding the Gemfile.  To ensure that you'll always use the correct version in this repository, you can do this.
 
- rvm --ruby-version use 2.2.2 # Or whatever the correct version number is.
+ rvm --ruby-version use 2.3.0 # Or whatever the correct version number is.
 
 Get the latest version of RubyGems (for security reasons).
 
  gem update --system
- gem --version # Should be at least version 2.4.8.
+ gem --version # Should be at least version 2.6.4.
 
 Install Bundler.
 
  gem install bundler
- bundle --version # Must be at least version 1.10.5 to keep Gemfile.lock compatible across developers.
+ bundle --version # Must be at least version 1.12.1 to keep Gemfile.lock compatible across developers.
 
 Install needed gems.
 
@@ -66,7 +66,7 @@ For example:
 
 === Database
 
-I'm running PostgreSQL 9.4.0 for my development instance.  Installation (on Mac OS X) and aliases:
+I'm running PostgreSQL 9.5.2 for my development instance.  Installation (on Mac OS X) and aliases:
 
  brew install postgresql
  alias pgstart='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
@@ -95,9 +95,9 @@ FYI, in production we are using a cloud-based Solr instance on Websolr.
 
 === Web and background worker processes
 
-I'm using Unicorn to start the web process(es).  In development I usually run one web process.  The default is to run three.  To run just one web process, set the WEB_CONCURRENCY variable.
+I'm using Unicorn to start the web process(es).  In development I usually run two web processes.  The default is to run three.  To run just two web processes, set the WEB_CONCURRENCY variable.
 
- export WEB_CONCURRENCY=1
+ export WEB_CONCURRENCY=2
  alias unicornstart='bundle exec unicorn -p 5000 -c ./config/unicorn.rb'
 
 I'm also running a background worker that runs delayed_job_active_record.  Usually, I don't run it during development.  However, you will need the background worker if you want to mimic the production environment and you're working on anything involving newsletter subscriptions, the admin interface, or anything else that uses delayed_job.
