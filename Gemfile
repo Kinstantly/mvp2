@@ -84,10 +84,9 @@ gem 'fog-aws'
 
 # Search with the Solr search engine.
 # gem 'sunspot_rails', '~> 2.0.0.pre'
-git 'git://github.com/edsimpson/sunspot.git', tag: 'v2.0.0.pre.130115' do
-	gem 'sunspot'
-	gem 'sunspot_rails'
-end
+# http://sunspot.github.io/
+gem 'sunspot'
+gem 'sunspot_rails'
 
 # Show progress on the console of long-running tasks.
 gem 'progress_bar'
@@ -162,9 +161,7 @@ group :development, :test do
 	gem 'launchy', '~> 2.1'
 	gem 'syntax'
 	# gem 'sunspot_solr', '~> 2.0.0.pre' # optional pre-packaged Solr distribution for use in development
-	git 'git://github.com/edsimpson/sunspot.git' do
-		gem 'sunspot_solr'
-	end
+	gem 'sunspot_solr', git: 'git://github.com/edsimpson/sunspot.git'
 end
 
 # Benchmarking.

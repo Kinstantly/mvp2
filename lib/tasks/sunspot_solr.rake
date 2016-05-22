@@ -1,4 +1,4 @@
-if Rails.env.development? || Rails.env.test?
+unless Rails.env.production?
   namespace :sunspot do
     namespace :solr do
       desc 'Start the Solr instance'
@@ -9,22 +9,13 @@ if Rails.env.development? || Rails.env.test?
                 "Use rake sunspot:solr:run to run Solr in the foreground.")
         end
 
-        if defined?(Sunspot::Rails::Server)
-          Sunspot::Rails::Server.new.start
-        else
-          Sunspot::Solr::Server.new.start
-        end
-
+        server.start
         puts "Successfully started Solr ..."
       end
 
       desc 'Run the Solr instance in the foreground'
       task :run => :environment do
-        if defined?(Sunspot::Rails::Server)
-          Sunspot::Rails::Server.new.run
-        else
-          Sunspot::Solr::Server.new.run
-        end
+        server.run
       end
 
       desc 'Stop the Solr instance'
@@ -35,17 +26,23 @@ if Rails.env.development? || Rails.env.test?
                 "Use rake sunspot:solr:run to run Solr in the foreground.")
         end
 
-        if defined?(Sunspot::Rails::Server)
-          Sunspot::Rails::Server.new.stop
-        else
-          Sunspot::Solr::Server.new.stop
-        end
-
+        server.stop
         puts "Successfully stopped Solr ..."
       end
 
       # for backwards compatibility
       task :reindex => :"sunspot:reindex"
+      
+      def server
+        svr = if defined?(Sunspot::Rails::Server)
+          Sunspot::Rails::Server.new
+        else
+          Sunspot::Solr::Server.new
+        end
+        
+        svr.solr_data_dir = File.expand_path("solr/data/#{Rails.env}")
+        svr
+      end
     end
   end
 end

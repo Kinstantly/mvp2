@@ -614,7 +614,7 @@ When /^I click on the "(.*?)" (?:link|button) of the "(.*?)" formlet$/ do |link,
 	within("##{formlet_id formlet}") do
 		click_link_or_button link
 	end
-	sleep 1 # In case this click caused an AJAX call, give it some time to finish to avoid database deadlock with later cleanup phase.
+	sleep 5 # In case this click caused an AJAX call, give it some time to finish to avoid database deadlock with later cleanup phase.
 end
 
 When /^I check the publish box in the "(.*?)" formlet$/ do |formlet|

@@ -279,8 +279,10 @@ class Profile < ActiveRecord::Base
 	
 	# Profiles that have the specified service assigned to them should be boosted to the top of the results.
 	# Profiles that exactly match the service name in a full-text search should follow.
+	# The edismax request handler will score hits outside the service fields the same as ones inside the service fields.  So use dismax, which will score hits inside the service fields higher.
 	def self.search_by_service(service, new_opts={})
 		opts = {
+			solr_params: {defType: 'dismax'},
 			phrase_fields: {services: 100.0}
 		}.merge(new_opts)
 		self.configurable_search("\"#{service.name}\"", opts) # Specify service name as a phrase.

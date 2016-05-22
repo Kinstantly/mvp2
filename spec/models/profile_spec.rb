@@ -521,8 +521,14 @@ describe Profile, :type => :model do
 		
 		context "searching by service" do
 			let(:service) { FactoryGirl.create :service, name: 'Brew Master' }
-			let(:profile_with_service) { FactoryGirl.create :published_profile, services: [service] }
-			let(:profile_with_name) { FactoryGirl.create :published_profile, headline: service.name }
+			let(:profile_with_service) { 
+				profile = FactoryGirl.create :published_profile, first_name: 'Search Term in Service'
+				profile.services << service
+				profile
+			}
+			let(:profile_with_name) {
+				FactoryGirl.create :published_profile, headline: service.name, first_name: 'Search Term in Headline'
+			}
 		
 			before(:example) do
 				profile_with_name and profile_with_service

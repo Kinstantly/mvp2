@@ -5,18 +5,6 @@ GIT
     sunspot_solr (2.0.0.pre.130115)
 
 GIT
-  remote: git://github.com/edsimpson/sunspot.git
-  revision: 88712fcec11d3874ef3eeae900dc66e1d31dcbe0
-  tag: v2.0.0.pre.130115
-  specs:
-    sunspot (2.0.0.pre.130115)
-      pr_geohash (~> 1.0)
-      rsolr (~> 1.0.7)
-    sunspot_rails (2.0.0.pre.130115)
-      nokogiri
-      sunspot (= 2.0.0.pre.130115)
-
-GIT
   remote: https://github.com/dgynn/paperclip.git
   revision: c77ca6343699af2ed9435fa7b63d59cb9843af53
   branch: interpolations_tuning
@@ -321,7 +309,7 @@ GEM
       chunky_png (~> 1.0)
     rqrcode-rails3 (0.1.7)
       rqrcode (>= 0.4.2)
-    rsolr (1.0.8)
+    rsolr (1.1.1)
       builder (>= 2.1.2)
     rspec-collection_matchers (1.1.2)
       rspec-expectations (>= 2.99.0.beta1)
@@ -372,6 +360,13 @@ GEM
     stripe_event (1.4.0)
       activesupport (>= 3.1)
       stripe (~> 1.6)
+    sunspot (2.2.5)
+      pr_geohash (~> 1.0)
+      rsolr (~> 1.1.1)
+    sunspot_rails (2.2.5)
+      nokogiri
+      rails (>= 3)
+      sunspot (= 2.2.5)
     syntax (1.0.0)
     test-unit (3.1.2)
       power_assert
@@ -465,8 +460,8 @@ DEPENDENCIES
   sitemap_generator (~> 5.1)
   stackprof
   stripe_event
-  sunspot!
-  sunspot_rails!
+  sunspot
+  sunspot_rails
   sunspot_solr!
   syntax
   test-unit (~> 3.0)
