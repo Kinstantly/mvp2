@@ -654,8 +654,12 @@ module ProfilesHelper
 		profile_wrap_item_names profile.specialties, 30, ', '
 	end
 
+	# Places each specialty in its own span tag.
+	# Ensures the resulting HTML is limited by the length option.
+	# Note: We prevent the truncation step from escaping all HTML and we tell #sanitize to keep the span tags.
 	def search_result_specialties_truncated(profile, options={})
-		sanitize profile_display_truncated search_result_specialties(profile), length: options[:length], separator: '</span>, <span>', omission: '...</span>'
+		truncated_list = profile_display_truncated search_result_specialties(profile), length: options[:length], separator: '</span>, <span>', omission: '...</span>', escape: false
+		sanitize truncated_list, tags: %w(span)
 	end
 
 	# Show the first location associated with the profile.
