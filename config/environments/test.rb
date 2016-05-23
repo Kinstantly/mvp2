@@ -1,6 +1,13 @@
 Mvp2::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # This setting can be removed with Rails 4.2.  The proper default is implemented in that version.
+  # Caybara should NOT be allowed to make concurrent requests to a multi-threaded web server, e.g., webkit.
+  # Operations that are not threadsafe can cause the test to fail incorrectly.
+  # https://robots.thoughtbot.com/how-to-fix-circular-dependency-errors-in-rails-integration-tests
+  # https://github.com/rails/rails/commit/112077c255879351edf4530791cc4bcc7bd4005b
+  config.allow_concurrency = false
+
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped
