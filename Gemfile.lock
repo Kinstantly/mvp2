@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/edsimpson/sunspot.git
-  revision: 9a97e2608a5adaa8ab073826deb6d0450f4e2979
+  revision: 844e49dbeb68ec40bc09572bc4919fc69af9a98f
   specs:
     sunspot_solr (2.0.0.pre.130115)
 
