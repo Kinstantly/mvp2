@@ -1,4 +1,4 @@
-unless Rails.env.production?
+unless defined?(Rails) && Rails.env.production?
   namespace :sunspot do
     namespace :solr do
       desc 'Start the Solr instance'
@@ -40,7 +40,10 @@ unless Rails.env.production?
           Sunspot::Solr::Server.new
         end
         
-        svr.solr_data_dir = File.expand_path("solr/data/#{Rails.env}")
+        if defined?(Rails) && Rails::VERSION::MAJOR >= 4
+          svr.solr_data_dir = File.expand_path("solr/data/#{Rails.env}")
+        end
+        
         svr
       end
     end
