@@ -4,6 +4,7 @@ ruby '2.3.0'
 
 # gem 'rails', '3.2.22.2'
 gem 'rails', '4.0.13'
+# gem 'rails', '4.1.15'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -35,17 +36,14 @@ gem 'dynamic_form'
 # Dynamic add and remove links for nested models.
 gem 'nested_form'
 
-# Gems used only for assets and not required
-# in production environments by default.
+# Gems used for assets.
 # group :assets do
-  gem 'sass-rails'#,   '~> 3.2.3'
-  gem 'coffee-rails'#, '~> 3.2.1'
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
-
-	# http://github.com/lautis/uglifier
-  gem 'uglifier'#, '>= 1.0.3'
+gem 'sass-rails'
+gem 'coffee-rails'
+# http://github.com/lautis/uglifier
+gem 'uglifier'
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+# gem 'therubyracer', :platforms => :ruby
 # end
 
 # Has jquery and jquery_ujs.
@@ -239,11 +237,6 @@ gem 'money-rails'
 # Mailchimp API wrapper
 # http://github.com/amro/gibbon
 gem "gibbon"
-
-# Prep for migration to Rails 4.
-# Remove this when migrated to Rails 4 because it is built in.
-# https://github.com/rails/strong_parameters
-# gem 'strong_parameters'
 
 # Rack middleware for blocking & throttling abusive requests.
 # https://github.com/kickstarter/rack-attack
