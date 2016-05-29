@@ -24,6 +24,12 @@ describe AdminEvent, :type => :model do
 		}.to change(AdminEvent, :count).by(-1)
 	end
 	
+	it 'can be found in the trash' do
+		saved_admin_event.trash = true
+		saved_admin_event.save
+		expect(AdminEvent.trash.include?(saved_admin_event)).to be_truthy
+	end
+	
 	it 'can be ordered by name' do
 		saved_admin_event
 		second_admin_event

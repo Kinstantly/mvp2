@@ -1,4 +1,4 @@
-Mvp2::Application.configure do
+Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   
   # Fallback host name used in URLs, etc.
@@ -12,7 +12,7 @@ Mvp2::Application.configure do
   config.cache_classes = true
 
   # Eager load code on boot. This eager loads most of Rails and
-  # your application in memory, allowing both thread web servers
+  # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
@@ -45,8 +45,7 @@ Mvp2::Application.configure do
   # Generate digests for assets URLs.
   config.assets.digest = true
 
-  # Version of your assets, change this if you want to expire all your assets.
-  config.assets.version = '1.0'
+  # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
@@ -79,14 +78,6 @@ Mvp2::Application.configure do
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = "http://assets.example.com"
 
-  # Precompile additional assets.
-  # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-  config.assets.precompile += %w( home_page.css interior.css home_page_ie8.css plain.css ie.css )
-  config.assets.precompile += %w( home_page_old.css ) # Home page with sliding banner.
-
-  # Precompile additional js manifests
-  config.assets.precompile += %w( profile_edit.js profile_search.js profile_show.js review_new.js payment.js )
-
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
@@ -106,7 +97,7 @@ Mvp2::Application.configure do
   # config.threadsafe!
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
-  # the I18n.default_locale when a translation can not be found).
+  # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
 
   # Send deprecation notices to registered listeners.
@@ -117,6 +108,9 @@ Mvp2::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  # Do not dump schema after migrations.
+  config.active_record.dump_schema_after_migration = false
 
 	# Devise needs this for its email.
 	config.action_mailer.default_url_options = { :host => config.default_host }

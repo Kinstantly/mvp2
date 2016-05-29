@@ -25,7 +25,7 @@ class Subcategory < ActiveRecord::Base
 	# has_and_belongs_to_many :services, after_add: :services_changed, after_remove: :services_changed
 	
 	default_scope { where(trash: false) }
-	scope :trash, -> { where(trash: true) } # Rails 4.1+: unscope(where: :trash).where(trash: true)
+	scope :trash, -> { rewhere(trash: true) }
 	# scope :predefined, -> { where(is_predefined: true) }
 	scope :order_by_name, -> { order('lower(name)') }
 	

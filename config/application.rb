@@ -82,6 +82,8 @@ module Mvp2
     # config.i18n.default_locale = :de
 		
 		# Ensure requested locales are available.  Raises I18n::InvalidLocale if not available.
+		# A security measure, to ensure user input cannot be used as locale information unless it is previously known.
+		# It's recommended not to disable this option unless you have a strong reason for doing so.
 		config.i18n.enforce_available_locales = true
 
     # Configure the default encoding used in templates for Ruby 1.9.

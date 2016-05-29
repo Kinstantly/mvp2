@@ -29,6 +29,12 @@ describe Category, :type => :model do
 		}.to change(Category, :count).by(-1)
 	end
 	
+	it 'can be found in the trash' do
+		category.trash = true
+		category.save
+		expect(Category.trash.include?(category)).to be_truthy
+	end
+	
 	it "can be flagged as predefined" do
 		category.is_predefined = true
 		category.see_all_column = 1 # required if predefined

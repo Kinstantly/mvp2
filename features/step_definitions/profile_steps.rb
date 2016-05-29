@@ -688,20 +688,15 @@ When /^I click on the link to see all locations$/ do
 	click_link I18n.t 'views.profile.view.more_locations'
 end
 
-When /^I (?:should )?see step "(one|two|three)" of "(.*?)" formlet$/ do |step, formlet|
+When /^I (?:should )?see step "(one|two|three)" of "(.*?)" formlet$/ do |visible_step, formlet|
 	within("##{formlet_id formlet}") do
-		# expect(page.has_css?("li.step_#{step}:not(.aria-hidden)", :visible => true)).to be true
-		expect(page.has_css?("li.step_#{step}", :visible => true)).to be true
-		case step
-		when 'one'
-			expect(page.has_no_css?('li.step_two', :visible => true)).to be true
-			expect(page.has_no_css?('li.step_three', :visible => true)).to be true
-		when 'two'
-			expect(page.has_no_css?('li.step_one', :visible => true)).to be true
-			expect(page.has_no_css?('li.step_three', :visible => true)).to be true
-		when 'three'
-			expect(page.has_no_css?('li.step_one.aria-hidden', :visible => true)).to be true
-			expect(page.has_no_css?('li.step_two.aria-hidden', :visible => true)).to be true
+		# Capybara (or something) seems to be out of sync with actual visibility, so match any visibility state and use the "aria-hidden" class to infer visibility.
+		%w(one two three).each do |step|
+			if step == visible_step
+				expect(page).to have_css("li.step_#{step}:not(.aria-hidden)", visible: :all)
+			else
+				expect(page).to have_css("li.step_#{step}.aria-hidden", visible: :all)
+			end
 		end
 	end
 end

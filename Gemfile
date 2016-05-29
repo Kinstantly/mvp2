@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 ruby '2.3.0'
 
 # gem 'rails', '3.2.22.2'
-gem 'rails', '4.0.13'
-# gem 'rails', '4.1.15'
+# gem 'rails', '4.0.13'
+gem 'rails', '4.1.15'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -203,11 +203,6 @@ gem 'rack-raw-upload'
 # Dalli is a better inferface to memcached.
 # https://github.com/mperham/dalli
 gem 'dalli'
-
-# Detects changes to templates when caching is being used.
-# Note: available by default in Rails 4.
-# https://github.com/rails/cache_digests
-gem 'cache_digests'
 
 # The byebug debugger.
 # Example: bundle exec rails server --port=5000

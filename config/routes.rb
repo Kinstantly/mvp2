@@ -1,4 +1,4 @@
-Mvp2::Application.routes.draw do
+Rails.application.routes.draw do
 	# The priority is based upon order of creation: first created -> highest priority.
 	# See how all your routes lay out with "rake routes".
 	# You can have the root of your site routed with "root"
@@ -249,7 +249,7 @@ Mvp2::Application.routes.draw do
   #     resource :seller
   #   end
 
-  # Example resource route with more complex sub-resources
+  # Example resource route with more complex sub-resources:
   #   resources :products do
   #     resources :comments
   #     resources :sales do

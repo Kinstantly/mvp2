@@ -9,7 +9,7 @@ class SearchTerm < ActiveRecord::Base
 	has_and_belongs_to_many :specialties
 	
 	default_scope { where(trash: false) }
-	scope :trash, -> { where(trash: true) } # Rails 4.1+: unscope(where: :trash).where(trash: true)
+	scope :trash, -> { rewhere(trash: true) }
 	scope :order_by_name, -> { order('lower(name)') }
 	
 	MAX_STRING_LENGTH = 254
