@@ -131,14 +131,6 @@ The task puts the compiled assets in the public/assets directory.  If you are al
 
 To solve this, after you are done testing, you should remove all the compiled assets from the public/assets directory (be careful to preserve assets that are in source control, e.g., fonts) and then clear out the cache (e.g., restart memcached).
 
-Note: To test production precompilation in your development environment, you might have to temporarily append the following to config/database.yml. *Be sure to remove this temporary configuration from the file, otherwise you will mess up the production environment!!*
-
- production:
-   adapter: postgresql
-   encoding: unicode
-   database: does_not_exist_dbname
-   pool: 5
-
 For more information see: http://guides.rubyonrails.org/v4.0/asset_pipeline.html#precompiling-assets
 
 == Database contents
