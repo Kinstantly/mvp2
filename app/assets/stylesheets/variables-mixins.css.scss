@@ -15,8 +15,6 @@ $fa-border-color:     #eee !default;
 $fa-inverse:          #fff !default;
 $fa-li-width:         (30em / 14) !default;
 
-$image-path: ".";
-
 $default_link_color: #366599;
 $visited_link_color: #388F7D;
 $toplink_color: #FFFFFF;
@@ -186,7 +184,7 @@ $button_corner_radius: 4px;
 	width: 16px;
 	height: 16px;
 	display: inline-block;
-	background: url('help_16_blue.png') 0px 0px no-repeat;
+	background: asset-url('help_16_blue.png') 0px 0px no-repeat;
 	@include help_popover;
 }
 
@@ -272,7 +270,7 @@ $button_corner_radius: 4px;
 	background-position: $iesize; /* Internet Explorer 7/8 */
 	background-size: $bgsize;
 	-moz-background-size: $bgsize;
-	-ms-behavior: url(#{$image-path}/backgroundsize.min.htc);
+	-ms-behavior: asset-url('backgroundsize.min.htc');
 }
 @mixin column-count($count,$gap) {
 	-moz-column-count: $count;
@@ -429,7 +427,7 @@ $button_corner_radius: 4px;
 }
 @mixin loading_form_popover{
 	display: block;
-	background: #FFF url('loading_large.gif') no-repeat center center;
+	background: #FFF asset-url('loading_large.gif') no-repeat center center;
 }
 @mixin loaded_form_popover{
 	display: block;

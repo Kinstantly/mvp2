@@ -24,7 +24,7 @@
 		h1 {
 			a {
 				display: block;
-				background: transparent url('#{$image-path}/logo_tagline_directorypage.png') no-repeat;
+				background: transparent asset-url('logo_tagline_directorypage.png') no-repeat;
 				text-indent: -999em;
 				margin: 0;
 				@include scale(width, 185);
@@ -32,7 +32,7 @@
 				float: left;
 				
 				&.logo_no_tagline {
-					background: transparent url('#{$image-path}/logo_no_tagline_directorypage.png') no-repeat;
+					background: transparent asset-url('logo_no_tagline_directorypage.png') no-repeat;
 				}
 			}
 		}
@@ -93,7 +93,7 @@
 				}
 			}
 			#search {
-				background: $kinstantly_pink url('search.png') center no-repeat;
+				background: $kinstantly_pink asset-url('search.png') center no-repeat;
 				background-size: 66.666%;
 				text-indent: -999em;
 				@include border-radius(0.2143em);
@@ -124,7 +124,7 @@
 				@include scale(width, 32, 11);
 				@include scale(height, 28, 11);
 				@include background-size (cover,center);
-				background: transparent url(#{$image-path}/menu-button-gray.png) no-repeat;
+				background: transparent asset-url('menu-button-gray.png') no-repeat;
 				@include border-radius(0);
 				border: none;
 				text-indent: -999em;
@@ -134,7 +134,7 @@
 				@media (max-width: 36em) {
 					//@include scale(width, 32, 11);
 					//@include scale(height, 28, 11);
-					background: transparent url(#{$image-path}/menu-button-sm-gray.png) no-repeat;
+					background: transparent asset-url('menu-button-sm-gray.png') no-repeat;
 					@include background-size (cover,center);
 				}
 			
@@ -1234,7 +1234,7 @@
 				line-height: 1.3em;
 				clear: both;
 				color: $secondary-color;
-				background: url(#{$image-path}/quote-mark.png) no-repeat left top;
+				background: asset-url('quote-mark.png') no-repeat left top;
 				@include scale(padding-left, 36,12);
 		}
 		.search_results_prompt {
@@ -1668,7 +1668,7 @@
 			margin-top: 43px;
 
 			.blurb{
-				background: url(#{$image-path}/boy_in_blue.jpg) no-repeat;
+				background: asset-url('boy_in_blue.jpg') no-repeat;
 				background-size: 100% auto;
 				padding-top: calc(259 / 260 * 100% ); /*push box bottom with respect to height-width ratio */
 				max-width: 260px;
@@ -1808,7 +1808,7 @@
 
 			.newsletter-signup-button{
 				display: inline-block;
-				background: url(#{$image-path}/newsletter_signup_bkg.jpg) no-repeat;
+				background: asset-url('newsletter_signup_bkg.jpg') no-repeat;
 				background-size: 100% auto;
 				width: 421px;
 				height: 71px;
@@ -1879,7 +1879,7 @@
 		bottom: 0;
 		right: 0; 
 		padding: 0;
-		background: url(#{$image-path}/contactImg.jpg) no-repeat;
+		background: asset-url('contactImg.jpg') no-repeat;
 		background-size: 100% auto;
 		text-shadow: 1px 0px 4px rgba(0, 0, 0, 0.75);
 		@media screen and (max-width: 63em /*1008px*/) {
@@ -2339,7 +2339,7 @@ div.popover {
 	.help_icon {
 		@include help_icon;
 		margin-bottom: -4px;
-		background-image: url('help_24_blue.png');
+		background-image: asset-url('help_24_blue.png');
 		width:24px;
 		height:24px;
 		
@@ -2474,7 +2474,7 @@ div.popover {
 			}
 		}
 		.panel_loading {
-			background-image: url('loading_large.gif');
+			background-image: asset-url('loading_large.gif');
 			background-position: center top;
 			background-repeat: no-repeat;
 			width: 100%;
@@ -2502,7 +2502,7 @@ div.popover {
 			}
 			.delete_icon {
 				float: right;
-				background: url('delete.gif') 0px 0px no-repeat;
+				background: asset-url('delete.gif') 0px 0px no-repeat;
 				width: 16px;
 				height: 16px;
 				margin-top: 24px;
@@ -2611,7 +2611,7 @@ span.inline_block_attr{
 }
 
 .upload-waiter{
-	background: url('loading_large.gif') no-repeat center center;
+	background: asset-url('loading_large.gif') no-repeat center center;
 	background-color:rgba(240,240,240,0.7);
 	position: absolute;
 	top: 0px;
@@ -2790,7 +2790,7 @@ ul.links-list > li{
 				top: 44px;
 				width:24px;
 				height:24px;
-				background: url('help_24_blue.png') 0px 0px no-repeat;
+				background: asset-url('help_24_blue.png') 0px 0px no-repeat;
 				
 				.help_popover {
 					@include help_popover;
@@ -3145,7 +3145,7 @@ ul.links-list > li{
 			width: 15px;
 			height:15px;
 			margin-left: 2px;
-			background: url('#{$image-path}/edit-blue.png') left center no-repeat;
+			background: asset-url('edit-blue.png') left center no-repeat;
     		background-size: 12px 15px;
 		}
 		.save, .save:hover{

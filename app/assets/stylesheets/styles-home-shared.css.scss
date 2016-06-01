@@ -30,7 +30,7 @@ BIGGER MOBILE
 		margin: 32px 0 0 0;
 	}
 	.home {
-		background: #FFF url('home-img.jpg') center top no-repeat;
+		background: #FFF asset-url('home-img.jpg') center top no-repeat;
 	}
 	#social {
 		float: left;
@@ -87,16 +87,16 @@ you can add resource intensive styles.
 			width: 266px;
 		}
 		.select-wrapper {   
-				background: url('arrow.png') no-repeat 245px center #ffffff;
+				background: asset-url('arrow.png') no-repeat 245px center #ffffff;
 				width: 286px;
 		}
 		#provider_search_button {
-			background: url('search-mag-button-blue.png') no-repeat center 0px 0px;
+			background: asset-url('search-mag-button-blue.png') no-repeat center 0px 0px;
 			width: 296px;
 		}
 		#provider_search_button:hover {
 			cursor: pointer;
-			background: url('search-mag-button-blue.png') no-repeat center 0px -41px;
+			background: asset-url('search-mag-button-blue.png') no-repeat center 0px -41px;
 		}
 	}
 	.category-list {
@@ -110,7 +110,7 @@ you can add resource intensive styles.
 		width: 970px;
 	}
 	.home {
-		background: #FFF url('home-img.jpg') center top no-repeat;
+		background: #FFF asset-url('home-img.jpg') center top no-repeat;
 	}
 	#social {
 		margin: 489px 0 0 378px;

@@ -37,12 +37,12 @@ body {
 				bottom: 0;
 				right: 0;
 				text-indent: -999em;
-				background: transparent url('#{$image-path}/kinstantly-logo-home-tag.png') no-repeat;
+				background: transparent asset-url('kinstantly-logo-home-tag.png') no-repeat;
 				@include background-size(contain,left);
 				transform: rotate( .0001deg ); // This is a stupid fix for Firefox making image blurry
 				
 				@media (max-width: $masthead_break_3) {
-					background: transparent url('#{$image-path}/kinstantly-logo-small-tag.png') no-repeat;
+					background: transparent asset-url('kinstantly-logo-small-tag.png') no-repeat;
 					//@include background-size(auto,left);
 					@include background-size(cover,top);
 					background-position: top left;
@@ -90,7 +90,7 @@ body {
 				@media (max-width: $masthead_break_3) {
 					@include scale(width, 34, 11);
 					@include scale(height, 36, 11);
-					background: transparent url(#{$image-path}/search-light-gray.png) no-repeat;
+					background: transparent asset-url('search-light-gray.png') no-repeat;
 					@include background-size (contain,center);
 				}
 				@media (max-width: $masthead_break_4) {
@@ -128,7 +128,7 @@ body {
 				@media (max-width: $masthead_break_3) {
 					@include scale(width, 32, 11);
 					@include scale(height, 32, 11);
-					background: transparent url(#{$image-path}/menu-button-sm-gray.png) no-repeat;
+					background: transparent asset-url('menu-button-sm-gray.png') no-repeat;
 					@include background-size (cover,center);
 				}
 			
@@ -323,7 +323,7 @@ body {
 				}
 			}
 			#provider_search_button {
-				background: $kinstantly_pink url(#{$image-path}/search.svg) center center no-repeat;
+				background: $kinstantly_pink asset-url('search.svg') center center no-repeat;
 				background-size: cover;
 				text-indent: -999em;
 				background-size: 66.666%;
@@ -361,7 +361,7 @@ body {
 		@include scale(width, 23);
 		@include scale(height, 33);
 		z-index: 50;
-		background: asset-url("blog-teaser-right-nav-gray.png") no-repeat;
+		background: asset-url('blog-teaser-right-nav-gray.png') no-repeat;
 
 		&:hover {
 			opacity: 0.8;
@@ -372,7 +372,7 @@ body {
 			right: 9%;
 			width: 29px;
 			height: 39px;
-			background: url(#{$image-path}/blog-teaser-right-nav-dark-white-bgnd.png) no-repeat;
+			background: asset-url('blog-teaser-right-nav-dark-white-bgnd.png') no-repeat;
 			opacity: 0.6;
 			
 			&:hover {
@@ -570,7 +570,7 @@ body {
 			text-align: center;
 			@include scale(margin-bottom, 8);
 			@include scale(min-height, 40);
-			background: url(#{$image-path}/h4-icons1.svg) no-repeat;
+			background: asset-url('h4-icons1.svg') no-repeat;
 			background-size: 100%;
 			background-position: center top;
 			padding-top: 52.27272727%;
@@ -591,11 +591,11 @@ body {
 				line-height: 1.2em;
 				@include scale(padding, 10 0 10 29, 15);
 				border-bottom: 1px solid $kinstantly_light_gray;
-				background: url(#{$image-path}/plus.gif) no-repeat 0 0.6em;
+				background: asset-url('plus.gif') no-repeat 0 0.6em;
 				text-align: left;
 			}
 			li.open {
-		background: url(#{$image-path}/minus.gif) no-repeat 0 0.6em;
+		background: asset-url('minus.gif') no-repeat 0 0.6em;
 		}
 			
 		}
@@ -604,7 +604,7 @@ body {
 		@extend %span1of5;
 	}
 	#col2 h4 {
-		background: url(#{$image-path}/h4-icons2.svg) no-repeat;
+		background: asset-url('h4-icons2.svg') no-repeat;
 		background-size: 100%;
 		@media (max-width: 48em) {
 			background-size: 3em !important;
@@ -613,15 +613,15 @@ body {
 		}
 	}
 	#col3 h4 {
-		background: url(#{$image-path}/h4-icons3.svg) no-repeat;
+		background: asset-url('h4-icons3.svg') no-repeat;
 		background-size: 100%;
 	}
 	#col4 h4 {
-		background: url(#{$image-path}/h4-icons4.svg) no-repeat;
+		background: asset-url('h4-icons4.svg') no-repeat;
 		background-size: 100%;
 	}
 	#col5 h4 {
-		background: url(#{$image-path}/h4-icons5.svg) no-repeat;
+		background: asset-url('h4-icons5.svg') no-repeat;
 		background-size: 100%;
 	}
 }
