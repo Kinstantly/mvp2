@@ -37,14 +37,12 @@ gem 'dynamic_form'
 gem 'nested_form'
 
 # Gems used for assets.
-# group :assets do
+# https://github.com/rails/sass-rails
 gem 'sass-rails'
+# https://github.com/rails/coffee-rails
 gem 'coffee-rails'
 # http://github.com/lautis/uglifier
 gem 'uglifier'
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer', :platforms => :ruby
-# end
 
 # Has jquery and jquery_ujs.
 gem 'jquery-rails'

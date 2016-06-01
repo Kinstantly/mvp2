@@ -361,7 +361,7 @@ body {
 		@include scale(width, 23);
 		@include scale(height, 33);
 		z-index: 50;
-		background: url(#{$image-path}/blog-teaser-right-nav-gray.png) no-repeat;
+		background: asset-url("blog-teaser-right-nav-gray.png") no-repeat;
 
 		&:hover {
 			opacity: 0.8;
