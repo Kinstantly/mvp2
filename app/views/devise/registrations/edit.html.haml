@@ -105,18 +105,12 @@
 								=profile_button_image profile_url(@user.profile), :reviews
 							%hr/
 							%textarea.ui-corner-all.ui-widget-content{onclick: "$(this).select()"}
-								=raw profile_button_image profile_url(@user.profile), :schedule
-							.preview
-								%label
-									Preview:
-								=profile_button_image profile_url(@user.profile), :schedule
-							%hr/
-							%textarea.ui-corner-all.ui-widget-content{onclick: "$(this).select()"}
 								=raw profile_button_image profile_url(@user.profile), :like
 							.preview
 								%label
 									Preview:
 								=profile_button_image profile_url(@user.profile), :like	
+							%hr/
 							%p.note 
 								Need help? Email us at
 								= succeed '.' do
