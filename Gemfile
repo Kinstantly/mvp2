@@ -12,6 +12,7 @@ gem 'rails', '4.1.15'
 # Put nokogiri before other gems that use libxml (like pg).
 # http://stackoverflow.com/a/15492096/1203206
 # http://stackoverflow.com/a/16943050/1203206
+# http://nokogiri.org
 gem 'nokogiri'
 
 # Abort requests that are taking too long; a subclass of Timeout::Error is raised.
