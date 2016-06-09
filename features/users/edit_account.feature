@@ -56,7 +56,7 @@ Feature: Edit account
 	Scenario: Change news settings as a provider
 		Given I am logged in as a provider
 			And I am on my contact preferences edit page
-		When I check "Get occasional tips on how to grow your business"
+		When I check "Send me occasional tips and insights on how to grow my business"
 			And I check "Get age-based development updates"
 			And I save the account settings
 		Then I should see a subscriptions edited message

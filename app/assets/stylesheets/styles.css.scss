@@ -2848,8 +2848,16 @@ ul.links-list > li{
 				vertical-align: middle;
 			}
 
+			#provider-newsletters-signup label {
+				font-size: 13px;
+				font-weight: normal;
+			}
+			
 			@media (max-width: $break-4) {
 				label{ font-size: .75em; }
+				#provider-newsletters-signup label {
+					font-size: .7em;
+				}
 				.devise_shared_links, .radio_buttons{
 					a{ font-size: .78em; }
 				}

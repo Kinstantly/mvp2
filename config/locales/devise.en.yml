@@ -95,7 +95,7 @@ en:
       on_create_provider_confirmation_instructions:
         subject: 'Confirm your Kinstantly account'
       on_create_welcome:
-        subject: 'Welcome to Kinstantly'
+        subject: 'WELCOME to the Kinstantly family (please read)'
       reset_password_instructions:
         subject: 'Reset password instructions'
       unlock_instructions:

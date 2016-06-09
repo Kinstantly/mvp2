@@ -91,22 +91,13 @@
 		-# 			= f.radio_button :is_provider, '2'
 		-# 			= parent_provider_tag
 
-	- unless @signing_up_for_newsletter
+	- unless is_provider or @signing_up_for_newsletter
 		.newsletters-signup
 			-# %h2= parent_newsletters_prompt
 			.checkbox
 				-# %p= parent_newsletters_hint
-				- if is_provider
-					= f.check_box :parent_newsletters
-				- else
-					= f.check_box :parent_newsletters, checked: 'checked'
+				= f.check_box :parent_newsletters, checked: 'checked'
 				= f.label :parent_newsletters, parent_newsletters_prompt
-				%br
-			#provider-newsletters-signup{:class => ("hidden" unless (is_provider || claiming_profile))}
-				-# %h2= provider_newsletters_prompt
-				.checkbox
-					= f.check_box :provider_newsletters
-					= f.label :provider_newsletters, provider_newsletters_prompt
 	.buttons
 		- if @signing_up_for_newsletter
 			= f.submit t(:newsletter_sign_up_label, scope: 'views.sign_up'), data: { disable_with: t('views.sign_up.submit_disable') }, class: 'default newsletter_sign_up', id: 'sign_up_button'
@@ -114,16 +105,22 @@
 				= link_to t(:newsletter_sign_up_cancel, scope: 'views.sign_up'), root_path, class: 'cancel', id: 'sign_up_cancel_button'
 		- else
 			= f.submit t((is_provider ? :provider_label : :label), scope: 'views.sign_up'), data: { disable_with: t('views.sign_up.submit_disable') }, class: 'default', id: 'sign_up_button'
+	- if (is_provider or claiming_profile) and not @signing_up_for_newsletter
+		#provider-newsletters-signup
+			-# %h2= provider_newsletters_prompt
+			.checkbox
+				= f.check_box :provider_newsletters, checked: 'checked'
+				= f.label :provider_newsletters, provider_newsletters_prompt
 
-- unless @signing_up_for_newsletter
-	:javascript
-		$(':radio[name="user[is_provider]"]').on('change', function() {
-			selected_val = $(this).filter(":checked").val();
-			if(selected_val == 0) {
-				$('#provider-newsletters-signup').slideUp(200);
-				$('input:checkbox[name="user[provider_newsletters]"]:checked').attr('checked', false);
-			}
-			else {
-				$('#provider-newsletters-signup').slideDown(200);
-			}
-		});
+-# - unless @signing_up_for_newsletter
+-# 	:javascript
+-# 		$(':radio[name="user[is_provider]"]').on('change', function() {
+-# 			selected_val = $(this).filter(":checked").val();
+-# 			if(selected_val == 0) {
+-# 				$('#provider-newsletters-signup').slideUp(200);
+-# 				$('input:checkbox[name="user[provider_newsletters]"]:checked').attr('checked', false);
+-# 			}
+-# 			else {
+-# 				$('#provider-newsletters-signup').slideDown(200);
+-# 			}
+-# 		});

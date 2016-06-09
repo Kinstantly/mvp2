@@ -32,6 +32,6 @@ class UserAccountMailer < Devise::Mailer
 	# Send on user creation when claiming a profile, i.e., simple welcome email.
 	def on_create_welcome(record, opts={})
 		@show_logo = true
-		devise_mail(record, :on_create_welcome, opts)
+		devise_mail(record, :on_create_welcome, {reply_to: 'jscott@kinstantly.com'}.merge(opts))
 	end
 end

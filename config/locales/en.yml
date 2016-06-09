@@ -854,7 +854,7 @@ en:
       registration_special_code_tip: 'Have a promotional code? Enter it here.'
       parent_newsletters_prompt: 'Get age-based development updates, reminders, and our Top Stories delivered to your inbox.'
       parent_newsletters_hint: 'Check one or more editions:'
-      provider_newsletters_prompt: 'Get occasional tips on how to grow your business'
+      provider_newsletters_prompt: 'Send me occasional tips and insights on how to grow my business'
     specialty:
       name: 'Specialty'
       edit:

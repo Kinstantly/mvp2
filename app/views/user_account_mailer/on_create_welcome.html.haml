@@ -1,34 +1,29 @@
-- name = @resource.profile_to_claim.try :first_name
-= "Hi #{name.presence || 'there'},"
+-# - name = @resource.profile_to_claim.try :first_name
+-# = "Hi #{name.presence || 'there'},"
+You're in! As soon as you
+= succeed ',' do
+	= link_to 'complete your profile', edit_my_profile_url
+it will be visible to our nearly 1 million visitors around the world&mdash;and will get picked up by google and other search engines.
 %br
 %br
-Thanks for joining Kinstantly. We're excited to help you grow your business.
+- if @resource.provider_newsletters
+	In the weeks and months ahead, we'll be sending you some pretty great tips and insights on how you can grow your business (many shared by other providers, like you).
+	%br
+	%br
+In the meantime, if you have a few seconds, I'd like to get to know you a bit...
 %br
 %br
-%strong Here's how to get started:
-Fill out your profile, so families can more easily find you, learn about your services, and get in touch with you.
+I'd really appreciate it if you'd hit reply to this message and tell me just a few quick things about you&mdash;especially any particular issues or challenges you face in your business right now.
 %br
 %br
-Only have time to fill out a few fields right now? Parents tell us these are the things they look for most:
+That'll help us shape the messages we send you, so we can make a real difference in your business&mdash;and your life.
 %br
-%ul
-	%li your specialties
-	%li the best ways to contact you
-	%li your street address, or even just your zip code, so that people searching for you can see your location on the map
-	%li a photo of you (a smile helps)
-%br
-We save each part of your profile as you go, so you can complete or update your profile whenever you want, as often as you want.
-%br
-%p{style: 'margin-top:25px;margin-bottom:20px;'}
-	= link_to 'Start editing my profile', edit_my_profile_url, style: 'background-color:#e75370;border-radius:4px;color:#fff;font-size:16px;display:inline-block;font-weight:bold;padding:10px 25px;text-decoration:none;'
 %br
 Thanks so much,
 %br
 %br
-Jim Scott, co-founder, and the Kinstantly Team
+Jim Scott
 %br
+Co-founder and CEO
 %br
-P.S. If you ever have questions or suggestions on how we can do better, shoot me an email at
-= succeed "." do
-	= mail_to 'jscott@kinstantly.com'
-I'd love to hear from you.
+Kinstantly
