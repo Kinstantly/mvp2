@@ -1,4 +1,4 @@
-= simple_form_for @story_teaser do |f|
+= simple_form_for @story_teaser, defaults: { input_html: { size: '60' } } do |f|
 	= f.error_notification
 	= f.input :active
 	= f.input :display_order
