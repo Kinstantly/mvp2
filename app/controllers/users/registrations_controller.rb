@@ -87,9 +87,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 			resource.load_profile
 			# Notify admin that either a provider or parent has registered.
 			if resource.is_provider?
-				AdminMailer.provider_registration_alert(resource).deliver
+				AdminMailer.provider_registration_alert(resource).deliver_now
 			else
-				AdminMailer.parent_registration_alert(resource).deliver
+				AdminMailer.parent_registration_alert(resource).deliver_now
 			end
 		end
 	end

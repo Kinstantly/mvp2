@@ -592,7 +592,7 @@ describe Profile, :type => :model do
 				message = double('message')
 				allow(ProfileMailer).to receive(:invite).and_return(message)
 				expect(ProfileMailer).not_to receive(:invite)
-				expect(message).not_to receive(:deliver)
+				expect(message).not_to receive(:deliver_now)
 				profile.invite subject, body
 			end
 		end
@@ -607,7 +607,7 @@ describe Profile, :type => :model do
 				message = double('message')
 				allow(profile).to receive(:generate_token).and_return(delivery_token)
 				expect(ProfileMailer).to receive(:invite).with(recipient, subject, body, profile, delivery_token, false).and_return(message)
-				expect(message).to receive(:deliver)
+				expect(message).to receive(:deliver_now)
 				profile.invite subject, body
 			end
 			
@@ -644,7 +644,7 @@ describe Profile, :type => :model do
 				message = double('message')
 				allow(ProfileMailer).to receive(:invite).and_return(message)
 				expect(ProfileMailer).not_to receive(:invite)
-				expect(message).not_to receive(:deliver)
+				expect(message).not_to receive(:deliver_now)
 				profile.invite subject, body
 			end
 		end

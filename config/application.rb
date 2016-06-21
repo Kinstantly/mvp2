@@ -2,11 +2,9 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-if defined?(Bundler)
-  # Require the gems listed in Gemfile, including any gems
-  # you've limited to :test, :development, or :production.
-  Bundler.require(*Rails.groups)
-end
+# Require the gems listed in Gemfile, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(*Rails.groups)
 
 module Mvp2
   class Application < Rails::Application
@@ -80,14 +78,17 @@ module Mvp2
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-		
-		# Ensure requested locales are available.  Raises I18n::InvalidLocale if not available.
-		# A security measure, to ensure user input cannot be used as locale information unless it is previously known.
-		# It's recommended not to disable this option unless you have a strong reason for doing so.
-		config.i18n.enforce_available_locales = true
+
+    # Ensure requested locales are available.  Raises I18n::InvalidLocale if not available.
+    # A security measure, to ensure user input cannot be used as locale information unless it is previously known.
+    # It's recommended not to disable this option unless you have a strong reason for doing so.
+    config.i18n.enforce_available_locales = true
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
+
+    # Do not swallow errors in after_commit/after_rollback callbacks.
+    config.active_record.raise_in_transactional_callbacks = true
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password, :password_confirmation, :otp_code]

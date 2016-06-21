@@ -119,9 +119,9 @@ class NewslettersController < ApplicationController
 		end
 		if successful_subscribes.any?
 			if options[:subscribing_to_alerts]
-				AdminMailer.alerts_subscribe_alert(successful_subscribes, email, options).deliver
+				AdminMailer.alerts_subscribe_alert(successful_subscribes, email, options).deliver_now
 			else
-				AdminMailer.newsletter_subscribe_alert(successful_subscribes, email).deliver
+				AdminMailer.newsletter_subscribe_alert(successful_subscribes, email).deliver_now
 			end
 		end
 	end

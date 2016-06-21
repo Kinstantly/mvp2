@@ -4,10 +4,14 @@ ruby '2.3.0'
 
 # gem 'rails', '3.2.22.2'
 # gem 'rails', '4.0.13'
-gem 'rails', '4.1.15'
+# gem 'rails', '4.1.15'
+gem 'rails', '4.2.6'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
+
+# http://github.com/plataformatec/responders
+gem 'responders', '~> 2.0'
 
 # Put nokogiri before other gems that use libxml (like pg).
 # http://stackoverflow.com/a/15492096/1203206
@@ -161,12 +165,13 @@ group :development, :test do
 	gem 'sunspot_solr', git: 'git://github.com/edsimpson/sunspot.git'
 end
 
-# Benchmarking.
+# Benchmarking and debugging.
 group :development do
 	gem 'derailed'
 	gem 'stackprof'
 	# https://github.com/josevalim/rails-footnotes
 	gem 'rails-footnotes', '~> 4.0'
+	gem 'web-console', '~> 2.0'
 end
 
 #Image processor and model manager for photo uploads
@@ -221,8 +226,12 @@ gem 'sendgrid'
 # Cron jobs
 gem 'whenever', :require => false
 
+# Payments
+# https://stripe.com/docs
+gem 'stripe'
 # Stripe Connect
 gem 'omniauth-stripe-connect', :git => 'https://github.com/isaacsanders/omniauth-stripe-connect.git'
+# https://github.com/integrallis/stripe_event
 gem 'stripe_event'
 
 # Money! https://github.com/RubyMoney

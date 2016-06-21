@@ -46,6 +46,6 @@ class ProviderSuggestion < ActiveRecord::Base
 	private
 	
 	def send_provider_suggestion_notice
-		AdminMailer.provider_suggestion_notice(self).deliver
+		AdminMailer.provider_suggestion_notice(self).deliver_now
 	end
 end

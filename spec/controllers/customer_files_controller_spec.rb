@@ -15,7 +15,6 @@ describe CustomerFilesController, type: :controller, payments: true do
 	let(:another_customer_file) { FactoryGirl.create :customer_file, provider: another_provider, customer: customer_1 }
 
 	let(:api_token) { stripe_token_mock }
-	let(:api_charge) { stripe_charge_mock amount_cents: charge_amount_cents }
 	let(:api_balance_transaction) { stripe_balance_transaction_mock fee_cents: charge_fee_cents }
 	
 	before(:example) do
@@ -25,8 +24,8 @@ describe CustomerFilesController, type: :controller, payments: true do
 		allow(Stripe::Token).to receive(:create).with(any_args) do
 			api_token
 		end
-		allow(Stripe::Charge).to receive(:create).with(any_args) do
-			api_charge
+		allow(Stripe::Charge).to receive(:create).with(any_args) do |params, access_token|
+			stripe_charge_mock params
 		end
 		allow(Stripe::BalanceTransaction).to receive(:retrieve).with(any_args) do
 			api_balance_transaction

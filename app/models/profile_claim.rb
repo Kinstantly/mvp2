@@ -31,6 +31,6 @@ class ProfileClaim < ActiveRecord::Base
 	private
 
 	def send_profile_claim_notice
-		AdminMailer.profile_claim_notice(self).deliver
+		AdminMailer.profile_claim_notice(self).deliver_now
 	end
 end

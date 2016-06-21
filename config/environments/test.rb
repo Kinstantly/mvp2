@@ -6,7 +6,7 @@ Rails.application.configure do
   # Operations that are not threadsafe can cause the test to fail incorrectly.
   # https://robots.thoughtbot.com/how-to-fix-circular-dependency-errors-in-rails-integration-tests
   # https://github.com/rails/rails/commit/112077c255879351edf4530791cc4bcc7bd4005b
-  config.allow_concurrency = false
+  # config.allow_concurrency = false
 
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that
@@ -19,8 +19,8 @@ Rails.application.configure do
   # preloads Rails for running tests, you may have to set it to true.
   config.eager_load = false
 
-  # Configure static asset server for tests with Cache-Control for performance.
-  config.serve_static_assets  = true
+  # Configure static file server for tests with Cache-Control for performance.
+  config.serve_static_files   = true
   config.static_cache_control = 'public, max-age=3600'
 
   # Show full error reports and disable caching.
@@ -37,6 +37,9 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+
+  # Randomize the order test cases are executed.
+  config.active_support.test_order = :random # or `:sorted` if you prefer
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr

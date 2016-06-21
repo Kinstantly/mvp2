@@ -24,7 +24,7 @@ describe StripeInfo, type: :model, payments: true do
 	
 	it "sends a welcome email to a newly connected provider" do
 		message = double('Mail::Message')
-		expect(message).to receive :deliver
+		expect(message).to receive :deliver_now
 		expect(StripeConnectMailer).to receive(:welcome_provider).and_return(message)
 		stripe_info.configure_authorization(omniauth_values)
 	end

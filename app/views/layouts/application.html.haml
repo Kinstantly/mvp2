@@ -104,10 +104,9 @@
 		:javascript
 			my_vars.google_api_key = "#{GOOGLE_BROWSER_API_KEY}"
 			my_vars.fb_api_key	   = "#{FB_API_KEY}"
-
-			//hide utf8 param in search provider form
-			if($('#providerSearch input[name="utf8"]') && $('#providerSearch input[name="utf8"]').parent())
-				$('#providerSearch input[name="utf8"]').parent().hide() 
+			
+			// If the utf8 param input in the search provider form is wrapped in its own div, hide it.
+			$('#providerSearch div > input[name="utf8"]').parent().hide();
 		
 		:coffeescript
 			# Autocomplete location field in search form.

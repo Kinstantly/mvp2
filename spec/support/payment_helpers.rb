@@ -2,6 +2,7 @@ def stripe_card_mock
 	card = double('Stripe::Card').as_null_object
 	allow(card).to receive(:exp_month).and_return(1)
 	allow(card).to receive(:exp_year).and_return(2050)
+	allow(card).to receive(:livemode).and_return(false)
 	card
 end
 
@@ -11,6 +12,7 @@ def stripe_customer_mock(options={})
 	cards = double 'Hash'
 	allow(cards).to receive(:retrieve).with(any_args) { card }
 	allow(customer).to receive(:cards).and_return(cards)
+	allow(customer).to receive(:livemode).and_return(false)
 	customer
 end
 
@@ -19,10 +21,20 @@ def stripe_token_mock
 end
 
 def stripe_charge_mock(options={})
-	amount_cents = options[:amount_cents] || 1000
+	amount = options[:amount] || 1000
+	description = options[:description]
+	statement_descriptor = options[:statement_descriptor]
 	refunds = options[:refunds] # default is nil
 	charge = double('Stripe::Charge').as_null_object
-	allow(charge).to receive(:amount).and_return(amount_cents)
+	allow(charge).to receive(:amount).and_return(amount)
+	allow(charge).to receive(:description).and_return(description)
+	allow(charge).to receive(:statement_descriptor).and_return(statement_descriptor)
+	allow(charge).to receive(:paid).and_return(true)
+	allow(charge).to receive(:captured).and_return(true)
+	allow(charge).to receive(:livemode).and_return(false)
+	allow(charge).to receive(:refunded).and_return(false)
+	allow(charge).to receive(:id).and_return('ch_XXXXXXXXXXXXXXXXXXXXXXXX')
+	allow(charge).to receive(:balance_transaction).and_return('txn_XXXXXXXXXXXXXXXXXXXXXXXX')
 	if refunds
 		allow(charge).to receive(:refunds).and_return(refunds)
 		allow(charge).to receive(:amount_refunded) { @stripe_amount_refunded }

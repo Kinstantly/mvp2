@@ -38,6 +38,9 @@ def api_charge
 	allow(charge).to receive(:refunds).and_return(api_refunds)
 	allow(charge).to receive(:amount_refunded) { charge_amount_refunded }
 	allow(charge).to receive(:refunded) { charge_amount_refunded == charge_amount_cents }
+	allow(charge).to receive(:paid).and_return(true)
+	allow(charge).to receive(:captured).and_return(true)
+	allow(charge).to receive(:livemode).and_return(false)
 	charge
 end
 

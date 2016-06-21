@@ -309,7 +309,7 @@ class ProfilesController < ApplicationController
 	# Send email notification to profile moderator
 	def notify_profile_moderator
 		if @profile.errors.empty? && !current_user.profile_editor?
-			AdminMailer.on_update_alert(@profile).deliver
+			AdminMailer.on_update_alert(@profile).deliver_now
 		end
 	end
 	

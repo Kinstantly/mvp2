@@ -7,7 +7,8 @@ describe Customer, type: :model, payments: true do
 	let(:profile) { provider.profile }
 	let(:profile_id) { profile.id.to_s }
 	let(:stripe_token) { 'tok_14dHeE2wVg10iFMK9gYM2T72' }
-	let(:authorized_amount) { 1000 }
+	let(:authorized_amount) { 1000 } # USD
+	let(:authorized_amount_cents) { authorized_amount * 100 }
 	let(:authorization) {
 		{
 			user:         parent,
@@ -69,7 +70,7 @@ describe Customer, type: :model, payments: true do
 		
 		it "should return the authorized amount for the given authorized provider" do
 			customer.save_with_authorization authorization
-			expect(customer.authorized_amount_for_profile(profile_id)).to eq authorized_amount
+			expect(customer.authorized_amount_for_profile(profile_id).cents).to eq authorized_amount_cents
 		end
 		
 	  it "should create a customer record" do
@@ -96,7 +97,7 @@ describe Customer, type: :model, payments: true do
 		
 		it "should send confirmation to the new customer" do
 			message = double('Mail::Message')
-			expect(message).to receive :deliver
+			expect(message).to receive :deliver_now
 			expect(CustomerMailer).to receive(:confirm_authorized_amount).and_return(message)
 			customer.save_with_authorization authorization
 		end
@@ -123,7 +124,7 @@ describe Customer, type: :model, payments: true do
 		
 		it "should send confirmation of the revoked authorization" do
 			message = double('Mail::Message')
-			expect(message).to receive :deliver
+			expect(message).to receive :deliver_now
 			expect(CustomerMailer).to receive(:confirm_revoked_authorization).and_return(message)
 			customer_with_authorization.save_with_authorization revocation
 		end

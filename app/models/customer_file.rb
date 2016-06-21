@@ -19,9 +19,13 @@ class CustomerFile < ActiveRecord::Base
 		validates attribute, allow_blank: true, length: {maximum: MAX_LENGTHS[attribute]}
 	end
 	
+	# The following monetized attributes are backed by a database column.
 	monetize :authorized_amount, as: 'authorized_amount_usd', allow_nil: true
-	monetize :authorized_amount_increment, as: 'authorized_amount_increment_usd', allow_nil: true
-	monetize :charge_amount, as: 'charge_amount_usd', allow_nil: true
+	
+	# The following monetized attributes are NOT backed by a database column.
+	# Disable built-in validation which has the side effect of not requiring a column when setting the attribute value. Model-level validation is used instead.
+	monetize :authorized_amount_increment, as: 'authorized_amount_increment_usd', allow_nil: true, disable_validation: true
+	monetize :charge_amount, as: 'charge_amount_usd', allow_nil: true, disable_validation: true
 	
 	validates :authorized_amount, numericality: {only_integer: true, greater_than_or_equal_to: 0}, allow_blank: true
 	validates :charge_amount, :authorized_amount_increment, numericality: {only_integer: true, greater_than: 0}, allow_blank: true
@@ -86,7 +90,7 @@ class CustomerFile < ActiveRecord::Base
 			stripe_fee:            fee_details['stripe_fee'],
 			application_fee:       fee_details['application_fee']
 		)
-		stripe_charges << stripe_charge
+		self.stripe_charges << stripe_charge
 		
 		self.authorized_amount -= charge.amount
 		save!
@@ -141,19 +145,19 @@ class CustomerFile < ActiveRecord::Base
 	end
 	
 	def confirm_authorized_amount
-		CustomerMailer.confirm_authorized_amount(self).deliver
+		CustomerMailer.confirm_authorized_amount(self).deliver_now
 	end
 	
 	def notify_provider_of_payment_authorization
-		CustomerMailer.notify_provider_of_payment_authorization(self).deliver
+		CustomerMailer.notify_provider_of_payment_authorization(self).deliver_now
 	end
 	
 	def confirm_revoked_authorization
-		CustomerMailer.confirm_revoked_authorization(self).deliver
+		CustomerMailer.confirm_revoked_authorization(self).deliver_now
 	end
 	
 	def notify_provider_of_revoked_authorization
-		CustomerMailer.notify_provider_of_revoked_authorization(self).deliver
+		CustomerMailer.notify_provider_of_revoked_authorization(self).deliver_now
 	end
 	
 	private

@@ -90,7 +90,7 @@ describe StripeCharge, type: :model, payments: true do
 		let(:api_balance_transaction) { stripe_balance_transaction_mock fee_cents: charge_fee_cents }
 		let(:api_refund) { stripe_refund_mock balance_transaction: api_balance_transaction }
 		let(:api_refunds) { stripe_charge_refunds_mock refund_mock: api_refund }
-		let(:api_charge) { stripe_charge_mock amount_cents: charge_amount_cents,  refunds: api_refunds }
+		let(:api_charge) { stripe_charge_mock amount: charge_amount_cents, refunds: api_refunds }
 		let(:api_application_fee_list) { application_fee_list_mock }
 		
 		before(:example) do

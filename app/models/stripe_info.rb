@@ -58,6 +58,6 @@ class StripeInfo < ActiveRecord::Base
 	
 	# Welcome the newly connected provider.
 	def welcome_provider
-		StripeConnectMailer.welcome_provider(user).deliver
+		StripeConnectMailer.welcome_provider(user).deliver_now
 	end
 end

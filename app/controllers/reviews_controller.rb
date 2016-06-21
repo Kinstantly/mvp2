@@ -37,7 +37,7 @@ class ReviewsController < ApplicationController
 		@review.reviewer = current_user
 		success = @review.save_with_reviewer
 		if success
-			ReviewMailer.notify_moderator(@review).deliver
+			ReviewMailer.notify_moderator(@review).deliver_now
 			redirect_to profile_path @review.profile_id
 		else
 			respond_with @review, layout: false

@@ -68,7 +68,7 @@ describe UsersController, :type => :controller do
 				it 'should not allow the parent to edit their user admin record' do
 					expect {
 						get :edit, id: parent.id
-					}.to raise_error ActionController::RoutingError
+					}.to raise_error ActionController::UrlGenerationError
 				end
 			end
 			
@@ -76,7 +76,7 @@ describe UsersController, :type => :controller do
 				it 'should not allow the parent to update their user admin record' do
 					expect {
 						put :update, id: parent.id, user: {username: 'new_username'}
-					}.to raise_error ActionController::RoutingError
+					}.to raise_error ActionController::UrlGenerationError
 				end
 			end
 		end
@@ -232,7 +232,7 @@ describe UsersController, :type => :controller do
 				it 'should not allow the provider to edit their user admin record' do
 					expect {
 						get :edit, id: provider.id
-					}.to raise_error ActionController::RoutingError
+					}.to raise_error ActionController::UrlGenerationError
 				end
 			end
 			
@@ -240,7 +240,7 @@ describe UsersController, :type => :controller do
 				it 'should not allow the provider to update their user admin record' do
 					expect {
 						put :update, id: provider.id, user: {username: 'new_username'}
-					}.to raise_error ActionController::RoutingError
+					}.to raise_error ActionController::UrlGenerationError
 				end
 			end
 		end

@@ -51,7 +51,7 @@ class MailchimpWebhookController < ApplicationController
 						user = User.find_by_email(subscriber_email)
 						user.process_unsubscribe_event(list_name)
 					end
-					AdminMailer.newsletter_unsubscribe_alert(list_name, subscriber_email).deliver
+					AdminMailer.newsletter_unsubscribe_alert(list_name, subscriber_email).deliver_now
 				else
 					logger.error "MailChimp Webhook unsubscribe verification error. MailChimp response: #{r}" if logger
 				end

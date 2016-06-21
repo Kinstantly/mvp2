@@ -15,11 +15,15 @@ class StripeCharge < ActiveRecord::Base
 	scope :all_for_provider, ->(provider) { joins(:customer_file).where(customer_files: {user_id: provider.id}) }
 	scope :most_recent_first, -> { order('created_at DESC') }
 	
+	# The following monetized attributes are backed by a database column.
 	monetize :amount, as: 'amount_usd', allow_nil: true
 	monetize :amount_refunded, as: 'amount_refunded_usd', allow_nil: true
 	monetize :stripe_fee, as: 'stripe_fee_usd', allow_nil: true
 	monetize :application_fee, as: 'application_fee_usd', allow_nil: true
-	monetize :refund_amount, as: 'refund_amount_usd', allow_nil: true
+	
+	# The following monetized attribute is NOT backed by a database column.
+	# Disable built-in validation which has the side effect of not requiring a column when setting the attribute value. Model-level validation is used instead.
+	monetize :refund_amount, as: 'refund_amount_usd', allow_nil: true, disable_validation: true
 	
 	# The following are the difference between the original value and the refunded value, if any.
 	monetize :amount_collected, as: 'amount_collected_usd'
@@ -162,11 +166,11 @@ class StripeCharge < ActiveRecord::Base
 	
 	# If there is a customer, notify them of the new charge.
 	def notify_customer
-		StripeChargeMailer.notify_customer(self).deliver if customer_file.try(:has_customer_account?)
+		StripeChargeMailer.notify_customer(self).deliver_now if customer_file.try(:has_customer_account?)
 	end
 	
 	# If there is a customer, notify them of the refund.
 	def notify_customer_of_refund
-		StripeChargeMailer.notify_customer_of_refund(self).deliver if customer_file.try(:has_customer_account?)
+		StripeChargeMailer.notify_customer_of_refund(self).deliver_now if customer_file.try(:has_customer_account?)
 	end
 end
