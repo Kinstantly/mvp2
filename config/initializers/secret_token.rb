@@ -13,7 +13,7 @@ Mvp2::Application.config.secret_token = 'c00622ad01f871609998b1fe3a615668cfe57eb
 # if you're sharing your code publicly.
 
 # When you are sure you won't be rolling back to Rails 3.x, create a secret key for the following (in production, be sure to set it from an environment variable):
-# Mvp2::Application.config.secret_key_base = ''
+Mvp2::Application.config.secret_key_base = ENV['SECRET_KEY_BASE'] || 'c0d30237ba6d1f068e4fec1fceb5d98698bc93d9dc747f6097460135fcf2e32e45d96e18b788610afcefd0036c113fa2408ede42e40528a564ab4cec32600845'
 
 # http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html#action-pack
 #
