@@ -31,8 +31,8 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   # config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  # Serve static files with Rack::Cache.
-  # (serve_static_files = true is also needed to run Rails 4 on Heroku and is set by the rails_12factor gem.)
+  # serve_static_files = true is needed to run Rails 4 on Heroku and is set by the rails_12factor gem.
+  # https://devcenter.heroku.com/articles/rails-4-asset-pipeline
   config.serve_static_files = true
   config.static_cache_control = 'public, max-age=3600'
 
@@ -83,6 +83,7 @@ Rails.application.configure do
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = 'http://assets.example.com'
+  config.action_controller.asset_host = ENV['ASSET_HOST']
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
