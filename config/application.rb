@@ -123,7 +123,7 @@ module Mvp2
       g.helper_specs false
     end
 
-		config.middleware.use 'Rack::RawUpload'
+    config.middleware.use 'Rack::RawUpload'
 
     # Compress responses.
     # Ensure etag is calculated and conditional-get is assessed *before* compression is done.
@@ -144,6 +144,18 @@ module Mvp2
     
     # For blocking & throttling abusive requests. See config/initializers/rack_attack.rb.
     config.middleware.use Rack::Attack
+    
+    # Cross-Origin Resource Sharing (CORS).
+    # Needed to serve assets from a CDN (CloudFront), in particular, fonts.
+    # https://github.com/cyu/rack-cors
+    # https://www.w3.org/TR/cors/
+    # https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+    config.middleware.insert_before 0, 'Rack::Cors' do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [:get, :head]
+      end
+    end
   end
 end
 

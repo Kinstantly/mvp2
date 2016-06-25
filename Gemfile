@@ -244,3 +244,8 @@ gem "gibbon"
 # Rack middleware for blocking & throttling abusive requests.
 # https://github.com/kickstarter/rack-attack
 gem 'rack-attack'
+
+# Cross-Origin Resource Sharing (CORS).
+# Needed to serve assets from a CDN (CloudFront), in particular, fonts.
+# https://github.com/cyu/rack-cors
+gem 'rack-cors', require: 'rack/cors'
