@@ -3,4 +3,4 @@
 	.edit.popover
 		%h3= t 'views.two_factor_authentication.qrcode_label'
 		%p
-			= image_tag two_factor_authentication_qrcode_path(format: :svg, version: Time.zone.now.to_i)
+			= image_tag two_factor_authentication_qrcode_url(format: :svg, version: Time.zone.now.to_i)
