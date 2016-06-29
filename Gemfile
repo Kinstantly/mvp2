@@ -230,7 +230,8 @@ gem 'whenever', :require => false
 # https://stripe.com/docs
 gem 'stripe'
 # Stripe Connect
-gem 'omniauth-stripe-connect', :git => 'https://github.com/isaacsanders/omniauth-stripe-connect.git'
+# https://stripe.com/docs/connect
+gem 'omniauth-stripe-connect' #, :git => 'https://github.com/isaacsanders/omniauth-stripe-connect.git'
 # https://github.com/integrallis/stripe_event
 gem 'stripe_event'
 
