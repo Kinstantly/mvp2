@@ -34,7 +34,7 @@ Rails.application.configure do
   # serve_static_files = true is needed to run Rails 4 on Heroku and is set by the rails_12factor gem.
   # https://devcenter.heroku.com/articles/rails-4-asset-pipeline
   config.serve_static_files = true
-  config.static_cache_control = 'public, max-age=3600'
+  config.static_cache_control = 'public, max-age=31536000'
 
   # Compress JavaScripts and CSS.
   config.assets.compress = true
