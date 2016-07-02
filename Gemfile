@@ -165,13 +165,22 @@ group :development, :test do
 	gem 'sunspot_solr', git: 'git://github.com/edsimpson/sunspot.git'
 end
 
-# Benchmarking and debugging.
+# Benchmarking, debugging, and development.
 group :development do
 	gem 'derailed'
 	gem 'stackprof'
 	# https://github.com/josevalim/rails-footnotes
 	gem 'rails-footnotes', '~> 4.0'
 	gem 'web-console', '~> 2.0'
+	# Spring is a Rails application preloader.
+	# https://github.com/rails/spring
+	gem 'spring'
+	gem 'spring-commands-rspec'
+	gem 'spring-commands-cucumber'
+	# The byebug debugger.
+	# Example: bundle exec rails server --port=5000
+	# http://github.com/deivid-rodriguez/byebug
+	gem 'byebug'
 end
 
 #Image processor and model manager for photo uploads
@@ -207,11 +216,6 @@ gem 'rack-raw-upload'
 # Dalli is a better inferface to memcached.
 # https://github.com/mperham/dalli
 gem 'dalli'
-
-# The byebug debugger.
-# Example: bundle exec rails server --port=5000
-# http://github.com/deivid-rodriguez/byebug
-gem 'byebug', group: :development
 
 # Makes running your Rails app easier. Based on the ideas behind 12factor.net
 # https://github.com/heroku/rails_12factor

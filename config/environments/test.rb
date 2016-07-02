@@ -1,7 +1,8 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # This setting can be removed with Rails 4.2.  The proper default is implemented in that version.
+  # The proper default is implemented with Rails 4.2.
+  # If not set, then it is effectively true only if cache_classes and eager_load are both true.
   # Caybara should NOT be allowed to make concurrent requests to a multi-threaded web server, e.g., webkit.
   # Operations that are not threadsafe can cause the test to fail incorrectly.
   # https://robots.thoughtbot.com/how-to-fix-circular-dependency-errors-in-rails-integration-tests
