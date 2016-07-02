@@ -1,9 +1,9 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 	
 	layout 'interior'
-	before_filter :authenticate_user!
+	before_action :authenticate_user!
 	
-	before_filter :after_stripe_connect_set_up, only: [:stripe_connect, :failure]
+	before_action :after_stripe_connect_set_up, only: [:stripe_connect, :failure]
 
 	def stripe_connect
 		auth = request.env["omniauth.auth"]

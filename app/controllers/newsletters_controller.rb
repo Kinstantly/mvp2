@@ -2,7 +2,7 @@ class NewslettersController < ApplicationController
 	
 	respond_to :html
 	
-	before_filter :load_variables
+	before_action :load_variables
 
 	# GET /newsletter
 	def new

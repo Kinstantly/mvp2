@@ -1,5 +1,5 @@
 class Users::TwoFactorAuthenticationController < Devise::TwoFactorAuthenticationController
-	before_filter :prepare_for_update, only: :update
+	before_action :prepare_for_update, only: :update
 
 	def qrcode
 		account = "#{default_host}/#{resource.email}"

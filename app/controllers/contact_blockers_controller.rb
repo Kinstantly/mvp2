@@ -1,7 +1,7 @@
 class ContactBlockersController < ApplicationController
 	respond_to :html
 	
-	before_filter :authenticate_user!, except: [:new_from_email_delivery, :create_from_email_delivery, :email_delivery_not_found, :contact_blocker_confirmation]
+	before_action :authenticate_user!, except: [:new_from_email_delivery, :create_from_email_delivery, :email_delivery_not_found, :contact_blocker_confirmation]
 	
 	# Side effect: loads @contact_blockers or @contact_blocker as appropriate.
 	# e.g., for index action, @contact_blockers is set to ContactBlocker.accessible_by(current_ability)
@@ -10,7 +10,7 @@ class ContactBlockersController < ApplicationController
 	skip_load_resource only: [:new_from_email_delivery, :create_from_email_delivery]
 	skip_load_and_authorize_resource only: [:email_delivery_not_found, :contact_blocker_confirmation]
 	
-	before_filter :load_from_email_delivery, only: [:new_from_email_delivery, :create_from_email_delivery]
+	before_action :load_from_email_delivery, only: [:new_from_email_delivery, :create_from_email_delivery]
 	
 	def new_from_email_delivery
 		if @contact_blocker

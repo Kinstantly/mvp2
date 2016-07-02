@@ -8,17 +8,17 @@ class ApplicationController < ActionController::Base
 	http_basic_authenticate_with name: ENV['BASIC_AUTH_NAME'], password: ENV['BASIC_AUTH_PASSWORD'], unless: :skip_http_basic_authentication if ENV['BASIC_AUTH_NAME'].present?
 	
 	# PaperTrail filter that assigns current_user.id to PaperTrail.whodunnit.
-	before_filter :set_paper_trail_whodunnit
+	before_action :set_paper_trail_whodunnit
 	
 	# Store referrer for use after sign-in or sign-up if so directed.
-	before_filter :store_referrer, only: :new
+	before_action :store_referrer, only: :new
 	
 	# Tell Devise which parameters can be updated in the User model.
-	before_filter :configure_permitted_devise_parameters, if: :devise_controller?
+	before_action :configure_permitted_devise_parameters, if: :devise_controller?
 	
 	# Set security-related HTTP headers for all responses.
 	# (For Rails 4, instead use config.action_dispatch.default_headers in config/application.rb.)
-	after_filter :set_default_response_headers
+	after_action :set_default_response_headers
 	
 	# What to do if access is denied or record not found.
 	# Prevent fishing for existing, but protected, records by making it look like the page was not found.

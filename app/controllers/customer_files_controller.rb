@@ -2,7 +2,7 @@ class CustomerFilesController < ApplicationController
 	
 	respond_to :html
 	
-	before_filter :authenticate_user!
+	before_action :authenticate_user!
 	
 	# Side effect: loads @customer_files or @customer_file as appropriate.
 	# e.g., for index action, @customer_files is set to CustomerFile.accessible_by(current_ability)

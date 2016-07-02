@@ -1,12 +1,12 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 	# Add this controller to the devise route if you need to customize the registration controller.
 
-	before_filter :confirm_two_factor_authenticated, except: [:new, :create, :cancel]
+	before_action :confirm_two_factor_authenticated, except: [:new, :create, :cancel]
 	
-	after_filter :after_registration, only: :create
+	after_action :after_registration, only: :create
 	
 	# User settings page should not be cached because it might display sensitive information.
-	after_filter :set_no_cache_response_headers, only: [:edit, :update]
+	after_action :set_no_cache_response_headers, only: [:edit, :update]
 
 	layout :registrations_layout
 

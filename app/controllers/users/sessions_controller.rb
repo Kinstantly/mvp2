@@ -2,7 +2,7 @@ class Users::SessionsController < Devise::SessionsController
 	layout :sessions_layout
 
 	respond_to :json, only: :create
-	before_filter :verify_auth_token, :only => :create, if: -> { request.format.json? }
+	before_action :verify_auth_token, :only => :create, if: -> { request.format.json? }
 
 	private
 	

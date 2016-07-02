@@ -1,15 +1,15 @@
 class ProfileClaimsController < ApplicationController
 	respond_to :html, :js
 	
-	before_filter :authenticate_user_on_public_site, except: [:new, :create]
-	before_filter :authenticate_user_on_private_site
+	before_action :authenticate_user_on_public_site, except: [:new, :create]
+	before_action :authenticate_user_on_private_site
 	
 	# Side effect: loads @profile_claims or @profile_claim as appropriate.
 	# e.g., for index action, @profile_claims is set to ProfileClaim.accessible_by(current_ability)
 	# For actions specified by the :new option, a new profile_claim will be built rather than fetching one.
 	load_and_authorize_resource
 
-	before_filter :load_profile, only: [:new, :create]
+	before_action :load_profile, only: [:new, :create]
 	
 	# GET /profile_claims/new
 	def new

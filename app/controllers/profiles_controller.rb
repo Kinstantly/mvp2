@@ -2,10 +2,10 @@ class ProfilesController < ApplicationController
 	
 	respond_to :html, :js, :json
 	
-	before_filter :authenticate_user_on_public_site, except: [:show, :show_claiming, :link_index, :search, :about_payments]
-	before_filter :authenticate_user_on_private_site, except: :show
+	before_action :authenticate_user_on_public_site, except: [:show, :show_claiming, :link_index, :search, :about_payments]
+	before_action :authenticate_user_on_private_site, except: :show
 	
-	before_filter :load_user_and_profile, only: [:view_my_profile, :edit_my_profile]
+	before_action :load_user_and_profile, only: [:view_my_profile, :edit_my_profile]
 	
 	# Side effect: loads @profiles or @profile as appropriate.
 	# e.g., for index action, @profiles is set to Profile.accessible_by(current_ability)
@@ -14,16 +14,16 @@ class ProfilesController < ApplicationController
 	skip_load_and_authorize_resource only: [:search, :autocomplete_specialty_name, :autocomplete_location_city]
 	
 	# Notify profile moderator when profile has been update by profile owner
-	after_filter :notify_profile_moderator, only: [:formlet_update, :photo_update]
+	after_action :notify_profile_moderator, only: [:formlet_update, :photo_update]
 	
 	# *After* profile is loaded:
 	#   ensure it has at least one location
 	#   set SEO description and keywords for profile show and edit pages
 	#   ensure there is a new review for the admin profile edit page
-	before_filter :require_location_in_profile, only: [:new, :edit, :edit_tab, :edit_my_profile, :edit_plain]
-	before_filter :seo_keywords, only: [:edit, :show, :edit_my_profile, :view_my_profile]
-	before_filter :seo_description, only: [:edit, :show, :edit_my_profile, :view_my_profile]
-	before_filter :require_new_review, only: :edit_plain
+	before_action :require_location_in_profile, only: [:new, :edit, :edit_tab, :edit_my_profile, :edit_plain]
+	before_action :seo_keywords, only: [:edit, :show, :edit_my_profile, :view_my_profile]
+	before_action :seo_description, only: [:edit, :show, :edit_my_profile, :view_my_profile]
+	before_action :require_new_review, only: :edit_plain
 	
 	# Autocomplete service and specialty names.
 	autocomplete :service, :name, full: true

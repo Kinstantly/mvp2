@@ -1,14 +1,14 @@
 class CategoriesController < ApplicationController
 	layout 'plain'
 	
-	before_filter :authenticate_user!
+	before_action :authenticate_user!
 	
 	# @category and @categories initialized by load_and_authorize_resource with cancan ability conditions.
 	load_and_authorize_resource
 	skip_load_resource only: :autocomplete_subcategory_name
 	
 	# This is dependent on @category (the resource) being loaded.
-	before_filter :load_category_subcategory, only: [:update_subcategory, :remove_subcategory]
+	before_action :load_category_subcategory, only: [:update_subcategory, :remove_subcategory]
 	
 	# Autocomplete subcategory names.
 	autocomplete :subcategory, :name, full: true

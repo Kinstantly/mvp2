@@ -2,14 +2,14 @@ class CustomersController < ApplicationController
 	
 	respond_to :html
 	
-	before_filter :authenticate_user!
+	before_action :authenticate_user!
 	
 	# Side effect: loads @customers or @customer as appropriate.
 	# e.g., for index action, @customers is set to Customer.accessible_by(current_ability)
 	# For actions specified by the :new option, a new customer will be built rather than fetching one.
 	load_and_authorize_resource
 
-	before_filter :load_profile_id
+	before_action :load_profile_id
 
 	# GET /authorize_payment/:profile_id
 	def authorize_payment

@@ -2,14 +2,14 @@ class ReviewsController < ApplicationController
 	
 	respond_to :html, :js
 	
-	before_filter :authenticate_user!
+	before_action :authenticate_user!
 	
 	# Side effect: loads @reviews or @review as appropriate.
 	# e.g., for index action, @reviews is set to Review.accessible_by(current_ability)
 	# For actions specified by the :new option, a new review will be built rather than fetching one.
 	load_and_authorize_resource new: :admin_create
 	
-	before_filter :load_profile, only: [:new, :create]
+	before_action :load_profile, only: [:new, :create]
 	
 	def admin_create
 		# @review initialized with parameter values by load_and_authorize_resource.

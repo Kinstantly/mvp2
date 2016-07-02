@@ -2,8 +2,8 @@ class ProviderSuggestionsController < ApplicationController
 	
 	respond_to :html, :js
 	
-	before_filter :authenticate_user_on_public_site, except: [:new, :create]
-	before_filter :authenticate_user_on_private_site
+	before_action :authenticate_user_on_public_site, except: [:new, :create]
+	before_action :authenticate_user_on_private_site
 	
 	# Side effect: loads @provider_suggestions or @provider_suggestion as appropriate.
 	# e.g., for index action, @provider_suggestions is set to ProviderSuggestion.accessible_by(current_ability)

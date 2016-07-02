@@ -1,6 +1,6 @@
 class Users::ConfirmationsController < Devise::ConfirmationsController
 	
-	before_filter :set_admin_mode
+	before_action :set_admin_mode
 	
 	# GET /resource/confirmation?confirmation_token=abcdef
 	def show

@@ -2,7 +2,7 @@ class StripeChargesController < ApplicationController
 	
 	respond_to :html
 	
-	before_filter :authenticate_user!
+	before_action :authenticate_user!
 	
 	# Side effect: loads @stripe_charges or @stripe_charge as appropriate.
 	# e.g., for index action, @stripe_charges is set to StripeCharge.accessible_by(current_ability)

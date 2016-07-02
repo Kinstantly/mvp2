@@ -2,12 +2,12 @@ class UsersController < ApplicationController
 	layout 'plain'
 	respond_to :js, only: :update_profile_help
 
-	before_filter :authenticate_user!
-	before_filter :set_up_user, only: [:edit_subscriptions, :update_subscriptions, :view_profile, :update_profile, :edit_profile]
+	before_action :authenticate_user!
+	before_action :set_up_user, only: [:edit_subscriptions, :update_subscriptions, :view_profile, :update_profile, :edit_profile]
 	load_and_authorize_resource
 	
 	# *After* profile is loaded, ensure it has at least one location.
-	before_filter :require_location_in_profile, only: [:edit_profile]
+	before_action :require_location_in_profile, only: [:edit_profile]
 	
 	def index
 		@order_by_options = { recent: 'recent', email: 'email' }

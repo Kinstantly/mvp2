@@ -1,7 +1,7 @@
 class StoryTeasersController < ApplicationController
 	layout 'plain'
 	
-	before_filter :authenticate_user!
+	before_action :authenticate_user!
 	
 	# @story_teaser and @story_teasers initialized by load_and_authorize_resource with cancan ability conditions.
 	load_and_authorize_resource

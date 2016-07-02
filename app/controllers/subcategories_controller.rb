@@ -1,14 +1,14 @@
 class SubcategoriesController < ApplicationController
 	layout 'plain'
 	
-	before_filter :authenticate_user!
+	before_action :authenticate_user!
 	
 	# @subcategory and @subcategories initialized by load_and_authorize_resource with cancan ability conditions.
 	load_and_authorize_resource
 	skip_load_resource only: :autocomplete_service_name
 	
 	# This is dependent on @subcategory (the resource) being loaded.
-	before_filter :load_subcategory_service, only: [:update_service, :remove_service]
+	before_action :load_subcategory_service, only: [:update_service, :remove_service]
 	
 	# Autocomplete service names.
 	autocomplete :service, :name, full: true
