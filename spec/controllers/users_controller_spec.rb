@@ -9,9 +9,9 @@ describe UsersController, :type => :controller do
 			end
 		end
 		
-		describe "PUT edit_subscriptions" do
+		describe "PATCH update_subscriptions" do
 			it "should require login" do
-				put :update_subscriptions, user: {parent_newsletters: '1'}
+				patch :update_subscriptions, user: {parent_newsletters: '1'}
 				expect(response).to redirect_to new_user_session_url
 			end
 		end
@@ -31,27 +31,27 @@ describe UsersController, :type => :controller do
 			end
 		end
 		
-		describe "PUT edit_subscriptions" do
+		describe "PATCH update_subscriptions" do
 			it "should return to the subscription management page after a successful update" do
-				put :update_subscriptions, user: {parent_newsletters: '1'}
+				patch :update_subscriptions, user: {parent_newsletters: '1'}
 				expect(response).to redirect_to edit_subscriptions_url
 			end
 			
 			it "should update the parent's subscriptions" do
-				put :update_subscriptions, user: {parent_newsletters: '1', provider_newsletters: '0'}
+				patch :update_subscriptions, user: {parent_newsletters: '1', provider_newsletters: '0'}
 				expect(assigns[:user].parent_newsletters).to be_truthy
 				expect(assigns[:user].provider_newsletters).to be_falsey
 			end
 			
 			it "should not update the email address" do
 				expect {
-					put :update_subscriptions, user: {email: 'wrong@example.org'}
+					patch :update_subscriptions, user: {email: 'wrong@example.org'}
 				}.to_not change { parent.reload.email }
 			end
 			
 			it "should not update the password" do
 				expect {
-					put :update_subscriptions, user: {password: 'noway2change', password_confirmation: 'noway2change'}
+					patch :update_subscriptions, user: {password: 'noway2change', password_confirmation: 'noway2change'}
 				}.to_not change { parent.reload.encrypted_password }
 			end
 		end
@@ -96,27 +96,27 @@ describe UsersController, :type => :controller do
 			end
 		end
 		
-		describe "PUT edit_subscriptions" do
+		describe "PATCH update_subscriptions" do
 			it "should return to the subscription management page after a successful update" do
-				put :update_subscriptions, user: {provider_newsletters: '1'}
+				patch :update_subscriptions, user: {provider_newsletters: '1'}
 				expect(response).to redirect_to edit_subscriptions_url
 			end
 			
 			it "should update the provider's subscriptions" do
-				put :update_subscriptions, user: {parent_newsletters: '0', provider_newsletters: '1'}
+				patch :update_subscriptions, user: {parent_newsletters: '0', provider_newsletters: '1'}
 				expect(assigns[:user].parent_newsletters).to be_falsey
 				expect(assigns[:user].provider_newsletters).to be_truthy
 			end
 			
 			it "should not update the email address" do
 				expect {
-					put :update_subscriptions, user: {email: 'wrong@example.org'}
+					patch :update_subscriptions, user: {email: 'wrong@example.org'}
 				}.to_not change { provider.reload.email }
 			end
 			
 			it "should not update the password" do
 				expect {
-					put :update_subscriptions, user: {password: 'noway2change', password_confirmation: 'noway2change'}
+					patch :update_subscriptions, user: {password: 'noway2change', password_confirmation: 'noway2change'}
 				}.to_not change { provider.reload.encrypted_password }
 			end
 		end
@@ -127,7 +127,7 @@ describe UsersController, :type => :controller do
 			end
 		end
 
-		describe "PUT update_profile_help" do
+		describe "PATCH update_profile_help" do
 			before(:example) do
 				provider.profile_help = true
 				provider.save
@@ -136,7 +136,7 @@ describe UsersController, :type => :controller do
 			it "successfully updates a profile_help attribute" do
 				id = provider.id
 				attrs = {profile_help: false}
-				put :update_profile_help, id: id, user: attrs, format: :js
+				patch :update_profile_help, id: id, user: attrs, format: :js
 				expect(assigns[:update_succeeded]).to be_truthy
 				expect(provider.reload.profile_help).to eq attrs[:profile_help]
 			end
@@ -144,14 +144,14 @@ describe UsersController, :type => :controller do
 			it "should not update user attributes other than profile_help" do
 				id = provider.id
 				email = 'billie@example.com'
-				put :update_profile_help,  id: id, user: {email: email, profile_help: false}, format: :js
+				patch :update_profile_help,  id: id, user: {email: email, profile_help: false}, format: :js
 				expect(provider.reload.email).not_to eq email
 				expect(provider.unconfirmed_email).not_to eq email
 			end
 
 			it "cannot update profile_help attribute of another user" do
 				other_user_id = FactoryGirl.create(:user).id
-				put :update_profile_help, id: other_user_id, user: FactoryGirl.attributes_for(:user, profile_help: true), format: :js
+				patch :update_profile_help, id: other_user_id, user: FactoryGirl.attributes_for(:user, profile_help: true), format: :js
 				expect(assigns[:update_succeeded]).to be_falsey
 			end
 		end

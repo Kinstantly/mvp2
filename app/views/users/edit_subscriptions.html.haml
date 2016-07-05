@@ -6,7 +6,7 @@
 		%br
 		%h1= t 'views.user.edit.subscriptions_form_header'
 		%h2= t 'views.user.edit.subscriptions_note'
-		= form_for @user, url: update_subscriptions_path, method: :put do |f|
+		= form_for @user, url: update_subscriptions_path do |f|
 			= f.error_messages
 			= f.check_box :parent_newsletters
 			= f.label :parent_newsletters, t('views.sign_up.parent_newsletters_prompt')

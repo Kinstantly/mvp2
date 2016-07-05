@@ -28,15 +28,15 @@ describe SubcategoriesController, :type => :routing do
 		end
 
 		it "routes to #add_service" do
-			expect(put("/subcategories/1/add_service")).to route_to("subcategories#add_service", :id => "1")
+			expect(patch("/subcategories/1/add_service")).to route_to("subcategories#add_service", :id => "1")
 		end
 
 		it "routes to #update_service" do
-			expect(put("/subcategories/1/update_service")).to route_to("subcategories#update_service", :id => "1")
+			expect(patch("/subcategories/1/update_service")).to route_to("subcategories#update_service", :id => "1")
 		end
 
 		it "routes to #remove_service" do
-			expect(put("/subcategories/1/remove_service")).to route_to("subcategories#remove_service", :id => "1")
+			expect(patch("/subcategories/1/remove_service")).to route_to("subcategories#remove_service", :id => "1")
 		end
 
 	end

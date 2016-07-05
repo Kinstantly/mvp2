@@ -180,54 +180,54 @@ describe CategoriesController, :type => :controller do
 			end
 		end
 		
-		describe "PUT add_subcategory" do
+		describe "PATCH add_subcategory" do
 			it "redirects to the category" do
-				put :add_subcategory, id: category.to_param, name: 'Australian Music Instruction'
+				patch :add_subcategory, id: category.to_param, name: 'Australian Music Instruction'
 				expect(response).to redirect_to(edit_category_url category)
 			end
 
 			it "adds a subcategory" do
 				subcategory = FactoryGirl.create :subcategory, name: 'Outback Activities'
-				put :add_subcategory, id: category.to_param, name: subcategory.name
+				patch :add_subcategory, id: category.to_param, name: subcategory.name
 				expect(assigns(:category).subcategories).to include(subcategory)
 			end
 
 			it "adds an existing subcategory" do
 				subcategory = FactoryGirl.create :subcategory, name: 'Desert Opera'
 				expect {
-					put :add_subcategory, id: category.to_param, name: subcategory.name
+					patch :add_subcategory, id: category.to_param, name: subcategory.name
 				}.to change(Subcategory, :count).by(0)
 			end
 
 			it "adds an existing subcategory with a display order" do
 				subcategory = FactoryGirl.create :subcategory, name: 'Violetta Divas'
 				order = 5
-				put :add_subcategory, id: category.to_param, name: subcategory.name, subcategory_display_order: order
+				patch :add_subcategory, id: category.to_param, name: subcategory.name, subcategory_display_order: order
 				expect(assigns(:category).category_subcategory(subcategory).subcategory_display_order).to eq(order)
 			end
 			
 			it "creates a subcategory" do
 				expect {
-					put :add_subcategory, id: category.to_param, name: 'Vegemite Recipes'
+					patch :add_subcategory, id: category.to_param, name: 'Vegemite Recipes'
 				}.to change(Subcategory, :count).by(1)
 			end
 			
 			it "adds a created subcategory" do
 				name = 'Didgeridoo Clubs'
-				put :add_subcategory, id: category.to_param, name: name
+				patch :add_subcategory, id: category.to_param, name: name
 				expect(assigns(:category).subcategories).to include(Subcategory.find_by_name name)
 			end
 			
 			it "does not add a duplicate subcategory" do
 				name = 'Roo Zoos'
 				expect {
-					put :add_subcategory, id: category.to_param, name: name
-					put :add_subcategory, id: category.to_param, name: name
+					patch :add_subcategory, id: category.to_param, name: name
+					patch :add_subcategory, id: category.to_param, name: name
 				}.to change(category.subcategories, :count).by(1)
 			end
 		end
 		
-		describe "PUT update_subcategory" do
+		describe "PATCH update_subcategory" do
 			let(:subcategory) { FactoryGirl.create :subcategory, name: 'Billabongs' }
 			let(:display_order) { 7 }
 			
@@ -236,17 +236,17 @@ describe CategoriesController, :type => :controller do
 			end
 			
 			it "redirects to the category" do
-				put :update_subcategory, id: category.to_param, subcategory_id: subcategory.to_param, subcategory_display_order: display_order
+				patch :update_subcategory, id: category.to_param, subcategory_id: subcategory.to_param, subcategory_display_order: display_order
 				expect(response).to redirect_to(edit_category_url category)
 			end
 			
 			it "modifies the display order of a subcategory" do
-				put :update_subcategory, id: category.to_param, subcategory_id: subcategory.to_param, subcategory_display_order: display_order
+				patch :update_subcategory, id: category.to_param, subcategory_id: subcategory.to_param, subcategory_display_order: display_order
 				expect(assigns(:category).category_subcategory(subcategory).subcategory_display_order).to eq(display_order)
 			end
 		end
 		
-		describe "PUT remove_subcategory" do
+		describe "PATCH remove_subcategory" do
 			let(:subcategory) { FactoryGirl.create :subcategory, name: 'How to Lean on the Everlasting Arms' }
 			
 			before(:example) do
@@ -254,12 +254,12 @@ describe CategoriesController, :type => :controller do
 			end
 			
 			it "redirects to the category" do
-				put :remove_subcategory, id: category.to_param, subcategory_id: subcategory.to_param
+				patch :remove_subcategory, id: category.to_param, subcategory_id: subcategory.to_param
 				expect(response).to redirect_to(edit_category_url category)
 			end
 
 			it "removes a subcategory" do
-				put :remove_subcategory, id: category.to_param, subcategory_id: subcategory.to_param
+				patch :remove_subcategory, id: category.to_param, subcategory_id: subcategory.to_param
 				expect(assigns(:category).subcategories).not_to include(subcategory)
 			end
 		end

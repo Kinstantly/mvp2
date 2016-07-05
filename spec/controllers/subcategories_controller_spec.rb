@@ -180,54 +180,54 @@ describe SubcategoriesController, :type => :controller do
 			end
 		end
 		
-		describe "PUT add_service" do
+		describe "PATCH add_service" do
 			it "redirects to the subcategory" do
-				put :add_service, id: subcategory.to_param, name: 'Didgeridoo instructor'
+				patch :add_service, id: subcategory.to_param, name: 'Didgeridoo instructor'
 				expect(response).to redirect_to(edit_subcategory_url subcategory)
 			end
 
 			it "adds a service" do
 				service = FactoryGirl.create :service, name: 'Guitar teacher'
-				put :add_service, id: subcategory.to_param, name: service.name
+				patch :add_service, id: subcategory.to_param, name: service.name
 				expect(assigns(:subcategory).services).to include(service)
 			end
 
 			it "adds an existing service" do
 				service = FactoryGirl.create :service, name: 'Guitar teacher'
 				expect {
-					put :add_service, id: subcategory.to_param, name: service.name
+					patch :add_service, id: subcategory.to_param, name: service.name
 				}.to change(Service, :count).by(0)
 			end
 
 			it "adds an existing service with a display order" do
 				service = FactoryGirl.create :service, name: 'Guitar teacher'
 				order = 5
-				put :add_service, id: subcategory.to_param, name: service.name, service_display_order: order
+				patch :add_service, id: subcategory.to_param, name: service.name, service_display_order: order
 				expect(assigns(:subcategory).service_subcategory(service).service_display_order).to eq(order)
 			end
 			
 			it "creates a service" do
 				expect {
-					put :add_service, id: subcategory.to_param, name: 'Piano teacher'
+					patch :add_service, id: subcategory.to_param, name: 'Piano teacher'
 				}.to change(Service, :count).by(1)
 			end
 			
 			it "adds a created service" do
 				name = 'Mandolin teacher'
-				put :add_service, id: subcategory.to_param, name: name
+				patch :add_service, id: subcategory.to_param, name: name
 				expect(assigns(:subcategory).services).to include(Service.find_by_name name)
 			end
 			
 			it "does not add a duplicate service" do
 				name = 'Unique music teacher'
 				expect {
-					put :add_service, id: subcategory.to_param, name: name
-					put :add_service, id: subcategory.to_param, name: name
+					patch :add_service, id: subcategory.to_param, name: name
+					patch :add_service, id: subcategory.to_param, name: name
 				}.to change(subcategory.services, :count).by(1)
 			end
 		end
 		
-		describe "PUT update_service" do
+		describe "PATCH update_service" do
 			let(:service) { FactoryGirl.create :service, name: 'Shpongle teacher' }
 			let(:display_order) { 7 }
 			
@@ -236,17 +236,17 @@ describe SubcategoriesController, :type => :controller do
 			end
 			
 			it "redirects to the subcategory" do
-				put :update_service, id: subcategory.to_param, service_id: service.to_param, service_display_order: display_order
+				patch :update_service, id: subcategory.to_param, service_id: service.to_param, service_display_order: display_order
 				expect(response).to redirect_to(edit_subcategory_url subcategory)
 			end
 			
 			it "modifies the display order of a service" do
-				put :update_service, id: subcategory.to_param, service_id: service.to_param, service_display_order: display_order
+				patch :update_service, id: subcategory.to_param, service_id: service.to_param, service_display_order: display_order
 				expect(assigns(:subcategory).service_subcategory(service).service_display_order).to eq(display_order)
 			end
 		end
 		
-		describe "PUT remove_service" do
+		describe "PATCH remove_service" do
 			let(:service) { FactoryGirl.create :service, name: 'Shpongle teacher' }
 			
 			before(:example) do
@@ -254,12 +254,12 @@ describe SubcategoriesController, :type => :controller do
 			end
 			
 			it "redirects to the subcategory" do
-				put :remove_service, id: subcategory.to_param, service_id: service.to_param
+				patch :remove_service, id: subcategory.to_param, service_id: service.to_param
 				expect(response).to redirect_to(edit_subcategory_url subcategory)
 			end
 
 			it "removes a service" do
-				put :remove_service, id: subcategory.to_param, service_id: service.to_param
+				patch :remove_service, id: subcategory.to_param, service_id: service.to_param
 				expect(assigns(:subcategory).services).not_to include(service)
 			end
 		end

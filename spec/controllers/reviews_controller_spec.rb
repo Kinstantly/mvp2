@@ -26,10 +26,10 @@ describe ReviewsController, :type => :controller do
 			end
 		end
 		
-		describe "PUT admin_update" do
+		describe "PATCH admin_update" do
 			it "cannot update a review via the admin action" do
 				body = 'Best sweet potato pecan pie in the county!'
-				put :admin_update, id: review_by_parent.id, review: review_attributes.merge(body: body)
+				patch :admin_update, id: review_by_parent.id, review: review_attributes.merge(body: body)
 				expect(response).not_to render_template('admin_update')
 				expect(Review.find(review_by_parent.id).body).not_to eq body
 			end
@@ -90,17 +90,17 @@ describe ReviewsController, :type => :controller do
 			end
 		end
 	
-		describe "PUT admin_update" do
+		describe "PATCH admin_update" do
 			it "updates a review" do
 				body = 'Durme hermosa donzella'
-				put :admin_update, id: review_by_parent.id, review: review_attributes.merge(body: body)
+				patch :admin_update, id: review_by_parent.id, review: review_attributes.merge(body: body)
 				expect(response).to render_template('admin_update')
 				expect(assigns[:review].body).to eq body
 			end
 			
 			it "updates a review with a new reviewer" do
 				email, username = 'amina@example.com', 'amina'
-				put :admin_update, id: review_by_parent.id,
+				patch :admin_update, id: review_by_parent.id,
 					review: review_attributes.merge(reviewer_email: email, reviewer_username: username)
 				expect(response).to render_template('admin_update')
 				expect(reviewer = assigns[:review].reviewer).not_to be_nil
@@ -110,7 +110,7 @@ describe ReviewsController, :type => :controller do
 		
 			it "does not modify the reviewer username" do
 				username = 'elvino'
-				put :admin_update, id: review_by_parent.id,
+				patch :admin_update, id: review_by_parent.id,
 					review: review_attributes.merge(reviewer_email: review_by_parent.reviewer.email, reviewer_username: username)
 				expect(response).to render_template('admin_update')
 				expect(reviewer = assigns[:review].reviewer).not_to be_nil

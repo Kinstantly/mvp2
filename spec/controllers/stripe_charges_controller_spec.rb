@@ -64,32 +64,32 @@ describe StripeChargesController, type: :controller, payments: true do
 				charge.save
 			end
 			
-			describe "PUT create_refund" do
+			describe "PATCH create_refund" do
 				it "applies a partial refund" do
-					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
+					patch :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
 					expect(assigns(:stripe_charge).amount_refunded_usd.cents).to eq refund_amount_cents
 				end
 
 				it "applies a full refund" do
-					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: charge_amount_usd}
+					patch :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: charge_amount_usd}
 					expect(assigns(:stripe_charge).amount_refunded_usd.cents).to eq charge_amount_cents
 				end
 				
 				it "applies multiple refunds" do
-					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
-					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
+					patch :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
+					patch :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
 					expect(assigns(:stripe_charge).amount_refunded_usd.cents).to eq(2 * refund_amount_cents)
 				end
 			
 				it "cannot refund more than the charge" do
-					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: '$400.00'}
+					patch :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: '$400.00'}
 					expect(response).to render_template :show
 					expect(assigns(:stripe_charge).amount_refunded_usd).to be_nil
 				end
 			
 				it "cannot do multiple refunds totalling more than the charge" do
-					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
-					put :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: charge_amount_usd}
+					patch :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: refund_amount_usd}
+					patch :create_refund, id: charge.id, stripe_charge: {refund_amount_usd: charge_amount_usd}
 					expect(response).to render_template :show
 					expect(assigns(:stripe_charge).amount_refunded_usd.cents).to eq refund_amount_cents
 				end

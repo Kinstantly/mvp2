@@ -39,7 +39,7 @@
 		- unless @stripe_charge.refunded
 			%div= t 'views.stripe_charge.refund.title', customer_name: customer_name
 			.generic_form
-				= form_for @stripe_charge, url: {action: :create_refund}, method: :put do |f|
+				= form_for @stripe_charge, url: {action: :create_refund} do |f|
 					= f.error_messages
 					.required_tip= t 'views.required'
 					.text_field

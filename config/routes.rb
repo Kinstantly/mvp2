@@ -57,7 +57,7 @@ Rails.application.routes.draw do
 	
 	# User can edit their subscriptions without entering their password, i.e., bypass Devise.
 	get 'edit_subscriptions' => 'users#edit_subscriptions', as: 'edit_subscriptions'
-	put 'update_subscriptions' => 'users#update_subscriptions'
+	patch 'update_subscriptions' => 'users#update_subscriptions'
 	
 	# DEPRECATED: When profile is accessed via user.
 	# match 'edit_user_profile' => 'users#edit_profile'
@@ -73,7 +73,7 @@ Rails.application.routes.draw do
 	# User can update profile_help attribute.
 	resources :users, only: [:index, :show] do
 		member do
-			put 'update_profile_help'
+			patch 'update_profile_help'
 		end
 	end
 	
@@ -125,9 +125,9 @@ Rails.application.routes.draw do
 	
 	resources :categories, except: :show do
 		member do
-			put :add_subcategory
-			put :update_subcategory
-			put :remove_subcategory
+			patch :add_subcategory
+			patch :update_subcategory
+			patch :remove_subcategory
 		end
 		collection do
 			get :autocomplete_subcategory_name
@@ -136,9 +136,9 @@ Rails.application.routes.draw do
 	
 	resources :subcategories, except: :show do
 		member do
-			put :add_service
-			put :update_service
-			put :remove_service
+			patch :add_service
+			patch :update_service
+			patch :remove_service
 		end
 		collection do
 			get :find_by_name
@@ -159,7 +159,7 @@ Rails.application.routes.draw do
 	
 	resources :reviews, except: [:new, :index] do
 		member do
-			put :admin_update
+			patch :admin_update
 		end
 		collection do
 			post :admin_create
@@ -194,14 +194,14 @@ Rails.application.routes.draw do
 	resources :customer_files, only: [:index, :show] do
 		member do
 			get :new_charge
-			put :create_charge
+			patch :create_charge
 		end
 	end
 	
 	# Charges made to a customer by a provider.
 	resources :stripe_charges, only: :show do
 		member do
-			put :create_refund
+			patch :create_refund
 			get :show_to_client
 		end
 	end

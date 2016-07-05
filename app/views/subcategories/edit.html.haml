@@ -30,13 +30,13 @@
 					- @subcategory.services.by_display_order.order_by_name.each do |record|
 						%tr
 							%td.miniform
-								= form_for @subcategory, url: {action: :update_service}, method: :put do |f|
+								= form_for @subcategory, url: {action: :update_service} do |f|
 									= f.submit t('views.save'), data: { disable_with: t('views.saving') }
 									= text_field_tag :service_display_order, @subcategory.service_subcategory(record).service_display_order, size: 4
 									= hidden_field_tag :service_id, record.to_param
 							%td= link_to record.name, edit_service_path(record), class: 'name'
 							%td.miniform
-								= form_for @subcategory, url: {action: :remove_service}, method: :put do |f|
+								= form_for @subcategory, url: {action: :remove_service} do |f|
 									= f.submit t('views.remove'), data: { disable_with: t('views.removing') }
 									= hidden_field_tag :service_id, record.to_param
 		%h1= t 'views.service.edit.add'
@@ -50,7 +50,7 @@
 			%tbody
 				%tr
 					%td.miniform
-						= form_for @subcategory, url: {action: :add_service}, method: :put do |f|
+						= form_for @subcategory, url: {action: :add_service} do |f|
 							= f.submit t('views.save'), data: { disable_with: t('views.saving') }
 							= text_field_tag :service_display_order, '', size: 4
 							= autocomplete_form_field :name, '', autocomplete_service_name_subcategories_path, placeholder: t('views.service.view.find_by_name'), size: 30

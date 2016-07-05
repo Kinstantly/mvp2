@@ -23,13 +23,13 @@
 					- @category.subcategories.by_display_order.order_by_name.each do |record|
 						%tr
 							%td.miniform
-								= form_for @category, url: {action: :update_subcategory}, method: :put do |f|
+								= form_for @category, url: {action: :update_subcategory} do |f|
 									= f.submit t('views.save'), data: { disable_with: t('views.saving') }
 									= text_field_tag :subcategory_display_order, @category.category_subcategory(record).subcategory_display_order, size: 4
 									= hidden_field_tag :subcategory_id, record.to_param
 							%td= link_to record.name, edit_subcategory_path(record), class: 'name'
 							%td.miniform
-								= form_for @category, url: {action: :remove_subcategory}, method: :put do |f|
+								= form_for @category, url: {action: :remove_subcategory} do |f|
 									= f.submit t('views.remove'), data: { disable_with: t('views.removing') }
 									= hidden_field_tag :subcategory_id, record.to_param
 		%h1= t 'views.subcategory.edit.add'
@@ -43,7 +43,7 @@
 			%tbody
 				%tr
 					%td.miniform
-						= form_for @category, url: {action: :add_subcategory}, method: :put do |f|
+						= form_for @category, url: {action: :add_subcategory} do |f|
 							= f.submit t('views.save'), data: { disable_with: t('views.saving') }
 							= text_field_tag :subcategory_display_order, '', size: 4
 							= autocomplete_form_field :name, '', autocomplete_subcategory_name_categories_path, placeholder: t('views.subcategory.view.find_by_name'), size: 30
