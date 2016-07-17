@@ -33,23 +33,27 @@ Feature: Sign up
 		Scenario: Username is optional for providers
 			When I sign up without a username
 			Then I see an unconfirmed account message
-	
+
+		Scenario: Newly registered user is sent to the confirmation page
+			When I sign up with email "asleepatthewheel@example.com"
+			Then I should see "look for the email we just sent you" on the page
+
 		Scenario: Newly registered user receives confirmation email
-			When I sign up with email "asleep@thewheel.wv.us"
-			Then "asleep@thewheel.wv.us" should receive an email with subject "Confirm your Kinstantly account"
+			When I sign up with email "asleepatthewheel@example.com"
+			Then "asleepatthewheel@example.com" should receive an email with subject "Confirm your Kinstantly account"
 	
 		@private_site
 		Scenario: Newly registered user receives no confirmation email when running as private site
-			When I sign up with email "asleep@thewheel.wv.us"
-			Then "asleep@thewheel.wv.us" should receive no email with subject "Confirm your Kinstantly account"
+			When I sign up with email "asleepatthewheel@example.com"
+			Then "asleepatthewheel@example.com" should receive no email with subject "Confirm your Kinstantly account"
 	
 		@private_site
 		Scenario: Newly registered user receives confirmation email after admin approves when running as private site
-			Given I sign up with email "asleep@thewheel.wv.us"
+			Given I sign up with email "asleepatthewheel@example.com"
 			When I am logged in as an administrator
-				And I visit the account page for "asleep@thewheel.wv.us"
+				And I visit the account page for "asleepatthewheel@example.com"
 				And I click on "Send confirmation instructions"
-			Then "asleep@thewheel.wv.us" should receive an email with subject "Confirm your Kinstantly account"
+			Then "asleepatthewheel@example.com" should receive an email with subject "Confirm your Kinstantly account"
 		
 		Scenario: Newly registered user must confirm
 			When I sign up with valid user data
@@ -58,11 +62,11 @@ Feature: Sign up
 			Then I see a confirmed account message
 
 		Scenario: Newly registered user receives another confirmation email when re-sent by admin
-			Given I sign up with email "asleep@thewheel.wv.us"
+			Given I sign up with email "asleepatthewheel@example.com"
 			When I am logged in as an administrator
-				And I visit the account page for "asleep@thewheel.wv.us"
+				And I visit the account page for "asleepatthewheel@example.com"
 				And I click on "Send confirmation instructions"
-			Then "asleep@thewheel.wv.us" should receive 2 emails with subject "Confirm your Kinstantly account"
+			Then "asleepatthewheel@example.com" should receive 2 emails with subject "Confirm your Kinstantly account"
 
 		Scenario: Newly registered and confirmed expert receives a welcome email
 			When I sign up with valid user data

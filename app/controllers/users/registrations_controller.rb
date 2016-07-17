@@ -101,7 +101,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 	end
 
 	def after_inactive_sign_up_path_for(resource)
-		path = if params[:in_blog].present?
+		path = if resource.is_provider?
+			provider_registration_preconfirmation_url
+		elsif params[:in_blog].present?
 			in_blog_awaiting_confirmation_path
 		else
 			member_awaiting_confirmation_path

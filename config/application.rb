@@ -21,6 +21,10 @@ module Mvp2
     # Query-string parameter placed in URLs to aid in tracking the profile-claiming funnel.
     config.claim_profile_tracking_parameter = {claim_profile: 't'}
     
+    # Where to send a provider just after they register but before they confirm their email address.
+    # This page should contain instructions for confirming their registration, e.g., check their email.
+    config.provider_registration_preconfirmation_url = ENV['PROVIDER_REGISTRATION_PRECONFIRMATION_URL'].presence || 'http://lp.kinstantly.com/pro-thanks'
+    
     # Stripe configuration (payment gateway).
     # If stripe[:live_mode] is true, we should only process Stripe events that have livemode == true.
     config.stripe = {

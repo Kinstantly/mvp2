@@ -33,12 +33,17 @@ Capybara::Webkit.configure do |config|
 	config.allow_unknown_urls
 end
 
+# Cucumber/Capybara doesn't really work with redirecting to an offsite page.
+# So test with a local page; specifying the path is sufficient.
+Rails.configuration.provider_registration_preconfirmation_url = '/member/awaiting_confirmation'
+
 # Make sure the search index is clean before running a search scenario.
 Before('@search') do
 	Sunspot.remove_all!
 end
 
 Before do
+	# MailChimp API mocks
 	set_up_gibbon_mocks
 end
 

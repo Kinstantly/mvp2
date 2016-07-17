@@ -64,21 +64,25 @@ describe "User registration and editing", :type => :request do
 	context "registering as a provider" do
 		let(:provider_attributes) { FactoryGirl.attributes_for :provider }
 		let(:provider_sign_up_attributes) { {
+			is_provider: '1',
 			email: provider_attributes[:email],
 			password: provider_attributes[:password],
 			password_confirmation: provider_attributes[:password_confirmation]
 		} }
+		let(:confirmation_url) { 
+			provider_registration_preconfirmation_url + '?email_pending_confirmation=t&provider=t'
+		}
 		
 		it "redirects to the sign-up confirmation page" do
 			post user_registration_path, user: provider_sign_up_attributes
-			expect(response).to redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
+			expect(response).to redirect_to confirmation_url
 		end
 		
 		context "coming from the blog" do
 			it "redirects to the sign-up confirmation page" do
 				get new_user_registration_path(blog: 't')
 				post user_registration_path, user: provider_sign_up_attributes
-				expect(response).to redirect_to member_awaiting_confirmation_url email_pending_confirmation: 't'
+				expect(response).to redirect_to confirmation_url
 			end
 		end
 	end

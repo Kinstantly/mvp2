@@ -8,6 +8,10 @@ module SiteConfigurationHelpers
 			Rails.configuration.claim_profile_tracking_parameter
 		end
 		
+		def provider_registration_preconfirmation_url
+			Rails.configuration.provider_registration_preconfirmation_url
+		end
+		
 		def stripe_live_mode?
 			Rails.configuration.stripe[:live_mode]
 		end
