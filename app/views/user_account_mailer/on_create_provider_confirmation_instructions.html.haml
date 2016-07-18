@@ -1,12 +1,11 @@
-%h2{style: 'font-size:22px;color:#f64f6f;'}
-	Confirm your Kinstantly account
 -#= "Hi #{@resource.username.presence || 'there'},"
-%br
-You're just a click away from building your free profile on Kinstantly!
-%br
+%span{style: 'font-size:16px;'}
+	You're just a click away from creating your free profile on Kinstantly&mdash;and more referrals!
+	%br
 %p{style: 'margin-top:25px;margin-bottom:20px;'}
 	= link_to 'Confirm email address', confirmation_url(@resource, confirmation_token: @token), style: 'background-color:#e75370;border-radius:4px;color:#fff;font-size:16px;display:inline-block;font-weight:bold;padding:10px 25px;text-decoration:none;'
-%br
-Thanks,
-%br
-&ndash; The Kinstantly Team
+%span{style: 'font-size:16px;'}
+	%br
+	Thanks,
+	%br
+	&ndash; The Kinstantly Team

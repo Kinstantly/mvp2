@@ -1000,28 +1000,30 @@ en:
     tagline: "Let’s talk..."
     emails:
       info:
-          display: 'Feedback or General Questions'
-          value: 'info'
+        display: 'Feedback or General Questions'
+        value: 'info'
       support:
-          display: 'Support Questions'
-          value: 'support'
+        display: 'Support Questions'
+        value: 'support'
       privacy:
-          display: 'Privacy Questions'
-          value: 'privacy'
+        display: 'Privacy Questions'
+        value: 'privacy'
+      team:
+        value: 'team'
     social:
       twitter:
-          display: 'Follow us on Twitter'
-          value: 'http://twitter.com/Kinstantly'
+        display: 'Follow us on Twitter'
+        value: 'http://twitter.com/Kinstantly'
       facebook:
-          display: 'Like us on Facebook'
-          value: 'http://facebook.com/pages/Kinstantly/144758479018753'
+        display: 'Like us on Facebook'
+        value: 'http://facebook.com/pages/Kinstantly/144758479018753'
       google:
-          display: 'Add us to your Google+ circle'
-          value: '#'
+        display: 'Add us to your Google+ circle'
+        value: '#'
       newsletter:
-          display_html: "Get our <a href='#' title='Newsletter for parents'>newsletter for parents</a> or <a href='#' title='Newsletter for providers'>newsletter for providers</a>"
+        display_html: "Get our <a href='#' title='Newsletter for parents'>newsletter for parents</a> or <a href='#' title='Newsletter for providers'>newsletter for providers</a>"
       blog:
-          display_html: "Read our blogs: <a href='#' title='Kinstant Messages'>Kinstant Messages</a> and <a href='#' title='TK'>TK</a>"
+        display_html: "Read our blogs: <a href='#' title='Kinstant Messages'>Kinstant Messages</a> and <a href='#' title='TK'>TK</a>"
   helpers:
     label:
       profile_claim:

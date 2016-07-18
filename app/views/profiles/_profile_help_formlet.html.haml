@@ -1,4 +1,3 @@
-- info_email = "#{t('contact.emails.info.value')}@#{t('email_domain')}"
 = link_to "Profile help", "#", class: 'profile-help-link editable'
 .ui-helper-clearfix
 .popover
@@ -16,19 +15,20 @@
 			Here are 5 tips to get you started:
 		%ol
 			%li
-				Be sure to hit the save button at the bottom of the pop-up window for each field you add or edit &mdash; so you can save as you go and come back to finish later.
+				Be sure to hit the save button at the bottom of the pop-up window for each field you add or edit&mdash;so you can save as you go.
 			%li
-				Start at the top of your profile, with your name, website (if any), and phone number. This means that parents and prospective clients can get in touch with you even while you’re still working on the rest of your profile.
+				Start at the top of your profile, with your name, website (if any), and phone number. That will allow prospective clients to get in touch with you even while you're completing the rest of your profile.
 			%li
-				Add your physical address (or at least a city, state, and ZIP code), so a map will appear with your profile -- and so you'll appear in local search results.
+				Add your physical address (or at least a city, state, and ZIP code), so a map will appear with your profile&mdash;and so you'll appear in local search results.
 			%li
 				Add a photo of you (parents tell us they like warm and smiling photos best).
 			%li
-				Take advantage of our Facebook "like" button and ratings and reviews to gather support from clients who love you!
+				:plain
+					Under Availability/service area, be sure to mention if you're available remotely by phone, Skype, etc. That will expand your pool of potential referrals to <em>all</em> our visitors from around the world (not just your local area).
 		%p
-			Questions? Concerns? Comments? Please email us at
+			Questions? Email us at
 			= succeed '.' do
-				= mail_to info_email
+				= mail_to "#{t('contact.emails.team.value')}@#{t('email_domain')}"
 		%p
 			= f.submit t('views.profile.edit.profile_help_close_button_2'), data: { disable_with: t('views.profile.edit.profile_help_close_button_2') }, onclick: '$(this).submit();my_vars.f.close_formlets();', class: 'save regular dont_popover'
 			= f.submit t('views.profile.edit.profile_help_close_button_1'), data: { disable_with: t('views.profile.edit.profile_help_close_button_1') }, onclick: '$(this).submit();my_vars.f.close_formlets();', class: 'save mobile dont_popover'
