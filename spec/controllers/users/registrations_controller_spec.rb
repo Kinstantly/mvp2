@@ -181,9 +181,12 @@ describe Users::RegistrationsController, :type => :controller do
 				end
 			
 				let(:provider) { User.find_by_email email }
+				let(:confirmation_url) { 
+					"#{provider_registration_preconfirmation_url}?email_pending_confirmation=t&parent_newsletters=t&provider=t"
+				}
 			
 				it "displays confirmation notice with tracking parameters" do
-					expect(response).to redirect_to '/member/awaiting_confirmation?email_pending_confirmation=t&parent_newsletters=t&provider=t'
+					expect(response).to redirect_to confirmation_url
 				end
 				
 				it "has a profile" do

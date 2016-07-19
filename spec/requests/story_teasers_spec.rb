@@ -7,7 +7,7 @@ RSpec.describe 'StoryTeasers', :type => :request do
 	
 	let(:story_teaser) { FactoryGirl.create :story_teaser }
 	
-	describe 'GET /story_teasers' do
+	describe 'story_teasers requests' do
 		let(:admin_user) { FactoryGirl.create :admin_user, email: 'elina@example.com' }
 
 		before (:each) do
@@ -41,12 +41,12 @@ RSpec.describe 'StoryTeasers', :type => :request do
 		end
 		
 		it 'requests update of a story teaser' do
-			put story_teasers_path, id: story_teaser, story_teaser: valid_attributes
+			patch story_teaser_path(story_teaser), story_teaser: valid_attributes
 			expect(response).to have_http_status(302) # redirects to show view
 		end
 		
-		it 'requests update of a story teaser' do
-			delete story_teasers_path, id: story_teaser
+		it 'requests deletion of a story teaser' do
+			delete story_teaser_path story_teaser
 			expect(response).to have_http_status(302) # redirects to list view
 		end
 	end
