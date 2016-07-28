@@ -18,7 +18,7 @@ class ContactBlocker < ActiveRecord::Base
 	# Additionally, if this contact_blocker is associated with an email_delivery and the given email is different from the email_delivery recipient, also block that recipient.
 	# Prevent duplicates.
 	def update_attributes_from_email_delivery(values)
-		if self.class.find_by_email(values[:email]) || update_attributes(values)
+		if self.class.find_by_email_ignore_case(values[:email]) || update_attributes(values)
 			if email_delivery
 				email_delivery.contact_blockers.where(email: email_delivery.recipient).first_or_create
 			else
@@ -29,10 +29,15 @@ class ContactBlocker < ActiveRecord::Base
 		end
 	end
 	
+	# Class method to find the first matching contact blocker by email address while ignoring case.
+	def self.find_by_email_ignore_case(email)
+		where('lower(email) = ?', email.downcase).first
+	end
+	
 	private
 	
 	def remove_email_subscriptions
-		user = User.find_by_email email
+		user = User.find_by_email_ignore_case email
 		user.remove_email_subscriptions if user
 	end
 end

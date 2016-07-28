@@ -46,6 +46,9 @@ class Ability
 		# In response to an email we sent, any one can request we never contact them.
 		alias_action :new_from_email_delivery, to: :create_from_email_delivery
 		can :create_from_email_delivery, ContactBlocker
+		# Any one can request we never contact them but just supplying their email address.
+		alias_action :new_from_email_address, to: :create_from_email_address
+		can :create_from_email_address, ContactBlocker
 		
 		# Any confirmed user can become a customer.
 		if user.confirmed?

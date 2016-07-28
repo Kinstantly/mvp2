@@ -1,6 +1,6 @@
 = render partial: 'email_delivery_info'
 
-= simple_form_for @contact_blocker do |f|
+= simple_form_for @contact_blocker, defaults: { input_html: { size: '60' } } do |f|
 	= f.error_notification
 	= f.input :email
 	= f.button :submit

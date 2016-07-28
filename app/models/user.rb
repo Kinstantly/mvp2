@@ -212,7 +212,7 @@ class User < ActiveRecord::Base
 	
 	# True if we are not allowed to contact this user (most likely because they unsubscribed their email address).
 	def contact_is_blocked?
-		email.present? and ContactBlocker.find_by_email(email).present?
+		email.present? and ContactBlocker.find_by_email_ignore_case(email).present?
 	end
 
 	# Returns the name of the attribute that holds the user's leid (see below) for the given list.
@@ -343,7 +343,7 @@ class User < ActiveRecord::Base
 	
 	# Public class methods.
 	#
-	# For methods whose behavior is identical in the superclass when not running as a private site,
+	# Includes methods whose behavior is identical in the superclass when not running as a private site,
 	# I initially tried only defining the methods here when running_as_private_site? is true.
 	# But then the methods were not defined in Rspec for private_site specs (the test environment caches classes).
 	# You can fix this by reloading the User class in the private_site around hook, but that seemed risky.
@@ -351,6 +351,11 @@ class User < ActiveRecord::Base
 	# within the method.  Bleh.
 	class << self
 		
+		# Class method to find the first matching user by email address while ignoring case.
+		def find_by_email_ignore_case(email)
+			where('lower(email) = ?', email.downcase).first
+		end
+	
 		# Generate a password that is not too long.
 		def generate_password
 			gen = Random.new

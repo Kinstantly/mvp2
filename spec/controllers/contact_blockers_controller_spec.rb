@@ -241,4 +241,102 @@ describe ContactBlockersController, :type => :controller do
 		end
 	end
 
+	context 'recipient opting out with no email delivery record, i.e., delivered via an independent system' do
+		describe "GET new_from_email_address" do
+			it "assigns a new contact_blocker as @contact_blocker" do
+				get :new_from_email_address, delivered_email_address: valid_attributes[:email]
+				expect(assigns(:contact_blocker)).to be_a_new(ContactBlocker)
+			end
+
+			it "assigns an existing contact_blocker as @contact_blocker if email address is already blocked" do
+				get :new_from_email_address, delivered_email_address: contact_blocker.email
+				expect(assigns(:contact_blocker)).to eq contact_blocker
+			end
+
+			it "assigns new contact_blocker with the email address" do
+				get :new_from_email_address, delivered_email_address: valid_attributes[:email]
+				expect(assigns(:contact_blocker).email).to eq valid_attributes[:email]
+			end
+
+			it "assigns new contact_blocker with the email address using short parameter name" do
+				get :new_from_email_address, e: valid_attributes[:email]
+				expect(assigns(:contact_blocker).email).to eq valid_attributes[:email]
+			end
+
+			it 'is OK if no email address was supplied' do
+				get :new_from_email_address
+				expect(assigns(:contact_blocker).email).to be_blank
+			end
+		end
+
+		describe "POST create_from_email_address" do
+			describe "with valid params" do
+				it "creates one new ContactBlocker if recipient is blocking the email delivered to" do
+					expect {
+						post :create_from_email_address, delivered_email_address: valid_attributes[:email], contact_blocker: valid_attributes
+					}.to change(ContactBlocker, :count).by(1)
+				end
+
+				it "creates a ContactBlocker even if the email address was not supplied in the URL" do
+					expect {
+						post :create_from_email_address, contact_blocker: valid_attributes
+					}.to change(ContactBlocker, :count).by(1)
+				end
+
+				it "creates two new ContactBlockers if recipient is blocking an email other than the one delivered to" do
+					expect {
+						post :create_from_email_address, delivered_email_address: valid_attributes[:email], contact_blocker: valid_attributes.merge(email: 'Other'+valid_attributes[:email])
+					}.to change(ContactBlocker, :count).by(2)
+				end
+
+				it "creates only one ContactBlocker for email addresses that differ only in case" do
+					expect {
+						post :create_from_email_address, contact_blocker: valid_attributes
+						post :create_from_email_address, contact_blocker: valid_attributes.merge(email: valid_attributes[:email].upcase)
+					}.to change(ContactBlocker, :count).by(1)
+				end
+
+				it "assigns a newly created contact_blocker as @contact_blocker" do
+					post :create_from_email_address, delivered_email_address: valid_attributes[:email], contact_blocker: valid_attributes
+					expect(assigns(:contact_blocker)).to be_a(ContactBlocker)
+					expect(assigns(:contact_blocker)).to be_persisted
+				end
+
+				it "redirects to the confirmation view" do
+					post :create_from_email_address, delivered_email_address: valid_attributes[:email], contact_blocker: valid_attributes
+					expect(response).to redirect_to contact_blocker_confirmation_url
+				end
+			end
+
+			describe 'with invalid params' do
+				let(:invalid_attributes) { valid_attributes.merge(email: '@example.com') }
+				
+				it 'renders the opt-out form when the posted URL specifies an invalid email address' do
+					post :create_from_email_address, delivered_email_address: invalid_attributes[:email], contact_blocker: invalid_attributes
+					expect(response).to render_template 'new_from_email_address'
+				end
+				
+				it 'renders the opt-out form when the user enters an invalid email address' do
+					post :create_from_email_address, delivered_email_address: valid_attributes[:email], contact_blocker: invalid_attributes
+					expect(response).to render_template 'new_from_email_address'
+				end
+				
+				it 'opts out the entered email even when the posted URL specifies an invalid email address' do
+					post :create_from_email_address, delivered_email_address: invalid_attributes[:email], contact_blocker: valid_attributes
+					expect(response).to redirect_to contact_blocker_confirmation_url
+				end
+			end
+		end
+
+		describe "PATCH create_from_email_address" do
+			describe "when the email address already has a contact blocker" do
+				it "creates one new ContactBlocker if recipient is blocking the email delivered to" do
+					expect {
+						patch :create_from_email_address, delivered_email_address: valid_attributes[:email], contact_blocker: valid_attributes
+					}.to change(ContactBlocker, :count).by(1)
+				end
+			end
+		end
+
+	end
 end

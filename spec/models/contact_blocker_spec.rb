@@ -64,6 +64,13 @@ describe ContactBlocker, :type => :model do
 		}.to change(ContactBlocker, :count).by(2)
 	end
 	
+	it 'can ignore case when finding an existing contact blocker record' do
+		email = 'Junior_Brown@example.org'
+		contact_blocker.update_attributes email: email.downcase
+		expect(ContactBlocker.find_by_email email).to be_nil
+		expect(ContactBlocker.find_by_email_ignore_case email).to be_present
+	end
+	
 	context "removes existing mailing list subscriptions" do
 		it "checks for subscriptions" do
 			expect(contact_blocker).to receive :remove_email_subscriptions

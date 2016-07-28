@@ -649,7 +649,7 @@ class Profile < ActiveRecord::Base
 		elsif contact_blockers.present?
 			emails = contact_blockers.map(&:email).join(', ')
 			errors.add :invitation_email, I18n.t('models.profile.invitation_email.contact_blocked_by_invitee', emails: emails)
-		elsif (contact_blocker = ContactBlocker.find_by_email invitation_email)
+		elsif (contact_blocker = ContactBlocker.find_by_email_ignore_case invitation_email)
 			errors.add :invitation_email, I18n.t('models.profile.invitation_email.contact_blocked_for', email: contact_blocker.email)
 		end
 		errors.empty?

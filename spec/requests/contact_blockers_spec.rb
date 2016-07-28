@@ -18,4 +18,41 @@ describe "ContactBlockers", :type => :request do
 			expect(response.redirect_url).to eq contact_blocker_confirmation_url
 		end
 	end
+	
+	describe "request prefilled opt-out form" do
+		it "responds successfully" do
+			get new_contact_blocker_from_email_address_path(delivered_email_address: valid_attributes[:email])
+			expect(response.status).to eq(200)
+		end
+	end
+	
+	describe "request prefilled opt-out form with short parameter name" do
+		it "responds successfully" do
+			get new_contact_blocker_from_email_address_path(e: valid_attributes[:email])
+			expect(response.status).to eq(200)
+		end
+	end
+
+	describe "submit prefilled opt-out form" do
+		it "responds successfully" do
+			post create_contact_blocker_from_email_address_path(delivered_email_address: valid_attributes[:email]), contact_blocker: valid_attributes
+			expect(response.status).to eq(302)
+			expect(response.redirect_url).to eq contact_blocker_confirmation_url
+		end
+	end
+	
+	describe "request opt-out form" do
+		it "responds successfully" do
+			get new_contact_blocker_from_email_address_path
+			expect(response.status).to eq(200)
+		end
+	end
+
+	describe "submit opt-out form" do
+		it "responds successfully" do
+			post create_contact_blocker_from_email_address_path, contact_blocker: valid_attributes
+			expect(response.status).to eq(302)
+			expect(response.redirect_url).to eq contact_blocker_confirmation_url
+		end
+	end
 end

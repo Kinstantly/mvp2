@@ -178,6 +178,9 @@ Rails.application.routes.draw do
 	post 'noemail/:email_delivery_token' => 'contact_blockers#create_from_email_delivery', as: :create_contact_blocker_from_email_delivery
 	get 'noemailerror' => 'contact_blockers#email_delivery_not_found', as: :email_delivery_not_found
 	get 'noemailconfirmation' => 'contact_blockers#contact_blocker_confirmation', as: :contact_blocker_confirmation
+	get 'optout' => 'contact_blockers#new_from_email_address', as: :new_contact_blocker_from_email_address
+	post 'optout' => 'contact_blockers#create_from_email_address', as: :create_contact_blocker_from_email_address
+	patch 'optout' => 'contact_blockers#create_from_email_address'
 	
 	# Stripe web hooks
 	post 'magenta/:provider_id' => 'stripe#webhook'

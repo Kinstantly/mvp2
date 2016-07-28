@@ -47,8 +47,7 @@ class MailchimpWebhookController < ApplicationController
 				user_unsubscribed = (r['success_count'] == 1 && r['data'][0]['status'] == 'unsubscribed')
 				user_deleted = r['error_count'] == 1
 				if user_unsubscribed || user_deleted
-					if User.exists?(email: subscriber_email)
-						user = User.find_by_email(subscriber_email)
+					if (user = User.find_by_email_ignore_case(subscriber_email))
 						user.process_unsubscribe_event(list_name)
 					end
 					AdminMailer.newsletter_unsubscribe_alert(list_name, subscriber_email).deliver_now

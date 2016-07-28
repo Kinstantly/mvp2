@@ -14,6 +14,10 @@ Given /^I opted out of receiving email from us$/ do
 	FactoryGirl.create :contact_blocker, email: @user.email
 end
 
+Given /^I click an optout link with the email address "(.*?)"$/ do |email|
+	visit new_contact_blocker_from_email_address_path e: email
+end
+
 ### WHEN ###
 
 When /^I click on the unsubscribe link in the unclaimed profile invitation$/ do
@@ -25,6 +29,22 @@ When /^I click on a bad unsubscribe link in the unclaimed profile invitation$/ d
 end
 
 When /^I click submit on the unsubscribe page$/ do
+	click_button I18n.t('views.contact_blocker.edit.unsubscribe_submit')
+end
+
+When /^I visit the optout page$/ do
+	visit new_contact_blocker_from_email_address_path
+end
+
+When /^I visit the prefilled optout page$/ do
+	visit new_contact_blocker_from_email_address_path e: @user.email
+end
+
+When /^I enter my email address on the optout page$/ do
+	fill_in 'Email address', with: @user.email
+end
+
+When /^I click submit on the optout page$/ do
 	click_button I18n.t('views.contact_blocker.edit.unsubscribe_submit')
 end
 
@@ -44,4 +64,12 @@ end
 
 Then /^I should see no invitation link$/ do
 	expect(page).to_not have_content I18n.t('views.profile.view.invitation_to_claim_link')
+end
+
+Then /^I should be blocked from receiving further email$/ do
+  expect(ContactBlocker.find_by_email @user.email).to be_present
+end
+
+Then /^"(.*?)" should be blocked from receiving further email$/ do |email|
+  expect(ContactBlocker.find_by_email email).to be_present
 end

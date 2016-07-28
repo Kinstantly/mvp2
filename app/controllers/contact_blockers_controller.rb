@@ -1,16 +1,17 @@
 class ContactBlockersController < ApplicationController
 	respond_to :html
 	
-	before_action :authenticate_user!, except: [:new_from_email_delivery, :create_from_email_delivery, :email_delivery_not_found, :contact_blocker_confirmation]
+	before_action :authenticate_user!, except: [:new_from_email_delivery, :create_from_email_delivery, :new_from_email_address, :create_from_email_address, :email_delivery_not_found, :contact_blocker_confirmation]
 	
 	# Side effect: loads @contact_blockers or @contact_blocker as appropriate.
 	# e.g., for index action, @contact_blockers is set to ContactBlocker.accessible_by(current_ability)
 	# For actions specified by the :new option, a new contact_blocker will be built rather than fetching one.
 	load_and_authorize_resource
-	skip_load_resource only: [:new_from_email_delivery, :create_from_email_delivery]
+	skip_load_resource only: [:new_from_email_delivery, :create_from_email_delivery, :new_from_email_address, :create_from_email_address]
 	skip_load_and_authorize_resource only: [:email_delivery_not_found, :contact_blocker_confirmation]
 	
 	before_action :load_from_email_delivery, only: [:new_from_email_delivery, :create_from_email_delivery]
+	before_action :load_with_delivered_email_address, only: [:new_from_email_address, :create_from_email_address]
 	
 	def new_from_email_delivery
 		if @contact_blocker
@@ -29,6 +30,25 @@ class ContactBlockersController < ApplicationController
 			end
 		else
 			redirect_to email_delivery_not_found_url
+		end
+	end
+	
+	def new_from_email_address
+		respond_with @contact_blocker
+	end
+	
+	def create_from_email_address
+		completed = if @contact_blocker.email == contact_blocker_params[:email]
+			@contact_blocker.save
+		else # The user entered a different email address; block both email addresses.
+			@contact_blocker.save # If failed, ignore because user can't correct this email address.
+			@contact_blocker = with_email_address contact_blocker_params[:email]
+			@contact_blocker.save
+		end
+		if completed
+			redirect_to contact_blocker_confirmation_url
+		else
+			render action: :new_from_email_address
 		end
 	end
 	
@@ -87,6 +107,14 @@ class ContactBlockersController < ApplicationController
 		if (token = params[:email_delivery_token]).present? and (email_delivery = EmailDelivery.find_by_token token)
 			@contact_blocker = email_delivery.contact_blockers.build email: email_delivery.recipient
 		end
+	end
+	
+	def load_with_delivered_email_address
+		@contact_blocker = with_email_address (params[:delivered_email_address].presence || params[:e])
+	end
+	
+	def with_email_address(email)
+		(email.present? && ContactBlocker.find_by_email_ignore_case(email)) || ContactBlocker.new(email: email)
 	end
 	
 	# Use this method to whitelist the permissible parameters. Example:
