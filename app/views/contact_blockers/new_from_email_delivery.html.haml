@@ -5,7 +5,7 @@
 			= f.error_messages
 			
 			.text_field
-				= f.label :email
+				= f.label :email, "#{ContactBlocker.human_attribute_name :email}:"
 				%br
 				= f.email_field :email
 				

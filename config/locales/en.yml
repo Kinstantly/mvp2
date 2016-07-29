@@ -387,17 +387,18 @@ en:
       name: 'Contact opt-out'
       view:
         title: 'Contact opt-out for %{email}'
-        unsubscribe_confirmation_html: '<p>Unsubscribe successful &mdash; you will no longer receive marketing emails from Kinstantly.</p><br /><p>Thank you.</p>'
+        unsubscribe_confirmation_title: 'Done!'
+        unsubscribe_confirmation_html: "<p>You've successfully unsubscribed. You'll no longer receive marketing emails from Kinstantly.</p><br /><p>Thank you.</p>"
         unsubscribe_error: "Sorry. We didn't understand your request. If you want to get off our mailing list, please send email to"
         unsubscribe_link: 'Unsubscribe from all future emails'
       edit:
         confirm_destroy: 'Are you sure you want to remove the opt-out record for %{email}?'
         create: 'Create a new contact opt-out'
         title: 'Edit contact opt-out for %{email}'
-        unsubscribe_note: 'Unsubscribe from all Kinstantly marketing communications.'
+        unsubscribe_note: 'Unsubscribe me from all Kinstantly marketing emails.'
         unsubscribe_submit: 'Unsubscribe'
         unsubscribe_submit_disable: 'Unsubscribing...'
-        unsubscribe_title: 'Unsubscribe from Marketing Messages'
+        unsubscribe_title: 'Unsubscribe me from marketing emails'
     customer:
       edit:
         add_card: 'Add card'
