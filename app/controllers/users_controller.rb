@@ -32,7 +32,7 @@ class UsersController < ApplicationController
 			redirect_to action: :edit_subscriptions
 		else
 			set_flash_message :alert, :subscriptions_update_error
-			render action: :edit_subscriptions
+			render action: :edit_subscriptions, layout: 'interior'
 		end
 	end
 
