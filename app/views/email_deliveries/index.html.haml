@@ -34,7 +34,7 @@
 								= new_contact_blocker_from_email_address_url e: email_delivery.recipient
 						%td
 							- email_delivery.contact_blockers.order(:id).each do |record|
-								= link_to record.email, edit_contact_blocker_path(record)
+								= link_to record.email, contact_blocker_path(record)
 						%td= link_to email_delivery.profile.display_name_otherwise_company, profile_path(email_delivery.profile) if email_delivery.profile
 						%td= email_delivery.sender
 						%td= email_delivery.email_type

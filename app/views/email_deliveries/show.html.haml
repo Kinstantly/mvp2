@@ -17,7 +17,7 @@
 			%td= EmailDelivery.human_attribute_name :contact_blockers
 			%td
 				- @email_delivery.contact_blockers.order(:id).each do |record|
-					= link_to record.email, edit_contact_blocker_path(record)
+					= link_to record.email, contact_blocker_path(record)
 					%br
 		%tr
 			%td= EmailDelivery.human_attribute_name :profile

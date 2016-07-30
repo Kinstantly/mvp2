@@ -1,7 +1,16 @@
 - contact_blocker ||= @contact_blocker
 - if (email_delivery = contact_blocker.try :email_delivery)
-	%p= profile_invitation_to_claim_info email_delivery
-	- if profile = email_delivery.profile
+	- if email_delivery.email_type == 'invitation'
 		%p
-			= "#{EmailDelivery.human_attribute_name :profile}:"
-			= link_to profile.display_name_or_company, profile_path(profile)
+			= profile_invitation_to_claim_info email_delivery
+			- if can? :manage, email_delivery
+				= link_to t('views.click_to_view'), email_delivery
+		- if profile = email_delivery.profile
+			%p
+				= "#{EmailDelivery.human_attribute_name :profile}:"
+				= link_to profile.display_name_or_company, profile_path(profile)
+	- else
+		%p
+			= generic_email_delivery_info email_delivery
+			- if can? :manage, email_delivery
+				= link_to t('views.click_to_view'), email_delivery

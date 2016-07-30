@@ -29,6 +29,7 @@ class EmailDeliveriesController < ApplicationController
 	end
 	
 	def create
+		@email_delivery.token ||= EmailDelivery.generate_token
 		if @email_delivery.save
 			set_flash_message :notice, :created, recipient: @email_delivery.recipient
 			redirect_to email_delivery_path(@email_delivery)

@@ -520,6 +520,7 @@ en:
         destroy_confirm: 'This email delivery record will be destroyed. Are you sure?'
         title: 'Edit email delivery record for %{recipient}'
       view:
+        info: 'Email was sent to %{recipient} sometime after %{time} by %{sender}.'
         opt_out_links: 'Opt-out link(s)'
         title: 'Email delivery record for %{recipient}'
     home:

@@ -474,7 +474,7 @@ class Profile < ActiveRecord::Base
 			errors.add :invitation_sent_at, I18n.t('models.profile.invitation_sent_at.save_error')
 		elsif generate_and_save_invitation_token
 			recipient = options[:preview_email].presence || invitation_email
-			delivery_token = generate_token
+			delivery_token = EmailDelivery.generate_token
 			ProfileMailer.invite(recipient, subject, body, self, delivery_token, test_invitation).deliver_now
 			unless test_invitation or invitation_delivered recipient, options[:sender], delivery_token
 				errors.add :invitation_sent_at, I18n.t('models.profile.invitation_sent_at.save_error')

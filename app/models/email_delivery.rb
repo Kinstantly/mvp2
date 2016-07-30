@@ -8,4 +8,9 @@ class EmailDelivery < ActiveRecord::Base
 	validates :recipient, email: true
 	
 	has_many :contact_blockers
+	
+	# Generate a unique token.
+	def self.generate_token
+		UUIDTools::UUID.timestamp_create.to_s
+	end
 end
