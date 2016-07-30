@@ -1,0 +1,46 @@
+.show
+	= render partial: 'shared/nav_title', locals: { title: t('views.email_delivery.view.title', recipient: @email_delivery.recipient) }
+	%p#notice= notice
+	%table
+		%tr
+			%td= EmailDelivery.human_attribute_name :recipient
+			%td= @email_delivery.recipient
+		%tr
+			%td= t 'views.email_delivery.view.opt_out_links'
+			%td.select_to_copy
+				- if @email_delivery.token.present?
+					%textarea.ui-corner-all.ui-widget-content{readonly: 'readonly'}
+						= new_contact_blocker_from_email_delivery_url email_delivery_token: @email_delivery.token
+				%textarea.ui-corner-all.ui-widget-content{readonly: 'readonly'}
+					= new_contact_blocker_from_email_address_url e: @email_delivery.recipient
+		%tr
+			%td= EmailDelivery.human_attribute_name :contact_blockers
+			%td
+				- @email_delivery.contact_blockers.order(:id).each do |record|
+					= link_to record.email, edit_contact_blocker_path(record)
+					%br
+		%tr
+			%td= EmailDelivery.human_attribute_name :profile
+			%td= link_to @email_delivery.profile.display_name_otherwise_company, profile_path(@email_delivery.profile) if @email_delivery.profile
+		%tr
+			%td= EmailDelivery.human_attribute_name :sender
+			%td= @email_delivery.sender
+		%tr
+			%td= EmailDelivery.human_attribute_name :email_type
+			%td= @email_delivery.email_type
+		%tr
+			%td= EmailDelivery.human_attribute_name :created_at
+			%td= @email_delivery.created_at
+		%tr
+			%td= EmailDelivery.human_attribute_name :tracking_category
+			%td= @email_delivery.tracking_category
+		%tr
+			%td= EmailDelivery.human_attribute_name :token
+			%td= @email_delivery.token
+	= link_to 'Edit', edit_email_delivery_path(@email_delivery)
+	|
+	= link_to 'List', email_deliveries_path
+
+:coffeescript
+	$('.select_to_copy textarea').on 'click', ->
+		$(this).select()

@@ -150,6 +150,13 @@ module ApplicationHelper
 		end
 	end
 	
+	def admin_email_delivery_links
+		if can? :manage, EmailDelivery
+			link_to(t('views.email_delivery.name').pluralize, email_deliveries_path) +
+				link_to(t('views.email_delivery.edit.create'), new_email_delivery_path)
+		end
+	end
+	
 	def admin_category_links
 		if can? :manage, Category
 			link_to(t('views.category.name').pluralize, categories_path) +

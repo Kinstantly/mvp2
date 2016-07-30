@@ -1,0 +1,12 @@
+= simple_form_for @email_delivery, defaults: { input_html: { size: '60' } } do |f|
+	= f.error_notification
+	= f.input :recipient, required: true
+	= f.input :sender
+	= f.input :email_type
+	= f.button :submit
+	- if @email_delivery.new_record?
+		= link_to t('views.cancel'), email_deliveries_path
+	- else
+		= link_to t('views.done'), email_delivery_path(@email_delivery)
+		|
+		= link_to 'List', email_deliveries_path

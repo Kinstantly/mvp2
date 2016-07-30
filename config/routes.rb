@@ -212,6 +212,15 @@ Rails.application.routes.draw do
 	# Displayed teasers that click through to stories.
 	resources :story_teasers
 	
+	# Email delivery events.  Used to track email deliveries.
+	# Can be associated with contact_blockers to prevent future deliveries to the specified email address.
+	resources :email_deliveries do
+		collection do
+			get :new_list
+			post :create_list
+		end
+	end
+	
 	# Catch all other routing requests and do something benign.
 	# The main purpose of this route is to provide as little information as possible to site probers.
 	# For Rails 4, add "via: :all".

@@ -26,6 +26,9 @@
 		.buttons {
 			margin-top: 1em;
 		}
+		td.select_to_copy textarea {
+			width: 98%;
+		}
 	}
 }
 
@@ -41,6 +44,12 @@
 		}
 		td:first-of-type {
 			font-weight: bold;
+		}
+		td.select_to_copy {
+			min-width: 25em;
+			textarea {
+				width: 98%;
+			}
 		}
 	}
 }

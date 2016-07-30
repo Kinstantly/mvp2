@@ -1,0 +1,10 @@
+.edit
+	= render partial: 'shared/nav_title', locals: { title: t('views.email_delivery.edit.title', recipient: @email_delivery.recipient) }
+	%p#notice= notice
+	
+	#forms
+		= render partial: 'edit_form'
+		- if can?(:destroy, @email_delivery)
+			= form_for @email_delivery, method: :delete, html: {id: 'destroy_email_delivery', class: 'destroy_button'} do |f|
+				= f.submit t('views.email_delivery.edit.destroy_button'), data: { disable_with: t('views.email_delivery.edit.destroy_button_disable'), confirm: t('views.email_delivery.edit.destroy_confirm') }
+= render partial: 'shared/save_changes_prompt'

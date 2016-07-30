@@ -63,7 +63,7 @@ en:
       create_error: 'There was a problem creating the opt-out.'
       destroyed: "Opt-out for '%{email}' was trashed."
       destroy_error: 'There was a problem trashing the opt-out.'
-      not_found_by_email: "Opt-put for '%{email}' was not found."
+      not_found_by_email: "Opt-out for '%{email}' was not found."
       updated: "Opt-out for '%{email}' was updated."
       update_error: 'There was a problem updating the opt-out.'
     customers:
@@ -73,6 +73,13 @@ en:
       payment_authorization_revoked: 'Payment permission has been revoked.'
     customer_files:
       created_charge: 'Charge was completed.'
+    email_deliveries:
+      created: "Email delivery record for '%{recipient}' was created."
+      create_error: 'There was a problem creating the email delivery record.'
+      destroyed: "Email delivery record for '%{recipient}' was destroyed."
+      destroy_error: 'There was a problem destroyed the email delivery record.'
+      updated: "Email delivery record for '%{recipient}' was updated."
+      update_error: 'There was a problem updating the email delivery record.'
     profiles:
       created: 'The profile was created.'
       create_error: 'There was a problem creating the profile.'
@@ -346,6 +353,7 @@ en:
     accessibility: 'Skip to content'
     cancel: 'Cancel'
     click_to_view: 'Click to view.'
+    done: 'Done'
     field_label: '%{name}:'
     optional_field_label: '%{name} (optional):'
     find_button: 'Find'
@@ -503,6 +511,17 @@ en:
           link: 'here'
           after_link: 'to request reauthorization.'
         view_customer: 'View'
+    email_delivery:
+      name: 'Email delivery'
+      edit:
+        create: 'Create an email delivery record'
+        destroy_button: 'Delete email delivery record'
+        destroy_button_disable: 'Deleting...'
+        destroy_confirm: 'This email delivery record will be destroyed. Are you sure?'
+        title: 'Edit email delivery record for %{recipient}'
+      view:
+        opt_out_links: 'Opt-out link(s)'
+        title: 'Email delivery record for %{recipient}'
     home:
       view:
         about: 'About us'

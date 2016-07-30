@@ -1,0 +1,49 @@
+- @page_title = "#{company_name} - #{t('views.email_delivery.name').pluralize}"
+.index
+	%h1= t('views.email_delivery.name').pluralize
+	#top_bar
+		= render partial: 'home/admin_nav'
+	.email_delivery_nav
+		= link_to t('views.email_delivery.edit.create'), new_email_delivery_path
+	.list{align: 'center'}
+		.pagination_nav
+			= render partial: 'shared/per_page_form', locals: { record_type: EmailDelivery }
+			= paginate @email_deliveries
+		%table
+			%thead
+				%tr
+					%th= EmailDelivery.human_attribute_name :recipient
+					%th.large
+						= t 'views.email_delivery.view.opt_out_links'
+					%th.large
+						= EmailDelivery.human_attribute_name :contact_blockers
+					%th= EmailDelivery.human_attribute_name :profile
+					%th= EmailDelivery.human_attribute_name :sender
+					%th= EmailDelivery.human_attribute_name :email_type
+					%th= EmailDelivery.human_attribute_name :created_at
+					%th= EmailDelivery.human_attribute_name :tracking_category
+			%tbody
+				- @email_deliveries.each do |email_delivery|
+					%tr
+						%td= link_to email_delivery.recipient, email_delivery_path(email_delivery)
+						%td.select_to_copy
+							- if email_delivery.token.present?
+								%textarea.ui-corner-all.ui-widget-content{readonly: 'readonly'}
+									= new_contact_blocker_from_email_delivery_url email_delivery_token: email_delivery.token
+							%textarea.ui-corner-all.ui-widget-content{readonly: 'readonly'}
+								= new_contact_blocker_from_email_address_url e: email_delivery.recipient
+						%td
+							- email_delivery.contact_blockers.order(:id).each do |record|
+								= link_to record.email, edit_contact_blocker_path(record)
+						%td= link_to email_delivery.profile.display_name_otherwise_company, profile_path(email_delivery.profile) if email_delivery.profile
+						%td= email_delivery.sender
+						%td= email_delivery.email_type
+						%td= email_delivery.created_at
+						%td= email_delivery.tracking_category
+		= paginate @email_deliveries
+	.email_delivery_nav
+		= link_to t('views.email_delivery.edit.create'), new_email_delivery_path
+
+:coffeescript
+	$('.select_to_copy textarea').on 'click', ->
+		$(this).select()
