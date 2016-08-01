@@ -30,8 +30,9 @@
 							- if email_delivery.token.present?
 								%textarea.ui-corner-all.ui-widget-content{readonly: 'readonly'}
 									= new_contact_blocker_from_email_delivery_url email_delivery_token: email_delivery.token
-							%textarea.ui-corner-all.ui-widget-content{readonly: 'readonly'}
-								= new_contact_blocker_from_email_address_url e: email_delivery.recipient
+							- else
+								%textarea.ui-corner-all.ui-widget-content{readonly: 'readonly'}
+									= new_contact_blocker_from_email_address_url e: email_delivery.recipient
 						%td
 							- email_delivery.contact_blockers.order(:id).each do |record|
 								= link_to record.email, contact_blocker_path(record)

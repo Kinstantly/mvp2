@@ -8,18 +8,18 @@ class EmailDeliveriesController < ApplicationController
 	skip_load_resource only: [:new_list, :create_list]
 
 	def index
-		@order_by_options = { sender: 'sender', recipient: 'recipient', email_type: 'email type', recent: 'recent' }
+		@order_by_options = { sender: 'sender', recipient: 'recipient', email_type: 'email type', recent: 'recent first' }
 		@email_deliveries = case params[:order_by]
 		when 'sender'
-			@email_deliveries.order(:sender)
+			@email_deliveries.order(:sender).order_by_descending_id
 		when 'recipient'
-			@email_deliveries.order(:recipient)
+			@email_deliveries.order(:recipient).order_by_descending_id
 		when 'email_type'
-			@email_deliveries.order(:email_type)
+			@email_deliveries.order(:email_type).order_by_descending_id
 		when 'recent'
-			@email_deliveries.order('id DESC')
+			@email_deliveries.order_by_descending_id
 		else
-			@email_deliveries.order('id DESC')
+			@email_deliveries.order_by_descending_id
 		end.page(params[:page]).per(params[:per_page])
 	end
 

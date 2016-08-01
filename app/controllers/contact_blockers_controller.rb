@@ -17,7 +17,8 @@ class ContactBlockersController < ApplicationController
 		if @contact_blocker
 			respond_with @contact_blocker
 		else
-			redirect_to email_delivery_not_found_url
+			# Couldn't find email_delivery record.  Ask them for their email address.
+			redirect_to new_contact_blocker_from_email_address_url
 		end
 	end
 	

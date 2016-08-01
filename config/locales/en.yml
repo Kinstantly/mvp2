@@ -397,7 +397,10 @@ en:
         title: 'Contact opt-out for %{email}'
         unsubscribe_confirmation_title: 'Done!'
         unsubscribe_confirmation_html: "<p>You've successfully unsubscribed. You'll no longer receive marketing emails from Kinstantly.</p><br /><p>Thank you.</p>"
-        unsubscribe_error: "Sorry. We didn't understand your request. If you want to get off our mailing list, please send email to"
+        unsubscribe_error_email_subject: 'Unsubscribe request'
+        unsubscribe_error_link_text: 'click here'
+        unsubscribe_error_html: "We didn't understand your request. If you want to get off our mailing list, please %{opt_out_link} to try again or send email to %{mailto}."
+        unsubscribe_error_title: 'Sorry.'
         unsubscribe_link: 'Unsubscribe from all future emails'
       edit:
         confirm_destroy: 'Are you sure you want to remove the opt-out record for %{email}?'

@@ -11,8 +11,9 @@
 				- if @email_delivery.token.present?
 					%textarea.ui-corner-all.ui-widget-content{readonly: 'readonly'}
 						= new_contact_blocker_from_email_delivery_url email_delivery_token: @email_delivery.token
-				%textarea.ui-corner-all.ui-widget-content{readonly: 'readonly'}
-					= new_contact_blocker_from_email_address_url e: @email_delivery.recipient
+				- else
+					%textarea.ui-corner-all.ui-widget-content{readonly: 'readonly'}
+						= new_contact_blocker_from_email_address_url e: @email_delivery.recipient
 		%tr
 			%td= EmailDelivery.human_attribute_name :contact_blockers
 			%td
@@ -40,6 +41,8 @@
 	= link_to 'Edit', edit_email_delivery_path(@email_delivery)
 	|
 	= link_to 'List', email_deliveries_path
+	|
+	= link_to t('views.email_delivery.edit.create'), new_email_delivery_path
 
 :coffeescript
 	$('.select_to_copy textarea').on 'click', ->

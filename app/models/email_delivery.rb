@@ -9,6 +9,8 @@ class EmailDelivery < ActiveRecord::Base
 	
 	has_many :contact_blockers
 	
+	scope :order_by_descending_id, -> { order('id DESC') }
+	
 	# Generate a unique token.
 	def self.generate_token
 		UUIDTools::UUID.timestamp_create.to_s
