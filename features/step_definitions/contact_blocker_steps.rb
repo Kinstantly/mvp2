@@ -50,16 +50,25 @@ end
 
 ### THEN ###
 
+Then /^I should be on the opt-out page$/ do
+	expect(page).to have_current_path new_contact_blocker_from_email_address_path
+end
+
 Then /^I should be on the unsubscribe page$/ do
-	expect(page).to have_content I18n.t('views.contact_blocker.edit.unsubscribe_title')
+	starts_with = new_contact_blocker_from_email_delivery_path(email_delivery_token: 'a').sub(%r{a/?\z}, '')
+	expect(page).to have_current_path Regexp.new("\\A#{starts_with}")
+end
+
+Then /^I should be on the unsubscribe page for the unclaimed profile invitation$/ do
+	expect(page).to have_current_path new_contact_blocker_from_email_delivery_path(email_delivery_token: @unattached_profile.email_deliveries.last.token)
 end
 
 Then /^I should be on the unsubscribe confirmation page$/ do
-	expect(page).to have_content /unsubscribe successful/i
+	expect(page).to have_current_path contact_blocker_confirmation_path
 end
 
-Then /^I should be on the unsubscribe recovery page$/ do
-	expect(page).to have_content I18n.t('views.contact_blocker.view.unsubscribe_error')
+Then /^I should be on the unsubscribe (?:recovery|error) page$/ do
+	expect(page).to have_current_path email_delivery_not_found_path
 end
 
 Then /^I should see no invitation link$/ do

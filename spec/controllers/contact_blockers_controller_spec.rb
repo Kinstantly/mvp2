@@ -22,9 +22,9 @@ describe ContactBlockersController, :type => :controller do
 				expect(assigns(:contact_blocker).email_delivery).to be_present
 			end
 			
-			it "goes to recovery page with invalid email delivery token" do
+			it "goes to opt-out page if invalid email delivery token is used" do
 				get :new_from_email_delivery, email_delivery_token: email_delivery.token+'a'
-				expect(response).to redirect_to email_delivery_not_found_url
+				expect(response).to redirect_to new_contact_blocker_from_email_address_url
 			end
 		end
 

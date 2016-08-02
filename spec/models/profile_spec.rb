@@ -605,7 +605,7 @@ describe Profile, :type => :model do
 		
 			it "sends invitation email" do
 				message = double('message')
-				allow(profile).to receive(:generate_token).and_return(delivery_token)
+				allow(EmailDelivery).to receive(:generate_token).and_return(delivery_token)
 				expect(ProfileMailer).to receive(:invite).with(recipient, subject, body, profile, delivery_token, false).and_return(message)
 				expect(message).to receive(:deliver_now)
 				profile.invite subject, body

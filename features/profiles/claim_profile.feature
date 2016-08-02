@@ -40,7 +40,7 @@ Feature: Claim profile
 		Given I am not logged in
 			And I have been invited to claim a profile
 		When I click on the unsubscribe link in the unclaimed profile invitation
-		Then I should be on the unsubscribe page
+		Then I should be on the unsubscribe page for the unclaimed profile invitation
 	
 	Scenario: Invited provider unsubscribes
 		Given I am not logged in
@@ -49,11 +49,11 @@ Feature: Claim profile
 			And I click submit on the unsubscribe page
 		Then I should be on the unsubscribe confirmation page
 	
-	Scenario: Invited provider clicks a corrupted unsubscribe link
+	Scenario: Invited provider is sent to a blank opt-out form after clicking a corrupted unsubscribe link
 		Given I am not logged in
 			And I have been invited to claim a profile
 		When I click on a bad unsubscribe link in the unclaimed profile invitation
-		Then I should be on the unsubscribe recovery page
+		Then I should be on the opt-out page
 	
 	Scenario: Unregistered provider must register to claim profile
 		Given I am not logged in
