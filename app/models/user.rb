@@ -482,10 +482,8 @@ class User < ActiveRecord::Base
 		first_name = username.presence || email.presence
 		last_name  = ''
 		if expert?
-			if profile.try(:first_name).present?
-				first_name = profile.first_name
-				last_name  = profile.last_name if profile.last_name.present?
-			end
+			first_name = profile.try(:first_name).try(:strip).presence || ''
+			last_name  = profile.try(:last_name).try(:strip).presence || ''
 		end
 		merge_vars = { FNAME: first_name, LNAME: last_name }
 		

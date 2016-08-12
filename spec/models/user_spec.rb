@@ -459,7 +459,7 @@ describe User, :type => :model do
 			let(:provider) { FactoryGirl.create :provider_with_username }
 			let(:provider_newsletters_list_id) { mailchimp_list_ids[:provider_newsletters] }
 			
-			it "should set mailchimp subscriber name to profile first and last name" do
+			it "should set mailchimp subscriber first and last name to profile first and last name" do
 				provider.provider_newsletters = true
 				merge_vars = { FNAME: provider.profile.first_name, LNAME: provider.profile.last_name }
 				opts = {
@@ -474,10 +474,26 @@ describe User, :type => :model do
 				provider.save
 			end
 
-			it "should set mailchimp subscriber name to username if profile first is empty" do
+			it "should set mailchimp subscriber first name to blank if profile first name is empty" do
 				provider.provider_newsletters = true
 				provider.profile.first_name = ''
-				merge_vars = { FNAME: provider.username, LNAME: "" }
+				merge_vars = { FNAME: '', LNAME: provider.profile.last_name }
+				opts = {
+					id: provider_newsletters_list_id,
+					email: { leid: provider.provider_newsletters_leid, email: provider.email },
+					merge_vars: merge_vars,
+					double_optin: false,
+					update_existing: true
+				}
+				# We can do the following because we are mocking the lists API.
+				expect(Gibbon::API.new.lists).to receive(:subscribe).with(opts).once
+				provider.save
+			end
+
+			it "should set mailchimp subscriber last name to blank if profile last name is empty" do
+				provider.provider_newsletters = true
+				provider.profile.last_name = ''
+				merge_vars = { FNAME: provider.profile.first_name, LNAME: '' }
 				opts = {
 					id: provider_newsletters_list_id,
 					email: { leid: provider.provider_newsletters_leid, email: provider.email },
