@@ -479,13 +479,12 @@ class User < ActiveRecord::Base
 		# Do nothing if we are not allowed to contact this user. (It's OK if they are not confirmed yet.)
 		return false if contact_is_blocked?
 
-		first_name = username.presence || email.presence
-		last_name  = ''
+		merge_vars = {}
 		if expert?
 			first_name = profile.try(:first_name).try(:strip).presence || ''
 			last_name  = profile.try(:last_name).try(:strip).presence || ''
+			merge_vars.merge! FNAME: first_name, LNAME: last_name
 		end
-		merge_vars = { FNAME: first_name, LNAME: last_name }
 		
 		list_names.each do |list_name|
 			next if !User.mailing_list_name_valid?(list_name)

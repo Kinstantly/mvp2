@@ -423,25 +423,9 @@ describe User, :type => :model do
 		context "parent" do
 			let(:parent_newsletters_id) { mailchimp_list_ids[:parent_newsletters] }		
 			
-			it "should set mailchimp subscriber name to username" do
+			it "should not attempt to set the mailchimp subscriber name (because there are no name fields in the user record)" do
 				parent.parent_newsletters = true
-				merge_vars = { FNAME: parent.username, LNAME: "" }
-				opts = {
-					email: { leid: parent.parent_newsletters_leid, email: parent.email },
-					id: parent_newsletters_id,
-					merge_vars: merge_vars,
-					double_optin: false,
-					update_existing: true
-				}
-				# We can do the following because we are mocking the lists API.
-				expect(Gibbon::API.new.lists).to receive(:subscribe).with(opts).once
-				parent.save
-			end
-
-			it "should set mailchimp subscriber name to email if username is empty" do
-				parent.parent_newsletters = true
-				parent.username = "updated_username"
-				merge_vars = { FNAME: parent.username, LNAME: "" }
+				merge_vars = { }
 				opts = {
 					email: { leid: parent.parent_newsletters_leid, email: parent.email },
 					id: parent_newsletters_id,
