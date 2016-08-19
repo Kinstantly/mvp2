@@ -34,8 +34,11 @@ class NewslettersController < ApplicationController
 		if @errors.any?
 			render :new
 		else
-			subscribe_options = { subscribing_to_alerts: @subscribing_to_alerts }
-			subscribe_options[:merge_vars] = { 'DUEBIRTH1' => @duebirth1 } if @duebirth1
+			subscribe_options = {
+				subscribing_to_alerts: @subscribing_to_alerts,
+				merge_vars: { 'SUBSOURCE' => 'directory_subscription_page' }
+			}
+			subscribe_options[:merge_vars]['DUEBIRTH1'] = @duebirth1 if @duebirth1
 			job = NewsletterSubscriptionJob.new subscribe_lists, @email, subscribe_options
 			if update_mailing_lists_in_background?
 				Delayed::Job.enqueue job

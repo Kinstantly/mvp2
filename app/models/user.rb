@@ -479,7 +479,7 @@ class User < ActiveRecord::Base
 		# Do nothing if we are not allowed to contact this user. (It's OK if they are not confirmed yet.)
 		return false if contact_is_blocked?
 
-		merge_vars = {}
+		merge_vars = { 'SUBSOURCE' => 'directory_user_create_or_update' }
 		if expert?
 			first_name = profile.try(:first_name).try(:strip).presence || ''
 			last_name  = profile.try(:last_name).try(:strip).presence || ''

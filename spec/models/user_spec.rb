@@ -425,7 +425,7 @@ describe User, :type => :model do
 			
 			it "should not attempt to set the mailchimp subscriber name (because there are no name fields in the user record)" do
 				parent.parent_newsletters = true
-				merge_vars = { }
+				merge_vars = { 'SUBSOURCE' => 'directory_user_create_or_update' }
 				opts = {
 					email: { leid: parent.parent_newsletters_leid, email: parent.email },
 					id: parent_newsletters_id,
@@ -445,7 +445,11 @@ describe User, :type => :model do
 			
 			it "should set mailchimp subscriber first and last name to profile first and last name" do
 				provider.provider_newsletters = true
-				merge_vars = { FNAME: provider.profile.first_name, LNAME: provider.profile.last_name }
+				merge_vars = {
+					'SUBSOURCE' => 'directory_user_create_or_update',
+					FNAME: provider.profile.first_name,
+					LNAME: provider.profile.last_name
+				}
 				opts = {
 					id: provider_newsletters_list_id,
 					email: { leid: provider.provider_newsletters_leid, email: provider.email },
@@ -461,7 +465,11 @@ describe User, :type => :model do
 			it "should set mailchimp subscriber first name to blank if profile first name is empty" do
 				provider.provider_newsletters = true
 				provider.profile.first_name = ''
-				merge_vars = { FNAME: '', LNAME: provider.profile.last_name }
+				merge_vars = {
+					'SUBSOURCE' => 'directory_user_create_or_update',
+					FNAME: '',
+					LNAME: provider.profile.last_name
+				}
 				opts = {
 					id: provider_newsletters_list_id,
 					email: { leid: provider.provider_newsletters_leid, email: provider.email },
@@ -477,7 +485,11 @@ describe User, :type => :model do
 			it "should set mailchimp subscriber last name to blank if profile last name is empty" do
 				provider.provider_newsletters = true
 				provider.profile.last_name = ''
-				merge_vars = { FNAME: provider.profile.first_name, LNAME: '' }
+				merge_vars = {
+					'SUBSOURCE' => 'directory_user_create_or_update',
+					FNAME: provider.profile.first_name,
+					LNAME: ''
+				}
 				opts = {
 					id: provider_newsletters_list_id,
 					email: { leid: provider.provider_newsletters_leid, email: provider.email },
