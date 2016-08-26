@@ -806,7 +806,11 @@ describe Profile, :type => :model do
 			profile.save
 			profile.reload
 			profile.first_name = "Bob"
-			merge_vars = { FNAME: profile.first_name, LNAME: profile.last_name }
+			merge_vars = {
+				'SUBSOURCE' => 'directory_user_create_or_update',
+				FNAME: profile.first_name,
+				LNAME: profile.last_name
+			}
 			opts = {
 				email: { email: profile.user.email, leid: profile.user.provider_newsletters_leid },
 				id: list_id,
