@@ -24,7 +24,7 @@ class EmailDeliveriesController < ApplicationController
 	end
 
 	def new
-		@email_delivery.sender = current_user.try :email
+		@email_delivery.sender = EmailDelivery.order_by_descending_id.first.try(:sender)
 		@email_delivery.email_type = 'provider_sell'
 	end
 	
