@@ -3,8 +3,8 @@ class ContactBlocker < ActiveRecord::Base
 	
 	DEFAULT_ACCESSIBLE_ATTRIBUTES = [ :email ]
 	
-	# If you want to make other attributes accessible to admin, use a role, e.g.,
-	# attr_accessible :email, :email_delivery_id, as: :admin
+	# Strip leading and trailing whitespace from input intended for these attributes.
+	auto_strip_attributes :email
 	
 	belongs_to :email_delivery
 	
@@ -31,7 +31,7 @@ class ContactBlocker < ActiveRecord::Base
 	
 	# Class method to find the first matching contact blocker by email address while ignoring case.
 	def self.find_by_email_ignore_case(email)
-		where('lower(email) = ?', email.downcase).first
+		where('lower(email) = ?', email.strip.downcase).first
 	end
 	
 	private

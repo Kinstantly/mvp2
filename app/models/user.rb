@@ -353,7 +353,7 @@ class User < ActiveRecord::Base
 		
 		# Class method to find the first matching user by email address while ignoring case.
 		def find_by_email_ignore_case(email)
-			where('lower(email) = ?', email.downcase).first
+			where('lower(email) = ?', email.strip.downcase).first
 		end
 	
 		# Generate a password that is not too long.

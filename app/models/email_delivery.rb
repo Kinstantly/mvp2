@@ -3,6 +3,9 @@ class EmailDelivery < ActiveRecord::Base
 	
 	DEFAULT_ACCESSIBLE_ATTRIBUTES = [:recipient, :sender, :email_type, :tracking_category]
 	
+	# Strip leading and trailing whitespace from input intended for these attributes.
+	auto_strip_attributes :recipient, :sender, :email_type, :tracking_category
+	
 	belongs_to :profile
 	
 	validates :recipient, email: true
