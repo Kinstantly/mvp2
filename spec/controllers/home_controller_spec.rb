@@ -100,4 +100,14 @@ describe HomeController, :type => :controller do
 			expect(response).to redirect_to blog_url
 		end
 	end
+
+	describe "GET 'pro'" do
+		before(:example) do
+			get :pro
+		end
+
+		it "redirects to the provider sell page" do
+			expect(response).to redirect_to provider_sell_url
+		end
+	end
 end

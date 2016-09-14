@@ -21,6 +21,10 @@ class HomeController < ApplicationController
 		redirect_to blog_url
 	end
 	
+	def pro
+		redirect_to provider_sell_url
+	end
+	
 	private
 	
 	def authorize_admin

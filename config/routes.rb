@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 	get 'admin' => 'home#admin'
 	get 'show_all_categories' => 'home#show_all_categories'
 	get 'blog' => 'home#blog'
+	get 'pro' => 'home#pro'
 	get 'recent_newsletters' => 'home#recent_newsletters'
 	get 'newsletter/latest/:name' => 'newsletters#latest', as: :latest_newsletter
 	get 'newsletter/list(/:name)' => 'newsletters#list', as: :newsletter_list
