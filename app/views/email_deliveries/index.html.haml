@@ -5,6 +5,8 @@
 		= render partial: 'home/admin_nav'
 	.email_delivery_nav
 		= link_to t('views.email_delivery.edit.create'), new_email_delivery_path
+		|
+		= link_to t('views.email_delivery.edit.new_list'), new_list_email_deliveries_path
 	.list{align: 'center'}
 		.pagination_nav
 			= render partial: 'shared/per_page_form', locals: { record_type: EmailDelivery }
@@ -44,6 +46,8 @@
 		= paginate @email_deliveries
 	.email_delivery_nav
 		= link_to t('views.email_delivery.edit.create'), new_email_delivery_path
+		|
+		= link_to t('views.email_delivery.edit.new_list'), new_list_email_deliveries_path
 
 :coffeescript
 	$('.select_to_copy textarea').on 'click', ->

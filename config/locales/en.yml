@@ -75,7 +75,9 @@ en:
       created_charge: 'Charge was completed.'
     email_deliveries:
       created: "Email delivery record for '%{recipient}' was created."
+      created_list: 'Email delivery records were successfully created.'
       create_error: 'There was a problem creating the email delivery record.'
+      create_list_error: 'There was a problem creating one or more email delivery records: %{message}'
       destroyed: "Email delivery record for '%{recipient}' was destroyed."
       destroy_error: 'There was a problem destroyed the email delivery record.'
       updated: "Email delivery record for '%{recipient}' was updated."
@@ -518,12 +520,22 @@ en:
       name: 'Email delivery'
       edit:
         create: 'Create an email delivery record'
+        create_list: 'Create list'
+        create_list_title: 'Create a list of email delivery records without unsubscribed recipients'
         destroy_button: 'Delete email delivery record'
         destroy_button_disable: 'Deleting...'
         destroy_confirm: 'This email delivery record will be destroyed. Are you sure?'
+        email_list: 'List of email addresses'
+        email_list_empty_error: 'Email list is required'
+        email_list_tip: 'Enter email addresses each separated by a comma, semicolon, or newline.'
+        new_list: 'Create a batch of email deliveries'
         title: 'Edit email delivery record for %{recipient}'
       view:
+        blocked_recipients: 'Unsubscribed: DO NOT USE!'
+        email_unsubscribe_list: 'Recipients with unsubscribe links'
+        email_unsubscribe_list_title: 'Recipients with unsubscribe links'
         info: 'Email was sent to %{recipient} sometime after %{time} by %{sender}.'
+        list: 'List all email deliveries'
         opt_out_links: 'Opt-out link(s)'
         title: 'Email delivery record for %{recipient}'
     home:

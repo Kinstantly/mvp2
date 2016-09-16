@@ -5,7 +5,7 @@ class EmailDeliveriesController < ApplicationController
 	
 	# @email_delivery and @email_deliveries initialized by load_and_authorize_resource with cancan ability conditions.
 	load_and_authorize_resource
-	skip_load_resource only: [:new_list, :create_list]
+	skip_load_resource only: [:new_list, :create_list, :show_list]
 
 	def index
 		@order_by_options = { sender: 'sender', recipient: 'recipient', email_type: 'email type', recent: 'recent first' }
@@ -40,10 +40,29 @@ class EmailDeliveriesController < ApplicationController
 	end
 
 	def new_list
+		@sender = EmailDelivery.order_by_descending_id.first.try(:sender)
+		@email_type = 'provider_sell'
 	end
 	
 	def create_list
-		
+		@sender = params[:sender]
+		@email_type = params[:email_type]
+		@email_list = params[:email_list]
+		@create_list = CreatePermittedEmailDeliveryList.new({
+			sender: @sender,
+			email_type: @email_type,
+			email_list: @email_list
+		})
+		if @create_list.call
+			@email_unsubscribe_list = @create_list.email_unsubscribe_list_string
+			@blocked_recipients = @create_list.blocked_recipients.join("\n")
+			@notice = t('controllers.email_deliveries.created_list')
+			render action: :show_list
+		else
+			@alert = t('controllers.email_deliveries.create_list_error', message: @create_list.errors.uniq.join('; '))
+			@create_list.destroy
+			render action: :new_list
+		end
 	end
 
 	# def edit
