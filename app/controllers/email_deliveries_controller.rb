@@ -56,7 +56,7 @@ class EmailDeliveriesController < ApplicationController
 		if @create_list.call
 			@email_unsubscribe_list = @create_list.email_unsubscribe_list_string
 			@blocked_recipients = @create_list.blocked_recipients.join("\n")
-			@notice = t('controllers.email_deliveries.created_list')
+			@notice = t('controllers.email_deliveries.created_list') if @create_list.email_deliveries.present?
 			render action: :show_list
 		else
 			@alert = t('controllers.email_deliveries.create_list_error', message: @create_list.errors.uniq.join('; '))

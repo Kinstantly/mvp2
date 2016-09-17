@@ -533,6 +533,7 @@ en:
       view:
         blocked_recipients: 'Unsubscribed: DO NOT USE!'
         email_unsubscribe_list: 'Recipients with unsubscribe links'
+        email_unsubscribe_list_tip_html: 'Tip: Copy the <strong>Recipients with unsubscribe links</strong> field into the clipboard. Then paste into the first cell of a new spreadsheet. That will populate the spreadsheet with these values.'
         email_unsubscribe_list_title: 'Recipients with unsubscribe links'
         info: 'Email was sent to %{recipient} sometime after %{time} by %{sender}.'
         list: 'List all email deliveries'

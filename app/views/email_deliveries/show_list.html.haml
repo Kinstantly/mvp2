@@ -1,6 +1,8 @@
 .show
 	= render partial: 'shared/nav_title', locals: { title: t('views.email_delivery.view.email_unsubscribe_list_title') }
 	%p#notice= @notice
+	- if @create_list.email_deliveries.present?
+		%p= t 'views.email_delivery.view.email_unsubscribe_list_tip_html'
 	%table
 		%tr
 			%td= t 'views.email_delivery.view.email_unsubscribe_list'
