@@ -105,10 +105,12 @@
 									%span= location.address1
 									%span= location.address2
 									%span= location.display_city_region_postal_code
+									%span= location.display_country
 								%a{'data-latitude' => location.latitude, 'data-longitude' => location.longitude}
 									%span= location.address1
 									%span= location.address2
 									%span= location.display_city_region_postal_code
+									%span= location.display_country
 							%div{itemprop: "geo", itemscope: "", itemtype: "http://schema.org/GeoCoordinates"}
 								%meta{itemprop: "latitude", content:"#{location.latitude}"}
 								%meta{itemprop: "longitude", content:"#{location.longitude}"}

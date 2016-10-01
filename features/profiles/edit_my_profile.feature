@@ -67,7 +67,7 @@ Feature: Edit my expert profile
 		When I open the "locations" formlet
 			And I enter "123 Main St." in the "Street address" field of the "locations" formlet
 			And I enter "Ames" in the "City" field of the "locations" formlet
-			And I select "Iowa" as the state in the "locations" formlet
+			And I select "Iowa" as the "State" in the "locations" formlet
 			And I enter "50010" in the "Zip Code" field of the "locations" formlet
 			And I enter "505-555-0123" in the "Phone" field of the "locations" formlet
 			And I enter "Bike parking in front." in the "Add a comment" field of the "locations" formlet

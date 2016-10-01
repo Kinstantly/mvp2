@@ -107,6 +107,7 @@ Rails.application.routes.draw do
 			get :no_categories
 			get :no_subcategories
 			get :no_services
+			get :location_country_data
 		end
 	end
 	

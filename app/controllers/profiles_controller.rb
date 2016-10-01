@@ -11,7 +11,7 @@ class ProfilesController < ApplicationController
 	# e.g., for index action, @profiles is set to Profile.accessible_by(current_ability)
 	load_and_authorize_resource new: :admin
 	skip_load_resource only: [:view_my_profile, :edit_my_profile, :autocomplete_service_name, :no_categories, :no_subcategories, :no_services]
-	skip_load_and_authorize_resource only: [:search, :autocomplete_specialty_name, :autocomplete_location_city]
+	skip_load_and_authorize_resource only: [:search, :autocomplete_specialty_name, :autocomplete_location_city, :location_country_data]
 	
 	# Notify profile moderator when profile has been update by profile owner
 	after_action :notify_profile_moderator, only: [:formlet_update, :photo_update]
@@ -113,7 +113,7 @@ class ProfilesController < ApplicationController
 	
 	def formlet_update
 		@formlet = params[:formlet]
-		if @formlet.blank?
+		if @formlet.blank? or "#{@formlet}#{params[:refresh_formlets]}#{params[:refresh_partials]}" =~ /[.\/]/
 			set_flash_message :alert, :update_error
 		else
 			@refresh_formlets = params[:refresh_formlets]
@@ -266,6 +266,20 @@ class ProfilesController < ApplicationController
 		info[:ids_names]['services'] = @profile.service_ids_names
 		info[:ids_names]['specialties'] = @profile.specialty_ids_names
 		respond_with info
+	end
+	
+	def location_country_data
+		return_data = { 
+			region_select_id: params[:region_select_id],
+			postal_code_id: params[:postal_code_id]
+		}
+		country_data = CountryData.new code: params[:code]
+		if country_data.call
+			return_data[:region_options] = country_data.region_option_tags
+			return_data[:region_select_label] = country_data.region_label
+			return_data[:postal_code_label] = country_data.postal_code_label
+		end
+		respond_with return_data
 	end
 	
 	def show_tab

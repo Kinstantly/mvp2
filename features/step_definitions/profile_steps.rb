@@ -598,9 +598,9 @@ When /^I enter "(.*?)" in the "(.*?)" field of the "(.*?)" formlet$/ do |text, f
 	end
 end
 
-When /^I select "(.*?)" as the state in the "(.*?)" formlet$/ do |name, formlet|
+When /^I select "(.*?)" as the "(.*?)" in the "(.*?)" formlet$/ do |option, select_box, formlet|
 	within("##{formlet_id formlet}") do
-		select name, from: 'State'
+		select option, from: select_box, match: :first
 	end
 end
 
@@ -969,6 +969,12 @@ end
 
 Then /^I should see the "(.*?)" formlet$/ do |formlet|
 	expect(page).to have_css("##{formlet_id formlet}.formlet", visible: true)
+end
+
+Then /^I should see "(.*?)" in the "(.*?)" formlet$/ do |text, formlet|
+	within("##{formlet_id formlet}") do
+		expect(page).to have_content text
+	end
 end
 
 Then /^I should see an edit tab$/ do

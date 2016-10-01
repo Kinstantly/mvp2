@@ -51,6 +51,10 @@ class Location < ActiveRecord::Base
 		[addr.presence, postal_code.presence].compact.join(' ')
 	end
 	
+	def display_country
+		Carmen::Country.coded(country).try(:name)
+	end
+	
 	def display_address
 		addr = join_present_attrs ', ', :address1, :address2, :city, :region
 		[addr.presence, postal_code.presence].compact.join(' ')

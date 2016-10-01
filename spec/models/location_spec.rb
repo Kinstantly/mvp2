@@ -19,6 +19,11 @@ describe Location, :type => :model do
 		expect(location.errors_on(:note).size).to eq 0
 	end
 	
+	it 'displays the country name' do
+		location = Location.new country: 'US'
+		expect(location.display_country).to eq 'United States'
+	end
+	
 	it "limits the number of input characters for attributes stored as string or text records" do
 		location = Location.new
 		[:address1, :address2, :city, :region, :postal_code, :country, :note].each do |attr|
