@@ -101,15 +101,19 @@
 					.location_block{'data-i' => "#{i}"}
 						- if location.display_address.present?
 							%aside.address.location{itemprop: "address", itemscope: "", itemtype: "http://schema.org/PostalAddress"}
-								%span{itemprop: 'streetAddress', class: 'nonlinked_address'}
+								%span.address_lines.nonlinked_address{itemprop: 'streetAddress'}
 									%span= location.address1
-									%span= location.address2
-									%span= location.display_city_region_postal_code
+									- if location.address2.present?
+										%span= location.address2
+									%span.city_region= location.display_city_region
+									%span.postal_code= location.postal_code
 									%span= location.display_country
-								%a{'data-latitude' => location.latitude, 'data-longitude' => location.longitude}
+								%a.address_lines{'data-latitude' => location.latitude, 'data-longitude' => location.longitude}
 									%span= location.address1
-									%span= location.address2
-									%span= location.display_city_region_postal_code
+									- if location.address2.present?
+										%span= location.address2
+									%span.city_region= location.display_city_region
+									%span.postal_code= location.postal_code
 									%span= location.display_country
 							%div{itemprop: "geo", itemscope: "", itemtype: "http://schema.org/GeoCoordinates"}
 								%meta{itemprop: "latitude", content:"#{location.latitude}"}

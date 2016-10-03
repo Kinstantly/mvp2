@@ -6,11 +6,13 @@
 - display_locations.each_with_index do |location, i|
 	.location_block{'data-i' => "#{i}"}
 		%aside.address.location.editable
-			%span.attribute_display{itemprop: 'street-address'}
+			%span.address_lines.attribute_display{itemprop: 'street-address'}
 				- if location.display_address.present?
 					%span= location.address1
-					%span= location.address2
-					%span= location.display_city_region_postal_code
+					- if location.address2.present?
+						%span= location.address2
+					%span.city_region= location.display_city_region
+					%span.postal_code= location.postal_code
 					%span= location.display_country
 				- else
 					%span= profile_blank_attribute_message(Location.human_attribute_name :display_address)

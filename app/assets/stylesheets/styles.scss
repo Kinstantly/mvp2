@@ -618,9 +618,16 @@
 					width: 37%;
 				}
 				
-				span + span { 
-					display: block;
+				span + span {
 					margin-top: .25em;
+				}
+				
+				.address_lines span { 
+					display: block;
+					
+					&.city_region, &.postal_code {
+						display: inline-block;
+					}
 				}
 				
 				a.more, a.less {
