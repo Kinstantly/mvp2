@@ -299,13 +299,13 @@ end
 
 Given /^a published profile with city "(.*?)" and state "(.*?)"$/ do |city, state|
 	create_published_profile
-	@published_profile.locations = [FactoryGirl.create(:location, city: city, region: state)]
+	@published_profile.locations = [FactoryGirl.create(:location, city: city, region: state, country: 'US')]
 	@published_profile.save
 end
 
 Given /^another published profile with city "(.*?)" and state "(.*?)"$/ do |city, state|
 	create_published_profile_2
-	@published_profile_2.locations = [FactoryGirl.create(:location, city: city, region: state)]
+	@published_profile_2.locations = [FactoryGirl.create(:location, city: city, region: state, country: 'US')]
 	@published_profile_2.save
 end
 
@@ -316,8 +316,8 @@ Given /^(my|a published) profile with cities "(.*?)" and "(.*?)" and states "(.*
 	else
 		create_profile
 	end
-	profile.locations = [FactoryGirl.create(:location, city: city1, region: state1),
-		FactoryGirl.create(:location, city: city2, region: state2)]
+	profile.locations = [FactoryGirl.create(:location, city: city1, region: state1, country: 'US'),
+		FactoryGirl.create(:location, city: city2, region: state2, country: 'US')]
 	profile.save
 end
 

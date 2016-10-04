@@ -334,14 +334,16 @@ describe Profile, :type => :model do
 	
 	context "locations" do
 		it "has multiple locations" do
-			profile.locations.build(city: 'Albuquerque', region: 'NM')
+			profile.locations.build(city: 'Albuquerque', region: 'NM', country: 'US')
 			expect(profile.errors_on(:locations).size).to eq 0
 			expect(profile.locations.first.errors_on(:city).size).to eq 0
 			expect(profile.locations.first.errors_on(:region).size).to eq 0
-			profile.locations.build(city: 'Manteca', region: 'CA')
+			expect(profile.locations.first.errors_on(:country).size).to eq 0
+			profile.locations.build(city: 'Manteca', region: 'CA', country: 'US')
 			expect(profile.errors_on(:locations).size).to eq 0
 			expect(profile.locations.last.errors_on(:city).size).to eq 0
 			expect(profile.locations.last.errors_on(:region).size).to eq 0
+			expect(profile.locations.last.errors_on(:country).size).to eq 0
 		end
 		
 		it "should update the locations count cache even when the location has been created first" do
@@ -421,12 +423,12 @@ describe Profile, :type => :model do
 		
 			context "geographic", geocoding_api: true, internet: true do
 				let (:location_1) {
-					profile_1.locations.create({address1: '1398 Haight St', city: 'San Francisco', region: 'CA', postal_code: '94117'})
-				} 
+					profile_1.locations.create({address1: '1398 Haight St', city: 'San Francisco', region: 'CA', postal_code: '94117', country: 'US'})
+				}
 				let (:geocode_1) { {latitude: location_1.latitude, longitude: location_1.longitude} }
 				
 				let (:location_2) {
-					profile_2.locations.create({address1: '1933 Davis Street', city: 'San Leandro', region: 'CA', postal_code: '94577'})
+					profile_2.locations.create({address1: '1933 Davis Street', city: 'San Leandro', region: 'CA', postal_code: '94577', country: 'US'})
 				}
 				let (:geocode_2) { {latitude: location_2.latitude, longitude: location_2.longitude} }
 				

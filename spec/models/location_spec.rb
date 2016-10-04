@@ -1,22 +1,25 @@
 require 'spec_helper'
 
 describe Location, :type => :model do
+	let(:intl_location_params) { {
+		address1: 'Rúa Virrey Osorio, 30',
+		address2: 'Suite 265',
+		city: 'A Coruña',
+		region: 'GA',
+		country: 'ES',
+		postal_code: '15011',
+		note: 'The elevator is broken.'
+	} }
+	let(:intl_location) { Location.new(intl_location_params) }
+	
 	it "has two address fields, city, region, country, postal code, and a note" do
-		location = Location.new
-		location.address1 = '2 Carrer de Campana'
-		location.address2 = 'Suite 65'
-		location.city = 'Palma de Mallorca'
-		location.region = 'Balearic Islands'
-		location.country = 'ES'
-		location.postal_code = '070XX'
-		location.note = 'The elevator is broken.'
-		expect(location.errors_on(:address1).size).to eq 0
-		expect(location.errors_on(:address2).size).to eq 0
-		expect(location.errors_on(:city).size).to eq 0
-		expect(location.errors_on(:region).size).to eq 0
-		expect(location.errors_on(:country).size).to eq 0
-		expect(location.errors_on(:postal_code).size).to eq 0
-		expect(location.errors_on(:note).size).to eq 0
+		expect(intl_location.errors_on(:address1).size).to eq 0
+		expect(intl_location.errors_on(:address2).size).to eq 0
+		expect(intl_location.errors_on(:city).size).to eq 0
+		expect(intl_location.errors_on(:region).size).to eq 0
+		expect(intl_location.errors_on(:country).size).to eq 0
+		expect(intl_location.errors_on(:postal_code).size).to eq 0
+		expect(intl_location.errors_on(:note).size).to eq 0
 	end
 	
 	it 'displays the country name' do
@@ -41,12 +44,20 @@ describe Location, :type => :model do
 		expect(location.errors_on(:search_area_tag).size).to eq 0
 	end
 	
+	context 'geocoding' do
+		it 'has a geocodable address' do
+			expect(intl_location.geocodable_address).to include intl_location.address1, intl_location.city, intl_location.region, intl_location.postal_code, intl_location.display_country
+		end
+		
+		it 'has no geocodable address if only the country was specified' do
+			expect(Location.new(country: 'US').geocodable_address).to eq ''
+		end
+	end
+	
 	it "has Sunspot coordinates" do
 		lat = 37.7701468
 		lon = -122.4451098
-		location = Location.new
-		location.latitude = lat
-		location.longitude = lon
+		location = Location.new latitude: lat, longitude: lon
 		coords = location.coordinates
 		expect(coords.lat).to be_within(0.0000001).of(lat)
 		expect(coords.lng).to be_within(0.0000001).of(lon)

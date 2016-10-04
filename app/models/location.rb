@@ -67,10 +67,10 @@ class Location < ActiveRecord::Base
 	
 	def geocodable_address
 		addr = join_present_attrs ', ', :address1, :city, :region
-		[addr.presence, postal_code.presence].compact.join(' ')
-		# Do not include country until we go international.
+		addr = [addr.presence, postal_code.presence].compact.join(' ')
 		# If only country is returned, we get coordinates in the middle of the country which can be misleading.
-		# [addr.presence, country.presence].compact.join(', ')
+		addr += ", #{display_country}" if addr.present? and country.present?
+		addr
 	end
 	
 	# Always return an array with latitude and longitude values, even if address failed geocoding (in which case, values are nil).

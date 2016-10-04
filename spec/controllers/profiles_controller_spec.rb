@@ -915,14 +915,14 @@ describe ProfilesController, :type => :controller do
 	context "as a site visitor searching by distance", geocoding_api: true, internet: true do
 		let(:service) { FactoryGirl.create(:service, name: 'Brew Master') }
 		let(:bear_location) {
-			FactoryGirl.create(:location, address1: '345 Healdsburg Ave.', city: 'Healdsburg', region: 'CA', postal_code: '95448')
+			FactoryGirl.create(:location, address1: '345 Healdsburg Ave.', city: 'Healdsburg', region: 'CA', postal_code: '95448', country: 'US')
 		}
 		let(:bear_profile) {
 			FactoryGirl.create(:published_profile, company_name: "Bear Republic Brewing Co",
 				locations: [bear_location], services: [service])
 		}
 		let(:rr_location) {
-			FactoryGirl.create(:location, address1: '725 4th Street', city: 'Santa Rosa', region: 'CA', postal_code: '95404')
+			FactoryGirl.create(:location, address1: '725 4th Street', city: 'Santa Rosa', region: 'CA', postal_code: '95404', country: 'US')
 		}
 		let(:rr_profile) {
 			FactoryGirl.create(:published_profile, company_name: 'Russian River Brewing Co',
