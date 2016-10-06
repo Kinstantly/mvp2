@@ -1,10 +1,4 @@
 GIT
-  remote: git://github.com/edsimpson/sunspot.git
-  revision: 844e49dbeb68ec40bc09572bc4919fc69af9a98f
-  specs:
-    sunspot_solr (2.0.0.pre.130115)
-
-GIT
   remote: https://github.com/dgynn/paperclip.git
   revision: c77ca6343699af2ed9435fa7b63d59cb9843af53
   branch: interpolations_tuning
@@ -15,6 +9,12 @@ GIT
       cocaine (~> 0.5.5)
       mime-types
       mimemagic (= 0.3.0)
+
+GIT
+  remote: https://github.com/edsimpson/sunspot.git
+  revision: 844e49dbeb68ec40bc09572bc4919fc69af9a98f
+  specs:
+    sunspot_solr (2.0.0.pre.130115)
 
 GEM
   remote: https://rubygems.org/
@@ -265,7 +265,7 @@ GEM
       activesupport (>= 3.0, < 6.0)
       request_store (~> 1.1)
     pg (0.18.1)
-    phonie (1.0.2)
+    phonie (3.3.1)
     pkg-config (1.1.7)
     power_assert (0.2.3)
     pr_geohash (1.0.0)
@@ -332,7 +332,7 @@ GEM
       chunky_png (~> 1.0)
     rqrcode-rails3 (0.1.7)
       rqrcode (>= 0.4.2)
-    rsolr (1.1.1)
+    rsolr (1.1.2)
       builder (>= 2.1.2)
     rspec-collection_matchers (1.1.2)
       rspec-expectations (>= 2.99.0.beta1)

@@ -102,6 +102,7 @@ gem 'rails-jquery-autocomplete'
 gem 'carmen-rails'
 
 # Parse and print phone numbers.  International support.
+# http://github.com/wmoxam/phonie
 gem 'phonie'
 
 # Geocoding (by street or IP address), reverse geocoding (find street address based on given coordinates), and distance queries.
@@ -160,7 +161,7 @@ group :development, :test do
 	gem 'launchy', '~> 2.1'
 	gem 'syntax'
 	# gem 'sunspot_solr', '~> 2.0.0.pre' # optional pre-packaged Solr distribution for use in development
-	gem 'sunspot_solr', git: 'git://github.com/edsimpson/sunspot.git'
+	gem 'sunspot_solr', git: 'https://github.com/edsimpson/sunspot.git'
 end
 
 # Benchmarking, debugging, and development.

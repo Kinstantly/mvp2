@@ -116,10 +116,20 @@ class ActiveRecord::Base
 	end
 	
 	# Display area code, number, and if present, extension.
-	# Display country code if so designated.
+	# Display country code if not the default country code or so designated.
 	def display_phone_number(value, show_country_code=false)
 		phone = Phonie::Phone.parse value.try(:strip)
-		phone.try :format, "#{'%c ' if show_country_code}(%a) %f-%l#{', x%x' if phone.try(:extension).present?}"
+		if phone
+			format_s = if phone.country_code != Phonie.configuration.default_country_code
+				'+%c %a %f %l'
+			elsif show_country_code
+				'%c (%a) %f-%l'
+			else
+				'(%a) %f-%l'
+			end
+			format_s += ', x%x' if phone.extension.present?
+			phone.format format_s
+		end
 	end
 	
 	# Create ID map of associations between the given list of parent records and the records of the specified child association.  Also creates a hash of child ID to child name.  Returns an array with the associations followed by the names.  HTML escapes the names.

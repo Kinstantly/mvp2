@@ -71,22 +71,68 @@ describe Location, :type => :model do
 	end
 	
 	context "phone number" do
-		let(:location) { FactoryGirl.build :location }
+		context 'US numbers are the default' do
+			let(:location) { FactoryGirl.build :location }
 		
-		it "should accept a properly formatted US number" do
-			location.phone = '(415) 555-1234'
-			expect(location.errors_on(:phone).size).to eq 0
+			it "should accept a properly formatted US number with the country code" do
+				location.phone = '1 (415) 555-1234'
+				expect(location.errors_on(:phone).size).to eq 0
+			end
+		
+			it "should accept a properly formatted US number without the country code" do
+				location.phone = '(415) 555-1234'
+				expect(location.errors_on(:phone).size).to eq 0
+			end
+		
+			it "should fail with an improperly formatted US number" do
+				location.phone = '(415) 55-1234'
+				expect(location.errors_on(:phone).size).to eq 1
+			end
+			
+			it 'should not show the country code for a US or Canada number' do
+				location.phone = '1 (415) 555-1234'
+				expect(location.display_phone).to eq '(415) 555-1234'
+			end
+			
+			it 'should show an extension' do
+				location.phone = '1 (415) 555-1234 x222'
+				expect(location.display_phone).to eq '(415) 555-1234, x222'
+			end
 		end
 		
-		it "should fail with an improperly formatted US number" do
-			location.phone = '(415) 55-1234'
-			expect(location.errors_on(:phone).size).to eq 1
+		context 'international numbers' do
+			let(:location) { FactoryGirl.build :location, country: 'GB' }
+			
+			it "should accept a properly formatted UK number with '+'" do
+				location.phone = '+44 20 7790 5371'
+				expect(location.errors_on(:phone).size).to eq 0
+			end
+			
+			it "should accept a properly formatted UK number without '+'" do
+				location.phone = '44 20 7790 5371'
+				expect(location.errors_on(:phone).size).to eq 0
+			end
+		
+			it "should fail with an improperly formatted UK number" do
+				location.phone = '7790 5371'
+				expect(location.errors_on(:phone).size).to eq 1
+			end
+			
+			it 'should show the country code for a non-US number' do
+				location.phone = '44 20 7790 5371'
+				expect(location.display_phone).to eq '+44 20 779 05371'
+			end
+			
+			it 'should show an extension' do
+				location.phone = '44 20 7790 5371 x222'
+				expect(location.display_phone).to eq '+44 20 779 05371, x222'
+			end
 		end
 	end
 	
 	it "automatically strips leading and trailing whitespace from selected attributes" do
 		location = FactoryGirl.build :location
-		phone = '(800) 555-1001'
+		phone = '1 (800) 555-1001'
 		location.phone = " #{phone} "
 		expect(location.errors_on(:phone).size).to eq 0
 		expect(location.phone).to eq phone
