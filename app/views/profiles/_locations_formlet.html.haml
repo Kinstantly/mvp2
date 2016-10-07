@@ -8,11 +8,13 @@
 		%aside.address.location.editable
 			%span.address_lines.attribute_display{itemprop: 'street-address'}
 				- if location.display_address.present?
+					- city_region = location.display_city_region
 					%span= location.address1
 					- if location.address2.present?
 						%span= location.address2
-					%span.city_region= location.display_city_region
-					%span.postal_code= location.postal_code
+					- if city_region.present? or location.postal_code.present?
+						%span.city_region= city_region
+						%span.postal_code= location.postal_code
 					%span= location.display_country
 				- else
 					%span= profile_blank_attribute_message(Location.human_attribute_name :display_address)
