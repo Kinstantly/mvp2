@@ -27,6 +27,11 @@ describe Location, :type => :model do
 		expect(location.display_country).to eq 'United States'
 	end
 	
+	it 'displays the region name' do
+		location = Location.new region: 'NM', country: 'US'
+		expect(location.display_region).to eq 'New Mexico'
+	end
+	
 	it "limits the number of input characters for attributes stored as string or text records" do
 		location = Location.new
 		[:address1, :address2, :city, :region, :postal_code, :country, :note].each do |attr|
@@ -42,6 +47,16 @@ describe Location, :type => :model do
 		location = FactoryGirl.create :location
 		location.search_area_tag = FactoryGirl.create :search_area_tag, name: 'East Bay'
 		expect(location.errors_on(:search_area_tag).size).to eq 0
+	end
+	
+	context 'text search on address' do
+		let(:country) { Carmen::Country.coded intl_location_params[:country] }
+		let(:country_name) { country.name }
+		let(:region_name) { country.subregions.coded(intl_location_params[:region]).name }
+		
+		it 'uses the full address including the names and codes of the region and country' do
+			expect(intl_location.search_address).to include intl_location.address1, intl_location.address2, intl_location.city, intl_location.region, intl_location.postal_code, region_name, country_name
+		end
 	end
 	
 	context 'geocoding' do

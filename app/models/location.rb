@@ -55,14 +55,17 @@ class Location < ActiveRecord::Base
 		Carmen::Country.coded(country).try(:name)
 	end
 	
+	def display_region
+		Carmen::Country.coded(country).try(:subregions).try(:coded, region).try(:name)
+	end
+	
 	def display_address
 		addr = join_present_attrs ', ', :address1, :address2, :city, :region
 		[addr.presence, postal_code.presence].compact.join(' ')
 	end
 	
 	def search_address
-		region_name = Carmen::Country.coded(country).try(:subregions).try(:coded, region).try(:name)
-		[display_address, region_name].compact.join(' ')
+		[display_address, display_region, display_country].compact.join(' ')
 	end
 	
 	def geocodable_address

@@ -22,6 +22,12 @@ Feature: search the provider directory
 		When I enter "Pesaro" in the search box
 		Then I should see "Pesaro" and "CA" in the search results list
 
+	Scenario: show city, region, and country in search result that is outside the US
+		Given a published profile with city "Montreal", region "QC", and country "CA"
+			And I visit the "/" page
+		When I enter "Montreal" in the search box
+		Then I should see "QC" and "Canada" in the search results list
+
 	Scenario: order search results by distance from postal code
 		Given a published profile with city "San Mateo" and state "CA"
 			And another published profile with city "San Francisco" and state "CA"

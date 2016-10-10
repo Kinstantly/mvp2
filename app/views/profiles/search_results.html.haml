@@ -64,13 +64,13 @@
 								- if (location_count = displayable_locations.count) > 0
 									%p.address
 										- first_location = displayable_locations.first
-										= link_to first_location.display_address, "javascript:void(0)", class: "location", "data-latitude" => first_location.latitude, "data-longitude" => first_location.longitude, target: "_blank"
+										= link_to search_result_address(first_location), "javascript:void(0)", class: "location", "data-latitude" => first_location.latitude, "data-longitude" => first_location.longitude, target: "_blank"
 										- if location_count > 1
 											= link_to t('views.location.view.more.how_many', count: (location_count - 1)), "javascript:void(0)", class: "more", onclick: "my_vars.f.toggle_more_locations(this)"
 											%span.other-locations-slider{style: "display:none"}
 												- displayable_locations.each_with_index do |location, n|
 													-if location != first_location
-														= link_to location.try(:display_address), "javascript:void(0)", class: "location", "data-latitude" => location.latitude, "data-longitude" => location.longitude, target: "_blank"
+														= link_to search_result_address(location), "javascript:void(0)", class: "location", "data-latitude" => location.latitude, "data-longitude" => location.longitude, target: "_blank"
 								- if profile.search_widget_code.present?
 									= raw profile.search_widget_code
 							- if center_announcement.present?

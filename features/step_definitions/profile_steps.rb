@@ -321,6 +321,12 @@ Given /^(my|a published) profile with cities "(.*?)" and "(.*?)" and states "(.*
 	profile.save
 end
 
+Given /^a published profile with city "(.*?)", region "(.*?)"(?:,) and country "(.*?)"$/ do |city, region, country|
+	create_published_profile
+	@published_profile.locations = [FactoryGirl.create(:location, city: city, region: region, country: country)]
+	@published_profile.save
+end
+
 Given /^a published profile with admin notes "(.*?)"$/ do |notes|
 	create_published_profile
 	@published_profile.admin_notes = notes
