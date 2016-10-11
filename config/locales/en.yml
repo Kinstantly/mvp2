@@ -580,7 +580,7 @@ en:
         address2_prompt: 'Room, suite, floor if any'
         address2_example: 'Examples: #300, Suite 102, 3rd floor'
         note_example: "Examples: There's no elevator; We're on the K Street bus line; Parking lot across the street..."
-        phone_example: 'Examples: 505-555-0123 or 800-555-0199 x47'
+        phone_example: 'Examples: U.S. and Canada: (505) 555-0162 or (416) 555-0155 x47. Elsewhere: +61 3 5550 7109 or +44 20 7946 0079 x47.'
         remove: 'Mark the above location for removal upon saving'
         remove_confirm: 'This location will be removed when you click save.'
         remove_confirm_admin: 'This location will be removed when you save the profile.'
