@@ -1,6 +1,6 @@
 - profile ||= @profile
-- country ||= (profile.try(:locations).try(:first).try(:country).presence || default_profile_country)
 - @page_title = profile_page_title profile
+- @default_country ||= default_profile_country
 .profile_areas
 	- if can? :manage, Profile
 		%fieldset.profile_id
@@ -53,20 +53,25 @@
 	%fieldset.location_contact_profile
 		%legend= Profile.human_attribute_name :locations
 		= f.fields_for :locations do |lf|
+			- country = lf.object.country.presence || @default_country
+			- country_data = CountryData.new code: country
+			- country_data.call
 			.address
 				= lf.label :address1
 				= lf.text_field :address1
 				= lf.label :address2
 				= lf.text_field :address2
+			.country
+				= lf.label :country
+				= lf.country_select :country, {priority: ['US', 'CA', 'AU', 'NZ', 'GB']}, class: 'country_select'
 			.city_state
 				= lf.label :city
 				= autocomplete_form_field :city, nil, autocomplete_location_city_profiles_path, form_builder: lf
-				= lf.label :region
+				= lf.label :region, country_data.region_label
 				= lf.subregion_select :region, country, include_blank: '--'
 			.postal_code
-				= lf.label :postal_code
+				= lf.label :postal_code, country_data.postal_code_label
 				= lf.text_field :postal_code
-				= lf.hidden_field :country, value: country
 			.phone
 				= lf.label :phone
 				= lf.text_field :phone
@@ -306,6 +311,28 @@
 		$('.custom_specialties input:last').focus().keydown (e) ->
 			add_custom_specialties_text_field e if e.which == 13 # carriage return
 	$('#add_custom_specialties_text_field').on 'click', add_custom_specialties_text_field
+	
+	# If country is changed in this location field, load the corresponding regions and labels.
+	on_country_changed = (field) ->
+		field.find('.country_select').on 'change', () ->
+			country_select = $(this)
+			country_select_id = country_select.attr('id')
+			country_params =
+				code: country_select.val()
+				region_select_id: country_select_id.replace(/_country$/, '_region')
+				postal_code_id: country_select_id.replace(/_country$/, '_postal_code')
+			$.getJSON '/profiles/location_country_data', country_params, (country_data) ->
+				$('label[for="' + country_data.region_select_id + '"]').html country_data.region_select_label
+				$('#' + country_data.region_select_id).html country_data.region_options
+				$('label[for="' + country_data.postal_code_id + '"]').html country_data.postal_code_label
+	
+	# Set up triggers for fields that are already loaded.
+	$('.fields').each ->
+		on_country_changed $(this)
+	
+	# Set up triggers for any fields that are added after the page loaded.
+	$(document).on 'nested:fieldAdded:locations', (event) ->
+		on_country_changed event.field
 	
 	# Run after document is loaded.
 	$ ->
