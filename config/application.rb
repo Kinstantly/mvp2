@@ -31,6 +31,9 @@ module Mvp2
     # API key used by the Geocoder gem.
     config.geocoder_api_key = ENV['GEOCODER_API_KEY'].presence
     
+    # Number of times to retry a search when Solr returns an error.
+    config.search_retries_on_error = ENV['SEARCH_RETRIES_ON_ERROR'].presence.try(:to_i) || 2
+    
     # Stripe configuration (payment gateway).
     # If stripe[:live_mode] is true, we should only process Stripe events that have livemode == true.
     config.stripe = {

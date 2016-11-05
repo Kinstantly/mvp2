@@ -75,6 +75,10 @@ module SiteConfigurationHelpers
 		def iso_date_regexp
 			Rails.configuration.iso_date_regexp
 		end
+		
+		def search_retries_on_error
+			Rails.configuration.search_retries_on_error
+		end
 	end
 	
 	def self.included(receiver)

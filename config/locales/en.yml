@@ -817,6 +817,7 @@ en:
       nearest_results_msg: 'Page %{page} of nearest results'
       nearest_to_city_postal_code: 'Show closest to'
       nearest_to_you: 'Show nearest to you'
+      error: 'There was a problem while searching. Please try again.'
       found:
         none: 'No search results'
         how_many:

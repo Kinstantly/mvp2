@@ -97,3 +97,12 @@ Feature: search the provider directory
 			And I visit the "/" page
 		When I enter "" in the search box
 		Then I should see no search results
+
+	Scenario: search engine failure should result in a nice error message
+		Given the search engine is not working
+			And I am not logged in
+			And I visit the "/" page
+		When I enter "day camps" in the search box
+		Then I should see "There was a problem while searching" on the page
+			And I should see "Please try again" on the page
+			And I should see no search results

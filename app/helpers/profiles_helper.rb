@@ -611,7 +611,9 @@ module ProfilesHelper
 		search_area = in_search_area options[:search_area_tag_id]
 		sorted_by_proximity = options[:address].present? && total > 1 ? t('views.search_results.sorted_by_proximity_to', address: options[:address]) : nil
 		addendum = [search_area, sorted_by_proximity].compact.join(' ')
-		if query.present?
+		if search.respond_to?(:error) and search.error
+			t 'views.search_results.error'
+		elsif query.present?
 			t_scope = 'views.search_results.found_for'
 			"#{total > 0 ? t('how_many', scope: t_scope, count: total, query: query) : t('none', scope: t_scope, query: query)} #{addendum}"
 		else

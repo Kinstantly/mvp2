@@ -325,7 +325,7 @@ class Profile < ActiveRecord::Base
 		
 		# Do the search.
 		# Note: eager load associations that are likely to be used on a search results page.
-		self.search(include: [:locations, :specialties]) do
+		self.search_with_retry(include: [:locations, :specialties]) do
 			if opts[:solr_params].present?
 				adjust_solr_params do |params|
 					params.merge! opts[:solr_params]
@@ -358,6 +358,24 @@ class Profile < ActiveRecord::Base
 			paginate_opts[:page] = opts[:page].to_i if opts[:page].present?
 			paginate_opts[:per_page] = opts[:per_page].to_i if opts[:per_page].present?
 			paginate paginate_opts if paginate_opts.present?
+		end
+	end
+	
+	def self.search_with_retry(options = {}, &block)
+		retries = search_retries_on_error || 0
+		tries = 0
+		begin
+			tries += 1
+			self.search options, &block
+		rescue RSolr::Error::Http, RSolr::Error::ConnectionRefused => error
+			if tries <= retries
+				logger.info "Profile search: After #{tries} #{'try'.pluralize tries}, retrying search on #{error}"
+				sleep 1
+				retry
+			else
+				logger.error "Profile search error: After #{tries} #{'try'.pluralize tries}, failed search on #{error}"
+				NilSearch.new error: error
+			end
 		end
 	end
 	

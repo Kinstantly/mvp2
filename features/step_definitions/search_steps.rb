@@ -4,6 +4,12 @@ Given /^I am on the search results page$/ do
 	visit search_providers_path query: 'Music Teachers'
 end
 
+Given(/^the search engine is not working$/) do
+	allow(Net::HTTPBadRequest).to receive :new
+	error = RSolr::Error::Http.new( Net::HTTP::Get.new('/'), Net::HTTPBadRequest.new )
+	allow(Profile).to receive(:search).and_raise(error)
+end
+
 When /^I enter published profile data in the search box$/ do
 	within('#providerSearch') do
 		fill_in 'provider_search_query', with: @published_profile_data[:last_name]

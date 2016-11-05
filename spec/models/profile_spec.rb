@@ -562,6 +562,32 @@ describe Profile, :type => :model do
 				expect(Profile.fuzzy_search('').results.size).to eq 0
 			end
 		end
+		
+		context 'search result when the search engine failed' do
+			let(:error) {
+				allow(Net::HTTPBadRequest).to receive :new
+				RSolr::Error::Http.new( Net::HTTP::Get.new('/'), Net::HTTPBadRequest.new )
+			}
+			let(:retries) { 2 }
+			
+			before(:example) do
+				allow(Profile).to receive(:search).and_raise(error)
+				Rails.configuration.search_retries_on_error = retries
+			end
+			
+			it 'should have an error' do
+				expect(Profile.fuzzy_search('math')).to respond_to :error
+			end
+			
+			it 'should provide the error' do
+				expect(Profile.fuzzy_search('math').error).to be error
+			end
+			
+			it 'should retry' do
+				expect(Profile).to receive(:search).exactly(retries + 1).times
+				Profile.fuzzy_search('math')
+			end
+		end
 	end
 	
 	context "character limits on string and text attributes" do

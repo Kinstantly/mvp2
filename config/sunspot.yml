@@ -4,6 +4,8 @@ development:
     port: 8982
     log_level: INFO
     path: /solr
+    open_timeout: 6
+    read_timeout: 6
 
 test:
   solr:
@@ -11,6 +13,8 @@ test:
     port: 8981
     log_level: WARNING
     path: /solr
+    open_timeout: 6
+    read_timeout: 6
 
 performance:
   solr:
@@ -18,8 +22,12 @@ performance:
     port: 8983
     log_level: WARNING
     path: /solr
+    open_timeout: 6
+    read_timeout: 6
 
 # Might need this for production.
-# production:
-#   solr:
+production:
+  solr:
+    open_timeout: 6
+    read_timeout: 6
 #     path: /solr/default
