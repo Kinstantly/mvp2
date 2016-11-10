@@ -588,6 +588,28 @@ describe Profile, :type => :model do
 				Profile.fuzzy_search('math')
 			end
 		end
+		
+		context 'search result when the search-engine times out on connection open or read' do
+			let(:open_timeout) { Net::OpenTimeout.new }
+			let(:read_timeout) { Net::ReadTimeout.new }
+			let(:retries) { 2 }
+			
+			before(:example) do
+				Rails.configuration.search_retries_on_error = retries
+			end
+			
+			it 'should retry on connection open timeout' do
+				allow(Profile).to receive(:search).and_raise(open_timeout)
+				expect(Profile).to receive(:search).exactly(retries + 1).times
+				Profile.fuzzy_search('math')
+			end
+			
+			it 'should retry on read timeout' do
+				allow(Profile).to receive(:search).and_raise(read_timeout)
+				expect(Profile).to receive(:search).exactly(retries + 1).times
+				Profile.fuzzy_search('math')
+			end
+		end
 	end
 	
 	context "character limits on string and text attributes" do

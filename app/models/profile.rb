@@ -367,7 +367,7 @@ class Profile < ActiveRecord::Base
 		begin
 			tries += 1
 			self.search options, &block
-		rescue RSolr::Error::Http, RSolr::Error::ConnectionRefused => error
+		rescue RSolr::Error::Http, RSolr::Error::ConnectionRefused, Net::OpenTimeout, Net::ReadTimeout => error
 			if tries <= retries
 				logger.info "Profile search: After #{tries} #{'try'.pluralize tries}, retrying search on #{error}"
 				sleep 1
