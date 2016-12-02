@@ -91,7 +91,7 @@ Rails.application.configure do
   }
 
   # Wrapper for MailChimp API
-  Gibbon::API.api_key = '924cc5a82c5f67ecc397bd1d4fcb7236-us9'
+  Gibbon::Request.api_key = '924cc5a82c5f67ecc397bd1d4fcb7236-us9'
   config.mailing_lists[:mailchimp_list_ids] = {
     :parent_marketing_emails => '46eeff8675',
     :parent_newsletters => '7030e9d15b',

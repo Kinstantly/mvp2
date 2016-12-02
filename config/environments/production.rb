@@ -141,7 +141,7 @@ Rails.application.configure do
   }
 
   # Wrapper for MailChimp API
-  Gibbon::API.api_key = ENV['MAILCHIMP_API_KEY']
+  Gibbon::Request.api_key = ENV['MAILCHIMP_API_KEY']
   config.mailing_lists[:mailchimp_list_ids] = {
     :parent_marketing_emails => ENV['PARENT_MARKETING_EMAILS_LIST_ID'],
     :parent_newsletters => ENV['PARENT_NEWSLETTERS_LIST_ID'],

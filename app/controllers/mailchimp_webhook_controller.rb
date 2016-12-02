@@ -39,14 +39,11 @@ class MailchimpWebhookController < ApplicationController
 			logger.info "MailChimp Webhook: user reported abuse: email => #{subscriber_email}" if logger
 		end
 		
-		emails = [{email: subscriber_email}]
 		begin
-			gb = Gibbon::API.new
-			r = gb.lists.member_info id: incoming_list_id, emails: emails
+			r = Gibbon::Request.lists(incoming_list_id).members(email_md5_hash(subscriber_email)).retrieve
 			if r.present?
-				user_unsubscribed = (r['success_count'] == 1 && r['data'][0]['status'] == 'unsubscribed')
-				user_deleted = r['error_count'] == 1
-				if user_unsubscribed || user_deleted
+				case r['status']
+				when 'unsubscribed', 'cleaned'
 					if (user = User.find_by_email_ignore_case(subscriber_email))
 						user.process_unsubscribe_event(list_name)
 					end
@@ -58,7 +55,16 @@ class MailchimpWebhookController < ApplicationController
 				logger.info "MailChimp Webhook unsubscribe: No member_info for list_name => #{list_name}, email => #{subscriber_email}" if logger
 			end
 		rescue Gibbon::MailChimpError => e
-			logger.error "MailChimp Webhook error while processing notification: #{e.message}, error code: #{e.code}." if logger
+			if e.status_code == 404 # No subscription record at MailChimp; probably was deleted.
+				if (user = User.find_by_email_ignore_case(subscriber_email))
+					user.process_unsubscribe_event(list_name)
+				end
+				# AdminMailer.newsletter_delete_alert(list_name, subscriber_email).deliver_now
+				AdminMailer.newsletter_unsubscribe_alert(list_name, subscriber_email).deliver_now
+				logger.info "MailChimp Webhook unsubscribe: No subscription record for list_name => #{list_name}, email => #{subscriber_email}; was most likely deleted rather than unsubscribed" if logger
+			else
+				logger.error "MailChimp Webhook error while processing notification: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{subscriber_email}" if logger
+			end
 		end
 	end
 	
@@ -78,10 +84,10 @@ class MailchimpWebhookController < ApplicationController
 			campaign_content = retrieve_campaign_content(id)
 			if campaign_info.present? && campaign_content.present?
 				newsletter.cid = id
-				newsletter.list_id = campaign_info['list_id']
+				newsletter.list_id = campaign_info['recipients']['list_id']
 				newsletter.send_time = campaign_info['send_time'].to_date
-				newsletter.title = campaign_info['title']
-				newsletter.subject = campaign_info['subject']
+				newsletter.title = campaign_info['settings']['title']
+				newsletter.subject = campaign_info['settings']['subject_line']
 				newsletter.archive_url = campaign_info['archive_url']
 				newsletter.content = campaign_content
 				if !newsletter.save
@@ -96,27 +102,33 @@ class MailchimpWebhookController < ApplicationController
 	end
 
 	def retrieve_campaign_info(id)
-		gb = Gibbon::API.new
+		# gb = Gibbon::API.new
 		begin
-			filters = { campaign_id: id }
-			r = gb.campaigns.list filters: filters
-			info = r.try(:[], 'data').try(:first) unless r.blank?
-		rescue Exception => e
-			logger.error "Error while retrieving MailChimp archive list: #{e.message}" if logger
+			# filters = { campaign_id: id }
+			# r = gb.campaigns.list filters: filters
+			# info = r.try(:[], 'data').try(:first) unless r.blank?
+			info = Gibbon::Request.campaigns(id).retrieve
+		rescue Gibbon::MailChimpError => e
+			logger.error "Error while retrieving MailChimp archive list: #{e.title}; #{e.detail}; status: #{e.status_code}; campaign ID: #{id}"
 		ensure
 			return info || []
 		end
 	end
 
 	def retrieve_campaign_content(id)
-		gb = Gibbon::API.new
+		# gb = Gibbon::API.new
 		begin
-			r = gb.campaigns.content cid: id
-			html = r.try(:[], 'html') unless r.blank?
-		rescue Exception => e
-			logger.error "Error while retrieving MailChimp newsletter content: #{e.message}" if logger
+			# r = gb.campaigns.content cid: id
+			content = Gibbon::Request.campaigns(id).content.retrieve
+			html = content.try :[], 'html'
+		rescue Gibbon::MailChimpError => e
+			logger.error "Error while retrieving MailChimp newsletter content: #{e.title}; #{e.detail}; status: #{e.status_code}; campaign ID: #{id}"
 		ensure
 			return html
 		end
+	end
+	
+	def email_md5_hash(email)
+		Digest::MD5.hexdigest email.downcase
 	end
 end

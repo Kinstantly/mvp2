@@ -102,22 +102,28 @@ class NewslettersController < ApplicationController
 			next if !User.mailing_list_name_valid?(list_name)
 
 			list_id = mailchimp_list_ids[list_name]
-			email_struct = { email: email }
+			# email_struct = { email: email }
 			begin
-				gb = Gibbon::API.new
-				subscribe_params = {
-					id: list_id,
-					email: email_struct,
-					double_optin: false,
-					send_welcome: send_mailchimp_welcome?
+				# gb = Gibbon::API.new
+				# subscribe_params = {
+				# 	id: list_id,
+				# 	email: email_struct,
+				# 	double_optin: false,
+				# 	send_welcome: send_mailchimp_welcome?
+				# }
+				# subscribe_params[:merge_vars] = options[:merge_vars] if options[:merge_vars]
+				# r = gb.lists.subscribe subscribe_params
+				
+				r = Gibbon::Request.lists(list_id).members(email_md5_hash(email)).upsert body: {
+					email_address: email,
+					status: 'subscribed',
+					merge_fields: options[:merge_vars]
 				}
-				subscribe_params[:merge_vars] = options[:merge_vars] if options[:merge_vars]
-				r = gb.lists.subscribe subscribe_params
-				if r.try(:[], 'leid').present?
+				if r.try(:[], 'status') == 'subscribed'
 					successful_subscribes << list_name
 				end
 			rescue Gibbon::MailChimpError => e
-				logger.error "MailChimp error while subscribing guest user with email #{email_struct} to #{list_name}: #{e.message}, error code: #{e.code}" if logger
+				logger.error "MailChimp error while subscribing guest user with email #{email} to #{list_name}: #{e.title}; #{e.detail}; status: #{e.status_code}"
 			end
 		end
 		if successful_subscribes.any?
@@ -127,6 +133,10 @@ class NewslettersController < ApplicationController
 				AdminMailer.newsletter_subscribe_alert(successful_subscribes, email).deliver_now
 			end
 		end
+	end
+	
+	def self.email_md5_hash(email)
+		Digest::MD5.hexdigest email.downcase
 	end
 	
 	private
@@ -163,41 +173,57 @@ class NewslettersController < ApplicationController
 	end
 
 	def archive_url(id)
-		gb = Gibbon::API.new
+		# gb = Gibbon::API.new
 		begin
-			r = gb.campaigns.list filters: { id: id }
-			url = r.try(:[], 'data').try(:[], 0).try(:[], 'archive_url') unless r.blank?
-		rescue Exception => e
-			logger.info "Error while retrieving MailChimp newsletter ##{id}: #{e.message}" if logger
+			# r = gb.campaigns.list filters: { id: id }
+			# url = r.try(:[], 'data').try(:[], 0).try(:[], 'archive_url') unless r.blank?
+			r = Gibbon::Request.campaigns(id).retrieve params: {
+				fields: 'archive_url'
+			}
+			url = r.try :[], 'archive_url'
+		rescue Gibbon::MailChimpError => e
+			logger.info "Error while retrieving MailChimp newsletter campaign ID #{id}: #{e.title}; #{e.detail}; status: #{e.status_code}"
 		ensure
 			return url
 		end
 	end
 
 	def latest_archive_url(list_name)
-		gb = Gibbon::API.new
-		gb.timeout = 2 # second(s)
+		# gb = Gibbon::API.new
+		# gb.timeout = 2 # second(s)
 		begin
 			list_id = mailchimp_list_ids[list_name]
-			filters = { list_id: list_id, status: 'sent' }
-			r = gb.campaigns.list filters: filters, sort_field: 'send_time', limit: 1
-			url = r.try(:[], 'data').try(:[], 0).try(:[], 'archive_url') unless r.blank?
-		rescue Exception => e
-			logger.info "Error while retrieving MailChimp newsletter urls: #{e.message}" if logger
+			# filters = { list_id: list_id, status: 'sent' }
+			# r = gb.campaigns.list filters: filters, sort_field: 'send_time', limit: 1
+			# url = r.try(:[], 'data').try(:[], 0).try(:[], 'archive_url') unless r.blank?
+			r = Gibbon::Request.campaigns.retrieve params: {
+				list_id: list_id,
+				status: 'sent',
+				fields: 'campaigns.archive_url'
+			}
+			url = r.try(:[], 'campaigns').try(:last).try(:[], 'archive_url')
+		rescue Gibbon::MailChimpError => e
+			logger.info "Error while retrieving latest MailChimp newsletter url for #{list_name}: #{e.title}; #{e.detail}; status: #{e.status_code}"
 		ensure
 			return url
 		end
 	end
 
 	def list_archive(list_name)
-		gb = Gibbon::API.new
+		# gb = Gibbon::API.new
 		begin
 			list_id = mailchimp_list_ids[list_name]
-			filters = { list_id: list_id, status: 'sent' }
-			r = gb.campaigns.list filters: filters, sort_field: 'send_time', limit: 100
-			data = r.try(:[], 'data') unless r.blank?
-		rescue Exception => e
-			logger.info "Error while retrieving MailChimp newsletter urls: #{e.message}" if logger
+			# filters = { list_id: list_id, status: 'sent' }
+			# r = gb.campaigns.list filters: filters, sort_field: 'send_time', limit: 100
+			# data = r.try(:[], 'data') unless r.blank?
+			r = Gibbon::Request.campaigns.retrieve params: {
+				list_id: list_id,
+				status: 'sent',
+				fields: 'campaigns.archive_url,campaigns.settings.subject_line'
+			}
+			data = r.try(:[], 'campaigns').try(:reverse).try(:[], 0, 100)
+		rescue Gibbon::MailChimpError => e
+			logger.info "Error while retrieving MailChimp newsletter urls for #{list_name}: #{e.title}; #{e.detail}; status: #{e.status_code}"
 		ensure
 			return data || []
 		end

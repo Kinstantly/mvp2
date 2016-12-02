@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe MailchimpWebhookController, :type => :controller do
+describe MailchimpWebhookController, type: :controller, mailchimp: true do
 	let(:token) { Rails.configuration.mailchimp_webhook_security_token }
 	let(:list_id) { mailchimp_list_ids[:parent_newsletters]}
 	let(:user) { FactoryGirl.create(:client_user) }
@@ -14,7 +14,8 @@ describe MailchimpWebhookController, :type => :controller do
 			}
 		}
 	}
-	describe "POST process_notification", mailchimp: true do
+	
+	describe "POST process_notification" do
 		
 		it "returns a status of 200 no matter what" do
 			post :process_notification, token: 'none'
@@ -28,11 +29,10 @@ describe MailchimpWebhookController, :type => :controller do
 				@parent_newsletters_leid = user.parent_newsletters_leid
 	
 				# Unsubscribe without deleting user from the list
-				gb = Gibbon::API.new
-				r = gb.lists.unsubscribe id: list_id, 
-					email: { email: user.email },
-					send_goodbye: false,
-					send_notify: false
+				email_hash = Digest::MD5.hexdigest user.email.downcase
+				Gibbon::Request.lists(list_id).members(email_hash).update body: {
+					status: 'unsubscribed'
+				}
 			end
 
 			it "should not process notification without a valid token" do
@@ -84,9 +84,10 @@ describe MailchimpWebhookController, :type => :controller do
 			end
 			
 			it "should remove one subscription" do
-				Gibbon::API.new.lists.unsubscribe id: list_id,
-					email: {email: user.email, leid: user.parent_newsletters_leid},
-					delete_member: true, send_goodbye: false, send_notify: false
+				email_hash = Digest::MD5.hexdigest user.email.downcase
+				Gibbon::Request.lists(list_id).members(email_hash).update body: {
+					status: 'unsubscribed'
+				}
 				
 				post :process_notification, params
 				user.reload
@@ -105,8 +106,8 @@ describe MailchimpWebhookController, :type => :controller do
 		  end
 		end
 
-		context "new campaign sent" do
-			# The following works because we are mocking the campaigns API.
+		# The following requires mocking of the campaigns API.
+		context "new campaign sent", use_gibbon_mocks: true do
 			it "creates a new record when valid campaign data provided" do
 				post :process_notification, campaign_params
 				new_newsletter = Newsletter.find_by_cid(campaign_params[:data][:id])

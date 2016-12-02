@@ -234,8 +234,8 @@ class User < ActiveRecord::Base
 
 	#Sync local subscriptions changes (create/update/delete) with MailChimp.
 	def sync_subscription_preferences(updated_attrs=[])
-		email_updated = updated_attrs[:email].present?
-		if email_updated
+		email_update = updated_attrs[:email]
+		if email_update.present?
 			if update_mailing_lists_in_background?
 				delay.import_subscriptions
 			else
@@ -255,10 +255,10 @@ class User < ActiveRecord::Base
 		subscriptions_to_remove = old_values.merge(new_values){|key, ov, nv| (ov && !nv)}.select {|k,v| v}.keys
 
 		if update_mailing_lists_in_background?
-			delay.subscribe_to_mailing_lists(subscriptions_to_update, email_updated)
+			delay.subscribe_to_mailing_lists(subscriptions_to_update, email_update)
 			delay.unsubscribe_from_mailing_lists(subscriptions_to_remove)
 		else
-			subscribe_to_mailing_lists(subscriptions_to_update, email_updated)
+			subscribe_to_mailing_lists(subscriptions_to_update, email_update)
 			unsubscribe_from_mailing_lists(subscriptions_to_remove)
 		end
 	end
@@ -475,7 +475,7 @@ class User < ActiveRecord::Base
 	# end
 
 	# Creates new or updates existing subscriptions on MailChimp.
-	def subscribe_to_mailing_lists(list_names=[], new_email=false)
+	def subscribe_to_mailing_lists(list_names=[], email_update=nil)
 		# Do nothing if we are not allowed to contact this user. (It's OK if they are not confirmed yet.)
 		return false if contact_is_blocked?
 
@@ -490,27 +490,55 @@ class User < ActiveRecord::Base
 			next if !User.mailing_list_name_valid?(list_name)
 
 			list_id = mailchimp_list_ids[list_name]
-			subscriber_leid = leid list_name
-			email_struct = { leid: subscriber_leid }
-			if new_email && subscriber_leid.present?
-				# User changed their email; email attribute have been updated at this time.
-				# Do not use email as an id, but instruct MailChimp to update the email.
-				merge_vars['new-email'] = email
-			else
-				email_struct[:email] = email
-			end
+			# subscriber_leid = leid list_name
+			# email_struct = { leid: subscriber_leid }
+			# if new_email && subscriber_leid.present?
+			# 	# User changed their email; email attribute have been updated at this time.
+			# 	# Do not use email as an id, but instruct MailChimp to update the email.
+			# 	merge_vars['new-email'] = email
+			# else
+			# 	email_struct[:email] = email
+			# end
+			
+			r = nil
+			
+			# have to deal with case where they changed the email address while subscribed, i.e., email_update is present; in this case, we must use the previous email address for the MD5 hash.
 			begin
-				gb = Gibbon::API.new
-				r = gb.lists.subscribe id: list_id, 
-					email: email_struct,
-					merge_vars: merge_vars,
-					double_optin: false,
-					update_existing: true
-				if r.present?
-					update_column(leid_attr_name(list_name), r['leid'])
+				if email_update.present?
+					# Update the email address in the subscription with the old email address.
+					old_email = email_update[0]
+					r = Gibbon::Request.lists(list_id).members(email_md5_hash(old_email)).update body: {
+						email_address: email,
+						status: 'subscribed',
+						merge_fields: merge_vars
+					}
 				end
 			rescue Gibbon::MailChimpError => e
-				logger.error "MailChimp error while subscribing user #{id} to #{merge_vars}: #{e.message}, error code: #{e.code}" if logger
+				logger.error "MailChimp error while updating subscription for user #{id} to #{list_name} with email #{old_email}: #{e.title}; #{e.detail}; status: #{e.status_code}; new email: #{email}" unless e.status_code == 404
+			end
+			
+			begin
+				# gb = Gibbon::API.new
+				# r = gb.lists.subscribe id: list_id,
+				# 	email: email_struct,
+				# 	merge_vars: merge_vars,
+				# 	double_optin: false,
+				# 	update_existing: true
+				
+				unless r.present? and r['status'] == 'subscribed'
+					r = Gibbon::Request.lists(list_id).members(email_md5_hash(email)).upsert body: {
+						email_address: email,
+						status: 'subscribed',
+						merge_fields: merge_vars
+					}
+				end
+			rescue Gibbon::MailChimpError => e
+				logger.error "MailChimp error while subscribing user #{id} to #{list_name}: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{email}"
+			end
+
+			if r.present? and r['status'] == 'subscribed'
+				update_column(list_name.to_s, true)
+				update_column(leid_attr_name(list_name), r['unique_email_id'])
 			end
 		end
 	end
@@ -521,18 +549,22 @@ class User < ActiveRecord::Base
 			next if !User.mailing_list_name_valid?(list_name)
 			
 			list_id = mailchimp_list_ids[list_name]
-			subscriber_leid = leid list_name
-			email_struct = {email: email, leid: subscriber_leid}
+			# subscriber_leid = leid list_name
+			# email_struct = {email: email, leid: subscriber_leid}
 			begin
-				gb = Gibbon::API.new
-				r = gb.lists.unsubscribe id: list_id, 
-					email: email_struct,
-					delete_member: true,
-					send_goodbye: false,
-					send_notify: false
+				# gb = Gibbon::API.new
+				# r = gb.lists.unsubscribe id: list_id,
+				# 	email: email_struct,
+				# 	delete_member: true,
+				# 	send_goodbye: false,
+				# 	send_notify: false
+				
+				Gibbon::Request.lists(list_id).members(email_md5_hash(email)).update body: {
+					status: 'unsubscribed'
+				}
 				update_column(leid_attr_name(list_name), nil)
 			rescue Gibbon::MailChimpError => e
-				logger.error "MailChimp error while unsubscribing user #{id}: #{e.message}, error code: #{e.code}" if logger
+				logger.error "MailChimp error while unsubscribing user #{id}: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{email}"
 			end
 		end
 	end
@@ -542,15 +574,21 @@ class User < ActiveRecord::Base
 		active_mailing_lists.each do |list_name|
 			list_id = mailchimp_list_ids[list_name]
 			begin
-				gb = Gibbon::API.new
-				r = gb.lists.member_info id: list_id, emails: [{email: email}]
-				if r.present? && r['success_count'] == 1 && r.try(:[], 'data').try(:[], 0).present?
+				# gb = Gibbon::API.new
+				# r = gb.lists.member_info id: list_id, emails: [{email: email}]
+				
+				r = Gibbon::Request.lists(list_id).members(email_md5_hash(email)).retrieve
+				if r.present? && r['status'] == 'subscribed'
 					update_column(list_name.to_s, true)
-					update_column(leid_attr_name(list_name), r['data'][0]['leid'])
+					update_column(leid_attr_name(list_name), r['unique_email_id'])
 				end
 			rescue Gibbon::MailChimpError => e
-				logger.error "MailChimp error while importing mailchimp subscriptions for user #{id} #{email}: #{e.message}, error code: #{e.code}" if logger
+				logger.error "MailChimp error while importing mailchimp subscriptions for user #{id}: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{email}" unless e.status_code == 404 # 404 means no subscription record, i.e., not subscribed.
 			end
 		end
+	end
+	
+	def email_md5_hash(email)
+		Digest::MD5.hexdigest email.downcase
 	end
 end

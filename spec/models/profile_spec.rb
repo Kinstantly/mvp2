@@ -855,22 +855,17 @@ describe Profile, :type => :model do
 			profile.user = FactoryGirl.create(:expert_user, provider_newsletters: true)
 			profile.save
 			profile.reload
-			profile.first_name = "Bob"
-			merge_vars = {
-				'SUBSOURCE' => 'directory_user_create_or_update',
-				FNAME: profile.first_name,
-				LNAME: profile.last_name
-			}
-			opts = {
-				email: { email: profile.user.email, leid: profile.user.provider_newsletters_leid },
-				id: list_id,
-				merge_vars: merge_vars,
-				double_optin: false,
-				update_existing: true
-			}
-			# We can do the following because we are mocking the lists API.
-			expect(Gibbon::API.new.lists).to receive(:subscribe).with(opts).once
-			profile.save
+			old_first_name = profile.first_name
+			new_first_name = 'Montserrat'
+			email_hash = Digest::MD5.hexdigest profile.user.email.downcase
+			
+			expect {
+				profile.first_name = new_first_name
+				profile.save
+			}.to change {
+				r = Gibbon::Request.lists(list_id).members(email_hash).retrieve
+				r['merge_fields']['FNAME']
+			}.from(old_first_name).to(new_first_name)
 		end
 	end
 end

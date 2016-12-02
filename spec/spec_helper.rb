@@ -66,7 +66,10 @@ RSpec.configure do |config|
 
   # Mocks for the MailChimp API via Gibbon.
   config.before(:example) do |example|
-    set_up_gibbon_mocks unless example.metadata[:contact_mailchimp]
+    if example.metadata[:use_gibbon_mocks] or
+      !(example.metadata[:contact_mailchimp] or ENV['CONTACT_MAILCHIMP'].present?)
+      set_up_gibbon_mocks
+    end
   end
 
   # Specs for describing behavior while running as a private site.

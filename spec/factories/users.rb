@@ -43,7 +43,7 @@ FactoryGirl.define do
 			after(:build) { |user, evaluator| user.welcome_sent_at = Time.at(0).utc unless evaluator.pending_welcome }
 			
 			factory :second_provider do
-				email 'FactoryEmailSecondProvider@example.com'
+				email 'FactoryEmailSecondProvider@kinstantly.com'
 			end
 			
 			factory :provider_with_username do
@@ -63,7 +63,7 @@ FactoryGirl.define do
 				association :profile, factory: :profile_allowed_charge_authorizations
 				
 				factory :second_payable_provider do
-					email 'FactoryEmailSecondPayableProvider@example.com'
+					email 'FactoryEmailSecondPayableProvider@kinstantly.com'
 				end
 			end
 			

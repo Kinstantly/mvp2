@@ -375,13 +375,12 @@ describe User, :type => :model do
 		let(:parent) { FactoryGirl.create :parent }
 		let(:new_parent) { FactoryGirl.build :parent }
 		
-		it "can request MailChimp and mailing lists exist in MailChimp account", contact_mailchimp: true do
-			local_list_ids = mailchimp_list_ids.values
-			gb = Gibbon::API.new
-			r = gb.lists.list
-			expect(r.present?).to be_truthy
-			remote_list_ids = r['data'].collect { |list_data| list_data['id'] }   
-			expect((local_list_ids - remote_list_ids).empty?).to be_truthy
+		it "mailing lists exist in MailChimp account", contact_mailchimp: true do
+			mailchimp_list_ids.values.each do |list_id|
+				r = Gibbon::Request.lists(list_id).retrieve
+				expect(r).to be_present
+				expect(r['id']).to eq list_id
+			end
 		end
 
 		it "can subscribe to mailing lists" do
@@ -423,18 +422,20 @@ describe User, :type => :model do
 		context "parent" do
 			let(:parent_newsletters_id) { mailchimp_list_ids[:parent_newsletters] }		
 			
-			it "should not attempt to set the mailchimp subscriber name (because there are no name fields in the user record)" do
-				parent.parent_newsletters = true
+			it "should not attempt to set the mailchimp subscriber name (because there are no name fields in the user record)", use_gibbon_mocks: true do
 				merge_vars = { 'SUBSOURCE' => 'directory_user_create_or_update' }
-				opts = {
-					email: { leid: parent.parent_newsletters_leid, email: parent.email },
-					id: parent_newsletters_id,
-					merge_vars: merge_vars,
-					double_optin: false,
-					update_existing: true
+				body = {
+					body: {
+						email_address: parent.email,
+						status: 'subscribed',
+						merge_fields: merge_vars
+					}
 				}
+				email_hash = Digest::MD5.hexdigest parent.email.downcase
 				# We can do the following because we are mocking the lists API.
-				expect(Gibbon::API.new.lists).to receive(:subscribe).with(opts).once
+				expect(Gibbon::Request.lists(parent_newsletters_id).members(email_hash)).to receive(:upsert).with(body).once
+				
+				parent.parent_newsletters = true
 				parent.save
 			end
 		end
@@ -443,62 +444,68 @@ describe User, :type => :model do
 			let(:provider) { FactoryGirl.create :provider_with_username }
 			let(:provider_newsletters_list_id) { mailchimp_list_ids[:provider_newsletters] }
 			
-			it "should set mailchimp subscriber first and last name to profile first and last name" do
-				provider.provider_newsletters = true
+			it "should set mailchimp subscriber first and last name to profile first and last name", use_gibbon_mocks: true do
 				merge_vars = {
 					'SUBSOURCE' => 'directory_user_create_or_update',
 					FNAME: provider.profile.first_name,
 					LNAME: provider.profile.last_name
 				}
-				opts = {
-					id: provider_newsletters_list_id,
-					email: { leid: provider.provider_newsletters_leid, email: provider.email },
-					merge_vars: merge_vars,
-					double_optin: false,
-					update_existing: true
+				body = {
+					body: {
+						email_address: provider.email,
+						status: 'subscribed',
+						merge_fields: merge_vars
+					}
 				}
+				email_hash = Digest::MD5.hexdigest provider.email.downcase
 				# We can do the following because we are mocking the lists API.
-				expect(Gibbon::API.new.lists).to receive(:subscribe).with(opts).once
+				expect(Gibbon::Request.lists(provider_newsletters_list_id).members(email_hash)).to receive(:upsert).with(body).once
+
+				provider.provider_newsletters = true
 				provider.save
 			end
 
-			it "should set mailchimp subscriber first name to blank if profile first name is empty" do
-				provider.provider_newsletters = true
-				provider.profile.first_name = ''
+			it "should set mailchimp subscriber first name to blank if profile first name is empty", use_gibbon_mocks: true do
 				merge_vars = {
 					'SUBSOURCE' => 'directory_user_create_or_update',
 					FNAME: '',
 					LNAME: provider.profile.last_name
 				}
-				opts = {
-					id: provider_newsletters_list_id,
-					email: { leid: provider.provider_newsletters_leid, email: provider.email },
-					merge_vars: merge_vars,
-					double_optin: false,
-					update_existing: true
+				body = {
+					body: {
+						email_address: provider.email,
+						status: 'subscribed',
+						merge_fields: merge_vars
+					}
 				}
+				email_hash = Digest::MD5.hexdigest provider.email.downcase
 				# We can do the following because we are mocking the lists API.
-				expect(Gibbon::API.new.lists).to receive(:subscribe).with(opts).once
+				expect(Gibbon::Request.lists(provider_newsletters_list_id).members(email_hash)).to receive(:upsert).with(body).once
+				
+				provider.provider_newsletters = true
+				provider.profile.first_name = ''
 				provider.save
 			end
 
-			it "should set mailchimp subscriber last name to blank if profile last name is empty" do
-				provider.provider_newsletters = true
-				provider.profile.last_name = ''
+			it "should set mailchimp subscriber last name to blank if profile last name is empty", use_gibbon_mocks: true do
 				merge_vars = {
 					'SUBSOURCE' => 'directory_user_create_or_update',
 					FNAME: provider.profile.first_name,
 					LNAME: ''
 				}
-				opts = {
-					id: provider_newsletters_list_id,
-					email: { leid: provider.provider_newsletters_leid, email: provider.email },
-					merge_vars: merge_vars,
-					double_optin: false,
-					update_existing: true
+				body = {
+					body: {
+						email_address: provider.email,
+						status: 'subscribed',
+						merge_fields: merge_vars
+					}
 				}
+				email_hash = Digest::MD5.hexdigest provider.email.downcase
 				# We can do the following because we are mocking the lists API.
-				expect(Gibbon::API.new.lists).to receive(:subscribe).with(opts).once
+				expect(Gibbon::Request.lists(provider_newsletters_list_id).members(email_hash)).to receive(:upsert).with(body).once
+
+				provider.provider_newsletters = true
+				provider.profile.last_name = ''
 				provider.save
 			end
 		end
