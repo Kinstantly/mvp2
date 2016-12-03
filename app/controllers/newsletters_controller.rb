@@ -135,10 +135,6 @@ class NewslettersController < ApplicationController
 		end
 	end
 	
-	def self.email_md5_hash(email)
-		Digest::MD5.hexdigest email.downcase
-	end
-	
 	private
 	
 	def load_variables

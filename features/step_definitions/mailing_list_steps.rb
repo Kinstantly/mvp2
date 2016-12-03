@@ -62,7 +62,7 @@ end
 ### THEN ###
 
 Then /^"(.*?)" should be subscribed to the "(.*?)" mailing list with (?:due|birth) date "(.*?)"$/ do |email, list, date|
-	merge_vars = member_of_mailing_list(email, list)['merges']
+	merge_vars = member_of_mailing_list(email, list)['merge_fields']
 	expect(merge_vars).to be_present
 	expect(merge_vars['DUEBIRTH1']).to eq date
 end

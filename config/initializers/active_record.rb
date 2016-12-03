@@ -1,6 +1,7 @@
 class ActiveRecord::Base
 	
 	include SiteConfigurationHelpers
+	include NewsletterSubscriptionHelpers
 	
 	# The default list of attributes that are accessible by mass assignment.
 	DEFAULT_ACCESSIBLE_ATTRIBUTES = []

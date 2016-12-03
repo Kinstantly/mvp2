@@ -1,6 +1,8 @@
 # This file is required by features/support/env.rb for Cucumber scenarios.
 # So make sure everything in here is compatible with Cucumber using RSpec mocks.
 
+include NewsletterSubscriptionHelpers
+
 def set_up_gibbon_mocks
 	set_up_gibbon_lists_api_mock
 	set_up_gibbon_campaigns_api_mock
@@ -133,25 +135,25 @@ end
 # Make sure all of the test mailing lists are empty.
 def empty_mailing_lists
 	begin
-		gb = Gibbon::API.new
 		mailing_lists.each do |list_name|
 			list_id = Rails.configuration.mailing_lists[:mailchimp_list_ids][list_name.to_sym]
-			gb.lists.members(id: list_id)['data'].each do |member|
-				gb.lists.unsubscribe id: list_id, email: {email: member['email']}, delete_member: true, send_notify: false
+			r = Gibbon::Request.lists(list_id).members.retrieve params: {fields: 'members.email_address'}
+			r['members'].try(:each) do |member|
+				email = member['email_address']
+				Gibbon::Request.lists(list_id).members(email_md5_hash(email)).delete
 			end
 		end
 	rescue Gibbon::MailChimpError => e
-		puts "MailChimp error while unsubscribing: #{e.message}, error code: #{e.code}"
+		puts "MailChimp error while unsubscribing: #{e.title}; #{e.detail}; status: #{e.status_code}"
 	end
 end
 
 # Get info for a particular member of the specified list.
 def member_of_mailing_list(email, list_name)
 	begin
-		gb = Gibbon::API.new
 		list_id = Rails.configuration.mailing_lists[:mailchimp_list_ids][list_name.to_sym]
-		gb.lists.member_info(id: list_id, emails: [{email: email}])['data'][0]
+		Gibbon::Request.lists(list_id).members(email_md5_hash(email)).retrieve
 	rescue Gibbon::MailChimpError => e
-		puts "MailChimp error while retrieving member info: #{e.message}, error code: #{e.code}"
+		puts "MailChimp error while retrieving member info: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{email}; list: #{list_name}"
 	end
 end

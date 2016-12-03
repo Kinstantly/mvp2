@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
 	
 	include SiteConfigurationHelpers
+	include NewsletterSubscriptionHelpers
 	
 	protect_from_forgery
 	layout 'interior'

@@ -17,7 +17,7 @@ Feature: Subscribe to alerts
 
 	Scenario: User subscribes on the alerts-only sign-up page with date
 		When I visit the alerts-only sign-up page and subscribe with email "example@kinstantly.com" and date "6/1/2015"
-		Then "example@kinstantly.com" should be subscribed to the "parent_newsletters" mailing list with birth date "6/1/2015"
+		Then "example@kinstantly.com" should be subscribed to the "parent_newsletters" mailing list with birth date "2015-06-01"
 
 	Scenario: Subscription is prevented if the date is entered with a bad format
 		When I visit the alerts-only sign-up page and subscribe with email "example@kinstantly.com" and date "4/1/15"

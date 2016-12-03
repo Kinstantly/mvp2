@@ -44,7 +44,7 @@ end
 
 Before do
 	# MailChimp API mocks
-	set_up_gibbon_mocks
+	set_up_gibbon_mocks unless ENV['CONTACT_MAILCHIMP'].present?
 end
 
 # Scenarios for describing behavior while running as a private site.
