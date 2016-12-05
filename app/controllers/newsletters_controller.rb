@@ -102,18 +102,8 @@ class NewslettersController < ApplicationController
 			next if !User.mailing_list_name_valid?(list_name)
 
 			list_id = mailchimp_list_ids[list_name]
-			# email_struct = { email: email }
+			
 			begin
-				# gb = Gibbon::API.new
-				# subscribe_params = {
-				# 	id: list_id,
-				# 	email: email_struct,
-				# 	double_optin: false,
-				# 	send_welcome: send_mailchimp_welcome?
-				# }
-				# subscribe_params[:merge_vars] = options[:merge_vars] if options[:merge_vars]
-				# r = gb.lists.subscribe subscribe_params
-				
 				r = Gibbon::Request.lists(list_id).members(email_md5_hash(email)).upsert body: {
 					email_address: email,
 					status: 'subscribed',
@@ -169,10 +159,7 @@ class NewslettersController < ApplicationController
 	end
 
 	def archive_url(id)
-		# gb = Gibbon::API.new
 		begin
-			# r = gb.campaigns.list filters: { id: id }
-			# url = r.try(:[], 'data').try(:[], 0).try(:[], 'archive_url') unless r.blank?
 			r = Gibbon::Request.campaigns(id).retrieve params: {
 				fields: 'archive_url'
 			}
@@ -185,13 +172,9 @@ class NewslettersController < ApplicationController
 	end
 
 	def latest_archive_url(list_name)
-		# gb = Gibbon::API.new
-		# gb.timeout = 2 # second(s)
 		begin
 			list_id = mailchimp_list_ids[list_name]
-			# filters = { list_id: list_id, status: 'sent' }
-			# r = gb.campaigns.list filters: filters, sort_field: 'send_time', limit: 1
-			# url = r.try(:[], 'data').try(:[], 0).try(:[], 'archive_url') unless r.blank?
+			
 			r = Gibbon::Request.campaigns.retrieve params: {
 				list_id: list_id,
 				status: 'sent',
@@ -206,12 +189,9 @@ class NewslettersController < ApplicationController
 	end
 
 	def list_archive(list_name)
-		# gb = Gibbon::API.new
 		begin
 			list_id = mailchimp_list_ids[list_name]
-			# filters = { list_id: list_id, status: 'sent' }
-			# r = gb.campaigns.list filters: filters, sort_field: 'send_time', limit: 100
-			# data = r.try(:[], 'data') unless r.blank?
+			
 			r = Gibbon::Request.campaigns.retrieve params: {
 				list_id: list_id,
 				status: 'sent',

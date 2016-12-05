@@ -91,22 +91,18 @@ class MailchimpWebhookController < ApplicationController
 				newsletter.archive_url = campaign_info['archive_url']
 				newsletter.content = campaign_content
 				if !newsletter.save
-					logger.error "MailChimp Webhook error: campaign save failed." if logger
+					logger.error "MailChimp Webhook error: save failed for campaign ID => #{id}; campaign_info => #{campaign_info}; campaign_content starts with \"#{campaign_content.try :slice, 0, 20}\""
 				end
 			else
-				logger.error "MailChimp Webhook error: could not retrieve info or content for campaign ID => #{id}" if logger
+				logger.error "MailChimp Webhook error: could not retrieve info or content for campaign ID => #{id}; campaign_info => #{campaign_info}; campaign_content starts with \"#{campaign_content.try :slice, 0, 20}\""
 			end
 		else
-			logger.error "MailChimp Webhook error: Newsletter campaign record already exists for campaign ID => #{id}.  Ignoring this webhook event." if logger
+			logger.error "MailChimp Webhook error: Newsletter campaign record already exists for campaign ID => #{id}.  Ignoring this webhook event."
 		end
 	end
 
 	def retrieve_campaign_info(id)
-		# gb = Gibbon::API.new
 		begin
-			# filters = { campaign_id: id }
-			# r = gb.campaigns.list filters: filters
-			# info = r.try(:[], 'data').try(:first) unless r.blank?
 			info = Gibbon::Request.campaigns(id).retrieve
 		rescue Gibbon::MailChimpError => e
 			logger.error "Error while retrieving MailChimp archive list: #{e.title}; #{e.detail}; status: #{e.status_code}; campaign ID: #{id}"
@@ -116,9 +112,7 @@ class MailchimpWebhookController < ApplicationController
 	end
 
 	def retrieve_campaign_content(id)
-		# gb = Gibbon::API.new
 		begin
-			# r = gb.campaigns.content cid: id
 			content = Gibbon::Request.campaigns(id).content.retrieve
 			html = content.try :[], 'html'
 		rescue Gibbon::MailChimpError => e

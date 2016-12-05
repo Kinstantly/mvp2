@@ -490,15 +490,6 @@ class User < ActiveRecord::Base
 			next if !User.mailing_list_name_valid?(list_name)
 
 			list_id = mailchimp_list_ids[list_name]
-			# subscriber_leid = leid list_name
-			# email_struct = { leid: subscriber_leid }
-			# if new_email && subscriber_leid.present?
-			# 	# User changed their email; email attribute have been updated at this time.
-			# 	# Do not use email as an id, but instruct MailChimp to update the email.
-			# 	merge_vars['new-email'] = email
-			# else
-			# 	email_struct[:email] = email
-			# end
 			
 			r = nil
 			
@@ -518,13 +509,6 @@ class User < ActiveRecord::Base
 			end
 			
 			begin
-				# gb = Gibbon::API.new
-				# r = gb.lists.subscribe id: list_id,
-				# 	email: email_struct,
-				# 	merge_vars: merge_vars,
-				# 	double_optin: false,
-				# 	update_existing: true
-				
 				unless r.present? and r['status'] == 'subscribed'
 					r = Gibbon::Request.lists(list_id).members(email_md5_hash(email)).upsert body: {
 						email_address: email,
@@ -549,16 +533,8 @@ class User < ActiveRecord::Base
 			next if !User.mailing_list_name_valid?(list_name)
 			
 			list_id = mailchimp_list_ids[list_name]
-			# subscriber_leid = leid list_name
-			# email_struct = {email: email, leid: subscriber_leid}
+			
 			begin
-				# gb = Gibbon::API.new
-				# r = gb.lists.unsubscribe id: list_id,
-				# 	email: email_struct,
-				# 	delete_member: true,
-				# 	send_goodbye: false,
-				# 	send_notify: false
-				
 				Gibbon::Request.lists(list_id).members(email_md5_hash(email)).update body: {
 					status: 'unsubscribed'
 				}
@@ -573,10 +549,8 @@ class User < ActiveRecord::Base
 	def import_subscriptions
 		active_mailing_lists.each do |list_name|
 			list_id = mailchimp_list_ids[list_name]
+			
 			begin
-				# gb = Gibbon::API.new
-				# r = gb.lists.member_info id: list_id, emails: [{email: email}]
-				
 				r = Gibbon::Request.lists(list_id).members(email_md5_hash(email)).retrieve
 				if r.present? && r['status'] == 'subscribed'
 					update_column(list_name.to_s, true)

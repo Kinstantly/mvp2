@@ -109,21 +109,23 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 		# The following requires mocking of the campaigns API.
 		context "new campaign sent", use_gibbon_mocks: true do
 			it "creates a new record when valid campaign data provided" do
-				post :process_notification, campaign_params
-				new_newsletter = Newsletter.find_by_cid(campaign_params[:data][:id])
-				expect(new_newsletter).to be_present
-				expect(new_newsletter.cid).to eq campaign_params[:data][:id]
+				expect {
+					post :process_notification, campaign_params
+				}.to change(Newsletter, :count).by(1)
+				expect(Newsletter.find_by_cid campaign_params[:data][:id]).to be_present
 			end
 			
 			it "does not create a new record when invalid campaign data provided" do
-				post :process_notification, campaign_params.merge(data: {id: nil})
-				new_newsletter = Newsletter.find_by_cid(campaign_params[:data][:id])
-				expect(new_newsletter).to be_nil
+				expect {
+					post :process_notification, campaign_params.merge(data: {id: nil})
+				}.to_not change(Newsletter, :count)
 			end
 			
 			it 'will not duplicate the record when notified twice of the same campaign' do
-				post :process_notification, campaign_params
-				post :process_notification, campaign_params
+				expect {
+					post :process_notification, campaign_params
+					post :process_notification, campaign_params
+				}.to change(Newsletter, :count).by(1)
 				expect(Newsletter.where(cid: campaign_params[:data][:id]).size).to eq 1
 			end
 		end

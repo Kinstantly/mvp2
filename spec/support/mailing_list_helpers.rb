@@ -9,8 +9,8 @@ def set_up_gibbon_mocks
 end
 
 def set_up_gibbon_lists_api_mock
-	Struct.new 'GibbonListsAPI' unless defined? Struct::GibbonListsAPI
-	lists_api = double('Struct::GibbonListsAPI').as_null_object
+	Struct.new 'GibbonRequest' unless defined? Struct::GibbonRequest
+	lists_api = double('Struct::GibbonRequest').as_null_object
 	
 	@mailchimp_lists = {}
 	
@@ -89,43 +89,44 @@ def set_up_gibbon_lists_api_mock
 	end
 	
 	# lists API
-	allow_any_instance_of(Gibbon::API).to receive(:lists).and_return(lists_api)
+	allow_any_instance_of(Gibbon::Request).to receive(:lists).and_return(lists_api)
 end
 
 def set_up_gibbon_campaigns_api_mock
-	Struct.new 'GibbonCampaignsAPI' unless defined? Struct::GibbonCampaignsAPI
-	campaigns_api = double('Struct::GibbonCampaignsAPI').as_null_object
+	Struct.new 'SingleCampaignAPI' unless defined? Struct::SingleCampaignAPI
+	single_campaign_api = double('Struct::SingleCampaignAPI').as_null_object
 	
-	# list
-	allow(campaigns_api).to receive(:list) do |options| # filters: filters
-		id = options[:filters][:campaign_id]
-		if id.present?
-			data = [{
-				'id' => id,
-				'list_id' => 'abc123',
-				'send_time' => Time.zone.now,
+	allow(Gibbon::Request).to receive(:campaigns).with(kind_of(String)).and_return(single_campaign_api)
+	
+	# retrieve a single campaign
+	allow(single_campaign_api).to receive(:retrieve).and_return(
+		{
+			'id' => 'c123',
+			'status' => 'sent',
+			'send_time' => '2015-07-17T10:13:04+00:00',
+			'archive_url' => 'http://example.com',
+			'recipients' => {
+				'list_id' => 'abc123'
+			},
+			'settings' => {
 				'title' => 'Latest parenting news',
-				'subject' => 'THIS WEEKEND: sport events',
-				'archive_url' => 'http://example.com'
-			}]
-			{ 'data' => data }
-		else
-			raise Gibbon::MailChimpError, "campaigns.list(): campaign_id => #{id}"
-		end
-	end
+				'subject_line' => 'THIS WEEKEND: sport events'
+			}
+		}
+	)
 	
-	# content
-	allow(campaigns_api).to receive(:content) do |options| # cid: id
-		id = options[:cid]
-		if id.present?
-			{ 'html' => '<!DOCTYPE html><html><head></head><body>THIS WEEKEND: sport events.</body></html>' }
-		else
-			raise Gibbon::MailChimpError, "campaigns.content(): cid => #{id}"
-		end
-	end
+	# retrieve campaign content
+	Struct.new 'SingleCampaignContentAPI' unless defined? Struct::SingleCampaignContentAPI
+	single_campaign_content_api = double('Struct::SingleCampaignContentAPI').as_null_object
 	
-	# campaigns API
-	allow_any_instance_of(Gibbon::API).to receive(:campaigns).and_return(campaigns_api)
+	allow(single_campaign_api).to receive(:content).and_return(single_campaign_content_api)
+	
+	allow(single_campaign_content_api).to receive(:retrieve).and_return(
+		{
+			'plain_text' => 'THIS WEEKEND: sport events.',
+			'html' => '<!DOCTYPE html><html><head></head><body>THIS WEEKEND: sport events.</body></html>'
+		}
+	)
 end
 
 def mailing_lists
