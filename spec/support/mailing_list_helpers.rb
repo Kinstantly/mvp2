@@ -9,87 +9,109 @@ def set_up_gibbon_mocks
 end
 
 def set_up_gibbon_lists_api_mock
-	Struct.new 'GibbonRequest' unless defined? Struct::GibbonRequest
-	lists_api = double('Struct::GibbonRequest').as_null_object
+	Struct.new 'SingleListAPI' unless defined? Struct::SingleListAPI
+	Struct.new 'SingleMemberAPI' unless defined? Struct::SingleMemberAPI
 	
 	@mailchimp_lists = {}
+	@mailchimp_apis = {}
 	
-	# subscribe
-	allow(lists_api).to receive(:subscribe) do |options| # id: list_id
-		id = options[:id]
-		email = options[:email][:email]
-		if id.present? and email.present?
-			options[:merge_vars] ||= {}
-			options[:merge_vars]['EMAIL'] = email
-			@mailchimp_lists[id] ||= {}
-			@mailchimp_lists[id][email] = options.merge 'leid' => "#{id}:#{email}", 'status' => 'subscribed'
-		else
-			raise Gibbon::MailChimpError, "lists.subscribe(): list ID => #{id}, email => #{email}"
+	# return API for the list with the specified ID
+	allow(Gibbon::Request).to receive(:lists) do |list_id|
+		if @mailchimp_apis[list_id]
+			# called more than once for the same list; return the existing single_list_api
+			next @mailchimp_apis[list_id][:single_list_api]
 		end
-	end
-	
-	# unsubscribe
-	allow(lists_api).to receive(:unsubscribe) do |options| # id: list_id
-		id = options[:id]
-		email = options[:email][:email]
-		if id.present? and email.present?
-			@mailchimp_lists[id] ||= {}
-			if options[:delete_member]
-				@mailchimp_lists[id][email] = nil
-			elsif (info = @mailchimp_lists[id][email])
-				info['status'] = 'unsubscribed'
-			else
-				raise Gibbon::MailChimpError, "lists.unsubscribe(): list ID => #{id}, email => #{email}, info => #{info}"
+		
+		single_list_api = double('Struct::SingleListAPI').as_null_object
+		@mailchimp_apis[list_id] = { single_list_api: single_list_api }
+		
+		# return API for the list member with the specified email hash
+		allow(single_list_api).to receive(:members) do |email_hash|
+			if @mailchimp_apis[list_id][email_hash]
+				# called more than once for the same subscription; return the existing single_member_api
+				next @mailchimp_apis[list_id][email_hash]
 			end
-		else
-			raise Gibbon::MailChimpError, "lists.unsubscribe(): list ID => #{id}, email => #{email}"
-		end
-	end
-	
-	# member_info
-	allow(lists_api).to receive(:member_info) do |options| # id: list_id, emails: array_of_hashes
-		r = { 'success_count' => 0, 'error_count' => 0, 'data' => [] }
-		id = options[:id]
-		email_info_list = options[:emails]
-		if id.present? and email_info_list.present?
-			@mailchimp_lists[id] ||= {}
-			email_info_list.each do |email_info|
-				email = email_info[:email]
-				info = @mailchimp_lists[id][email]
-				if info.present?
-					r['success_count'] += 1
-					r['data'] << info.merge('email' => email, 'merges' => info[:merge_vars])
-				else
-					r['error_count'] += 1
+			
+			single_member_api = double('Struct::SingleMemberAPI').as_null_object
+			@mailchimp_apis[list_id][email_hash] = single_member_api
+			
+			# if the subscription exists, update it, otherwise create it
+			allow(single_member_api).to receive(:upsert) do |arg|
+				@mailchimp_lists[list_id] ||= {}
+				@mailchimp_lists[list_id][email_hash] ||= {}
+				@mailchimp_lists[list_id][email_hash].merge! arg[:body]
+				@mailchimp_lists[list_id][email_hash][:unique_email_id] = email_hash
+				
+				body = @mailchimp_lists[list_id][email_hash]
+				
+				# log_member_api_info(:upsert, list_id, email_hash, body)
+				
+				list_member_api_response body
+			end
+			
+			# update an existing subscription
+			allow(single_member_api).to receive(:update) do |arg|
+				if @mailchimp_lists[list_id].try(:[], email_hash).blank?
+					raise list_member_not_found_exception(list_id, email_hash)
 				end
-			end
-			r
-		else
-			raise Gibbon::MailChimpError, "lists.member_info(): list ID => #{id}, emails => #{email_info_list}"
-		end
-	end
-	
-	# members
-	allow(lists_api).to receive(:members) do |options| # id: list_id, status: status_value
-		r = { 'total' => 0, 'data' => [] }
-		id = options[:id]
-		status = options[:status].presence || 'subscribed'
-		if id.present?
-			@mailchimp_lists[id] ||= {}
-			@mailchimp_lists[id].each do |email, info|
-				if info['status'] == status
-					r['total'] += 1
-					r['data'] << { 'email' => email, 'status' => info['status'], 'merges' => info[:merge_vars] }
+				
+				@mailchimp_lists[list_id][email_hash].merge! arg[:body]
+				
+				body = @mailchimp_lists[list_id][email_hash]
+				if body[:email_address].present? and 
+					(new_email_hash = email_md5_hash(body[:email_address])) != email_hash
+					# the email address was updated; move to new hash location
+					body[:unique_email_id] = new_email_hash
+					@mailchimp_lists[list_id][new_email_hash] = body
+					@mailchimp_lists[list_id][email_hash] = nil
 				end
+				
+				# log_member_api_info(:update, list_id, email_hash, body)
+				
+				list_member_api_response body
 			end
-			r
-		else
-			raise Gibbon::MailChimpError, "lists.member_info(): list ID => #{id}, status => #{status}"
+			
+			# retrieve an existing subscription
+			allow(single_member_api).to receive(:retrieve) do
+				if @mailchimp_lists[list_id].try(:[], email_hash).blank?
+					raise list_member_not_found_exception(list_id, email_hash)
+				end
+				
+				body = @mailchimp_lists[list_id][email_hash]
+				
+				# log_member_api_info(:retrieve, list_id, email_hash, body)
+				
+				list_member_api_response body
+			end
+			
+			single_member_api
 		end
+		
+		single_list_api
+	end
+end
+
+def list_member_api_response(body)
+	# return a copy of merge_fields and stringify the keys
+	merge_fields = {}
+	body[:merge_fields].keys.each do |key|
+		merge_fields[key.to_s] = body[:merge_fields][key]
 	end
 	
-	# lists API
-	allow_any_instance_of(Gibbon::Request).to receive(:lists).and_return(lists_api)
+	{
+		'email_address' => body[:email_address],
+		'status' => body[:status],
+		'unique_email_id' => body[:unique_email_id],
+		'merge_fields' => merge_fields
+	}
+end
+
+def list_member_not_found_exception(list_id, email_hash)
+	Gibbon::MailChimpError.new('List member not found', title: 'List member not found', detail: "list_id => #{list_id}; email_hash => #{email_hash}", status_code: 404)
+end
+
+def log_member_api_info(method, list_id, email_hash, body)
+	puts "method => #{method}; list_id => #{list_id}; email_hash => #{email_hash}; body => #{body}"
 end
 
 def set_up_gibbon_campaigns_api_mock

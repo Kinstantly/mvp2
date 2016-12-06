@@ -388,6 +388,7 @@ describe User, :type => :model do
 			parent.save
 			parent.reload
 			expect(parent.parent_newsletters).to be_truthy
+			expect(parent.parent_newsletters_leid).to be_present
 		end
 		
 		it "cannot subscribe to mailing lists if previously blocked" do
@@ -396,6 +397,7 @@ describe User, :type => :model do
 			parent.save
 			parent.reload
 			expect(parent.parent_newsletters).to be_falsey
+			expect(parent.parent_newsletters_leid).to be_blank
 		end
 		
 		it "requires a subscription to at least one list if signing up for the newsletter" do
@@ -418,7 +420,47 @@ describe User, :type => :model do
 				expect(user.parent_newsletters_leid).to be_present
 			end
 		end
-
+		
+		it 'can unsubscribe from a mailing list' do
+			parent.parent_newsletters = true
+			parent.save
+			expect(parent.reload.parent_newsletters_leid).to be_present
+			
+			parent.parent_newsletters = false
+			parent.save
+			expect(parent.reload.parent_newsletters_leid).to be_blank
+		end
+		
+		context 'MailChimp API should match local status' do
+			let(:parent_newsletters_id) { mailchimp_list_ids[:parent_newsletters] }
+			let(:email_hash) { Digest::MD5.hexdigest parent.email.downcase }
+			
+			it 'can subscribe to a mailing list' do
+				parent.parent_newsletters = true
+				parent.save
+				r = Gibbon::Request.lists(parent_newsletters_id).members(email_hash).retrieve
+				expect(r['status']).to eq 'subscribed'
+			end
+			
+			it 'can unsubscribe from a mailing list' do
+				parent.parent_newsletters = true
+				parent.save
+				parent.parent_newsletters = false
+				parent.save
+				r = Gibbon::Request.lists(parent_newsletters_id).members(email_hash).retrieve
+				expect(r['status']).to eq 'unsubscribed'
+			end
+			
+			it 'should raise 404 exception if list member not found' do
+				parent.parent_newsletters = true
+				parent.save
+				expect {
+					bad_email_hash = email_hash.sub(/\A...../, '11111')
+					Gibbon::Request.lists(parent_newsletters_id).members(bad_email_hash).retrieve
+				}.to raise_error Gibbon::MailChimpError
+			end
+		end
+		
 		context "parent" do
 			let(:parent_newsletters_id) { mailchimp_list_ids[:parent_newsletters] }		
 			
