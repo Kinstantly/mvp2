@@ -123,7 +123,7 @@ def list_member_api_response(body)
 	# return a copy of merge_fields and stringify the keys
 	merge_fields = {}
 	body[:merge_fields].keys.each do |key|
-		merge_fields[key.to_s] = body[:merge_fields][key]
+		merge_fields[key.to_s] = normalize_response_field_value key, body[:merge_fields][key]
 	end
 	
 	{
@@ -132,6 +132,16 @@ def list_member_api_response(body)
 		'unique_email_id' => body[:unique_email_id],
 		'merge_fields' => merge_fields
 	}
+end
+
+def normalize_response_field_value(name, value)
+	case name.to_s
+	when 'DUEBIRTH1', /\ABIRTH\d+\z/
+		date = value.split '/'
+		sprintf '%d-%02d-%02d', date[2], date[0], date[1]
+	else
+		value
+	end
 end
 
 def list_not_found_exception(list_id)
