@@ -1,255 +1,260 @@
-source 'https://rubygems.org'
+# Global source lines are a security risk and should not be used as they can lead to gems being installed from unintended sources.
+# Wrap all "gem" calls within a "source" block.
 
 ruby '2.3.0'
 
-# gem 'rails', '4.2.7'
-gem 'rails', '4.2.7.1'
+source 'https://rubygems.org' do
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+	# gem 'rails', '4.2.7'
+	gem 'rails', '4.2.7.1'
 
-# http://github.com/plataformatec/responders
-gem 'responders', '~> 2.0'
+	# Bundle edge Rails instead:
+	# gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-# Put nokogiri before other gems that use libxml (like pg).
-# http://stackoverflow.com/a/15492096/1203206
-# http://stackoverflow.com/a/16943050/1203206
-# http://nokogiri.org
-gem 'nokogiri'
+	# http://github.com/plataformatec/responders
+	gem 'responders', '~> 2.0'
 
-# Abort requests that are taking too long; a subclass of Timeout::Error is raised.
-gem 'rack-timeout'
+	# Put nokogiri before other gems that use libxml (like pg).
+	# http://stackoverflow.com/a/15492096/1203206
+	# http://stackoverflow.com/a/16943050/1203206
+	# http://nokogiri.org
+	gem 'nokogiri'
 
-# json 1.7.7 has a bug fix: CVE-2013-0269
-gem 'json', '>= 1.7.7'
+	# Abort requests that are taking too long; a subclass of Timeout::Error is raised.
+	gem 'rack-timeout'
 
-# Make heroku happy.  They only support postgresql.
-# gem 'sqlite3', :group => :development
-gem 'pg'
+	# json 1.7.7 has a bug fix: CVE-2013-0269
+	gem 'json', '>= 1.7.7'
 
-gem 'haml'
+	# Make heroku happy.  They only support postgresql.
+	# gem 'sqlite3', :group => :development
+	gem 'pg'
 
-# html2haml loads ruby_parser which requires tons of memory.
-# Only needed in development from the command line.  Install it manually!
-# gem 'html2haml', group: :development
+	gem 'haml'
 
-# Get error message helpers for forms.
-gem 'dynamic_form'
+	# html2haml loads ruby_parser which requires tons of memory.
+	# Only needed in development from the command line.  Install it manually!
+	# gem 'html2haml', group: :development
 
-# Dynamic add and remove links for nested models.
-gem 'nested_form'
+	# Get error message helpers for forms.
+	gem 'dynamic_form'
 
-# Gems used for assets.
-# https://github.com/rails/sass-rails
-gem 'sass-rails'
-# https://github.com/rails/coffee-rails
-gem 'coffee-rails'
-# http://github.com/lautis/uglifier
-gem 'uglifier'
+	# Dynamic add and remove links for nested models.
+	gem 'nested_form'
 
-# Has jquery and jquery_ujs.
-gem 'jquery-rails'
-# Has jquery-ui (jquery-rails >= 3.0.0 no longer includes jquery-ui).
-gem 'jquery-ui-rails'
+	# Gems used for assets.
+	# https://github.com/rails/sass-rails
+	gem 'sass-rails'
+	# https://github.com/rails/coffee-rails
+	gem 'coffee-rails'
+	# http://github.com/lautis/uglifier
+	gem 'uglifier'
 
-# HAML 4 includes coffeescript support.
-# gem 'coffee-filter'
+	# Has jquery and jquery_ujs.
+	gem 'jquery-rails'
+	# Has jquery-ui (jquery-rails >= 3.0.0 no longer includes jquery-ui).
+	gem 'jquery-ui-rails'
 
-# ruby-prof is a fast code profiler for Ruby
-gem 'ruby-prof'
+	# HAML 4 includes coffeescript support.
+	# gem 'coffee-filter'
 
-# Authentication based on Warden.
-gem 'devise'
+	# ruby-prof is a fast code profiler for Ruby
+	gem 'ruby-prof'
 
-# Two factor authentication for Devise.
-# https://github.com/Houdini/two_factor_authentication
-gem 'two_factor_authentication'
+	# Authentication based on Warden.
+	gem 'devise'
 
-# Generates a QR code from a URI, I hope.
-# https://github.com/samvincent/rqrcode-rails3
-gem 'rqrcode-rails3'
+	# Two factor authentication for Devise.
+	# https://github.com/Houdini/two_factor_authentication
+	gem 'two_factor_authentication'
 
-# Authorization library.
-# https://github.com/CanCanCommunity/cancancan
-gem 'cancancan'
+	# Generates a QR code from a URI, I hope.
+	# https://github.com/samvincent/rqrcode-rails3
+	gem 'rqrcode-rails3'
 
-# Sitemap generation and search engine pinging.
-# Can upload sitemaps to AWS S3 (see below).
-gem 'sitemap_generator', '~> 5.1'
+	# Authorization library.
+	# https://github.com/CanCanCommunity/cancancan
+	gem 'cancancan'
 
-# Fog gives sitemap_generator access to AWS S3.
-# The fog gem is a memory hog.  So use fog-aws instead.
-gem 'fog-aws'
+	# Sitemap generation and search engine pinging.
+	# Can upload sitemaps to AWS S3 (see below).
+	gem 'sitemap_generator', '~> 5.1'
 
-# Search with the Solr search engine.
-# gem 'sunspot_rails', '~> 2.0.0.pre'
-# http://sunspot.github.io/
-gem 'sunspot'
-gem 'sunspot_rails'
+	# Fog gives sitemap_generator access to AWS S3.
+	# The fog gem is a memory hog.  So use fog-aws instead.
+	gem 'fog-aws'
 
-# Show progress on the console of long-running tasks.
-gem 'progress_bar'
+	# Search with the Solr search engine.
+	# gem 'sunspot_rails', '~> 2.0.0.pre'
+	# http://sunspot.github.io/
+	gem 'sunspot'
+	gem 'sunspot_rails'
 
-# Generates various types of UUIDs.  It conforms to RFC 4122 whenever possible.
-gem 'uuidtools'
+	# Show progress on the console of long-running tasks.
+	gem 'progress_bar'
 
-# Integration of jQuery UI Autocomplete Widget for Rails 3.2 and above.
-# https://github.com/bigtunacan/rails-jquery-autocomplete
-gem 'rails-jquery-autocomplete'
+	# Generates various types of UUIDs.  It conforms to RFC 4122 whenever possible.
+	gem 'uuidtools'
 
-# A repository of geographic regions for Ruby via Rails.
-# https://github.com/jim/carmen-rails
-gem 'carmen-rails'
+	# Integration of jQuery UI Autocomplete Widget for Rails 3.2 and above.
+	# https://github.com/bigtunacan/rails-jquery-autocomplete
+	gem 'rails-jquery-autocomplete'
 
-# Parse and print phone numbers.  International support.
-# http://github.com/wmoxam/phonie
-gem 'phonie'
+	# A repository of geographic regions for Ruby via Rails.
+	# https://github.com/jim/carmen-rails
+	gem 'carmen-rails'
 
-# Geocoding (by street or IP address), reverse geocoding (find street address based on given coordinates), and distance queries.
-gem 'geocoder'
+	# Parse and print phone numbers.  International support.
+	# http://github.com/wmoxam/phonie
+	gem 'phonie'
 
-# Use to safely create links from user input.
-# http://github.com/tenderlove/rails_autolink
-gem 'rails_autolink'
+	# Geocoding (by street or IP address), reverse geocoding (find street address based on given coordinates), and distance queries.
+	gem 'geocoder'
 
-# Pagination.
-gem 'kaminari'
+	# Use to safely create links from user input.
+	# http://github.com/tenderlove/rails_autolink
+	gem 'rails_autolink'
 
-# Form helpers
-# https://github.com/plataformatec/simple_form
-gem 'simple_form'
+	# Pagination.
+	gem 'kaminari'
 
-# Background processing
-# http://github.com/collectiveidea/delayed_job_active_record
-gem 'delayed_job_active_record'
+	# Form helpers
+	# https://github.com/plataformatec/simple_form
+	gem 'simple_form'
 
-# Support multiple simultaneous requests by forking multiple rails processes.
-gem 'unicorn'
+	# Background processing
+	# http://github.com/collectiveidea/delayed_job_active_record
+	gem 'delayed_job_active_record'
 
-# PaperTrail lets you track changes to your models' data. It's good for auditing or versioning.
-# You can see how a model looked at any stage in its lifecycle, revert it to any version, and
-# even undelete it after it's been destroyed.
-# https://github.com/airblade/paper_trail
-gem 'paper_trail'
+	# Support multiple simultaneous requests by forking multiple rails processes.
+	gem 'unicorn'
 
-# AutoStripAttributes helps to remove unnecessary whitespace from ActiveRecord or ActiveModel attributes.
-# It's good for removing accidental spaces from user inputs
-# (e.g. when user copy/pastes some value to a form and the value has extra spaces at the end).
-gem 'auto_strip_attributes'
+	# PaperTrail lets you track changes to your models' data. It's good for auditing or versioning.
+	# You can see how a model looked at any stage in its lifecycle, revert it to any version, and
+	# even undelete it after it's been destroyed.
+	# https://github.com/airblade/paper_trail
+	gem 'paper_trail'
 
-# Test::Unit is no longer included in the Ruby distribution.
-# 'rails console' needs this, so it needs to be installed on production.
-gem 'test-unit', '~> 3.0'
+	# AutoStripAttributes helps to remove unnecessary whitespace from ActiveRecord or ActiveModel attributes.
+	# It's good for removing accidental spaces from user inputs
+	# (e.g. when user copy/pastes some value to a form and the value has extra spaces at the end).
+	gem 'auto_strip_attributes'
 
-group :development, :test do
-	gem 'rspec-rails', '~> 3.3'
-	gem 'rspec-collection_matchers'
-	# https://cucumber.io/docs/reference/rails
-	gem 'cucumber-rails', require: false
-	# https://github.com/DatabaseCleaner/database_cleaner
-	gem 'database_cleaner'
-	# gem 'webrat', '~> 0.7'
-	gem 'factory_girl_rails', '~> 4.1'
-	gem 'email_spec', '~> 1.4'
-	# https://github.com/jnicklas/capybara
-	gem 'capybara'
-	# https://github.com/thoughtbot/capybara-webkit
-	# https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit
-	# Qt 5.5 is the last version of Qt that capybara-webkit will support.
-	# The Qt project has dropped the WebKit bindings from binary releases in 5.6.
-	gem 'capybara-webkit'
-	gem 'launchy', '~> 2.1'
-	gem 'syntax'
-	# gem 'sunspot_solr', '~> 2.0.0.pre' # optional pre-packaged Solr distribution for use in development
-	gem 'sunspot_solr', git: 'https://github.com/edsimpson/sunspot.git'
+	# Test::Unit is no longer included in the Ruby distribution.
+	# 'rails console' needs this, so it needs to be installed on production.
+	gem 'test-unit', '~> 3.0'
+
+	group :development, :test do
+		gem 'rspec-rails', '~> 3.3'
+		gem 'rspec-collection_matchers'
+		# https://cucumber.io/docs/reference/rails
+		gem 'cucumber-rails', require: false
+		# https://github.com/DatabaseCleaner/database_cleaner
+		gem 'database_cleaner'
+		# gem 'webrat', '~> 0.7'
+		gem 'factory_girl_rails', '~> 4.1'
+		gem 'email_spec', '~> 1.4'
+		# https://github.com/jnicklas/capybara
+		gem 'capybara'
+		# https://github.com/thoughtbot/capybara-webkit
+		# https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit
+		# Qt 5.5 is the last version of Qt that capybara-webkit will support.
+		# The Qt project has dropped the WebKit bindings from binary releases in 5.6.
+		gem 'capybara-webkit'
+		gem 'launchy', '~> 2.1'
+		gem 'syntax'
+		# gem 'sunspot_solr', '~> 2.0.0.pre' # optional pre-packaged Solr distribution for use in development
+		gem 'sunspot_solr', git: 'https://github.com/edsimpson/sunspot.git'
+	end
+
+	# Benchmarking, debugging, and development.
+	group :development do
+		gem 'derailed'
+		gem 'stackprof'
+		# https://github.com/josevalim/rails-footnotes
+		gem 'rails-footnotes', '~> 4.0'
+		gem 'web-console', '~> 2.0'
+		# Spring is a Rails application preloader.
+		# https://github.com/rails/spring
+		gem 'spring'
+		gem 'spring-commands-rspec'
+		gem 'spring-commands-cucumber'
+		# The byebug debugger.
+		# Example: bundle exec rails server --port=5000
+		# http://github.com/deivid-rodriguez/byebug
+		gem 'byebug'
+	end
+
+	#Image processor and model manager for photo uploads
+	# We really want the following, but it uses too much memory.  See below.
+	# gem 'paperclip', '~> 4.3'
+
+	# The following includes a fix for CVE-2015-2963 and a fix for memory over usage.
+	# https://github.com/thoughtbot/paperclip/pull/1888/commits
+	gem 'paperclip', git: 'https://github.com/dgynn/paperclip.git', branch: 'interpolations_tuning'
+
+	#S3 storage
+	gem 'aws-sdk', '~> 1.6'
+
+	# AJAX file uploader
+	# https://github.com/thoughtbot/jack_up
+	gem 'jack_up'
+	# Required for Jack_up
+	# https://github.com/rweng/underscore-rails
+	gem 'underscore-rails'
+	# Required for Jack_up
+	# https://github.com/newbamboo/rack-raw-upload
+	gem 'rack-raw-upload'
+
+	# To use ActiveModel has_secure_password
+	# gem 'bcrypt-ruby', '~> 3.0.0'
+
+	# To use Jbuilder templates for JSON
+	# gem 'jbuilder'
+
+	# Deploy with Capistrano
+	# gem 'capistrano'
+
+	# Dalli is a better inferface to memcached.
+	# https://github.com/mperham/dalli
+	gem 'dalli'
+
+	# Makes running your Rails app easier. Based on the ideas behind 12factor.net
+	# https://github.com/heroku/rails_12factor
+	gem 'rails_12factor', group: :production
+
+	#Support for ReCAPTCHA's Mailhide API
+	gem 'recaptcha-mailhide'
+
+	# Custom categories and filters for Sendgrid
+	gem 'sendgrid'
+
+	# Cron jobs
+	gem 'whenever', :require => false
+
+	# Payments
+	# https://stripe.com/docs
+	gem 'stripe'
+	# Stripe Connect
+	# https://stripe.com/docs/connect
+	gem 'omniauth-stripe-connect' #, :git => 'https://github.com/isaacsanders/omniauth-stripe-connect.git'
+	# https://github.com/integrallis/stripe_event
+	gem 'stripe_event'
+
+	# Money! https://github.com/RubyMoney
+	gem 'money-rails'
+
+	# Mailchimp API wrapper
+	# http://github.com/amro/gibbon
+	gem "gibbon"
+
+	# Rack middleware for blocking & throttling abusive requests.
+	# https://github.com/kickstarter/rack-attack
+	gem 'rack-attack'
+
+	# Cross-Origin Resource Sharing (CORS).
+	# Needed to serve assets from a CDN (CloudFront), in particular, fonts.
+	# https://github.com/cyu/rack-cors
+	gem 'rack-cors', require: 'rack/cors'
+
 end
-
-# Benchmarking, debugging, and development.
-group :development do
-	gem 'derailed'
-	gem 'stackprof'
-	# https://github.com/josevalim/rails-footnotes
-	gem 'rails-footnotes', '~> 4.0'
-	gem 'web-console', '~> 2.0'
-	# Spring is a Rails application preloader.
-	# https://github.com/rails/spring
-	gem 'spring'
-	gem 'spring-commands-rspec'
-	gem 'spring-commands-cucumber'
-	# The byebug debugger.
-	# Example: bundle exec rails server --port=5000
-	# http://github.com/deivid-rodriguez/byebug
-	gem 'byebug'
-end
-
-#Image processor and model manager for photo uploads
-# We really want the following, but it uses too much memory.  See below.
-# gem 'paperclip', '~> 4.3'
-
-# The following includes a fix for CVE-2015-2963 and a fix for memory over usage.
-# https://github.com/thoughtbot/paperclip/pull/1888/commits
-gem 'paperclip', git: 'https://github.com/dgynn/paperclip.git', branch: 'interpolations_tuning'
-
-#S3 storage
-gem 'aws-sdk', '~> 1.6'
-
-# AJAX file uploader
-# https://github.com/thoughtbot/jack_up
-gem 'jack_up'
-# Required for Jack_up
-# https://github.com/rweng/underscore-rails
-gem 'underscore-rails'
-# Required for Jack_up
-# https://github.com/newbamboo/rack-raw-upload
-gem 'rack-raw-upload'
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# Dalli is a better inferface to memcached.
-# https://github.com/mperham/dalli
-gem 'dalli'
-
-# Makes running your Rails app easier. Based on the ideas behind 12factor.net
-# https://github.com/heroku/rails_12factor
-gem 'rails_12factor', group: :production
-
-#Support for ReCAPTCHA's Mailhide API
-gem 'recaptcha-mailhide'
-
-# Custom categories and filters for Sendgrid
-gem 'sendgrid'
-
-# Cron jobs
-gem 'whenever', :require => false
-
-# Payments
-# https://stripe.com/docs
-gem 'stripe'
-# Stripe Connect
-# https://stripe.com/docs/connect
-gem 'omniauth-stripe-connect' #, :git => 'https://github.com/isaacsanders/omniauth-stripe-connect.git'
-# https://github.com/integrallis/stripe_event
-gem 'stripe_event'
-
-# Money! https://github.com/RubyMoney
-gem 'money-rails'
-
-# Mailchimp API wrapper
-# http://github.com/amro/gibbon
-gem "gibbon"
-
-# Rack middleware for blocking & throttling abusive requests.
-# https://github.com/kickstarter/rack-attack
-gem 'rack-attack'
-
-# Cross-Origin Resource Sharing (CORS).
-# Needed to serve assets from a CDN (CloudFront), in particular, fonts.
-# https://github.com/cyu/rack-cors
-gem 'rack-cors', require: 'rack/cors'
