@@ -25,6 +25,10 @@ class HomeController < ApplicationController
 		redirect_to provider_sell_url
 	end
 	
+	def about
+		redirect_to about_page
+	end
+	
 	private
 	
 	def authorize_admin

@@ -12,6 +12,10 @@ module SiteConfigurationHelpers
 			Rails.configuration.provider_sell_url
 		end
 		
+		def about_page
+			Rails.configuration.about_page
+		end
+		
 		def provider_registration_preconfirmation_url
 			Rails.configuration.provider_registration_preconfirmation_url
 		end

@@ -24,6 +24,9 @@ module Mvp2
     # Provider sell page.
     config.provider_sell_url = ENV['PROVIDER_SELL_URL'].presence || 'http://lp.kinstantly.com/pro/'
     
+    # About Us page. (Named 'about_page' to avoid conflict with existing 'about_url'.)
+    config.about_page = ENV['ABOUT_PAGE'].presence || 'http://lp.kinstantly.com/about/'
+    
     # Where to send a provider just after they register but before they confirm their email address.
     # This page should contain instructions for confirming their registration, e.g., check their email.
     config.provider_registration_preconfirmation_url = ENV['PROVIDER_REGISTRATION_PRECONFIRMATION_URL'].presence || 'http://lp.kinstantly.com/pro-thanks'

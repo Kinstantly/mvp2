@@ -40,12 +40,8 @@ describe HomeController, :type => :controller do
 			get :about
 		end
 		
-		it "renders the view" do
-			expect(response).to render_template 'about'
-		end
-		
-		it "renders the view when running as a private site", private_site: true do
-			expect(response).to render_template 'about'
+		it "redirects to the About Us page" do
+			expect(response).to redirect_to about_page
 		end
 	end
 	

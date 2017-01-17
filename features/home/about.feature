@@ -5,11 +5,7 @@ Feature: About
 
 	Background:
 	Given I am not logged in
-	When I visit the "/about" page
+	When I visit the "/" page
 
-	Scenario: display about page
-		Then I should see a statement about us
-
-	@private_site
-	Scenario: display about page when running as a private site
-		Then I should see a statement about us
+	Scenario: display an "About us" link that redirects off site
+		Then I should see "About us" on the page
