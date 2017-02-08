@@ -40,10 +40,12 @@ def set_up_gibbon_lists_api_mock
 			allow(member_api).to receive(:upsert) do |arg|
 				@mailchimp_lists[list_id] ||= {}
 				@mailchimp_lists[list_id][email_hash] ||= {}
-				@mailchimp_lists[list_id][email_hash].merge! arg[:body]
-				@mailchimp_lists[list_id][email_hash][:unique_email_id] = email_hash
 				
 				body = @mailchimp_lists[list_id][email_hash]
+				body.merge! arg[:body]
+				body[:id] = email_hash
+				body[:unique_email_id] = email_hash # fake it
+				body[:list_id] = list_id
 				
 				log_member_api_info(:upsert, list_id, email_hash, body)
 				
@@ -56,13 +58,14 @@ def set_up_gibbon_lists_api_mock
 					raise list_member_not_found_exception(list_id, email_hash)
 				end
 				
-				@mailchimp_lists[list_id][email_hash].merge! arg[:body]
-				
 				body = @mailchimp_lists[list_id][email_hash]
+				body.merge! arg[:body]
+				
 				if body[:email_address].present? and 
 					(new_email_hash = email_md5_hash(body[:email_address])) != email_hash
 					# the email address was updated; move to new hash location
-					body[:unique_email_id] = new_email_hash
+					body[:id] = new_email_hash
+					body[:unique_email_id] = new_email_hash # fake it
 					@mailchimp_lists[list_id][new_email_hash] = body
 					@mailchimp_lists[list_id][email_hash] = nil
 				end
@@ -129,7 +132,9 @@ def list_member_api_response(body)
 	{
 		'email_address' => body[:email_address],
 		'status' => body[:status],
+		'id' => body[:id],
 		'unique_email_id' => body[:unique_email_id],
+		'list_id' => body[:list_id],
 		'merge_fields' => merge_fields
 	}
 end
