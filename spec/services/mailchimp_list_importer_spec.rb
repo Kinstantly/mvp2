@@ -6,8 +6,7 @@ describe MailchimpListImporter do
 	
 	let(:list_importer_params) { {
 		list: list,
-		limit: 3, # Implement count and offset in list members API mock, then remove this line!!
-		verbose: 't'
+		verbose: 't' # Remove this line when done debugging.
 	} }
 	let(:list_importer) { MailchimpListImporter.new(list_importer_params) }
 

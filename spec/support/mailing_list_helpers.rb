@@ -76,10 +76,10 @@ def set_up_gibbon_lists_api_mock
 			end
 			
 			# retrieve an existing subscription or the whole list
-			allow(member_api).to receive(:retrieve) do
+			allow(member_api).to receive(:retrieve) do |arg|
 				list = @mailchimp_lists[list_id] || {}
 				
-				if email_hash
+				if email_hash # Retrieve a single member.
 					if list[email_hash].blank?
 						raise list_member_not_found_exception(list_id, email_hash)
 					end
@@ -89,15 +89,27 @@ def set_up_gibbon_lists_api_mock
 					log_member_api_info(:retrieve, list_id, email_hash, body)
 				
 					list_member_api_response body
-				else
-					list.keys.inject({'members' => []}) do |r, email_hash|
-						body = list[email_hash]
+				else # Retrieve a collection of members.
+					member_keys = list.keys.sort # Sort so that offset calls will work.
+					
+					offset = arg[:params][:offset].presence.try(:to_i) || 0
+					count = arg[:params][:count].presence.try(:to_i) || member_keys.size
+					member_keys_slice = member_keys[offset, count]
+					
+					member_list = if member_keys_slice
+						member_keys_slice.inject([]) do |members, email_hash|
+							body = list[email_hash]
 						
-						log_member_api_info(:retrieve, list_id, email_hash, body)
+							log_member_api_info(:retrieve, list_id, email_hash, body)
 						
-						r['members'] << list_member_api_response(body)
-						r
+							members << list_member_api_response(body)
+							members
+						end
+					else
+						[]
 					end
+					
+					{'members' => member_list}
 				end
 			end
 			
