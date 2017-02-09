@@ -1,7 +1,7 @@
 FactoryGirl.define do
 	factory :subscription do
-		subscribed false
-		status "FactoryStatus"
+		subscribed true
+		status "subscribed"
 		list_id "FactoryListId"
 		subscriber_hash "FactorySubscriberHash"
 		unique_email_id "FactoryUniqueEmailId"

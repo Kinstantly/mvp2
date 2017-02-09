@@ -12,7 +12,7 @@ class MailchimpListImporter
 	end
 	
 	def call
-		if params[:list].empty?
+		if params[:list].blank?
 			@errors << 'List must be specified.'
 			return (@successful = false)
 		end
@@ -37,6 +37,8 @@ class MailchimpListImporter
 			offset += batch_size
 			break if limit && @total_imported >= limit
 		end
+		
+		@successful
 	end
 	
 	def successful?
@@ -52,7 +54,6 @@ class MailchimpListImporter
 		is_new = sub.new_record?
 		
 		success = sub.update({
-			subscribed:      (member['status'] == 'subscribed'),
 			status:          member['status'],
 			list_id:         member['list_id'],
 			subscriber_hash: member['id'],
