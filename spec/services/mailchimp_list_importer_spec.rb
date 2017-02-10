@@ -1,12 +1,11 @@
 require 'spec_helper'
 
-describe MailchimpListImporter do
+describe MailchimpListImporter, mailchimp: true do
 	let(:list) { :parent_newsletters }
 	let(:list_id) { mailchimp_list_ids[list] }
 	
 	let(:list_importer_params) { {
-		list: list,
-		verbose: 't' # Remove this line when done debugging.
+		list: list
 	} }
 	let(:list_importer) { MailchimpListImporter.new(list_importer_params) }
 
@@ -34,14 +33,44 @@ describe MailchimpListImporter do
 			email_list.each do |email|
 				Gibbon::Request.lists(list_id).members(email_md5_hash(email)).upsert body: {
 					email_address: email,
-					status: 'subscribed',
-					merge_fields: {}
+					status: 'subscribed'
 				}
 			end
 			
 			expect {
-				list_importer.call 
+				list_importer.call
 			}.to change(Subscription, :count).by(email_list.size)
+		end
+		
+		it "should import the subscriber's email address" do
+			email = 'subscriber@kinstantly.com'
+			
+			Gibbon::Request.lists(list_id).members(email_md5_hash(email)).upsert body: {
+				email_address: email,
+				status: 'subscribed'
+			}
+			
+			list_importer.call
+			subscriber = Subscription.last
+			expect(subscriber.email).to eq email
+		end
+		
+		it "should import the birth dates of the subscriber's children" do
+			email = 'subscriber@kinstantly.com'
+			birth1, birth2 = Date.new(2017, 5, 1), Date.new(2012, 10, 23)
+			
+			Gibbon::Request.lists(list_id).members(email_md5_hash(email)).upsert body: {
+				email_address: email,
+				status: 'subscribed',
+				merge_fields: {
+					'DUEBIRTH1' => birth1.strftime('%-m/%-d/%Y'),
+					'BIRTH2' => birth2.strftime('%-m/%-d/%Y')
+				}
+			}
+			
+			list_importer.call
+			subscriber = Subscription.last
+			expect([subscriber.birth1, subscriber.birth2]).to eq [birth1, birth2]
 		end
 	end
 	

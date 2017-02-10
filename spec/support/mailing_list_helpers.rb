@@ -90,26 +90,26 @@ def set_up_gibbon_lists_api_mock
 				
 					list_member_api_response body
 				else # Retrieve a collection of members.
+					if arg && arg[:params] # Parse optional parameters.
+						offset = arg[:params][:offset].presence.try(:to_i)
+						count = arg[:params][:count].presence.try(:to_i)
+					end
+					# Default values of MailChimp API.
+					offset ||= 0
+					count ||= 10
+					
 					member_keys = list.keys.sort # Sort so that offset calls will work.
+					member_keys_slice = member_keys[offset, count] || []
 					
-					offset = arg[:params][:offset].presence.try(:to_i) || 0
-					count = arg[:params][:count].presence.try(:to_i) || member_keys.size
-					member_keys_slice = member_keys[offset, count]
-					
-					member_list = if member_keys_slice
-						member_keys_slice.inject([]) do |members, email_hash|
-							body = list[email_hash]
+					members = member_keys_slice.map do |email_hash|
+						body = list[email_hash]
 						
-							log_member_api_info(:retrieve, list_id, email_hash, body)
+						log_member_api_info(:retrieve, list_id, email_hash, body)
 						
-							members << list_member_api_response(body)
-							members
-						end
-					else
-						[]
+						list_member_api_response body
 					end
 					
-					{'members' => member_list}
+					{'members' => members}
 				end
 			end
 			
@@ -139,7 +139,7 @@ def list_member_api_response(body)
 	merge_fields = {}
 	body[:merge_fields].keys.each do |key|
 		merge_fields[key.to_s] = normalize_response_field_value key, body[:merge_fields][key]
-	end
+	end if body[:merge_fields]
 	
 	{
 		'email_address' => body[:email_address],
