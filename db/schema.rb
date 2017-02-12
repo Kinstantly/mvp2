@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170207053659) do
+ActiveRecord::Schema.define(version: 20170212070442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -503,6 +503,28 @@ ActiveRecord::Schema.define(version: 20170207053659) do
     t.datetime "updated_at",                             null: false
   end
 
+  create_table "subscription_deliveries", force: :cascade do |t|
+    t.integer  "subscription_id"
+    t.integer  "subscription_stage_id"
+    t.string   "email"
+    t.string   "source_campaign_id"
+    t.string   "campaign_id"
+    t.datetime "send_time"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "subscription_deliveries", ["subscription_id"], name: "index_subscription_deliveries_on_subscription_id", using: :btree
+  add_index "subscription_deliveries", ["subscription_stage_id"], name: "index_subscription_deliveries_on_subscription_stage_id", using: :btree
+
+  create_table "subscription_stages", force: :cascade do |t|
+    t.string   "title"
+    t.string   "source_campaign_id"
+    t.integer  "trigger_delay_days"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
   create_table "subscriptions", force: :cascade do |t|
     t.boolean  "subscribed"
     t.string   "status"
@@ -597,4 +619,6 @@ ActiveRecord::Schema.define(version: 20170207053659) do
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
+  add_foreign_key "subscription_deliveries", "subscription_stages"
+  add_foreign_key "subscription_deliveries", "subscriptions"
 end

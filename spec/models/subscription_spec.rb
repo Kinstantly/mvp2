@@ -1,11 +1,12 @@
 require 'spec_helper'
 
-RSpec.describe Subscription, type: :model do
-	let(:original_email) { 'original_email@kinstantly.com' }
-	let(:new_email) { 'new_email@kinstantly.com' }
-	let(:new_subscription) { FactoryGirl.build :subscription, email: original_email }
+RSpec.describe Subscription, type: :model, mailchimp: true do
+	let(:new_subscription) { FactoryGirl.build :subscription }
 	
 	it 'has an email address' do
+		original_email = new_subscription.email
+		new_email = 'new_email@kinstantly.com'
+		
 		expect {
 			new_subscription.email = new_email
 		}.to change { new_subscription.email }.from(original_email).to(new_email)
