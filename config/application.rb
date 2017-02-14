@@ -56,6 +56,7 @@ module Mvp2
     config.mailing_lists = {
       mailchimp_list_ids: {}, # Configured in each environment.
       active_lists: [:parent_newsletters, :provider_newsletters],
+      mailchimp_folder_ids: {}, # Configured in each environment.
       update_in_background: ENV['UPDATE_MAILING_LISTS_IN_BACKGROUND'].present?,
       send_mailchimp_welcome: ENV['SEND_MAILCHIMP_WELCOME'].present?
     }

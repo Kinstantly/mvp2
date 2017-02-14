@@ -241,3 +241,21 @@ def member_of_mailing_list(email, list_name)
 		puts "MailChimp error while retrieving member info: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{email}; list: #{list_name}"
 	end
 end
+
+def campaign_folders
+	[:parent_newsletters_source_campaigns]
+end
+
+def empty_campaign_folders
+	begin
+		campaign_folders.each do |folder|
+			folder_id = Rails.configuration.mailing_lists[:mailchimp_folder_ids][folder.to_sym]
+			r = Gibbon::Request.campaigns.retrieve params: {folder_id: folder_id}
+			r['campaigns'].try(:each) do |campaign|
+				Gibbon::Request.campaigns(campaign['id']).delete
+			end
+		end
+	rescue Gibbon::MailChimpError => e
+		puts "MailChimp error while deleting: #{e.title}; #{e.detail}; status: #{e.status_code}"
+	end
+end

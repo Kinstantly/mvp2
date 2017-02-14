@@ -12,12 +12,11 @@ class MailchimpListImporter
 	end
 	
 	def call
-		if params[:list].blank?
-			@errors << 'List must be specified.'
-			return (@successful = false)
-		end
-		
 		list_id = mailchimp_list_ids[params[:list]]
+		
+		@errors << 'A valid list must be specified.' if list_id.blank?
+		return (@successful = false) if @errors.present?
+		
 		limit = params[:limit]
 		
 		fields = 'members.status,members.list_id,members.id,members.unique_email_id,members.email_address,members.merge_fields'

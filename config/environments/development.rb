@@ -101,6 +101,10 @@ Rails.application.configure do
     :provider_marketing_emails => '17cb397f2a',
     :provider_newsletters => 'ef9518f95a'
   }
+  config.mailing_lists[:mailchimp_folder_ids] = {
+    :parent_newsletters_source_campaigns => '24a1040a6b',
+    :parent_newsletters_campaigns => 'c028bc23cb'
+  }
   Delayed::Worker.logger = Rails.logger
 end
 

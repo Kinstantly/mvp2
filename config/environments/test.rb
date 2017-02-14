@@ -68,6 +68,10 @@ Rails.application.configure do
     :provider_marketing_emails => 'acc03566ad',
     :provider_newsletters => '64efed04f6'
   }
+  config.mailing_lists[:mailchimp_folder_ids] = {
+    :parent_newsletters_source_campaigns => 'dc18c4f0ad',
+    :parent_newsletters_campaigns => 'b8618a7fda'
+  }
 end
 
 REINDEX_PROFILES_IN_BACKGROUND = false

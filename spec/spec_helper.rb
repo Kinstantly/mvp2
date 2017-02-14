@@ -69,6 +69,9 @@ RSpec.configure do |config|
     if example.metadata[:use_gibbon_mocks] or
       !(example.metadata[:contact_mailchimp] or ENV['CONTACT_MAILCHIMP'].present?)
       set_up_gibbon_mocks
+    else
+      # Not using mocks.
+      empty_campaign_folders # Prevent build-up of test data in our MailChimp account.
     end
   end
 

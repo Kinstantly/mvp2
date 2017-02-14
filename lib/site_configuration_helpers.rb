@@ -48,6 +48,10 @@ module SiteConfigurationHelpers
 			Rails.configuration.google_analytics_tracking_id
 		end
 		
+		def mailchimp_folder_ids
+			Rails.configuration.mailing_lists[:mailchimp_folder_ids]
+		end
+		
 		def mailchimp_list_ids
 			Rails.configuration.mailing_lists[:mailchimp_list_ids]
 		end
