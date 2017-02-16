@@ -78,6 +78,11 @@ class MailchimpWebhookController < ApplicationController
 
 	def on_campaign_sent(data)
 		id = data['id']
+		unless id.present?
+			logger.error "MailChimp Webhook error: campaign ID not present"
+			return
+		end
+		
 		newsletter = Newsletter.find_by_cid(id) || Newsletter.new
 		if newsletter.new_record?
 			campaign_info = retrieve_campaign_info(id)
@@ -91,7 +96,7 @@ class MailchimpWebhookController < ApplicationController
 				newsletter.archive_url = campaign_info['archive_url']
 				newsletter.content = campaign_content
 				if !newsletter.save
-					logger.error "MailChimp Webhook error: save failed for campaign ID => #{id}; campaign_info => #{campaign_info}; campaign_content starts with \"#{campaign_content.try :slice, 0, 20}\""
+					logger.error "MailChimp Webhook error: save failed for campaign ID => #{id}; errors => #{newsletter.errors.messages}; campaign_info => #{campaign_info}; campaign_content starts with \"#{campaign_content.try :slice, 0, 20}\""
 				end
 			else
 				logger.error "MailChimp Webhook error: could not retrieve info or content for campaign ID => #{id}; campaign_info => #{campaign_info}; campaign_content starts with \"#{campaign_content.try :slice, 0, 20}\""

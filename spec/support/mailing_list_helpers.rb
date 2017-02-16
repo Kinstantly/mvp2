@@ -161,6 +161,14 @@ def normalize_response_field_value(name, value)
 	end
 end
 
+def invalid_resource_exception(errors=[])
+	Gibbon::MailChimpError.new('the server responded with status 400', title: 'Invalid Resource', detail: "The resource submitted could not be validated. For field-specific details, see the 'errors' array.", status_code: 400, body: {'status' => 400, 'errors' => errors})
+end
+
+def resource_not_found_exception
+	Gibbon::MailChimpError.new('the server responded with status 404', title: 'Resource not found', detail: "The requested resource could not be found.", status_code: 404)
+end
+
 def list_not_found_exception(list_id)
 	Gibbon::MailChimpError.new('List not found', title: 'List not found', detail: "list_id => #{list_id}", status_code: 404)
 end
@@ -176,40 +184,144 @@ def log_member_api_info(method, list_id, email_hash, body)
 end
 
 def set_up_gibbon_campaigns_api_mock
-	Struct.new 'SingleCampaignAPI' unless defined? Struct::SingleCampaignAPI
-	single_campaign_api = double('Struct::SingleCampaignAPI').as_null_object
+	Struct.new 'CampaignAPI' unless defined? Struct::CampaignAPI
 	
-	allow(Gibbon::Request).to receive(:campaigns).with(kind_of(String)).and_return(single_campaign_api)
+	@mailchimp_campaign_id = 0
+	@mailchimp_campaigns = {}
+	@mailchimp_campaign_apis = {}
 	
-	# retrieve a single campaign
-	allow(single_campaign_api).to receive(:retrieve).and_return(
-		{
-			'id' => 'c123',
-			'status' => 'sent',
-			'send_time' => '2015-07-17T10:13:04+00:00',
-			'archive_url' => 'http://example.com',
-			'recipients' => {
-				'list_id' => 'abc123'
-			},
-			'settings' => {
-				'title' => 'Latest parenting news',
-				'subject_line' => 'THIS WEEKEND: sport events'
+	allow(Gibbon::Request).to receive(:campaigns) do |campaign_id|
+		# campaign_id is nil if referencing multiple campaigns
+		
+		if @mailchimp_campaign_apis[campaign_id]
+			# called more than once for the same campaign; return the existing campaign_api
+			next @mailchimp_campaign_apis[campaign_id][:campaign_api]
+		end
+	
+		campaign_api = double('Struct::CampaignAPI').as_null_object
+		@mailchimp_campaign_apis[campaign_id] = { campaign_api: campaign_api }
+		
+		unless campaign_id
+			# create a campaign
+			allow(campaign_api).to receive(:create) do |arg|
+				body = arg[:body] || {}
+				unless body[:type]
+					raise invalid_resource_exception([
+						{'field' => '', 'message' => 'Required fields were not provided: type'}
+					])
+				end
+				unless body[:settings]
+					raise invalid_resource_exception([
+						{'field' => '', 'message' => 'Required fields were not provided: settings'}
+					])
+				end
+				if body[:recipients] && body[:recipients][:list_id].blank?
+					raise invalid_resource_exception([
+						{'field' => 'recipients', 'message' => 'Required fields were not provided: list_id'}
+					])
+				end
+
+				folder_id = body[:settings][:folder_id]
+				body['id'] = id = "#{@mailchimp_campaign_id += 1}"
+				response = campaign_api_response(body)
+				@mailchimp_campaigns[id] = { response: response, folder_id: folder_id }
+				response
+			end
+		end
+		
+		# retrieve campaign(s)
+		allow(campaign_api).to receive(:retrieve) do |arg|
+			if campaign_id
+				# single campaign
+				@mailchimp_campaigns[campaign_id][:response]
+			else
+				# multiple campaigns
+				folder_id = nil
+				if arg && arg[:params] # Parse optional parameters.
+					folder_id = arg[:params][:folder_id]
+					offset = arg[:params][:offset].presence.try(:to_i)
+					count = arg[:params][:count].presence.try(:to_i)
+				end
+				# Default values of MailChimp API.
+				offset ||= 0
+				count ||= 10
+				
+				ids = @mailchimp_campaigns.keys.sort # Sort so that offset calls will work.
+				ids_slice = ids[offset, count] || []
+				
+				campaign_list = ids_slice.map do |id|
+					campaign = @mailchimp_campaigns[id]
+					if folder_id.blank? || campaign[:folder_id] == folder_id
+						campaign[:response]
+					else
+						nil
+					end
+				end
+				
+				{ 'campaigns' => campaign_list.compact }
+			end
+		end
+	
+		# retrieve campaign content
+		Struct.new 'CampaignContentAPI' unless defined? Struct::CampaignContentAPI
+		campaign_content_api = double('Struct::CampaignContentAPI').as_null_object
+	
+		allow(campaign_api).to receive(:content).and_return(campaign_content_api)
+	
+		allow(campaign_content_api).to receive(:retrieve).and_return(
+			{
+				'plain_text' => 'THIS WEEKEND: sport events.',
+				'html' => '<!DOCTYPE html><html><head></head><body>THIS WEEKEND: sport events.</body></html>'
 			}
-		}
-	)
+		)
+		
+		if campaign_id
+			# actions on a single campaign
+			Struct.new 'CampaignActionsAPI' unless defined? Struct::CampaignActionsAPI
+			campaign_actions_api = double('Struct::CampaignActionsAPI').as_null_object
+			allow(campaign_api).to receive(:actions).and_return(campaign_actions_api)
+			
+			Struct.new 'CampaignActionsSendAPI' unless defined? Struct::CampaignActionsSendAPI
+			campaign_actions_send_api = double('Struct::CampaignActionsSendAPI').as_null_object
+			allow(campaign_actions_api).to receive(:send).and_return(campaign_actions_send_api)
+			
+			allow(campaign_actions_send_api).to receive(:create) do
+				if (campaign = @mailchimp_campaigns[campaign_id])
+					response = campaign[:response]
+					response['status'] = 'sent'
+					response['send_time'] = Time.now.to_s
+				else
+					raise resource_not_found_exception
+				end
+				nil
+			end
+		end
+		
+		campaign_api
+	end
+end
+
+def campaign_api_response(body={})
+	response = {
+		'id' => 'c123',
+		'status' => 'save',
+		'send_time' => '',
+		'archive_url' => 'http://example.com',
+		'recipients' => {
+			'list_id' => 'abc123'
+		},
+		'settings' => { }
+	}
 	
-	# retrieve campaign content
-	Struct.new 'SingleCampaignContentAPI' unless defined? Struct::SingleCampaignContentAPI
-	single_campaign_content_api = double('Struct::SingleCampaignContentAPI').as_null_object
-	
-	allow(single_campaign_api).to receive(:content).and_return(single_campaign_content_api)
-	
-	allow(single_campaign_content_api).to receive(:retrieve).and_return(
-		{
-			'plain_text' => 'THIS WEEKEND: sport events.',
-			'html' => '<!DOCTYPE html><html><head></head><body>THIS WEEKEND: sport events.</body></html>'
-		}
-	)
+	response.merge(copy_hash_and_stringify_keys(body))
+end
+
+def copy_hash_and_stringify_keys(h)
+	h_copy = {}
+	h.each do |key, value|
+		h_copy[key.to_s] = (value.is_a?(Hash) ? copy_hash_and_stringify_keys(value) : value)
+	end
+	h_copy
 end
 
 def mailing_lists
@@ -243,7 +355,7 @@ def member_of_mailing_list(email, list_name)
 end
 
 def campaign_folders
-	[:parent_newsletters_source_campaigns]
+	[:parent_newsletters_source_campaigns, :parent_newsletters_campaigns]
 end
 
 def empty_campaign_folders

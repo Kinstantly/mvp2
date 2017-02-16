@@ -151,7 +151,10 @@ Rails.application.configure do
     :provider_marketing_emails => ENV['PROVIDER_MARKETING_EMAILS_LIST_ID'],
     :provider_newsletters => ENV['PROVIDER_NEWSLETTERS_LIST_ID']
   }
-  
+  config.mailing_lists[:mailchimp_folder_ids] = {
+    :parent_newsletters_source_campaigns => ENV['PARENT_NEWSLETTERS_SOURCE_CAMPAIGNS_FOLDER_ID'],
+    :parent_newsletters_campaigns => ENV['PARENT_NEWSLETTERS_CAMPAIGNS_FOLDER_ID']
+  }
   config.mailing_lists[:update_in_background] = true
 end
 

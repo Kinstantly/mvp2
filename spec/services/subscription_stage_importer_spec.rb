@@ -17,6 +17,20 @@ describe SubscriptionStageImporter, mailchimp: true do
 	}
 	
 	context 'with valid parameters' do
+		let(:title) { 'Your Child is 3 YEARS, 1 month' }
+		let(:body) {
+			{
+				type: 'regular',
+				settings: {
+					folder_id: folder_id,
+					title: title,
+					subject_line: title,
+					from_name: 'Kinstantly',
+					reply_to: 'kinstantly@kinstantly.com'
+				}
+			}
+		}
+		
 		it 'should return success' do
 			expect(stage_importer.call).to be_truthy
 		end
@@ -34,16 +48,8 @@ describe SubscriptionStageImporter, mailchimp: true do
 			]
 			
 			title_list.each do |title|
-				Gibbon::Request.campaigns.create body: {
-					type: 'regular',
-					settings: {
-						folder_id: folder_id,
-						title: title,
-						subject_line: title,
-						from_name: 'Kinstantly',
-						reply_to: 'kinstantly@kinstantly.com'
-					}
-				}
+				body[:settings][:title] = body[:settings][:subject_line] = title
+				Gibbon::Request.campaigns.create body: body
 			end
 			
 			expect {
@@ -52,38 +58,14 @@ describe SubscriptionStageImporter, mailchimp: true do
 		end
 		
 		it "should import the source-campaign ID" do
-			title = 'Your Child is 3 YEARS, 1 month'
-			
-			campaign = Gibbon::Request.campaigns.create body: {
-				type: 'regular',
-				settings: {
-					folder_id: folder_id,
-					title: title,
-					subject_line: title,
-					from_name: 'Kinstantly',
-					reply_to: 'kinstantly@kinstantly.com'
-				}
-			}
-			
+			campaign = Gibbon::Request.campaigns.create body: body
 			stage_importer.call
 			subscription_stage = SubscriptionStage.last
 			expect(subscription_stage.source_campaign_id).to eq campaign['id']
 		end
 		
 		it "should import the source-campaign title" do
-			title = 'Your Child is 3 YEARS, 1 month'
-			
-			Gibbon::Request.campaigns.create body: {
-				type: 'regular',
-				settings: {
-					folder_id: folder_id,
-					title: title,
-					subject_line: title,
-					from_name: 'Kinstantly',
-					reply_to: 'kinstantly@kinstantly.com'
-				}
-			}
-			
+			Gibbon::Request.campaigns.create body: body
 			stage_importer.call
 			subscription_stage = SubscriptionStage.last
 			expect(subscription_stage.title).to eq title

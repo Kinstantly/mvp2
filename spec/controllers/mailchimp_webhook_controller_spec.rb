@@ -5,15 +5,6 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 	let(:list_id) { mailchimp_list_ids[:parent_newsletters]}
 	let(:user) { FactoryGirl.create(:client_user) }
 	let(:params) {{ type: "unsubscribe", token: token, data: {list_id: list_id, email: user.email }}}
-	let(:campaign_params) {
-		{ type: "campaign", 
-			token: token, 
-			data: { id: '123', list_id: list_id, 
-				send_time: DateTime.now, title: 'Latest parenting news', subject: 'THIS WEEKEND: sport events',
-				archive_url: 'http://example.com' 
-			}
-		}
-	}
 	
 	describe "POST process_notification" do
 		
@@ -106,8 +97,42 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 		  end
 		end
 
-		# The following requires mocking of the campaigns API.
+		# Because we are sending in these examples, require mocks. Thus we won't send real emails.
 		context "new campaign sent", use_gibbon_mocks: true do
+			let(:folder_id) { mailchimp_folder_ids[:parent_newsletters_campaigns] }
+			let(:campaign) {
+				response = Gibbon::Request.campaigns.create body: {
+					type: 'regular',
+					recipients: {
+						list_id: list_id
+					},
+					settings: {
+						folder_id: folder_id,
+						title: '3 YEARS, 1 month',
+						subject_line: 'Your Child is 3 YEARS, 1 month',
+						from_name: 'Kinstantly',
+						reply_to: 'kinstantly@kinstantly.com'
+					}
+				}
+				Gibbon::Request.campaigns(response['id']).actions.send.create
+				response
+			}
+			
+			let(:campaign_params) {
+				{
+					type: 'campaign', 
+					token: token, 
+					data: {
+						id: campaign['id'],
+						list_id: list_id,
+						send_time: campaign['send_time'],
+						title: campaign['settings']['title'],
+						subject: campaign['settings']['subject_line'],
+						archive_url: campaign['archive_url']
+					}
+				}
+			}
+			
 			it "creates a new record when valid campaign data provided" do
 				expect {
 					post :process_notification, campaign_params
