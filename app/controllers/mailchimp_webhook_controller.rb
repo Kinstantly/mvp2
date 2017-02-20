@@ -76,6 +76,13 @@ class MailchimpWebhookController < ApplicationController
 		params['token'].present? && params['token'] == SECURITY_TOKEN
 	end
 
+	def folder_id_skip_list
+		[
+			mailchimp_folder_ids[:parent_newsletters_campaigns],
+			mailchimp_folder_ids[:parent_newsletters_source_campaigns]
+		]
+	end
+
 	def on_campaign_sent(data)
 		id = data['id']
 		unless id.present?
@@ -86,6 +93,10 @@ class MailchimpWebhookController < ApplicationController
 		newsletter = Newsletter.find_by_cid(id) || Newsletter.new
 		if newsletter.new_record?
 			campaign_info = retrieve_campaign_info(id)
+			if campaign_info.present? && folder_id_skip_list.include?(campaign_info['settings']['folder_id'])
+				logger.info "MailChimp Webhook: Newsletter campaign is in skip list. Not archiving. ID => #{campaign_info['id']}; title => \"#{campaign_info['settings']['title']}\""
+				return
+			end
 			campaign_content = retrieve_campaign_content(id)
 			if campaign_info.present? && campaign_content.present?
 				newsletter.cid = id

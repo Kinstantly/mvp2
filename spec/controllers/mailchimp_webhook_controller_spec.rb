@@ -97,23 +97,26 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 		  end
 		end
 
-		# Because we are sending in these examples, require mocks. Thus we won't send real emails.
+		# Because these examples are sending the campaign, require mocks. Thus we won't send real emails.
 		context "new campaign sent", use_gibbon_mocks: true do
-			let(:folder_id) { mailchimp_folder_ids[:parent_newsletters_campaigns] }
-			let(:campaign) {
-				response = Gibbon::Request.campaigns.create body: {
+			let(:body) {
+				{
 					type: 'regular',
 					recipients: {
 						list_id: list_id
 					},
 					settings: {
-						folder_id: folder_id,
+						folder_id: nil,
 						title: '3 YEARS, 1 month',
 						subject_line: 'Your Child is 3 YEARS, 1 month',
 						from_name: 'Kinstantly',
 						reply_to: 'kinstantly@kinstantly.com'
 					}
 				}
+			}
+			
+			let(:campaign) {
+				response = Gibbon::Request.campaigns.create body: body
 				Gibbon::Request.campaigns(response['id']).actions.send.create
 				response
 			}
@@ -152,6 +155,13 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 					post :process_notification, campaign_params
 				}.to change(Newsletter, :count).by(1)
 				expect(Newsletter.where(cid: campaign_params[:data][:id]).size).to eq 1
+			end
+			
+			it "does not create a new record when a stage-based campaign was sent" do
+				body[:settings][:folder_id] = mailchimp_folder_ids[:parent_newsletters_campaigns]
+				expect {
+					post :process_notification, campaign_params
+				}.to_not change(Newsletter, :count)
 			end
 		end
 	end
