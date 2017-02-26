@@ -36,6 +36,22 @@ def set_up_gibbon_lists_api_mock
 			member_api = double('Struct::MemberAPI').as_null_object
 			@mailchimp_apis[list_id][email_hash] = member_api
 			
+			# create a new subscription
+			allow(member_api).to receive(:create) do |arg|
+				@mailchimp_lists[list_id] ||= {}
+				body = arg[:body]
+				member_id = email_md5_hash(body[:email_address])
+				
+				body[:id] = member_id
+				body[:unique_email_id] = member_id # fake it
+				body[:list_id] = list_id
+				@mailchimp_lists[list_id][member_id] = body
+				
+				log_member_api_info(:create, list_id, member_id, body)
+				
+				list_member_api_response body
+			end
+			
 			# if the subscription exists, update it, otherwise create it
 			allow(member_api).to receive(:upsert) do |arg|
 				@mailchimp_lists[list_id] ||= {}
