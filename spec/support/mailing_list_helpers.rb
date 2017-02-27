@@ -11,35 +11,47 @@ end
 def set_up_gibbon_lists_api_mock
 	Struct.new 'ListAPI' unless defined? Struct::ListAPI
 	Struct.new 'MemberAPI' unless defined? Struct::MemberAPI
+	Struct.new 'SegmentAPI' unless defined? Struct::SegmentAPI
 	
 	@mailchimp_lists = {}
-	@mailchimp_apis = {}
+	@mailchimp_list_segments = {}
+	@mailchimp_list_segment_members = {}
+	@mailchimp_list_apis = {}
 	
 	# return API for the list with the specified ID
 	allow(Gibbon::Request).to receive(:lists) do |list_id|
-		if @mailchimp_apis[list_id]
+		if @mailchimp_list_apis[list_id]
 			# called more than once for the same list; return the existing list_api
-			next @mailchimp_apis[list_id][:list_api]
+			next @mailchimp_list_apis[list_id][:list_api]
 		end
 		
 		list_api = double('Struct::ListAPI').as_null_object
-		@mailchimp_apis[list_id] = { list_api: list_api }
+		@mailchimp_list_apis[list_id] = {
+			list_api: list_api,
+			member_apis: {},
+			segment_apis: {}
+		}
+		
+		@mailchimp_lists[list_id] = {}
+		@mailchimp_list_segments[list_id] = {}
+		@mailchimp_list_segment_members[list_id] = {}
 		
 		# return API for the list member with the specified email hash
 		# or for all list members if no email hash specified
 		allow(list_api).to receive(:members) do |email_hash|
-			if @mailchimp_apis[list_id][email_hash]
+			if @mailchimp_list_apis[list_id][:member_apis][email_hash]
 				# called more than once for the same subscription; return the existing member_api
-				next @mailchimp_apis[list_id][email_hash]
+				next @mailchimp_list_apis[list_id][:member_apis][email_hash]
 			end
 			
 			member_api = double('Struct::MemberAPI').as_null_object
-			@mailchimp_apis[list_id][email_hash] = member_api
+			@mailchimp_list_apis[list_id][:member_apis][email_hash] = member_api
 			
 			# create a new subscription
 			allow(member_api).to receive(:create) do |arg|
-				@mailchimp_lists[list_id] ||= {}
 				body = arg[:body]
+				
+				# Don't set email_hash. It would be confused with the parent block's argument in later invocations of other methods.
 				member_id = email_md5_hash(body[:email_address])
 				
 				body[:id] = member_id
@@ -54,7 +66,6 @@ def set_up_gibbon_lists_api_mock
 			
 			# if the subscription exists, update it, otherwise create it
 			allow(member_api).to receive(:upsert) do |arg|
-				@mailchimp_lists[list_id] ||= {}
 				@mailchimp_lists[list_id][email_hash] ||= {}
 				
 				body = @mailchimp_lists[list_id][email_hash]
@@ -70,7 +81,7 @@ def set_up_gibbon_lists_api_mock
 			
 			# update an existing subscription
 			allow(member_api).to receive(:update) do |arg|
-				if @mailchimp_lists[list_id].try(:[], email_hash).blank?
+				if @mailchimp_lists[list_id][email_hash].blank?
 					raise list_member_not_found_exception(list_id, email_hash)
 				end
 				
@@ -146,6 +157,40 @@ def set_up_gibbon_lists_api_mock
 			member_api
 		end
 		
+		# return API for the list segment with the specified segment ID
+		# or for all segments if no segment ID specified
+		allow(list_api).to receive(:segments) do |segment_id|
+			if @mailchimp_list_apis[list_id][:segment_apis][segment_id]
+				# called more than once for the same segment; return the existing segment_api
+				next @mailchimp_list_apis[list_id][:segment_apis][segment_id]
+			end
+			
+			segment_api = double('Struct::SegmentAPI').as_null_object
+			@mailchimp_list_apis[list_id][:segment_apis][segment_id] = segment_api
+			
+			@mailchimp_list_segment_id ||= 0
+			
+			# create a new segment
+			allow(segment_api).to receive(:create) do |arg|
+				body = arg[:body]
+				
+				body[:id] = id = (@mailchimp_list_segment_id += 1)
+				body[:list_id] = list_id
+				if (static_segment = body[:static_segment])
+					verified_members = verify_segment_members static_segment, @mailchimp_lists[list_id]
+					@mailchimp_list_segment_members[list_id][id] = verified_members
+					body[:member_count] = verified_members.size
+				end
+				@mailchimp_list_segments[list_id][id] = body
+				
+				log_segment_api_info(:create, list_id, id, body)
+				
+				list_segment_api_response body
+			end
+			
+			segment_api
+		end
+		
 		list_api
 	end
 end
@@ -177,6 +222,20 @@ def normalize_response_field_value(name, value)
 	end
 end
 
+def list_segment_api_response(body)
+	copy_hash_and_stringify_keys body
+end
+
+def verify_segment_members(segment, list)
+	segment ||= []
+	list ||= []
+	verified_segment = segment.map do |email|
+		member = list[email_md5_hash(email)]
+		member && member[:status] == 'subscribed' ? email : nil
+	end
+	verified_segment.compact
+end
+
 def invalid_resource_exception(errors=[])
 	Gibbon::MailChimpError.new('the server responded with status 400', title: 'Invalid Resource', detail: "The resource submitted could not be validated. For field-specific details, see the 'errors' array.", status_code: 400, body: {'status' => 400, 'errors' => errors})
 end
@@ -195,7 +254,13 @@ end
 
 def log_member_api_info(method, list_id, email_hash, body)
 	if ENV['DISPLAY_TEST_LOG'].present?
-		puts "method => #{method}; list_id => #{list_id}; email_hash => #{email_hash}; body => #{body}"
+		puts "list members method => #{method}; list_id => #{list_id}; email_hash => #{email_hash}; body => #{body}"
+	end
+end
+
+def log_segment_api_info(method, list_id, segment_id, body)
+	if ENV['DISPLAY_TEST_LOG'].present?
+		puts "list segments method => #{method}; list_id => #{list_id}; segment_id => #{segment_id}; body => #{body}"
 	end
 end
 

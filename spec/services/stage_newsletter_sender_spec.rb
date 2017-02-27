@@ -76,6 +76,11 @@ describe StageNewsletterSender, mailchimp: true, use_gibbon_mocks: true do
 				subscribed_emails = subscribed_members.map { |member| member['email_address'] }
 				expect(subscribed_emails.sort).to eq member_emails
 				
+				expect {
+					list_importer = MailchimpListImporter.new list: list
+					list_importer.call
+				}.to change(Subscription, :count).by(members.size)
+				
 				titles.each do |title|
 					body[:settings][:title] = body[:settings][:subject_line] = title
 					Gibbon::Request.campaigns.create body: body
@@ -85,6 +90,11 @@ describe StageNewsletterSender, mailchimp: true, use_gibbon_mocks: true do
 					stage_importer = SubscriptionStageImporter.new list: list, folder: source_folder
 					stage_importer.call
 				}.to change(SubscriptionStage, :count).by(stages.size)
+				
+				stages.each do |title, trigger_delay_days|
+					stage = SubscriptionStage.find_by_title title
+					stage.update trigger_delay_days: trigger_delay_days
+				end
 				
 				newsletter_sender.call
 				expect(newsletter_sender).to be_successful
