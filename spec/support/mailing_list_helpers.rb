@@ -14,9 +14,11 @@ def set_up_gibbon_lists_api_mock
 	Struct.new 'SegmentAPI' unless defined? Struct::SegmentAPI
 	
 	@mailchimp_lists = {}
+	@mailchimp_list_apis = {}
+	
+	@mailchimp_list_segment_id = 0
 	@mailchimp_list_segments = {}
 	@mailchimp_list_segment_members = {}
-	@mailchimp_list_apis = {}
 	
 	# return API for the list with the specified ID
 	allow(Gibbon::Request).to receive(:lists) do |list_id|
@@ -168,8 +170,6 @@ def set_up_gibbon_lists_api_mock
 			segment_api = double('Struct::SegmentAPI').as_null_object
 			@mailchimp_list_apis[list_id][:segment_apis][segment_id] = segment_api
 			
-			@mailchimp_list_segment_id ||= 0
-			
 			# create a new segment
 			allow(segment_api).to receive(:create) do |arg|
 				body = arg[:body]
@@ -264,6 +264,12 @@ def log_segment_api_info(method, list_id, segment_id, body)
 	end
 end
 
+def log_campaign_api_info(method, campaign_id, response)
+	if ENV['DISPLAY_TEST_LOG'].present?
+		puts "campaigns method => #{method}; campaign_id => #{campaign_id}; response => #{response}"
+	end
+end
+
 def set_up_gibbon_campaigns_api_mock
 	Struct.new 'CampaignAPI' unless defined? Struct::CampaignAPI
 	
@@ -282,7 +288,33 @@ def set_up_gibbon_campaigns_api_mock
 		campaign_api = double('Struct::CampaignAPI').as_null_object
 		@mailchimp_campaign_apis[campaign_id] = { campaign_api: campaign_api }
 		
-		unless campaign_id
+		if campaign_id
+			# update a campaign
+			allow(campaign_api).to receive(:update) do |arg|
+				response = @mailchimp_campaigns[campaign_id][:response]
+				raise resource_not_found_exception unless response
+				
+				body = arg[:body] || {}
+				unless body[:settings]
+					raise invalid_resource_exception([
+						{'field' => '', 'message' => 'Required fields were not provided: settings'}
+					])
+				end
+				if body[:recipients] && body[:recipients][:list_id].blank?
+					raise invalid_resource_exception([
+						{'field' => 'recipients', 'message' => 'Required fields were not provided: list_id'}
+					])
+				end
+				
+				response.merge! copy_hash_and_stringify_keys(body)
+				@mailchimp_campaigns[campaign_id][:folder_id] = response['settings']['folder_id'].presence
+				
+				log_campaign_api_info :update, campaign_id, response
+				
+				response
+			end
+		
+		else # no campaign_id needed for these methods
 			# create a campaign
 			allow(campaign_api).to receive(:create) do |arg|
 				body = arg[:body] || {}
@@ -306,6 +338,9 @@ def set_up_gibbon_campaigns_api_mock
 				body['id'] = id = "#{@mailchimp_campaign_id += 1}"
 				response = campaign_api_response(body)
 				@mailchimp_campaigns[id] = { response: response, folder_id: folder_id }
+				
+				log_campaign_api_info :create, campaign_id, response
+				
 				response
 			end
 		end
@@ -314,7 +349,12 @@ def set_up_gibbon_campaigns_api_mock
 		allow(campaign_api).to receive(:retrieve) do |arg|
 			if campaign_id
 				# single campaign
-				@mailchimp_campaigns[campaign_id][:response]
+				response = @mailchimp_campaigns[campaign_id][:response]
+				raise resource_not_found_exception unless response
+				
+				log_campaign_api_info :retrieve, campaign_id, response
+				
+				response
 			else
 				# multiple campaigns
 				folder_id = nil
@@ -328,18 +368,24 @@ def set_up_gibbon_campaigns_api_mock
 				count ||= 10
 				
 				ids = @mailchimp_campaigns.keys.sort # Sort so that offset calls will work.
-				ids_slice = ids[offset, count] || []
+				ids_slice = ids[offset, (ids.size - offset)] || []
+				found = 0
 				
-				campaign_list = ids_slice.map do |id|
+				response_list = ids_slice.map do |id|
 					campaign = @mailchimp_campaigns[id]
-					if folder_id.blank? || campaign[:folder_id] == folder_id
+					if found < count && (folder_id.blank? || campaign[:folder_id] == folder_id)
+						found += 1
 						campaign[:response]
 					else
 						nil
 					end
 				end
 				
-				{ 'campaigns' => campaign_list.compact }
+				response = { 'campaigns' => response_list.compact }
+				
+				log_campaign_api_info :retrieve, campaign_id, response
+				
+				response
 			end
 		end
 	
@@ -374,6 +420,51 @@ def set_up_gibbon_campaigns_api_mock
 				else
 					raise resource_not_found_exception
 				end
+				
+				log_campaign_api_info 'actions.send.create', campaign_id, response
+				
+				nil
+			end
+			
+			Struct.new 'CampaignActionsReplicateAPI' unless defined? Struct::CampaignActionsReplicateAPI
+			campaign_actions_replicate_api = double('Struct::CampaignActionsReplicateAPI').as_null_object
+			allow(campaign_actions_api).to receive(:replicate).and_return(campaign_actions_replicate_api)
+			
+			allow(campaign_actions_replicate_api).to receive(:create) do
+				source_campaign = @mailchimp_campaigns[campaign_id]
+				raise resource_not_found_exception unless source_campaign
+				
+				response = copy_hash_and_stringify_keys source_campaign[:response]
+				response['id'] = id = "#{@mailchimp_campaign_id += 1}"
+				response['settings']['title'] = "#{response['settings']['title']} (copy 01)"
+				@mailchimp_campaigns[id] = { response: response, folder_id: source_campaign[:folder_id] }
+				
+				log_campaign_api_info 'actions.replicate.create', campaign_id, response
+				
+				response
+			end
+			
+			Struct.new 'CampaignActionsScheduleAPI' unless defined? Struct::CampaignActionsScheduleAPI
+			campaign_actions_schedule_api = double('Struct::CampaignActionsScheduleAPI').as_null_object
+			allow(campaign_actions_api).to receive(:schedule).and_return(campaign_actions_schedule_api)
+			
+			allow(campaign_actions_schedule_api).to receive(:create) do |arg|
+				campaign = @mailchimp_campaigns[campaign_id]
+				raise resource_not_found_exception unless campaign
+				
+				body = arg[:body] || {}
+				unless body[:schedule_time]
+					raise invalid_resource_exception([
+						{'field' => '', 'message' => 'Required fields were not provided: schedule_time'}
+					])
+				end
+				
+				response = campaign[:response]
+				response['status'] = 'schedule'
+				response['send_time'] = body[:schedule_time]
+				
+				log_campaign_api_info 'actions.schedule.create', campaign_id, response
+				
 				nil
 			end
 		end

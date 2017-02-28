@@ -2,12 +2,13 @@ class StageNewsletterSender
 	
 	include SiteConfigurationHelpers
 	
-	attr_reader :params, :errors, :total_campaigns_sent, :total_recipients
+	attr_reader :params, :errors, :total_campaigns_sent, :total_recipients, :time_string_format
 	
 	def initialize(params)
 		@params = params
 		@errors = []
 		@total_campaigns_sent = @total_recipients = 0
+		@time_string_format = '%Y-%m-%dT%H:%M:%S%:z'
 		@successful = true
 	end
 	
@@ -93,7 +94,7 @@ class StageNewsletterSender
 	def create_recipient_segment(subscriptions, subscription_stage)
 		emails = subscriptions.map &:email
 		body = {
-			name: "#{subscription_stage.title} #{Time.zone.now.to_s}",
+			name: "#{subscription_stage.title}: #{Time.zone.now.to_s}",
 			static_segment: emails
 		}
 		
@@ -101,11 +102,37 @@ class StageNewsletterSender
 	end
 	
 	def create_campaign(subscription_stage, segment, folder_id)
+		campaign = Gibbon::Request.campaigns(subscription_stage.source_campaign_id).actions.replicate.create
 		
+		Gibbon::Request.campaigns(campaign['id']).update body: {
+			recipients: {
+				list_id: subscription_stage.list_id,
+				segment_opts: { saved_segment_id: segment['id'] }
+			},
+			settings: {
+				title: "#{subscription_stage.title}: #{Time.zone.now.to_s}",
+				folder_id: mailchimp_folder_ids[:parent_newsletters_campaigns],
+				to_name: '*|FNAME|*'
+			}
+		}
 	end
 	
 	def schedule_campaign(campaign)
+		# Let's start with 8am today in the time zone configured for this application.
+		# See Rails.configuration.time_zone.
+		schedule_time = Time.zone.now.midnight + 8.hours
+		if schedule_time < Time.zone.now + 1.hour
+			# Too late to schedule for 8am today. Try tomorrow.
+			schedule_time += 1.day
+		end
+		# Specify as a UTC string.
+		schedule_time_utc = schedule_time.utc.strftime(time_string_format)
 		
+		Gibbon::Request.campaigns(campaign['id']).actions.schedule.create body: {
+			schedule_time: schedule_time_utc,
+			timewarp: false,
+			batch_delay: false
+		}
 	end
 	
 	def log_delivery(segment, campaign, subscription_stage)

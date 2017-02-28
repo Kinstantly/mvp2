@@ -103,6 +103,11 @@ describe StageNewsletterSender, mailchimp: true, use_gibbon_mocks: true do
 					folder_id: sent_folder_id
 				})['campaigns']
 				expect(scheduled_campaigns.size).to eq members.size
+				
+				scheduled_campaigns.each do |campaign|
+					expect(campaign['status']).to eq 'schedule'
+					expect(campaign['send_time']).to be_present
+				end
 			end
 			
 		end
