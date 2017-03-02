@@ -98,6 +98,7 @@ describe StageNewsletterSender, mailchimp: true, use_gibbon_mocks: true do
 				
 				newsletter_sender.call
 				expect(newsletter_sender).to be_successful
+				expect(newsletter_sender.errors).to be_blank
 				
 				scheduled_campaigns = Gibbon::Request.campaigns.retrieve(params: {
 					folder_id: sent_folder_id
@@ -108,6 +109,28 @@ describe StageNewsletterSender, mailchimp: true, use_gibbon_mocks: true do
 					expect(campaign['status']).to eq 'schedule'
 					expect(campaign['send_time']).to be_present
 				end
+				
+				stage = SubscriptionStage.find_by_title titles[0]
+				email = 'subscriber1@kinstantly.com'
+				subscription = Subscription.find_by_email email
+				delivery = SubscriptionDelivery.where(
+					email: email,
+					subscription: subscription,
+					subscription_stage: stage,
+					source_campaign_id: stage.source_campaign_id
+				).first
+				expect(delivery).to be_present
+				
+				stage = SubscriptionStage.find_by_title titles[1]
+				email = 'subscriber2@kinstantly.com'
+				subscription = Subscription.find_by_email email
+				delivery = SubscriptionDelivery.where(
+					email: email,
+					subscription: subscription,
+					subscription_stage: stage,
+					source_campaign_id: stage.source_campaign_id
+				).first
+				expect(delivery).to be_present
 			end
 			
 		end

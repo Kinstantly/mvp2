@@ -30,12 +30,17 @@ class StageNewsletterSender
 				next if recipients.blank?
 				
 				segment = create_recipient_segment recipients, stage
-				next unless segment['member_count'] > 0
+				next unless segment['member_count'] > 0 # MailChimp might have rejected all of them!
 				
 				campaign = create_campaign stage, segment, folder_id
-				schedule_campaign campaign
 				
-				log_delivery segment, campaign, stage
+				scheduled = schedule_campaign campaign
+				if scheduled['status'] != 'schedule'
+					@errors << "Error: failed to schedule '#{stage.title}'; NOT logging delivery; campaign ID => #{scheduled['id']}, campaign title => '#{scheduled['settings']['title']}'"
+					next
+				end
+				
+				log_delivery segment, scheduled, stage
 				
 			rescue Gibbon::MailChimpError => e
 				@errors << "Error while sending stage #{stage.id}: #{e.title}; #{e.detail}; status: #{e.status_code}; subscription stage: #{stage.inspect}"
@@ -122,7 +127,7 @@ class StageNewsletterSender
 		# See Rails.configuration.time_zone.
 		schedule_time = Time.zone.now.midnight + 8.hours
 		if schedule_time < Time.zone.now + 1.hour
-			# Too late to schedule for 8am today. Try tomorrow.
+			# Too late to schedule for 8am today. Try for tomorrow.
 			schedule_time += 1.day
 		end
 		# Specify as a UTC string.
@@ -133,9 +138,53 @@ class StageNewsletterSender
 			timewarp: false,
 			batch_delay: false
 		}
+		# FYI, the above request does not return the campaign.
+		
+		Gibbon::Request.campaigns(campaign['id']).retrieve
 	end
 	
 	def log_delivery(segment, campaign, subscription_stage)
+		list_id = subscription_stage.list_id
+		segment_id = segment['id']
 		
+		# We need to loop, because members are returned in batches by default.
+		offset, batch_size = 0, 50
+		total = segment['member_count']
+		retrieved = 0
+		
+		while retrieved < total
+			response = Gibbon::Request.lists(list_id).segments(segment_id).members.retrieve params: {
+				count: "#{batch_size}",
+				offset: "#{offset}"
+			}
+			offset += batch_size
+			
+			members = response['members']
+			break if members.blank? # In case of kookiness and we've run out before we reached the total.
+			retrieved += members.size
+			
+			members.each do |member|
+				begin
+					email = member['email_address']
+					subscription = Subscription.where(email: email, list_id: list_id).first
+				
+					SubscriptionDelivery.create!(
+						email: email,
+						subscription: subscription,
+						subscription_stage: subscription_stage,
+						source_campaign_id: subscription_stage.source_campaign_id,
+						campaign_id: campaign['id']
+					)
+				rescue ActiveRecord::RecordInvalid => invalid
+					invalid.record.errors.full_messages.each do |message|
+						@errors << "Log delivery error: #{message}: list_id => #{list_id}, segment_id => #{segment_id}"
+					end
+				end
+			end
+		end
+		
+		if retrieved == 0
+			@errors << "Log delivery error: no segment members found: list_id => #{list_id}, segment_id => #{segment_id}"
+		end
 	end
 end

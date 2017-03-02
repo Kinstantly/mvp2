@@ -12,6 +12,7 @@ def set_up_gibbon_lists_api_mock
 	Struct.new 'ListAPI' unless defined? Struct::ListAPI
 	Struct.new 'MemberAPI' unless defined? Struct::MemberAPI
 	Struct.new 'SegmentAPI' unless defined? Struct::SegmentAPI
+	Struct.new 'SegmentMembersAPI' unless defined? Struct::SegmentMembersAPI
 	
 	@mailchimp_lists = {}
 	@mailchimp_list_apis = {}
@@ -162,6 +163,7 @@ def set_up_gibbon_lists_api_mock
 		# return API for the list segment with the specified segment ID
 		# or for all segments if no segment ID specified
 		allow(list_api).to receive(:segments) do |segment_id|
+			segment_id = segment_id.try :to_i # segment_id must be an integer
 			if @mailchimp_list_apis[list_id][:segment_apis][segment_id]
 				# called more than once for the same segment; return the existing segment_api
 				next @mailchimp_list_apis[list_id][:segment_apis][segment_id]
@@ -174,7 +176,7 @@ def set_up_gibbon_lists_api_mock
 			allow(segment_api).to receive(:create) do |arg|
 				body = arg[:body]
 				
-				body[:id] = id = (@mailchimp_list_segment_id += 1)
+				body[:id] = id = (@mailchimp_list_segment_id += 1) # Segment ID is an integer!
 				body[:list_id] = list_id
 				if (static_segment = body[:static_segment])
 					verified_members = verify_segment_members static_segment, @mailchimp_lists[list_id]
@@ -186,6 +188,44 @@ def set_up_gibbon_lists_api_mock
 				log_segment_api_info(:create, list_id, id, body)
 				
 				list_segment_api_response body
+			end
+			
+			# API for members of this segment
+			segment_members_api = double('Struct::SegmentMembersAPI').as_null_object
+			allow(segment_api).to receive(:members).and_return(segment_members_api)
+			
+			# retrieve the members of this segment
+			allow(segment_members_api).to receive(:retrieve) do |arg|
+				if arg && arg[:params] # Parse optional parameters.
+					offset = arg[:params][:offset].presence.try(:to_i)
+					count = arg[:params][:count].presence.try(:to_i)
+				end
+				# Default values of MailChimp API.
+				offset ||= 0
+				count ||= 10
+				
+				emails = @mailchimp_list_segment_members[list_id][segment_id]
+				raise resource_not_found_exception unless emails
+				
+				# Sort the emails so that offset calls will work.
+				emails_slice = emails.sort[offset, (emails.size - offset)] || []
+				found = 0
+				
+				member_list = emails_slice.map do |email|
+					member = @mailchimp_lists[list_id][email_md5_hash(email)]
+					if found < count && member
+						found += 1
+						list_member_api_response member
+					else
+						nil
+					end
+				end
+				
+				response = { 'members' => member_list.compact }
+				
+				log_segment_api_info('members.retrieve', list_id, segment_id, response)
+				
+				list_segment_api_response response
 			end
 			
 			segment_api
@@ -258,9 +298,9 @@ def log_member_api_info(method, list_id, email_hash, body)
 	end
 end
 
-def log_segment_api_info(method, list_id, segment_id, body)
+def log_segment_api_info(method, list_id, segment_id, response)
 	if ENV['DISPLAY_TEST_LOG'].present?
-		puts "list segments method => #{method}; list_id => #{list_id}; segment_id => #{segment_id}; body => #{body}"
+		puts "list segments method => #{method}; list_id => #{list_id}; segment_id => #{segment_id}; response => #{response}"
 	end
 end
 
