@@ -52,36 +52,52 @@ describe StageNewsletterSender, mailchimp: true, use_gibbon_mocks: true do
 				}
 			}
 			
+			let(:date_format) { '%-m/%-d/%Y' }
 			let(:now) { Time.zone.now }
-			let(:members) {
-				{
-					'subscriber1@kinstantly.com' => [(now - (stages[titles[0]] + 1).days)],
-					'subscriber2@kinstantly.com' => [(now - (stages[titles[1]] + 1).days)]
-				}
+			let(:member_emails) {
+				[
+					'subscriber_1@kinstantly.com',
+					'subscriber_2@kinstantly.com',
+					'subscriber_3@kinstantly.com'
+				]
 			}
-			let(:member_emails) { members.keys.sort }
+			let(:members) {
+				hash = {}
+				member_emails.each_index do |i|
+					hash[member_emails[i]] = [(now - (stages[titles[i]] + 1).days), nil, nil, nil]
+				end
+				hash
+			}
 			
-			it 'should send stages with eligible subscribers' do
+			let(:create_subscriptions) {
 				members.each do |email, birthdates|
 					Gibbon::Request.lists(list_id).members.create(body: {
 						email_address: email,
 						status: 'subscribed',
 						merge_fields: {
-							'DUEBIRTH1' => birthdates[0].strftime('%-m/%-d/%Y')
+							'DUEBIRTH1' => birthdates.first.try(:strftime, date_format),
+							'BIRTH2' => birthdates.second.try(:strftime, date_format),
+							'BIRTH3' => birthdates.third.try(:strftime, date_format),
+							'BIRTH4' => birthdates.fourth.try(:strftime, date_format)
 						}
 					})
 				end
 				
-				subscribed_members = Gibbon::Request.lists(list_id).members.retrieve['members']
+				response = Gibbon::Request.lists(list_id).members.retrieve params: { count: (members.size + 1) }
+				subscribed_members = response['members']
 				subscribed_emails = subscribed_members.map { |member| member['email_address'] }
-				expect(subscribed_emails.sort).to eq member_emails
+				expect(subscribed_emails.sort).to eq member_emails.sort
 				
 				expect {
 					list_importer = MailchimpListImporter.new list: list
 					list_importer.call
 				}.to change(Subscription, :count).by(members.size)
 				
-				titles.each do |title|
+				subscribed_members
+			}
+			
+			let(:create_stages) {
+				source_campaigns = titles.map do |title|
 					body[:settings][:title] = body[:settings][:subject_line] = title
 					Gibbon::Request.campaigns.create body: body
 				end
@@ -96,43 +112,149 @@ describe StageNewsletterSender, mailchimp: true, use_gibbon_mocks: true do
 					stage.update trigger_delay_days: trigger_delay_days
 				end
 				
+				source_campaigns
+			}
+			
+			it 'should send stages with eligible subscribers' do
+				create_subscriptions
+				create_stages
+				
 				newsletter_sender.call
+				
 				expect(newsletter_sender).to be_successful
 				expect(newsletter_sender.errors).to be_blank
+			end
+			
+			it 'should create a scheduled campaign for each stage to send' do
+				create_subscriptions
+				create_stages
 				
-				scheduled_campaigns = Gibbon::Request.campaigns.retrieve(params: {
-					folder_id: sent_folder_id
-				})['campaigns']
-				expect(scheduled_campaigns.size).to eq members.size
+				expect {
+					newsletter_sender.call
+				}.to change {
+					# scheduled and sent campaigns
+					Gibbon::Request.campaigns.retrieve(params: {
+						folder_id: sent_folder_id
+					})['campaigns'].size
+				}.by members.size
 				
-				scheduled_campaigns.each do |campaign|
+				Gibbon::Request.campaigns.
+				retrieve(params: { folder_id: sent_folder_id })['campaigns'].each do |campaign|
 					expect(campaign['status']).to eq 'schedule'
 					expect(campaign['send_time']).to be_present
 				end
-				
-				stage = SubscriptionStage.find_by_title titles[0]
-				email = 'subscriber1@kinstantly.com'
-				subscription = Subscription.find_by_email email
-				delivery = SubscriptionDelivery.where(
-					email: email,
-					subscription: subscription,
-					subscription_stage: stage,
-					source_campaign_id: stage.source_campaign_id
-				).first
-				expect(delivery).to be_present
-				
-				stage = SubscriptionStage.find_by_title titles[1]
-				email = 'subscriber2@kinstantly.com'
-				subscription = Subscription.find_by_email email
-				delivery = SubscriptionDelivery.where(
-					email: email,
-					subscription: subscription,
-					subscription_stage: stage,
-					source_campaign_id: stage.source_campaign_id
-				).first
-				expect(delivery).to be_present
 			end
 			
+			it 'should log delivery to each recipient' do
+				create_subscriptions
+				create_stages
+				
+				newsletter_sender.call
+				
+				member_emails.each_index do |i|
+					stage = SubscriptionStage.find_by_title titles[i]
+					email = member_emails[i]
+					subscription = Subscription.find_by_email email
+					delivery = SubscriptionDelivery.where(
+						email: email,
+						subscription: subscription,
+						subscription_stage: stage,
+						source_campaign_id: stage.source_campaign_id
+					).first
+					expect(delivery).to be_present
+				end
+			end
+			
+			it 'should deliver to many recipients' do
+				# use a smallish batch size to test multi-batch retrieval
+				newsletter_sender_params[:batch_size] = 10
+				
+				# seed members; it is used by the setup procedures
+				days_since_birth = now - (stages[titles[0]] + 2).days
+				member_emails.delete_if { |email| true } # clear it out
+				members # should be empty now
+				for i in 1..102 do
+					email = "subscriber_#{i}@kinstantly.com"
+					member_emails << email
+					members[email] = [days_since_birth]
+				end
+				
+				create_subscriptions
+				create_stages
+				
+				expect {
+					newsletter_sender.call
+				}.to change(SubscriptionDelivery, :count).by members.size
+			end
+			
+			it "should use any of the children's birth dates for recipient selection" do
+				# array of days since birth for each stage
+				days_since_birth = (0..2).inject([]) do |days, i|
+					days << (stages[titles[i]] + 1).days
+				end
+				
+				# seed with members that should receive a stage based on the second, third, or fourth child
+				
+				member_emails.delete_if { |email| true } # clear it out
+				members # should be empty now
+				
+				member_emails << (email = 'subscriber_1@kinstantly.com')
+				members[email] = [
+					now + 30.days, now - days_since_birth[0]
+				]
+				
+				member_emails << (email = 'subscriber_2@kinstantly.com')
+				members[email] = [
+					now + 30.days, nil, now - days_since_birth[1]
+				]
+				
+				member_emails << (email = 'subscriber_3@kinstantly.com')
+				members[email] = [
+					now + 30.days, nil, nil, now - days_since_birth[2]
+				]
+				
+				member_emails << (email = 'subscriber_4@kinstantly.com')
+				members[email] = [
+					now + 30.days, now - days_since_birth[0], now - days_since_birth[1]
+				]
+				
+				create_subscriptions
+				create_stages
+				
+				expect {
+					newsletter_sender.call
+				}.to change(SubscriptionDelivery, :count).by 5
+				
+				stage_delivery_count = SubscriptionDelivery.where({
+					subscription_stage: SubscriptionStage.find_by_title(titles[0])
+				}).count
+				expect(stage_delivery_count).to eq 2
+				
+				stage_delivery_count = SubscriptionDelivery.where({
+					subscription_stage: SubscriptionStage.find_by_title(titles[1])
+				}).count
+				expect(stage_delivery_count).to eq 2
+				
+				stage_delivery_count = SubscriptionDelivery.where({
+					subscription_stage: SubscriptionStage.find_by_title(titles[2])
+				}).count
+				expect(stage_delivery_count).to eq 1
+			end
+			
+			it 'should not send duplicates' do
+				create_subscriptions
+				create_stages
+				
+				# first call should schedule recipients for delivery
+				expect {
+					StageNewsletterSender.new(newsletter_sender_params).call
+				}.to change(SubscriptionDelivery, :count).by members.size
+				
+				# duplicate supression should prevent second call from scheduling recipients
+				expect {
+					StageNewsletterSender.new(newsletter_sender_params).call
+				}.not_to change(SubscriptionDelivery, :count)
+			end
 		end
 	end
 	
@@ -144,6 +266,12 @@ describe StageNewsletterSender, mailchimp: true, use_gibbon_mocks: true do
 		it 'should not have a success status' do
 			newsletter_sender_error.call
 			expect(newsletter_sender_error).not_to be_successful
+		end
+		
+		it 'should specify a proper batch size if used' do
+			sender = StageNewsletterSender.new(newsletter_sender_params.merge batch_size: 0)
+			sender.call
+			expect(sender.errors).to be_present
 		end
 	end
 end

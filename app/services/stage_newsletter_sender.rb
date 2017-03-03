@@ -2,23 +2,26 @@ class StageNewsletterSender
 	
 	include SiteConfigurationHelpers
 	
-	attr_reader :params, :errors, :total_campaigns_sent, :total_recipients, :time_string_format
+	attr_reader :params, :errors, :total_campaigns_sent, :total_recipients, :time_string_format, :batch_size
 	
 	def initialize(params)
 		@params = params
 		@errors = []
 		@total_campaigns_sent = @total_recipients = 0
 		@time_string_format = '%Y-%m-%dT%H:%M:%S%:z'
+		@batch_size = 50
 		@successful = true
 	end
 	
 	def call
 		list_id = mailchimp_list_ids[params[:list]]
 		folder_id = mailchimp_folder_ids[params[:folder]]
+		@batch_size = params[:batch_size].to_i if params[:batch_size].present?
 		
 		id_pattern = /\A\w+\z/
 		@errors << 'A valid list must be specified.' if list_id !~ id_pattern
 		@errors << 'A valid folder for the sent campaigns must be specified.' if folder_id !~ id_pattern
+		@errors << 'A valid batch size must be specified' unless batch_size > 0
 		return (@successful = false) if @errors.present?
 		
 		# For each stage:
@@ -147,8 +150,8 @@ class StageNewsletterSender
 		list_id = subscription_stage.list_id
 		segment_id = segment['id']
 		
-		# We need to loop, because members are returned in batches by default.
-		offset, batch_size = 0, 50
+		# We need to loop, because MailChimp always retrieves members in batches.
+		offset = 0
 		total = segment['member_count']
 		retrieved = 0
 		

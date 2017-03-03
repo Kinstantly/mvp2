@@ -255,10 +255,13 @@ end
 def normalize_response_field_value(name, value)
 	case name.to_s
 	when 'DUEBIRTH1', /\ABIRTH\d+\z/
-		date = value.split '/'
-		sprintf '%d-%02d-%02d', date[2], date[0], date[1]
+		if value.present? && (date = value.split '/').size == 3
+			sprintf '%d-%02d-%02d', date[2], date[0], date[1]
+		else
+			value.nil? ? '' : value
+		end
 	else
-		value
+		value.nil? ? '' : value
 	end
 end
 
