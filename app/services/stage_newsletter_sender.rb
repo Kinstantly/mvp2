@@ -2,12 +2,12 @@ class StageNewsletterSender
 	
 	include SiteConfigurationHelpers
 	
-	attr_reader :params, :errors, :total_campaigns_sent, :total_recipients, :time_string_format, :batch_size
+	attr_reader :params, :errors, :total_campaigns_scheduled, :total_recipients, :time_string_format, :batch_size
 	
 	def initialize(params)
 		@params = params
 		@errors = []
-		@total_campaigns_sent = @total_recipients = 0
+		@total_campaigns_scheduled = @total_recipients = 0
 		@time_string_format = '%Y-%m-%dT%H:%M:%S%:z'
 		@batch_size = 50
 		@successful = true
@@ -43,7 +43,9 @@ class StageNewsletterSender
 					next
 				end
 				
-				log_delivery segment, scheduled, stage
+				@total_recipients += log_delivery segment, scheduled, stage
+				
+				@total_campaigns_scheduled += 1
 				
 			rescue Gibbon::MailChimpError => e
 				@errors << "Error while sending stage #{stage.id}: #{e.title}; #{e.detail}; status: #{e.status_code}; subscription stage: #{stage.inspect}"
@@ -189,5 +191,7 @@ class StageNewsletterSender
 		if retrieved == 0
 			@errors << "Log delivery error: no segment members found: list_id => #{list_id}, segment_id => #{segment_id}"
 		end
+		
+		retrieved
 	end
 end

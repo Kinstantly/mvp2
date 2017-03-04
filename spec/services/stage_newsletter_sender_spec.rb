@@ -266,6 +266,15 @@ describe StageNewsletterSender, mailchimp: true, use_gibbon_mocks: true do
 					StageNewsletterSender.new(newsletter_sender_params).call
 				}.not_to change(SubscriptionDelivery, :count)
 			end
+			
+			it 'should report total campaigns scheduled and total recipients' do
+				create_subscriptions
+				create_stages
+				newsletter_sender.call
+				
+				expect(newsletter_sender.total_recipients).to eq members.size
+				expect(newsletter_sender.total_campaigns_scheduled).to eq stages.size
+			end
 		end
 	end
 	
