@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170214093427) do
+ActiveRecord::Schema.define(version: 20170304090946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -512,6 +512,7 @@ ActiveRecord::Schema.define(version: 20170214093427) do
     t.datetime "send_time"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.datetime "schedule_time"
   end
 
   add_index "subscription_deliveries", ["subscription_id"], name: "index_subscription_deliveries_on_subscription_id", using: :btree

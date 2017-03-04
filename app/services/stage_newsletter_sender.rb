@@ -178,7 +178,8 @@ class StageNewsletterSender
 						subscription: subscription,
 						subscription_stage: subscription_stage,
 						source_campaign_id: subscription_stage.source_campaign_id,
-						campaign_id: campaign['id']
+						campaign_id: campaign['id'],
+						schedule_time: Time.zone.parse(campaign['send_time'])
 					)
 				rescue ActiveRecord::RecordInvalid => invalid
 					invalid.record.errors.full_messages.each do |message|
