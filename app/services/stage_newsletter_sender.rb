@@ -128,11 +128,11 @@ class StageNewsletterSender
 	end
 	
 	def schedule_campaign(campaign)
-		# Let's start with 8am today in the time zone configured for this application.
+		# Let's start with 9am today in the time zone configured for this application.
 		# See Rails.configuration.time_zone.
-		schedule_time = Time.zone.now.midnight + 8.hours
+		schedule_time = Time.zone.now.midnight + 9.hours
 		if schedule_time < Time.zone.now + 1.hour
-			# Too late to schedule for 8am today. Try for tomorrow.
+			# Too late to schedule for today. Try for tomorrow.
 			schedule_time += 1.day
 		end
 		# Specify as a UTC string.

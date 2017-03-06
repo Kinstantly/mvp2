@@ -29,6 +29,16 @@ class MailchimpWebhookController < ApplicationController
 	def on_unsubscribe(data)
 		incoming_list_id = data['list_id']
 		subscriber_email = data['email']
+		
+		if incoming_list_id.blank? or incoming_list_id !~ /\A\w+\z/
+			logger.error "MailChimp Webhook error: list ID is not valid; list ID => #{incoming_list_id}"
+			return
+		end
+		if subscriber_email.blank? or subscriber_email !~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+			logger.error "MailChimp Webhook error: subscriber email is not valid; email => #{subscriber_email}"
+			return
+		end
+		
 		list_name = mailchimp_list_ids.key(incoming_list_id)
 
 		if !User.mailing_list_name_valid?(list_name)
@@ -85,20 +95,52 @@ class MailchimpWebhookController < ApplicationController
 
 	def on_campaign_sent(data)
 		id = data['id']
-		unless id.present?
-			logger.error "MailChimp Webhook error: campaign ID not present"
+		if id.blank? or id !~ /\A\w+\z/
+			logger.error "MailChimp Webhook error: campaign ID is not valid; campaign ID => #{id}"
+			return
+		end
+		
+		campaign_info = retrieve_campaign_info(id)
+		if campaign_info.blank?
+			logger.error "MailChimp Webhook error: could not retrieve info for campaign ID => #{id}; campaign_info => #{campaign_info}"
+			return
+		end
+		
+		mark_campaign_as_sent campaign_info
+		archive_campaign campaign_info
+	end
+	
+	def mark_campaign_as_sent(campaign_info)
+		id = campaign_info['id']
+		
+		send_time_string = campaign_info['send_time'] || ''
+		send_time = Time.zone.parse send_time_string
+		
+		unless send_time
+			logger.error "MailChimp Webhook error: could not parse send_time for campaign ID => #{id}; campaign_info => #{campaign_info}"
+			return
+		end
+		
+		SubscriptionDelivery.where(campaign_id: id).find_each do |subscription_delivery|
+			unless subscription_delivery.update(send_time: send_time)
+				logger.error "MailChimp Webhook error: could not update send_time in this subscription_delivery record for campaign ID => #{id}; subscription_delivery => #{subscription_delivery.inspect}"
+			end
+		end
+	end
+	
+	def archive_campaign(campaign_info)
+		id = campaign_info['id']
+		
+		if folder_id_skip_list.include?(campaign_info['settings']['folder_id'])
+			logger.info "MailChimp Webhook: Newsletter campaign is in skip list. Not archiving. ID => #{id}; title => \"#{campaign_info['settings']['title']}\""
 			return
 		end
 		
 		newsletter = Newsletter.find_by_cid(id) || Newsletter.new
+		
 		if newsletter.new_record?
-			campaign_info = retrieve_campaign_info(id)
-			if campaign_info.present? && folder_id_skip_list.include?(campaign_info['settings']['folder_id'])
-				logger.info "MailChimp Webhook: Newsletter campaign is in skip list. Not archiving. ID => #{campaign_info['id']}; title => \"#{campaign_info['settings']['title']}\""
-				return
-			end
 			campaign_content = retrieve_campaign_content(id)
-			if campaign_info.present? && campaign_content.present?
+			if campaign_content.present?
 				newsletter.cid = id
 				newsletter.list_id = campaign_info['recipients']['list_id']
 				newsletter.send_time = campaign_info['send_time'].to_date
@@ -110,10 +152,10 @@ class MailchimpWebhookController < ApplicationController
 					logger.error "MailChimp Webhook error: save failed for campaign ID => #{id}; errors => #{newsletter.errors.messages}; campaign_info => #{campaign_info}; campaign_content starts with \"#{campaign_content.try :slice, 0, 20}\""
 				end
 			else
-				logger.error "MailChimp Webhook error: could not retrieve info or content for campaign ID => #{id}; campaign_info => #{campaign_info}; campaign_content starts with \"#{campaign_content.try :slice, 0, 20}\""
+				logger.error "MailChimp Webhook error: could not retrieve content for campaign ID => #{id}; campaign_info => #{campaign_info}; campaign_content starts with \"#{campaign_content.try :slice, 0, 20}\""
 			end
 		else
-			logger.error "MailChimp Webhook error: Newsletter campaign record already exists for campaign ID => #{id}.  Ignoring this webhook event."
+			logger.error "MailChimp Webhook error: Newsletter archive record already exists for campaign ID => #{id}.  Ignoring this webhook event."
 		end
 	end
 
@@ -123,7 +165,7 @@ class MailchimpWebhookController < ApplicationController
 		rescue Gibbon::MailChimpError => e
 			logger.error "Error while retrieving MailChimp archive list: #{e.title}; #{e.detail}; status: #{e.status_code}; campaign ID: #{id}"
 		ensure
-			return info || []
+			return info || {}
 		end
 	end
 

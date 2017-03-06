@@ -98,7 +98,9 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 		end
 
 		# Because these examples are sending the campaign, require mocks. Thus we won't send real emails.
-		context "new campaign sent", use_gibbon_mocks: true do
+		context "campaign sent", use_gibbon_mocks: true do
+			let(:title) { '3 YEARS, 1 month' }
+			
 			let(:body) {
 				{
 					type: 'regular',
@@ -107,8 +109,8 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 					},
 					settings: {
 						folder_id: nil,
-						title: '3 YEARS, 1 month',
-						subject_line: 'Your Child is 3 YEARS, 1 month',
+						title: title,
+						subject_line: title,
 						from_name: 'Kinstantly',
 						reply_to: 'kinstantly@kinstantly.com'
 					}
@@ -136,20 +138,20 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				}
 			}
 			
-			it "creates a new record when valid campaign data provided" do
+			it "should archive the campaign when valid data is provided" do
 				expect {
 					post :process_notification, campaign_params
 				}.to change(Newsletter, :count).by(1)
 				expect(Newsletter.find_by_cid campaign_params[:data][:id]).to be_present
 			end
 			
-			it "does not create a new record when invalid campaign data provided" do
+			it "should not archive the campaign when invalid data is provided" do
 				expect {
 					post :process_notification, campaign_params.merge(data: {id: nil})
 				}.to_not change(Newsletter, :count)
 			end
 			
-			it 'will not duplicate the record when notified twice of the same campaign' do
+			it 'should not create a duplicate archive when notified twice of the same campaign' do
 				expect {
 					post :process_notification, campaign_params
 					post :process_notification, campaign_params
@@ -157,11 +159,67 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				expect(Newsletter.where(cid: campaign_params[:data][:id]).size).to eq 1
 			end
 			
-			it "does not create a new record when a stage-based campaign was sent" do
-				body[:settings][:folder_id] = mailchimp_folder_ids[:parent_newsletters_campaigns]
-				expect {
-					post :process_notification, campaign_params
-				}.to_not change(Newsletter, :count)
+			context 'as stage-based newsletter' do
+				let(:subscriber_email) { 'subscriber_1@kinstantly.com' }
+				
+				let(:segment) {
+					Gibbon::Request.lists(list_id).segments.create body: {
+						name: "Stage-based static segment",
+						static_segment: [subscriber_email]
+					}
+				}
+				
+				let(:body) {
+					{
+						type: 'regular',
+						recipients: {
+							list_id: list_id,
+							segment_opts: { saved_segment_id: segment['id'] }
+						},
+						settings: {
+							folder_id: mailchimp_folder_ids[:parent_newsletters_campaigns],
+							title: title,
+							subject_line: title,
+							from_name: 'Kinstantly',
+							reply_to: 'kinstantly@kinstantly.com'
+						}
+					}
+				}
+				
+				let(:subscription) {
+					FactoryGirl.create :subscription, email: subscriber_email
+				}
+				
+				let(:subscription_stage) {
+					FactoryGirl.create :subscription_stage, title: title, list_id: list_id
+				}
+				
+				let(:subscription_delivery) {
+					FactoryGirl.create :subscription_delivery, {
+						subscription: subscription,
+						subscription_stage: subscription_stage,
+						email: subscription.email,
+						source_campaign_id: subscription_stage.source_campaign_id,
+						campaign_id: campaign['id'],
+						send_time: nil
+					}
+				}
+				
+				it "should update the send_time in the campaign's subscription_delivery records" do
+					subscription_delivery # schedule for delivery
+					
+					expect {
+						post :process_notification, campaign_params
+					}.to change {
+						subscription_delivery.reload.send_time
+					}.from(nil).to(Time.zone.parse campaign['send_time'])
+				end
+				
+				it "should not archive a stage-based campaign" do
+					expect {
+						post :process_notification, campaign_params
+					}.to_not change(Newsletter, :count)
+				end
 			end
 		end
 	end

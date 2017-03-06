@@ -275,6 +275,20 @@ describe StageNewsletterSender, mailchimp: true, use_gibbon_mocks: true do
 				expect(newsletter_sender.total_recipients).to eq members.size
 				expect(newsletter_sender.total_campaigns_scheduled).to eq stages.size
 			end
+			
+			it 'should not include members that are remotely unsubscribed (and not yet synced locally)' do
+				create_subscriptions
+				create_stages
+				
+				member_id = email_md5_hash member_emails[0]
+				Gibbon::Request.lists(list_id).members(member_id).update body: {
+					status: 'unsubscribed'
+				}
+				
+				expect {
+					newsletter_sender.call
+				}.to change(SubscriptionDelivery, :count).by (member_emails.size - 1)
+			end
 		end
 	end
 	

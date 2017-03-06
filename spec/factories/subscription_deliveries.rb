@@ -5,7 +5,8 @@ FactoryGirl.define do
 		email "FactoryEmail@kinstantly.com"
 		source_campaign_id "FactorySourceCampaignId"
 		campaign_id "FactoryCampaignId"
-		send_time "2017-02-11 23:04:42"
+		schedule_time "2017-03-04 16:00:00"
+		send_time "2017-03-04 16:04:42"
 	end
 
 end
