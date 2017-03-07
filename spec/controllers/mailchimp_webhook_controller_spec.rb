@@ -20,7 +20,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				@parent_newsletters_leid = user.parent_newsletters_leid
 	
 				# Unsubscribe without deleting user from the list
-				email_hash = Digest::MD5.hexdigest user.email.downcase
+				email_hash = email_md5_hash user.email
 				Gibbon::Request.lists(list_id).members(email_hash).update body: {
 					status: 'unsubscribed'
 				}
@@ -75,7 +75,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 			end
 			
 			it "should remove one subscription" do
-				email_hash = Digest::MD5.hexdigest user.email.downcase
+				email_hash = email_md5_hash user.email
 				Gibbon::Request.lists(list_id).members(email_hash).update body: {
 					status: 'unsubscribed'
 				}
@@ -101,7 +101,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 			before(:example) do
 				user.parent_newsletters = true
 				user.save!
-				email_hash = Digest::MD5.hexdigest user.email.downcase
+				email_hash = email_md5_hash user.email
 				Gibbon::Request.lists(list_id).members(email_hash).delete
 			end
 			
