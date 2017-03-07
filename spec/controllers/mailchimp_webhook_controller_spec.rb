@@ -97,6 +97,23 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 		  end
 		end
 
+		context 'subscriber deleted from list' do
+			before(:example) do
+				user.parent_newsletters = true
+				user.save!
+				email_hash = Digest::MD5.hexdigest user.email.downcase
+				Gibbon::Request.lists(list_id).members(email_hash).delete
+			end
+			
+			it 'should unsubscribe the user locally' do
+				expect {
+					post :process_notification, params
+				}.to change {
+					user.reload.parent_newsletters
+				}.from(true).to(false)
+			end
+		end
+		
 		# Because these examples are sending the campaign, require mocks. Thus we won't send real emails.
 		context "campaign sent", use_gibbon_mocks: true do
 			let(:title) { '3 YEARS, 1 month' }

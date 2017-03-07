@@ -69,8 +69,8 @@ class MailchimpWebhookController < ApplicationController
 				if (user = User.find_by_email_ignore_case(subscriber_email))
 					user.process_unsubscribe_event(list_name)
 				end
-				# AdminMailer.newsletter_delete_alert(list_name, subscriber_email).deliver_now
-				AdminMailer.newsletter_unsubscribe_alert(list_name, subscriber_email).deliver_now
+				AdminMailer.newsletter_subscriber_delete_alert(list_name, subscriber_email).deliver_now
+				# AdminMailer.newsletter_unsubscribe_alert(list_name, subscriber_email).deliver_now
 				logger.info "MailChimp Webhook unsubscribe: No subscription record for list_name => #{list_name}, email => #{subscriber_email}; was most likely deleted rather than unsubscribed" if logger
 			else
 				logger.error "MailChimp Webhook error while processing notification: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{subscriber_email}" if logger
@@ -103,6 +103,11 @@ class MailchimpWebhookController < ApplicationController
 		campaign_info = retrieve_campaign_info(id)
 		if campaign_info.blank?
 			logger.error "MailChimp Webhook error: could not retrieve info for campaign ID => #{id}; campaign_info => #{campaign_info}"
+			return
+		end
+		
+		if campaign_info['status'] != 'sent'
+			logger.info "MailChimp Webhook: Newsletter campaign has not been sent. Not marking as sent. Not archiving. ID => #{id}; status => \"#{campaign_info['status']}\"; title => \"#{campaign_info['settings']['title']}\""
 			return
 		end
 		

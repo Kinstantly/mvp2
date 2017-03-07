@@ -53,6 +53,14 @@ class AdminMailer < ActionMailer::Base
 		sendgrid_category 'Newsletter Unsubscribe Alert'
 		mail subject: "User with email #{email} has unsubscribed from \"#{@list_name}\" newsletters", to: ADMIN_EMAIL
 	end
+
+	# Notify site admin, when a mailchimp subscriber was deleted from a newsletter list.
+	def newsletter_subscriber_delete_alert(subscription, email)
+		@list_name = User.human_attribute_name subscription
+		@email = email
+		sendgrid_category 'Newsletter Subscriber Delete Alert'
+		mail subject: "User with email #{email} was deleted from \"#{@list_name}\" newsletter list", to: ADMIN_EMAIL
+	end
 	
 	# Notify the profile moderator, when a provider is suggested.
 	def provider_suggestion_notice(provider_suggestion)
