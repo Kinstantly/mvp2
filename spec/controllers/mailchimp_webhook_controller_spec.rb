@@ -3,8 +3,18 @@ require 'spec_helper'
 describe MailchimpWebhookController, type: :controller, mailchimp: true do
 	let(:token) { Rails.configuration.mailchimp_webhook_security_token }
 	let(:list_id) { mailchimp_list_ids[:parent_newsletters]}
-	let(:user) { FactoryGirl.create(:client_user) }
-	let(:params) {{ type: "unsubscribe", token: token, data: {list_id: list_id, email: user.email }}}
+	let(:subscriber_email) { 'subscriber_1@kinstantly.com' }
+	let(:user) { FactoryGirl.create(:client_user, email: subscriber_email) }
+	let(:params) {
+		{
+			type: "unsubscribe",
+			token: token,
+			data: {
+				list_id: list_id,
+				email: subscriber_email
+			}
+		}
+	}
 	
 	describe "POST process_notification" do
 		
@@ -110,6 +120,42 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 					post :process_notification, params
 				}.to change {
 					user.reload.parent_newsletters
+				}.from(true).to(false)
+			end
+		end
+		
+		context 'subscriptions with no local user account' do
+			let(:email_hash) { email_md5_hash subscriber_email }
+			let(:member) {
+				Gibbon::Request.lists(list_id).members(email_hash).upsert body: {
+					email_address: subscriber_email,
+					status: 'unsubscribed'
+				}
+			}
+			let!(:subscription) {
+				FactoryGirl.create :subscription, {
+					list_id: member['list_id'],
+					email: member['email_address'],
+					unique_email_id: member['unique_email_id'],
+					status: 'subscribed'
+				}
+			}
+			
+			it 'should mark the subscription record as not subscribed' do
+				expect {
+					post :process_notification, params
+				}.to change {
+					subscription.reload.subscribed
+				}.from(true).to(false)
+			end
+			
+			it 'should mark the subscription record as not subscribed even if deleted remotely' do
+				Gibbon::Request.lists(list_id).members(email_hash).delete
+				
+				expect {
+					post :process_notification, params
+				}.to change {
+					subscription.reload.subscribed
 				}.from(true).to(false)
 			end
 		end

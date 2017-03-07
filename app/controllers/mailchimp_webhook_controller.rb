@@ -51,12 +51,16 @@ class MailchimpWebhookController < ApplicationController
 		
 		begin
 			r = Gibbon::Request.lists(incoming_list_id).members(email_md5_hash(subscriber_email)).retrieve
+			
 			if r.present?
 				case r['status']
 				when 'unsubscribed', 'cleaned'
 					if (user = User.find_by_email_ignore_case(subscriber_email))
 						user.process_unsubscribe_event(list_name)
 					end
+					
+					update_subscription_status list_id: r['list_id'], unique_email_id: r['unique_email_id'], status: r['status']
+					
 					AdminMailer.newsletter_unsubscribe_alert(list_name, subscriber_email).deliver_now
 				else
 					logger.error "MailChimp Webhook unsubscribe verification error. MailChimp response: #{r}" if logger
@@ -64,16 +68,41 @@ class MailchimpWebhookController < ApplicationController
 			else
 				logger.info "MailChimp Webhook unsubscribe: No member_info for list_name => #{list_name}, email => #{subscriber_email}" if logger
 			end
+			
 		rescue Gibbon::MailChimpError => e
 			if e.status_code == 404 # No subscription record at MailChimp; probably was deleted.
 				if (user = User.find_by_email_ignore_case(subscriber_email))
 					user.process_unsubscribe_event(list_name)
 				end
+				
+				update_subscription_status list_id: incoming_list_id, email: subscriber_email, status: 'deleted'
+				
 				AdminMailer.newsletter_subscriber_delete_alert(list_name, subscriber_email).deliver_now
 				# AdminMailer.newsletter_unsubscribe_alert(list_name, subscriber_email).deliver_now
 				logger.info "MailChimp Webhook unsubscribe: No subscription record for list_name => #{list_name}, email => #{subscriber_email}; was most likely deleted rather than unsubscribed" if logger
 			else
 				logger.error "MailChimp Webhook error while processing notification: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{subscriber_email}" if logger
+			end
+		end
+	end
+	
+	def update_subscription_status(member)
+		list_id = member[:list_id]
+		unique_email_id = member[:unique_email_id]
+		email = member[:email]
+		status = member[:status]
+		
+		query = if unique_email_id.present?
+			Subscription.where(list_id: list_id, unique_email_id: unique_email_id)
+		elsif email.present?
+			Subscription.where(list_id: list_id).where('LOWER(email) = ?', email.downcase)
+		else
+			logger.error "MailChimp Webhook error: not enough information to update subscription status for #{member}"
+		end
+		
+		query.find_each do |subscription|
+			unless subscription.update status: status
+				logger.error "MailChimp Webhook error: could not update subscription status for #{member}; subscription => #{subscription.inspect}"
 			end
 		end
 	end
