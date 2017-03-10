@@ -433,31 +433,65 @@ describe User, :type => :model do
 		
 		context 'MailChimp API should match local status' do
 			let(:parent_newsletters_id) { mailchimp_list_ids[:parent_newsletters] }
-			let(:email_hash) { Digest::MD5.hexdigest parent.email.downcase }
+			let(:email_hash) { email_md5_hash parent.email.downcase }
 			
 			it 'can subscribe to a mailing list' do
-				parent.parent_newsletters = true
-				parent.save
-				r = Gibbon::Request.lists(parent_newsletters_id).members(email_hash).retrieve
-				expect(r['status']).to eq 'subscribed'
+				expect {
+					Gibbon::Request.lists(parent_newsletters_id).members(email_hash).retrieve
+				}.to raise_error Gibbon::MailChimpError # No subscription yet.
+				
+				parent.update parent_newsletters: true
+				member = Gibbon::Request.lists(parent_newsletters_id).members(email_hash).retrieve
+				expect(member['status']).to eq 'subscribed'
 			end
 			
 			it 'can unsubscribe from a mailing list' do
-				parent.parent_newsletters = true
-				parent.save
-				parent.parent_newsletters = false
-				parent.save
-				r = Gibbon::Request.lists(parent_newsletters_id).members(email_hash).retrieve
-				expect(r['status']).to eq 'unsubscribed'
+				parent.update parent_newsletters: true
+				
+				expect {
+					parent.update parent_newsletters: false
+				}.to change {
+					member = Gibbon::Request.lists(parent_newsletters_id).members(email_hash).retrieve
+					member['status']
+				}.from('subscribed').to('unsubscribed')
 			end
 			
 			it 'should raise 404 exception if list member not found' do
-				parent.parent_newsletters = true
-				parent.save
+				parent.update parent_newsletters: true
+				
 				expect {
 					bad_email_hash = email_hash.sub(/\A...../, '11111')
 					Gibbon::Request.lists(parent_newsletters_id).members(bad_email_hash).retrieve
 				}.to raise_error Gibbon::MailChimpError
+			end
+			
+			context 'subscribed email address changed on MailChimp but not locally' do
+				let(:new_email) { "new_#{parent.email}" }
+				
+				# Before each example:
+				let!(:email_change_via_mailchimp_while_subscribed) {
+					parent.update parent_newsletters: true
+					# Simulate subscriber changing their email address via MailChimp instead of their User account.
+					member = Gibbon::Request.lists(parent_newsletters_id).members(email_hash).update body: {
+						email_address: new_email
+					}
+					# Simulate MailChimp web hook triggering local update of leid (unique_email_id).
+					parent.process_subscribe_event :parent_newsletters, member['unique_email_id']
+					member # API response with member information.
+				}
+				
+				let(:new_email_hash) {
+					email_change_via_mailchimp_while_subscribed['id']
+				}
+				
+				it 'can still unsubscribe from a mailing list' do
+					expect {
+						parent.update parent_newsletters: false
+					}.to change {
+						member = Gibbon::Request.lists(parent_newsletters_id).members(new_email_hash).retrieve
+						member['status']
+					}.from('subscribed').to('unsubscribed')
+				end
 			end
 		end
 		

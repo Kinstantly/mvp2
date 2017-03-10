@@ -220,8 +220,11 @@ class User < ActiveRecord::Base
 		list_name.to_s + '_leid'
 	end
 	
-	# Returns this user's list-email id (leid) for the given list name.
-	# Leids are used by MailChimp to identify user on a mailing list.
+	# Returns this user's unique_email_id for the given list name.
+	# unique_email_id is used by MailChimp to identify an email address across its systems.
+	# Because a user can change the email address of the subscription via MailChimp, we can't
+	# reliably use the user.email value to look up their subscription on MailChimp. But we can
+	# use the unique_email_id.
 	def leid(list_name)
 		leid_attr = leid_attr_name list_name
 		respond_to?(leid_attr) ? send(leid_attr) : nil
@@ -272,7 +275,7 @@ class User < ActiveRecord::Base
 		update_column(list_name, false)
 	end
 
-	# Subscription created externally (through rake task).
+	# Subscription created or updated externally (through web hook or rake task).
 	# Persists new leid.
 	def process_subscribe_event(list_name, leid)
 		# List name is valid?
@@ -535,12 +538,33 @@ class User < ActiveRecord::Base
 			list_id = mailchimp_list_ids[list_name]
 			
 			begin
-				Gibbon::Request.lists(list_id).members(email_md5_hash(email)).update body: {
+				email_hash = email_md5_hash(email)
+				Gibbon::Request.lists(list_id).members(email_hash).update body: {
 					status: 'unsubscribed'
 				}
 				update_column(leid_attr_name(list_name), nil)
 			rescue Gibbon::MailChimpError => e
-				logger.error "MailChimp error while unsubscribing user #{id}: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{email}"
+				if e.status_code == 404 && leid(list_name)
+					# Not found by email address; try leid (MailChimp's unique_email_id).
+					begin
+						r = Gibbon::Request.lists(list_id).members.retrieve params: {
+							unique_email_id: leid(list_name)
+						}
+						if member = r['members'].first
+							email_hash = email_md5_hash(member['email_address'])
+							Gibbon::Request.lists(list_id).members(email_hash).update body: {
+								status: 'unsubscribed'
+							}
+							update_column(leid_attr_name(list_name), nil)
+						else
+							logger.error "MailChimp error while unsubscribing user #{id}: could not find subscription via MailChimp API with email => #{email} or leid => #{leid(list_name)}"
+						end
+					rescue Gibbon::MailChimpError => e
+						logger.error "MailChimp error while unsubscribing user #{id}: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{email}; leid: #{leid(list_name)}"
+					end
+				else
+					logger.error "MailChimp error while unsubscribing user #{id}: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{email}; leid: #{leid(list_name)}"
+				end
 			end
 		end
 	end

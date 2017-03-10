@@ -85,7 +85,7 @@ def set_up_gibbon_lists_api_mock
 			# update an existing subscription
 			allow(member_api).to receive(:update) do |arg|
 				if @mailchimp_lists[list_id][email_hash].blank?
-					raise list_member_not_found_exception(list_id, email_hash)
+					raise resource_not_found_exception
 				end
 				
 				body = @mailchimp_lists[list_id][email_hash]
@@ -97,7 +97,7 @@ def set_up_gibbon_lists_api_mock
 					body[:id] = new_email_hash
 					body[:unique_email_id] = new_email_hash # fake it
 					@mailchimp_lists[list_id][new_email_hash] = body
-					@mailchimp_lists[list_id][email_hash] = nil
+					@mailchimp_lists[list_id].delete(email_hash)
 				end
 				
 				log_member_api_info(:update, list_id, email_hash, body)
@@ -111,7 +111,7 @@ def set_up_gibbon_lists_api_mock
 				
 				if email_hash # Retrieve a single member.
 					if list[email_hash].blank?
-						raise list_member_not_found_exception(list_id, email_hash)
+						raise resource_not_found_exception
 					end
 				
 					body = list[email_hash]
@@ -123,18 +123,26 @@ def set_up_gibbon_lists_api_mock
 					if arg && arg[:params] # Parse optional parameters.
 						offset = arg[:params][:offset].presence.try(:to_i)
 						count = arg[:params][:count].presence.try(:to_i)
+						unique_email_id = arg[:params][:unique_email_id].presence
 					end
 					# Default values of MailChimp API.
 					offset ||= 0
 					count ||= 10
 					
+					if unique_email_id
+						# Create a NEW list of only members with unique_email_id.
+						list = list.select do |key, body|
+							body[:unique_email_id] == unique_email_id
+						end
+					end
+					
 					member_keys = list.keys.sort # Sort so that offset calls will work.
 					member_keys_slice = member_keys[offset, count] || []
 					
-					members = member_keys_slice.map do |email_hash|
-						body = list[email_hash]
+					members = member_keys_slice.map do |key|
+						body = list[key]
 						
-						log_member_api_info(:retrieve, list_id, email_hash, body)
+						log_member_api_info(:retrieve, list_id, key, body)
 						
 						list_member_api_response body
 					end
@@ -148,7 +156,7 @@ def set_up_gibbon_lists_api_mock
 				list = @mailchimp_lists[list_id] || {}
 				
 				if list[email_hash].blank?
-					raise list_member_not_found_exception(list_id, email_hash)
+					raise resource_not_found_exception
 				end
 				
 				log_member_api_info(:delete, list_id, email_hash, nil)
@@ -285,14 +293,6 @@ end
 
 def resource_not_found_exception
 	Gibbon::MailChimpError.new('the server responded with status 404', title: 'Resource not found', detail: "The requested resource could not be found.", status_code: 404)
-end
-
-def list_not_found_exception(list_id)
-	Gibbon::MailChimpError.new('List not found', title: 'List not found', detail: "list_id => #{list_id}", status_code: 404)
-end
-
-def list_member_not_found_exception(list_id, email_hash)
-	Gibbon::MailChimpError.new('List member not found', title: 'List member not found', detail: "list_id => #{list_id}; email_hash => #{email_hash}", status_code: 404)
 end
 
 def log_member_api_info(method, list_id, email_hash, body)
