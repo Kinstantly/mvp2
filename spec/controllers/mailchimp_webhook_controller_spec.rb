@@ -222,6 +222,51 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 					subscription.reload.subscriber_hash
 				}.from(member['id']).to(member_after_email_change['id'])
 			end
+			
+			it 'should not update subscription record if list_id is suspicious' do
+				expect {
+					upemail_params[:data][:list_id] = 'foo;bar'
+					post :process_notification, upemail_params
+				}.not_to change {
+					subscription.reload.email
+				}
+			end
+			
+			it 'should not update subscription record if list_id is wrong' do
+				expect {
+					upemail_params[:data][:list_id] = 'foo'
+					post :process_notification, upemail_params
+				}.not_to change {
+					subscription.reload.email
+				}
+			end
+			
+			it 'should not update subscription record if new email address is bad' do
+				expect {
+					upemail_params[:data][:new_email] = 'foo'
+					post :process_notification, upemail_params
+				}.not_to change {
+					subscription.reload.email
+				}
+			end
+			
+			it 'should not update subscription record if old email address is bad' do
+				expect {
+					upemail_params[:data][:old_email] = 'foo'
+					post :process_notification, upemail_params
+				}.not_to change {
+					subscription.reload.email
+				}
+			end
+			
+			it 'should not update subscription record if new_id is suspicious' do
+				expect {
+					upemail_params[:data][:new_id] = 'foo;bar'
+					post :process_notification, upemail_params
+				}.not_to change {
+					subscription.reload.email
+				}
+			end
 		end
 		
 		# Because these examples are sending the campaign, require mocks. Thus we won't send real emails.

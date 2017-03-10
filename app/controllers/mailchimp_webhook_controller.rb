@@ -113,7 +113,7 @@ class MailchimpWebhookController < ApplicationController
 			return
 		end
 		
-		# Update subscription with new email address and new unique_email_id.
+		# Update subscription with new email address, new unique_email_id, and new subscriber_hash.
 		query = Subscription.where(list_id: list_id).where('LOWER(email) = ?', old_email.downcase)
 		query.find_each do |subscription|
 			unless subscription.update({
@@ -138,7 +138,7 @@ class MailchimpWebhookController < ApplicationController
 		if id.present? and id =~ /\A\w+\z/
 			true
 		else
-			logger.error "MailChimp Webhook error: #{name} is not valid; #{name} => #{id}"
+			logger.error "MailChimp Webhook error: #{name} is not valid; #{name} => \"#{id}\""
 			false
 		end
 	end
@@ -147,7 +147,7 @@ class MailchimpWebhookController < ApplicationController
 		if email.present? and email =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
 			true
 		else
-			logger.error "MailChimp Webhook error: #{name} is not valid; #{name} => #{email}"
+			logger.error "MailChimp Webhook error: #{name} is not valid; #{name} => \"#{email}\""
 			false
 		end
 	end
@@ -160,7 +160,7 @@ class MailchimpWebhookController < ApplicationController
 		if User.mailing_list_name_valid?(list_name)
 			true
 		else
-			logger.error "MailChimp Webhook error: list_id \'#{list_id}\' is not valid. List name: #{list_name}."
+			logger.error "MailChimp Webhook error: list name \"#{list_name}\" is not valid; list_id => \"#{list_id}\""
 			false
 		end
 	end
