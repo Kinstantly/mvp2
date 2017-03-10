@@ -132,6 +132,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 					status: 'unsubscribed'
 				}
 			}
+			# Before each example:
 			let!(:subscription) {
 				FactoryGirl.create :subscription, {
 					list_id: member['list_id'],
@@ -157,6 +158,69 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				}.to change {
 					subscription.reload.subscribed
 				}.from(true).to(false)
+			end
+		end
+		
+		context 'subscriber email address changed' do
+			let(:email_hash) { email_md5_hash subscriber_email }
+			let(:member) {
+				Gibbon::Request.lists(list_id).members(email_hash).upsert body: {
+					email_address: subscriber_email,
+					status: 'subscribed'
+				}
+			}
+			# Before each example:
+			let!(:subscription) {
+				FactoryGirl.create :subscription, {
+					list_id: list_id,
+					email: subscriber_email,
+					subscriber_hash: member['id'],
+					unique_email_id: member['unique_email_id'],
+					status: member['status']
+				}
+			}
+			
+			let(:new_subscriber_email) { "new_#{subscriber_email}" }
+			let(:member_after_email_change) {
+				Gibbon::Request.lists(list_id).members(email_hash).update body: {
+					email_address: new_subscriber_email
+				}
+			}
+			let(:upemail_params) {
+				{
+					type: 'upemail',
+					token: token,
+					data: {
+						list_id: list_id,
+						new_id: member_after_email_change['unique_email_id'],
+						new_email: new_subscriber_email,
+						old_email: subscriber_email
+					}
+				}
+			}
+			
+			it 'should update email address in subscription record' do
+				expect {
+					post :process_notification, upemail_params
+				}.to change {
+					subscription.reload.email
+				}.from(subscriber_email).to(new_subscriber_email)
+			end
+			
+			it 'should update unique_email_id in subscription record' do
+				expect {
+					post :process_notification, upemail_params
+				}.to change {
+					subscription.reload.unique_email_id
+				}.from(member['unique_email_id']).to(member_after_email_change['unique_email_id'])
+			end
+			
+			it 'should update subscriber_hash in subscription record' do
+				expect {
+					post :process_notification, upemail_params
+				}.to change {
+					subscription.reload.subscriber_hash
+				}.from(member['id']).to(member_after_email_change['id'])
 			end
 		end
 		

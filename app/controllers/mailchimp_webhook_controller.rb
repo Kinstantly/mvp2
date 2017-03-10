@@ -15,6 +15,8 @@ class MailchimpWebhookController < ApplicationController
 				on_unsubscribe data
 			when 'campaign'
 				on_campaign_sent data
+			when 'upemail'
+				on_upemail data
 			else
 				logger.error "MailChimp Webhook error: unexpected incoming notification. Params: #{params}" if logger
 			end
@@ -30,21 +32,12 @@ class MailchimpWebhookController < ApplicationController
 		incoming_list_id = data['list_id']
 		subscriber_email = data['email']
 		
-		if incoming_list_id.blank? or incoming_list_id !~ /\A\w+\z/
-			logger.error "MailChimp Webhook error: list ID is not valid; list ID => #{incoming_list_id}"
-			return
-		end
-		if subscriber_email.blank? or subscriber_email !~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
-			logger.error "MailChimp Webhook error: subscriber email is not valid; email => #{subscriber_email}"
+		unless valid_list_id?(incoming_list_id) && valid_email?(subscriber_email, 'subscriber email')
 			return
 		end
 		
 		list_name = mailchimp_list_ids.key(incoming_list_id)
-
-		if !User.mailing_list_name_valid?(list_name)
-			logger.error "MailChimp Webhook unsubscribe verification error: incoming_list_id \'#{incoming_list_id}\' is not valid. List name: #{list_name}." if logger
-			return
-		end
+		
 		if data['reason'] == 'abuse'
 			logger.info "MailChimp Webhook: user reported abuse: email => #{subscriber_email}" if logger
 		end
@@ -107,6 +100,32 @@ class MailchimpWebhookController < ApplicationController
 		end
 	end
 	
+	def on_upemail(data)
+		list_id = data['list_id']
+		new_unique_email_id = data['new_id']
+		new_email = data['new_email']
+		old_email = data['old_email']
+		
+		unless valid_list_id?(list_id) &&
+			valid_id?(new_unique_email_id, 'new unique_email_id') &&
+			valid_email?(new_email, 'new email address') &&
+			valid_email?(old_email, 'old email address')
+			return
+		end
+		
+		# Update subscription with new email address and new unique_email_id.
+		query = Subscription.where(list_id: list_id).where('LOWER(email) = ?', old_email.downcase)
+		query.find_each do |subscription|
+			unless subscription.update({
+				email: new_email,
+				subscriber_hash: email_md5_hash(new_email),
+				unique_email_id: new_unique_email_id
+			})
+				logger.error "MailChimp Webhook error: could not update subscription status for #{old_email}; new email => #{new_email}; new unique_email_id => #{new_unique_email_id}; subscription => #{subscription.inspect}"
+			end
+		end
+	end
+	
 	def incoming_data_valid?(params)
 		params[EVENT_KEY].present? && params[DATA_KEY].present?
 	end
@@ -114,7 +133,38 @@ class MailchimpWebhookController < ApplicationController
 	def token_valid?(params)
 		params['token'].present? && params['token'] == SECURITY_TOKEN
 	end
+	
+	def valid_id?(id, name)
+		if id.present? and id =~ /\A\w+\z/
+			true
+		else
+			logger.error "MailChimp Webhook error: #{name} is not valid; #{name} => #{id}"
+			false
+		end
+	end
+	
+	def valid_email?(email, name)
+		if email.present? and email =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+			true
+		else
+			logger.error "MailChimp Webhook error: #{name} is not valid; #{name} => #{email}"
+			false
+		end
+	end
+	
+	def valid_list_id?(list_id)
+		return false unless valid_id?(list_id, 'list ID')
+		
+		list_name = mailchimp_list_ids.key(list_id)
 
+		if User.mailing_list_name_valid?(list_name)
+			true
+		else
+			logger.error "MailChimp Webhook error: list_id \'#{list_id}\' is not valid. List name: #{list_name}."
+			false
+		end
+	end
+	
 	def folder_id_skip_list
 		[
 			mailchimp_folder_ids[:parent_newsletters_campaigns],
