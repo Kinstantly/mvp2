@@ -267,6 +267,29 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 					subscription.reload.email
 				}
 			end
+			
+			context 'subscriber has a user account' do
+				# Before each example:
+				let!(:user) {
+					FactoryGirl.create(:client_user, email: subscriber_email, parent_newsletters: true)
+				}
+				
+				it 'should update the leid (unique_email_id) value of the user account' do
+					expect {
+						post :process_notification, upemail_params
+					}.to change {
+						user.reload.leid :parent_newsletters
+					}.from(member['unique_email_id']).to(member_after_email_change['unique_email_id'])
+				end
+				
+				it 'should not change the email address of the user account' do
+					expect {
+						post :process_notification, upemail_params
+					}.not_to change {
+						user.reload.email
+					}
+				end
+			end
 		end
 		
 		# Because these examples are sending the campaign, require mocks. Thus we won't send real emails.

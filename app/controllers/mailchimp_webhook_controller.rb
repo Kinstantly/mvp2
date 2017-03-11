@@ -113,15 +113,33 @@ class MailchimpWebhookController < ApplicationController
 			return
 		end
 		
+		old_unique_email_id = nil # Will be used to query user accounts below.
+		
 		# Update subscription with new email address, new unique_email_id, and new subscriber_hash.
 		query = Subscription.where(list_id: list_id).where('LOWER(email) = ?', old_email.downcase)
 		query.find_each do |subscription|
+			old_unique_email_id = subscription.unique_email_id
+			
 			unless subscription.update({
 				email: new_email,
 				subscriber_hash: email_md5_hash(new_email),
 				unique_email_id: new_unique_email_id
 			})
-				logger.error "MailChimp Webhook error: could not update subscription status for #{old_email}; new email => #{new_email}; new unique_email_id => #{new_unique_email_id}; subscription => #{subscription.inspect}"
+				logger.error "MailChimp Webhook error on 'upemail' event: could not update subscription for #{old_email}; new email => #{new_email}; new unique_email_id => #{new_unique_email_id}; subscription => #{subscription.inspect}"
+			end
+		end
+		
+		# Update user account, if any, with the new unique_email_id.
+		# Find account with old_email or by leid (if subscriber email was changed in the past).
+		leid_attr_name = User.leid_attr_name :parent_newsletters
+		query = if old_unique_email_id.present?
+			User.where("LOWER(email) = ? OR #{leid_attr_name} = ?", old_email.downcase, old_unique_email_id)
+		else
+			User.where("LOWER(email) = ?", old_email.downcase)
+		end
+		query.find_each do |user|
+			unless user.update(leid_attr_name => new_unique_email_id)
+				logger.error "MailChimp Webhook error on 'upemail' event: could not update user account for #{old_email}; old unique_email_id => #{old_unique_email_id}; new unique_email_id => #{new_unique_email_id}"
 			end
 		end
 	end

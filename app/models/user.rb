@@ -216,8 +216,13 @@ class User < ActiveRecord::Base
 	end
 
 	# Returns the name of the attribute that holds the user's leid (see below) for the given list.
-	def leid_attr_name(list_name)
+	# Class method is convenient for queries where we don't have an instance yet.
+	def self.leid_attr_name(list_name)
 		list_name.to_s + '_leid'
+	end
+	# Instance method.
+	def leid_attr_name(list_name)
+		self.class.leid_attr_name list_name
 	end
 	
 	# Returns this user's unique_email_id for the given list name.
