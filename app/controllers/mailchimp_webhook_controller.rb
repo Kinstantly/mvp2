@@ -131,7 +131,7 @@ class MailchimpWebhookController < ApplicationController
 		
 		# Update user account, if any, with the new unique_email_id.
 		# Find account with old_email or by leid (if subscriber email was changed in the past).
-		leid_attr_name = User.leid_attr_name :parent_newsletters
+		leid_attr_name = User.leid_attr_name mailchimp_list_ids.key(list_id)
 		query = if old_unique_email_id.present?
 			User.where("LOWER(email) = ? OR #{leid_attr_name} = ?", old_email.downcase, old_unique_email_id)
 		else
