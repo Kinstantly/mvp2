@@ -47,7 +47,7 @@ Feature: search the provider directory
 	Scenario: using search on a non-home page, order search results by distance from postal code
 		Given a published profile with city "San Mateo" and state "CA"
 			And another published profile with city "San Francisco" and state "CA"
-			And I visit the "/about" page
+			And I visit the view page for an existing published profile
 		When I enter "San Francisco CA" in the search box
 			And I enter "94025" in the search location box
 		Then I should see "San Mateo" first in the search results list
@@ -55,7 +55,7 @@ Feature: search the provider directory
 	Scenario: using search on a non-home page, order search results by distance from city
 		Given a published profile with city "San Mateo" and state "CA"
 			And another published profile with city "San Francisco" and state "CA"
-			And I visit the "/about" page
+			And I visit the view page for an existing published profile
 		When I enter "San Francisco CA" in the search box
 			And I enter "Menlo Park, CA" in the search location box
 		Then I should see "San Mateo" first in the search results list
@@ -76,20 +76,12 @@ Feature: search the provider directory
 		Then I should see no search results
 			And I should not see a Google Map container
 
-	Scenario: can search the provider directory from the about page
+	Scenario: can search the provider directory from a profile page
 		Given a published profile exists
 			And I am not logged in
-			And I visit the "/about" page
+			And I visit the view page for the existing published profile
 		When I enter published profile data in the search box
 		Then I should see profile data in the search results list
-
-	@private_site
-	Scenario: cannot search the provider directory as a new site visitor when running as a private site
-		Given a published profile exists
-			And I am not logged in
-			And I visit the "/about" page
-		When I enter published profile data in the search box
-		Then I should land on the alpha sign-up page
 
 	Scenario: empty search query should give no search results
 		Given a published profile exists
