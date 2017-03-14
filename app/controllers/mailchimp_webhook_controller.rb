@@ -192,10 +192,7 @@ class MailchimpWebhookController < ApplicationController
 
 	def on_campaign_sent(data)
 		id = data['id']
-		if id.blank? or id !~ /\A\w+\z/
-			logger.error "MailChimp Webhook error: campaign ID is not valid; campaign ID => #{id}"
-			return
-		end
+		return unless valid_id?(id, 'campaign ID')
 		
 		campaign_info = retrieve_campaign_info(id)
 		if campaign_info.blank?

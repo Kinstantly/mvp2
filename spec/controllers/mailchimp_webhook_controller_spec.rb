@@ -27,8 +27,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 			before(:example) do
 				user.parent_newsletters = true
 				user.save!
-				@parent_newsletters_leid = user.parent_newsletters_leid
-	
+				
 				# Unsubscribe without deleting user from the list
 				email_hash = email_md5_hash user.email
 				Gibbon::Request.lists(list_id).members(email_hash).update body: {
@@ -37,19 +36,57 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 			end
 
 			it "should not process notification without a valid token" do
-				params[:token] = "none"
-				post :process_notification, params
-				user.reload
-				expect(user.parent_newsletters).to eq true
-				expect(user.parent_newsletters_leid).to eq @parent_newsletters_leid
+				expect {
+					params[:token] = "none"
+					post :process_notification, params
+				}.not_to change {
+					user.reload.parent_newsletters
+				}
 			end
 
 			it "should not process notification with invalid request params" do
-				params.delete(:type)
-				post :process_notification, params
-				user.reload
-				expect(user.parent_newsletters).to eq true
-				expect(user.parent_newsletters_leid).to eq @parent_newsletters_leid
+				expect {
+					params.delete(:type)
+					post :process_notification, params
+				}.not_to change {
+					user.reload.parent_newsletters
+				}
+			end
+			
+			it 'should not process notification if list_id is suspicious' do
+				expect {
+					params[:data][:list_id] = 'foo;bar'
+					post :process_notification, params
+				}.not_to change {
+					user.reload.parent_newsletters
+				}
+			end
+			
+			it 'should not process notification if list_id is wrong' do
+				expect {
+					params[:data][:list_id] = 'foo'
+					post :process_notification, params
+				}.not_to change {
+					user.reload.parent_newsletters
+				}
+			end
+			
+			it 'should not process notification if email is suspicious' do
+				expect {
+					params[:data][:email] = 'foo;bar'
+					post :process_notification, params
+				}.not_to change {
+					user.reload.parent_newsletters
+				}
+			end
+			
+			it 'should not process notification if email is wrong' do
+				expect {
+					params[:data][:email] = 'foo'
+					post :process_notification, params
+				}.not_to change {
+					user.reload.parent_newsletters
+				}
 			end
 			
 			it "removes subscription when valid unsubscribe notification received" do
@@ -340,10 +377,25 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				expect(Newsletter.find_by_cid campaign_params[:data][:id]).to be_present
 			end
 			
-			it "should not archive the campaign when invalid data is provided" do
+			it "should do nothing when invalid data is provided" do
 				expect {
-					post :process_notification, campaign_params.merge(data: {id: nil})
-				}.to_not change(Newsletter, :count)
+					campaign_params[:data][:id] = nil
+					post :process_notification, campaign_params
+				}.not_to change(Newsletter, :count)
+			end
+			
+			it "should do nothing when a suspicious ID is detected" do
+				expect {
+					campaign_params[:data][:id] = 'foo;bar'
+					post :process_notification, campaign_params
+				}.not_to change(Newsletter, :count)
+			end
+			
+			it "should do nothing when an unknown ID is provided" do
+				expect {
+					campaign_params[:data][:id] = 'foo'
+					post :process_notification, campaign_params
+				}.not_to change(Newsletter, :count)
 			end
 			
 			it 'should not create a duplicate archive when notified twice of the same campaign' do
