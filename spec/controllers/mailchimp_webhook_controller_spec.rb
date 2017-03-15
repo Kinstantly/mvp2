@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe MailchimpWebhookController, type: :controller, mailchimp: true do
+	let(:now_utc_s) { Time.now.utc.to_s }
 	let(:token) { Rails.configuration.mailchimp_webhook_security_token }
 	let(:list_id) { mailchimp_list_ids[:parent_newsletters]}
 	let(:subscriber_email) { 'subscriber_1@kinstantly.com' }
@@ -9,6 +10,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 		{
 			type: "unsubscribe",
 			token: token,
+			fired_at: now_utc_s,
 			data: {
 				list_id: list_id,
 				email: subscriber_email
@@ -227,6 +229,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				{
 					type: 'upemail',
 					token: token,
+					fired_at: now_utc_s,
 					data: {
 						list_id: list_id,
 						new_id: member_after_email_change['unique_email_id'],
@@ -329,6 +332,154 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 			end
 		end
 		
+		context 'someone subscribed' do
+			let(:email_hash) { email_md5_hash subscriber_email }
+			
+			let(:member) {
+				Gibbon::Request.lists(list_id).members(email_hash).upsert body: {
+					email_address: subscriber_email,
+					status: 'subscribed',
+					email_type: 'html',
+					merge_fields: {
+						'DUEBIRTH1' => '3/20/2017'
+					}
+				}
+			}
+			
+			let(:subscribe_params) {
+				{
+					type: 'subscribe',
+					token: token,
+					fired_at: now_utc_s,
+					data: {
+						list_id: list_id,
+						id: "#{member['unique_email_id']}",
+						email: "#{member['email_address']}",
+						email_type: "#{member['email_type']}",
+						merges: {
+							"EMAIL" => "#{member['email_address']}",
+							"FNAME" => "#{member['merge_fields']['FNAME']}",
+							"LNAME" => "#{member['merge_fields']['LNAME']}",
+							"DUEBIRTH1" => "#{member['merge_fields']['DUEBIRTH1']}",
+							"BIRTH2" => "#{member['merge_fields']['BIRTH2']}",
+							"BIRTH3" => "#{member['merge_fields']['BIRTH3']}",
+							"BIRTH4" => "#{member['merge_fields']['BIRTH4']}",
+							"ZIPCODE" => "#{member['merge_fields']['ZIPCODE']}",
+							"POSTALCODE" => "#{member['merge_fields']['POSTALCODE']}",
+							"COUNTRY" => "#{member['merge_fields']['COUNTRY']}",
+							"SUBSOURCE" => "#{member['merge_fields']['SUBSOURCE']}"
+						}
+					}
+				}
+			}
+			
+			it 'should create a subscription record' do
+				expect {
+					post :process_notification, subscribe_params
+				}.to change(Subscription, :count).by 1
+			end
+			
+			it 'should save the merge data' do
+				post :process_notification, subscribe_params
+				subscription = Subscription.where(list_id: list_id, email: subscriber_email).take
+				expect(subscription.birth1.to_s).to eq subscribe_params[:data][:merges]['DUEBIRTH1']
+			end
+			
+			it 'should not create subscription record if list_id is suspicious' do
+				expect {
+					subscribe_params[:data][:list_id] = 'foo;bar'
+					post :process_notification, subscribe_params
+				}.not_to change(Subscription, :count)
+			end
+			
+			it 'should not create subscription record if list_id is wrong' do
+				expect {
+					subscribe_params[:data][:list_id] = 'foo'
+					post :process_notification, subscribe_params
+				}.not_to change(Subscription, :count)
+			end
+			
+			it 'should not create subscription record if email is suspicious' do
+				expect {
+					subscribe_params[:data][:email] = 'foo;bar'
+					post :process_notification, subscribe_params
+				}.not_to change(Subscription, :count)
+			end
+			
+			it 'should not create subscription record if email is bad' do
+				expect {
+					subscribe_params[:data][:email] = 'foo'
+					post :process_notification, subscribe_params
+				}.not_to change(Subscription, :count)
+			end
+			
+			it 'should not create a subscription record if member status is not "subscribed"' do
+				expect {
+					member # Set up member first.
+					Gibbon::Request.lists(list_id).members(email_hash).update body: {
+						status: 'pending'
+					}
+					post :process_notification, subscribe_params
+				}.not_to change(Subscription, :count)
+			end
+			
+			context 'a record already exists from a previous subscription' do
+				let(:previous_subscription) {
+					FactoryGirl.create(:subscription, {
+						status: 'unsubscribed',
+						list_id: list_id,
+						email: subscriber_email,
+						subscriber_hash: email_hash,
+						unique_email_id: "#{member['unique_email_id']}",
+						birth1: '2015-02-18'
+					})
+				}
+				
+				it 'should update the subscription status' do
+					expect {
+						post :process_notification, subscribe_params
+					}.to change {
+						previous_subscription.reload.subscribed
+					}.from(false).to(true)
+				end
+			
+				it 'should update merge data' do
+					expect {
+						post :process_notification, subscribe_params
+					}.to change {
+						previous_subscription.reload.birth1.to_s
+					}.from(previous_subscription.birth1.to_s).to(subscribe_params[:data][:merges]['DUEBIRTH1'])
+				end
+			end
+			
+			context 'subscriber has a user account' do
+				# Before each example:
+				let!(:user) {
+					FactoryGirl.create :client_user, {
+						email: subscriber_email,
+						parent_newsletters: false,
+						parent_newsletters_leid: nil
+					}
+				}
+				
+				it 'should mark the user account as subscribed to the list' do
+					expect {
+						post :process_notification, subscribe_params
+					}.to change {
+						user.reload.parent_newsletters
+					}.from(false).to(true)
+				end
+				
+				it 'should update the leid (unique_email_id) value of the user account' do
+					expect {
+						post :process_notification, subscribe_params
+					}.to change {
+						user.reload.leid :parent_newsletters
+					}.from(nil).to(member['unique_email_id'])
+				end
+			end
+		end
+		
 		# Because these examples are sending the campaign, require mocks. Thus we won't send real emails.
 		context "campaign sent", use_gibbon_mocks: true do
 			let(:title) { '3 YEARS, 1 month' }
@@ -359,6 +510,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				{
 					type: 'campaign', 
 					token: token, 
+					fired_at: now_utc_s,
 					data: {
 						id: campaign['id'],
 						list_id: list_id,

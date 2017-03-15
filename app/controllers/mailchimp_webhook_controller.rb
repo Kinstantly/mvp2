@@ -11,6 +11,8 @@ class MailchimpWebhookController < ApplicationController
 
 		if incoming_data_valid?(params) && token_valid?(params)
 			case type
+			when 'subscribe'
+				on_subscribe data
 			when 'unsubscribe'
 				on_unsubscribe data
 			when 'campaign'
@@ -27,6 +29,70 @@ class MailchimpWebhookController < ApplicationController
 	end
 	
 	private
+
+	def on_subscribe(data)
+		list_id = data['list_id']
+		subscriber_email = data['email']
+		
+		unless valid_list_id?(list_id) && valid_email?(subscriber_email, 'subscriber email')
+			return
+		end
+		
+		begin
+			member = Gibbon::Request.lists(list_id).members(email_md5_hash(subscriber_email)).retrieve
+			
+			if member.present? && member['status'] == 'subscribed'
+				#  create or update Subscription record
+				create_or_update_subscription member
+
+				#  update User record if it exists
+				update_user_if_any member
+			else
+				logger.error "MailChimp Webhook subscribe error: Request for subscriber data on MailChimp returned nil or invalid subscriber status. Response => #{member.inspect}"
+			end
+		rescue Gibbon::MailChimpError => e
+			logger.error "MailChimp Webhook error while processing 'subscribe' notification: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{subscriber_email}; list_id: #{list_id}"
+		end
+	end
+	
+	def create_or_update_subscription(member)
+		subscription = Subscription.find_or_initialize_by({
+			list_id: member['list_id'],
+			unique_email_id: member['unique_email_id']
+		})
+		
+		unless subscription.update({
+			status: member['status'],
+			subscriber_hash: member['id'],
+			email: member['email_address'],
+			fname: member['merge_fields']['FNAME'],
+			lname: member['merge_fields']['LNAME'],
+			birth1: member['merge_fields']['DUEBIRTH1'],
+			birth2: member['merge_fields']['BIRTH2'],
+			birth3: member['merge_fields']['BIRTH3'],
+			birth4: member['merge_fields']['BIRTH4'],
+			zip_code: member['merge_fields']['ZIPCODE'],
+			postal_code: member['merge_fields']['POSTALCODE'],
+			country: member['merge_fields']['COUNTRY'],
+			subsource: (member['merge_fields']['SUBSOURCE'].presence || 'mailchimp_api')
+		})
+			logger.error "MailChimp Webhook subscribe error while creating or updating subscription record; errors => #{subscription.errors.full_messages.join '; '}; subscription => #{subscription.inspect}"
+		end
+	end
+	
+	def update_user_if_any(member)
+		if user = User.find_by_email_ignore_case(member['email_address'])
+			list_name = mailchimp_list_ids.key member['list_id']
+			
+			# Do not trigger a callback on the user model or we might create an infinite loop!
+			unless user.update_columns({
+				list_name => true,
+				User.leid_attr_name(list_name) => member['unique_email_id']
+			})
+				logger.error "MailChimp Webhook subscribe error while updating user record; errors => #{user.errors.full_messages.join '; '}; user email => #{user.email}"
+			end
+		end
+	end
 
 	def on_unsubscribe(data)
 		incoming_list_id = data['list_id']

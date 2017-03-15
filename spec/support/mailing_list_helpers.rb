@@ -256,6 +256,7 @@ def list_member_api_response(body)
 		'id' => body[:id],
 		'unique_email_id' => body[:unique_email_id],
 		'list_id' => body[:list_id],
+		'email_type' => body[:email_type],
 		'merge_fields' => merge_fields
 	}
 end
