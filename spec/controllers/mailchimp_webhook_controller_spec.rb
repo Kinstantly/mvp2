@@ -163,7 +163,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 			end
 		end
 		
-		context 'subscriptions with no local user account' do
+		context 'user unsubscribed remotely with no local user account' do
 			let(:email_hash) { email_md5_hash subscriber_email }
 			let(:member) {
 				Gibbon::Request.lists(list_id).members(email_hash).upsert body: {
@@ -477,6 +477,140 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 						user.reload.leid :parent_newsletters
 					}.from(nil).to(member['unique_email_id'])
 				end
+			end
+		end
+		
+		context 'a subscriber updated their profile' do
+			let(:email_hash) { email_md5_hash subscriber_email }
+			
+			let(:member) {
+				Gibbon::Request.lists(list_id).members(email_hash).upsert body: {
+					email_address: subscriber_email,
+					status: 'subscribed',
+					email_type: 'html',
+					merge_fields: {
+						'DUEBIRTH1' => '3/16/2017',
+						'BIRTH2' => '8/21/2015',
+						'BIRTH3' => '7/1/2012',
+						'BIRTH4' => '6/12/2010',
+						'FNAME' => 'Pierre',
+						'LNAME' => 'Boulez',
+						'ZIPCODE' => '94107',
+						'POSTALCODE' => 'QC H3A 0G4',
+						'COUNTRY' => 'CA'
+					}
+				}
+			}
+			
+			let(:profile_params) {
+				{
+					type: 'profile',
+					token: token,
+					fired_at: now_utc_s,
+					data: {
+						list_id: list_id,
+						id: "#{member['unique_email_id']}",
+						email: "#{member['email_address']}",
+						email_type: "#{member['email_type']}",
+						merges: {
+							"EMAIL" => "#{member['email_address']}",
+							"FNAME" => "#{member['merge_fields']['FNAME']}",
+							"LNAME" => "#{member['merge_fields']['LNAME']}",
+							"DUEBIRTH1" => "#{member['merge_fields']['DUEBIRTH1']}",
+							"BIRTH2" => "#{member['merge_fields']['BIRTH2']}",
+							"BIRTH3" => "#{member['merge_fields']['BIRTH3']}",
+							"BIRTH4" => "#{member['merge_fields']['BIRTH4']}",
+							"ZIPCODE" => "#{member['merge_fields']['ZIPCODE']}",
+							"POSTALCODE" => "#{member['merge_fields']['POSTALCODE']}",
+							"COUNTRY" => "#{member['merge_fields']['COUNTRY']}",
+							"SUBSOURCE" => "#{member['merge_fields']['SUBSOURCE']}"
+						}
+					}
+				}
+			}
+			
+			let(:subscription) {
+				FactoryGirl.create(:subscription, {
+					status: 'subscribed',
+					list_id: list_id,
+					email: subscriber_email,
+					subscriber_hash: email_hash,
+					unique_email_id: "#{member['unique_email_id']}",
+					birth1: '2017-03-20',
+					fname: 'Sam'
+				})
+			}
+			
+			it 'should update the due/birth date' do
+				expect {
+					post :process_notification, profile_params
+				}.to change {
+					subscription.reload.birth1.try :to_s
+				}.from(subscription.birth1.try :to_s).to(profile_params[:data][:merges]['DUEBIRTH1'])
+			end
+			
+			it 'should update a second birth date' do
+				expect {
+					post :process_notification, profile_params
+				}.to change {
+					subscription.reload.birth2.try :to_s
+				}.from(subscription.birth2.try :to_s).to(profile_params[:data][:merges]['BIRTH2'])
+			end
+			
+			it 'should update a third birth date' do
+				expect {
+					post :process_notification, profile_params
+				}.to change {
+					subscription.reload.birth3.try :to_s
+				}.from(subscription.birth3.try :to_s).to(profile_params[:data][:merges]['BIRTH3'])
+			end
+			
+			it 'should update a fourth birth date' do
+				expect {
+					post :process_notification, profile_params
+				}.to change {
+					subscription.reload.birth4.try :to_s
+				}.from(subscription.birth4.try :to_s).to(profile_params[:data][:merges]['BIRTH4'])
+			end
+			
+			it 'should update the first name' do
+				expect {
+					post :process_notification, profile_params
+				}.to change {
+					subscription.reload.fname
+				}.from(subscription.fname).to(profile_params[:data][:merges]['FNAME'])
+			end
+			
+			it 'should update the last name' do
+				expect {
+					post :process_notification, profile_params
+				}.to change {
+					subscription.reload.lname
+				}.from(subscription.lname).to(profile_params[:data][:merges]['LNAME'])
+			end
+			
+			it 'should update the zip code' do
+				expect {
+					post :process_notification, profile_params
+				}.to change {
+					subscription.reload.zip_code
+				}.from(subscription.zip_code).to(profile_params[:data][:merges]['ZIPCODE'])
+			end
+			
+			it 'should update the postal code' do
+				expect {
+					post :process_notification, profile_params
+				}.to change {
+					subscription.reload.postal_code
+				}.from(subscription.postal_code).to(profile_params[:data][:merges]['POSTALCODE'])
+			end
+			
+			it 'should update the country' do
+				expect {
+					post :process_notification, profile_params
+				}.to change {
+					subscription.reload.country
+				}.from(subscription.country).to(profile_params[:data][:merges]['COUNTRY'])
 			end
 		end
 		

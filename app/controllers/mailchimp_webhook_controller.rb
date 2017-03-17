@@ -19,6 +19,8 @@ class MailchimpWebhookController < ApplicationController
 				on_campaign_sent data
 			when 'upemail'
 				on_upemail data
+			when 'profile'
+				on_profile_update data
 			else
 				logger.error "MailChimp Webhook error: unexpected incoming notification. Params: #{params}" if logger
 			end
@@ -61,20 +63,22 @@ class MailchimpWebhookController < ApplicationController
 			unique_email_id: member['unique_email_id']
 		})
 		
+		merge_fields = member['merge_fields']
+		
 		unless subscription.update({
-			status: member['status'],
+			status:          member['status'],
 			subscriber_hash: member['id'],
-			email: member['email_address'],
-			fname: member['merge_fields']['FNAME'],
-			lname: member['merge_fields']['LNAME'],
-			birth1: member['merge_fields']['DUEBIRTH1'],
-			birth2: member['merge_fields']['BIRTH2'],
-			birth3: member['merge_fields']['BIRTH3'],
-			birth4: member['merge_fields']['BIRTH4'],
-			zip_code: member['merge_fields']['ZIPCODE'],
-			postal_code: member['merge_fields']['POSTALCODE'],
-			country: member['merge_fields']['COUNTRY'],
-			subsource: (member['merge_fields']['SUBSOURCE'].presence || 'mailchimp_api')
+			email:           member['email_address'],
+			fname:           merge_fields['FNAME'],
+			lname:           merge_fields['LNAME'],
+			birth1:          merge_fields['DUEBIRTH1'],
+			birth2:          merge_fields['BIRTH2'],
+			birth3:          merge_fields['BIRTH3'],
+			birth4:          merge_fields['BIRTH4'],
+			zip_code:        merge_fields['ZIPCODE'],
+			postal_code:     merge_fields['POSTALCODE'],
+			country:         merge_fields['COUNTRY'],
+			subsource:      (merge_fields['SUBSOURCE'].presence || 'mailchimp_api')
 		})
 			logger.error "MailChimp Webhook subscribe error while creating or updating subscription record; errors => #{subscription.errors.full_messages.join '; '}; subscription => #{subscription.inspect}"
 		end
@@ -91,6 +95,56 @@ class MailchimpWebhookController < ApplicationController
 			})
 				logger.error "MailChimp Webhook subscribe error while updating user record; errors => #{user.errors.full_messages.join '; '}; user email => #{user.email}"
 			end
+		end
+	end
+
+	def on_profile_update(data)
+		list_id = data['list_id']
+		subscriber_email = data['email']
+		
+		unless valid_list_id?(list_id) && valid_email?(subscriber_email, 'subscriber email')
+			return
+		end
+		
+		begin
+			member = Gibbon::Request.lists(list_id).members(email_md5_hash(subscriber_email)).retrieve
+			
+			if member.present?
+				update_subscription_merge_fields member
+			else
+				logger.error "MailChimp Webhook profile update error: Request for subscriber data on MailChimp returned nil. list_id => #{list_id}; email => #{subscriber_email}"
+			end
+		rescue Gibbon::MailChimpError => e
+			logger.error "MailChimp Webhook error while processing 'profile' notification: #{e.title}; #{e.detail}; status: #{e.status_code}; email: #{subscriber_email}; list_id: #{list_id}"
+		end
+	end
+	
+	def update_subscription_merge_fields(member)
+		subscription = Subscription.where({
+			list_id: member['list_id'],
+			unique_email_id: member['unique_email_id']
+		}).take
+		
+		unless subscription
+			"MailChimp Webhook merge_fields update error: Could not find subscription record for member => #{member.inspect}"
+			return
+		end
+		
+		merge_fields = member['merge_fields']
+		
+		unless subscription.update({
+			fname:       merge_fields['FNAME'],
+			lname:       merge_fields['LNAME'],
+			birth1:      merge_fields['DUEBIRTH1'],
+			birth2:      merge_fields['BIRTH2'],
+			birth3:      merge_fields['BIRTH3'],
+			birth4:      merge_fields['BIRTH4'],
+			zip_code:    merge_fields['ZIPCODE'],
+			postal_code: merge_fields['POSTALCODE'],
+			country:     merge_fields['COUNTRY'],
+			subsource:  (merge_fields['SUBSOURCE'].presence || 'mailchimp_api')
+		})
+			logger.error "MailChimp Webhook merge_fields update error while updating subscription record; errors => #{subscription.errors.full_messages.join '; '}; subscription => #{subscription.inspect}"
 		end
 	end
 
