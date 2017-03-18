@@ -49,12 +49,11 @@ class MailchimpListImporter
 	def create_or_update(member)
 		puts "#{member['email_address']}\t#{member['merge_fields']['DUEBIRTH1']}" if params[:verbose].present?
 		
-		sub = Subscription.find_or_initialize_by email: member['email_address']
+		sub = Subscription.find_or_initialize_by email: member['email_address'], list_id: member['list_id']
 		is_new = sub.new_record?
 		
 		success = sub.update({
 			status:          member['status'],
-			list_id:         member['list_id'],
 			subscriber_hash: member['id'],
 			unique_email_id: member['unique_email_id'],
 			fname:           member['merge_fields']['FNAME'],
@@ -66,7 +65,7 @@ class MailchimpListImporter
 			zip_code:        member['merge_fields']['ZIPCODE'],
 			postal_code:     member['merge_fields']['POSTALCODE'],
 			country:         member['merge_fields']['COUNTRY'],
-			subsource:       member['merge_fields']['SUBSOURCE']
+			subsource:      (member['merge_fields']['SUBSOURCE'].presence || 'mailchimp_api')
 		})
 		
 		if success

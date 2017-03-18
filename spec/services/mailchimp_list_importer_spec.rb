@@ -23,23 +23,37 @@ describe MailchimpListImporter, mailchimp: true do
 			expect(list_importer).to be_successful
 		end
 		
-		it 'should create subscription records' do
-			email_list = [
-				'subscriber1@kinstantly.com',
-				'subscriber2@kinstantly.com',
-				'subscriber3@kinstantly.com'
-			]
+		context 'and multiple subscribers' do
+			# Before each example:
+			let!(:email_list){
+				list = [
+					'subscriber1@kinstantly.com',
+					'subscriber2@kinstantly.com',
+					'subscriber3@kinstantly.com'
+				]
 			
-			email_list.each do |email|
-				Gibbon::Request.lists(list_id).members(email_md5_hash(email)).upsert body: {
-					email_address: email,
-					status: 'subscribed'
-				}
+				list.each do |email|
+					Gibbon::Request.lists(list_id).members(email_md5_hash(email)).upsert body: {
+						email_address: email,
+						status: 'subscribed'
+					}
+				end
+				
+				list
+			}
+			
+			it 'should create subscription records' do
+				expect {
+					list_importer.call
+				}.to change(Subscription, :count).by(email_list.size)
 			end
 			
-			expect {
-				list_importer.call
-			}.to change(Subscription, :count).by(email_list.size)
+			it 'should not create duplicate subscription records when run more than once' do
+				expect {
+					list_importer.call
+					list_importer.call
+				}.to change(Subscription, :count).by(email_list.size)
+			end
 		end
 		
 		it "should import the subscriber's email address" do
@@ -51,7 +65,7 @@ describe MailchimpListImporter, mailchimp: true do
 			}
 			
 			list_importer.call
-			subscriber = Subscription.last
+			subscriber = Subscription.where(list_id: list_id, email: email).take
 			expect(subscriber.email).to eq email
 		end
 		
@@ -69,8 +83,36 @@ describe MailchimpListImporter, mailchimp: true do
 			}
 			
 			list_importer.call
-			subscriber = Subscription.last
+			subscriber = Subscription.where(list_id: list_id, email: email).take
 			expect([subscriber.birth1, subscriber.birth2]).to eq [birth1, birth2]
+		end
+		
+		it "should update the subscription record when member info has changed" do
+			email = 'subscriber@kinstantly.com'
+			old_birth, new_birth = Date.new(2012, 10, 23), Date.new(2017, 5, 1)
+			
+			Gibbon::Request.lists(list_id).members(email_md5_hash(email)).upsert body: {
+				email_address: email,
+				status: 'subscribed',
+				merge_fields: {
+					'DUEBIRTH1' => old_birth.strftime('%-m/%-d/%Y')
+				}
+			}
+			
+			list_importer.call
+			subscriber = Subscription.where(list_id: list_id, email: email).take
+			
+			expect {
+				Gibbon::Request.lists(list_id).members(email_md5_hash(email)).update body: {
+					merge_fields: {
+						'DUEBIRTH1' => new_birth.strftime('%-m/%-d/%Y')
+					}
+				}
+				
+				list_importer.call
+			}.to change {
+				subscriber.reload.birth1
+			}.from(old_birth).to(new_birth)
 		end
 	end
 	
