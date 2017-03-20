@@ -121,7 +121,7 @@ class StageNewsletterSender
 			},
 			settings: {
 				title: "#{subscription_stage.title}: #{Time.zone.now.to_s}",
-				folder_id: mailchimp_folder_ids[:parent_newsletters_campaigns],
+				folder_id: folder_id,
 				to_name: '*|FNAME|*'
 			}
 		}
@@ -150,7 +150,10 @@ class StageNewsletterSender
 	
 	def log_delivery(segment, campaign, subscription_stage)
 		list_id = subscription_stage.list_id
+		source_campaign_id = subscription_stage.source_campaign_id
 		segment_id = segment['id']
+		campaign_id = campaign['id']
+		schedule_time = Time.zone.parse campaign['send_time']
 		
 		# We need to loop, because MailChimp always retrieves members in batches.
 		offset = 0
@@ -171,15 +174,15 @@ class StageNewsletterSender
 			members.each do |member|
 				begin
 					email = member['email_address']
-					subscription = Subscription.where(email: email, list_id: list_id).first
-				
+					subscription = Subscription.where(email: email, list_id: list_id).take
+					
 					SubscriptionDelivery.create!(
 						email: email,
 						subscription: subscription,
 						subscription_stage: subscription_stage,
-						source_campaign_id: subscription_stage.source_campaign_id,
-						campaign_id: campaign['id'],
-						schedule_time: Time.zone.parse(campaign['send_time'])
+						source_campaign_id: source_campaign_id,
+						campaign_id: campaign_id,
+						schedule_time: schedule_time
 					)
 				rescue ActiveRecord::RecordInvalid => invalid
 					invalid.record.errors.full_messages.each do |message|
