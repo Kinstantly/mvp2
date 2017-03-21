@@ -2,12 +2,14 @@ class MailchimpWebhookController < ApplicationController
 	SECURITY_TOKEN = Rails.configuration.mailchimp_webhook_security_token
 	EVENT_KEY = "type"
 	DATA_KEY = "data"
+	FIRED_AT_KEY = "fired_at"
 
 	protect_from_forgery except: :process_notification
 	
 	def process_notification
 		type = params[EVENT_KEY]
 		data = params[DATA_KEY]
+		fired_at = params[FIRED_AT_KEY]
 
 		if incoming_data_valid?(params) && token_valid?(params)
 			case type
@@ -16,7 +18,7 @@ class MailchimpWebhookController < ApplicationController
 			when 'unsubscribe'
 				on_unsubscribe data
 			when 'campaign'
-				on_campaign_sent data
+				on_campaign_sent data, fired_at
 			when 'upemail'
 				on_upemail data
 			when 'profile'
@@ -265,7 +267,7 @@ class MailchimpWebhookController < ApplicationController
 	end
 	
 	def incoming_data_valid?(params)
-		params[EVENT_KEY].present? && params[DATA_KEY].present?
+		params[EVENT_KEY].present? && params[DATA_KEY].present? && params[FIRED_AT_KEY] =~ /\A[-+\d: A-Z.]+\z/
 	end
 
 	def token_valid?(params)
@@ -310,7 +312,7 @@ class MailchimpWebhookController < ApplicationController
 		]
 	end
 
-	def on_campaign_sent(data)
+	def on_campaign_sent(data, fired_at)
 		id = data['id']
 		return unless valid_id?(id, 'campaign ID')
 		
@@ -325,24 +327,21 @@ class MailchimpWebhookController < ApplicationController
 			return
 		end
 		
-		mark_campaign_as_sent campaign_info
+		mark_campaign_as_sent campaign_info, fired_at
 		archive_campaign campaign_info
 	end
 	
-	def mark_campaign_as_sent(campaign_info)
+	def mark_campaign_as_sent(campaign_info, time_sent)
 		id = campaign_info['id']
 		
-		send_time_string = campaign_info['send_time'] || ''
-		send_time = Time.zone.parse send_time_string
-		
-		unless send_time
-			logger.error "MailChimp Webhook error: could not parse send_time for campaign ID => #{id}; campaign_info => #{campaign_info}"
-			return
-		end
-		
 		SubscriptionDelivery.where(campaign_id: id).find_each do |subscription_delivery|
-			unless subscription_delivery.update(send_time: send_time)
-				logger.error "MailChimp Webhook error: could not update send_time in this subscription_delivery record for campaign ID => #{id}; subscription_delivery => #{subscription_delivery.inspect}"
+			success = Time.use_zone('UTC') {
+				# Assume UTC if time zone not specified in time_sent.
+				subscription_delivery.update send_time: time_sent
+			}
+			
+			unless success && subscription_delivery.send_time.present?
+				logger.error "MailChimp Webhook error: could not update send_time in this subscription_delivery record for campaign ID => #{id}; send time => #{time_sent}; errors => #{subscription_delivery.errors.full_messages.join '; '}; subscription_delivery => #{subscription_delivery.inspect}"
 			end
 		end
 	end

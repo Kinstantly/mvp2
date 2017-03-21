@@ -1,7 +1,10 @@
 require 'spec_helper'
 
 describe MailchimpWebhookController, type: :controller, mailchimp: true do
-	let(:now_utc_s) { Time.now.utc.to_s }
+	let(:fired_at) {
+		# MailChimp doesn't explicitly specify the time zone for this parameter. :(
+		Time.now.utc.to_s.sub(' UTC', '')
+	} 
 	let(:token) { Rails.configuration.mailchimp_webhook_security_token }
 	let(:list_id) { mailchimp_list_ids[:parent_newsletters]}
 	let(:subscriber_email) { 'subscriber_1@kinstantly.com' }
@@ -10,7 +13,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 		{
 			type: "unsubscribe",
 			token: token,
-			fired_at: now_utc_s,
+			fired_at: fired_at,
 			data: {
 				list_id: list_id,
 				email: subscriber_email
@@ -229,7 +232,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				{
 					type: 'upemail',
 					token: token,
-					fired_at: now_utc_s,
+					fired_at: fired_at,
 					data: {
 						list_id: list_id,
 						new_id: member_after_email_change['unique_email_id'],
@@ -350,7 +353,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				{
 					type: 'subscribe',
 					token: token,
-					fired_at: now_utc_s,
+					fired_at: fired_at,
 					data: {
 						list_id: list_id,
 						id: "#{member['unique_email_id']}",
@@ -506,7 +509,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				{
 					type: 'profile',
 					token: token,
-					fired_at: now_utc_s,
+					fired_at: fired_at,
 					data: {
 						list_id: list_id,
 						id: "#{member['unique_email_id']}",
@@ -644,7 +647,7 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				{
 					type: 'campaign', 
 					token: token, 
-					fired_at: now_utc_s,
+					fired_at: fired_at,
 					data: {
 						id: campaign['id'],
 						list_id: list_id,
@@ -741,17 +744,29 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				it "should update the send_time in the campaign's subscription_delivery records" do
 					subscription_delivery # schedule for delivery
 					
+					# Assume UTC if the time zone is not specified by the fired_at parameter.
+					time_sent = Time.use_zone('UTC') { Time.zone.parse campaign_params[:fired_at] }
+					
 					expect {
 						post :process_notification, campaign_params
 					}.to change {
 						subscription_delivery.reload.send_time
-					}.from(nil).to(Time.zone.parse campaign['send_time'])
+					}.from(nil).to(time_sent)
 				end
 				
 				it "should not archive a stage-based campaign" do
 					expect {
 						post :process_notification, campaign_params
 					}.to_not change(Newsletter, :count)
+				end
+				
+				it 'should not process notification with suspicious event time parameter' do
+					expect {
+						campaign_params[:fired_at] = 'foo;bar'
+						post :process_notification, campaign_params
+					}.not_to change {
+						subscription_delivery.reload.send_time
+					}
 				end
 			end
 		end
