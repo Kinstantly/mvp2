@@ -322,7 +322,7 @@ class MailchimpWebhookController < ApplicationController
 			return
 		end
 		
-		if campaign_info['status'] != 'sent'
+		unless ['sending', 'sent'].include? campaign_info['status']
 			logger.info "MailChimp Webhook: Newsletter campaign has not been sent. Not marking as sent. Not archiving. ID => #{id}; status => \"#{campaign_info['status']}\"; title => \"#{campaign_info['settings']['title']}\""
 			return
 		end

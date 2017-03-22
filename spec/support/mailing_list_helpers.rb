@@ -587,3 +587,15 @@ def empty_campaign_folders
 		puts "MailChimp error while deleting: #{e.title}; #{e.detail}; status: #{e.status_code}"
 	end
 end
+
+# Set the "use_gibbon_mocks" tag to true for any RSpec example calling this method.
+# The following modifies an existing campaign's status.
+# The MailChimp API has no mechanism for doing this,
+# so this can only be done while using these Gibbon mocks.
+def set_mocked_campaign_status(campaign_id, status)
+	if (campaign = @mailchimp_campaigns[campaign_id])
+		campaign[:response]['status'] = status
+	else
+		raise resource_not_found_exception
+	end
+end

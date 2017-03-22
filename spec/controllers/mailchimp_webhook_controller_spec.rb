@@ -768,6 +768,25 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 						subscription_delivery.reload.send_time
 					}
 				end
+				
+				# The following requires gibbon mocks, e.g., tweaking the campaign status.
+				context 'notification arrived while campaign is still sending', use_gibbon_mocks: true do
+					before(:example) do
+						subscription_delivery # schedule for delivery
+						set_mocked_campaign_status campaign['id'], 'sending'
+					end
+					
+					it "should update the send_time in the campaign's subscription_delivery records" do
+						# Assume UTC if the time zone is not specified by the fired_at parameter.
+						time_sent = Time.use_zone('UTC') { Time.zone.parse campaign_params[:fired_at] }
+					
+						expect {
+							post :process_notification, campaign_params
+						}.to change {
+							subscription_delivery.reload.send_time
+						}.from(nil).to(time_sent)
+					end
+				end
 			end
 		end
 	end
