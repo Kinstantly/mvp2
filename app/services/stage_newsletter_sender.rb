@@ -65,12 +65,12 @@ class StageNewsletterSender
 		
 		# Keep trying for several days after initial eligibility of recipients,
 		# in case we missed a day or more of running this service.
-		delay_days_max = subscription_stage.trigger_delay_days + 7
-		delay_days_min = subscription_stage.trigger_delay_days - 1
+		delay_days_min = subscription_stage.trigger_delay_days
+		delay_days_max = delay_days_min + 7
 		
 		# Look back this many days when checking for relevant subscription_deliveries.
 		# This value should always be more than the range of days we keep looking for recipients.
-		days_of_lookback = (delay_days_max - delay_days_min) + 4
+		days_of_lookback = (delay_days_max - delay_days_min) + 7
 		
 		s = "(SELECT subscriptions.* FROM subscriptions WHERE
 		      subscriptions.subscribed IS TRUE
