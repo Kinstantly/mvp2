@@ -695,6 +695,13 @@ describe MailchimpWebhookController, type: :controller, mailchimp: true do
 				expect(Newsletter.where(cid: campaign_params[:data][:id]).size).to eq 1
 			end
 			
+			it 'should not archive an automation email campaign' do
+				expect {
+					body['type'] = 'automation'
+					post :process_notification, campaign_params
+				}.not_to change(Newsletter, :count)
+			end
+			
 			context 'as stage-based newsletter' do
 				let(:subscriber_email) { 'subscriber_1@kinstantly.com' }
 				

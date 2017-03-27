@@ -354,6 +354,11 @@ class MailchimpWebhookController < ApplicationController
 			return
 		end
 		
+		if campaign_info['type'] == 'automation'
+			logger.info "MailChimp Webhook: Campaign is an automation email. Not archiving. ID => #{id}; title => \"#{campaign_info['settings']['title']}\""
+			return
+		end
+		
 		newsletter = Newsletter.find_by_cid(id) || Newsletter.new
 		
 		if newsletter.new_record?
