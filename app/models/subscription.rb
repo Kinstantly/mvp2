@@ -3,6 +3,11 @@ class Subscription < ActiveRecord::Base
 	
 	before_save :sync_subscribed_status
 	
+	# Class method to find the matching subscription while ignoring the case of the email address.
+	def self.find_by_lower_email_and_list_id(email, list_id)
+		where(list_id: list_id).where('LOWER(email) = ?', email.strip.downcase).take
+	end
+	
 	private
 	
 	# The subscribed property is an indexed boolean to be used for efficient lookups.
