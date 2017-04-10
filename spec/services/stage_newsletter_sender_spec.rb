@@ -54,6 +54,7 @@ describe StageNewsletterSender, mailchimp: true, use_gibbon_mocks: true do
 			
 			let(:date_format) { '%-m/%-d/%Y' }
 			let(:now) { Time.zone.now }
+			# Each member is set up to be in one of the above stages, so we need one member per stage.
 			let(:member_emails) {
 				[
 					'subscriber_1@kinstantly.com',
@@ -249,6 +250,61 @@ describe StageNewsletterSender, mailchimp: true, use_gibbon_mocks: true do
 						subscription_stage: SubscriptionStage.find_by_title(titles[2])
 					}).count
 					expect(stage_delivery_count).to eq 1
+				end
+			end
+			
+			context 'for pregnancy stages' do
+				let(:stages) {
+					{
+						'Your pregnancy: Week 37 (3 weeks to go!)'         => -21,
+						'Your pregnancy: Week 38 (2 weeks to go!)'         => -14,
+						'Your pregnancy: Week 39 (1 week to go!)'          =>  -7,
+						'Your pregnancy: Week 40 (Week of your due date!)' =>   0
+					}
+				}
+				# Each member is set up to be in one of the above stages, so we need one member per stage.
+				let(:member_emails) {
+					[
+						'subscriber_1@kinstantly.com',
+						'subscriber_2@kinstantly.com',
+						'subscriber_3@kinstantly.com',
+						'subscriber_4@kinstantly.com'
+					]
+				}
+				
+				before(:example) do
+					create_subscriptions
+					create_stages
+				end
+				
+				it 'should create a scheduled campaign for each pregnancy stage to send' do
+					expect {
+						newsletter_sender.call
+					}.to change {
+						# scheduled and sent campaigns
+						Gibbon::Request.campaigns.retrieve(params: {
+							folder_id: sent_folder_id
+						})['campaigns'].size
+					}.by members.size
+				end
+				
+				it 'should log delivery for each member' do
+					expect {
+						newsletter_sender.call
+					}.to change(SubscriptionDelivery, :count).by members.size
+				end
+				
+				it 'should successfully deliver the next pregnancy stage' do
+					newsletter_sender.call
+					
+					# simulate a week's passage
+					subscription = Subscription.find_by_email member_emails[2]
+					due_date = subscription.birth1 + 7.days
+					expect(subscription.update birth1: due_date).to eq true
+					
+					expect {
+						StageNewsletterSender.new(newsletter_sender_params).call
+					}.to change(SubscriptionDelivery, :count).by 1
 				end
 			end
 			
