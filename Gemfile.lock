@@ -68,7 +68,7 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
-    byebug (6.0.2)
+    byebug (9.0.6)
     cancancan (1.10.1)
     capybara (2.7.1)
       addressable
@@ -506,7 +506,7 @@ DEPENDENCIES
   whenever!
 
 RUBY VERSION
-   ruby 2.3.0p0
+   ruby 2.3.4p301
 
 BUNDLED WITH
-   1.13.0
+   1.14.6

@@ -6,14 +6,14 @@ Please add missing information to this document.
 
 === Ruby
 
-We are using Ruby 2.3.0p0 and Rails 3.2.22.2 (as of March 30, 2016).  The Gemfile directs Heroku to use Ruby 2.3.0 and Rails 3.2.22.2.
+The Gemfile specifies Ruby 2.3.4 and Rails 4.2.7.1 (as of 18 April 2017). Developers and Heroku will use those versions (as specified by the Gemfile).
 
-The Rails maintainers test version 3.2.22 against Ruby 2.2.2 (the last time I checked) and there is no guarantee that Rails 3.2.22 will work with later versions of Ruby.  However, our application appears to be working fine with Ruby 2.3.0.  I am currently upgrading to the latest stable version of Rails 4.
+The Rails maintainers test version 4.2.7.1 against Ruby 2.3 (the last time I checked) and there is no guarantee that Rails 4.2.7.1 will work with later versions of Ruby.
 
-For Ruby you should use at least ruby 2.2.2p95 to include the latest security updates.  You can install or upgrade using RVM.
+You can install or upgrade Ruby using RVM.
 
  gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
- \curl -sSL https://get.rvm.io | bash -s stable --ruby=2.3.0
+ \curl -sSL https://get.rvm.io | bash -s stable --ruby=2.3.4
 
 RVM documentation is here: https://rvm.io/
 
@@ -36,21 +36,30 @@ First make sure you're running the correct version of ruby.
 
 If you're using RVM, it will parse the Ruby version from the Gemfile as long as you don't have other RVM configuration files overriding the Gemfile.  To ensure that you'll always use the correct version in this repository, you can do this.
 
- rvm --ruby-version use 2.3.0 # Or whatever the correct version number is.
+ rvm --ruby-version use 2.3.4 # Or whatever the correct version number is.
 
 Get the latest version of RubyGems (for security reasons).
 
  gem update --system
- gem --version # Should be at least version 2.6.4.
+ gem --version # Should be at least version 2.6.11.
 
 Install Bundler.
 
  gem install bundler
- bundle --version # Must be at least version 1.12.1 to keep Gemfile.lock compatible across developers.
+ bundle --version # Should be at least version 1.14.6.
+
+Install Qt 5.5 (needed by the capybara-webkit gem, which is used by our Cucumber setup). See https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit.
 
 Install needed gems.
 
  bundle install
+
+If bundler runs into problems installing the sunspot gem, you might need to install it manually, e.g.,
+
+ gem install sunspot --version 2.2.5 # Use the version specified in Gemfile.lock.
+ gem install sunspot_rails --version 2.2.5 # You might not need to run this command.
+
+Then try running 'bundle install' again.
 
 Always run anything that uses ruby with 'bundle exec', i.e., rake, rails, unicorn, etc.  This will ensure that those commands are using the ruby gem versions that are specified by bundler.  Thus all developers and the production site will be working in the same environment.
 
@@ -66,7 +75,7 @@ For example:
 
 === Database
 
-I'm running PostgreSQL 9.5.2 for my development instance.  Installation (on Mac OS X) and aliases:
+I'm running PostgreSQL 9.6.2 for my development instance.  Installation (on Mac OS X) and aliases:
 
  brew install postgresql
  alias pgstart='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
