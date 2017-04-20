@@ -200,7 +200,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    json (1.8.3)
+    json (1.8.6)
     jwt (1.5.1)
     kaminari (0.14.1)
       actionpack (>= 3.0.0)
@@ -216,7 +216,7 @@ GEM
     mime-types (2.99.3)
     mimemagic (0.3.0)
     mini_portile2 (2.1.0)
-    minitest (5.9.1)
+    minitest (5.10.1)
     monetize (1.4.0)
       money (~> 6.7)
     money (6.7.1)
@@ -236,7 +236,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.11.0)
-    nokogiri (1.6.8.1)
+    nokogiri (1.7.1)
       mini_portile2 (~> 2.1.0)
     oauth2 (1.1.0)
       faraday (>= 0.8, < 0.10)
@@ -289,9 +289,9 @@ GEM
       sprockets-rails
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
-    rails-dom-testing (1.0.7)
+    rails-dom-testing (1.0.8)
       activesupport (>= 4.2.0.beta, < 5.0)
-      nokogiri (~> 1.6.0)
+      nokogiri (~> 1.6)
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-footnotes (4.1.8)
       rails (>= 3.2)
@@ -393,7 +393,7 @@ GEM
     test-unit (3.1.2)
       power_assert
     thor (0.19.1)
-    thread_safe (0.3.5)
+    thread_safe (0.3.6)
     tilt (2.0.5)
     two_factor_authentication (1.1.5)
       devise
@@ -401,7 +401,7 @@ GEM
       rails (>= 3.1.1)
       randexp
       rotp
-    tzinfo (1.2.2)
+    tzinfo (1.2.3)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)

@@ -9,7 +9,7 @@
 
 # Ignore rvm config files.
 .rvmrc
-.ruby-version
+.ruby-version*
 
 # Ignore bundler config
 /.bundle
