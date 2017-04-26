@@ -1,7 +1,7 @@
 # Global source lines are a security risk and should not be used as they can lead to gems being installed from unintended sources.
 # Wrap all "gem" calls within a "source" block.
 
-ruby '2.3.4'
+ruby '2.4.1'
 
 source 'https://rubygems.org' do
 
@@ -66,7 +66,8 @@ source 'https://rubygems.org' do
 
 	# Two factor authentication for Devise.
 	# https://github.com/Houdini/two_factor_authentication
-	gem 'two_factor_authentication'
+	# We need >= 2.0.0. But it's not available on rubygems.org as of April 23, 2017.
+	gem 'two_factor_authentication', git: 'https://github.com/Houdini/two_factor_authentication.git', ref: '82fb6b1'
 
 	# Generates a QR code from a URI, I hope.
 	# https://github.com/samvincent/rqrcode-rails3

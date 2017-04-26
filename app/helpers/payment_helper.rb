@@ -3,7 +3,7 @@ module PaymentHelper
 		case amount
 		when Money
 			humanized_money_with_symbol(amount)
-		when Fixnum
+		when Integer
 			format('$%.2f', (amount / 100.0))
 		when NilClass
 			'$0.00'

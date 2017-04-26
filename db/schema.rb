@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170406055354) do
+ActiveRecord::Schema.define(version: 20170425023256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -604,6 +604,9 @@ ActiveRecord::Schema.define(version: 20170406055354) do
     t.string   "encrypted_otp_secret_key",       limit: 255
     t.string   "encrypted_otp_secret_key_iv",    limit: 255
     t.string   "encrypted_otp_secret_key_salt",  limit: 255
+    t.string   "direct_otp"
+    t.datetime "direct_otp_sent_at"
+    t.datetime "totp_timestamp"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

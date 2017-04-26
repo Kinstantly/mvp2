@@ -1,4 +1,16 @@
 GIT
+  remote: https://github.com/Houdini/two_factor_authentication.git
+  revision: 82fb6b192cb8c2ad98442410e934343dabf78118
+  ref: 82fb6b1
+  specs:
+    two_factor_authentication (2.0.0)
+      devise
+      encryptor
+      rails (>= 3.1.1)
+      randexp
+      rotp (>= 3.2.0)
+
+GIT
   remote: https://github.com/dgynn/paperclip.git
   revision: c77ca6343699af2ed9435fa7b63d59cb9843af53
   branch: interpolations_tuning
@@ -145,7 +157,7 @@ GEM
     email_spec (1.6.0)
       launchy (~> 2.1)
       mail (~> 2.2)
-    encryptor (2.0.0)
+    encryptor (3.0.0)
     erubis (2.7.0)
     excon (0.45.4)
     execjs (2.7.0)
@@ -321,7 +333,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rotp (2.1.1)
+    rotp (3.3.0)
     rqrcode (0.10.1)
       chunky_png (~> 1.0)
     rqrcode-rails3 (0.1.7)
@@ -394,12 +406,6 @@ GEM
     thor (0.19.4)
     thread_safe (0.3.6)
     tilt (2.0.5)
-    two_factor_authentication (1.1.5)
-      devise
-      encryptor
-      rails (>= 3.1.1)
-      randexp
-      rotp
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
@@ -505,7 +511,7 @@ DEPENDENCIES
   whenever!
 
 RUBY VERSION
-   ruby 2.3.4p301
+   ruby 2.4.1p111
 
 BUNDLED WITH
    1.14.6

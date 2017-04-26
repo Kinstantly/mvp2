@@ -19,13 +19,16 @@ FactoryGirl.define do
 		}
 		
 		after(:create) { |user, evaluator|
-			# two_factor_authentication automatically sets up a otp_secret_key which then requires doing
-			# the two-factor authentication step during sign-ins.  We don't want to mess with that for most tests.
+			# If we have a value for user.otp_secret_key (two_factor_authentication),
+			# then we must do the two-factor authentication step during sign-ins.
+			# We don't want to mess with that for most tests.
 			# So don't require two-factor authentication unless so specified.
-			unless evaluator.require_two_factor_authentication
+			if evaluator.require_two_factor_authentication
+				user.reset_otp_secret_key
+			else
 				user.otp_secret_key = nil
-				user.save
 			end
+			user.save
 		}
 		
 		profile

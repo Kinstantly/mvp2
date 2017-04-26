@@ -11,3 +11,6 @@
 			.buttons
 				= submit_tag t('views.two_factor_authentication.submit'), data: { disable_with: t('views.two_factor_authentication.submit_disable') }, class: 'highlight'
 				= link_to t('views.two_factor_authentication.cancel'), destroy_user_session_path, method: :delete, class: 'cancel'
+
+:coffeescript
+	$('input#otp_code').focus()

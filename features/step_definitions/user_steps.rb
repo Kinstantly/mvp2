@@ -139,6 +139,12 @@ def load_user(who)
 	end
 end
 
+def otp_code_for(user)
+	if otp_secret_key = user.otp_secret_key
+		ROTP::TOTP.new(otp_secret_key, digits: user.class.otp_length).now
+	end
+end
+
 ### GIVEN ###
 Given /^I am not logged in$/ do
   visit '/users/sign_out'
@@ -394,12 +400,12 @@ When /^I click on the sign[- ]?up button$/ do
 end
 
 When /^I submit the correct one-time password$/ do
-	fill_in 'otp_code', with: @user.otp_code
+	fill_in 'otp_code', with: otp_code_for(@user)
 	click_button I18n.t('views.two_factor_authentication.submit')
 end
 
 When /^I submit an incorrect one-time password$/ do
-	fill_in 'otp_code', with: sprintf('%06d', (@user.otp_code.to_i + 1))
+	fill_in 'otp_code', with: sprintf('%06d', (otp_code_for(@user).to_i + 1))
 	click_button I18n.t('views.two_factor_authentication.submit')
 end
 

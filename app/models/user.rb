@@ -346,7 +346,7 @@ class User < ActiveRecord::Base
 	end
 	
 	def reset_otp_secret_key
-		self.otp_secret_key = ROTP::Base32.random_base32
+		self.otp_secret_key = generate_totp_secret
 	end
 	
 	# Public class methods.
