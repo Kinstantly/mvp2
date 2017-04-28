@@ -76,6 +76,8 @@
 					%h4= t 'views.announcement.edit.search_result_area_explanation'
 					.search-result-announcement-area
 						- displayable_locations = @profile.displayable_sorted_locations
+						-# Ensure that we include any PaymentProfileAnnouncement by preloading that type.
+						- payment_announcement = @profile.payment_profile_announcements.all_search_results.first
 						- first_announcement = @profile.profile_announcements.all_search_results.first
 						- second_announcement = @profile.profile_announcements.all_search_results.second
 						- second_display_announcement = display_announcement == first_announcement ? second_announcement : first_announcement

@@ -26,13 +26,15 @@
 				- displayable_locations = profile.displayable_sorted_locations
 				- locations_array[profile_id]['locations'] = displayable_locations
 				- locations_count += displayable_locations.count
-
-				- first_announcement = profile.profile_announcements.search_results_to_display.first
-				- second_announcement = profile.profile_announcements.search_results_to_display.second
-				- center_announcement = get_center_announcement(first_announcement, second_announcement)
-				- upper_right_announcement = get_upper_right_announcement(first_announcement, second_announcement)
-
+				
 				- cache ['search_result', profile] do
+					-# Ensure that we include any PaymentProfileAnnouncement by preloading that type.
+					- payment_announcement = profile.payment_profile_announcements.search_results_to_display.first
+					- first_announcement = profile.profile_announcements.search_results_to_display.first
+					- second_announcement = profile.profile_announcements.search_results_to_display.second
+					- center_announcement = get_center_announcement(first_announcement, second_announcement)
+					- upper_right_announcement = get_upper_right_announcement(first_announcement, second_announcement)
+					
 					%li.result{id: "result#{profile_id}", "data-profile-id" => profile_id}
 						%aside.photo
 							= image_tag profile.profile_photo.url(:medium), onclick: "document.location='#{profile_path(profile)}'", alt: "#{profile.company_otherwise_display_name}", onerror: "this.src = '#{image_path(Profile::DEFAULT_PHOTO_PATH)}'"

@@ -633,8 +633,10 @@ class Profile < ActiveRecord::Base
 		user.try(:is_payable?) ? user : nil
 	end
 
+	# Find the specified instance of ProfileAnnouncement or PaymentProfileAnnouncement.
+	# You'd think it would be enough to look in profile_announcements, but sometimes we need to look in payment_profile_announcements too.
 	def find_profile_announcement(id)
-		profile_announcements.detect{|a| a.id == id}
+		profile_announcements.detect{|a| a.id == id} || payment_profile_announcements.detect{|a| a.id == id}
 	end
 	
 	private
