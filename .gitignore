@@ -48,5 +48,8 @@
 # Ignore rails_footnotes local configuration.
 /.rails_footnotes
 
+# Debugger files.
+/.byebug_history
+
 # With Rails 4.0 and up, bin stubs are version controlled.
 # /bin

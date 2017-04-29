@@ -26,6 +26,10 @@ class ApplicationController < ActionController::Base
 	rescue_from CanCan::AccessDenied, with: :not_found
 	rescue_from ActiveRecord::RecordNotFound, with: :not_found
 	
+	# Possibly an unacceptable request, e.g., "Accept: image/gif" in home page request.
+	# See https://github.com/rails/rails/issues/4127#issuecomment-10247450
+	rescue_from ActionView::MissingTemplate, with: :not_acceptable if Rails.env.production?
+	
 	# Redirect to an appropriate location with a message.
 	# To be used when a resource or page is not found or we have denied access to some part of the site.
 	def not_found(exception=nil)
@@ -47,6 +51,18 @@ class ApplicationController < ActionController::Base
 			set_flash_message :alert, :page_not_found_sign_in
 			redirect_to new_user_session_path
 		end
+	end
+	
+	# Log the problem and return status 406: Not Acceptable.
+	# https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.7
+	def not_acceptable(exception=nil)
+		message = if exception
+			"#{exception.class}: #{exception.message}"
+		else
+			''
+		end
+		logger.error "Request not acceptable: fullpath=\"#{request.fullpath}\" remote_ip=#{request.remote_ip}. #{message}"
+		render nothing: true, status: 406
 	end
 
 	# After sign-up or sign-in and if we are a User,
