@@ -212,7 +212,12 @@ Rails.application.routes.draw do
 	end
 	
 	# Displayed teasers that click through to stories.
-	resources :story_teasers
+	resources :story_teasers do
+		member do
+			patch :activate
+			patch :deactivate
+		end
+	end
 	
 	# Email delivery events.  Used to track email deliveries.
 	# Can be associated with contact_blockers to prevent future deliveries to the specified email address.

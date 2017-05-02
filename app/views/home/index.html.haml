@@ -37,13 +37,16 @@
 			-# %header.banner-header
 			-# 	%h1= t 'company.tagline'
 			%ul#blog-teasers
-				- StoryTeaser.active_only.order_by_display_order.limit(3).each_with_index do |teaser, i|
-					%li{id: "story_teaser_#{i+1}", class: teaser.css_class}
-						%a{href: teaser.url, class: 'teaser-image'}
-							%img{src: "https://d27zr285hfv284.cloudfront.net/images/directory/home/#{teaser.image_file}", class: 'slide', alt: teaser.title.html_safe}
-						.caption
-							%a{href: teaser.url}
-								= teaser.title.html_safe
+				- story_teasers = StoryTeaser.active_only.order_by_display_order.limit(3)
+				- cache story_teasers do
+					- story_teasers.each_with_index do |teaser, i|
+						- tracked_url = teaser.tracked_url('directory_home', 'banner', i+1)
+						%li{id: "story_teaser_#{i+1}", class: story_teaser_css_class(teaser, i == 0)}
+							%a{href: tracked_url, class: 'teaser-image'}
+								%img{src: "https://d27zr285hfv284.cloudfront.net/images/directory/home/#{teaser.image_file}", class: 'slide', alt: teaser.title.html_safe}
+							.caption
+								%a{href: tracked_url}
+									= teaser.title.html_safe
 			%a{href: (blog_url + '?utm_source=directory_home&utm_medium=banner&utm_content=arrow&utm_campaign=blog_home'), class: 'blog-teaser-right-nav'}
 				= t 'views.home.view.nav.blog'
 		#provider-search-browse.container.find-providers

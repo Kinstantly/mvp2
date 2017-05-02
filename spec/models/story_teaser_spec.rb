@@ -20,6 +20,26 @@ RSpec.describe StoryTeaser, :type => :model do
 		end
 	end
 	
+	it 'can be activated' do
+		story_teaser.active = false
+		story_teaser.save
+		expect {
+			story_teaser.activate
+		}.to change {
+			story_teaser.reload.active
+		}.from(false).to(true)
+	end
+	
+	it 'can be deactivated' do
+		story_teaser.active = true
+		story_teaser.save
+		expect {
+			story_teaser.deactivate
+		}.to change {
+			story_teaser.reload.active
+		}.from(true).to(false)
+	end
+	
 	it 'can be ordered by descending ID' do
 		id1 = (FactoryGirl.create :story_teaser).id
 		id2 = (FactoryGirl.create :story_teaser).id
@@ -62,5 +82,16 @@ RSpec.describe StoryTeaser, :type => :model do
 		}.to change {
 			StoryTeaser.active_only.include?(story_teaser)
 		}.from(false).to(true)
+	end
+	
+	it 'can create a tracked URL' do
+		post = 'peaceable-kingdom-donna-jaffe'
+		url = "https://blog.kinstantly.com/#{post}/"
+		source = 'directory_home'
+		medium = 'banner'
+		position = 1
+		tracked_url = "#{url}?utm_source=#{source}&utm_medium=#{medium}&utm_content=position_#{position}&utm_campaign=blog_#{post}"
+		story_teaser.url = url
+		expect(story_teaser.tracked_url(source, medium, position)).to eq tracked_url
 	end
 end

@@ -122,6 +122,28 @@ RSpec.describe StoryTeasersController, :type => :controller do
 		end
 	end
 
+	describe 'PATCH #activate' do
+		it 'activates the story_teaser' do
+			story_teaser = StoryTeaser.create! valid_attributes.merge(active: false)
+			expect {
+				patch :activate, id: story_teaser.to_param
+			}.to change {
+				StoryTeaser.active_only.count
+			}.by 1
+		end
+	end
+
+	describe 'PATCH #deactivate' do
+		it 'deactivates the story_teaser' do
+			story_teaser = StoryTeaser.create! valid_attributes.merge(active: true)
+			expect {
+				patch :deactivate, id: story_teaser.to_param
+			}.to change {
+				StoryTeaser.active_only.count
+			}.by -1
+		end
+	end
+
 	describe "DELETE #destroy" do
 		it "destroys the requested story_teaser" do
 			story_teaser = StoryTeaser.create! valid_attributes

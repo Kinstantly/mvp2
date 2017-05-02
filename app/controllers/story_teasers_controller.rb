@@ -66,6 +66,34 @@ class StoryTeasersController < ApplicationController
 		end
 	end
 
+	# PATCH /story_teasers/1/activate
+	# PATCH /story_teasers/1/activate.json
+	def activate
+		respond_to do |format|
+			if @story_teaser.activate
+				format.html { redirect_to @story_teaser, notice: 'Story teaser was successfully activated.' }
+				format.json { head :no_content }
+			else
+				format.html { render action: "edit" }
+				format.json { render json: @story_teaser.errors, status: :unprocessable_entity }
+			end
+		end
+	end
+
+	# PATCH /story_teasers/1/deactivate
+	# PATCH /story_teasers/1/deactivate.json
+	def deactivate
+		respond_to do |format|
+			if @story_teaser.deactivate
+				format.html { redirect_to @story_teaser, notice: 'Story teaser was successfully deactivated.' }
+				format.json { head :no_content }
+			else
+				format.html { render action: "edit" }
+				format.json { render json: @story_teaser.errors, status: :unprocessable_entity }
+			end
+		end
+	end
+
 	# DELETE /story_teasers/1
 	# DELETE /story_teasers/1.json
 	def destroy

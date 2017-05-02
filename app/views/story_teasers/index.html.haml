@@ -21,6 +21,7 @@
 					%th.small
 					%th.small
 					%th.small
+					%th.small
 			%tbody
 				- @story_teasers.each do |story_teaser|
 					%tr
@@ -32,6 +33,10 @@
 						%td= story_teaser.css_class
 						%td.small= link_to 'Show', story_teaser
 						%td.small= link_to 'Edit', edit_story_teaser_path(story_teaser)
+						- if story_teaser.active
+							%td.small= link_to 'Deactivate', deactivate_story_teaser_path(story_teaser), method: :patch
+						-else
+							%td.small= link_to 'Activate', activate_story_teaser_path(story_teaser), method: :patch
 						%td.small= link_to 'Remove', story_teaser, method: :delete, data: { confirm: t('views.story_teaser.edit.confirm_destroy', title: story_teaser.title) }
 		.pagination_nav
 			= render partial: 'shared/per_page_form', locals: { record_type: StoryTeaser }

@@ -27,6 +27,18 @@ RSpec.describe StoryTeasersController, :type => :routing do
 			expect(:put => "/story_teasers/1").to route_to("story_teasers#update", :id => "1")
 		end
 
+		it "routes to #update via PATCH" do
+			expect(:patch => "/story_teasers/1").to route_to("story_teasers#update", :id => "1")
+		end
+
+		it "routes to #activate via PATCH" do
+			expect(:patch => "/story_teasers/1/activate").to route_to("story_teasers#activate", :id => "1")
+		end
+
+		it "routes to #deactivate via PATCH" do
+			expect(:patch => "/story_teasers/1/deactivate").to route_to("story_teasers#deactivate", :id => "1")
+		end
+
 		it "routes to #destroy" do
 			expect(:delete => "/story_teasers/1").to route_to("story_teasers#destroy", :id => "1")
 		end

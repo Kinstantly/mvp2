@@ -45,6 +45,16 @@ RSpec.describe 'StoryTeasers', :type => :request do
 			expect(response).to have_http_status(302) # redirects to show view
 		end
 		
+		it 'requests activation of a story teaser' do
+			patch activate_story_teaser_path(story_teaser)
+			expect(response).to have_http_status(302) # redirects to show view
+		end
+		
+		it 'requests deactivation of a story teaser' do
+			patch deactivate_story_teaser_path(story_teaser)
+			expect(response).to have_http_status(302) # redirects to show view
+		end
+		
 		it 'requests deletion of a story teaser' do
 			delete story_teaser_path story_teaser
 			expect(response).to have_http_status(302) # redirects to list view

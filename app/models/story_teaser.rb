@@ -30,4 +30,27 @@ class StoryTeaser < ActiveRecord::Base
 	scope :order_by_active_display_order, -> { order('active DESC, display_order ASC, id DESC') }
 	scope :order_by_display_order, -> { order('display_order ASC') }
 	scope :active_only, -> { where(active: true) }
+	
+	def tracked_url(source, medium, position)
+		if url.present?
+			campaign = url.gsub(%r{/?(\?.*)?\z}, '').gsub(%r{\A.+/}, '')
+			tracked_url = url.include?('?') ? "#{url}&" : "#{url}?"
+			tracked_url << "utm_source=#{source}"
+			tracked_url << "&utm_medium=#{medium}"
+			tracked_url << "&utm_content=position_#{position}"
+			tracked_url << "&utm_campaign=blog_#{campaign}"
+		else 
+			url
+		end
+	end
+	
+	def activate
+		self.active = true
+		save
+	end
+	
+	def deactivate
+		self.active = false
+		save
+	end
 end
