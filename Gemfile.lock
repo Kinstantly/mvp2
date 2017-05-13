@@ -23,6 +23,12 @@ GIT
       mimemagic (= 0.3.0)
 
 GIT
+  remote: https://github.com/edsimpson/recaptcha-mailhide.git
+  revision: 0319de25bdd2ceb1798e36d8df0c41f7cc06ee2e
+  specs:
+    recaptcha-mailhide (1.0.1)
+
+GIT
   remote: https://github.com/edsimpson/sunspot.git
   revision: 844e49dbeb68ec40bc09572bc4919fc69af9a98f
   specs:
@@ -322,7 +328,6 @@ GEM
     raindrops (0.13.0)
     rake (10.5.0)
     randexp (0.1.7)
-    recaptcha-mailhide (0.1.1)
     request_store (1.3.1)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)

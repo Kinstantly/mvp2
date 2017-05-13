@@ -224,8 +224,10 @@ source 'https://rubygems.org' do
 	# https://github.com/heroku/rails_12factor
 	gem 'rails_12factor', group: :production
 
-	#Support for ReCAPTCHA's Mailhide API
-	gem 'recaptcha-mailhide'
+	# Support for ReCAPTCHA's Mailhide API
+	# https://github.com/pilaf/recaptcha-mailhide
+	# Use the deprecation patch in our version. A pull request has been submitted.
+	gem 'recaptcha-mailhide', git: 'https://github.com/edsimpson/recaptcha-mailhide.git'
 
 	# Custom categories and filters for Sendgrid
 	gem 'sendgrid'
