@@ -283,6 +283,9 @@ $button_corner_radius: 4px;
 @mixin mobile-popover {
 	@media screen and (max-width: 480px) {
 		width: 80%;
+		&.mobile-popover-wide {
+			width: 95%;
+		}
 		form, h1, .generic_form {
 			width: 100%;
 		}

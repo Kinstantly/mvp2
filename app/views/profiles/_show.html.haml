@@ -40,8 +40,14 @@
 								%span.short.url_icon= profile_linked_website @profile, strip_url(@profile.url), 24
 								%span.long.url_icon= profile_linked_website @profile, strip_url(@profile.url), 40
 						- if @profile.email.present?
+							#captcha_email
+								.popover.mobile-popover-wide
+									.close-popover-link
+										= link_to t('views.profile.view.close'), '#', class: 'cancel'
+									.cancel.close-popover-button
+									%iframe{name: 'captcha_email_frame'}
 							%li.email
-								%span.email_icon= profile_captcha_email @profile
+								%span.email_icon= profile_captcha_email @profile, target: 'captcha_email_frame', onclick: 'my_vars.f.open_captcha_email(this)'
 								%span.info.tooltip{:href => "#"}
 									
 									.help_popover= t 'views.profile.view.email_help'
@@ -303,3 +309,22 @@
 			$(document).on 'click', my_vars.f.outer_close_profile_claim_form
 			false
 		
+		# Captcha pop-over to reveal email address.
+		my_vars.f.open_captcha_email = (e) ->
+			container = $('#captcha_email').addClass 'active'
+			popover = $('.popover', container).css 'padding', '36px 1px 2px 4px'
+			place_popover popover, 10
+			$('iframe', popover).css width: '98%', height: '336px'
+			$(document).on 'click', my_vars.f.outer_close_captcha_email
+			false
+		# Close captcha pop-over.
+		my_vars.f.close_captcha_email = (e) ->
+			$('#captcha_email').removeClass 'active'
+			$(document).off 'click', my_vars.f.outer_close_captcha_email
+			false
+		$('#captcha_email .cancel').on 'click', (e) ->
+			my_vars.f.close_captcha_email(e)
+		# Close if clicked outside the captcha pop-over
+		my_vars.f.outer_close_captcha_email = (e) ->
+			if $(e.target).closest('#captcha_email,.email_icon').length == 0
+				my_vars.f.close_captcha_email(e)
