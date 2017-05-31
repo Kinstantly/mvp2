@@ -7,7 +7,13 @@ SitemapGenerator::Sitemap.public_path = 'tmp/'
 SitemapGenerator::Sitemap.sitemaps_path = Rails.configuration.sitemap_sitemaps_path
 SitemapGenerator::Sitemap.adapter = SitemapGenerator::S3Adapter.new
 
+# Override defaults for the root path. See below.
+SitemapGenerator::Sitemap.include_root = false
+
 SitemapGenerator::Sitemap.create do
+	# Override defaults for the root path.
+	add root_path, priority: 1.0, changefreq: 'daily'
+	
 	add provider_sign_up_path, changefreq: 'monthly'
 	add new_user_registration_path, changefreq: 'monthly'
 	add about_path, changefreq: 'monthly'
