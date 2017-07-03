@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 	
 	get 'about' => 'home#about'
 	get 'contact' => 'home#contact'
-	get 'faq' => 'home#faq'
+	# get 'faq' => 'home#faq'
 	get 'terms' => 'home#terms'
 	get 'privacy' => 'home#privacy'
 	get 'admin' => 'home#admin'

@@ -35,7 +35,7 @@ end
 
 # Cucumber/Capybara doesn't really work with redirecting to an offsite page.
 # So test with a local page; specifying the path is sufficient.
-Rails.configuration.provider_registration_preconfirmation_url = '/member/awaiting_confirmation'
+Rails.configuration.provider_registration_preconfirmation_page = '/member/awaiting_confirmation'
 
 # Make sure the search index is clean before running a search scenario.
 Before('@search') do

@@ -22,14 +22,23 @@ module Mvp2
     config.claim_profile_tracking_parameter = {claim_profile: 't'}
     
     # Provider sell page.
-    config.provider_sell_url = ENV['PROVIDER_SELL_URL'].presence || 'http://lp.kinstantly.com/pro/'
+    config.provider_sell_page = ENV['PROVIDER_SELL_PAGE'].presence || 'https://blog.kinstantly.com/pro-how-it-works/'
     
     # About Us page. (Named 'about_page' to avoid conflict with existing 'about_url'.)
-    config.about_page = ENV['ABOUT_PAGE'].presence || 'http://lp.kinstantly.com/about/'
+    config.about_page = ENV['ABOUT_PAGE'].presence || 'https://blog.kinstantly.com/about/'
+    
+    # Contact Us page.
+    config.contact_page = ENV['CONTACT_PAGE'].presence || 'https://blog.kinstantly.com/contact-us/'
+    
+    # Terms of Use page.
+    config.terms_page = ENV['TERMS_PAGE'].presence || 'https://blog.kinstantly.com/terms-of-use/'
+    
+    # Privacy page.
+    config.privacy_page = ENV['PRIVACY_PAGE'].presence || 'https://blog.kinstantly.com/privacy/'
     
     # Where to send a provider just after they register but before they confirm their email address.
     # This page should contain instructions for confirming their registration, e.g., check their email.
-    config.provider_registration_preconfirmation_url = ENV['PROVIDER_REGISTRATION_PRECONFIRMATION_URL'].presence || 'http://lp.kinstantly.com/pro-thanks'
+    config.provider_registration_preconfirmation_page = ENV['PROVIDER_REGISTRATION_PRECONFIRMATION_PAGE'].presence || 'https://blog.kinstantly.com/pro-thanks/'
     
     # API key used by the Geocoder gem.
     config.geocoder_api_key = ENV['GEOCODER_API_KEY'].presence

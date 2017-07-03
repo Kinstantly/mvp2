@@ -8,16 +8,28 @@ module SiteConfigurationHelpers
 			Rails.configuration.claim_profile_tracking_parameter
 		end
 		
-		def provider_sell_url
-			Rails.configuration.provider_sell_url
+		def provider_sell_page
+			Rails.configuration.provider_sell_page
 		end
 		
 		def about_page
 			Rails.configuration.about_page
 		end
 		
-		def provider_registration_preconfirmation_url
-			Rails.configuration.provider_registration_preconfirmation_url
+		def contact_page
+			Rails.configuration.contact_page
+		end
+		
+		def terms_page
+			Rails.configuration.terms_page
+		end
+		
+		def privacy_page
+			Rails.configuration.privacy_page
+		end
+		
+		def provider_registration_preconfirmation_page
+			Rails.configuration.provider_registration_preconfirmation_page
 		end
 		
 		def stripe_live_mode?

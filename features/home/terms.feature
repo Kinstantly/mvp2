@@ -3,13 +3,7 @@ Feature: Terms of Use
 	As a client
 	I want to see this service's terms of use
 
-	Scenario: show terms of use
+	Scenario: display a "Terms of use" link
 		Given I am not logged in
-		When I visit the "/terms" page
-		Then I should see explanations of our terms of use
-
-	@private_site
-	Scenario: show terms of use when running as a private site
-		Given I am not logged in
-		When I visit the "/terms" page
-		Then I should see explanations of our terms of use
+		When I visit the "/" page
+		Then I should see "Terms of use" on the page

@@ -22,11 +22,23 @@ class HomeController < ApplicationController
 	end
 	
 	def pro
-		redirect_to provider_sell_url
+		redirect_to provider_sell_page
 	end
 	
 	def about
 		redirect_to about_page
+	end
+	
+	def contact
+		redirect_to contact_page
+	end
+	
+	def terms
+		redirect_to terms_page
+	end
+	
+	def privacy
+		redirect_to privacy_page
 	end
 	
 	private

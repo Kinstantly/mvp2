@@ -3,13 +3,7 @@ Feature: Privacy Policy
 	As a client
 	I want to see this service's privacy policy
 
-	Scenario: show privacy policy
+	Scenario: display a "Privacy policy" link
 		Given I am not logged in
-		When I visit the "/privacy" page
-		Then I should see explanations of our privacy policy
-
-	@private_site
-	Scenario: show privacy policy when running as a private site
-		Given I am not logged in
-		When I visit the "/privacy" page
-		Then I should see explanations of our privacy policy
+		When I visit the "/" page
+		Then I should see "Privacy policy" on the page

@@ -3,13 +3,7 @@ Feature: Contact
 	As an expert or client
 	I want to use a contact for me ask a question or make a comment
 
-	Scenario: show contact-us and/or feedback form
+	Scenario: display a "Contact us" link
 		Given I am not logged in
-		When I visit the "/contact" page
-		Then I should see contact information
-
-	@private_site
-	Scenario: show contact-us and/or feedback form when running as a private site
-		Given I am not logged in
-		When I visit the "/contact" page
-		Then I should see contact information
+		When I visit the "/" page
+		Then I should see "Contact us" on the page

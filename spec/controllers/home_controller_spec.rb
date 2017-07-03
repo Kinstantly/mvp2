@@ -50,12 +50,8 @@ describe HomeController, :type => :controller do
 			get :contact
 		end
 		
-		it "renders the view" do
-			expect(response).to render_template 'contact'
-		end
-		
-		it "renders the view when running as a private site", private_site: true do
-			expect(response).to render_template 'contact'
+		it "redirects to the Contact Us page" do
+			expect(response).to redirect_to contact_page
 		end
 	end
 	
@@ -64,12 +60,8 @@ describe HomeController, :type => :controller do
 			get :privacy
 		end
 		
-		it "renders the view" do
-			expect(response).to render_template 'privacy'
-		end
-		
-		it "renders the view when running as a private site", private_site: true do
-			expect(response).to render_template 'privacy'
+		it "redirects to the Privacy page" do
+			expect(response).to redirect_to privacy_page
 		end
 	end
 	
@@ -78,12 +70,8 @@ describe HomeController, :type => :controller do
 			get :terms
 		end
 		
-		it "renders the view" do
-			expect(response).to render_template 'terms'
-		end
-		
-		it "renders the view when running as a private site", private_site: true do
-			expect(response).to render_template 'terms'
+		it "redirects to the Terms of Use page" do
+			expect(response).to redirect_to terms_page
 		end
 	end
 
@@ -103,7 +91,7 @@ describe HomeController, :type => :controller do
 		end
 
 		it "redirects to the provider sell page" do
-			expect(response).to redirect_to provider_sell_url
+			expect(response).to redirect_to provider_sell_page
 		end
 	end
 end

@@ -70,7 +70,7 @@ describe "User registration and editing", :type => :request do
 			password_confirmation: provider_attributes[:password_confirmation]
 		} }
 		let(:confirmation_url) { 
-			provider_registration_preconfirmation_url + '?email_pending_confirmation=t&provider=t'
+			provider_registration_preconfirmation_page + '?email_pending_confirmation=t&provider=t'
 		}
 		
 		it "redirects to the sign-up confirmation page" do
