@@ -6,7 +6,10 @@ class Rack::Attack
 	# > Rails.cache.write 'deny_request_from_ip_address_1.2.3.4', true, expires_in: 5.days
 	# To remove the block:
 	# > Rails.cache.delete 'deny_request_from_ip_address_1.2.3.4'
+	# You can also block a class C network:
+	# > Rails.cache.write 'deny_request_from_ip_address_1.2.3', true, expires_in: 5.days
 	blacklist('deny request from IP address') do |request|
-		Rails.cache.fetch "deny_request_from_ip_address_#{request.ip}"
+		key = "deny_request_from_ip_address_#{request.ip}"
+		Rails.cache.fetch(key).present? or Rails.cache.fetch(key.sub(/\.\d+\z/, '')).present?
 	end
 end
