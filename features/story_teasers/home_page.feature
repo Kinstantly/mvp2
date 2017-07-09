@@ -7,7 +7,7 @@ Feature: Story teasers on the home page
 	Background:
 		Given I am logged in as an administrator
 
-	Scenario: Add a story teaser to the home page
+	Scenario: Adding a story teaser to the home page has been disabled
 		When I visit the "/story_teasers/new" page
 			And I check "Active"
 			And I enter "1" in the "Display order" field
@@ -17,4 +17,4 @@ Feature: Story teasers on the home page
 			And I click on the "Create Story teaser" button
 		Then I should see "Story teaser was successfully created" on the page
 			And I visit the "/" page
-		Then I should see "This toddler makes coffee for his dad but doesn't drink it" on the page
+		Then I should not see "This toddler makes coffee for his dad but doesn't drink it" on the page
