@@ -170,6 +170,8 @@ module Mvp2
     
     # For blocking & throttling abusive requests. See config/initializers/rack_attack.rb.
     config.middleware.use Rack::Attack
+    # Do not specify a default value. That way we can turn off throttling or complete rapid search tests.
+    config.max_search_requests_per_minute = ENV['MAX_SEARCH_REQUESTS_PER_MINUTE']
     
     # Cross-Origin Resource Sharing (CORS).
     # Needed to serve assets from a CDN (CloudFront), in particular, fonts.

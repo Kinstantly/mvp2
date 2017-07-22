@@ -282,7 +282,7 @@ GEM
       highline (~> 1.6.1)
       options (~> 2.3.0)
     rack (1.6.8)
-    rack-attack (4.3.0)
+    rack-attack (5.0.1)
       rack
     rack-cors (0.4.0)
     rack-raw-upload (1.1.1)
@@ -509,4 +509,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.15.1
+   1.15.2
