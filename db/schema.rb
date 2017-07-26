@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170425023256) do
+ActiveRecord::Schema.define(version: 20170726023553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -555,58 +555,60 @@ ActiveRecord::Schema.define(version: 20170425023256) do
   add_index "subscriptions", ["subscribed"], name: "index_subscriptions_on_subscribed", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                          limit: 255, default: "",    null: false
-    t.string   "encrypted_password",             limit: 255, default: "",    null: false
-    t.string   "reset_password_token",           limit: 255
+    t.string   "email",                           limit: 255, default: "",    null: false
+    t.string   "encrypted_password",              limit: 255, default: "",    null: false
+    t.string   "reset_password_token",            limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                              default: 0
+    t.integer  "sign_in_count",                               default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",             limit: 255
-    t.string   "last_sign_in_ip",                limit: 255
-    t.datetime "created_at",                                                 null: false
-    t.datetime "updated_at",                                                 null: false
+    t.string   "current_sign_in_ip",              limit: 255
+    t.string   "last_sign_in_ip",                 limit: 255
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
     t.text     "roles"
-    t.string   "phone",                          limit: 255
-    t.integer  "failed_attempts",                            default: 0
-    t.string   "unlock_token",                   limit: 255
+    t.string   "phone",                           limit: 255
+    t.integer  "failed_attempts",                             default: 0
+    t.string   "unlock_token",                    limit: 255
     t.datetime "locked_at"
-    t.string   "username",                       limit: 255
-    t.string   "confirmation_token",             limit: 255
+    t.string   "username",                        limit: 255
+    t.string   "confirmation_token",              limit: 255
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.string   "unconfirmed_email",              limit: 255
+    t.string   "unconfirmed_email",               limit: 255
     t.datetime "welcome_sent_at"
-    t.integer  "reviews_given_count",                        default: 0,     null: false
+    t.integer  "reviews_given_count",                         default: 0,     null: false
     t.datetime "admin_confirmation_sent_at"
     t.integer  "admin_confirmation_sent_by_id"
-    t.string   "registration_special_code",      limit: 255
-    t.boolean  "parent_marketing_emails",                    default: false
-    t.boolean  "parent_newsletters",                         default: false
-    t.boolean  "provider_marketing_emails",                  default: false
-    t.boolean  "provider_newsletters",                       default: false
-    t.boolean  "profile_help",                               default: true
-    t.boolean  "signed_up_from_blog",                        default: false
-    t.string   "postal_code",                    limit: 255
-    t.string   "parent_marketing_emails_leid",   limit: 255
-    t.string   "parent_newsletters_leid",        limit: 255
-    t.string   "provider_marketing_emails_leid", limit: 255
-    t.string   "provider_newsletters_leid",      limit: 255
-    t.boolean  "signed_up_for_mailing_lists",                default: false
-    t.string   "parent_newsletters_stage1_leid", limit: 255
-    t.boolean  "parent_newsletters_stage1",                  default: false
-    t.string   "parent_newsletters_stage2_leid", limit: 255
-    t.boolean  "parent_newsletters_stage2",                  default: false
-    t.string   "parent_newsletters_stage3_leid", limit: 255
-    t.boolean  "parent_newsletters_stage3",                  default: false
-    t.integer  "second_factor_attempts_count",               default: 0
-    t.string   "encrypted_otp_secret_key",       limit: 255
-    t.string   "encrypted_otp_secret_key_iv",    limit: 255
-    t.string   "encrypted_otp_secret_key_salt",  limit: 255
+    t.string   "registration_special_code",       limit: 255
+    t.boolean  "parent_marketing_emails",                     default: false
+    t.boolean  "parent_newsletters",                          default: false
+    t.boolean  "provider_marketing_emails",                   default: false
+    t.boolean  "provider_newsletters",                        default: false
+    t.boolean  "profile_help",                                default: true
+    t.boolean  "signed_up_from_blog",                         default: false
+    t.string   "postal_code",                     limit: 255
+    t.string   "parent_marketing_emails_leid",    limit: 255
+    t.string   "parent_newsletters_leid",         limit: 255
+    t.string   "provider_marketing_emails_leid",  limit: 255
+    t.string   "provider_newsletters_leid",       limit: 255
+    t.boolean  "signed_up_for_mailing_lists",                 default: false
+    t.string   "parent_newsletters_stage1_leid",  limit: 255
+    t.boolean  "parent_newsletters_stage1",                   default: false
+    t.string   "parent_newsletters_stage2_leid",  limit: 255
+    t.boolean  "parent_newsletters_stage2",                   default: false
+    t.string   "parent_newsletters_stage3_leid",  limit: 255
+    t.boolean  "parent_newsletters_stage3",                   default: false
+    t.integer  "second_factor_attempts_count",                default: 0
+    t.string   "encrypted_otp_secret_key",        limit: 255
+    t.string   "encrypted_otp_secret_key_iv",     limit: 255
+    t.string   "encrypted_otp_secret_key_salt",   limit: 255
     t.string   "direct_otp"
     t.datetime "direct_otp_sent_at"
     t.datetime "totp_timestamp"
+    t.boolean  "wants_info_about_online_classes",             default: false
+    t.boolean  "wants_to_be_interviewed",                     default: false
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

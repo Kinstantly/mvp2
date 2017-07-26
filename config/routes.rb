@@ -71,10 +71,11 @@ Rails.application.routes.draw do
 	get 'claim_profile/:token/confirm' => 'users#force_claim_profile', as: :force_claim_user_profile
 	
 	# Admin can list and view user accounts.
-	# User can update profile_help attribute.
+	# User can update a limited set of attributes.
 	resources :users, only: [:index, :show] do
 		member do
 			patch 'update_profile_help'
+			patch 'formlet_update'
 		end
 	end
 	

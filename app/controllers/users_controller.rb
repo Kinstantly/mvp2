@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	layout 'plain'
-	respond_to :js, only: :update_profile_help
+	respond_to :js, only: [:update_profile_help, :formlet_update]
 
 	before_action :authenticate_user!
 	before_action :set_up_user, only: [:edit_subscriptions, :update_subscriptions, :view_profile, :update_profile, :edit_profile]
@@ -75,6 +75,16 @@ class UsersController < ApplicationController
 			@update_succeeded = true
 		end
 		render template: "profiles/profile_help_formlet_update"
+	end
+	
+	def formlet_update
+		@formlet = params[:formlet]
+		if @formlet.blank? or "#{@formlet}" =~ /[.\/]/
+			set_flash_message :alert, :update_error
+		else
+			@update_succeeded = @user.update_attributes(user_params)
+		end
+		respond_with @user, layout: false
 	end
 
 	private

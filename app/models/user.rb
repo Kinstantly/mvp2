@@ -17,7 +17,8 @@ class User < ActiveRecord::Base
 	# Setup accessible (or protected) attributes for your model
 	PASSWORDLESS_ACCESSIBLE_ATTRIBUTES = [
 		:provider_marketing_emails, :provider_newsletters,
-		:parent_newsletters, :profile_help
+		:parent_newsletters, :profile_help,
+		:wants_info_about_online_classes, :wants_to_be_interviewed
 	]
 	PASSWORD_ACCESSIBLE_ATTRIBUTES = [
 		*PASSWORDLESS_ACCESSIBLE_ATTRIBUTES,

@@ -550,3 +550,11 @@ end
 Then /^I should have run out of two-factor authentication attempts$/ do
   expect(page).to have_content I18n.t('devise.two_factor_authentication.max_login_attempts_reached')
 end
+
+Then /^I should be asking for information about online classes on Kinstantly$/ do
+	expect(@user.reload.wants_info_about_online_classes).to be true
+end
+
+Then /^I should be indicating that I want to be interviewed by Kinstantly$/ do
+	expect(@user.reload.wants_to_be_interviewed).to be true
+end

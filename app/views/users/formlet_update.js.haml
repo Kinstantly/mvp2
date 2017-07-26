@@ -1,0 +1,8 @@
+- if @update_succeeded.nil?
+	- url = @user.is_provider? ? edit_profile_path(@user.profile) : edit_user_registration_path
+	window.location.replace("#{url}");
+- else
+	- if @update_succeeded
+		my_vars.f.close_formlets();
+	- formlet = escape_javascript "#{@formlet}".strip.gsub(/[.\/]/, '')
+	$('##{formlet}').html('#{escape_javascript(render partial: formlet+'_formlet')}');
