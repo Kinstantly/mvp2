@@ -9,6 +9,9 @@ class UsersController < ApplicationController
 	# *After* profile is loaded, ensure it has at least one location.
 	before_action :require_location_in_profile, only: [:edit_profile]
 	
+	# Notify admin when user changes status via a formlet.
+	after_action :notify_admin_on_user_change, only: [:formlet_update]
+	
 	def index
 		@order_by_options = { recent: 'recent', email: 'email' }
 		case params[:order_by]
@@ -94,6 +97,13 @@ class UsersController < ApplicationController
 		if @user.is_provider?
 			@user.build_profile unless @user.profile
 			@profile = @user.profile
+		end
+	end
+	
+	def notify_admin_on_user_change
+		if @user.errors.empty? and !current_user.profile_editor?
+			changes = @user.previous_changes
+			AdminMailer.wants_info_about_online_classes(@user).deliver_now if changes['wants_info_about_online_classes']
 		end
 	end
 	

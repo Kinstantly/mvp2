@@ -1,0 +1,18 @@
+%html
+	%body
+		- if @user
+			%p
+				= @profile.try(:display_name_or_company) or @user.email
+				- if @user.wants_info_about_online_classes
+					wants information about online classes.
+				- else
+					%b no longer
+					wants information about online classes.
+			%p
+				Email:
+				= mail_to @user.email
+			%p= mailer_user_link @user
+			- if @user.is_provider?
+				%p= link_to 'View provider profile', profile_url(@profile)
+		- else
+			%p Oops, can't find the user's record.

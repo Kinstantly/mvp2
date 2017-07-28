@@ -14,6 +14,18 @@ class AdminMailer < ActionMailer::Base
 		mail 
 	end
 	
+	# Notify site admin when a provider wants (or no longer wants) information about online classes.
+	def wants_info_about_online_classes(user)
+		@user, @profile = user, user.profile
+		if user.wants_info_about_online_classes
+			sendgrid_category 'Provider Requests Online Class Info'
+			mail subject: 'Provider wants info about online classes', to: ADMIN_EMAIL
+		else
+			sendgrid_category 'Provider No Longer Requests Online Class Info'
+			mail subject: 'Provider no longer wants info about online classes', to: ADMIN_EMAIL
+		end
+	end
+	
 	# Notify site admin, when a provider registers.
 	def provider_registration_alert(user)
 		@user, @profile = user, user.profile
