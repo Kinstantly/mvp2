@@ -150,6 +150,9 @@ em, i {
     background: asset-url('edit-over.png') left center no-repeat;
     cursor: pointer;
 }
+.editable.no-icon {
+	background-image: none;
+}
 
 /*  Header -------------------------------------------------------------------------- */
 

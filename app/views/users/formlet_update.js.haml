@@ -5,4 +5,4 @@
 	- if @update_succeeded
 		my_vars.f.close_formlets();
 	- formlet = escape_javascript "#{@formlet}".strip.gsub(/[.\/]/, '')
-	$('##{formlet}').html('#{escape_javascript(render partial: formlet+'_formlet')}');
+	$('##{formlet}').fadeOut(400, function() { $(this).html('#{escape_javascript(render partial: formlet+'_formlet')}').fadeIn(400); });

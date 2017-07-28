@@ -4,8 +4,8 @@
 	= form_for [:formlet_update, user], remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
-		#wants_info_about_online_classes
-			= f.check_box :wants_info_about_online_classes
+		%p#wants_info_about_online_classes
+			= f.check_box :wants_info_about_online_classes, { class: 'editable no-icon' }
 			= f.label :wants_info_about_online_classes, t('views.profile.edit.wants_info_about_online_classes')
 		= f.submit t('views.profile.edit.submit'), data: { disable_with: t('views.profile.edit.submit_disable') }, class: 'hidden'
 
