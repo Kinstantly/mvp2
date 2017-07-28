@@ -58,6 +58,15 @@
 				= f.submit t('devise.confirmations.create_confirmation_submit'), data: { disable_with: t('devise.confirmations.create_confirmation_submit_disable') }, class: 'default auto_width'
 	%br
 	%label.strong.cell
+		Opt-ins:
+	%span.cell
+		%ul
+			- if @user.wants_info_about_online_classes
+				%li= t('views.profile.view.wants_info_about_online_classes')
+			- if @user.wants_to_be_interviewed
+				%li= t('views.profile.view.wants_to_be_interviewed')
+	%br
+	%label.strong.cell
 		Subscriptions:
 	%span.cell
 		= active_mailing_lists.map{ |list| User.human_attribute_name list if @user.send list }.compact.join(', ')

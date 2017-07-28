@@ -666,6 +666,8 @@ en:
         total: 'Total'
         review_provider_link: 'Add your review'
         url: 'website:'
+        wants_info_about_online_classes: "Provider is interested in learning more about offering online classes on Kinstantly."
+        wants_to_be_interviewed: "Provider would like to be added to the list of experts we consider when looking for someone to interview for articles on Kinstantly."
       edit:
         accepting_new_clients_blank: 'Not accepting new clients/customers'
         add_specialty_text_field: 'Hit ENTER to add another specialty'
