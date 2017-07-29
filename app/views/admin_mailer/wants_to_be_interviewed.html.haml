@@ -1,0 +1,18 @@
+%html
+	%body
+		- if @user
+			%p
+				= @profile.try(:display_name_or_company) or @user.email
+				- if @user.wants_to_be_interviewed
+					wants to be interviewed for articles on Kinstantly.
+				- else
+					%b no longer
+					wants to be interviewed for articles on Kinstantly.
+			%p
+				Email:
+				= mail_to @user.email
+			%p= mailer_user_link @user
+			- if @user.is_provider?
+				%p= link_to 'View provider profile', profile_url(@profile)
+		- else
+			%p Oops, can't find the user's record.

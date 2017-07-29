@@ -1,8 +1,8 @@
 @javascript
-Feature: Options a provider can agree to, or not, from their profile edit tab
-	In order to take advantage of content marketing and to offer online classes via Kinstantly
+Feature: Allow a provider with a profile to request information about offering online classes via Kinstantly
+	In order to offer online classes to parents
 	As a registered provider
-	I want to opt in to interviews, online classes, and possibly other offerings
+	I want to ask for information about creating and selling online classes via Kinstantly
 	
 	Background:
 		Given I am logged in as a provider
@@ -34,4 +34,3 @@ Feature: Options a provider can agree to, or not, from their profile edit tab
 		When I uncheck "I'm interested in learning more about offering online classes on Kinstantly"
 			And "admin@kinstantly.com" opens the email with subject "Provider no longer wants info about online classes"
 		Then they should see /no longer(?:.|\s)+wants information about online classes/ in the email body
-	

@@ -1,17 +1,17 @@
-- formlet = 'courses_info'
+- formlet = 'interview_me'
 - user = @user || @profile.user # This partial may have been rendered from a profile view.
 .edit
 	= form_for [:formlet_update, user], remote: true, html: {id: "edit-#{formlet}"} do |f|
 		= f.error_messages
 		= hidden_field_tag 'formlet', formlet
-		%p#wants_info_about_online_classes
-			= f.check_box :wants_info_about_online_classes, { class: 'editable no-icon' }
-			= f.label :wants_info_about_online_classes, t('views.profile.edit.wants_info_about_online_classes')
+		%p#wants_to_be_interviewed
+			= f.check_box :wants_to_be_interviewed, { class: 'editable no-icon' }
+			= f.label :wants_to_be_interviewed, t('views.profile.edit.wants_to_be_interviewed')
 		= f.submit t('views.profile.edit.submit'), data: { disable_with: t('views.profile.edit.submit_disable') }, class: 'hidden'
 
 :coffeescript
 	# Show message while saving.
-	$('#user_wants_info_about_online_classes').on 'click', ->
-		$('#wants_info_about_online_classes label').html('Saving...')
+	$('#user_wants_to_be_interviewed').on 'click', ->
+		$('#wants_to_be_interviewed label').html('Saving...')
 		$(this).submit()
 		false # Stop bubble-up to prevent a double form submission.

@@ -26,6 +26,18 @@ class AdminMailer < ActionMailer::Base
 		end
 	end
 	
+	# Notify site admin when a provider wants (or no longer wants) to be interviewed for articles.
+	def wants_to_be_interviewed(user)
+		@user, @profile = user, user.profile
+		if user.wants_to_be_interviewed
+			sendgrid_category 'Provider Wants To Be Interviewed'
+			mail subject: 'Provider wants to be interviewed for articles', to: ADMIN_EMAIL
+		else
+			sendgrid_category 'Provider No Longer Wants To Be Interviewed'
+			mail subject: 'Provider no longer wants to be interviewed for articles', to: ADMIN_EMAIL
+		end
+	end
+	
 	# Notify site admin, when a provider registers.
 	def provider_registration_alert(user)
 		@user, @profile = user, user.profile

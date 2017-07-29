@@ -54,6 +54,7 @@
 			#year_started.formlet= render partial: 'year_started_formlet'
 			- if @profile.owned?
 				#courses_info= render partial: 'users/courses_info_formlet'
+				#interview_me= render partial: 'users/interview_me_formlet'
 %section.profile.right
 	- cache ['edit_profile_map_promo', allowed_for_prerelease?, @profile] do
 		%section.map

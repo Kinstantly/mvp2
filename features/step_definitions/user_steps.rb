@@ -211,6 +211,10 @@ Given /^I am already asking for information about online classes on Kinstantly$/
 	@user.reload.update wants_info_about_online_classes: true
 end
 
+Given(/^I am already indicating that I want to be interviewed by Kinstantly$/) do
+	@user.reload.update wants_to_be_interviewed: true
+end
+
 ### WHEN ###
 When /^I sign in with valid credentials$/ do
   create_visitor

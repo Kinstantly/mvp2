@@ -104,6 +104,7 @@ class UsersController < ApplicationController
 		if @user.errors.empty? and !current_user.profile_editor?
 			changes = @user.previous_changes
 			AdminMailer.wants_info_about_online_classes(@user).deliver_now if changes['wants_info_about_online_classes']
+			AdminMailer.wants_to_be_interviewed(@user).deliver_now if changes['wants_to_be_interviewed']
 		end
 	end
 	
