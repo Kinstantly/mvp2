@@ -7,7 +7,7 @@
 	my_vars.edit_location = my_vars.edit_location || {};
 	my_vars.edit_location.max_lengths = #{Location::MAX_LENGTHS.to_json};
 	my_vars.edit_profile.profile_help = !!#{current_user.profile_help} && !!#{@profile.owned_by? current_user};
-- cache ['edit_profile_left', @profile] do
+- cache ['edit_profile_left', @profile, @profile.user] do
 	.clearfix
 		#editing_tip= t 'views.profile.edit.editing_tip'
 		- if @profile.owned_by? @current_user

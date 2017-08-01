@@ -740,7 +740,7 @@ en:
         summary_tip: 'Tip: A first-person description ("I advise parents on...") is warmer and more approachable.'
         tab_load_error_message_html: 'Oops. Something went wrong. Click <a href="%{path}">here</a> to reload the page.'
         url_example: 'Example: www.allkidstutoring.com or http://www.allkidstutoring.com'
-        wants_info_about_online_classes: "I'm interested in learning more about offering online classes on Kinstantly"
+        wants_info_about_online_classes: "I'm interested in learning more about offering online classes on Kinstantly."
         wants_to_be_interviewed: "One more thing...Check this box if you'd like to be added to the list of experts we consider when looking for someone to interview for articles on Kinstantly. (It's one of the best ways to generate more customers.)"
         year_started_explanation: '(year you began business or practice)'
         year_started_example: 'Examples: 2001; Began practicing in 2000 and started my own company in 2006'
