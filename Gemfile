@@ -1,7 +1,7 @@
 # Global source lines are a security risk and should not be used as they can lead to gems being installed from unintended sources.
 # Wrap all "gem" calls within a "source" block.
 
-ruby '2.4.1'
+ruby '2.4.2'
 
 source 'https://rubygems.org' do
 
