@@ -58,7 +58,7 @@ Rails.application.configure do
   }
 
   # Wrapper for MailChimp API
-  Gibbon::Request.api_key = '1c6c41452463d27bc7b25aeb37de5133-us9'
+  Gibbon::Request.api_key = '7bef031275cb238da0ac1d178222d7ddf32e584f88d'
   config.mailing_lists[:mailchimp_list_ids] = {
     :parent_marketing_emails => '24517534db',
     :parent_newsletters => '1575880c9b',
@@ -72,6 +72,7 @@ Rails.application.configure do
     :parent_newsletters_source_campaigns => 'dc18c4f0ad',
     :parent_newsletters_campaigns => 'b8618a7fda'
   }
+	config.mailchimp_webhook_security_token = '7f965e58339d12c4539668f5088a5f7a26a0bba69243388f4e8c17a1f4e'
 end
 
 REINDEX_PROFILES_IN_BACKGROUND = false

@@ -80,18 +80,18 @@ Rails.application.configure do
     :s3_host_alias => config.cloudfront_domain_name,
     :url => ':s3_alias_url',
     #:url => ":s3_domain_url",
-    :hash_secret => 'DLJsk1RTbt2ybEsDx5ib71mRJPBRmeJ/+vxAun3zZS+3v8Dctd+jUP3IfgVNdmhXaIGguuM74ucCRiiXTg7jhg==',
+    :hash_secret => 'b3d7280f61cbeef18975fc5ba14795974e4b38acf76585ba37c296aceb37cd928c2ead29e362f121fee0e4717e8d60ace5d5152c50799301c7027afd4ba2bfc7',
     :hash_data => ":attachment/:id_partition/:style/:filename",
     :s3_protocol => 'https',
     :s3_permissions => :public_read,
     :s3_credentials => {
-      :access_key_id => 'AKIAICTCJIOBR3CFCHBQ',
-      :secret_access_key => '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'
+      :access_key_id => ENV['PAPERCLIP_AWS_ACCESS_KEY_ID'],
+      :secret_access_key => ENV['PAPERCLIP_AWS_SECRET_ACCESS_KEY']
     }
   }
 
   # Wrapper for MailChimp API
-  Gibbon::Request.api_key = '924cc5a82c5f67ecc397bd1d4fcb7236-us9'
+  Gibbon::Request.api_key = ENV['MAILCHIMP_API_KEY']
   config.mailing_lists[:mailchimp_list_ids] = {
     :parent_marketing_emails => '46eeff8675',
     :parent_newsletters => '7030e9d15b',
