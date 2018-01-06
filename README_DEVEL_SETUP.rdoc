@@ -6,11 +6,7 @@ Please add missing information to this document.
 
 === Ruby
 
-The Gemfile specifies Ruby 2.3.4 and Rails 4.2.7.1 (as of 18 April 2017). Developers and Heroku will use those versions (as specified by the Gemfile).
-
-The Rails maintainers test version 4.2.7.1 against Ruby 2.3 (the last time I checked) and there is no guarantee that Rails 4.2.7.1 will work with later versions of Ruby.
-
-You can install or upgrade Ruby using RVM.
+You can install or upgrade Ruby using RVM. For example,
 
  gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
  \curl -sSL https://get.rvm.io | bash -s stable --ruby=2.3.4
